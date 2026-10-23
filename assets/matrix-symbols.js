@@ -103,6 +103,14 @@
       })));
       line(3, 26, 29, 26, 3, 1);
       line(5, 3, 5, 6, 2); line(3, 4.5, 7, 4.5, 2);
+    } else if (id === 'arright') {
+      poly([[3,3],[21,3],[21,8],[29,8],[29,29],[3,29]], 1);
+      poly([[5,5],[19,5],[19,10],[27,10],[27,27],[5,27]], 0);
+      line(15,5,15,13,3,1); line(5,15,11,15,3,1); line(19,10,19,20,3,1);
+      rect(6,6,6,5,2); rect(22,12,4,7,2); rect(6,20,6,6,2); rect(21,23,5,3,2);
+      line(14,28,14,18,4,1.5); line(14,18,24,18,4,1.5);
+      const a = (time * .17) % 1;
+      ellipse(a<.5?14:14+(a-.5)*20,a<.5?28-a*20:18,1.2,1.2,3);
     } else if (id === 'seal') {
       const rot = t * .16;
       for (let k = 0; k < 8; k++) {
@@ -115,5 +123,5 @@
     }
     return { width: W, height: H, pixels: p.pixels };
   }
-  window.PortfolioMatrixSymbols = { ids: ['heart','star','moon','spiral','butterfly','bolt','dice','orbit','art','seal'], render };
+  window.PortfolioMatrixSymbols = { ids: ['heart','star','moon','spiral','butterfly','bolt','dice','orbit','art','seal','arright'], render };
 })();

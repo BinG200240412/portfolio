@@ -7,9 +7,12 @@
   const forcedColors = matchMedia('(forced-colors: active)');
   const TAU = Math.PI * 2;
   const colours = [[174,173,160],[178,136,132],[143,164,184],[186,170,120],
-    [137,165,150],[165,145,179],[203,199,185]];
+    [137,165,150],[165,145,179],[203,199,185],
+    [82,90,93],[117,125,124],[224,219,204]];
   // Every object keeps its own small palette. A colour change is a hard boundary.
   const palettes = {
+    'robot-dog':[0,6,7,4,1,0,8,9], 'quest-3':[0,6,7,2,1,0,8,9],
+    skill:[6,5,0,1], sudoku:[0,7,6,1], 'american-poster':[7,0,6,3], arright:[0,3,6,4],
     clock:[3,1,6,0], 'pharaoh-cat':[2,3,6,1], gorilla:[0,4,6,5],
     eye:[5,2,6,1], hand:[0,5,6,1], flower:[1,3,6,4],
     heart:[1,5,6,3], star:[3,1,6,4], moon:[5,3,6,2],
@@ -19,26 +22,24 @@
   // This is a collage, not a tiled wallpaper. Cropped edges, unequal scales,
   // and a few tight clusters leave the centre as the space between objects.
   const desktop = [
-    ['clock',.038,.155,.18,-.14], ['pharaoh-cat',.219,.125,.365,.09],
-    ['star',.420,.071,.083,-.15], ['eye',.612,.13,.27,.12],
-    ['art',.850,.086,.22,-.10], ['orbit',1.01,.22,.18,.19],
-    ['hand',.105,.390,.155,-.18], ['seal',.331,.309,.081,.12],
-    ['heart',.775,.315,.117,.16], ['flower',.968,.492,.385,.13],
-    ['gorilla',.105,.719,.375,-.08], ['moon',.289,.689,.122,-.20],
-    ['butterfly',.439,.838,.205,.08], ['bolt',.630,.756,.091,.20],
-    ['pharaoh-cat',.779,.675,.115,-.14], ['dice',.956,.756,.087,.23],
-    ['art',.154,.987,.145,.12], ['spiral',.580,1.018,.16,-.14],
-    ['clock',.853,.944,.292,-.13], ['seal',.505,.292,.057,-.10],
-    ['heart',.351,.965,.056,.15],
+    ['robot-dog',.171,.184,.48,-.10], ['skill',.72,.08,.39,-.11],
+    ['gorilla',.403,.052,.12,.10], ['eye',.535,.145,.135,.10],
+    ['american-poster',1.015,.19,.11,.17], ['arright',.074,.425,.18,-.18],
+    ['star',.369,.309,.060,-.1], ['seal',.661,.269,.071,.12],
+    ['quest-3',.845,.48,.46,.07], ['heart',.777,.304,.092,.15],
+    ['american-poster',.157,.836,.24,-.10], ['sudoku',.504,.867,.215,.11],
+    ['pharaoh-cat',.757,.741,.116,-.13], ['bolt',.632,.765,.067,.16],
+    ['clock',.995,.88,.155,.15], ['heart',.326,.963,.058,.16],
+    ['arright',.347,.714,.115,.14], ['spiral',.751,1.016,.134,-.15],
   ];
   const mobile = [
-    ['clock',.005,.085,.25,-.15], ['pharaoh-cat',.468,.107,.545,.08],
-    ['heart',.94,.085,.19,.14], ['eye',.09,.29,.325,-.12],
-    ['hand',.855,.302,.255,.16], ['seal',.49,.311,.14,.10],
-    ['star',1.015,.474,.16,-.13], ['gorilla',.24,.674,.59,-.10],
-    ['flower',.93,.741,.36,.12], ['moon',.875,.59,.18,.14],
-    ['butterfly',.105,.928,.30,-.13], ['art',.515,.922,.255,.10],
-    ['orbit',1.005,.963,.415,.15], ['bolt',.49,.806,.128,-.15],
+    ['robot-dog',.24,.163,.78,-.10], ['skill',.77,.115,.42,-.09],
+    ['heart',.965,.185,.13,.15], ['arright',.885,.303,.275,.14],
+    ['pharaoh-cat',.115,.355,.18,-.13], ['seal',.508,.288,.115,.12],
+    ['star',1.025,.47,.15,-.13], ['quest-3',.76,.722,.76,.09],
+    ['american-poster',.165,.815,.30,-.11], ['sudoku',.653,.953,.275,.11],
+    ['gorilla',.488,.80,.19,-.10], ['eye',.126,.976,.22,.08],
+    ['bolt',.518,.591,.10,.12],
   ];
   const smooth = value => { const t = Math.max(0, Math.min(1, value)); return t * t * (3 - 2 * t); };
   let width = 0, height = 0, items = [], quiet = [], sprites = [];
@@ -92,9 +93,9 @@
     if (!sprites.length || !width || !height) return;
     ctx.clearRect(0, 0, width, height);
     for (const item of items) {
-      const library = window.PortfolioMatrixMotifs;
-      const extra = window.PortfolioMatrixSymbols;
-      const source = library?.ids.includes(item.id) ? library : extra;
+      const libraries = [window.PortfolioMatrix3D,window.PortfolioProjectStickers,
+        window.PortfolioMatrixMotifs,window.PortfolioMatrixSymbols];
+      const source = libraries.find(library => library?.ids.includes(item.id));
       if (!source?.ids.includes(item.id)) continue;
       const image = source.render(item.id, time * item.speed, item.variant);
       const pitch = item.size / image.width, size = pitch * 1.4;
@@ -114,7 +115,8 @@
           if (!light) continue;
           // Whole solid LEDs carry the drawing. Only their overall brightness
           // fades near typography; there is no painted backdrop or central hole.
-          ctx.globalAlpha = (dark ? .72 : .65) * light;
+          const facet = image.shades ? [0,.48,.66,.84,1][image.shades[row * image.width + column]] : 1;
+          ctx.globalAlpha = (dark ? .76 : .66) * light * facet;
           ctx.drawImage(sprites[palette[(role - 1) % palette.length]],px-size/2,py-size/2,size,size);
         }
       }
