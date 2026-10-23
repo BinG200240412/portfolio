@@ -87,7 +87,7 @@
     return (value % 6283) / 1000;
   }
 
-  function robotDog(m, time, phase) {
+  function robotDog(m, time, phase, reaction = 0, hover = 0) {
     m.box(-0.03, 0.32, 0, 1.37, 0.31, 0.55, 1, 6);
     m.box(-0.06, 0.496, 0, 1.12, 0.045, 0.43, 6, 1);
     m.box(-0.17, 0.524, 0, 0.56, 0.018, 0.28, 7);
@@ -99,6 +99,7 @@
     m.box(0.43, 0.36, 0.286, 0.045, 0.10, 0.019, 5);
     m.box(0.43, 0.36, -0.286, 0.045, 0.10, 0.019, 5);
 
+    const headStart = m.vertices.length;
     m.box(0.69, 0.35, 0, 0.20, 0.12, 0.25, 7);
     m.box(0.83, 0.37, 0, 0.28, 0.24, 0.43, 6, 1);
     m.box(0.978, 0.37, 0, 0.022, 0.175, 0.35, 3);
@@ -108,13 +109,21 @@
       m.box(1.026, 0.399, z - 0.009, 0.006, 0.012, 0.012, 8);
     });
     m.box(0.999, 0.315, 0, 0.010, 0.019, 0.050, 4);
+    // All neck, sensor and head vertices rotate together about the neck joint.
+    const raise = reaction * .38 + hover * .07, c = Math.cos(raise), sn = Math.sin(raise);
+    if (raise) for (let i=headStart;i<m.vertices.length;i++) {
+      const v=m.vertices[i],x=v[0]-.63,y=v[1]-.35;
+      v[0]=.63+x*c-y*sn;v[1]=.35+x*sn+y*c;
+    }
 
     for (let front = 0; front < 2; front++) for (let side = 0; side < 2; side++) {
       const isFront = front === 1, sign = side === 0 ? -1 : 1;
       const x = isFront ? 0.47 : -0.49, z = sign * 0.355;
       const step = time * 2.7 + phase + ((front + side) % 2) * Math.PI;
       const hip = [x,0.19,z];
-      const foot = [x + Math.sin(step) * 0.17, -0.72 + Math.max(0,Math.cos(step)) * 0.14, z];
+      const pawLift = isFront ? reaction * (side === 1 ? .25 : .06) : 0;
+      const foot = [x + Math.sin(step) * 0.17 + (isFront ? .07 : -.025) * reaction,
+        -0.72 + Math.max(0,Math.cos(step)) * 0.14 + pawLift, z];
       const dx = foot[0] - hip[0], dy = foot[1] - hip[1], distance = Math.hypot(dx, dy);
       const upper = 0.46, lower = 0.49;
       const along = (upper * upper - lower * lower + distance * distance) / (2 * distance);
@@ -213,9 +222,13 @@
   }
 
   const ids = Object.freeze(['robot-dog','quest-3']);
-  function build(id, time, variant) {
-    const m = mesh(), seconds = Number.isFinite(time) ? time : 0;
-    if (id === 'robot-dog') robotDog(m,seconds,variantPhase(variant));
+  function build(id, time, variant, options = {}) {
+    const m = mesh(), input = options || {};
+    const active = Number.isFinite(input.active) ? Math.max(0,Math.min(1,input.active)) : 0;
+    const hover = !input.reduced && Number.isFinite(input.hover) ? Math.max(0,Math.min(1,input.hover)) : 0;
+    const seconds = input.reduced ? 0 : Number.isFinite(time) ? time : 0;
+    const reaction = active > 0 ? input.reduced ? .72 : Math.sin(active * Math.PI * .85) : 0;
+    if (id === 'robot-dog') robotDog(m,seconds,variantPhase(variant),reaction,hover);
     if (id === 'quest-3') quest3(m);
     return { vertices: m.vertices, faces: m.faces };
   }

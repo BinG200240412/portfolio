@@ -1,194 +1,150 @@
-/* Samples BinG's original rear-view SVG, rather than redrawing the character.
- * Source copies are byte-identical to 银背大猩猩-矢量.svg (original double butt)
- * and BinG-银背猩猩品牌锁定稿-扁爱心屁股-v3.svg (heart mask reference only).
- * The latter's figure, surrounding glyphs and wordmark are never rendered.
+/* Original code-drawn rear-view gorilla. No image loads, SVG sampling or SDFs.
+ * 48×64 native LEDs; roles 1–4 are grey, role 5 belongs only to the red heart.
  */
 (function (global) {
   'use strict';
+  const W = 48, H = 64, TAU = Math.PI * 2;
+  const BAYER = [0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
+  const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
+  const finite = (v,f) => Number.isFinite(v) ? v : f;
+  const butt = [[9,35],[10,33],[12,32],[15,32],[18,33],[20,34],[22,33],[25,32],[28,33],[30,35],
+    [31,38],[30,41],[28,43],[25,44],[22,43],[20,40],[18,43],[15,44],[12,43],[10,41]];
+  const heart = [[9,35],[10,33],[12,32],[15,32],[18,33],[20,35],[22,33],[25,32],[28,33],[30,35],
+    [31,38],[30,40],[28,42],[25,44],[22,46],[20,47],[18,46],[15,44],[12,42],[10,40]];
 
-  const WIDTH = 96, HEIGHT = 128, SCALE = 4;
-  const SW = WIDTH * SCALE, SH = HEIGHT * SCALE;
-  const script = document.currentScript;
-  const base = script?.src || new URL('assets/matrix-gorilla.js', document.baseURI).href;
-  const sourceURL = new URL('works/gorilla/native-gorilla-rear.svg', base).href;
-  const heartURL = new URL('works/gorilla/native-gorilla-heart-reference.svg', base).href;
-  const empty = new Uint8Array(WIDTH * HEIGHT);
-  const bayer = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
-  let state = null;
-
-  function clamp(value, min, max) { return Math.max(min, Math.min(max, value)); }
-  function finite(value, fallback) { return Number.isFinite(value) ? value : fallback; }
-  function phase(variant) {
-    const text = String(variant ?? '');
-    let hash = 0;
-    for (let i = 0; i < text.length; i++) hash = (hash * 31 + text.charCodeAt(i)) >>> 0;
-    return hash % 6283 / 1000;
-  }
-
-  function load(url) {
-    return new Promise((resolve, reject) => {
-      const image = new Image();
-      image.onload = () => resolve(image);
-      image.onerror = reject;
-      image.src = url;
-    });
-  }
-
-  function alpha(image) {
-    const canvas = document.createElement('canvas');
-    canvas.width = SW; canvas.height = SH;
-    const context = canvas.getContext('2d', { willReadFrequently: true });
-    context.drawImage(image, 0, 0, SW, SH);
-    const rgba = context.getImageData(0, 0, SW, SH).data;
-    const result = new Uint8Array(SW * SH);
-    for (let i = 0; i < result.length; i++) result[i] = rgba[i * 4 + 3];
-    return result;
-  }
-
-  function hole(ink, seedX, seedY, region) {
-    const x0 = Math.floor(region[0] * SW), y0 = Math.floor(region[1] * SH);
-    const x1 = Math.ceil(region[2] * SW), y1 = Math.ceil(region[3] * SH);
-    const start = Math.round(seedY * SH) * SW + Math.round(seedX * SW);
-    const mask = new Uint8Array(SW * SH);
-    if (ink[start] > 110) throw new Error('Original gorilla negative-space seed is covered.');
-    const queue = new Int32Array(SW * SH);
-    let head = 0, tail = 1;
-    queue[0] = start; mask[start] = 1;
-    const box = { x0: SW, y0: SH, x1: 0, y1: 0 };
-    while (head < tail) {
-      const index = queue[head++], x = index % SW, y = Math.floor(index / SW);
-      box.x0 = Math.min(box.x0, x); box.x1 = Math.max(box.x1, x);
-      box.y0 = Math.min(box.y0, y); box.y1 = Math.max(box.y1, y);
-      for (const step of [-1, 1, -SW, SW]) {
-        const next = index + step, nx = next % SW, ny = Math.floor(next / SW);
-        if (nx < x0 || nx > x1 || ny < y0 || ny > y1 || mask[next] || ink[next] > 110) continue;
-        mask[next] = 1; queue[tail++] = next;
+  function raster() {
+    const pixels = new Uint8Array(W * H);
+    function dot(x,y,c) {
+      x=Math.round(x);y=Math.round(y);
+      if(x>=0&&x<W&&y>=0&&y<H)pixels[y*W+x]=c;
+    }
+    function poly(points,c) {
+      let y0=H,y1=0;
+      for(const p of points){y0=Math.min(y0,p[1]);y1=Math.max(y1,p[1]);}
+      for(let y=Math.max(0,Math.floor(y0));y<=Math.min(H-1,Math.ceil(y1));y++) {
+        for(let x=0;x<W;x++) {
+          let inside=false;
+          for(let i=0,j=points.length-1;i<points.length;j=i++) {
+            const a=points[i],b=points[j];
+            if((a[1]>y+.5)!==(b[1]>y+.5)&&x+.5<(b[0]-a[0])*(y+.5-a[1])/(b[1]-a[1])+a[0])inside=!inside;
+          }
+          if(inside)pixels[y*W+x]=c;
+        }
       }
     }
-    // An open background region must never become a giant red rectangle.
-    if (box.x0 <= x0 || box.x1 >= x1 || box.y0 <= y0 || box.y1 >= y1 || tail < 120) {
-      throw new Error('Gorilla negative space is not an enclosed local shape.');
+    function ellipse(cx,cy,rx,ry,c) {
+      for(let y=Math.max(0,Math.floor(cy-ry));y<=Math.min(H-1,Math.ceil(cy+ry));y++)
+        for(let x=Math.max(0,Math.floor(cx-rx));x<=Math.min(W-1,Math.ceil(cx+rx));x++)
+          if(((x-cx)/rx)**2+((y-cy)/ry)**2<=1)pixels[y*W+x]=c;
     }
-    return { mask, box };
-  }
-
-  function distanceTo(mask, inside) {
-    const field = new Float32Array(SW * SH);
-    const diagonal = Math.SQRT2;
-    for (let i = 0; i < field.length; i++) field[i] = Boolean(mask[i]) === inside ? 0 : 1e5;
-    for (let y = 0; y < SH; y++) for (let x = 0; x < SW; x++) {
-      const i = y * SW + x;
-      if (x) field[i] = Math.min(field[i], field[i - 1] + 1);
-      if (y) {
-        field[i] = Math.min(field[i], field[i - SW] + 1);
-        if (x) field[i] = Math.min(field[i], field[i - SW - 1] + diagonal);
-        if (x < SW - 1) field[i] = Math.min(field[i], field[i - SW + 1] + diagonal);
+    function line(ax,ay,bx,by,c,width) {
+      const n=Math.max(1,Math.ceil(Math.hypot(bx-ax,by-ay)*2));
+      for(let i=0;i<=n;i++) {
+        const t=i/n,x=ax+(bx-ax)*t,y=ay+(by-ay)*t;
+        if((width||1)>1)ellipse(x,y,width/2,width/2,c);else dot(x,y,c);
       }
     }
-    for (let y = SH - 1; y >= 0; y--) for (let x = SW - 1; x >= 0; x--) {
-      const i = y * SW + x;
-      if (x < SW - 1) field[i] = Math.min(field[i], field[i + 1] + 1);
-      if (y < SH - 1) {
-        field[i] = Math.min(field[i], field[i + SW] + 1);
-        if (x) field[i] = Math.min(field[i], field[i + SW - 1] + diagonal);
-        if (x < SW - 1) field[i] = Math.min(field[i], field[i + SW + 1] + diagonal);
-      }
+    return {pixels,dot,poly,ellipse,line};
+  }
+
+  function phase(value) {
+    const s=String(value??'');let n=0;
+    for(let i=0;i<s.length;i++)n=(n*31+s.charCodeAt(i))>>>0;
+    return (n%1000)/1000;
+  }
+
+  function render(id,time,variant,options) {
+    const r=raster(),settings=options||{};
+    const morph=clamp(finite(settings.morph,0),0,1);
+    const reduced=Boolean(settings.reduced);
+    const t=reduced?0:finite(time,0),p=phase(variant);
+    const px=reduced?0:clamp(finite(settings.pointerX,0),-1,1);
+    const py=reduced?0:clamp(finite(settings.pointerY,0),-1,1);
+    const cycle=reduced?0:((t+p)*.5)%1;
+    const step=Math.sin(cycle*TAU);
+    const leftFoot={x:reduced?0:Math.round(step*.85),y:reduced?0:-Math.round(Math.max(0,step)*1.2)};
+    const rightFoot={x:reduced?0:-Math.round(step*.85),y:reduced?0:-Math.round(Math.max(0,-step)*1.2)};
+    const headX=reduced?0:Math.sin(t*.63+p)*.55+px*.5;
+    const headY=reduced?0:-.5-.65*Math.sin(t*.76+p)+py*.3;
+    const headAngle=reduced?0:Math.sin(t*.54+p)*.035+px*.018;
+    const blinkPhase=((t+p+1.1)%5.4+5.4)%5.4;
+    const blink=!reduced&&blinkPhase>4.7&&blinkPhase<4.9;
+    if(id!=='gorilla')return{width:W,height:H,pixels:r.pixels,ready:true,hitBox:{x0:9,y0:32,x1:32,y1:48}};
+
+    // Legs move from the knee down, while the back and butt stay anchored.
+    const l=leftFoot,q=rightFoot;
+    r.poly([[10,45],[18,46],[21,50],[20+l.x,54+l.y],[20+l.x,58+l.y],
+      [18+l.x,60+l.y],[12+l.x,60+l.y],[9+l.x,59+l.y],[9+l.x,56+l.y],[10,51]],1);
+    r.poly([[24,46],[31,47],[33,51],[32+q.x,56+q.y],[34+q.x,58+q.y],
+      [33+q.x,61+q.y],[26+q.x,61+q.y],[23+q.x,60+q.y],[23+q.x,56+q.y],[24,51]],1);
+    r.poly([[29,16],[33,18],[35,23],[36,27],[38,31],[39,36],[39,41],[38,45],
+      [39,49],[37,51],[34,52],[31,51],[31,48],[28,47],[24,47],[22,49],[20,51],
+      [16,51],[12,51],[9,49],[8,46],[7,42],[6,38],[7,34],[9,31],[11,28],
+      [15,25],[17,21],[20,18],[23,17],[26,15]],1);
+    const silhouette=r.pixels.slice();
+    // Keep an unbroken one-LED outline; dark inner planes intentionally breathe.
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++) {
+      const i=y*W+x;if(!silhouette[i])continue;
+      const edge=x===0||x===W-1||y===0||y===H-1||!silhouette[i-1]||!silhouette[i+1]||!silhouette[i-W]||!silhouette[i+W];
+      const rank=BAYER[(x&3)+(y&3)*4];
+      r.pixels[i]=edge?1:rank<6?4:rank===8?3:0;
     }
-    return field;
-  }
-
-  function signedDistance(mask) {
-    const outside = distanceTo(mask, true), inside = distanceTo(mask, false);
-    for (let i = 0; i < outside.length; i++) outside[i] -= inside[i];
-    return outside;
-  }
-
-  function alignHeart(original, reference) {
-    const result = new Uint8Array(SW * SH), a = original.box, b = reference.box;
-    for (let y = a.y0; y <= a.y1; y++) for (let x = a.x0; x <= a.x1; x++) {
-      const hx = Math.round(b.x0 + (x - a.x0) / (a.x1 - a.x0) * (b.x1 - b.x0));
-      const hy = Math.round(b.y0 + (y - a.y0) / (a.y1 - a.y0) * (b.y1 - b.y0));
-      result[y * SW + x] = reference.mask[hy * SW + hx];
+    // A diagonal silver saddle identifies the back; regular gaps replace noise.
+    const silver=raster();
+    silver.poly([[27,14],[32,18],[30,22],[28,25],[26,28],[23,30],[20,32],
+      [16,33],[15,30],[17,27],[19,24],[20,21],[23,18]],2);
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++) {
+      const i=y*W+x;
+      if(silver.pixels[i]&&silhouette[i])r.pixels[i]=(x+2*y)%5===0?0:((x+y)%4===0?3:2);
     }
-    return result;
-  }
+    // Three short cuts describe the hanging right arm, rather than a solid slab.
+    r.line(33,27,35,32,2);r.line(35,32,36,37,2);r.line(32,29,33,34,0);
+    r.line(34,40,34,46,2);r.line(36,42,36,48,0);
+    r.line(11+l.x,54+l.y,11+l.x,58+l.y,2);
+    r.line(27+q.x,56+q.y,30+q.x,57+q.y,3);
+    // The central leg gap remains open through every alternating foot frame.
+    r.line(21,53,21,62,0);r.line(22,55,22,62,0);
 
-  function sample(field, x, y) {
-    x = clamp(x, 0, SW - 1.001); y = clamp(y, 0, SH - 1.001);
-    const ix = Math.floor(x), iy = Math.floor(y), dx = x - ix, dy = y - iy;
-    const i = iy * SW + ix;
-    return (field[i] * (1 - dx) + field[i + 1] * dx) * (1 - dy) +
-      (field[i + SW] * (1 - dx) + field[i + SW + 1] * dx) * dy;
-  }
-
-  function render(id, time, variant, options) {
-    if (id !== 'gorilla' || !state) {
-      return { width: WIDTH, height: HEIGHT, pixels: empty, ready: false,
-        hitBox: { x0: 16, y0: 60, x1: 61, y1: 90 } };
+    // Corresponding hand-set vertices give the two lobes a true geometric morph.
+    const shape=butt.map((a,i)=>[a[0]+(heart[i][0]-a[0])*morph,a[1]+(heart[i][1]-a[1])*morph]);
+    const voidMask=raster();voidMask.poly(shape,1);
+    for(let y=31;y<49;y++)for(let x=8;x<33;x++) {
+      const i=y*W+x;if(!voidMask.pixels[i])continue;
+      r.pixels[i]=morph>(BAYER[(x&3)+(y&3)*4]+.5)/16?5:0;
     }
-    const settings = options || {};
-    const morph = clamp(finite(settings.morph, 0), 0, 1);
-    const px = clamp(finite(settings.pointerX, 0), -1, 1);
-    const py = clamp(finite(settings.pointerY, 0), -1, 1);
-    const t = finite(time, 0), p = phase(variant);
-    const yaw = Math.sin(t * 0.43 + p) * 0.035 + px * 0.05;
-    const lean = Math.sin(t * 0.37 + p) * 0.17 + py * 0.46;
-    const pixels = new Uint8Array(WIDTH * HEIGHT);
-    const shades = new Uint8Array(WIDTH * HEIGHT);
-    const box = state.box;
 
-    for (let y = 0; y < HEIGHT; y++) for (let x = 0; x < WIDTH; x++) {
-      const nx = x / WIDTH, ny = y / HEIGHT;
-      // The head sits slightly forward; peripheral glyphs sit behind the body.
-      // Only subpixel depth offsets change, never the original composition.
-      let depth = 0.18;
-      if (nx > 0.17 && nx < 0.85 && ny > 0.1 && ny < 0.94) depth = 0.55;
-      if (nx > 0.53 && nx < 0.87 && ny > 0.1 && ny < 0.38) depth = 0.95;
-      if ((nx < 0.31 && ny < 0.54) || (nx > 0.76 && ny > 0.49)) depth = 0.18;
-      const sx = (x + 0.5 - WIDTH / 2) / Math.cos(yaw) + WIDTH / 2 - depth * yaw * 10;
-      const sy = y + 0.5 - lean * depth;
-      const ax = sx * SCALE, ay = sy * SCALE;
-      const ink = (sample(state.ink, ax - 0.85, ay - 0.85) + sample(state.ink, ax + 0.85, ay - 0.85) +
-        sample(state.ink, ax - 0.85, ay + 0.85) + sample(state.ink, ax + 0.85, ay + 0.85)) / 4;
-      const i = y * WIDTH + x;
-      if (ink >= 33) {
-        pixels[i] = 1;
-        shades[i] = ink > 210 ? 4 : ink > 125 ? 3 : ink > 65 ? 2 : 1;
-      }
-      if (ax < box.x0 - 3 || ax > box.x1 + 3 || ay < box.y0 - 3 || ay > box.y1 + 3) continue;
-      const before = sample(state.original, ax, ay);
-      const after = sample(state.heart, ax, ay);
-      const current = before * (1 - morph) + after * morph;
-      if (morph > 0 && before < 0 && current >= 0) {
-        // Restore body ink only where the old enclosed negative space closes.
-        pixels[i] = 1; shades[i] = 4;
-      }
-      if (current < 0) {
-        pixels[i] = 0; shades[i] = 0;
-        // Ordered LED coverage brings in red without colouring the paper.
-        const threshold = (bayer[(x & 3) + (y & 3) * 4] + 0.5) / 16;
-        if (morph > threshold) { pixels[i] = 5; shades[i] = 4; }
-      }
+    // All facial parts share one neck transform: a local lift/turn, not a sticker spin.
+    const transform=point=>{
+      const dx=point[0]-31,dy=point[1]-23,c=Math.cos(headAngle),s=Math.sin(headAngle);
+      return[31+dx*c-dy*s+headX,23+dx*s+dy*c+headY];
+    };
+    const headPoly=(points,color)=>r.poly(points.map(transform),color);
+    const headLine=(a,b,c)=>{a=transform(a);b=transform(b);r.line(a[0],a[1],b[0],b[1],c);};
+    headPoly([[28,8],[30,5],[34,4],[37,6],[39,9],[40,12],[42,15],[42,18],
+      [43,20],[42,23],[40,26],[37,26],[35,24],[33,21],[31,19],[29,17],[27,13]],1);
+    headPoly([[29,9],[32,6],[35,6],[37,8],[38,11],[37,13],[34,12],[32,14],[29,13]],4);
+    headLine([29,9],[32,7],3);
+    headPoly([[35,12],[38,12],[40,14],[40,16],[42,18],[41,20],[42,21],
+      [40,24],[38,24],[36,22],[35,19],[33,17],[33,14]],2);
+    headPoly([[31,13],[33,12],[34,14],[33,16],[31,16],[30,15]],2);
+    headLine([32,14],[32,15],4);
+    headLine([36,14],[39,14],4);
+    if(blink)headLine([36,17],[39,17],4);
+    else {
+      headPoly([[36,16],[38,15],[40,17],[38,18]],4);
+      const pupil=transform([38,16.5]);r.dot(pupil[0],pupil[1],1);
     }
-    // Hit box is the changing butt/heart region, in this returned pixel space.
-    const shiftX = 0.55 * yaw * 10, shiftY = lean * 0.55;
-    return { width: WIDTH, height: HEIGHT, pixels, shades, ready: true,
-      hitBox: { x0: box.x0 / SCALE + shiftX, y0: box.y0 / SCALE + shiftY,
-        x1: (box.x1 + 1) / SCALE + shiftX, y1: (box.y1 + 1) / SCALE + shiftY } };
+    headLine([40,18],[41,19],4);headLine([39,22],[41,22],4);
+    const shades=new Uint8Array(W*H);
+    for(let i=0;i<shades.length;i++)if(r.pixels[i])shades[i]=4;
+    return {width:W,height:H,pixels:r.pixels,shades,ready:true,
+      hitBox:{x0:9,y0:32,x1:32,y1:48},
+      motionX:reduced?0:Math.sin(t*.23+p)*.65,motionY:0,motionUnit:'native-pixel',
+      motion:{leftFoot,rightFoot,head:{x:headX,y:headY,angle:headAngle},blink}};
   }
 
-  global.PortfolioGorillaMotif = { ids: ['gorilla'], render };
-
-  Promise.all([load(sourceURL), load(heartURL)]).then(([source, heart]) => {
-    const ink = alpha(source), reference = alpha(heart);
-    const originalHole = hole(ink, 0.40, 0.59, [0.14, 0.45, 0.66, 0.74]);
-    const targetHole = hole(reference, 0.40, 0.56, [0.14, 0.42, 0.66, 0.70]);
-    state = { ink, box: originalHole.box, original: signedDistance(originalHole.mask),
-      heart: signedDistance(alignHeart(originalHole, targetHole)) };
-    global.dispatchEvent(new CustomEvent('portfolio:gorilla-ready', {
-      detail: { id: 'gorilla', width: WIDTH, height: HEIGHT, hitBox: render('gorilla', 0, 0).hitBox }
-    }));
-  }).catch(error => {
-    console.warn('Original gorilla motif could not be sampled.', error);
-  });
+  global.PortfolioGorillaMotif={ids:['gorilla'],render};
+  // Synchronous readiness: the event is informational; callers may render immediately.
+  if(typeof global.dispatchEvent==='function'&&typeof CustomEvent==='function')
+    global.dispatchEvent(new CustomEvent('portfolio:gorilla-ready',{detail:{id:'gorilla',width:W,height:H}}));
 })(window);

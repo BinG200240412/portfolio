@@ -9,17 +9,19 @@
   const TAU = Math.PI * 2;
   const colours = [[174,173,160],[178,136,132],[143,164,184],[186,170,120],
     [137,165,150],[165,145,179],[203,199,185],
-    [82,90,93],[117,125,124],[224,219,204],[204,85,71]];
+    [82,90,93],[117,125,124],[224,219,204],[204,85,71],
+    [205,204,197],[163,165,162],[118,123,122],[75,83,82]];
   // Paper needs coloured ink, rather than dimmed light. Keep the same sage,
   // rose, blue, ochre and mauve roles, with enough chroma to survive warm white.
   const lightColours = [[143,145,126],[171,105,101],[102,139,169],[174,143,74],
     [103,146,121],[149,117,171],[180,164,127],
-    [62,76,81],[102,122,117],[203,188,151],[176,61,47]];
+    [62,76,81],[102,122,117],[203,188,151],[176,61,47],
+    [58,65,64],[96,103,101],[137,144,139],[181,186,178]];
   // Every object keeps its own small palette. A colour change is a hard boundary.
   const palettes = {
     'robot-dog':[0,6,7,4,1,0,8,9], 'quest-3':[0,6,7,2,1,0,8,9],
     skill:[6,5,0,1], sudoku:[6,1,0,4], 'kiss-woman':[6,1,0,1], arright:[0,3,6,4],
-    clock:[3,1,6,0], gorilla:[0,4,6,5,10],
+    clock:[3,1,6,0], gorilla:[12,11,13,14,10],
     'liangzhu-mask':[4,0,6,3], 'jade-cong':[4,0,6,3],
     eye:[5,2,6,1], hand:[0,5,6,1], flower:[1,3,6,4],
     heart:[1,5,6,3], star:[3,1,6,4], moon:[5,3,6,2],
@@ -29,39 +31,86 @@
   // Scale follows the visible silhouette, not a shared square tile: a few
   // oversized anchors, medium drawings, then much smaller punctuation.
   const desktop = [
-    ['robot-dog',.15,.18,.54,-.10], ['skill',.74,.07,.30,-.11],
-    ['gorilla',.46,.225,.29,0], ['eye',.255,.395,.064,-.10],
-    ['heart',.97,.155,.038,.17], ['arright',.060,.435,.135,-.18],
-    ['star',.29,.305,.028,-.1], ['jade-cong',.65,.36,.083,.05],
-    ['quest-3',.875,.49,.59,.07], ['heart',.79,.28,.048,.15],
-    ['kiss-woman',.105,.87,.40,-.11], ['sudoku',.51,.865,.145,.11],
-    ['liangzhu-mask',.765,.805,.125,-.05], ['bolt',.62,.735,.034,.16],
-    ['clock',.995,.91,.106,.15], ['heart',.33,.965,.030,.16],
-    ['arright',.335,.715,.078,.14], ['spiral',.80,1.01,.074,-.15],
+    ['robot-dog',.15,.18,.44,-.10], ['skill',.74,.07,.30,-.11],
+    ['gorilla',.46,.225,.205,0], ['eye',.255,.395,.075,-.10],
+    ['heart',.97,.155,.05,.17], ['arright',.075,.435,.17,-.18],
+    ['star',.29,.305,.045,-.1], ['jade-cong',.65,.36,.115,.05],
+    ['quest-3',.875,.49,.43,.07], ['heart',.79,.28,.055,.15],
+    ['kiss-woman',.13,.835,.205,-.11], ['sudoku',.50,.855,.235,.11],
+    ['liangzhu-mask',.765,.805,.17,-.05], ['bolt',.62,.735,.045,.16],
+    ['clock',.965,.91,.106,.15], ['heart',.33,.965,.045,.16],
+    ['arright',.335,.715,.085,.14], ['spiral',.80,.98,.074,-.15],
   ];
   const mobile = [
-    ['robot-dog',.20,.16,.84,-.10], ['skill',.80,.105,.34,-.09],
-    ['heart',.965,.20,.060,.15], ['arright',.065,.60,.16,.14],
-    ['liangzhu-mask',.12,.35,.19,0], ['jade-cong',.9,.947,.12,.05],
-    ['star',.96,.49,.062,-.13], ['quest-3',.80,.715,.90,.09],
-    ['kiss-woman',.145,.82,.26,-.11], ['sudoku',.63,.92,.20,.11],
-    ['gorilla',.74,.31,.49,0], ['eye',.13,.97,.12,.08],
-    ['bolt',.49,.592,.052,.12],
+    ['robot-dog',.20,.16,.69,-.10], ['skill',.80,.105,.35,-.09],
+    ['heart',.94,.20,.085,.15], ['arright',.11,.60,.23,.14],
+    ['liangzhu-mask',.12,.35,.22,0], ['jade-cong',.9,.947,.16,.05],
+    ['star',.94,.49,.085,-.13], ['quest-3',.80,.715,.70,.09],
+    ['kiss-woman',.15,.81,.215,-.11], ['sudoku',.53,.92,.285,.11],
+    ['gorilla',.74,.31,.40,0], ['eye',.13,.97,.13,.08],
+    ['bolt',.49,.592,.075,.12],
   ];
   const smooth = value => { const t = Math.max(0, Math.min(1, value)); return t * t * (3 - 2 * t); };
-  let width = 0, height = 0, items = [], quiet = [], sprites = [];
+  const projects = {sudoku:'sudoku','robot-dog':'robot-dog','quest-3':'quest-3',arright:'arright',
+    skill:'skill','kiss-woman':'sudoku-visual','liangzhu-mask':'liangzhu','jade-cong':'liangzhu'};
+  const names = {sudoku:['数独','Sudoku'],'robot-dog':['机器狗','Robot dog'],'quest-3':['Quest 3','Quest 3'],
+    arright:['Arright','Arright'],skill:['Skills','Skills'],'kiss-woman':['数独视觉系统','Sudoku visual system'],
+    'liangzhu-mask':['良渚','Liangzhu'],'jade-cong':['良渚','Liangzhu']};
+  const hotspots = new Map();
+  const sampleWeights = new Float32Array(9), sampleShades = new Float32Array(9);
+  const sampled = {role:0,coverage:0,shade:4};
+  let width = 0, height = 0, ledPitch = 3, items = [], quiet = [], sprites = [];
   let dark = true, frame = 0, lastFrame = 0, elapsed = 0, pageShown = true;
   let morph = 0, morphTarget = 0, pointerX = 0, pointerY = 0, aimX = 0, aimY = 0;
   let gorillaReady = false, gorillaPlacement = null;
+  let pending = null, maskSettling = 0;
 
   function updateQuietZones() {
-    const line = stage.querySelector('.line').getBoundingClientRect();
-    quiet = [{ x: line.x + line.width / 2, y: line.y + line.height / 2,
-      w: line.width / 2 + 10, h: line.height / 2 + 10 }];
-    if (stage.classList.contains('works')) {
-      const menu = document.getElementById('menu').getBoundingClientRect();
-      quiet.push({ x: menu.x + menu.width / 2, y: menu.y + menu.height / 2,
-        w: menu.width / 2 + 6, h: menu.height / 2 + 7 });
+    // Paint the actual DOM glyphs, including individual typewriter spans and
+    // their letter spacing. The transparent space between letters stays clear.
+    quiet = [];
+    const origin = stage.getBoundingClientRect();
+    const roots = [stage.querySelector('.line')];
+    if (stage.classList.contains('works')) roots.push(document.getElementById('menu'));
+    for (const root of roots) {
+      if (!root) continue;
+      const box = root.getBoundingClientRect(), padding = Math.ceil(ledPitch + 3);
+      if (!box.width || !box.height || !root.textContent.trim()) continue;
+      const mask = document.createElement('canvas');
+      mask.width = Math.max(1, Math.ceil(box.width + padding * 2));
+      mask.height = Math.max(1, Math.ceil(box.height + padding * 2));
+      const paint = mask.getContext('2d', {willReadFrequently:true});
+      if (!paint) continue;
+      paint.fillStyle = paint.strokeStyle = '#fff'; paint.lineJoin = 'round';
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      let node;
+      while ((node = walker.nextNode())) {
+        const style = getComputedStyle(node.parentElement);
+        if (style.display === 'none' || style.visibility === 'hidden') continue;
+        paint.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+        paint.textBaseline = 'alphabetic';
+        const spacing = parseFloat(style.letterSpacing) || 0;
+        const range = document.createRange();
+        for (let offset = 0; offset < node.length;) {
+          const character = String.fromCodePoint(node.data.codePointAt(offset));
+          range.setStart(node, offset); range.setEnd(node, offset + character.length);
+          offset += character.length;
+          if (!character.trim()) continue;
+          const rect = range.getBoundingClientRect(), metrics = paint.measureText(character);
+          if (!rect.width || !rect.height || !metrics.width) continue;
+          const ascent = metrics.fontBoundingBoxAscent ?? parseFloat(style.fontSize) * .8;
+          const descent = metrics.fontBoundingBoxDescent ?? parseFloat(style.fontSize) * .2;
+          const fontHeight = ascent + descent || parseFloat(style.fontSize);
+          const sx = rect.width / Math.max(1, metrics.width + spacing), sy = rect.height / fontHeight;
+          paint.save();
+          paint.translate(rect.left - box.left + padding, rect.top - box.top + padding);
+          paint.scale(sx, sy); paint.lineWidth = Math.max(2, ledPitch * .9) / Math.max(sx, sy);
+          paint.strokeText(character, 0, ascent); paint.fillText(character, 0, ascent);
+          paint.restore();
+        }
+      }
+      quiet.push({x:box.left-origin.left-padding,y:box.top-origin.top-padding,
+        width:mask.width,height:mask.height,data:paint.getImageData(0,0,mask.width,mask.height).data});
     }
   }
   function resize() {
@@ -70,10 +119,19 @@
     canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     const small = width < 700, unit = small ? width : Math.min(width, height);
+    // One physical LED scale for every library, independent of source raster.
+    // Let very large displays grow the pitch too, keeping the sample count bounded.
+    ledPitch = Math.max(3, unit / 170);
     items = (small ? mobile : desktop).map(([id,x,y,size,angle], index) => ({
-      id, x:x * width, y:y * height, size:size * unit, angle,
+      id, key:`${index}:${id}`, x:x * width, y:y * height, size:size * unit, angle,
       phase: index * 2.399963, variant: index % 5, speed:.7 + index % 4 * .13,
     }));
+    const used = new Set();
+    for (const item of items) if (projects[item.id]) { used.add(item.key); ensureHotspot(item); }
+    for (const [key, entry] of hotspots) if (!used.has(key)) {
+      if (pending?.entry === entry) pending = null;
+      entry.button.remove(); hotspots.delete(key);
+    }
     updateQuietZones(); draw(reduced.matches ? 6 : elapsed);
   }
   function makeSprites() {
@@ -86,50 +144,110 @@
       return sprite;
     });
   }
-  function clearance(x, y, time) {
+  function clearance(x, y) {
     let light = 1;
-    for (const box of quiet) {
-      const radius = 12;
-      const dx = Math.abs(x - box.x) - box.w + radius;
-      const dy = Math.abs(y - box.y) - box.h + radius;
-      const edge = Math.hypot(Math.max(dx,0),Math.max(dy,0)) + Math.min(Math.max(dx,dy),0) - radius;
-      const ebb = 7 + 4 * Math.sin(x * .028 + time * .4) + 3 * Math.sin(y * .051 - time * .31);
-      light = Math.min(light, Math.round(smooth((edge - ebb) / 22) * 16) / 16);
+    for (const mask of quiet) {
+      const column = Math.floor(x - mask.x), row = Math.floor(y - mask.y);
+      if (column < 0 || row < 0 || column >= mask.width || row >= mask.height) continue;
+      light = Math.min(light, 1 - .45 * mask.data[(row * mask.width + column) * 4 + 3] / 255);
     }
     return light;
   }
   function placement(item, time, image) {
     const gorilla = item.id === 'gorilla';
-    const angle = item.angle + .035 * Math.sin(time * .23 + item.phase) + (gorilla ? pointerX * .025 : 0);
+    const entry = hotspots.get(item.key), active = pending && pending.entry === entry ? pending.progress : 0;
+    const beat = reduced.matches ? 0 : Math.sin(active * Math.PI);
+    const angle = item.angle + .035 * Math.sin(time * .23 + item.phase) +
+      (gorilla ? pointerX * .025 : Math.sin(active * TAU) * .055);
     return {
       x: item.x + Math.sin(time * .28 + item.phase) * 4 + (gorilla ? pointerX * 2 : 0),
-      y: item.y + Math.sin(time * .31 + item.phase * 1.3) * 4 + (gorilla ? pointerY * 1.5 : 0),
-      angle, cos:Math.cos(angle), sin:Math.sin(angle), pitch:item.size / image.width,
+      y: item.y + Math.sin(time * .31 + item.phase * 1.3) * 4 + (gorilla ? pointerY * 1.5 : -beat * 5),
+      angle, cos:Math.cos(angle), sin:Math.sin(angle), pitch:item.size / image.width * (1 + beat * .045),
       width:image.width, height:image.height, hitBox:image.hitBox,
     };
   }
-  function buttonVisibility() {
-    if (!gorillaButton) return;
-    const shown = visible() && gorillaReady && !!gorillaPlacement;
-    gorillaButton.hidden = !shown;
-    gorillaButton.disabled = !shown;
+  function ensureHotspot(item) {
+    if (hotspots.has(item.key)) return;
+    const button = document.createElement('button');
+    button.type = 'button'; button.className = 'matrix-object-hit'; button.hidden = true;
+    button.setAttribute('data-project', projects[item.id]); button.setAttribute('data-motif', item.id);
+    button.setAttribute('data-i18n-ignore', '');
+    const entry = {button,id:item.id,project:projects[item.id],hover:0,hoverTarget:0,placement:null};
+    const hover = value => { entry.hoverTarget = value; };
+    button.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') hover(1); });
+    button.addEventListener('pointerleave', () => hover(0));
+    button.addEventListener('focus', () => hover(1)); button.addEventListener('blur', () => hover(0));
+    button.addEventListener('click', () => {
+      if (!visible() || !entry.placement || pending) return;
+      if (reduced.matches) { window.PortfolioNavigation?.openProject(entry.project); return; }
+      pending = {entry,progress:0}; buttonVisibility();
+    });
+    hotspots.set(item.key, entry); stage.appendChild(button); objectLabel(entry);
   }
-  function buttonPosition() {
-    if (!gorillaButton || !gorillaPlacement) return;
-    const p = gorillaPlacement, box = p.hitBox;
+  function objectLabel(entry) {
+    const english = window.PortfolioI18n?.language === 'en' || document.documentElement.lang === 'en';
+    const label = english ? `Open ${names[entry.id][1]}` : `查看${names[entry.id][0]}`;
+    entry.button.setAttribute('aria-label',label); entry.button.title = label;
+  }
+  function buttonVisibility() {
+    const live = visible();
+    if (gorillaButton) {
+      const shown = live && gorillaReady && !!gorillaPlacement;
+      gorillaButton.hidden = !shown; gorillaButton.disabled = !shown || !!pending;
+    }
+    for (const entry of hotspots.values()) {
+      const shown = live && !!entry.placement;
+      entry.button.hidden = !shown;
+      entry.button.disabled = !shown || (!!pending && pending.entry !== entry);
+      entry.button.setAttribute('aria-busy', String(pending?.entry === entry));
+    }
+  }
+  function positionButton(button, p) {
+    if (!button || !p) return false;
+    const box = p.hitBox;
     if (!box || ![box.x0,box.y0,box.x1,box.y1].every(Number.isFinite) || box.x1 < box.x0 || box.y1 < box.y0) {
-      gorillaReady = false;
-      return;
+      return false;
     }
     const u = ((box.x0 + box.x1) / 2 - (p.width - 1) / 2) * p.pitch;
     const v = ((box.y0 + box.y1) / 2 - (p.height - 1) / 2) * p.pitch;
     const w = Math.max(44, (box.x1 - box.x0 + 1) * p.pitch + 8);
     const h = Math.max(44, (box.y1 - box.y0 + 1) * p.pitch + 8);
     const x = p.x + u * p.cos - v * p.sin, y = p.y + u * p.sin + v * p.cos;
-    gorillaButton.style.width = `${w}px`;
-    gorillaButton.style.height = `${h}px`;
-    gorillaButton.style.transformOrigin = '50% 50%';
-    gorillaButton.style.transform = `translate3d(${x-w/2}px,${y-h/2}px,0) rotate(${p.angle}rad)`;
+    button.style.width = `${w}px`; button.style.height = `${h}px`;
+    button.style.transformOrigin = '50% 50%';
+    button.style.transform = `translate3d(${x-w/2}px,${y-h/2}px,0) rotate(${p.angle}rad)`;
+    return true;
+  }
+  function inkBounds(image) {
+    if (image.hitBox) return image.hitBox;
+    let x0=image.width,y0=image.height,x1=-1,y1=-1;
+    for (let y=0;y<image.height;y++) for (let x=0;x<image.width;x++) if (image.pixels[y*image.width+x]) {
+      x0=Math.min(x0,x); y0=Math.min(y0,y); x1=Math.max(x1,x); y1=Math.max(y1,y);
+    }
+    return x1 < x0 ? null : {x0,y0,x1,y1};
+  }
+  // Area sampling keeps thin ink strokes when a high-resolution source is
+  // reduced to the same LED grid as every other object.
+  function sample(image, x, y, span, paletteLength) {
+    const half=span/2,x0=x-half,x1=x+half,y0=y-half,y1=y+half;
+    const weights=sampleWeights, shades=sampleShades;
+    weights.fill(0); shades.fill(0);
+    let occupied=0;
+    for (let row=Math.max(0,Math.ceil(y0-.5));row<=Math.min(image.height-1,Math.floor(y1+.5));row++) {
+      const wy=Math.max(0,Math.min(y1,row+.5)-Math.max(y0,row-.5));
+      if (!wy) continue;
+      for (let column=Math.max(0,Math.ceil(x0-.5));column<=Math.min(image.width-1,Math.floor(x1+.5));column++) {
+        const index=row*image.width+column,role=image.pixels[index];
+        if (!role || role>paletteLength) continue;
+        const weight=wy*Math.max(0,Math.min(x1,column+.5)-Math.max(x0,column-.5));
+        occupied+=weight; weights[role]+=weight; shades[role]+=weight*(image.shades?.[index] || 4);
+      }
+    }
+    if (occupied/(span*span)<.10) return null;
+    let role=1; for(let i=2;i<=paletteLength;i++) if(weights[i]>weights[role]) role=i;
+    sampled.role=role; sampled.coverage=Math.min(1,occupied/(span*span*.35));
+    sampled.shade=Math.max(1,Math.min(4,Math.round(shades[role]/weights[role])));
+    return sampled;
   }
   function buttonLabel() {
     if (!gorillaButton) return;
@@ -156,6 +274,15 @@
     const follow = 1 - Math.exp(-dt * 12);
     pointerX += (aimX - pointerX) * follow;
     pointerY += (aimY - pointerY) * follow;
+    for (const entry of hotspots.values()) entry.hover += (entry.hoverTarget-entry.hover)*follow;
+    if (pending) {
+      pending.progress = Math.min(1,pending.progress+dt/.65);
+      if (pending.progress >= 1) {
+        const project = pending.entry.project;
+        pending = null;
+        if (visible()) window.PortfolioNavigation?.openProject(project);
+      }
+    }
   }
   function draw(time) {
     if (!sprites.length || !width || !height) return;
@@ -167,38 +294,46 @@
       window.PortfolioMatrix3D,window.PortfolioProjectStickers,window.PortfolioMatrixMotifs,window.PortfolioMatrixSymbols];
     gorillaReady = false;
     gorillaPlacement = null;
+    for (const entry of hotspots.values()) entry.placement = null;
     for (const item of items) {
       const source = libraries.find(library => library?.ids.includes(item.id));
       if (!source?.ids.includes(item.id)) continue;
-      const image = source.render(item.id, time * item.speed, item.variant,
-        item.id === 'gorilla' ? {morph:smooth(morph),pointerX,pointerY} : undefined);
+      const entry = hotspots.get(item.key);
+      const options = {active:pending && pending.entry===entry ? pending.progress : 0,
+        hover:reduced.matches ? 0 : entry?.hover || 0,reduced:reduced.matches};
+      if (item.id === 'gorilla') Object.assign(options,{morph:smooth(morph),pointerX,pointerY});
+      const image = source.render(item.id, time * item.speed, item.variant, options);
+      if (!image?.pixels || !image.width || !image.height) continue;
       const p = placement(item, time, image);
-      const {pitch,x,y,cos,sin} = p, size = pitch * 1.4, palette = palettes[item.id];
+      const {pitch,x,y,cos,sin} = p, size = ledPitch * 1.4, palette = palettes[item.id];
+      if (!palette) continue;
+      p.hitBox = inkBounds(image);
+      if (entry && image.ready !== false && positionButton(entry.button,p)) entry.placement=p;
       if (item.id === 'gorilla' && source === window.PortfolioGorillaMotif && (image.ready === true || source.ready === true)) {
         gorillaPlacement = p;
-        gorillaReady = true;
+        gorillaReady = positionButton(gorillaButton,p);
       }
-      for (let row = 0; row < image.height; row++) {
-        for (let column = 0; column < image.width; column++) {
-          const role = image.pixels[row * image.width + column];
-          if (!role) continue;
-          const u = (column - (image.width - 1) / 2) * pitch;
-          const v = (row - (image.height - 1) / 2) * pitch;
+      const columns=Math.ceil(image.width*pitch/ledPitch), rows=Math.ceil(image.height*pitch/ledPitch);
+      for (let row = 0; row < rows; row++) {
+        for (let column = 0; column < columns; column++) {
+          const u = (column - (columns - 1) / 2) * ledPitch;
+          const v = (row - (rows - 1) / 2) * ledPitch;
           const px = x + u * cos - v * sin, py = y + u * sin + v * cos;
           if (px < -size || px > width + size || py < -size || py > height + size) continue;
-          const light = clearance(px, py, time);
-          if (!light) continue;
+          const pixel=sample(image,u/pitch+(image.width-1)/2,v/pitch+(image.height-1)/2,ledPitch/pitch,palette.length);
+          if (!pixel) continue;
+          const light = clearance(px, py);
           // Whole solid LEDs carry the drawing. Only their overall brightness
           // fades near typography; there is no painted backdrop or central hole.
           // Flat stickers keep their full colour; both themes retain solid LEDs.
-          const facet = image.shades ? facets[image.shades[row * image.width + column]] : 1;
-          ctx.globalAlpha = opacity * light * facet;
-          ctx.drawImage(sprites[palette[(role - 1) % palette.length]],px-size/2,py-size/2,size,size);
+          const facet = image.shades ? facets[pixel.shade] : 1;
+          const ink=opacity*facet*pixel.coverage;
+          ctx.globalAlpha = light===1 ? ink : Math.min(ink,Math.max(.16,ink*light));
+          ctx.drawImage(sprites[palette[pixel.role-1]],px-size/2,py-size/2,size,size);
         }
       }
     }
     ctx.globalAlpha = 1;
-    buttonPosition();
     buttonVisibility();
   }
   function visible() {
@@ -213,7 +348,9 @@
         const dt = Math.min((now - lastFrame) / 1000, .1);
         elapsed += dt;
         interactionStep(dt);
+        if (maskSettling > 0) { maskSettling-=dt; updateQuietZones(); }
       }
+      if (!visible()) { buttonVisibility(); return; }
       lastFrame = now; draw(elapsed);
     }
     frame = requestAnimationFrame(tick);
@@ -221,11 +358,18 @@
   function sync() {
     cancelAnimationFrame(frame); frame = 0; lastFrame = 0;
     if (!visible()) {
+      pending = null;
       aimX = aimY = pointerX = pointerY = 0;
+      for (const entry of hotspots.values()) entry.hover=entry.hoverTarget=0;
       buttonVisibility();
       return;
     }
     if (reduced.matches) {
+      if (pending) {
+        const project=pending.entry.project; pending=null;
+        window.PortfolioNavigation?.openProject(project);
+        if (!visible()) { buttonVisibility(); return; }
+      }
       morph = morphTarget;
       aimX = aimY = pointerX = pointerY = 0;
       draw(6);
@@ -239,23 +383,33 @@
     gorillaButton.addEventListener('pointermove', pointerMove);
     gorillaButton.addEventListener('pointerleave', () => { aimX = aimY = 0; });
     gorillaButton.addEventListener('click', () => {
-      if (!visible() || !gorillaReady) return;
+      if (!visible() || !gorillaReady || pending) return;
       morphTarget = morphTarget ? 0 : 1;
       buttonLabel();
       if (reduced.matches) { morph = morphTarget; draw(6); }
     });
     buttonLabel();
   }
-  addEventListener('portfolio:language', buttonLabel);
+  addEventListener('portfolio:language', () => {
+    buttonLabel(); for (const entry of hotspots.values()) objectLabel(entry);
+    updateQuietZones(); if (reduced.matches) draw(6);
+  });
   addEventListener('portfolio:gorilla-ready', () => { draw(reduced.matches ? 6 : elapsed); });
   makeSprites(); resize();
   const layout = new ResizeObserver(() => { updateQuietZones(); if (reduced.matches) draw(6); });
   layout.observe(stage.querySelector('.line')); layout.observe(document.getElementById('menu'));
+  const letters = new MutationObserver(() => {
+    maskSettling=.3; updateQuietZones(); if (reduced.matches) draw(6);
+  });
+  letters.observe(stage.querySelector('.line'),{subtree:true,childList:true,characterData:true});
+  letters.observe(document.getElementById('menu'),{subtree:true,childList:true,characterData:true});
   new MutationObserver(() => { updateQuietZones(); sync(); }).observe(stage, { attributes:true,attributeFilter:['class'] });
   new MutationObserver(() => { makeSprites(); draw(reduced.matches ? 6 : elapsed); })
     .observe(document.documentElement, { attributes:true,attributeFilter:['data-theme'] });
   addEventListener('resize',resize,{passive:true}); document.addEventListener('visibilitychange',sync);
   reduced.addEventListener('change',sync); forcedColors.addEventListener('change',sync);
   addEventListener('pagehide',()=>{pageShown=false;sync();}); addEventListener('pageshow',()=>{pageShown=true;sync();});
+  document.fonts?.ready.then(() => {updateQuietZones();draw(reduced.matches ? 6 : elapsed);});
+  document.fonts?.addEventListener('loadingdone',()=>{updateQuietZones();draw(reduced.matches ? 6 : elapsed);});
   sync();
 })();

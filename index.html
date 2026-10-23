@@ -11,12 +11,12 @@
 <script src="assets/theme.js?v=bilingual-20261023"></script>
 <script defer src="assets/matrix-motifs.js?v=sticker-collage-20261023"></script>
 <script defer src="assets/matrix-symbols.js?v=work-objects-20261023"></script>
-<script defer src="assets/matrix-models.js?v=work-objects-20261023"></script>
-<script defer src="assets/matrix-3d.js?v=work-objects-20261023"></script>
-<script defer src="assets/matrix-project-stickers.js?v=cute-portraits-20261023"></script>
+<script defer src="assets/matrix-models.js?v=interactive-objects-20261024"></script>
+<script defer src="assets/matrix-3d.js?v=interactive-objects-20261024"></script>
+<script defer src="assets/matrix-project-stickers.js?v=interactive-objects-20261024"></script>
 <script defer src="assets/matrix-liangzhu.js?v=liangzhu-and-heart-20261023"></script>
-<script defer src="assets/matrix-gorilla.js?v=liangzhu-and-heart-20261023"></script>
-<script defer src="assets/matrix-field.js?v=liangzhu-and-heart-20261023"></script>
+<script defer src="assets/matrix-gorilla.js?v=interactive-objects-20261024"></script>
+<script defer src="assets/matrix-field.js?v=interactive-objects-20261024"></script>
 <script defer src="assets/about-companion.js?v=portrait-and-companion-20261023"></script>
 <style>
   :root{
@@ -169,7 +169,7 @@
     .cols section:first-child{border-top:0;padding-top:0}}
 </style>
 <link rel="stylesheet" href="assets/theme.css?v=slab-regular-20261023">
-<link rel="stylesheet" href="assets/matrix-field.css?v=liangzhu-and-heart-20261023">
+<link rel="stylesheet" href="assets/matrix-field.css?v=interactive-objects-20261024">
 <link rel="stylesheet" href="assets/about.css?v=portrait-and-companion-20261023">
 </head>
 <body class="portfolio-shell">
@@ -381,6 +381,23 @@ function enterSection(name,no){
   stage.classList.add('faded');
   setTimeout(()=>{if(phase!=='transit')return;section.classList.add('on');secBack.classList.add('on');phase='section';},430);
 }
+
+// The same project pages open from the typographic menu and the LED objects.
+const OBJECT_PROJECTS = Object.freeze({
+  'sudoku':'数独 · App', 'sudoku-visual':'数独 · 视觉',
+  'robot-dog':'良渚 · XR', 'quest-3':'良渚 · XR',
+  'arright':'arright', 'skill':'设计工具 · Skills', 'liangzhu':'良渚 · AI 3D',
+});
+window.PortfolioNavigation = Object.freeze({
+  openProject(key) {
+    const name = OBJECT_PROJECTS[key];
+    if (!name || stage.inert || ['transit','section','resume'].includes(phase)) return false;
+    disarmHint(); markActivity();
+    phase = 'works';
+    enterSection(name, String(SECTIONS.indexOf(name) + 1).padStart(2, '0'));
+    return true;
+  },
+});
 
 /* ====== idle 睁眼：你撒手，它看你（hub / works 时生效） ====== */
 let lastAct=performance.now(),watching=false;

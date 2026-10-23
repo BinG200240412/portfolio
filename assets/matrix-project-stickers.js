@@ -92,10 +92,23 @@
     });
     return pixels;
   })();
-  function sudoku(time, variant) {
+  function sudoku(time, variant, options = {}) {
     const pixels = sudokuBase.slice();
+    const active = Number.isFinite(options?.active) ? Math.max(0,Math.min(1,options.active)) : 0;
+    if (active > 0) {
+      // Four actual digit permutations during the click progress, not a colour flash.
+      // Reduced motion holds one distinct arrangement throughout the feedback.
+      const step = options.reduced ? 1 : Math.min(4,1 + Math.floor(active * 4));
+      const digits = [1,3,5,2,8];
+      [[6,5,1],[35,5,2],[21,20,1],[6,34,2],[35,34,1]].forEach(([x,y,role],index) => {
+        rect(pixels,x,y,7,9,0);
+        sudokuDigits[digits[(index + step) % digits.length]].forEach((row,dy) => {
+          for (let dx=0;dx<row.length;dx++) if (row[dx] === '1') dot(pixels,x+dx,y+dy,role);
+        });
+      });
+    }
     // A very small one-pixel heart bob; the digits and grid stay perfectly legible.
-    const lift = Math.sin(time * .85 + variant * .3) > .75 ? -1 : 0;
+    const lift = !options.reduced && Math.sin(time * .85 + variant * .3) > .75 ? -1 : 0;
     ['01010','11111','11111','01110','00100'].forEach((row, dy) => {
       for (let dx = 0; dx < row.length; dx++) if (row[dx] === '1') dot(pixels, 22 + dx, 7 + dy + lift, 2);
     });
@@ -198,13 +211,13 @@
   const drawings = { skill, sudoku, 'kiss-woman': portrait };
   window.PortfolioProjectStickers = {
     ids: Object.freeze(Object.keys(drawings)),
-    render(id, time = 0, variant = 0) {
+    render(id, time = 0, variant = 0, options = {}) {
       const seconds = Number.isFinite(time) ? Math.max(0, time) : 0;
       const version = Number.isFinite(variant) ? Math.abs(Math.floor(variant)) % 5 : 0;
       const isPortrait = id === 'kiss-woman';
       const draw = Object.prototype.hasOwnProperty.call(drawings,id) ? drawings[id] : null;
       return { width:isPortrait ? PORTRAIT_WIDTH : SIZE,height:isPortrait ? PORTRAIT_HEIGHT : SIZE,
-        pixels:draw ? draw(seconds,version) : blank() };
+        pixels:draw ? draw(seconds,version,options || {}) : blank() };
     },
   };
 })();

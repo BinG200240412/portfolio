@@ -2,13 +2,18 @@
   const SIZE = 64;
   // Real mesh projection and a depth buffer, then sampled into solid LEDs.
   // Facet lighting is quantised; neither pixels nor hues contain gradients.
-  function render(id, time = 0, variant = 0) {
-    const mesh = window.PortfolioMatrixModels?.build(id, time, variant);
+  function render(id, time = 0, variant = 0, options = {}) {
+    const input = options || {};
+    const active = Number.isFinite(input.active) ? Math.max(0,Math.min(1,input.active)) : 0;
+    const hover = !input.reduced && Number.isFinite(input.hover) ? Math.max(0,Math.min(1,input.hover)) : 0;
+    const seconds = input.reduced ? 0 : Number.isFinite(time) ? time : 0;
+    const reaction = active > 0 ? input.reduced ? .72 : Math.sin(active * Math.PI * .85) : 0;
+    const mesh = window.PortfolioMatrixModels?.build(id, seconds, variant, input);
     const pixels = new Uint8Array(SIZE * SIZE), shades = new Uint8Array(SIZE * SIZE);
     if (!mesh) return { width:SIZE,height:SIZE,pixels,shades,model:true };
     const dog = id === 'robot-dog';
-    const yaw = dog ? -.62 + .38 * Math.sin(time * .26 + variant * .2) : .12 + .42 * Math.sin(time * .24 + variant * .16);
-    const tilt = dog ? .25 + .04 * Math.sin(time * .3) : .19 + .08 * Math.sin(time * .29 + .4);
+    const yaw = dog ? -.62 + .38 * Math.sin(seconds * .26 + variant * .2) + reaction * .13 : .12 + .42 * Math.sin(seconds * .24 + variant * .16) + reaction * .40 + hover * .06;
+    const tilt = dog ? .25 + .04 * Math.sin(seconds * .3) : .19 + .08 * Math.sin(seconds * .29 + .4) + reaction * .22;
     const cy = Math.cos(yaw), sy = Math.sin(yaw), cx = Math.cos(tilt), sx = Math.sin(tilt);
     const rotated = mesh.vertices.map(([x,y,z]) => {
       const u = x * cy + z * sy, depth = -x * sy + z * cy;
@@ -29,7 +34,10 @@
       const nx=uy*vz-uz*vy, ny=uz*vx-ux*vz, nz=ux*vy-uy*vx;
       const length = Math.hypot(nx,ny,nz) || 1;
       const lit = Math.abs((nx * -.39 + ny * .61 + nz * .69) / length);
-      const shade = 1 + Math.min(3,Math.floor(lit * 4));
+      let shade = 1 + Math.min(3,Math.floor(lit * 4));
+      // The headset's front shell gets one discrete light step; straps stay unchanged.
+      const visor = !dog && face.role === 2 && indices.every(index => mesh.vertices[index][2] > .16);
+      if (visor && reaction > .18) shade = Math.min(4,shade+1);
       for (let k=1;k<indices.length-1;k++) {
         const p=projected[indices[0]],q=projected[indices[k]],r=projected[indices[k+1]];
         const area=(q[1]-r[1])*(p[0]-r[0])+(r[0]-q[0])*(p[1]-r[1]);
