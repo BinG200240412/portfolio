@@ -8,7 +8,7 @@
 <script src="assets/i18n-main.js?v=bilingual-20261023"></script>
 <script src="assets/i18n-cases.js?v=bilingual-20261023"></script>
 <script src="assets/i18n.js?v=bilingual-20261023"></script>
-<script src="assets/theme.js?v=bilingual-20261023"></script>
+<script src="assets/theme.js?v=diagonal-back-20261024"></script>
 <script defer src="assets/matrix-motifs.js?v=sticker-collage-20261023"></script>
 <script defer src="assets/matrix-symbols.js?v=work-objects-20261023"></script>
 <script defer src="assets/matrix-models.js?v=interactive-objects-20261024"></script>
@@ -16,7 +16,7 @@
 <script defer src="assets/matrix-project-stickers.js?v=interactive-objects-20261024"></script>
 <script defer src="assets/matrix-liangzhu.js?v=liangzhu-and-heart-20261023"></script>
 <script defer src="assets/matrix-gorilla.js?v=interactive-objects-20261024"></script>
-<script defer src="assets/matrix-field.js?v=paper-colour-accents-20261024"></script>
+<script defer src="assets/matrix-field.js?v=staged-navigation-20261024"></script>
 <script defer src="assets/about-companion.js?v=portrait-and-companion-20261023"></script>
 <script defer src="assets/ambient-field.js?v=soft-particles-20261024"></script>
 <style>
@@ -36,6 +36,7 @@
   #stage{position:fixed;inset:0;z-index:10;display:grid;place-items:center;background:#fff;
     transition:opacity .7s ease,transform .7s cubic-bezier(.4,0,.2,1)}
   #stage.gone{opacity:0;transform:translateY(-44px);pointer-events:none}
+  #stage.intro-active{cursor:pointer}
 
   .line{display:inline-flex;align-items:center;font-size:clamp(28px,4vw,40px);line-height:1;z-index:2}
   .text{display:inline-block;white-space:pre}
@@ -169,7 +170,7 @@
     .cols section{padding:0;border-left:0;border-top:1px solid #e3e3e3;padding-top:28px}
     .cols section:first-child{border-top:0;padding-top:0}}
 </style>
-<link rel="stylesheet" href="assets/theme.css?v=slab-regular-20261023">
+<link rel="stylesheet" href="assets/theme.css?v=diagonal-back-20261024">
 <link rel="stylesheet" href="assets/matrix-field.css?v=interactive-objects-20261024">
 <link rel="stylesheet" href="assets/about.css?v=original-photo-right-20261024">
 <link rel="stylesheet" href="assets/ambient-field.css?v=soft-particles-20261024">
@@ -184,17 +185,17 @@
     <canvas id="matrix-field" aria-hidden="true"></canvas>
     <button id="gorilla-hit" type="button" class="matrix-gorilla-hit" aria-pressed="false" aria-label="让猩猩的屁股变成红色爱心" data-i18n-ignore hidden></button>
     <div class="caption" id="cap" aria-hidden="true"></div>
-    <div class="line"><span class="text" id="text" data-i18n-ignore></span><span class="dot" id="dot" role="button" tabindex="0" aria-label="揭晓 / 展开"></span></div>
+    <div class="line"><span class="text" id="text" data-i18n-ignore></span><span class="dot" id="dot" role="button" tabindex="0" aria-label="进入导航" data-i18n-ignore></span></div>
     <nav class="menu" id="menu" data-i18n-ignore></nav>
     <div class="hint" id="hint" aria-hidden="true"></div>
   </div>
 
-  <button id="back"><span class="bd"></span>返回</button>
-  <button id="toHub"><span class="bd"></span>返回</button>
+  <button id="back" aria-label="返回导航" title="返回导航" data-i18n-ignore hidden disabled><span class="bd" aria-hidden="true"></span></button>
+  <button id="toHub" aria-label="返回导航" title="返回导航" data-i18n-ignore hidden disabled><span class="bd" aria-hidden="true"></span></button>
 
   <!-- 板块落地 -->
   <section id="section"></section>
-  <button id="secBack"><span class="bd"></span>作品集</button>
+  <button id="secBack" aria-label="返回作品集" title="返回作品集" data-i18n-ignore hidden disabled><span class="bd" aria-hidden="true"></span></button>
 
   <!-- 关于我 / 简历 -->
   <main id="resume" aria-hidden="true">
@@ -270,15 +271,25 @@ function morphTo(w){target=w;pump();}
 function settle(w){target=w;pump();return new Promise(res=>{(current===target&&!pumping)?res():settlers.push(res);});}
 
 /* ---- 状态机 ---- */
-let phase='typing';
-function setClickable(on){dotEl.classList.toggle('clickable',on);}
-/* 首屏点击提示：进入可点击态后，~7s 没点击就画出圆边提醒 */
-let hintT=null;
-function armHint(){clearTimeout(hintT);dotEl.classList.remove('hinting');
-  hintT=setTimeout(()=>{if((phase==='question'||phase==='name')&&dotEl.classList.contains('clickable'))dotEl.classList.add('hinting');},7000);}
-function disarmHint(){clearTimeout(hintT);dotEl.classList.remove('hinting');}
-async function intro(){await settle(QUESTION);if(phase!=='typing')return;phase='question';setClickable(true);armHint();}
-async function revealName(){disarmHint();phase='typing';setClickable(false);await settle(NAME);if(phase!=='typing')return;phase='name';setClickable(true);armHint();}
+let phase='typing', navigationEpoch=0;
+function setClickable(on){
+  dotEl.classList.toggle('clickable',on);dotEl.tabIndex=on?0:-1;
+  dotEl.setAttribute('aria-disabled',String(!on));
+}
+function disarmHint(){dotEl.classList.remove('hinting');}
+function navigationChanged(){
+  navigationEpoch++;
+  for(const [button,shown] of [[backBtn,phase==='resume'],[toHubBtn,phase==='works'],[secBack,phase==='section']]){
+    button.hidden=!shown;button.disabled=!shown;button.tabIndex=shown?0:-1;
+  }
+  stage.classList.toggle('intro-active',phase==='typing'||phase==='question');
+  window.dispatchEvent(new CustomEvent('portfolio:navigation',{detail:{mode:phase}}));
+}
+async function intro(){
+  setClickable(true);navigationChanged();
+  await settle(QUESTION);if(phase!=='typing')return;
+  phase='question';navigationChanged();
+}
 
 /* ---- 菜单渲染（hub 顶层 / works 作品层） ---- */
 function buildItem(label,no,onEnter,onLeave,onClick){
@@ -318,7 +329,7 @@ function showHub(){
   window.scrollTo(0,0);
   stage.classList.remove('faded','gone');stage.classList.add('works','hublv');
   renderMenu('hub');cap.textContent='';hint.textContent='';
-  morphTo(NAME);markActivity();
+  morphTo(NAME);markActivity();navigationChanged();
 }
 function showWorks(){
   stage.inert=false;
@@ -330,7 +341,7 @@ function showWorks(){
   window.scrollTo(0,0);
   stage.classList.remove('faded','gone','hublv');stage.classList.add('works');
   renderMenu('works');cap.textContent='';hint.textContent='';
-  morphTo(tr(HOME));markActivity();
+  morphTo(tr(HOME));markActivity();navigationChanged();
 }
 function expandPage(which){
   disarmHint();clearWatch();
@@ -343,11 +354,21 @@ function expandPage(which){
   const m=resume;
   m.setAttribute('aria-hidden','false');m.classList.add('live');
   document.body.classList.add('expanded');window.scrollTo(0,0);
+  navigationChanged();
   requestAnimationFrame(()=>{if(phase===which&&m.classList.contains('live'))m.classList.add('reveal');});
 }
 
-dotEl.addEventListener('click',()=>{disarmHint();if(phase==='question')revealName();else if(phase==='name')showHub();});
+// An opening click anywhere in the scene reveals the name and both choices.
+// Object buttons receive the click first, so their small reactions still play.
+stage.addEventListener('click',()=>{
+  if(phase==='typing'||phase==='question'){disarmHint();showHub();}
+});
 dotEl.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();dotEl.click();}});
+document.addEventListener('keydown',event=>{
+  if(event.defaultPrevented||!(phase==='typing'||phase==='question'))return;
+  if(event.target.closest('button,a,input,textarea,select,[role="button"]'))return;
+  if(event.key==='Enter'||event.key===' '){event.preventDefault();showHub();}
+});
 backBtn.addEventListener('click',()=>{if(phase==='resume')showHub();});
 toHubBtn.addEventListener('click',()=>{if(phase==='works')showHub();});
 secBack.addEventListener('click',()=>{if(phase==='section')showWorks();});
@@ -366,7 +387,7 @@ const SECTION_PAGE={
   "作品归档":"sections/more.html",
 };
 function enterSection(name,no){
-  if(phase!=='works')return;phase='transit';clearWatch();
+  if(phase!=='works')return;phase='transit';clearWatch();navigationChanged();
   document.body.classList.remove('works-mode');
   const page=SECTION_PAGE[name];
   if(page){
@@ -383,7 +404,7 @@ function enterSection(name,no){
   section.scrollTop=0;
   stage.inert=true;
   stage.classList.add('faded');
-  setTimeout(()=>{if(phase!=='transit')return;section.classList.add('on');secBack.classList.add('on');phase='section';},430);
+  setTimeout(()=>{if(phase!=='transit')return;section.classList.add('on');secBack.classList.add('on');phase='section';navigationChanged();},430);
 }
 
 // The same project pages open from the typographic menu and the LED objects.
@@ -393,15 +414,24 @@ const OBJECT_PROJECTS = Object.freeze({
   'arright':'arright', 'skill':'设计工具 · Skills', 'liangzhu':'良渚 · AI 3D',
 });
 window.PortfolioNavigation = Object.freeze({
+  projectGate(){return phase==='works'&&!stage.inert?navigationEpoch:0;},
   openProject(key) {
     const name = OBJECT_PROJECTS[key];
-    if (!name || stage.inert || ['transit','section','resume'].includes(phase)) return false;
+    if (!name || stage.inert || phase!=='works') return false;
     disarmHint(); markActivity();
-    phase = 'works';
     enterSection(name, String(SECTIONS.indexOf(name) + 1).padStart(2, '0'));
     return true;
   },
 });
+function updateBackLabels(){
+  const english=window.PortfolioI18n?.language==='en';
+  dotEl.setAttribute('aria-label',english?'Open navigation':'进入导航');
+  for(const button of [backBtn,toHubBtn,secBack]){
+    const label=button===secBack?(english?'Back to works':'返回作品集'):(english?'Back to navigation':'返回导航');
+    button.setAttribute('aria-label',label);button.title=label;
+  }
+}
+updateBackLabels();
 
 /* ====== idle 睁眼：你撒手，它看你（hub / works 时生效） ====== */
 let lastAct=performance.now(),watching=false;
@@ -411,6 +441,7 @@ function clearWatch(){watching=false;dotEl.classList.remove('watching');}
 setInterval(()=>{if((phase==='works'||phase==='hub')&&!watching&&performance.now()-lastAct>3500){watching=true;dotEl.classList.add('watching');}},400);
 
 addEventListener('portfolio:language', () => {
+  updateBackLabels();
   if (phase === 'hub') { renderMenu('hub'); morphTo(NAME); }
   else if (phase === 'works') { renderMenu('works'); morphTo(tr(HOME)); }
 });

@@ -180,21 +180,40 @@
     button.type = 'button'; button.className = 'matrix-object-hit'; button.hidden = true;
     button.setAttribute('data-project', projects[item.id]); button.setAttribute('data-motif', item.id);
     button.setAttribute('data-i18n-ignore', '');
-    const entry = {button,id:item.id,project:projects[item.id],hover:0,hoverTarget:0,placement:null};
+    const entry = {button,id:item.id,project:projects[item.id],hover:0,hoverTarget:0,staticActive:0,placement:null};
     const hover = value => { entry.hoverTarget = value; };
     button.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') hover(1); });
     button.addEventListener('pointerleave', () => hover(0));
     button.addEventListener('focus', () => hover(1)); button.addEventListener('blur', () => hover(0));
     button.addEventListener('click', () => {
       if (!visible() || !entry.placement || pending) return;
-      if (reduced.matches) { window.PortfolioNavigation?.openProject(entry.project); return; }
-      pending = {entry,progress:0}; buttonVisibility();
+      const gate=projectGate();
+      if (reduced.matches) {
+        entry.staticActive=entry.staticActive?0:1; draw(6);
+        if (gate && gate===projectGate()) window.PortfolioNavigation?.openProject(entry.project);
+        return;
+      }
+      entry.staticActive=0;
+      pending = {entry,progress:0,gate}; buttonVisibility();
     });
     hotspots.set(item.key, entry); stage.appendChild(button); objectLabel(entry);
   }
+  function projectGate() {
+    const gate=window.PortfolioNavigation?.projectGate?.();
+    return Number.isSafeInteger(gate) && gate>0 ? gate : 0;
+  }
+  function finishPending() {
+    const reaction=pending;
+    pending=null;
+    if (reaction && visible() && reaction.gate && reaction.gate===projectGate())
+      window.PortfolioNavigation?.openProject(reaction.entry.project);
+    return reaction;
+  }
   function objectLabel(entry) {
     const english = window.PortfolioI18n?.language === 'en' || document.documentElement.lang === 'en';
-    const label = english ? `Open ${names[entry.id][1]}` : `查看${names[entry.id][0]}`;
+    const works=!!projectGate();
+    const label = english ? `${works?'Open':'Play with'} ${names[entry.id][1]}`
+      : works?`查看${names[entry.id][0]}`:`与${names[entry.id][0]}互动`;
     entry.button.setAttribute('aria-label',label); entry.button.title = label;
   }
   function buttonVisibility() {
@@ -285,11 +304,7 @@
     for (const entry of hotspots.values()) entry.hover += (entry.hoverTarget-entry.hover)*follow;
     if (pending) {
       pending.progress = Math.min(1,pending.progress+dt/.65);
-      if (pending.progress >= 1) {
-        const project = pending.entry.project;
-        pending = null;
-        if (visible()) window.PortfolioNavigation?.openProject(project);
-      }
+      if (pending.progress >= 1) finishPending();
     }
   }
   function draw(time) {
@@ -307,7 +322,7 @@
       const source = libraries.find(library => library?.ids.includes(item.id));
       if (!source?.ids.includes(item.id)) continue;
       const entry = hotspots.get(item.key);
-      const options = {active:pending && pending.entry===entry ? pending.progress : 0,
+      const options = {active:pending && pending.entry===entry ? pending.progress : reduced.matches ? entry?.staticActive || 0 : 0,
         hover:reduced.matches ? 0 : entry?.hover || 0,reduced:reduced.matches};
       if (item.id === 'gorilla') Object.assign(options,{morph:smooth(morph),pointerX,pointerY});
       const image = source.render(item.id, time * item.speed, item.variant, options);
@@ -369,14 +384,14 @@
     if (!visible()) {
       pending = null;
       aimX = aimY = pointerX = pointerY = 0;
-      for (const entry of hotspots.values()) entry.hover=entry.hoverTarget=0;
+      for (const entry of hotspots.values()) {entry.hover=entry.hoverTarget=0;entry.staticActive=0;}
       buttonVisibility();
       return;
     }
     if (reduced.matches) {
       if (pending) {
-        const project=pending.entry.project; pending=null;
-        window.PortfolioNavigation?.openProject(project);
+        const reaction=finishPending();
+        if (reaction) reaction.entry.staticActive=1;
         if (!visible()) { buttonVisibility(); return; }
       }
       morph = morphTarget;
@@ -403,6 +418,7 @@
     buttonLabel(); for (const entry of hotspots.values()) objectLabel(entry);
     updateQuietZones(); if (reduced.matches) draw(6);
   });
+  addEventListener('portfolio:navigation', () => {for (const entry of hotspots.values()) objectLabel(entry);});
   addEventListener('portfolio:gorilla-ready', () => { draw(reduced.matches ? 6 : elapsed); });
   makeSprites(); resize();
   const layout = new ResizeObserver(() => { updateQuietZones(); if (reduced.matches) draw(6); });

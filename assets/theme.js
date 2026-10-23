@@ -50,7 +50,8 @@
         const back = document.createElement('a');
         back.className = 'standalone-back';
         back.href = '../index.html';
-        back.textContent = '← 作品';
+        back.setAttribute('data-i18n-ignore', '');
+        back.innerHTML = '<span class="bd" aria-hidden="true"></span><span class="return-label"></span>';
         document.body.appendChild(back);
         window.PortfolioI18n?.apply(back);
       }
@@ -74,6 +75,14 @@
     apply(theme);
   }
   function updateLanguageControls() {
+    const back = document.querySelector('.standalone-back');
+    if (back) {
+      const english = window.PortfolioI18n?.language === 'en';
+      const label = english ? 'Back to works' : '返回作品集';
+      back.setAttribute('aria-label', label); back.title = label;
+      back.querySelector('.return-label').textContent = label;
+      back.setAttribute('href', '../index.html?lang=' + (english ? 'en' : 'zh'));
+    }
     const host = document.getElementById('themeControls');
     if (!host) return;
     host.setAttribute('aria-label', tr('页面颜色与语言'));
