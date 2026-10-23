@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>蔡正阳 — Who am I</title>
 <meta name="description" content="蔡正阳的作品集。独立开发、交互与艺术。">
-<script src="assets/theme.js"></script>
-<script defer src="assets/matrix-field.js?v=gorilla-20261023"></script>
+<script src="assets/i18n-main.js?v=bilingual-20261023"></script>
+<script src="assets/i18n-cases.js?v=bilingual-20261023"></script>
+<script src="assets/i18n.js?v=bilingual-20261023"></script>
+<script src="assets/theme.js?v=bilingual-20261023"></script>
+<script defer src="assets/matrix-field.js?v=lively-20261023"></script>
 <style>
   :root{
     --mono:"JetBrains Mono","Noto Sans SC",monospace;
@@ -159,7 +162,7 @@
     .cols section{padding:0;border-left:0;border-top:1px solid #e3e3e3;padding-top:28px}
     .cols section:first-child{border-top:0;padding-top:0}}
 </style>
-<link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/theme.css?v=bilingual-20261023">
 <link rel="stylesheet" href="assets/matrix-field.css">
 </head>
 <body class="portfolio-shell">
@@ -169,8 +172,8 @@
   <div id="stage">
     <canvas id="matrix-field" aria-hidden="true"></canvas>
     <div class="caption" id="cap" aria-hidden="true"></div>
-    <div class="line"><span class="text" id="text"></span><span class="dot" id="dot" role="button" tabindex="0" aria-label="揭晓 / 展开"></span></div>
-    <nav class="menu" id="menu"></nav>
+    <div class="line"><span class="text" id="text" data-i18n-ignore></span><span class="dot" id="dot" role="button" tabindex="0" aria-label="揭晓 / 展开"></span></div>
+    <nav class="menu" id="menu" data-i18n-ignore></nav>
     <div class="hint" id="hint" aria-hidden="true"></div>
   </div>
 
@@ -221,6 +224,7 @@
 
 <script>
 const QUESTION="Who am I ?", NAME="CaizheNGyaNG", HOME="作品集";
+const tr = value => window.PortfolioI18n?.t(value) || value;
 const SECTIONS=["arright","数独 · App","数独 · 视觉","良渚 · AI 3D","良渚 · XR","漂移之屋","千里江山","设计工具 · Skills","作品归档"];
 const HUB=[
   {label:"关于我", act:()=>expandPage('resume')},
@@ -269,14 +273,14 @@ function buildItem(label,no,onEnter,onLeave,onClick){
 function renderMenu(level){
   menuEl.innerHTML='';
   if(level==='hub'){
-    HUB.forEach((it,i)=>menuEl.appendChild(buildItem(it.label,i+1,
-      ()=>{markActivity();if(phase==='hub')morphTo(it.label);},
+    HUB.forEach((it,i)=>menuEl.appendChild(buildItem(tr(it.label),i+1,
+      ()=>{markActivity();if(phase==='hub')morphTo(tr(it.label));},
       ()=>{if(phase==='hub')morphTo(NAME);},
       ()=>{if(phase==='hub')it.act();})));
   }else{
-    SECTIONS.forEach((name,i)=>menuEl.appendChild(buildItem(name,i+1,
-      ()=>{markActivity();if(phase==='works')morphTo(name);},
-      ()=>{if(phase==='works')morphTo(HOME);},
+    SECTIONS.forEach((name,i)=>menuEl.appendChild(buildItem(tr(name),i+1,
+      ()=>{markActivity();if(phase==='works')morphTo(tr(name));},
+      ()=>{if(phase==='works')morphTo(tr(HOME));},
       ()=>{if(phase==='works')enterSection(name,'0'+(i+1));})));
   }
 }
@@ -304,7 +308,7 @@ function showWorks(){
   window.scrollTo(0,0);
   stage.classList.remove('faded','gone','hublv');stage.classList.add('works');
   renderMenu('works');cap.textContent='';hint.textContent='';
-  morphTo(HOME);markActivity();
+  morphTo(tr(HOME));markActivity();
 }
 function expandPage(which){
   stage.inert=true;
@@ -342,11 +346,13 @@ function enterSection(name,no){
   const page=SECTION_PAGE[name];
   if(page){
     section.classList.add('native');
-    section.innerHTML=`<iframe class="native-frame" src="${page}" title="${name}" loading="eager"></iframe>`;
+    const frameURL = new URL(page, location.href);
+    frameURL.searchParams.set("lang", window.PortfolioI18n?.language || "zh");
+    section.innerHTML=`<iframe class="native-frame" src="${frameURL.pathname + frameURL.search}" title="${tr(name)}" loading="eager"></iframe>`;
   }else{
     section.classList.remove('native');
     section.innerHTML=`<div class="sec-inner"><div class="sec-no rv2">${no}</div>`+
-      `<h1 class="sec-title rv2">${name}<span class="rd"></span></h1>`+
+      `<h1 class="sec-title rv2">${tr(name)}<span class="rd"></span></h1>`+
       `</div>`;
   }
   section.scrollTop=0;
@@ -362,6 +368,10 @@ function clearWatch(){watching=false;dotEl.classList.remove('watching');}
 ['mousemove','mousedown','keydown','wheel','touchstart'].forEach(ev=>addEventListener(ev,markActivity,{passive:true}));
 setInterval(()=>{if((phase==='works'||phase==='hub')&&!watching&&performance.now()-lastAct>3500){watching=true;dotEl.classList.add('watching');}},400);
 
+addEventListener('portfolio:language', () => {
+  if (phase === 'hub') { renderMenu('hub'); morphTo(NAME); }
+  else if (phase === 'works') { renderMenu('works'); morphTo(tr(HOME)); }
+});
 intro();
 </script>
 </body>

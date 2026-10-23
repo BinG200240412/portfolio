@@ -3,222 +3,239 @@
   const stage = document.getElementById('stage');
   const ctx = canvas?.getContext('2d', { alpha: true });
   if (!ctx || !stage) return;
-
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const forcedColors = matchMedia('(forced-colors: active)');
-  const TAU = Math.PI * 2;
-  const seed = 200240412;
+  const TAU = Math.PI * 2, aspect = 1300 / 1086;
+  const maskWidth = 160, maskHeight = Math.round(maskWidth * aspect);
+  const pose = new Float32Array(maskWidth * maskHeight);
+  const palette = ['#bcbcbc', '#9eae9f', '#b69589', '#97a7b7', '#b0a0b5'];
   const smooth = (a, b, x) => {
     const t = Math.max(0, Math.min(1, (x - a) / (b - a)));
     return t * t * (3 - 2 * t);
   };
-  const hash = (x, y) => {
-    let n = Math.imul(x + seed, 374761393) ^ Math.imul(y + 1, 668265263);
-    n = Math.imul(n ^ (n >>> 13), 1274126177);
-    return ((n ^ (n >>> 16)) >>> 0) / 4294967296;
-  };
+  let width = 0, height = 0, pitch = 4, mobile = false, actorWidth = 260;
+  let cloud = [], quiet = [], background = [], sprites = [];
+  let dark = true, frame = 0, lastFrame = 0, elapsed = 0, pageShown = true;
 
-  let width = 0, height = 0, pitch = 6, mobile = false;
-  let dots = [], quiet = [];
-  let sprite, dark = true, frame = 0, lastFrame = 0, elapsed = 0;
-  let art = {}, mask = null;
-  const maskWidth = 264, maskHeight = 352;
-  let pageShown = true;
-
-  // The artwork moves through a fixed lattice. Individual beads stay in place.
-  function resize() {
-    width = stage.clientWidth;
-    height = stage.clientHeight;
-    mobile = width < 700 || (width < 1000 && height > width);
-    const artWidth = mobile
-      ? Math.max(72, Math.min(240, width * .64, (height / 2 - 108) * .75))
-      : Math.max(120, Math.min(420, height * .74 * .75, width / 2 - 252));
-    art = { width: artWidth, height: artWidth * 4 / 3 };
-    art.x = mobile ? (width - art.width) / 2 : (width / 2 - 212 - art.width) / 2;
-    art.y = mobile ? Math.max(24, (height / 2 - 84 - art.height) / 2) : (height - art.height) / 2;
-    pitch = Math.max(mobile ? 2.8 : 3.8, art.width / (mobile ? 66 : 74));
-    const ratio = Math.min(devicePixelRatio || 1, 1.5);
-    canvas.width = Math.round(width * ratio);
-    canvas.height = Math.round(height * ratio);
-    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-    dots = [];
-    const columns = Math.ceil(width / pitch);
-    const rows = Math.ceil(height / pitch);
-    const offsetX = (width - (columns - 1) * pitch) / 2;
-    const offsetY = (height - (rows - 1) * pitch) / 2;
-    const unit = Math.min(width, height) * .56;
-    for (let row = 0; row < rows; row++) {
-      for (let column = 0; column < columns; column++) {
-        const x = offsetX + column * pitch;
-        const y = offsetY + row * pitch;
-        const u = (x - art.x) / art.width, v = (y - art.y) / art.height;
-        const artCell = u > -.055 && u < 1.055 && v > -.055 && v < 1.055;
-        // The distant field shares the same grid, with more space between beads.
-        if (!artCell && (row % 3 || column % 3)) continue;
-        dots.push({ x, y, nx: (x - width / 2) / unit, ny: (y - height / 2) / unit,
-          u, v, artCell, exposure: .92 + hash(row, column + 83) * .08 });
-      }
+  function clearance(x, y) {
+    let alpha = 1;
+    for (const box of quiet) {
+      const dx = Math.max(0, Math.abs(x - box.x) - box.halfWidth);
+      const dy = Math.max(0, Math.abs(y - box.y) - box.halfHeight);
+      alpha *= smooth(0, box.feather, Math.hypot(dx, dy));
     }
-    updateQuietZones();
-    draw(elapsed);
+    return alpha;
   }
-
-  function beadSprite() {
-    dark = document.documentElement.dataset.theme !== 'light';
-    sprite = document.createElement('canvas');
-    sprite.width = sprite.height = 32;
-    const paint = sprite.getContext('2d');
-    const color = dark ? '236,233,219' : '64,63,57';
-    const halo = paint.createRadialGradient(16, 16, 0, 16, 16, 15);
-    halo.addColorStop(0, `rgba(${color},.3)`);
-    halo.addColorStop(.32, `rgba(${color},.1)`);
-    halo.addColorStop(.7, `rgba(${color},.012)`);
-    halo.addColorStop(1, `rgba(${color},0)`);
-    paint.fillStyle = halo;
-    paint.fillRect(0, 0, 32, 32);
-    const core = paint.createRadialGradient(14.6, 14.4, .5, 16, 16, 6.8);
-    core.addColorStop(0, dark ? '#fffef6' : '#78756a');
-    core.addColorStop(.45, `rgb(${color})`);
-    core.addColorStop(1, dark ? '#aba99d' : '#302f2a');
-    paint.fillStyle = core;
-    paint.beginPath();
-    paint.arc(16, 16, 6.8, 0, TAU);
-    paint.fill();
-  }
-
   function updateQuietZones() {
-    // Keep a stable space while the title types and changes width.
-    const title = stage.querySelector('.line');
-    const titleRect = title.getBoundingClientRect();
+    const title = stage.querySelector('.line').getBoundingClientRect();
     quiet = [{ x: width / 2, y: height / 2,
-      halfWidth: Math.max(titleRect.width / 2 + 34, Math.min(width * .43, 192)),
-      halfHeight: Math.max(48, titleRect.height / 2 + 30), feather: mobile ? 38 : 58 }];
+      halfWidth: Math.max(title.width / 2 + 30, Math.min(width * .38, 188)),
+      halfHeight: Math.max(46, title.height / 2 + 28), feather: mobile ? 35 : 54 }];
     if (stage.classList.contains('works')) {
       const menu = document.getElementById('menu').getBoundingClientRect();
       quiet.push({ x: menu.x + menu.width / 2, y: menu.y + menu.height / 2,
-        halfWidth: menu.width / 2 + 24, halfHeight: menu.height / 2 + 22, feather: 65 });
+        halfWidth: menu.width / 2 + 18, halfHeight: menu.height / 2 + 16, feather: 48 });
     }
-    for (const dot of dots) {
-      let clear = 1;
-      for (const box of quiet) {
-        const dx = Math.max(0, Math.abs(dot.x - box.x) - box.halfWidth);
-        const dy = Math.max(0, Math.abs(dot.y - box.y) - box.halfHeight);
-        clear *= smooth(0, box.feather, Math.hypot(dx, dy));
+    for (const dot of background) dot.clear = clearance(dot.x, dot.y);
+  }
+  function resize() {
+    width = stage.clientWidth; height = stage.clientHeight;
+    mobile = width < 700 || (width < 1000 && height > width);
+    actorWidth = Math.max(80, Math.min(mobile ? 240 : 320, width * (mobile ? .62 : .28), height * .43));
+    pitch = Math.max(mobile ? 2.7 : 3.4, actorWidth / 74);
+    const ratio = Math.min(devicePixelRatio || 1, 1.5);
+    canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    background = [];
+    for (let y = pitch / 2; y < height; y += pitch * 4)
+      for (let x = pitch / 2; x < width; x += pitch * 4) background.push({ x, y, clear: 1 });
+    updateQuietZones(); draw(reduced.matches ? 2 : elapsed);
+  }
+  function makeSprites() {
+    dark = document.documentElement.dataset.theme !== 'light';
+    sprites = palette.map((hex, index) => {
+      const sprite = document.createElement('canvas'); sprite.width = sprite.height = 32;
+      const paint = sprite.getContext('2d');
+      const color = index === 0 ? (dark ? '#bcbcbc' : '#686868') : hex;
+      const rgb = [1, 3, 5].map(i => parseInt(color.slice(i, i + 2), 16));
+      const shade = factor => 'rgb(' + rgb.map(v => Math.round(v * factor)).join(',') + ')';
+      const halo = paint.createRadialGradient(16, 16, 1, 16, 16, 15);
+      halo.addColorStop(0, color + '38'); halo.addColorStop(.6, color + '07'); halo.addColorStop(1, color + '00');
+      paint.fillStyle = halo; paint.fillRect(0, 0, 32, 32);
+      const core = paint.createRadialGradient(14.5, 14.5, .4, 16, 16, 7);
+      core.addColorStop(0, shade(1.14)); core.addColorStop(.48, color); core.addColorStop(1, shade(.78));
+      paint.fillStyle = core; paint.beginPath(); paint.arc(16, 16, 7, 0, TAU); paint.fill();
+      return sprite;
+    });
+  }
+  function bead(x, y, color, alpha, size = pitch * 1.72) {
+    alpha *= clearance(x, y);
+    if (alpha < .018) return;
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(sprites[color], x - size / 2, y - size / 2, size, size);
+  }
+  function joint(angle, x, y) { return { c: Math.cos(angle), s: Math.sin(angle), x: x / 1086, y: y / 1086 }; }
+
+  // Skin the original outline first, then resample the new pose on fixed LEDs.
+  function poseFigure(time, facing) {
+    pose.fill(0);
+    const gait = time * 5.3;
+    const bones = [
+      joint(-.09 + .12 * Math.sin(time * 1.7) + .055 * Math.sin(gait), 680, 390),
+      joint(-.13 - .43 * (.5 + .5 * Math.sin(gait + .6)), 735, 475),
+      joint(.23 * Math.sin(gait), 330, 970), joint(-.22 * Math.sin(gait), 605, 1030),
+    ];
+    const root = joint(.055 * Math.sin(gait + .8), 535, 790);
+    for (const p of cloud) {
+      let x = p.x, y = p.y;
+      for (let i = 0; i < 4; i++) {
+        const weight = p.weights[i]; if (!weight) continue;
+        const b = bones[i], dx = p.x - b.x, dy = p.y - b.y;
+        x += weight * (b.x + dx * b.c - dy * b.s - p.x);
+        y += weight * (b.y + dx * b.s + dy * b.c - p.y);
       }
-      dot.clear = clear;
+      const dx = x - root.x, dy = y - root.y;
+      x = root.x + dx * root.c - dy * root.s; y = root.y + dx * root.s + dy * root.c;
+      x = .5 + (x - .5) * facing;
+      const px = (.08 + x * .84) * (maskWidth - 1), py = (.05 + y / aspect * .84) * (maskHeight - 1);
+      const ix = Math.floor(px), iy = Math.floor(py), fx = px - ix, fy = py - iy;
+      if (ix < 0 || iy < 0 || ix >= maskWidth - 1 || iy >= maskHeight - 1) continue;
+      const at = iy * maskWidth + ix, a = p.alpha;
+      pose[at] += a * (1 - fx) * (1 - fy); pose[at + 1] += a * fx * (1 - fy);
+      pose[at + maskWidth] += a * (1 - fx) * fy; pose[at + maskWidth + 1] += a * fx * fy;
     }
   }
-
-  function sampleArt(u, v) {
-    if (!mask || u < 0 || u > 1 || v < 0 || v > 1) return 0;
-    const x = u * (maskWidth - 1), y = v * (maskHeight - 1);
-    const ix = Math.floor(x), iy = Math.floor(y);
-    const fx = x - ix, fy = y - iy;
-    const right = Math.min(ix + 1, maskWidth - 1), bottom = Math.min(iy + 1, maskHeight - 1);
-    const a = mask[iy * maskWidth + ix] * (1 - fx) + mask[iy * maskWidth + right] * fx;
-    const b = mask[bottom * maskWidth + ix] * (1 - fx) + mask[bottom * maskWidth + right] * fx;
-    return (a * (1 - fy) + b * fy) / 255;
+  function samplePose(u, v) {
+    const x = Math.max(0, Math.min(maskWidth - 1.001, u * (maskWidth - 1)));
+    const y = Math.max(0, Math.min(maskHeight - 1.001, v * (maskHeight - 1)));
+    const ix = Math.floor(x), iy = Math.floor(y), fx = x - ix, fy = y - iy, at = iy * maskWidth + ix;
+    return Math.min(1, (pose[at] * (1 - fx) + pose[at + 1] * fx) * (1 - fy) +
+      (pose[at + maskWidth] * (1 - fx) + pose[at + maskWidth + 1] * fx) * fy);
   }
-
-  // Two advecting wave systems bend through one another. Every phase keeps
-  // advancing: no held silhouettes, mode changes, or fade-only intervals.
-  function flowField(x, y, time) {
-    const u = x + .34 * Math.sin(y * 1.8 - time * .35) +
-      .22 * Math.sin(x * 1.2 + y * 2.9 + time * .21);
-    const v = y + .38 * Math.sin(x * 1.6 + time * .28) +
-      .18 * Math.cos(y * 1.9 - x * .8 - time * .25);
-    const a = Math.sin(u * 4.1 + v * 1.1 - time * .72);
-    const b = Math.sin(v * 4.4 - u * 1.4 + time * .51);
-    const c = Math.sin((u + v) * 2.6 + Math.sin(u * 1.7 + time * .24) - time * .33);
-    const field = a + .64 * b + .28 * c;
-    const ridge = Math.exp(-((field - .1) ** 2) / .09);
-    const echo = .3 * Math.exp(-((field + .78) ** 2) / .16);
-    const current = .76 + .24 * (.5 + .5 * Math.sin(u * 1.2 - v * .8 + time * .8));
-    return Math.max(ridge, echo) * current;
+  function route(time) {
+    const points = mobile ? [[.5, .17], [1.02, .30], [1.02, .70], [.5, .83], [-.02, .70], [-.02, .30]]
+      : [[.12, .5], [.28, .18], [.72, .18], [.88, .5], [.70, .81], [.27, .80]];
+    const phase = time / 2.9, step = Math.floor(phase), t = phase - step;
+    const p = [-1, 0, 1, 2].map(i => points[((step + i) % points.length + points.length) % points.length]);
+    const component = axis => .5 * ((2 * p[1][axis]) + (-p[0][axis] + p[2][axis]) * t +
+      (2 * p[0][axis] - 5 * p[1][axis] + 4 * p[2][axis] - p[3][axis]) * t * t +
+      (-p[0][axis] + 3 * p[1][axis] - 3 * p[2][axis] + p[3][axis]) * t * t * t);
+    return { x: component(0) * width, y: component(1) * height };
   }
-
+  function drawFigure(time) {
+    if (!cloud.length) return;
+    const center = route(time), ahead = route(time + .08), before = route(time - .08);
+    poseFigure(time, ahead.x >= before.x ? 1 : -1);
+    const w = actorWidth * (1 + .035 * Math.sin(time * 1.4)), h = w * aspect;
+    center.y = Math.max(h * .42 + 16, Math.min(height - h * .42 - 8, center.y));
+    const left = center.x - w / 2, top = center.y - h / 2 - 15 * Math.abs(Math.sin(time * 2.65));
+    const startX = Math.max(pitch / 2, Math.ceil((left - pitch / 2) / pitch) * pitch + pitch / 2);
+    const startY = Math.max(pitch / 2, Math.ceil((top - pitch / 2) / pitch) * pitch + pitch / 2);
+    for (let y = startY; y < Math.min(height, top + h); y += pitch) {
+      for (let x = startX; x < Math.min(width, left + w); x += pitch) {
+        const coverage = samplePose((x - left) / w, (y - top) / h);
+        if (coverage >= .06) bead(x, y, 0, (dark ? .68 : .48) * coverage);
+      }
+    }
+  }
+  function inside(x, y, polygon) {
+    let yes = false;
+    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+      const a = polygon[i], b = polygon[j];
+      if ((a.y > y) !== (b.y > y) && x < (b.x - a.x) * (y - a.y) / (b.y - a.y) + a.x) yes = !yes;
+    }
+    return yes;
+  }
+  function drawStars(time) {
+    const anchors = mobile ? [[.19, .13], [.83, .65], [.28, .87], [.84, .21]]
+      : [[.43, .17], [.85, .23], [.78, .81], [.18, .80]];
+    anchors.forEach(([ax, ay], index) => {
+      const phase = time * (1.3 + index * .12) + index * 1.8;
+      const x = ax * width + Math.sin(time * .48 + index) * (mobile ? 15 : 27), y = ay * height + Math.sin(phase) * 15;
+      const radius = (mobile ? 27 : 38) * (index === 3 ? .7 : 1), angle = Math.sin(time * .8 + index) * .4;
+      const c = Math.cos(angle), s = Math.sin(angle);
+      const polygon = Array.from({ length: 10 }, (_, i) => {
+        const outer = i % 2 === 0, limb = i / 2;
+        const theta = -Math.PI / 2 + i * Math.PI / 5 + (outer ? .18 * Math.sin(phase + limb * 1.5) : 0);
+        const r = radius * (outer ? 1 + .12 * Math.sin(phase + limb) : .44);
+        return { x: Math.cos(theta) * r, y: Math.sin(theta) * r };
+      });
+      const reach = radius * 1.3, blink = Math.pow(Math.max(0, Math.cos(time * 1.2 + index * 2)), 24);
+      const startX = Math.ceil((x - reach - pitch / 2) / pitch) * pitch + pitch / 2;
+      const startY = Math.ceil((y - reach - pitch / 2) / pitch) * pitch + pitch / 2;
+      for (let py = startY; py <= y + reach; py += pitch) {
+        for (let px = startX; px <= x + reach; px += pitch) {
+          if (px < 0 || px > width || py < 0 || py > height) continue;
+          const dx = px - x, dy = py - y, u = dx * c + dy * s, v = -dx * s + dy * c;
+          if (!inside(u, v, polygon)) continue;
+          const eye = Math.min(Math.hypot(u - radius * .15, (v + radius * .05) / Math.max(.16, 1 - blink)),
+            Math.hypot(u + radius * .15, (v + radius * .05) / Math.max(.16, 1 - blink))) < radius * .065;
+          const smile = Math.abs(u) < radius * .17 && Math.abs(v - radius * (.14 - .9 * (u / radius) ** 2)) < radius * .035;
+          if (!eye && !smile) bead(px, py, index + 1, dark ? .63 : .54);
+        }
+      }
+    });
+  }
   function draw(time) {
-    if (!sprite || !width || !height) return;
+    if (!sprites.length || !width || !height) return;
     ctx.clearRect(0, 0, width, height);
-    const gain = dark ? .58 : .43;
-    const driftX = .015 * Math.sin(time * .28), driftY = .018 * Math.sin(time * .22 + .6);
-    for (const dot of dots) {
-      if (dot.clear < .005) continue;
-      const field = flowField(dot.nx, dot.ny, time);
-      let coverage = 0, light = field;
-      if (dot.artCell) {
-        // A sub-cell warp and travelling light bands keep the silhouette alive.
-        const u = dot.u - driftX + .005 * Math.sin(dot.v * 9 - time * .7);
-        const v = dot.v - driftY + .003 * Math.sin(dot.u * 8 + time * .6);
-        coverage = sampleArt(u, v);
-        const band = .5 + .5 * Math.sin(dot.v * 12 - dot.u * 6 - time * 1.35 + 1.8 * field);
-        light = .36 + .64 * smooth(.06, .96, band);
-      }
-      // Preserve all of the original negative space, including the heart and type.
-      const background = dot.artCell && mask ? 0 : field * .095;
-      const strength = coverage * light;
-      const alpha = (background + gain * strength * dot.exposure) * dot.clear;
-      if (alpha < .012) continue;
-      const beadSize = pitch * (coverage > .02 ? 1.25 + .55 * light : 1.2);
+    for (const dot of background) {
+      const wave = Math.sin(dot.x * .011 + Math.sin(dot.y * .009 + time * .4) * 2 - time * .5);
+      const alpha = Math.max(0, wave) ** 6 * (dark ? .05 : .045) * dot.clear;
+      if (alpha < .018) continue;
       ctx.globalAlpha = alpha;
-      ctx.drawImage(sprite, dot.x - beadSize / 2, dot.y - beadSize / 2, beadSize, beadSize);
+      const size = pitch * 1.15;
+      ctx.drawImage(sprites[0], dot.x - size / 2, dot.y - size / 2, size, size);
     }
-    ctx.globalAlpha = 1;
+    drawStars(time); drawFigure(time); ctx.globalAlpha = 1;
   }
-
-  function visible() {
-    return pageShown && !document.hidden && !stage.classList.contains('gone') &&
-      !stage.classList.contains('faded') && !forcedColors.matches;
-  }
-
+  function visible() { return pageShown && !document.hidden && !stage.classList.contains('gone') && !stage.classList.contains('faded') && !forcedColors.matches; }
   function tick(now) {
     frame = 0;
     if (!visible() || reduced.matches) return;
     if (!lastFrame || now - lastFrame >= 1000 / 24) {
       if (lastFrame) elapsed += Math.min((now - lastFrame) / 1000, .1);
-      lastFrame = now;
-      draw(elapsed);
+      lastFrame = now; draw(elapsed);
     }
     frame = requestAnimationFrame(tick);
   }
-
   function sync() {
-    cancelAnimationFrame(frame);
-    frame = 0;
-    lastFrame = 0;
+    cancelAnimationFrame(frame); frame = 0; lastFrame = 0;
     if (!visible()) return;
-    if (reduced.matches) draw(6);
-    else frame = requestAnimationFrame(tick);
+    if (reduced.matches) draw(2); else frame = requestAnimationFrame(tick);
   }
-
-  beadSprite();
-  resize();
   const artwork = new Image();
   artwork.onload = () => {
-    const source = document.createElement('canvas');
-    source.width = maskWidth;
-    source.height = maskHeight;
-    const paint = source.getContext('2d', { willReadFrequently: true });
-    if (!paint) return;
-    paint.drawImage(artwork, 0, 0, maskWidth, maskHeight);
-    const rgba = paint.getImageData(0, 0, maskWidth, maskHeight).data;
-    mask = new Uint8Array(maskWidth * maskHeight);
-    for (let i = 0; i < mask.length; i++) mask[i] = rgba[i * 4 + 3];
-    draw(reduced.matches ? 6 : elapsed);
+    const source = document.createElement('canvas'); source.width = 216; source.height = Math.round(216 * aspect);
+    const paint = source.getContext('2d', { willReadFrequently: true }); if (!paint) return;
+    const scale = source.width / 1086;
+    paint.drawImage(artwork, 175 * scale, 90 * scale, 750 * scale, 1140 * scale);
+    const rgba = paint.getImageData(0, 0, source.width, source.height).data;
+    const exposure = (.84 * (maskWidth - 1) / source.width) * (.84 * (maskHeight - 1) / source.height);
+    cloud = [];
+    for (let row = 0; row < source.height; row++) {
+      for (let column = 0; column < source.width; column++) {
+        const alpha = rgba[(row * source.width + column) * 4 + 3] / 255; if (alpha < .03) continue;
+        const x = column / source.width, v = row / source.height;
+        const weights = [smooth(.46, .55, x) * (1 - smooth(.27, .35, v)),
+          smooth(.61, .72, x) * smooth(.33, .41, v) * (1 - smooth(.78, .83, v)),
+          (1 - smooth(.37, .44, x)) * smooth(.72, .78, v),
+          smooth(.40, .46, x) * (1 - smooth(.68, .74, x)) * smooth(.76, .82, v)];
+        const sum = weights.reduce((a, b) => a + b, 0);
+        if (sum > 1) for (let i = 0; i < weights.length; i++) weights[i] /= sum;
+        cloud.push({ x, y: row / source.width, weights, alpha: alpha * exposure });
+      }
+    }
+    draw(reduced.matches ? 2 : elapsed);
   };
-  artwork.src = 'assets/works/gorilla/bing-gorilla.svg';
-  const layout = new ResizeObserver(() => { updateQuietZones(); if (reduced.matches) draw(6); });
-  layout.observe(stage.querySelector('.line'));
-  layout.observe(document.getElementById('menu'));
-  const state = new MutationObserver(() => { updateQuietZones(); sync(); });
-  state.observe(stage, { attributes: true, attributeFilter: ['class'] });
-  const theme = new MutationObserver(() => { beadSprite(); draw(reduced.matches ? 6 : elapsed); });
-  theme.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-  addEventListener('resize', resize, { passive: true });
-  document.addEventListener('visibilitychange', sync);
-  reduced.addEventListener('change', sync);
-  forcedColors.addEventListener('change', sync);
-  addEventListener('pagehide', () => { pageShown = false; sync(); });
-  addEventListener('pageshow', () => { pageShown = true; sync(); });
+  artwork.src = 'assets/works/gorilla/bing-gorilla-figure.svg';
+  makeSprites(); resize();
+  const layout = new ResizeObserver(() => { updateQuietZones(); if (reduced.matches) draw(2); });
+  layout.observe(stage.querySelector('.line')); layout.observe(document.getElementById('menu'));
+  new MutationObserver(() => { updateQuietZones(); sync(); }).observe(stage, { attributes: true, attributeFilter: ['class'] });
+  new MutationObserver(() => { makeSprites(); draw(reduced.matches ? 2 : elapsed); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  addEventListener('resize', resize, { passive: true }); document.addEventListener('visibilitychange', sync);
+  reduced.addEventListener('change', sync); forcedColors.addEventListener('change', sync);
+  addEventListener('pagehide', () => { pageShown = false; sync(); }); addEventListener('pageshow', () => { pageShown = true; sync(); });
   sync();
 })();

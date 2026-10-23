@@ -1,0 +1,9 @@
+EB Garamond — Google Fonts official repository
+https://github.com/google/fonts/tree/main/ofl/ebgaramond
+Original variable normal and italic TTF converted to WOFF2 without glyph subsetting. Weight axis: 400–800. SIL OFL 1.1, see OFL-EBGaramond.txt.
+
+Portfolio GenWan Medium — subset of GenWanMin2 TW M (GenWanMin2TW-M), the simplified-Chinese font actually selected by Sudoku by BinG.
+Official upstream: https://github.com/ButTaiwan/genwan-font
+Local original: /Users/bing/Desktop/BinG_WORK/字体/GenWan/GenWan-M.ttf
+Subset generated from current portfolio HTML, JS and CSS on 2026-10-23; 1042 CJK/fullwidth codepoints, all present in the source and output cmap. Renamed subset family Portfolio GenWan. Regenerate when adding Chinese content.
+SIL OFL 1.1, see OFL-GenWanMin.txt.
