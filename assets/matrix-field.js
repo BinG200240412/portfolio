@@ -8,10 +8,10 @@
   const forcedColors = matchMedia('(forced-colors: active)');
   const seed = 200240412;
   const TAU = Math.PI * 2;
-  // Neighbouring colours have similar lightness. Every LED participates in the colour field.
-  const colours = [[154,180,142],[128,176,164],[132,162,194],[170,150,195],[198,148,174],
-    [204,151,129],[194,174,126],[171,182,132],[138,181,179],[161,158,191]];
-  const shadesPerColour = 8;
+  // A finite illustration palette. Colour belongs to a moving shape, never to
+  // an independent rainbow field, and never blends into its neighbour.
+  const colours = [[155,158,150],[174,146,155],[137,158,177],
+    [164,158,119],[135,163,148],[157,143,173]];
   const smooth = (a, b, value) => {
     const t = Math.max(0, Math.min(1, (value - a) / (b - a)));
     return t * t * (3 - 2 * t);
@@ -27,27 +27,19 @@
 
   function updateQuietZones() {
     const title = stage.querySelector('.line').getBoundingClientRect();
-    quiet = [{ x: width / 2, y: height / 2,
-      halfWidth: Math.max(80, title.width / 2 + (width < 700 ? 14 : 26)),
-      halfHeight: Math.max(38, title.height * .78 + 16), power: 2 }];
+    quiet = [{ x: title.x + title.width / 2, y: title.y + title.height / 2,
+      halfWidth: title.width / 2 + 18, halfHeight: title.height / 2 + 17 }];
     if (stage.classList.contains('works')) {
       const menu = document.getElementById('menu').getBoundingClientRect();
       quiet.push({ x: menu.x + menu.width / 2, y: menu.y + menu.height / 2,
-        halfWidth: menu.width / 2 + 24, halfHeight: menu.height * .78 + 16, power: 2 });
-    }
-    for (const dot of dots) {
-      dot.shore = quiet.map(box => {
-        const dx = (dot.x - box.x) / box.halfWidth, dy = (dot.y - box.y) / box.halfHeight;
-        return { u: dx, v: dy, rx: box.halfWidth, ry: box.halfHeight, power: box.power,
-          safeRadius: Math.hypot(dx / 1.13, dy / 1.22) };
-      });
+        halfWidth: menu.width / 2 + 14, halfHeight: menu.height / 2 + 12 });
     }
   }
 
   function resize() {
     width = stage.clientWidth;
     height = stage.clientHeight;
-    pitch = Math.max(width < 700 ? 9 : 12, Math.sqrt(width * height / 14000));
+    pitch = Math.max(width < 700 ? 9 : 12, Math.sqrt(width * height / 10000));
     const ratio = Math.min(devicePixelRatio || 1, 1.5);
     canvas.width = Math.round(width * ratio);
     canvas.height = Math.round(height * ratio);
@@ -55,13 +47,11 @@
     const columns = Math.ceil(width / pitch), rows = Math.ceil(height / pitch);
     const offsetX = (width - (columns - 1) * pitch) / 2;
     const offsetY = (height - (rows - 1) * pitch) / 2;
-    const unit = Math.max(1, Math.min(width, height));
     dots = [];
     for (let row = 0; row < rows; row++) {
       for (let column = 0; column < columns; column++) {
         const x = offsetX + column * pitch, y = offsetY + row * pitch;
-        dots.push({ x, y, u: (x - width / 2) / unit, v: (y - height / 2) / unit,
-          exposure: .97 + hash(column, row) * .03, shore: [] });
+        dots.push({ x, y });
       }
     }
     updateQuietZones();
@@ -70,75 +60,149 @@
 
   function makeSprites() {
     dark = document.documentElement.dataset.theme !== 'light';
-    sprites = [];
-    for (let i = 0; i < colours.length * shadesPerColour; i++) {
-      const index = Math.floor(i / shadesPerColour), amount = (i % shadesPerColour) / shadesPerColour;
-      const first = colours[index], next = colours[(index + 1) % colours.length];
-      const rgb = first.map((value, k) => (value + (next[k] - value) * amount) * (dark ? 1 : .92));
+    sprites = colours.map(rgb => {
       const sprite = document.createElement('canvas');
       sprite.width = sprite.height = 32;
       const paint = sprite.getContext('2d');
-      // A single flat colour per LED. All gradients happen between whole LEDs.
-      paint.fillStyle = 'rgb(' + rgb.map(Math.round).join(',') + ')';
+      paint.fillStyle = 'rgb(' + rgb.map(value => Math.round(value * (dark ? 1 : .82))).join(',') + ')';
       paint.beginPath();
       paint.arc(16, 16, 8, 0, TAU);
       paint.fill();
-      sprites.push(sprite);
-    }
+      return sprite;
+    });
   }
 
-  // The reference survives as broad arches and asymmetric elliptical pressure,
-  // embedded in a continuous field rather than assembled into a complete figure.
-  function field(x, y, time) {
-    const u = x + .16 * Math.sin(y * 4 - time * .31) + .08 * Math.sin(x * 3 + y * 2 + time * .23);
-    const v = y + .15 * Math.sin(x * 3.3 + time * .27) + .07 * Math.cos(y * 4.6 - x * 1.4 - time * .19);
-    const arch = Math.hypot((u + .28 + .07 * Math.sin(time * .21)) * 1.08, (v + .23) * 1.5);
-    const lens = Math.hypot((u - .42) * 1.45, (v - .19 + .08 * Math.cos(time * .25)) * 1.12);
-    const morph = .5 + .5 * Math.sin(time * .16 + u * .8);
-    const pressure = arch * (1 - morph) + lens * morph;
-    const a = Math.sin(u * 5.6 + Math.sin(v * 4.2 - time * .37) * 1.55 - time * .51);
-    const b = Math.cos(v * 6.1 - u * 1.3 + Math.sin(u * 3.2 + time * .28) - time * .39);
-    const c = Math.cos(pressure * 10.5 - time * .46 + .75 * Math.sin(v * 2.4 + time * .22));
-    const light = smooth(-.85, .86, a * .53 + b * .33 + c * .34);
-    const colour = 5 + 2.5 * Math.sin(u * 2 + v * .8 + time * .13) +
-      1.6 * Math.sin(v * 2.2 - u * .9 - time * .11) + 1.2 * Math.sin(u * 3.4 - v * 1.8 + time * .08);
-    return { light, colour };
+  // Every coloured body and every dark opening use this same rounded star.
+  // The shared coordinate warp bends the entire illustration, including the
+  // clearing around the text, instead of adding a separate central mask.
+  function warp(x, y, time) {
+    const unit = Math.min(width, height);
+    return {
+      x: x + unit * (.024 * Math.sin(y / unit * 5.1 - time * .31) +
+        .012 * Math.sin(x / unit * 7.2 + y / unit * 2.8 + time * .24)),
+      y: y + unit * (.024 * Math.sin(x / unit * 4.7 + time * .27) +
+        .012 * Math.cos(y / unit * 6.4 - x / unit * 2.1 - time * .22)),
+    };
+  }
+  function boundary(angle, phase, time) {
+    return 1 + .17 * Math.cos(angle * 4 + phase + .35 * Math.sin(time * .34 + phase)) +
+      .065 * Math.sin(angle * 3 - time * .29 + phase);
+  }
+  function shape(x, y, rx, ry, angle, phase, colour) {
+    return { x, y, rx, ry, cos: Math.cos(angle), sin: Math.sin(angle), phase, colour, scale: 1 };
+  }
+  function prepare(body, time, feather = 0) {
+    const a = body.phase + .35 * Math.sin(time * .34 + body.phase);
+    const b = -time * .29 + body.phase;
+    body.c4 = Math.cos(a); body.s4 = Math.sin(a);
+    body.c3 = Math.cos(b); body.s3 = Math.sin(b);
+    body.unit = Math.min(body.rx, body.ry);
+    const reach = 1.235 * body.scale + feather / body.unit;
+    body.bx = reach * Math.hypot(body.rx * body.cos, body.ry * body.sin);
+    body.by = reach * Math.hypot(body.rx * body.sin, body.ry * body.cos);
+    return body;
+  }
+  function localPoint(point, body) {
+    const dx = point.x - body.x, dy = point.y - body.y;
+    return { x: (dx * body.cos + dy * body.sin) / body.rx,
+      y: (-dx * body.sin + dy * body.cos) / body.ry };
+  }
+  function distance(point, body) {
+    if (Math.abs(point.x - body.x) > body.bx || Math.abs(point.y - body.y) > body.by) return -Infinity;
+    const local = localPoint(point, body);
+    const radius = Math.hypot(local.x, local.y);
+    const c = radius ? local.x / radius : 1, s = radius ? local.y / radius : 0;
+    // Polynomial harmonics equal boundary(atan2(y,x)), avoiding per-dot trig.
+    const c2 = c * c, s2 = s * s;
+    const cos4 = 1 - 8 * c2 * s2, sin4 = 4 * c * s * (c2 - s2);
+    const cos3 = 4 * c * c2 - 3 * c, sin3 = 3 * s - 4 * s * s2;
+    const edge = 1 + .17 * (cos4 * body.c4 - sin4 * body.s4) +
+      .065 * (sin3 * body.c3 + cos3 * body.s3);
+    return (edge * body.scale - radius) * body.unit;
+  }
+
+  function scene(time) {
+    const unit = Math.min(width, height), step = Math.max(190, unit * .52);
+    const bodies = [], openings = [];
+    const columns = Math.ceil(width / step) + 2, rows = Math.ceil(height / step) + 2;
+    for (let row = -1; row < rows; row++) {
+      for (let column = -1; column < columns; column++) {
+        const phase = hash(column + 30, row + 30) * TAU;
+        const x = (column + .5) * step + step * .1 * Math.sin(time * .25 + phase);
+        const y = (row + .5) * step + step * .1 * Math.cos(time * .28 + phase);
+        const rx = step * (.83 + .06 * Math.sin(time * .32 + phase));
+        const ry = step * (.78 + .08 * Math.cos(time * .26 + phase));
+        bodies.push(shape(x, y, rx, ry, .18 * Math.sin(time * .21 + phase), phase,
+          ((column + row * 3) % colours.length + colours.length) % colours.length));
+      }
+    }
+    // These are cuts in the very same illustration. Their edges, motion and
+    // stepped brightness use exactly the same function as the coloured bodies.
+    const holes = [[-.1, .02, .24, .12, .3], [.73, -.1, .23, .13, 2.1],
+      [1.11, .84, .25, .13, 4.4], [.21, 1.12, .24, .13, 5.8]];
+    for (const [x, y, rx, ry, phase] of holes) {
+      openings.push(shape(x * width + unit * .04 * Math.sin(time * .32 + phase),
+        y * height + unit * .035 * Math.cos(time * .3 + phase), unit * rx, unit * ry,
+        .18 * Math.sin(time * .22 + phase), phase, -1));
+    }
+    for (let i = 0; i < quiet.length; i++) {
+      const box = quiet[i], centre = warp(box.x, box.y, time);
+      const opening = shape(centre.x + 16 * Math.sin(time * .37 + i),
+        centre.y + 12 * Math.cos(time * .33 + .6 + i), box.halfWidth, box.halfHeight,
+        .045 * Math.sin(time * .28 + i), .7 + i * 2, -1);
+      // Fit this star's own parameters around the text. No secondary guard or
+      // alpha mask: all of its visible shore is generated by distance() above.
+      let fit = 1;
+      for (let gy = -1; gy <= 1; gy++) {
+        for (let gx = -1; gx <= 1; gx++) {
+          const point = warp(box.x + gx * box.halfWidth, box.y + gy * box.halfHeight, time);
+          const local = localPoint(point, opening);
+          fit = Math.max(fit, Math.hypot(local.x, local.y) /
+            boundary(Math.atan2(local.y, local.x), opening.phase, time));
+        }
+      }
+      opening.scale = fit + .08;
+      openings.push(opening);
+    }
+    const cell = Math.max(80, unit * .24);
+    const bucketColumns = Math.ceil(width / cell) + 2, bucketRows = Math.ceil(height / cell) + 2;
+    const buckets = Array.from({ length: bucketColumns * bucketRows }, () => ({ bodies: [], openings: [] }));
+    function place(body, kind, feather) {
+      prepare(body, time, feather);
+      const x0 = Math.max(0, Math.floor((body.x - body.bx) / cell) + 1);
+      const x1 = Math.min(bucketColumns - 1, Math.floor((body.x + body.bx) / cell) + 1);
+      const y0 = Math.max(0, Math.floor((body.y - body.by) / cell) + 1);
+      const y1 = Math.min(bucketRows - 1, Math.floor((body.y + body.by) / cell) + 1);
+      for (let row = y0; row <= y1; row++) {
+        for (let column = x0; column <= x1; column++) buckets[row * bucketColumns + column][kind].push(body);
+      }
+    }
+    for (const body of bodies) place(body, 'bodies', 0);
+    for (const opening of openings) place(opening, 'openings', pitch * 6);
+    return { buckets, bucketColumns, cell };
   }
 
   function draw(time) {
     if (!sprites.length || !width || !height) return;
     ctx.clearRect(0, 0, width, height);
-    const size = pitch * 1.2;
-    const tides = quiet.map((box, index) => ({
-      x: (Math.sin(time * .43 + index) * .75 + Math.sin(time * .21 + .7) * .25) * Math.min(25, box.halfWidth * .16),
-      y: (Math.sin(time * .51 + .6 + index) * .75 + Math.sin(time * .27) * .25) * Math.min(16, box.halfHeight * .3),
-      sx: 1 + .065 * Math.sin(time * .47 + index),
-      sy: 1 + .12 * Math.sin(time * .39 + .8 + index),
-    }));
-    const feather = pitch * (width < 700 ? 10 : 11);
+    const size = pitch * 1.2, feather = pitch * 6;
+    const { buckets, bucketColumns, cell } = scene(time);
     for (const dot of dots) {
-      const value = field(dot.u, dot.v, time);
-      const colour = ((value.colour % colours.length) + colours.length) % colours.length;
-      const index = Math.floor(colour * shadesPerColour) % sprites.length;
-      // Drift and breathe the clearing itself; step its feather across 10–11 LEDs.
-      let clear = 1;
-      for (let i = 0; i < dot.shore.length; i++) {
-        const shore = dot.shore[i], tide = tides[i];
-        const u = (shore.u - tide.x / shore.rx) / tide.sx;
-        const v = (shore.v - tide.y / shore.ry) / tide.sy;
-        const angle = Math.atan2(v, u);
-        const radius = (Math.abs(u) ** shore.power + Math.abs(v) ** shore.power) ** (1 / shore.power);
-        const edge = 1.12 + .2 * Math.sin(angle * 3 + time * .46) +
-          .12 * Math.sin(angle * 5 - time * .37 + .8) + .07 * Math.sin(angle * 9 + time * .59);
-        const radialPixels = Math.hypot(shore.rx * tide.sx * Math.cos(angle), shore.ry * tide.sy * Math.sin(angle));
-        const distance = (radius - edge) * radialPixels;
-        const ramp = Math.max(0, Math.min(1, distance / feather));
-        const stepped = Math.round(Math.pow(ramp, .72) * 24) / 24;
-        // Only this compact inner guard stays anchored to the actual letters.
-        clear *= stepped * smooth(.97, 1.09, shore.safeRadius);
+      const point = warp(dot.x, dot.y, time);
+      const bucket = buckets[(Math.floor(point.y / cell) + 1) * bucketColumns + Math.floor(point.x / cell) + 1];
+      let surface = -Infinity, colour = 0;
+      for (const body of bucket.bodies) {
+        const inside = distance(point, body);
+        if (inside > surface) { surface = inside; colour = body.colour; }
       }
-      ctx.globalAlpha = ((dark ? .115 : .085) + value.light * (dark ? .66 : .53)) * dot.exposure * clear;
-      ctx.drawImage(sprites[index], dot.x - size / 2, dot.y - size / 2, size, size);
+      for (const opening of bucket.openings) surface = Math.min(surface, -distance(point, opening));
+      // A common signed surface drives every edge, central and peripheral.
+      // Hue is a hard region ID. Only whole-LED brightness has discrete steps.
+      const ramp = smooth(0, feather, surface);
+      const brightness = Math.round(ramp * 24) / 24;
+      if (!brightness) continue;
+      ctx.globalAlpha = (dark ? .66 : .48) * brightness;
+      ctx.drawImage(sprites[colour], dot.x - size / 2, dot.y - size / 2, size, size);
     }
     ctx.globalAlpha = 1;
   }
