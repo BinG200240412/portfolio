@@ -2,7 +2,7 @@
 
 Original identity reference: user-provided IMG_0311.JPG, unchanged in Downloads. Intermediate reference: the first generated full-body sprite.
 
-Current asset: caizhengyang-sprite-v2.png. Generated with the built-in image_gen tool, 2026-10-23. A small-headed gameplay sprite with only two eye pixels replaces the detailed dialogue-style portrait. Cards have no original-photo reveal or click action. Website CSS tones the sprite down for each theme.
+Current asset: caizhengyang-sprite-v2.png. Generated with the built-in image_gen tool, 2026-10-23. A small-headed gameplay sprite with only two eye pixels replaces the detailed dialogue-style portrait. The sprite is used as a small walking companion on About me. There is no portrait grid or photo-reveal action. Website CSS tones the sprite down for each theme.
 
 ## Final refinement prompt
 
