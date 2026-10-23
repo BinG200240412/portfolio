@@ -1,4 +1,4 @@
-/* About: the original monochrome portrait, followed by three clear CV columns. */
+/* About: introduction on the left, the supplied photograph on the right. */
 body.portfolio-shell #resume{
   width:100%;max-width:1140px;padding:72px clamp(28px,4.6vw,56px) 100px;
 }
@@ -6,15 +6,15 @@ body.portfolio-shell #resume.live{
   display:grid;grid-template-columns:minmax(0,1fr);align-items:start;
 }
 .about-hero{
-  grid-row:1;display:grid;grid-template-columns:minmax(250px,320px) minmax(0,1fr);
+  grid-row:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,320px);
   gap:clamp(40px,6vw,76px);align-items:center;width:100%;min-width:0;
 }
 .about-portrait{
-  display:block;width:100%;max-width:320px;min-width:0;margin:0;justify-self:start;
+  display:block;width:100%;max-width:320px;min-width:0;margin:0;justify-self:end;
 }
 .about-portrait>img{
-  display:block;width:100%;height:auto;aspect-ratio:365/410;object-fit:cover;
-  object-position:50% 50%;filter:grayscale(1) contrast(1.02);border:0;border-radius:0;box-shadow:none;
+  display:block;width:100%;height:auto;object-fit:contain;
+  filter:none;border:0;border-radius:0;box-shadow:none;
 }
 .about-intro{min-width:0}
 #resume .about-intro .cv-head{margin-bottom:26px}
@@ -60,7 +60,7 @@ html[lang="en"] #resume .about-details li{font-size:14px;line-height:1.7}
 #about-companion.is-walking,.about-companion-track.is-walking #about-companion{will-change:transform}
 
 @media(max-width:900px) and (min-width:769px){
-  .about-hero{grid-template-columns:minmax(230px,280px) minmax(0,1fr);gap:34px}
+  .about-hero{grid-template-columns:minmax(0,1fr) minmax(230px,280px);gap:34px}
   #resume .about-intro .cv-head h1{font-size:clamp(42px,5.4vw,52px)}
   #resume .about-intro .tags{gap:9px 16px;margin-bottom:21px}
   #resume .about-details>section{padding-inline:20px}
