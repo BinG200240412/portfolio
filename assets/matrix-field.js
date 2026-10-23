@@ -16,7 +16,15 @@
   const lightColours = [[95,106,83],[139,90,88],[77,112,139],[127,105,63],
     [75,116,91],[117,91,137],[120,105,80],
     [82,94,94],[91,111,105],[117,104,76],[147,98,91],
-    [76,83,82],[100,107,105],[110,118,111],[124,132,120]];
+    [76,83,82],[100,107,105],[110,118,111],[124,132,120],
+    [179,76,62],[44,111,166],[165,113,32],[34,130,91],[128,69,157]];
+  // On paper, a few camera windows, digits and small marks carry purer ink.
+  // The large surfaces retain their existing muted colours in both themes.
+  const lightAccentRoles = {
+    'robot-dog':{3:16,4:18,8:16}, 'quest-3':{3:16,6:16},
+    sudoku:{2:15}, arright:{3:17,4:18}, skill:{3:19,4:15},
+    'liangzhu-mask':{2:18,3:17},
+  };
   // Every object keeps its own small palette. A colour change is a hard boundary.
   const palettes = {
     'robot-dog':[0,6,7,4,1,0,8,9], 'quest-3':[0,6,7,2,1,0,8,9],
@@ -307,6 +315,7 @@
       const p = placement(item, time, image);
       const {pitch,x,y,cos,sin} = p, size = ledPitch * 1.4, palette = palettes[item.id];
       if (!palette) continue;
+      const accentRoles = dark ? null : lightAccentRoles[item.id];
       p.hitBox = inkBounds(image);
       if (entry && image.ready !== false && positionButton(entry.button,p)) entry.placement=p;
       if (item.id === 'gorilla' && source === window.PortfolioGorillaMotif && (image.ready === true || source.ready === true)) {
@@ -329,7 +338,7 @@
           const facet = image.shades ? facets[pixel.shade] : 1;
           const ink=opacity*facet*pixel.coverage;
           ctx.globalAlpha = light===1 ? ink : Math.min(ink,Math.max(.16,ink*light));
-          ctx.drawImage(sprites[palette[pixel.role-1]],px-size/2,py-size/2,size,size);
+          ctx.drawImage(sprites[accentRoles?.[pixel.role] ?? palette[pixel.role-1]],px-size/2,py-size/2,size,size);
         }
       }
     }
