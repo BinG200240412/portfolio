@@ -1,4 +1,4 @@
-/* About: personal introduction on the left, a playful portrait contact sheet on the right. */
+/* About: personal introduction beside an aligned, low-chroma pixel portrait grid. */
 body.portfolio-shell #resume{
   width:100%;max-width:1320px;padding:72px clamp(28px,4.85vw,64px) 100px;
 }
@@ -23,54 +23,65 @@ body.portfolio-shell #resume{
 
 .identity-gallery{
   position:relative;display:block;align-self:start;width:min(100%,590px);max-width:100%;
-  margin:0 auto;scroll-margin-top:80px;--identity-gap:15px;--identity-shadow:rgba(0,0,0,.14);
+  margin:0 auto;scroll-margin-top:80px;--identity-gap:15px;
+  --identity-frame-a:#3d4840;--identity-frame-b:#3c4750;--identity-frame-c:#4f4d43;
+  --identity-frame-d:#49434f;--identity-frame-e:#4f4944;
+  --identity-text:#d5d7d1;--identity-subtext:#b7bdb3;
+  --identity-window:#50564f;--identity-window-line:#343b35;
+  --identity-sprite-filter:saturate(.55) brightness(.87);
+}
+html[data-theme="light"] .identity-gallery{
+  --identity-frame-a:#a9b5a9;--identity-frame-b:#a4b0b8;--identity-frame-c:#bab2a3;
+  --identity-frame-d:#b1a8b9;--identity-frame-e:#b7b09a;
+  --identity-text:#252b27;--identity-subtext:#414a43;
+  --identity-window:#bac2b5;--identity-window-line:#929d91;--identity-sprite-filter:none;
 }
 .identity-grid{
   position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
   gap:var(--identity-gap);width:100%;isolation:isolate;
 }
 .identity-card{
-  --identity-color:#f08068;--identity-turn:-1.2deg;
+  --identity-color:var(--identity-frame-a);
   position:relative;grid-row:calc(var(--row,0) + 1);grid-column:calc(var(--col,0) + 1);
-  display:grid;grid-template-rows:12px minmax(0,1fr) 21px;gap:6px;
-  width:100%;min-width:0;min-height:0;aspect-ratio:.76;
-  margin:0;padding:8px 11px 9px;overflow:hidden;
-  border:2px solid var(--identity-color);border-radius:6px;
-  background:var(--identity-color);color:#22231f;font:inherit;text-align:left;
-  box-shadow:3px 4px 0 var(--identity-shadow);cursor:default;
+  display:grid;grid-template-rows:10px minmax(0,1fr) 16px;gap:5px;
+  width:100%;min-width:0;min-height:0;aspect-ratio:1;
+  margin:0;padding:8px 9px;overflow:hidden;
+  border:2px solid var(--identity-color);border-radius:0;
+  background:var(--identity-color);color:var(--identity-text);font:inherit;text-align:left;
+  box-shadow:none;cursor:default;
   transform-origin:50% 50%;transform:translate(var(--card-x,0px),var(--card-y,0px));
   opacity:0;visibility:hidden;pointer-events:none;z-index:calc(12 - var(--index,0));
   transition:transform 800ms cubic-bezier(.2,.72,.2,1),opacity 300ms ease,visibility 0s linear 1050ms;
 }
-.identity-card:nth-child(5n+2){--identity-color:#8e9ee8;--identity-turn:1.5deg}
-.identity-card:nth-child(5n+3){--identity-color:#c2d66d;--identity-turn:-1.7deg}
-.identity-card:nth-child(5n+4){--identity-color:#c0a3df;--identity-turn:1.1deg}
-.identity-card:nth-child(5n+5){--identity-color:#dbb45e;--identity-turn:-.7deg}
-.identity-card:first-child{--identity-turn:0deg;opacity:1;visibility:visible;z-index:15}
+.identity-card:nth-child(5n+2){--identity-color:var(--identity-frame-b);}
+.identity-card:nth-child(5n+3){--identity-color:var(--identity-frame-c);}
+.identity-card:nth-child(5n+4){--identity-color:var(--identity-frame-d);}
+.identity-card:nth-child(5n+5){--identity-color:var(--identity-frame-e);}
+.identity-card:first-child{opacity:1;visibility:visible;z-index:15}
 .identity-gallery:is(.spreading,.spread) .identity-card{
-  transform:translate(0,0) rotate(var(--identity-turn));opacity:1;visibility:visible;
+  transform:translate(0,0);opacity:1;visibility:visible;
   transition-delay:calc(var(--index,0) * 25ms),calc(var(--index,0) * 25ms),0s;
 }
 .identity-card__top{
   display:flex;align-items:center;justify-content:space-between;gap:6px;min-width:0;
-  color:#252720;font-size:9px;line-height:1;letter-spacing:.08em;white-space:nowrap;
+  color:var(--identity-text);font-size:9px;line-height:1;letter-spacing:.08em;white-space:nowrap;
 }
 .identity-card__top>i{display:block;flex:none;width:4px;height:4px;border-radius:50%;background:var(--red,#ef4937)}
 .identity-card__window{
   position:relative;display:block;align-self:stretch;min-width:0;min-height:0;overflow:hidden;
-  border:1px solid #30312a;border-radius:2px;background:#e8e7dc;
+  border:1px solid var(--identity-window-line);border-radius:0;background:var(--identity-window);
 }
 .identity-gallery .identity-card__window>.identity-card__pixel{
   position:absolute;inset:0;display:block;width:100%;height:100%;max-width:none;
-  object-fit:contain;object-position:50% 50%;image-rendering:pixelated;filter:none;border-radius:0;
+  object-fit:contain;object-position:50% 50%;image-rendering:pixelated;filter:var(--identity-sprite-filter);border-radius:0;
   user-select:none;-webkit-user-select:none;pointer-events:none;
 }
 .identity-card__footer{
   display:flex;align-items:end;justify-content:space-between;gap:4px;min-width:0;
-  color:#22231f;font-size:clamp(8px,.77vw,10px);line-height:1.2;letter-spacing:.025em;
+  color:var(--identity-text);font-size:clamp(8px,.77vw,10px);line-height:1.2;letter-spacing:.025em;
 }
 .identity-card__footer>:first-child{min-width:0;white-space:nowrap}
-.identity-card__footer>:last-child{color:#404137;font-size:9px;letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.identity-card__footer>:last-child{color:var(--identity-subtext);font-size:9px;letter-spacing:.02em;font-variant-numeric:tabular-nums}
 
 @media(max-width:900px){
   body.portfolio-shell #resume{max-width:760px;padding:78px clamp(24px,5vw,40px) 80px}
@@ -96,8 +107,7 @@ body.portfolio-shell #resume{
   #resume .about-copy .cols h2{font-size:22px}
   .identity-gallery{--identity-gap:10px;width:100%;margin:0 0 38px}
   .identity-card{
-    grid-template-rows:minmax(0,1fr) 12px;gap:4px;padding:6px;border-radius:4px;
-    box-shadow:2px 3px 0 var(--identity-shadow);
+    grid-template-rows:minmax(0,1fr) 12px;gap:4px;padding:6px;border-radius:0;box-shadow:none;
   }
   .identity-card__top{display:none}
   .identity-card__footer{justify-content:flex-end;align-items:center;font-size:8px;line-height:1}
