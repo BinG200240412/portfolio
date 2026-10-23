@@ -15,6 +15,7 @@
 <script defer src="assets/matrix-3d.js?v=work-objects-20261023"></script>
 <script defer src="assets/matrix-project-stickers.js?v=cute-portraits-20261023"></script>
 <script defer src="assets/matrix-field.js?v=gorilla-return-20261023"></script>
+<script defer src="assets/identity-cards.js?v=identity-array-20261023"></script>
 <style>
   :root{
     --mono:"JetBrains Mono","Noto Sans SC",monospace;
@@ -153,8 +154,6 @@
   .intro p{font-family:var(--sans);font-size:14.5px;line-height:2;color:#333;margin-bottom:1.2em}
   .intro p:last-child{margin-bottom:0}.intro .em{color:var(--ink)}
   .intro .lead{font-size:16px;color:var(--ink);font-weight:400}
-  .portrait{display:flex;justify-content:center;margin:clamp(20px,4vw,40px) 0 clamp(40px,6vw,64px)}
-  .portrait img{width:clamp(240px,38vw,340px);height:auto;filter:grayscale(1) contrast(1.02)}
   .contact{list-style:none;margin-bottom:clamp(48px,7vw,80px);display:grid;gap:9px;font-size:13.5px}
   .contact li{display:flex;gap:1.2em}.contact .k{color:#9a9a9a;min-width:5.2em}.contact .v{color:var(--ink)}
   .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
@@ -169,6 +168,7 @@
 </style>
 <link rel="stylesheet" href="assets/theme.css?v=slab-regular-20261023">
 <link rel="stylesheet" href="assets/matrix-field.css">
+<link rel="stylesheet" href="assets/identity-cards.css?v=identity-array-20261023">
 </head>
 <body class="portfolio-shell">
   <div id="themeControls"></div>
@@ -196,7 +196,95 @@
     <div class="intro rv">
       <p>以设计与技术为工具，创作游戏、交互与影像。</p>
     </div>
-    <figure class="portrait rv"><img src="assets/portrait.jpg" alt="蔡正阳"></figure>
+    <figure id="identity-gallery" class="identity-gallery rv assembled" data-i18n-ignore aria-label="互动肖像">
+      <div class="identity-grid">
+        <button type="button" class="identity-card" data-identity-card aria-pressed="false" aria-label="肖像 1：查看原照片" style="--index:0;--row:1;--col:1">
+          <span class="identity-card__top" aria-hidden="true"><span>WHO AM I</span><i></i></span>
+          <span class="identity-card__window" aria-hidden="true">
+            <img class="identity-card__pixel" src="assets/portraits/caizhengyang-pixel.png" alt="" width="1122" height="1402" decoding="async">
+            <img class="identity-card__photo" src="assets/portraits/caizhengyang-photo.jpg" alt="" width="1331" height="1864" decoding="async">
+            <span class="identity-card__flash"></span>
+          </span>
+          <span class="identity-card__footer" aria-hidden="true"><span>CAIZHENGYANG</span><span>01</span></span>
+        </button>
+        <button type="button" class="identity-card" data-identity-card aria-pressed="false" aria-label="肖像 2：查看原照片" style="--index:1;--row:0;--col:0">
+          <span class="identity-card__top" aria-hidden="true"><span>WHO AM I</span><i></i></span>
+          <span class="identity-card__window" aria-hidden="true">
+            <img class="identity-card__pixel" src="assets/portraits/caizhengyang-pixel.png" alt="" width="1122" height="1402" decoding="async">
+            <img class="identity-card__photo" src="assets/portraits/caizhengyang-photo.jpg" alt="" width="1331" height="1864" decoding="async">
+            <span class="identity-card__flash"></span>
+          </span>
+          <span class="identity-card__footer" aria-hidden="true"><span>CAIZHENGYANG</span><span>02</span></span>
+        </button>
+        <button type="button" class="identity-card" data-identity-card aria-pressed="false" aria-label="肖像 3：查看原照片" style="--index:2;--row:0;--col:1">
+          <span class="identity-card__top" aria-hidden="true"><span>WHO AM I</span><i></i></span>
+          <span class="identity-card__window" aria-hidden="true">
+            <img class="identity-card__pixel" src="assets/portraits/caizhengyang-pixel.png" alt="" width="1122" height="1402" decoding="async">
+            <img class="identity-card__photo" src="assets/portraits/caizhengyang-photo.jpg" alt="" width="1331" height="1864" decoding="async">
+            <span class="identity-card__flash"></span>
+          </span>
+          <span class="identity-card__footer" aria-hidden="true"><span>CAIZHENGYANG</span><span>03</span></span>
+        </button>
+        <button type="button" class="identity-card" data-identity-card aria-pressed="false" aria-label="肖像 4：查看原照片" style="--index:3;--row:0;--col:2">
+          <span class="identity-card__top" aria-hidden="true"><span>WHO AM I</span><i></i></span>
+          <span class="identity-card__window" aria-hidden="true">
+            <img class="identity-card__pixel" src="assets/portraits/caizhengyang-pixel.png" alt="" width="1122" height="1402" decoding="async">
+            <img class="identity-card__photo" src="assets/portraits/caizhengyang-photo.jpg" alt="" width="1331" height="1864" decoding="async">
+            <span class="identity-card__flash"></span>
+          </span>
+          <span class="identity-card__footer" aria-hidden="true"><span>CAIZHENGYANG</span><span>04</span></span>
+        </button>
+        <button type="button" class="identity-card" data-identity-card aria-pressed="false" aria-label="肖像 5：查看原照片" style="--index:4;--row:1;--col:0">
+          <span class="identity-card__top" aria-hidden="true"><span>WHO AM I</span><i></i></span>
+          <span class="identity-card__window" aria-hidden="true">
+            <img class="identity-card__pixel" src="assets/portraits/caizhengyang-pixel.png" alt="" width="1122" height="1402" decoding="async">
+            <img class="identity-card__photo" src="assets/portraits/caizhengyang-photo.jpg" alt="" width="1331" height="1864" decoding="async">
+            <span class="identity-card__flash"></span>
+          </span>
+          <span class="identity-card__footer" aria-hidden="true"><span>CAIZHENGYANG</span><span>05</span></span>
+        </button>
+        <button type="button" class="identity-card" data-identity-card aria-pressed="false" aria-label="肖像 6：查看原照片" style="--index:5;--row:1;--col:2">
+          <span class="identity-card__top" aria-hidden="true"><span>WHO AM I</span><i></i></span>
+          <span class="identity-card__window" aria-hidden="true">
+            <img class="identity-card__pixel" src="assets/portraits/caizhengyang-pixel.png" alt="" width="1122" height="1402" decoding="async">
+            <img class="identity-card__photo" src="assets/portraits/caizhengyang-photo.jpg" alt="" width="1331" height="1864" decoding="async">
+            <span class="identity-card__flash"></span>
+          </span>
+          <span class="identity-card__footer" aria-hidden="true"><span>CAIZHENGYANG</span><span>06</span></span>
+        </button>
+        <button type="button" class="identity-card" data-identity-card aria-pressed="false" aria-label="肖像 7：查看原照片" style="--index:6;--row:2;--col:0">
+          <span class="identity-card__top" aria-hidden="true"><span>WHO AM I</span><i></i></span>
+          <span class="identity-card__window" aria-hidden="true">
+            <img class="identity-card__pixel" src="assets/portraits/caizhengyang-pixel.png" alt="" width="1122" height="1402" decoding="async">
+            <img class="identity-card__photo" src="assets/portraits/caizhengyang-photo.jpg" alt="" width="1331" height="1864" decoding="async">
+            <span class="identity-card__flash"></span>
+          </span>
+          <span class="identity-card__footer" aria-hidden="true"><span>CAIZHENGYANG</span><span>07</span></span>
+        </button>
+        <button type="button" class="identity-card" data-identity-card aria-pressed="false" aria-label="肖像 8：查看原照片" style="--index:7;--row:2;--col:1">
+          <span class="identity-card__top" aria-hidden="true"><span>WHO AM I</span><i></i></span>
+          <span class="identity-card__window" aria-hidden="true">
+            <img class="identity-card__pixel" src="assets/portraits/caizhengyang-pixel.png" alt="" width="1122" height="1402" decoding="async">
+            <img class="identity-card__photo" src="assets/portraits/caizhengyang-photo.jpg" alt="" width="1331" height="1864" decoding="async">
+            <span class="identity-card__flash"></span>
+          </span>
+          <span class="identity-card__footer" aria-hidden="true"><span>CAIZHENGYANG</span><span>08</span></span>
+        </button>
+        <button type="button" class="identity-card" data-identity-card aria-pressed="false" aria-label="肖像 9：查看原照片" style="--index:8;--row:2;--col:2">
+          <span class="identity-card__top" aria-hidden="true"><span>WHO AM I</span><i></i></span>
+          <span class="identity-card__window" aria-hidden="true">
+            <img class="identity-card__pixel" src="assets/portraits/caizhengyang-pixel.png" alt="" width="1122" height="1402" decoding="async">
+            <img class="identity-card__photo" src="assets/portraits/caizhengyang-photo.jpg" alt="" width="1331" height="1864" decoding="async">
+            <span class="identity-card__flash"></span>
+          </span>
+          <span class="identity-card__footer" aria-hidden="true"><span>CAIZHENGYANG</span><span>09</span></span>
+        </button>
+      </div>
+      <figcaption class="identity-caption">
+        <span data-identity-hint aria-live="polite">点一下，咔嚓。</span>
+        <button type="button" data-identity-arrange aria-expanded="false">展开 ↗</button>
+      </figcaption>
+    </figure>
     <ul class="contact rv">
       <li><a href="mailto:bing2002czy@gmail.com">bing2002czy@gmail.com ↗</a></li>
     </ul>
@@ -261,8 +349,8 @@ let hintT=null;
 function armHint(){clearTimeout(hintT);dotEl.classList.remove('hinting');
   hintT=setTimeout(()=>{if((phase==='question'||phase==='name')&&dotEl.classList.contains('clickable'))dotEl.classList.add('hinting');},7000);}
 function disarmHint(){clearTimeout(hintT);dotEl.classList.remove('hinting');}
-async function intro(){await settle(QUESTION);phase='question';setClickable(true);armHint();}
-async function revealName(){disarmHint();phase='typing';setClickable(false);await settle(NAME);phase='name';setClickable(true);armHint();}
+async function intro(){await settle(QUESTION);if(phase!=='typing')return;phase='question';setClickable(true);armHint();}
+async function revealName(){disarmHint();phase='typing';setClickable(false);await settle(NAME);if(phase!=='typing')return;phase='name';setClickable(true);armHint();}
 
 /* ---- 菜单渲染（hub 顶层 / works 作品层） ---- */
 function buildItem(label,no,onEnter,onLeave,onClick){
@@ -292,6 +380,7 @@ function renderMenu(level){
 
 /* ---- 顶层：关于我 / 作品集 ---- */
 function showHub(){
+  if(location.hash==='#about'){const url=new URL(location.href);url.hash='';history.replaceState(history.state,'',url);}
   stage.inert=false;
   phase='hub';setClickable(false);
   resume.classList.remove('reveal','live');
@@ -316,6 +405,9 @@ function showWorks(){
   morphTo(tr(HOME));markActivity();
 }
 function expandPage(which){
+  disarmHint();clearWatch();
+  if(location.hash!=='#about'){const url=new URL(location.href);url.hash='about';history.pushState(history.state,'',url);}
+  if(section.classList.contains('on')){section.classList.remove('on','native');secBack.classList.remove('on');}
   stage.inert=true;
   phase=which;setClickable(false);
   document.body.classList.remove('works-mode');
@@ -323,7 +415,7 @@ function expandPage(which){
   const m=resume;
   m.setAttribute('aria-hidden','false');m.classList.add('live');
   document.body.classList.add('expanded');window.scrollTo(0,0);
-  requestAnimationFrame(()=>m.classList.add('reveal'));
+  requestAnimationFrame(()=>{if(phase===which&&m.classList.contains('live'))m.classList.add('reveal');});
 }
 
 dotEl.addEventListener('click',()=>{disarmHint();if(phase==='question')revealName();else if(phase==='name')showHub();});
@@ -363,7 +455,7 @@ function enterSection(name,no){
   section.scrollTop=0;
   stage.inert=true;
   stage.classList.add('faded');
-  setTimeout(()=>{section.classList.add('on');secBack.classList.add('on');phase='section';},430);
+  setTimeout(()=>{if(phase!=='transit')return;section.classList.add('on');secBack.classList.add('on');phase='section';},430);
 }
 
 /* ====== idle 睁眼：你撒手，它看你（hub / works 时生效） ====== */
@@ -377,7 +469,14 @@ addEventListener('portfolio:language', () => {
   if (phase === 'hub') { renderMenu('hub'); morphTo(NAME); }
   else if (phase === 'works') { renderMenu('works'); morphTo(tr(HOME)); }
 });
-intro();
+function syncAboutRoute(){
+  if(location.hash==='#about'&&phase!=='resume')expandPage('resume');
+  else if(location.hash!=='#about'&&phase==='resume')showHub();
+}
+addEventListener('popstate',syncAboutRoute);
+addEventListener('hashchange',syncAboutRoute);
+if(location.hash==='#about')expandPage('resume');
+else intro();
 </script>
 </body>
 </html>
