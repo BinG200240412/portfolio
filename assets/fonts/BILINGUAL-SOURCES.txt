@@ -1,4 +1,4 @@
-Active Latin typeface — Josefin Slab Thin (weight 100), normal and italic
+Active Latin typeface — Josefin Slab Regular (weight 400), normal and italic
 Official Google Fonts source (retrieved 2026-10-23):
 https://github.com/google/fonts/tree/main/ofl/josefinslab
 https://raw.githubusercontent.com/google/fonts/main/ofl/josefinslab/JosefinSlab%5Bwght%5D.ttf
@@ -8,17 +8,18 @@ Source SHA-256:
 normal 52f8addf239848d129cfde96c3290b78e271ad657ef5645068d4f08046c2d1b8
 italic 2629d8e5c81bf652f096179d89e525c3d02824307cdd10852053979fe72c8ee9
 
-FontTools instantiated wght=100 into two static WOFF2 files without glyph subsetting.
-Both output OS/2 usWeightClass values are 100; neither contains a variable axis.
-The OFL reserves the name Josefin. The derived fonts use the family Portfolio Slab Thin,
-PostScript names PortfolioSlab-Thin and PortfolioSlab-ThinItalic.
-CSS maps old requested weights 100–900 to these exact static Thin outlines and disables
-synthetic weight. It does not make a 700 or 900 outline. English readability adjustments
-use size and color. SIL OFL 1.1 and source copyright: OFL-JosefinSlab.txt.
+FontTools instantiated wght=400 into two static WOFF2 files without glyph subsetting.
+Both output OS/2 usWeightClass values are 400; neither contains a variable axis.
+The OFL reserves the name Josefin. The derived fonts use the family Portfolio Slab,
+PostScript names PortfolioSlab-Regular and PortfolioSlab-Italic.
+CSS maps old requested weights 100–900 to these exact static Regular outlines and
+disables synthetic weight. The source's actual wght=400 outlines are retained;
+metadata was not simply relabelled. English readability uses size and color.
+SIL OFL 1.1 and source copyright: OFL-JosefinSlab.txt.
 
 Output SHA-256:
-PortfolioSlab-Thin.woff2 2e4f00f668cb5ea13babc8eaaf0bcd3c57fffab1a6cd2f08058b664630d064dd
-PortfolioSlab-ThinItalic.woff2 1baac197f26c3a4ab739341c449e96962fde1a74cd7f59317a606aa6bfa24552
+PortfolioSlab-Regular.woff2 48af577c0b48d4bbeda5af85b6464b41f8db2ef4aaf30be3ed6129a66a5534b4
+PortfolioSlab-Italic.woff2 ccb7b0adbab89f92769ebbb2c1b9f35de4482824cedaaaf2d32f2c0b96f34d1e
 
 Portfolio GenWan Medium — subset of GenWanMin2 TW M (GenWanMin2TW-M), the simplified-Chinese font actually selected by Sudoku by BinG.
 Official upstream: https://github.com/ButTaiwan/genwan-font
@@ -27,6 +28,8 @@ Subset generated from current portfolio HTML, JS and CSS on 2026-10-23; 1042 CJK
 SIL OFL 1.1, see OFL-GenWanMin.txt.
 
 Legacy assets retained but no longer referenced by the current font CSS:
-EBGaramond.woff2 / EBGaramond-Italic.woff2, from the official Google Fonts
+PortfolioSlab-Thin.woff2 / PortfolioSlab-ThinItalic.woff2 — former weight-100
+instances from the same Josefin Slab source, OFL-JosefinSlab.txt.
+EBGaramond.woff2 / EBGaramond-Italic.woff2 — official Google Fonts source:
 https://github.com/google/fonts/tree/main/ofl/ebgaramond
 SIL OFL 1.1: OFL-EBGaramond.txt.
