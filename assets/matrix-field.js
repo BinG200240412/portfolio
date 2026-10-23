@@ -33,13 +33,13 @@
     if (stage.classList.contains('works')) {
       const menu = document.getElementById('menu').getBoundingClientRect();
       quiet.push({ x: menu.x + menu.width / 2, y: menu.y + menu.height / 2,
-        halfWidth: menu.width / 2 + 20, halfHeight: menu.height / 2 + 20, power: 4 });
+        halfWidth: menu.width / 2 + 24, halfHeight: menu.height * .78 + 16, power: 2 });
     }
     for (const dot of dots) {
       dot.shore = quiet.map(box => {
         const dx = (dot.x - box.x) / box.halfWidth, dy = (dot.y - box.y) / box.halfHeight;
-        return { radius: (Math.abs(dx) ** box.power + Math.abs(dy) ** box.power) ** (1 / box.power),
-          angle: Math.atan2(dy, dx) };
+        return { u: dx, v: dy, rx: box.halfWidth, ry: box.halfHeight, power: box.power,
+          safeRadius: Math.hypot(dx / 1.13, dy / 1.22) };
       });
     }
   }
@@ -75,20 +75,11 @@
       const index = Math.floor(i / shadesPerColour), amount = (i % shadesPerColour) / shadesPerColour;
       const first = colours[index], next = colours[(index + 1) % colours.length];
       const rgb = first.map((value, k) => (value + (next[k] - value) * amount) * (dark ? 1 : .92));
-      const colour = factor => 'rgb(' + rgb.map(value => Math.round(Math.min(255, value * factor))).join(',') + ')';
       const sprite = document.createElement('canvas');
       sprite.width = sprite.height = 32;
       const paint = sprite.getContext('2d');
-      const halo = paint.createRadialGradient(16, 16, 5, 16, 16, 15.5);
-      halo.addColorStop(0, 'rgba(' + rgb.map(Math.round).join(',') + ',.18)');
-      halo.addColorStop(1, 'rgba(' + rgb.map(Math.round).join(',') + ',0)');
-      paint.fillStyle = halo;
-      paint.fillRect(0, 0, 32, 32);
-      const core = paint.createRadialGradient(14.5, 14.5, .8, 16, 16, 8);
-      core.addColorStop(0, colour(1.13));
-      core.addColorStop(.5, colour(1));
-      core.addColorStop(1, colour(.7));
-      paint.fillStyle = core;
+      // A single flat colour per LED. All gradients happen between whole LEDs.
+      paint.fillStyle = 'rgb(' + rgb.map(Math.round).join(',') + ')';
       paint.beginPath();
       paint.arc(16, 16, 8, 0, TAU);
       paint.fill();
@@ -118,17 +109,33 @@
     if (!sprites.length || !width || !height) return;
     ctx.clearRect(0, 0, width, height);
     const size = pitch * 1.2;
+    const tides = quiet.map((box, index) => ({
+      x: (Math.sin(time * .43 + index) * .75 + Math.sin(time * .21 + .7) * .25) * Math.min(25, box.halfWidth * .16),
+      y: (Math.sin(time * .51 + .6 + index) * .75 + Math.sin(time * .27) * .25) * Math.min(16, box.halfHeight * .3),
+      sx: 1 + .065 * Math.sin(time * .47 + index),
+      sy: 1 + .12 * Math.sin(time * .39 + .8 + index),
+    }));
+    const feather = pitch * (width < 700 ? 10 : 11);
     for (const dot of dots) {
       const value = field(dot.u, dot.v, time);
       const colour = ((value.colour % colours.length) + colours.length) % colours.length;
       const index = Math.floor(colour * shadesPerColour) % sprites.length;
-      // An irregular, moving shoreline dissolves the whole LED before the text.
+      // Drift and breathe the clearing itself; step its feather across 10–11 LEDs.
       let clear = 1;
-      for (const shore of dot.shore) {
-        const edge = 1.25 + .14 * Math.sin(shore.angle * 3 + time * .22) +
-          .08 * Math.sin(shore.angle * 5 - time * .18 + .8) +
-          .045 * Math.sin(shore.angle * 9 + time * .29);
-        clear *= smooth(edge, edge + .6, shore.radius);
+      for (let i = 0; i < dot.shore.length; i++) {
+        const shore = dot.shore[i], tide = tides[i];
+        const u = (shore.u - tide.x / shore.rx) / tide.sx;
+        const v = (shore.v - tide.y / shore.ry) / tide.sy;
+        const angle = Math.atan2(v, u);
+        const radius = (Math.abs(u) ** shore.power + Math.abs(v) ** shore.power) ** (1 / shore.power);
+        const edge = 1.12 + .2 * Math.sin(angle * 3 + time * .46) +
+          .12 * Math.sin(angle * 5 - time * .37 + .8) + .07 * Math.sin(angle * 9 + time * .59);
+        const radialPixels = Math.hypot(shore.rx * tide.sx * Math.cos(angle), shore.ry * tide.sy * Math.sin(angle));
+        const distance = (radius - edge) * radialPixels;
+        const ramp = Math.max(0, Math.min(1, distance / feather));
+        const stepped = Math.round(Math.pow(ramp, .72) * 24) / 24;
+        // Only this compact inner guard stays anchored to the actual letters.
+        clear *= stepped * smooth(.97, 1.09, shore.safeRadius);
       }
       ctx.globalAlpha = ((dark ? .115 : .085) + value.light * (dark ? .66 : .53)) * dot.exposure * clear;
       ctx.drawImage(sprites[index], dot.x - size / 2, dot.y - size / 2, size, size);
