@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>蔡正阳 — caizheNGyaNG</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+<title>蔡正阳 — Who am I</title>
+<meta name="description" content="蔡正阳的作品集。独立开发、交互与艺术。">
+<script src="assets/theme.js"></script>
 <style>
   :root{
     --mono:"JetBrains Mono","Noto Sans SC",monospace;
@@ -118,17 +117,17 @@
   #section.native{background:#0b0b0a}
   .native-frame{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
 
-  /* ============ 内容页：简历 / 报名动机 ============ */
-  #resume,#motive{display:none;position:relative;z-index:1;max-width:920px;margin:0 auto;
+  /* ============ 内容页：简历 ============ */
+  #resume{display:none;position:relative;z-index:1;max-width:920px;margin:0 auto;
     padding:clamp(40px,7vw,96px) clamp(24px,5vw,72px) 120px}
-  #resume.live,#motive.live{display:block}
+  #resume.live{display:block}
   .rv{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
-  #resume.reveal .rv,#motive.reveal .rv{opacity:1;transform:none}
-  #resume.reveal .rv:nth-child(1),#motive.reveal .rv:nth-child(1){transition-delay:.04s}
-  #resume.reveal .rv:nth-child(2),#motive.reveal .rv:nth-child(2){transition-delay:.16s}
-  #resume.reveal .rv:nth-child(3),#motive.reveal .rv:nth-child(3){transition-delay:.28s}
-  #resume.reveal .rv:nth-child(4),#motive.reveal .rv:nth-child(4){transition-delay:.40s}
-  #resume.reveal .rv:nth-child(5),#motive.reveal .rv:nth-child(5){transition-delay:.52s}
+  #resume.reveal .rv{opacity:1;transform:none}
+  #resume.reveal .rv:nth-child(1){transition-delay:.04s}
+  #resume.reveal .rv:nth-child(2){transition-delay:.16s}
+  #resume.reveal .rv:nth-child(3){transition-delay:.28s}
+  #resume.reveal .rv:nth-child(4){transition-delay:.40s}
+  #resume.reveal .rv:nth-child(5){transition-delay:.52s}
   #resume.reveal .rv:nth-child(6){transition-delay:.62s}
   .cv-head{margin-bottom:clamp(30px,5vw,52px)}
   .cv-head h1{font-family:var(--serif);font-size:clamp(48px,7.5vw,82px);font-weight:600;letter-spacing:.02em;
@@ -155,23 +154,21 @@
   .cols h2{font-family:var(--serif);font-size:clamp(21px,2.6vw,28px);font-weight:600;margin-bottom:1.3em}
   .cols ul{list-style:none;display:grid;gap:1em}
   .cols li{font-family:var(--sans);font-size:12.5px;line-height:1.7;color:#444}.cols .lead{color:#9a9a9a}
-  /* 报名动机落款 */
-  .motive-sign{font-family:var(--serif);font-style:italic;font-size:clamp(24px,4vw,40px);
-    line-height:1.4;color:var(--ink);margin-top:clamp(40px,6vw,68px);max-width:18ch}
-  .motive-sign .rd{color:var(--red);font-style:normal}
   @media(max-width:720px){.cols{grid-template-columns:1fr;gap:36px}
     .cols section{padding:0;border-left:0;border-top:1px solid #e3e3e3;padding-top:28px}
     .cols section:first-child{border-top:0;padding-top:0}}
 </style>
+<link rel="stylesheet" href="assets/theme.css">
 </head>
-<body>
+<body class="portfolio-shell">
+  <div id="themeControls"></div>
 
   <!-- 中枢 -->
   <div id="stage">
-    <div class="caption" id="cap">蔡正阳 — Portfolio</div>
-    <div class="line"><span class="text" id="text"></span><span class="dot" id="dot" role="button" aria-label="揭晓 / 展开"></span></div>
+    <div class="caption" id="cap" aria-hidden="true"></div>
+    <div class="line"><span class="text" id="text"></span><span class="dot" id="dot" role="button" tabindex="0" aria-label="揭晓 / 展开"></span></div>
     <nav class="menu" id="menu"></nav>
-    <div class="hint" id="hint">悬停浏览 · 点击进入</div>
+    <div class="hint" id="hint" aria-hidden="true"></div>
   </div>
 
   <button id="back"><span class="bd"></span>返回</button>
@@ -184,29 +181,19 @@
   <!-- 关于我 / 简历 -->
   <main id="resume" aria-hidden="true">
     <header class="cv-head rv"><h1>蔡正阳<span class="rd"></span></h1><div class="latin">caizheNGyaNG · About Me</div></header>
-    <div class="tags rv">
-      <span>资深影迷</span><span>独立开发者</span><span>XR 艺术家</span><span>AI 艺术家</span>
-      <span>交互设计师</span><span>vibe coder</span><span>网页艺术</span><span>AI 影像探索</span>
-      <span>装置艺术</span><span>策展助理</span>
-    </div>
+    <div class="tags rv"><span>独立开发</span><span>交互设计</span><span>艺术实践</span></div>
     <div class="intro rv">
-      <p>对 ai 抱有极大热情，日常学习主要就是玩各种 ai，并从中发觉。最近极感兴趣 <span class="em">vibe coding</span>、网页艺术，并计划在下一阶段探索 ai 影像制作。看到这个工作坊，想从中交流学习，探索 ai 影像的边界。</p>
-      <p>常接触电影，尤其感兴趣科幻题材——《2001 太空漫游》《银翼杀手》《大都会》《阿基拉》。也颇爱人文题材影片，《随风而逝》《一一》……</p>
+      <p>以设计与技术为工具，创作游戏、交互与影像。</p>
     </div>
     <figure class="portrait rv"><img src="assets/portrait.jpg" alt="蔡正阳"></figure>
     <ul class="contact rv">
-      <li><span class="k">年龄</span><span class="v">24</span></li>
-      <li><span class="k">籍贯</span><span class="v">江苏常州</span></li>
-      <li><span class="k">邮箱</span><span class="v">bing2002czy@gmail.com</span></li>
-      <li><span class="k">电话</span><span class="v">18961198692</span></li>
-      <li><span class="k">英语素养</span><span class="v">CET6</span></li>
+      <li><a href="mailto:bing2002czy@gmail.com">bing2002czy@gmail.com ↗</a></li>
     </ul>
     <div class="cols rv">
       <section><h2>教育背景</h2><ul>
         <li><span class="lead">院校</span>　中国美术学院</li>
         <li><span class="lead">专业</span>　AI 与智能设计</li>
-        <li><span class="lead">年级</span>　研究生一年级在读</li>
-        <li><span class="lead">主要研究方向</span>　AI 哲思 · Vibe Coding · AI 生图 · AI 生成视频 · XR 开发 · 交互设计</li>
+        <li><span class="lead">主要研究方向</span>　AI · XR · 交互设计</li>
       </ul></section>
       <section><h2>个人履历</h2><ul>
         <li>2021 年　参与中建地产平面项目</li>
@@ -229,28 +216,15 @@
     </div>
   </main>
 
-  <!-- 本次报名动机 -->
-  <main id="motive" aria-hidden="true">
-    <header class="cv-head rv"><h1>本次报名动机<span class="rd"></span></h1><div class="latin">Why I Apply · 阿里 × 国美 跨媒体工作坊</div></header>
-    <div class="intro rv">
-      <p class="lead">我做的东西，一直在两件事之间来回：用 AI 去造一个世界，也对 AI 本身发问。</p>
-      <p>一边用它复原良渚、生成场景、搭可触摸的交互装置；一边在《漂移之屋》《More than Human》里追问——当 AI 开始读懂、预测、甚至改写我们，人还剩下什么。这两条线，一条向外造世界，一条向内照见自己。</p>
-      <p>这次阿里 × 国美的工作坊，正好站在「设计 × 技术 × 批判」的交叉点上，也正是我最想深入的地方。我想认真探索 <span class="em">AI 影像</span>的边界——不只是把它当生产力工具，而是把它当成一种新的语言、一面照见我们自己的镜子。</p>
-      <p>我也始终相信，<span class="em">判断力比工具更重要</span>。AI 让产出变得廉价，于是「为什么做、做成什么样」的取舍，反而成了唯一稀缺的东西。我希望在这里，和一群同样较真的人，把这件事往深里做。</p>
-    </div>
-    <p class="motive-sign rv">用 AI 造世界，<br>也对 AI 发问<span class="rd">.</span></p>
-  </main>
-
 <script>
 const QUESTION="Who am I ?", NAME="CaizheNGyaNG", HOME="作品集";
-const SECTIONS=["vibe coding","AI 3D 工作流搭建","XR 文旅项目","More than Human","装置艺术","更多作品集"];
+const SECTIONS=["arright","数独 · App","数独 · 视觉","良渚 · AI 3D","良渚 · XR","漂移之屋","千里江山","作品归档"];
 const HUB=[
   {label:"关于我", act:()=>expandPage('resume')},
   {label:"作品集", act:showWorks},
-  {label:"本次报名动机", act:()=>expandPage('motive')},
 ];
 const $=id=>document.getElementById(id);
-const textEl=$('text'), dotEl=$('dot'), stage=$('stage'), resume=$('resume'), motive=$('motive'),
+const textEl=$('text'), dotEl=$('dot'), stage=$('stage'), resume=$('resume'),
       menuEl=$('menu'), cap=$('cap'), hint=$('hint'), backBtn=$('back'), toHubBtn=$('toHub'),
       section=$('section'), secBack=$('secBack');
 const TYPE=130, ERASE=70, wait=ms=>new Promise(r=>setTimeout(r,ms));
@@ -280,11 +254,13 @@ async function revealName(){disarmHint();phase='typing';setClickable(false);awai
 
 /* ---- 菜单渲染（hub 顶层 / works 作品层） ---- */
 function buildItem(label,no,onEnter,onLeave,onClick){
-  const a=document.createElement('a');a.className='mi';
+  const a=document.createElement('a');a.className='mi';a.href='#';
   a.innerHTML=`<span class="mn">0${no}</span>${label}`;
   a.addEventListener('mouseenter',onEnter);
   a.addEventListener('mouseleave',onLeave);
-  a.addEventListener('click',onClick);
+  a.addEventListener('click',event=>{event.preventDefault();onClick();});
+  a.addEventListener('focus',onEnter);
+  a.addEventListener('blur',onLeave);
   return a;
 }
 function renderMenu(level){
@@ -302,54 +278,59 @@ function renderMenu(level){
   }
 }
 
-/* ---- 顶层三段：关于我 / 作品集 / 报名动机 ---- */
+/* ---- 顶层：关于我 / 作品集 ---- */
 function showHub(){
+  stage.inert=false;
   phase='hub';setClickable(false);
-  resume.classList.remove('reveal','live');motive.classList.remove('reveal','live');
-  resume.setAttribute('aria-hidden','true');motive.setAttribute('aria-hidden','true');
+  resume.classList.remove('reveal','live');
+  resume.setAttribute('aria-hidden','true');
   document.body.classList.remove('expanded','works-mode');
   if(section.classList.contains('on')){section.classList.remove('on','native');secBack.classList.remove('on');}
   window.scrollTo(0,0);
   stage.classList.remove('faded','gone');stage.classList.add('works','hublv');
-  renderMenu('hub');cap.textContent='蔡正阳 — 评审导览 / Guide';hint.textContent='三个方面 · 全面了解';
+  renderMenu('hub');cap.textContent='';hint.textContent='';
   morphTo(NAME);markActivity();
 }
 function showWorks(){
+  stage.inert=false;
   phase='works';setClickable(false);
-  resume.classList.remove('reveal','live');motive.classList.remove('reveal','live');
-  resume.setAttribute('aria-hidden','true');motive.setAttribute('aria-hidden','true');
+  resume.classList.remove('reveal','live');
+  resume.setAttribute('aria-hidden','true');
   if(section.classList.contains('on')){section.classList.remove('on','native');secBack.classList.remove('on');}
   document.body.classList.remove('expanded');document.body.classList.add('works-mode');
   window.scrollTo(0,0);
   stage.classList.remove('faded','gone','hublv');stage.classList.add('works');
-  renderMenu('works');cap.textContent='蔡正阳 — Selected Works';hint.textContent='悬停浏览 · 点击进入';
+  renderMenu('works');cap.textContent='';hint.textContent='';
   morphTo(HOME);markActivity();
 }
 function expandPage(which){
+  stage.inert=true;
   phase=which;setClickable(false);
   document.body.classList.remove('works-mode');
   stage.classList.add('gone');stage.classList.remove('works','hublv');
-  const m=which==='resume'?resume:motive, other=which==='resume'?motive:resume;
-  other.setAttribute('aria-hidden','true');other.classList.remove('reveal','live');
+  const m=resume;
   m.setAttribute('aria-hidden','false');m.classList.add('live');
   document.body.classList.add('expanded');window.scrollTo(0,0);
   requestAnimationFrame(()=>m.classList.add('reveal'));
 }
 
 dotEl.addEventListener('click',()=>{disarmHint();if(phase==='question')revealName();else if(phase==='name')showHub();});
-backBtn.addEventListener('click',()=>{if(phase==='resume'||phase==='motive')showHub();});
+dotEl.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();dotEl.click();}});
+backBtn.addEventListener('click',()=>{if(phase==='resume')showHub();});
 toHubBtn.addEventListener('click',()=>{if(phase==='works')showHub();});
 secBack.addEventListener('click',()=>{if(phase==='section')showWorks();});
 
 /* ---- 进板块：极简淡出 ---- */
 /* 原生重建页（可编辑元素，非贴图） */
 const SECTION_PAGE={
-  "vibe coding":"sections/sudoku.html",
-  "AI 3D 工作流搭建":"sections/ai3d.html",
-  "XR 文旅项目":"sections/xr.html",
-  "More than Human":"sections/drift.html",
-  "装置艺术":"sections/qianli.html",
-  "更多作品集":"sections/more.html",
+  "arright":"sections/arright.html",
+  "数独 · App":"sections/sudoku.html",
+  "数独 · 视觉":"sections/sudoku-visual.html",
+  "良渚 · AI 3D":"sections/ai3d.html",
+  "良渚 · XR":"sections/xr.html",
+  "漂移之屋":"sections/drift.html",
+  "千里江山":"sections/qianli.html",
+  "作品归档":"sections/more.html",
 };
 function enterSection(name,no){
   if(phase!=='works')return;phase='transit';clearWatch();
@@ -362,9 +343,10 @@ function enterSection(name,no){
     section.classList.remove('native');
     section.innerHTML=`<div class="sec-inner"><div class="sec-no rv2">${no}</div>`+
       `<h1 class="sec-title rv2">${name}<span class="rd"></span></h1>`+
-      `<p class="sec-note rv2">内容即将填充 · Content coming</p></div>`;
+      `</div>`;
   }
   section.scrollTop=0;
+  stage.inert=true;
   stage.classList.add('faded');
   setTimeout(()=>{section.classList.add('on');secBack.classList.add('on');phase='section';},430);
 }

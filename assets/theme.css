@@ -1,0 +1,53 @@
+@font-face{font-family:"Portfolio Mono";src:url("fonts/GeistMono-Regular.ttf") format("truetype");font-style:normal;font-weight:400;font-display:swap}
+html[data-theme="dark"]{--paper:#111110;--bg:#111110;--bg2:#181817;--panel:#1a1a18;--ink:#efeee9;--mid:#b7b6b0;--soft:#a4a39c;--dim:#8d8c85;--faint:#77766f;--line:#33332f;--line2:#484841;--red:#f04432;--surface:#1b1b19;--chrome:rgba(17,17,16,.92)}
+html[data-theme="light"]{--paper:#f5f3ed;--bg:#f5f3ed;--bg2:#eeece5;--panel:#eae8e1;--ink:#171715;--mid:#55554f;--soft:#66665f;--dim:#75756d;--faint:#85857d;--line:#d6d4cb;--line2:#c5c2b8;--red:#e13c2a;--surface:#eeece5;--chrome:rgba(245,243,237,.94)}
+html{background:var(--paper);scrollbar-color:var(--faint) var(--paper)}
+body{background-color:var(--paper);color:var(--ink)}
+::selection{background:var(--red);color:#fff}
+.theme-controls{position:fixed;z-index:90;right:26px;top:23px;display:flex;align-items:center;gap:2px;padding:3px;background:var(--chrome);border:1px solid var(--line);border-radius:30px;backdrop-filter:blur(14px)}
+.theme-controls button{display:grid;place-items:center;width:32px;height:30px;border:0;border-radius:50%;background:none;cursor:pointer;position:relative}
+.theme-dot{display:block;width:13px;height:13px;border-radius:50%;border:1px solid #777}
+.dark-dot{background:#151515}.light-dot{background:#f5f3ed}
+.theme-controls button[aria-pressed="true"] .theme-dot{outline:1px solid var(--ink);outline-offset:4px}
+.theme-controls button:hover{background:var(--panel)}
+.theme-controls button:focus-visible,.standalone-back:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.standalone-back{position:fixed;left:26px;top:25px;z-index:90;color:var(--ink);text-decoration:none;font:12px "Portfolio Mono",monospace;background:var(--chrome);border:1px solid var(--line);border-radius:30px;padding:10px 15px}
+
+/* Site chrome changes colour; the work itself keeps its original colour. */
+body.portfolio-shell{--mono:"Portfolio Mono","PingFang SC","Microsoft YaHei",monospace;--sans:"PingFang SC","Microsoft YaHei",sans-serif;--serif:var(--mono);background:var(--paper)}
+.portfolio-shell #stage,.portfolio-shell #section,.portfolio-shell #section.native{background:var(--paper)}
+.portfolio-shell #section{pointer-events:none}
+.portfolio-shell #section.on{pointer-events:auto}
+.portfolio-shell .caption,.portfolio-shell .hint{display:none}
+.portfolio-shell .mi{color:var(--soft);min-height:36px;align-items:center;text-decoration:none}
+.portfolio-shell .mi .mn{color:var(--faint)}
+.portfolio-shell .mi:hover,.portfolio-shell .mi:focus-visible{color:var(--ink)}
+.portfolio-shell .mi:focus-visible{outline:1px solid var(--red);outline-offset:5px}
+.portfolio-shell #back{left:30px;right:auto}
+.portfolio-shell #back,.portfolio-shell #toHub{color:var(--soft);background:var(--chrome);padding:9px 0}
+.portfolio-shell #secBack{color:var(--ink);background:var(--chrome);border-color:var(--line);box-shadow:none}
+.portfolio-shell #secBack .bd{box-shadow:none}
+.portfolio-shell .tags{gap:11px 22px;margin-bottom:32px}
+.portfolio-shell .tags span{padding:0;background:none;border:0;color:var(--soft);font-size:12px}
+.portfolio-shell .tags span::before{display:none}
+.portfolio-shell .intro p,.portfolio-shell .cols li{color:var(--mid)}
+.portfolio-shell .cv-head .latin,.portfolio-shell .contact .k,.portfolio-shell .cols .lead{color:var(--soft)}
+.portfolio-shell .cols section{border-color:var(--line)}
+.portfolio-shell .contact a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+.portfolio-shell .line{font-size:clamp(24px,4vw,44px);max-width:92vw}
+.portfolio-shell .menu{top:calc(50% + 54px);transform:translateX(-50%);gap:9px 24px;max-width:880px}
+.portfolio-shell #stage.hublv .menu{gap:14px 38px}
+.portfolio-shell .dot:focus-visible{outline:1px solid var(--ink);outline-offset:9px}
+
+body.legacy-case{padding-top:82px;background:var(--paper);background-image:none!important}
+.legacy-case header.top{display:none}
+.legacy-case .act,.legacy-case .speclist,.legacy-case .callout{background:var(--panel)}
+.legacy-case .core h2,.legacy-case .actbar h2,.legacy-case .act .at,.legacy-case .act .an b,.legacy-case .sw .lab b,.legacy-case .speclist b,.legacy-case .callout p,.legacy-case .closing .big{color:var(--ink)}
+html[data-theme="light"] .legacy-case [style*="color:#fff"]{color:var(--ink)!important}
+.legacy-case.archive .hero h1,.legacy-case.archive .yr{color:var(--ink)}
+.legacy-case.archive .dl{background:var(--ink);color:var(--paper);box-shadow:none}
+.legacy-case.archive .dl:hover{background:var(--mid);box-shadow:none}
+.media-viewer .viewer-bar{height:130px;padding-top:70px}
+.media-viewer .viewer-image{min-height:calc(100% - 130px)}
+@media(max-width:600px){.theme-controls{top:17px;right:16px}.standalone-back{left:17px;top:19px}.portfolio-shell #back,.portfolio-shell #toHub{top:19px;left:20px}.portfolio-shell #secBack{top:17px;left:16px}.portfolio-shell .menu{max-width:90vw;gap:9px 20px}.portfolio-shell .mi{font-size:12px}.portfolio-shell #resume{padding-top:90px}.portfolio-shell .cv-head h1{font-size:clamp(36px,8vw,64px)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <script src="../assets/theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="arright：把物品放到合适的位置，让一个场景成立的排列推理游戏。网页版第一章，12 份装修委托。">
+  <title>arright — 蔡正阳</title>
+  <style>
+    :root,
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --paper: #0b0b0b;
+      --ink: #f1f1ed;
+      --mid: #babbb7;
+      --soft: #868782;
+      --line: #30312e;
+      --mono: "Portfolio Mono", "JetBrains Mono", ui-monospace, monospace;
+    }
+    html[data-theme="light"] {
+      color-scheme: light;
+      --paper: #f7f7f3;
+      --ink: #171815;
+      --mid: #51534e;
+      --soft: #777a72;
+      --line: #d4d6cf;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--mono);
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection { color: var(--paper); background: var(--ink); }
+    img { display: block; width: 100%; height: auto; }
+    figure, p, h1, h2 { margin: 0; }
+    .wrap {
+      width: min(100%, 1360px);
+      margin-inline: auto;
+      padding: 80px clamp(20px, 5vw, 76px) 28px;
+    }
+    .hero { padding: clamp(32px, 6vw, 72px) 0 42px; }
+    .eyebrow, .meta, .figure-index, figcaption, .mechanics .num, .foot {
+      font-size: 10px;
+      line-height: 1.7;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--soft);
+    }
+    .hero-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-top: 22px;
+    }
+    h1 {
+      font-size: clamp(62px, 15.5vw, 180px);
+      font-weight: 500;
+      line-height: .94;
+      letter-spacing: -.09em;
+      padding-right: .08em;
+    }
+    .meta { padding-bottom: 7px; text-align: right; white-space: nowrap; }
+    .intro {
+      max-width: 44em;
+      margin-top: 30px;
+      color: var(--mid);
+      font-size: clamp(13px, 1.3vw, 16px);
+      line-height: 1.9;
+      letter-spacing: .02em;
+      text-wrap: pretty;
+    }
+    .figure-index {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 20px;
+      padding-block: 16px;
+      border-top: 1px solid var(--line);
+    }
+    .figure-index b { color: var(--mid); font-weight: 400; }
+    .screen { background: #f6f7f1; overflow: hidden; }
+    .screen img { opacity: 1; }
+    figcaption {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding-top: 14px;
+      letter-spacing: .04em;
+    }
+    .mechanics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      list-style: none;
+      margin: 0;
+      padding: clamp(42px, 7vw, 88px) 0;
+      gap: 22px;
+    }
+    .mechanics li { padding-top: 14px; border-top: 1px solid var(--line); }
+    .mechanics .num { display: block; }
+    .mechanics h2 {
+      margin-top: 19px;
+      font-size: clamp(15px, 1.5vw, 19px);
+      line-height: 1.45;
+      font-weight: 400;
+      letter-spacing: -.02em;
+    }
+    .mechanics p {
+      margin-top: 8px;
+      color: var(--soft);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+    .mobile-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+      gap: clamp(32px, 8vw, 120px);
+      margin-top: clamp(60px, 10vw, 130px);
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    .mobile-copy { position: sticky; top: 100px; padding-top: 4px; }
+    .mobile-copy h2 {
+      margin-top: 30px;
+      font-size: clamp(28px, 4.8vw, 58px);
+      line-height: 1.4;
+      font-weight: 400;
+      letter-spacing: -.05em;
+    }
+    .mobile-copy .note {
+      margin-top: 26px;
+      color: var(--soft);
+      font-size: 12px;
+      line-height: 1.9;
+    }
+    .mobile-screen {
+      width: min(100%, 360px);
+      justify-self: end;
+      margin-top: 16px;
+      border: 1px solid var(--line);
+    }
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      margin-top: clamp(60px, 10vw, 130px);
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      letter-spacing: .06em;
+    }
+    @media (max-width: 620px) {
+      .hero { padding-top: 34px; padding-bottom: 30px; }
+      .hero-line { display: block; margin-top: 24px; }
+      .meta { margin-top: 20px; text-align: left; padding: 0; }
+      .intro { margin-top: 22px; }
+      .figure-index { font-size: 9px; letter-spacing: .06em; }
+      figcaption { font-size: 9px; }
+      .mechanics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 20px; }
+      .mechanics h2 { margin-top: 12px; }
+      .mobile-section { grid-template-columns: 1fr; gap: 26px; }
+      .mobile-copy { position: static; }
+      .mobile-copy h2 { margin-top: 22px; }
+      .mobile-copy .note { margin-top: 18px; }
+      .mobile-screen { width: min(100%, 340px); justify-self: center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <div class="hero-line">
+        <h1>arright</h1>
+        <p class="meta">2026<br>网页版 · 第一章<br>12 份装修委托</p>
+      </div>
+      <p class="intro">把物品放到合适的位置，让一个场景成立的排列推理游戏。</p>
+    </header>
+
+    <figure>
+      <div class="figure-index"><span>01 / Overview</span><b>网页版第一章</b></div>
+      <div class="screen"><img src="../assets/works/arright/overview.jpg" width="1265" height="1129" alt="arright 首页：把生活，摆得刚刚好；右侧是带家具与路线的住宅平面图" fetchpriority="high" decoding="async"></div>
+      <figcaption><span>网页版第一章</span><span>界面实录 / 2026.10</span></figcaption>
+    </figure>
+
+    <ol class="mechanics" aria-label="四个相互牵制的玩法条件">
+      <li><span class="num">01</span><h2>摆得下</h2><p>家具的实体占地</p></li>
+      <li><span class="num">02</span><h2>用得了</h2><p>留出使用空间</p></li>
+      <li><span class="num">03</span><h2>相互照应</h2><p>位置、搭配与朝向</p></li>
+      <li><span class="num">04</span><h2>走得通</h2><p>画一条验收动线</p></li>
+    </ol>
+
+    <figure>
+      <div class="figure-index"><span>02 / Gameplay</span><b>条件、摆放与动线，同时成立</b></div>
+      <div class="screen"><img src="../assets/works/arright/gameplay.jpg" width="1280" height="1118" alt="第十二份整屋委托：六个住宅空间中摆放十九件家具，绿色验收路线连接各个使用区域，两侧呈现条件与操作" loading="lazy" decoding="async"></div>
+      <figcaption><span>C04 · 住得顺，才摆得对</span><span>87 格整屋 / 19 件家具</span></figcaption>
+    </figure>
+
+    <section class="mobile-section" aria-labelledby="mobile-heading">
+      <div class="mobile-copy">
+        <p class="eyebrow">03 / Small screen</p>
+        <h2 id="mobile-heading">手机界面</h2>
+        <p class="note">查看条件、摆家具、画路线。<br>在手机上，也能完成一份整屋委托。</p>
+      </div>
+      <figure class="mobile-screen"><img src="../assets/works/arright/mobile.jpg" width="393" height="1774" alt="arright 手机界面：房间条件、整屋平面图、家具选择和验收操作依次排列" loading="lazy" decoding="async"></figure>
+    </section>
+
+    <footer class="foot"><span>arright / 排列推理游戏</span><span>蔡正阳 · 2026</span></footer>
+  </main>
+</body>
+</html>

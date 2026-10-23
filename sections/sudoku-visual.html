@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script src="../assets/theme.js"></script>
+<meta name="description" content="数独美式报刊视觉：招聘广告与晨间分享海报。">
+<title>数独 · 视觉系统</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400&family=DM+Mono:wght@400&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root,[data-theme="dark"]{color-scheme:dark;--paper:#111210;--ink:#f0f0e8;--mid:#b8bab0;--soft:#83877b;--line:#34372f;--sans:"Noto Sans SC",sans-serif;--serif:"Fraunces",Georgia,serif;--mono:"DM Mono","Noto Sans SC",monospace}
+[data-theme="light"]{color-scheme:light;--paper:#f5f4ed;--ink:#24261f;--mid:#666b5d;--soft:#8c9182;--line:#d6d8cb}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:400 14px/1.85 var(--sans);-webkit-font-smoothing:antialiased}h1,h2,p,figure{margin:0}a{color:inherit;text-decoration:none}img{display:block;width:100%;height:auto}button{border:0;border-radius:0;background:none;padding:0;color:inherit;font:inherit;cursor:pointer}a,button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible{outline:1px solid var(--ink);outline-offset:7px}::selection{background:var(--ink);color:var(--paper)}.page{max-width:1340px;margin:auto;padding:0 clamp(22px,5.5vw,76px)}
+.topbar{min-height:88px;padding:0 96px 0 124px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:25px;color:var(--mid);font:10px/1.6 var(--mono);letter-spacing:.05em}.topbar>span:last-child{white-space:nowrap}.hero{padding:76px 0 72px}.hero-kicker{font:10px/1.7 var(--mono);letter-spacing:.08em;color:var(--soft)}.hero h1{font:400 clamp(80px,13.7vw,178px)/1 var(--serif);letter-spacing:-.065em;margin-top:30px}.hero-bottom{display:flex;justify-content:space-between;align-items:baseline;gap:25px;margin-top:35px}.hero-bottom h2{font-weight:400;font-size:clamp(20px,2.2vw,30px);letter-spacing:-.02em}.hero-bottom p{font-size:11px;color:var(--mid)}
+.artwork{display:grid;grid-template-columns:minmax(150px,.47fr) minmax(0,1.53fr);gap:clamp(35px,6vw,88px);align-items:start;border-top:1px solid var(--line);padding:52px 0 95px}.art-info{position:sticky;top:95px;padding-top:5px}.art-number{display:block;font:10px/1.6 var(--mono);letter-spacing:.08em;color:var(--soft)}.art-info h2{font-weight:400;font-size:26px;line-height:1.6;letter-spacing:-.03em;margin-top:24px}.art-kind{font-size:11px;color:var(--mid);margin-top:13px}.art-info p{font-size:12px;color:var(--mid);line-height:2.1;max-width:15em;margin-top:30px}.art-facts{display:flex;flex-wrap:wrap;gap:8px 18px;max-width:17em;margin-top:25px;font-size:10px;color:var(--soft)}.artwork--reverse{grid-template-columns:minmax(0,1.53fr) minmax(150px,.47fr)}.artwork--reverse .art-info{order:2}.artwork--reverse figure{order:1}.poster{position:relative;display:block;width:100%;background:#fff}.poster img{width:100%;height:auto}.image-hint{position:absolute;top:15px;right:15px;width:32px;height:32px;display:grid;place-items:center;background:#f5f4eddf;color:#45483f;font:18px/1 var(--mono);opacity:0;transition:opacity .2s}.poster:hover .image-hint,.poster:focus-visible .image-hint{opacity:1}.art-caption{display:flex;justify-content:space-between;gap:20px;font-size:10px;color:var(--soft);padding-top:18px}.art-caption span:last-child{font:9px/1.7 var(--mono);white-space:nowrap}.case-footer{display:flex;align-items:center;justify-content:space-between;gap:25px;padding:32px 0 45px;border-top:1px solid var(--line);font-size:11px;color:var(--mid)}.case-footer a{display:inline-flex;align-items:center;gap:24px;min-height:44px;color:var(--ink)}.case-footer a span{font-size:18px}
+.media-viewer{position:fixed;inset:0;border:0;margin:0;padding:0;width:100%;height:100%;max-width:none;max-height:none;overflow:auto;background:var(--paper);color:var(--ink)}.media-viewer::backdrop{background:#000a}.viewer-bar{position:sticky;top:0;z-index:2;height:74px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;gap:25px;background:var(--paper);border-bottom:1px solid var(--line)}#viewer-caption{font-size:11px;color:var(--mid)}.viewer-close{width:44px;height:44px;display:grid;place-items:center;font:28px/1 var(--mono)}.viewer-image{padding:30px 24px 50px;display:flex;justify-content:center}.viewer-image img{width:min(100%,1000px);height:auto;align-self:flex-start}
+@media(max-width:850px){.artwork{grid-template-columns:minmax(130px,.5fr) minmax(0,1.5fr);gap:30px}.artwork--reverse{grid-template-columns:minmax(0,1.5fr) minmax(130px,.5fr)}.art-info h2{font-size:23px}.art-info p{font-size:11px}.hero-bottom p{max-width:15em;text-align:right}}
+@media(max-width:620px){.topbar{min-height:78px;padding-left:100px;font-size:8px}.topbar>span:first-child{display:none}.topbar>span:last-child{margin-left:auto}.hero{padding:45px 0 45px}.hero-kicker{font-size:8px}.hero h1{font-size:clamp(70px,20vw,124px);letter-spacing:-.07em;margin-top:26px}.hero-bottom{display:block;margin-top:28px}.hero-bottom h2{font-size:22px}.hero-bottom p{text-align:left;font-size:10px;margin-top:14px;max-width:none}.artwork,.artwork--reverse{display:block;padding:30px 0 48px}.art-info{position:static;padding:0;margin-bottom:25px;display:grid;grid-template-columns:35px 1fr;gap:0 15px}.art-number{grid-row:1/3;font-size:9px;padding-top:6px}.art-info h2{font-size:23px;margin-top:0}.art-kind{font-size:10px;margin-top:6px}.art-info p{grid-column:2;font-size:11px;max-width:none;margin-top:16px}.art-facts{grid-column:2;font-size:9px;max-width:none;margin-top:14px}.art-caption{font-size:9px;padding-top:14px}.art-caption span:last-child{font-size:8px}.image-hint{opacity:.65;top:9px;right:9px;width:27px;height:27px;font-size:15px}.case-footer{font-size:9px;padding:23px 0 32px;gap:20px}.case-footer a{gap:13px}.viewer-bar{height:66px;padding-inline:20px}.viewer-image{padding:20px 15px 35px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+</style>
+<link rel="stylesheet" href="../assets/theme.css">
+</head>
+<body>
+<main class="page">
+  <div class="topbar" aria-hidden="true"></div>
+  <section class="hero" aria-labelledby="case-title"><span class="hero-kicker">数独 / 视觉系统</span><h1 id="case-title">SUDOKU</h1><div class="hero-bottom"><h2>美式报刊视觉</h2><p>招聘广告与残局分享。</p></div></section>
+  <section class="artwork" aria-labelledby="hiring-title">
+    <div class="art-info"><span class="art-number">01</span><h2 id="hiring-title">校对员招募</h2><span class="art-kind">招聘广告</span><div class="art-facts"><span>报刊式标题</span><span>人物排线</span><span>黑白印刷感</span></div></div>
+    <figure><button class="poster image-open" data-image="../assets/works/sudoku-refresh/hiring-poster.png" data-caption="校对员招募 · 招聘广告" aria-label="放大查看数独校对员招聘海报"><img src="../assets/works/sudoku-refresh/hiring-poster.png" width="1200" height="1600" alt="美式报刊风格数独招聘海报，女子手持数独，标题为 WANTED SUDOKU PROOFREADER" fetchpriority="high" decoding="async"><span class="image-hint" aria-hidden="true">↗</span></button><figcaption class="art-caption"><span>校对员招募</span><span>1200 × 1600</span></figcaption></figure>
+  </section>
+  <section class="artwork artwork--reverse" aria-labelledby="morning-title">
+    <div class="art-info"><span class="art-number">02</span><h2 id="morning-title">一日一题</h2><span class="art-kind">残局分享海报</span><div class="art-facts"><span>生活场景</span><span>版画线条</span><span>盘面留白</span></div></div>
+    <figure><button class="poster image-open" data-image="../assets/works/sudoku-refresh/morning-share-poster.png" data-caption="一日一题 · 残局分享海报" aria-label="放大查看晨间数独分享海报"><img src="../assets/works/sudoku-refresh/morning-share-poster.png" width="1085" height="1450" alt="两人在早餐桌旁交换数独的黑白版画海报，底部留有数独盘位置" loading="lazy" decoding="async"><span class="image-hint" aria-hidden="true">↗</span></button><figcaption class="art-caption"><span>一日一题</span><span>1085 × 1450</span></figcaption></figure>
+  </section>
+  <footer class="case-footer"><span>数独 · 视觉系统</span><a href="sudoku.html">原生 App 作品 <span aria-hidden="true">↗</span></a></footer>
+</main>
+<dialog class="media-viewer" id="media-viewer" aria-labelledby="viewer-caption"><div class="viewer-bar"><p id="viewer-caption"></p><button class="viewer-close" aria-label="关闭大图">×</button></div><div class="viewer-image" id="viewer-image"></div></dialog>
+<script>
+(() => {
+  const viewer=document.getElementById("media-viewer"),target=document.getElementById("viewer-image"),caption=document.getElementById("viewer-caption");
+  let trigger=null,previousOverflow="";
+  document.querySelectorAll(".image-open").forEach(button=>button.addEventListener("click",()=>{
+    trigger=button;const image=new Image();image.src=button.dataset.image;image.alt=button.querySelector("img").alt;
+    target.replaceChildren(image);caption.textContent=button.dataset.caption;
+    previousOverflow=document.body.style.overflow;document.body.style.overflow="hidden";
+    viewer.showModal();viewer.scrollTop=0;viewer.querySelector("button").focus({preventScroll:true});
+  }));
+  viewer.querySelector("button").addEventListener("click",()=>viewer.close());
+  viewer.addEventListener("close",()=>{document.body.style.overflow=previousOverflow;target.replaceChildren();trigger?.focus({preventScroll:true});});
+})();
+</script>
+</body>
+</html>
