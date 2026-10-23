@@ -1,0 +1,19 @@
+/* Independent background dust; source order keeps the matrix above stage dust.
+   About content must keep its existing positive stacking level above page dust. */
+#ambient-page,
+#ambient-stage {
+  display:block;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  user-select:none;
+  contain:strict;
+}
+#ambient-page {position:fixed;inset:0;z-index:0}
+#ambient-stage {position:absolute;inset:0;z-index:0}
+#ambient-page[hidden],
+#ambient-stage[hidden] {display:none}
+@media (forced-colors:active) {
+  #ambient-page,
+  #ambient-stage {display:none!important}
+}

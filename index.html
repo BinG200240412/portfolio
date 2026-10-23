@@ -18,6 +18,7 @@
 <script defer src="assets/matrix-gorilla.js?v=interactive-objects-20261024"></script>
 <script defer src="assets/matrix-field.js?v=portrait-and-ink-20261024"></script>
 <script defer src="assets/about-companion.js?v=portrait-and-companion-20261023"></script>
+<script defer src="assets/ambient-field.js?v=soft-particles-20261024"></script>
 <style>
   :root{
     --mono:"JetBrains Mono","Noto Sans SC",monospace;
@@ -171,12 +172,15 @@
 <link rel="stylesheet" href="assets/theme.css?v=slab-regular-20261023">
 <link rel="stylesheet" href="assets/matrix-field.css?v=interactive-objects-20261024">
 <link rel="stylesheet" href="assets/about.css?v=original-photo-right-20261024">
+<link rel="stylesheet" href="assets/ambient-field.css?v=soft-particles-20261024">
 </head>
 <body class="portfolio-shell">
+  <canvas id="ambient-page" aria-hidden="true" data-i18n-ignore></canvas>
   <div id="themeControls"></div>
 
   <!-- 中枢 -->
   <div id="stage">
+    <canvas id="ambient-stage" aria-hidden="true" data-i18n-ignore></canvas>
     <canvas id="matrix-field" aria-hidden="true"></canvas>
     <button id="gorilla-hit" type="button" class="matrix-gorilla-hit" aria-pressed="false" aria-label="让猩猩的屁股变成红色爱心" data-i18n-ignore hidden></button>
     <div class="caption" id="cap" aria-hidden="true"></div>
