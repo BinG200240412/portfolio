@@ -9,6 +9,11 @@
   const colours = [[174,173,160],[178,136,132],[143,164,184],[186,170,120],
     [137,165,150],[165,145,179],[203,199,185],
     [82,90,93],[117,125,124],[224,219,204]];
+  // Paper needs coloured ink, rather than dimmed light. Keep the same sage,
+  // rose, blue, ochre and mauve roles, with enough chroma to survive warm white.
+  const lightColours = [[143,145,126],[171,105,101],[102,139,169],[174,143,74],
+    [103,146,121],[149,117,171],[180,164,127],
+    [62,76,81],[102,122,117],[203,188,151]];
   // Every object keeps its own small palette. A colour change is a hard boundary.
   const palettes = {
     'robot-dog':[0,6,7,4,1,0,8,9], 'quest-3':[0,6,7,2,1,0,8,9],
@@ -69,10 +74,10 @@
   }
   function makeSprites() {
     dark = document.documentElement.dataset.theme !== 'light';
-    sprites = colours.map(rgb => {
+    sprites = (dark ? colours : lightColours).map(rgb => {
       const sprite = document.createElement('canvas'); sprite.width = sprite.height = 24;
       const paint = sprite.getContext('2d');
-      paint.fillStyle = 'rgb(' + rgb.map(value => Math.round(value * (dark ? 1 : .68))).join(',') + ')';
+      paint.fillStyle = 'rgb(' + rgb.map(Math.round).join(',') + ')';
       paint.beginPath(); paint.arc(12, 12, 6, 0, TAU); paint.fill();
       return sprite;
     });
@@ -92,6 +97,9 @@
   function draw(time) {
     if (!sprites.length || !width || !height) return;
     ctx.clearRect(0, 0, width, height);
+    // On paper, lit facets reveal more paper and shadows carry more ink.
+    const facets = dark ? [0,.48,.66,.84,1] : [0,1,.94,.86,.78];
+    const opacity = dark ? .76 : .92;
     for (const item of items) {
       const libraries = [window.PortfolioMatrix3D,window.PortfolioProjectStickers,
         window.PortfolioMatrixMotifs,window.PortfolioMatrixSymbols];
@@ -115,8 +123,9 @@
           if (!light) continue;
           // Whole solid LEDs carry the drawing. Only their overall brightness
           // fades near typography; there is no painted backdrop or central hole.
-          const facet = image.shades ? [0,.48,.66,.84,1][image.shades[row * image.width + column]] : 1;
-          ctx.globalAlpha = (dark ? .76 : .66) * light * facet;
+          // Flat stickers keep their full colour; both themes retain solid LEDs.
+          const facet = image.shades ? facets[image.shades[row * image.width + column]] : 1;
+          ctx.globalAlpha = opacity * light * facet;
           ctx.drawImage(sprites[palette[(role - 1) % palette.length]],px-size/2,py-size/2,size,size);
         }
       }
