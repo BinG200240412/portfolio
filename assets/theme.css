@@ -52,12 +52,15 @@ html[data-theme="light"] .legacy-case [style*="color:#fff"]{color:var(--ink)!imp
 @media(max-width:600px){.theme-controls{top:17px;right:16px}.standalone-back{left:17px;top:19px}.portfolio-shell #back,.portfolio-shell #toHub{top:19px;left:20px}.portfolio-shell #secBack{top:17px;left:16px}.portfolio-shell .menu{max-width:90vw;gap:9px 20px}.portfolio-shell .mi{font-size:12px}.portfolio-shell #resume{padding-top:90px}.portfolio-shell .cv-head h1{font-size:clamp(36px,8vw,64px)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
-/* One glyph-based type system in both languages: Garamond Latin + Sudoku’s GenWan Chinese. */
-@font-face{font-family:"EB Garamond";src:url("fonts/EBGaramond.woff2") format("woff2");font-style:normal;font-weight:400 800;font-display:swap}
-@font-face{font-family:"EB Garamond";src:url("fonts/EBGaramond-Italic.woff2") format("woff2");font-style:italic;font-weight:400 800;font-display:swap}
+/* Latin: Josefin Slab Thin 100; Chinese: Sudoku’s unchanged GenWan Medium.
+   The two static Thin faces cover every requested CSS weight, so legacy 300–900
+   declarations keep the same Thin outlines without synthetic bold. The derived
+   font is renamed Portfolio Slab Thin under Josefin’s reserved-name OFL. */
+@font-face{font-family:"Portfolio Slab Thin";src:url("fonts/PortfolioSlab-Thin.woff2") format("woff2");font-style:normal;font-weight:100 900;font-display:swap}
+@font-face{font-family:"Portfolio Slab Thin";src:url("fonts/PortfolioSlab-ThinItalic.woff2") format("woff2");font-style:italic;font-weight:100 900;font-display:swap}
 @font-face{font-family:"Portfolio GenWan";src:url("fonts/PortfolioGenWan-Medium.woff2") format("woff2");font-style:normal;font-weight:300 900;font-display:swap}
-:root{--portfolio-font:"EB Garamond","Portfolio GenWan",serif}
-body,body *,body *::before,body *::after{font-family:var(--portfolio-font)!important}
+:root{--portfolio-font:"Portfolio Slab Thin","Portfolio GenWan",serif}
+body,body *,body *::before,body *::after{font-family:var(--portfolio-font)!important;font-synthesis-weight:none}
 body.portfolio-shell{--mono:var(--portfolio-font);--sans:var(--portfolio-font);--serif:var(--portfolio-font)}
 .theme-controls .language-toggle{width:35px;color:var(--ink);font-size:15px;font-weight:500;border-left:1px solid var(--line);border-radius:0 20px 20px 0;margin-left:3px}
 .theme-controls .language-toggle:hover{border-radius:20px}
@@ -77,3 +80,12 @@ html[lang="en"] h1,html[lang="en"] h2,html[lang="en"] h3{overflow-wrap:normal}
 .topbar{padding-right:124px}
 @media(max-width:720px){.topbar{padding-right:110px}.topbar .store-link{white-space:normal;line-height:1.3;gap:8px}}
 @media(max-width:600px){.portfolio-shell .line{font-size:clamp(30px,8vw,40px)}.portfolio-shell .mi{font-size:15px}.portfolio-shell .menu{gap:5px 19px;max-width:90vw}.portfolio-shell #stage.hublv .mi{font-size:18px}html[lang="en"] .portfolio-shell .cols{grid-template-columns:1fr}.theme-controls .language-toggle{font-size:14px;width:32px}}
+
+/* Thin stays Thin. Give small English labels enough size and contrast instead. */
+html[lang="en"] :is(.topbar,.meta-row,.eyebrow,.num,.hen,.h2en,.project-type,.section-no,.screen-caption,.screen-caption span,.art-number,.art-kind,.art-facts,.art-caption,.sample-label,.sample-foot,.foot,.case-footer,.hero-kicker,.pdfbar .pt,.linknote,.tags span){font-size:13px!important;letter-spacing:.04em}
+html[lang="en"] :is(.meta-row,.hen,.h2en,.project-type,.section-no,.screen-caption,.art-number,.art-kind,.art-facts,.art-caption,.sample-label,.sample-foot,.foot,.case-footer){color:var(--mid)}
+html[lang="en"] :is(.standalone-back,.topbar a,.footer-actions a,.case-footer a,.skill-link,.repo-link,.pdfbar a){font-size:14px!important}
+html[lang="en"] .portfolio-shell .mi .mn{font-size:13px}
+html[lang="en"] :is(.tool .lbl,.tool .bdg,.cell .notes span){font-size:11px!important;letter-spacing:.02em}
+html[lang="en"] :is(.tool .lbl,.cell .notes span,.voice .meta span){color:var(--ink-mid,var(--mid))}
+html[lang="en"] .voice .meta span{font-size:12px}
