@@ -23,9 +23,9 @@
   // and a few tight clusters leave the centre as the space between objects.
   const desktop = [
     ['robot-dog',.171,.184,.48,-.10], ['skill',.72,.08,.39,-.11],
-    ['gorilla',.403,.052,.12,.10], ['eye',.535,.145,.135,.10],
+    ['gorilla',.443,.17,.29,.05], ['eye',.21,.40,.105,-.10],
     ['heart',.99,.18,.07,.17], ['arright',.074,.425,.18,-.18],
-    ['star',.369,.309,.060,-.1], ['seal',.661,.269,.071,.12],
+    ['star',.30,.32,.060,-.1], ['seal',.661,.269,.071,.12],
     ['quest-3',.845,.48,.46,.07], ['heart',.777,.304,.092,.15],
     ['kiss-woman',.151,.82,.255,-.11], ['sudoku',.504,.867,.215,.11],
     ['pharaoh-cat',.757,.741,.116,-.13], ['bolt',.632,.765,.067,.16],
@@ -35,10 +35,10 @@
   const mobile = [
     ['robot-dog',.24,.163,.78,-.10], ['skill',.77,.115,.42,-.09],
     ['heart',.965,.185,.13,.15], ['arright',.885,.303,.275,.14],
-    ['pharaoh-cat',.115,.355,.18,-.13], ['seal',.508,.288,.115,.12],
+    ['pharaoh-cat',.115,.355,.18,-.13], ['seal',.93,.40,.10,.12],
     ['star',1.025,.47,.15,-.13], ['quest-3',.76,.722,.76,.09],
     ['kiss-woman',.185,.81,.34,-.11], ['sudoku',.653,.925,.275,.11],
-    ['gorilla',.488,.80,.19,-.10], ['eye',.126,.976,.22,.08],
+    ['gorilla',.55,.365,.35,-.06], ['eye',.126,.976,.22,.08],
     ['bolt',.518,.591,.10,.12],
   ];
   const smooth = value => { const t = Math.max(0, Math.min(1, value)); return t * t * (3 - 2 * t); };
@@ -62,7 +62,7 @@
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     const small = width < 700, unit = small ? width : Math.min(width, height);
     items = (small ? mobile : desktop).map(([id,x,y,size,angle], index) => ({
-      id, x:x * width, y:y * height, size:size * unit, angle,
+      id, x:x * width, y:(small && height < 760 && id === 'gorilla' ? .325 : y) * height, size:size * unit, angle,
       phase: index * 2.399963, variant: index % 5, speed:.7 + index % 4 * .13,
     }));
     updateQuietZones(); draw(reduced.matches ? 6 : elapsed);
