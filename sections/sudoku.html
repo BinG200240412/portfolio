@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sudoku. — 一张安静的纸</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F1EA; --surface:#FBF9F4; --tile:#EDE7DA; --card:#FCFAF5;
+    --ink:#2A2723; --mid:#5A534A; --soft:#9A9183; --faint:#B8B0A1;
+    --line:#E7E1D4; --line2:#CDC4B3;
+    --pen:#2E4A66; --signal:#B26A4C; --signal-d:#9A5538; --red:#ff2b18;
+    --mono:"DM Mono",ui-monospace,"Noto Sans SC",monospace;
+    --serif:"Fraunces","Noto Serif SC",Georgia,serif;
+    --sans:"Noto Sans SC",-apple-system,system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:300;
+    line-height:1.85;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(120% 70% at 50% -8%,#faf7f0 0%,var(--paper) 52%);}
+  ::selection{background:rgba(178,106,76,.26);color:var(--ink)}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+  a{color:inherit}
+  img{display:block;max-width:100%}
+
+  header.top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;
+    padding:26px 0 22px;border-bottom:1px solid var(--line);
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--soft);text-transform:uppercase}
+  header.top .r{text-align:right;line-height:1.7}
+  header.top b{color:var(--mid);font-weight:500}
+
+  /* hero */
+  .hero{padding:clamp(48px,8vw,104px) 0 clamp(40px,6vw,72px);
+    display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,5vw,64px);align-items:center}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.28em;color:var(--signal);
+    text-transform:uppercase;display:flex;align-items:center;gap:11px;margin-bottom:26px}
+  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--signal);
+    box-shadow:0 0 0 0 rgba(178,106,76,.4);animation:pulse 4.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(178,106,76,.34)}50%{box-shadow:0 0 0 7px rgba(178,106,76,0)}}
+  .wordmark{font-family:var(--serif);font-weight:400;font-size:clamp(64px,12vw,150px);
+    line-height:.9;letter-spacing:-.01em;color:var(--ink);display:flex;align-items:baseline}
+  .wordmark .pt{color:var(--signal)}
+  .hero .slogan{font-family:var(--serif);font-style:italic;font-weight:400;
+    font-size:clamp(20px,2.6vw,30px);color:var(--mid);margin-top:24px;line-height:1.4}
+  .hero .slogan b{color:var(--signal);font-style:normal;font-weight:500}
+  .iconrow{display:flex;align-items:center;gap:16px;margin-top:34px}
+  .iconrow img{width:62px;height:62px;border-radius:15px;border:1px solid var(--line2);
+    box-shadow:0 8px 30px -12px rgba(42,39,35,.4)}
+  .iconrow .meta{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--soft);line-height:1.7;text-transform:uppercase}
+  .tf-cta{display:inline-flex;align-items:center;gap:11px;margin-top:30px;
+    font-family:var(--mono);font-size:13px;letter-spacing:.06em;color:#fff;text-decoration:none;
+    background:var(--signal);border-radius:30px;padding:14px 24px;
+    box-shadow:0 12px 32px -12px rgba(178,106,76,.6);transition:transform .2s,filter .2s,box-shadow .2s}
+  .tf-cta:hover{transform:translateY(-1px);filter:brightness(1.07);box-shadow:0 16px 38px -12px rgba(178,106,76,.72)}
+  .tf-cta svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.9}
+  .tf-cta span{opacity:.82;font-size:11px;letter-spacing:.1em;border-left:1px solid rgba(255,255,255,.4);padding-left:11px}
+  .heroshot{justify-self:center}
+  .phone{border-radius:34px;border:1px solid var(--line2);background:#fff;padding:6px;
+    box-shadow:0 40px 90px -40px rgba(42,39,35,.5),0 8px 24px -14px rgba(42,39,35,.3)}
+  .phone img{border-radius:28px;width:100%}
+
+  .intro{padding:clamp(20px,4vw,40px) 0 clamp(30px,5vw,56px)}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px 22px;font-family:var(--mono);font-size:11px;
+    letter-spacing:.08em;color:var(--soft);text-transform:uppercase;
+    padding-bottom:30px;border-bottom:1px solid var(--line)}
+  .meta-row span{display:inline-flex;align-items:center;gap:9px}
+  .meta-row span::before{content:"";width:5px;height:5px;background:var(--signal);border-radius:50%}
+  .logline{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3.6vw,44px);
+    line-height:1.42;color:var(--ink);max-width:22ch;margin-top:36px}
+  .logline em{font-style:italic;color:var(--signal)}
+
+  section.s{padding:clamp(40px,6vw,72px) 0;border-top:1px solid var(--line);
+    display:grid;grid-template-columns:280px 1fr;gap:clamp(24px,5vw,68px);align-items:start}
+  .rail{position:sticky;top:30px}
+  .num{font-family:var(--mono);font-size:12px;letter-spacing:.22em;color:var(--signal);margin-bottom:16px}
+  .htitle{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.4vw,46px);line-height:1.06;color:var(--ink)}
+  .hen{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--soft);text-transform:uppercase;margin-top:12px}
+  .body{max-width:64ch}
+  .body p{font-size:clamp(15px,1.15vw,17px);color:var(--mid);margin-bottom:1.1em}
+  .body p:last-child{margin-bottom:0}
+  .body .lead{color:var(--ink);font-weight:400;font-size:clamp(17px,1.4vw,20px)}
+  .body strong{color:var(--ink);font-weight:500}
+  .body .pen{color:var(--pen);font-weight:400}
+
+  /* principle cards */
+  .acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--line);margin-top:8px;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .act{background:var(--card);padding:26px 24px}
+  .act .an{font-family:var(--mono);font-size:11px;color:var(--signal);letter-spacing:.06em;margin-bottom:8px;text-transform:uppercase}
+  .act .at{font-family:var(--serif);font-size:23px;color:var(--ink);margin-bottom:11px}
+  .act p{font-size:14px;line-height:1.72;color:var(--mid)}
+  .act p .pen{color:var(--pen)}
+
+  .feat{padding:clamp(40px,6vw,72px) 0;border-top:1px solid var(--line)}
+  .feat .fhead{display:flex;align-items:baseline;gap:18px;margin-bottom:14px;flex-wrap:wrap}
+  .feat .num{margin:0}
+  .feat .htitle{font-size:clamp(24px,3vw,38px)}
+  .feat .fintro{max-width:66ch;color:var(--mid);font-size:clamp(15px,1.15vw,17px);margin-bottom:30px}
+
+  /* design system: swatches + type */
+  .dsys{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,48px);align-items:start;margin-top:8px}
+  .swatches{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .sw{border:1px solid var(--line);border-radius:4px;overflow:hidden;background:var(--card)}
+  .sw .chip{height:78px}
+  .sw .lab{padding:11px 14px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--mid);display:flex;justify-content:space-between;gap:8px}
+  .sw .lab b{color:var(--ink);font-weight:500;text-transform:uppercase}
+  .typecard{border:1px solid var(--line);border-radius:4px;background:var(--card);padding:26px 28px}
+  .typecard .tg{padding:18px 0;border-top:1px solid var(--line)}
+  .typecard .tg:first-child{border-top:0;padding-top:0}
+  .typecard .big-s{font-family:var(--serif);font-size:40px;color:var(--ink);line-height:1}
+  .typecard .big-m{font-family:var(--mono);font-size:30px;color:var(--ink);line-height:1;letter-spacing:.02em}
+  .typecard .tg .role{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--soft);text-transform:uppercase;margin-top:10px}
+
+  /* demo embed */
+  .demo-frame{width:100%;height:1180px;border:1px solid var(--line2);border-radius:6px;background:var(--surface);
+    box-shadow:0 30px 70px -45px rgba(42,39,35,.5);display:block}
+  .demo-hint{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--soft);text-transform:uppercase;margin-top:14px;display:flex;align-items:center;gap:9px}
+  .demo-hint::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal)}
+
+  /* screens gallery */
+  .gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:clamp(16px,2vw,26px);margin-top:8px}
+  .gal figure{margin:0}
+  .gal .ph{border-radius:22px;border:1px solid var(--line2);background:#fff;padding:5px;
+    box-shadow:0 26px 56px -34px rgba(42,39,35,.5)}
+  .gal .ph img{border-radius:18px;width:100%}
+  .gal figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--soft);text-transform:uppercase;margin-top:14px;text-align:center}
+
+  /* feature rows */
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,52px);align-items:center;padding:clamp(28px,4vw,46px) 0;border-top:1px solid var(--line)}
+  .frow:first-of-type{border-top:0}
+  .frow.rev{direction:rtl}.frow.rev>*{direction:ltr}
+  .frow .ph{border-radius:24px;border:1px solid var(--line2);background:#fff;padding:5px;justify-self:center;max-width:300px;
+    box-shadow:0 30px 64px -38px rgba(42,39,35,.5)}
+  .frow .ph img{border-radius:19px;width:100%}
+  .frow .ft .fk{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--signal);text-transform:uppercase;margin-bottom:12px}
+  .frow .ft h3{font-family:var(--serif);font-weight:400;font-size:clamp(24px,3vw,34px);color:var(--ink);margin-bottom:14px;line-height:1.1}
+  .frow .ft p{font-size:15px;color:var(--mid);line-height:1.8}
+  .frow .ft p strong{color:var(--ink);font-weight:500}
+  .frow .ft .pen{color:var(--pen)}
+
+  .closing{padding:clamp(70px,11vw,150px) 0 clamp(50px,7vw,90px);border-top:1px solid var(--line);text-align:center}
+  .closing .num{justify-content:center;display:flex}
+  .closing .big{font-family:var(--serif);font-weight:400;font-size:clamp(34px,6vw,80px);line-height:1.14;color:var(--ink);max-width:16ch;margin:18px auto 0}
+  .closing .big em{font-style:italic;color:var(--signal)}
+  .closing .tail{max-width:54ch;margin:40px auto 0;color:var(--mid);font-size:clamp(15px,1.2vw,17px)}
+
+  footer{border-top:1px solid var(--line);padding:30px 0 60px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--faint);text-transform:uppercase}
+
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
+  .rv.in{opacity:1;transform:none}
+
+  @media(max-width:860px){
+    .hero{grid-template-columns:1fr;gap:36px}
+    .heroshot{max-width:300px;justify-self:start}
+    section.s{grid-template-columns:1fr;gap:18px}
+    .rail{position:static}
+    .dsys,.frow{grid-template-columns:1fr}
+    .frow.rev{direction:ltr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>sudoku. · 独立设计与开发<br><b>Web Prototype + SwiftUI / iOS 17+</b></div>
+    <div class="r">蔡正阳 · BinG<br><b>One person, one purpose.</b></div>
+  </header>
+
+  <div class="hero">
+    <div>
+      <div class="eyebrow rv"><span class="dot"></span>vibe coding · iOS App</div>
+      <div class="wordmark rv">sudoku<span class="pt">.</span></div>
+      <p class="slogan rv">凡事有解。<br><b>Every puzzle has an answer.</b></p>
+      <div class="iconrow rv">
+        <img src="../assets/works/sudoku/icon.png" alt="sudoku App 图标">
+        <div class="meta">极简 · 克制 · 苹果质感<br>无广告 · 无追踪 · 一次性买断</div>
+      </div>
+      <a class="tf-cta rv" href="https://testflight.apple.com/join/ngXSEsy1" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        在 iPhone 上试玩<span>TestFlight ↗</span>
+      </a>
+    </div>
+    <div class="heroshot rv">
+      <div class="phone"><img src="../assets/works/sudoku/board.png" alt="sudoku 主棋盘"></div>
+    </div>
+  </div>
+
+  <div class="intro">
+    <div class="meta-row rv">
+      <span>单文件网页原型</span><span>SwiftUI · iOS 17+</span><span>无第三方依赖</span><span>¥1.99 一次性买断</span>
+    </div>
+    <p class="logline rv">想要一张<em>安静的纸</em>——<br>打开就解，解完安静下来。</p>
+  </div>
+
+  <!-- 01 起点 -->
+  <section class="s">
+    <div class="rail rv"><div class="num">01</div><div class="htitle">起点</div><div class="hen">The Problem</div></div>
+    <div class="body">
+      <p class="lead rv">市场上的数独 App，不是广告轰炸，就是功能堆砌，视觉嘈杂。</p>
+      <p class="rv">我想要的，是一张安静的纸——像高质纸上印的题目一样干净，打开就解，解完安静下来。没有广告、没有追踪、没有干扰，只有你和这一局。</p>
+      <p class="rv">于是从一个纯粹的个人需求出发，一个人，从网页原型到 SwiftUI，把它做了出来。</p>
+    </div>
+  </section>
+
+  <!-- 02 解法 -->
+  <section class="s">
+    <div class="rail rv"><div class="num">02</div><div class="htitle">克制，<br>是一种设计</div><div class="hen">Restraint as Design</div></div>
+    <div class="body">
+      <p class="lead rv">克制不是极简主义的标榜，而是每一个设计决定都指向同一个目标：<strong>让人专注于解题</strong>。</p>
+      <div class="acts rv">
+        <div class="act"><div class="an">Principle 01</div><div class="at">单色原则</div><p>整个 App 在任意时刻只用一种莫兰迪信号色，且只用在真正需要注意力的地方。</p></div>
+        <div class="act"><div class="an">Principle 02</div><div class="at">pen vs ink</div><p>题目数字用<strong>棕黑（ink）</strong>，用户输入用<span class="pen">钢笔蓝（pen）</span>——视觉即交流，无需额外标注。</p></div>
+        <div class="act"><div class="an">Principle 03</div><div class="at">文字即设计</div><p>每条开关的说明都认真斟酌，说清"这个开关到底是什么"。语言的精准，本身就是设计。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Design System -->
+  <section class="feat">
+    <div class="fhead rv"><div class="num">03</div><div class="htitle">设计系统</div><div class="hen" style="margin:0;align-self:flex-end;padding-bottom:6px">Design System</div></div>
+    <p class="fintro rv">一套纸感的色与字：暖黄白的纸、深棕的墨、钢笔蓝的笔迹，和一抹可切换的莫兰迪信号色。衬线负责"印"，等宽负责"仪表"。</p>
+    <div class="dsys">
+      <div class="swatches rv">
+        <div class="sw"><div class="chip" style="background:#F4F1EA"></div><div class="lab"><b>Paper</b><span>#F4F1EA</span></div></div>
+        <div class="sw"><div class="chip" style="background:#2A2723"></div><div class="lab"><b>Ink</b><span>#2A2723</span></div></div>
+        <div class="sw"><div class="chip" style="background:#2E4A66"></div><div class="lab"><b>Pen</b><span>#2E4A66</span></div></div>
+        <div class="sw"><div class="chip" style="background:#B26A4C"></div><div class="lab"><b>Signal · Clay</b><span>#B26A4C</span></div></div>
+      </div>
+      <div class="typecard rv">
+        <div class="tg"><div class="big-s">Fraunces <span style="font-style:italic">italic</span></div><div class="role">印 · 衬线 — Logo / 标题 / 文章</div></div>
+        <div class="tg"><div class="big-m">DM Mono 0123</div><div class="role">仪表 · 等宽 — 棋盘数字 / 全部界面文字</div></div>
+        <div class="tg"><div class="role" style="margin-top:0;color:var(--signal)">● 信号色可切换 · 陶土 / 松绿 / 钢蓝 / 麦黄 / 绛紫</div></div>
+      </div>
+    </div>
+    <figure class="rv" style="margin-top:30px;border:1px solid var(--line2);border-radius:6px;overflow:hidden;background:#fff;padding:5px;max-width:340px">
+      <img src="../assets/works/sudoku/board-blue.png" alt="设置 · 信号色选择" style="border-radius:14px">
+    </figure>
+  </section>
+
+  <!-- Interactive Demo -->
+  <section class="feat">
+    <div class="fhead rv"><div class="num">04</div><div class="htitle">在页面里调一调</div><div class="hen" style="margin:0;align-self:flex-end;padding-bottom:6px">Live Demo</div></div>
+    <p class="fintro rv">这就是当初验证设计用的单文件网页原型——纯手写 HTML / CSS / JS，零依赖。切换<strong>字体三声</strong>、<strong>网格层级</strong>、<strong>报纸题签</strong>三个开关，看同一块棋盘如何在细节里呼吸。</p>
+    <iframe class="demo-frame rv" src="sudoku-demo.html" title="sudoku 精装修预览 · 可交互" loading="lazy"></iframe>
+    <div class="demo-hint">实时渲染 · 可点击切换 — 这是网页，不是截图</div>
+  </section>
+
+  <!-- Key Screens -->
+  <section class="feat">
+    <div class="fhead rv"><div class="num">05</div><div class="htitle">关键界面</div><div class="hen" style="margin:0;align-self:flex-end;padding-bottom:6px">Key Screens</div></div>
+    <p class="fintro rv">从主棋盘到设置、规则、宣言、分享——每一屏都遵循同一套克制的语言。</p>
+    <div class="gal">
+      <figure class="rv"><div class="ph"><img src="../assets/works/sudoku/board.png" alt="主棋盘"></div><figcaption>主棋盘 / Board</figcaption></figure>
+      <figure class="rv"><div class="ph"><img src="../assets/works/sudoku/settings.png" alt="设置"></div><figcaption>设置 / Settings</figcaption></figure>
+      <figure class="rv"><div class="ph"><img src="../assets/works/sudoku/rules.png" alt="规则"></div><figcaption>规则 / The Rules</figcaption></figure>
+      <figure class="rv"><div class="ph"><img src="../assets/works/sudoku/manifesto.png" alt="关于 · 宣言"></div><figcaption>关于 / About</figcaption></figure>
+      <figure class="rv"><div class="ph"><img src="../assets/works/sudoku/history.png" alt="数独源流"></div><figcaption>源流 / Origin</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- Feature Highlights -->
+  <section class="feat">
+    <div class="fhead rv"><div class="num">06</div><div class="htitle">三个不肯妥协的细节</div><div class="hen" style="margin:0;align-self:flex-end;padding-bottom:6px">Highlights</div></div>
+
+    <div class="frow">
+      <div class="ph rv"><img src="../assets/works/sudoku/coach.png" alt="AI 导师 · 裸单讲解"></div>
+      <div class="ft rv">
+        <div class="fk">AI 导师 · 真棋盘式教程</div>
+        <h3>不是说教，是手把手</h3>
+        <p>裸单、隐单、裸对、区块指向、X-Wing——<strong>5 种解题技法</strong>的步骤式讲解：动态高亮棋盘对应格子 + 底部卡片讲解，可拖拽展开收起，<strong>不打断解题流</strong>。新手教程与 AI 导师共用同一视觉通道，代码零重复。</p>
+      </div>
+    </div>
+
+    <div class="frow rev">
+      <div class="ph rv"><img src="../assets/works/sudoku/classics.png" alt="经典残局 · 大师题库"></div>
+      <div class="ft rv">
+        <div class="fk">经典残局 · 大师级</div>
+        <h3>七道世界级残局，引擎校验</h3>
+        <p>AI Escargot、Inkala、Golden Nugget……收录世界公认最难的残局，配 Sudoku Exchange 公开题库（SE 五档评级），每题都经引擎唯一解校验。<strong>高手模式</strong>下不限错误、不标红、不高亮——填满才判断，<span class="pen">"Deduce, don't guess."</span></p>
+      </div>
+    </div>
+
+    <div class="frow">
+      <div class="ph rv"><img src="../assets/works/sudoku/share.png" alt="分享残局"></div>
+      <div class="ft rv">
+        <div class="fk">分享残局 · 一串口令</div>
+        <h3>最简单的，往往最优雅</h3>
+        <p>输出一段<strong>纯文本口令</strong>，朋友粘贴后即可还原同一局棋盘，从头挑战。无需服务器、无需账号——任何时代都能用，不依赖服务、不怕下线。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- closing -->
+  <section class="closing">
+    <div class="num rv">About · 一个人，安静地做</div>
+    <p class="big rv">凡事，<em>有解</em>。</p>
+    <p class="tail rv">没有团队、没有融资、没有路线图会议。一个人，从一张空白的纸开始，把每一个设计决定都想清楚，再安静地写下来。Every puzzle has an answer.</p>
+  </section>
+
+  <footer>
+    <span>sudoku. · 凡事有解</span>
+    <span>蔡正阳 BinG · 2026</span>
+  </footer>
+</div>
+
+<script>
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>更多作品集 — Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b0a; --bg2:#101010; --line:#262620; --line2:#33332a;
+    --ink:#eceae3; --soft:#bdbcb3; --dim:#86857c; --faint:#5c5b54;
+    --accent:#cdbb8e; --red:#ff2b18;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --serif:"Instrument Serif","Noto Serif SC",serif;
+    --sans:"Noto Sans SC",-apple-system,system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;
+    line-height:1.8;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(120% 60% at 50% -10%,#16160f 0%,var(--bg) 55%);
+    display:flex;flex-direction:column}
+  ::selection{background:#5c5530;color:#fff}
+  .wrap{width:100%;max-width:900px;margin:0 auto;padding:0 clamp(20px,5vw,56px)}
+  a{color:inherit;text-decoration:none}
+
+  header.top{padding:30px 0 24px;border-bottom:1px solid var(--line);
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  header.top b{color:var(--soft);font-weight:500}
+
+  .hero{padding:clamp(60px,12vw,140px) 0 clamp(40px,7vw,72px)}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.32em;color:var(--accent);
+    text-transform:uppercase;display:flex;align-items:center;gap:11px;margin-bottom:22px}
+  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--red);
+    box-shadow:0 0 0 0 rgba(255,43,24,.5);animation:blink 4.2s ease-in-out infinite}
+  @keyframes blink{0%,42%,100%{opacity:1;box-shadow:0 0 10px 1px rgba(255,43,24,.55)}
+    46%,52%{opacity:.18;box-shadow:0 0 0 0 rgba(255,43,24,0)}}
+  .hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(44px,9vw,104px);line-height:1;color:#fff;letter-spacing:.02em}
+  .hero p{margin-top:24px;max-width:48ch;color:var(--soft);font-size:clamp(15px,1.3vw,17px)}
+
+  .list{padding-bottom:clamp(60px,10vw,120px)}
+  .item{display:flex;align-items:center;gap:clamp(18px,4vw,40px);
+    padding:clamp(28px,4vw,42px) 0;border-top:1px solid var(--line)}
+  .item:last-child{border-bottom:1px solid var(--line)}
+  .yr{font-family:var(--serif);font-weight:500;font-size:clamp(40px,7vw,84px);line-height:.9;color:#fff;min-width:2.6em}
+  .mid{flex:1;min-width:0}
+  .mid .ti{font-family:var(--serif);font-size:clamp(20px,2.4vw,28px);color:var(--ink);line-height:1.2}
+  .mid .meta{margin-top:10px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--dim);
+    text-transform:uppercase;display:flex;gap:8px 18px;flex-wrap:wrap}
+  .mid .meta span{display:inline-flex;align-items:center;gap:8px}
+  .mid .meta span::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--accent)}
+  .dl{flex:0 0 auto;display:inline-flex;align-items:center;gap:11px;
+    font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#0d0d0b;
+    background:var(--accent);border-radius:30px;padding:13px 22px;cursor:pointer;white-space:nowrap;
+    transition:transform .2s ease,background .2s ease,box-shadow .2s ease;
+    box-shadow:0 6px 24px -10px rgba(205,187,142,.6)}
+  .dl:hover{background:#e3d4ac;transform:translateY(-1px);box-shadow:0 10px 30px -10px rgba(205,187,142,.7)}
+  .dl svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7}
+
+  footer{margin-top:auto;border-top:1px solid var(--line);padding:26px 0 50px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--faint);text-transform:uppercase;
+    display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+
+  @media(max-width:640px){
+    .item{flex-wrap:wrap;gap:14px}
+    .yr{min-width:auto}
+    .dl{width:100%;justify-content:center}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>蔡正阳 · Selected Works</div>
+    <div>Archive · <b>2024 – 2025</b></div>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow"><span class="dot"></span>更多作品集 · Past Portfolios</div>
+    <h1>更多作品集</h1>
+    <p>这里收录了我此前两年的完整作品集 PDF——比这个网站更厚、更杂，也更能看见一路走来的过程。点击即可下载。</p>
+  </section>
+
+  <section class="list">
+    <div class="item">
+      <div class="yr">2024</div>
+      <div class="mid">
+        <div class="ti">作品集 · 2024</div>
+        <div class="meta"><span>PDF</span><span>92 页</span><span>23.5 MB</span></div>
+      </div>
+      <a class="dl" href="../assets/works/more/portfolio-2024.pdf" download="蔡正阳-作品集2024.pdf">
+        <svg viewBox="0 0 24 24"><path d="M12 3v12M7.5 10.5 12 15l4.5-4.5"/><path d="M5 19h14"/></svg>下载
+      </a>
+    </div>
+
+    <div class="item">
+      <div class="yr">2025</div>
+      <div class="mid">
+        <div class="ti">作品集 · 2025</div>
+        <div class="meta"><span>PDF</span><span>29 页</span><span>13.6 MB</span></div>
+      </div>
+      <a class="dl" href="../assets/works/more/portfolio-2025.pdf" download="蔡正阳-作品集2025.pdf">
+        <svg viewBox="0 0 24 24"><path d="M12 3v12M7.5 10.5 12 15l4.5-4.5"/><path d="M5 19h14"/></svg>下载
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <span>更多作品集 · Archive</span>
+    <span>蔡正阳 · 2026</span>
+  </footer>
+</div>
+</body>
+</html>

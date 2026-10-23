@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>数独 · 精装修预览</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- 印=Fraunces · 仪表=DM Mono · 写=Libre Baskerville（系统 Baskerville 的网页替身） -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#F4F1EA;
+    --surface:#FBF9F4;
+    --tile:#E7E0D1;
+    --ink:#2A2723;
+    --ink-mid:#5A534A;
+    --ink-soft:#9A9183;
+    --line:#E7E1D4;
+    --line-2:#CDC4B3;
+    --pen:#2E4A66;
+    --pen-deep:#213C55;
+    --signal:#B26A4C;
+    --signal-deep:#9A5538;
+    --sel:rgba(178,106,76,.30);
+    --same:rgba(178,106,76,.13);
+    --peer:rgba(42,39,35,.040);
+
+    --f-mono:"DM Mono", ui-monospace, monospace;
+    --f-serif:"Fraunces", Georgia, serif;
+    --f-pen:"Libre Baskerville", Georgia, serif;
+
+    /* grid line hierarchy — overridden by .t-grid */
+    --box-color:#CDC4B3;
+    --box-w:1.5;
+    --frame-color:rgba(42,39,35,.06);
+    --frame-w:1px;
+    --board-radius:14px;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ min-height:100%; }
+  body{
+    font-family:var(--f-mono);
+    background:#E9E3D6;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    display:flex; flex-direction:column; align-items:center;
+    padding:34px 16px 64px;
+    gap:22px;
+  }
+
+  /* ── header / controls ── */
+  .head{ text-align:center; max-width:430px; }
+  .head h1{ font-family:var(--f-serif); font-weight:380; font-size:27px; letter-spacing:-.01em; }
+  .head h1 b{ color:var(--signal); font-weight:380; }
+  .head p{ font-size:12.5px; line-height:1.7; color:var(--ink-mid); margin-top:9px; font-family:-apple-system,"PingFang SC",sans-serif; }
+
+  .ab{ display:inline-flex; background:rgba(42,39,35,.05); border-radius:11px; padding:3px; gap:2px; }
+  .ab button{
+    border:none; cursor:pointer; background:transparent; font-family:var(--f-mono);
+    font-size:12px; font-weight:500; letter-spacing:.04em; color:var(--ink-soft);
+    padding:8px 20px; border-radius:9px; transition:.18s;
+  }
+  .ab button.on{ color:var(--ink); background:var(--surface); box-shadow:0 1px 3px rgba(60,48,36,.12); }
+
+  .subs{ display:flex; gap:7px; flex-wrap:wrap; justify-content:center; margin-top:13px; }
+  .subs label{
+    display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none;
+    font-size:12px; color:var(--ink-mid); font-family:-apple-system,"PingFang SC",sans-serif;
+    background:var(--surface); border:1px solid rgba(42,39,35,.07); padding:7px 13px 7px 11px; border-radius:9px;
+    transition:.15s;
+  }
+  .subs label:has(input:checked){ color:var(--ink); border-color:rgba(178,106,76,.4); }
+  .subs .dot{ width:8px; height:8px; border-radius:50%; background:var(--ink-soft); opacity:.35; transition:.15s; }
+  .subs label:has(input:checked) .dot{ background:var(--signal); opacity:1; }
+  .subs input{ display:none; }
+
+  /* ── phone ── */
+  .phone{
+    width:392px; max-width:100%;
+    background:var(--paper);
+    border-radius:40px;
+    padding:18px 18px 14px;
+    box-shadow:0 30px 70px -28px rgba(40,32,24,.55), 0 0 0 1px rgba(42,39,35,.06);
+  }
+  .screen{ display:flex; flex-direction:column; }
+
+  /* masthead — big centered wordmark, like a newspaper title */
+  .masthead{ text-align:center; padding:12px 0 2px; }
+  .wordmark{ font-family:var(--f-serif); font-weight:370; font-size:46px; letter-spacing:-.02em; line-height:1; }
+  .wordmark .pt{ color:var(--signal); }
+
+  /* toolbar under the masthead: difficulty button + icon buttons */
+  .toolbar{ display:flex; align-items:center; justify-content:space-between; margin-top:16px; padding:0 2px; }
+  .diffbtn{
+    display:inline-flex; align-items:center; gap:7px; cursor:pointer;
+    border:1px solid rgba(42,39,35,.12); background:var(--surface); border-radius:10px;
+    padding:9px 14px; font-family:var(--f-mono); font-size:12px; font-weight:500;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--ink);
+  }
+  .diffbtn .chev{ color:var(--ink-soft); font-size:10px; }
+  .icons{ display:flex; align-items:center; }
+  .ic{ width:38px; height:38px; display:grid; place-items:center; color:var(--ink-mid); cursor:pointer; }
+  .ic svg{ width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+  .ic .fdot{ fill:currentColor; stroke:none; }
+
+
+  /* ── newspaper slug (题签) ── */
+  .slug{ display:none; align-items:center; justify-content:center; gap:11px; margin-top:14px; padding:0 4px; }
+  .t-slug .slug{ display:flex; }
+  .slug .rule{ flex:1; height:1px; background:var(--line-2); max-width:46px; }
+  .slug .txt{
+    font-family:var(--f-mono); font-size:10px; font-weight:500; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--ink-soft); white-space:nowrap;
+  }
+  .slug .txt b{ color:var(--ink-mid); font-weight:500; }
+  .slug .st{ color:var(--ink-soft); opacity:.4; }
+  .slug .st.on{ color:var(--signal); opacity:1; }
+
+  /* info bar */
+  .info{ display:flex; align-items:center; margin-top:14px; padding:0 2px; height:16px; }
+  .info .miss{ display:flex; align-items:center; gap:5px; font-size:12px; color:var(--ink-soft); font-variant-numeric:tabular-nums; }
+  .info .miss .x{ color:var(--ink-soft); }
+  .info .sp{ flex:1; }
+  .info .timer{ display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-mid); font-variant-numeric:tabular-nums; letter-spacing:.04em; }
+  .info .timer .led{ width:5px; height:5px; border-radius:50%; background:var(--signal); }
+
+  /* ── board ── */
+  .board{
+    position:relative; margin-top:16px; aspect-ratio:1;
+    background:var(--surface);
+    border-radius:var(--board-radius);
+    border:var(--frame-w) solid var(--frame-color);
+    box-shadow:0 16px 30px -16px rgba(60,48,36,.32);
+    overflow:hidden;
+  }
+  .cells{ position:absolute; inset:0; display:grid; grid-template:repeat(9,1fr)/repeat(9,1fr); }
+  .cell{ position:relative; display:grid; place-items:center; cursor:pointer; }
+  .cell.peer{ background:var(--peer); }
+  .cell.same{ background:var(--same); }
+  .cell.selected{ background:var(--sel); }
+
+  .cell .val{ line-height:1; }
+  /* 现状: given = DM Mono ink */
+  .cell.given .val{ font-family:var(--f-mono); font-weight:500; color:var(--ink); font-size:20px; }
+  /* 精装修: given = Fraunces ink（印） */
+  .t-fonts .cell.given .val{
+    font-family:var(--f-serif); font-weight:440; font-size:22px;
+    font-optical-sizing:auto; font-feature-settings:"tnum" 1,"lnum" 1;
+  }
+  /* user entry = Baskerville italic blue-black（写）— 两种状态都不变 */
+  .cell.user .val{ font-family:var(--f-pen); font-style:italic; font-weight:400; color:var(--pen); font-size:22px; }
+  .cell.wrong .val{ font-family:var(--f-pen); font-style:italic; font-weight:400; color:var(--signal); font-size:22px; }
+
+  .cell .notes{ display:grid; grid-template:repeat(3,1fr)/repeat(3,1fr); width:100%; height:100%; padding:2px; }
+  .cell .notes span{ display:grid; place-items:center; font-family:var(--f-mono); font-size:8.5px; line-height:1; color:var(--ink-soft); }
+
+  .grid{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+  .grid line{ vector-effect:non-scaling-stroke; }
+  .grid .thin{ stroke:var(--line); stroke-width:1px; }
+  .grid .box{ stroke:var(--box-color); stroke-width:calc(var(--box-w) * 1px); }
+
+  /* ── tools ── */
+  .tools{ display:flex; margin-top:16px; }
+  .tool{ flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; }
+  .tool .ico{ width:44px; height:44px; border-radius:13px; background:rgba(42,39,35,.045); display:grid; place-items:center; color:var(--ink-mid); position:relative; }
+  .tool .ico svg{ width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+  .tool .lbl{ font-family:var(--f-mono); font-size:9px; font-weight:500; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-soft); }
+  .tool .bdg{ position:absolute; top:-5px; right:-5px; min-width:15px; height:15px; padding:0 3px; border-radius:8px; background:var(--signal); color:#fff; font-family:var(--f-mono); font-size:8.5px; font-weight:500; display:grid; place-items:center; }
+
+  /* ── keypad ── */
+  .pad{ display:flex; gap:6px; margin-top:14px; }
+  .num{
+    flex:1; border:none; cursor:pointer; background:var(--surface);
+    border-radius:12px; padding:8px 0 8px; display:flex; flex-direction:column; align-items:center; gap:3px;
+    box-shadow:0 3px 6px -3px rgba(60,48,36,.28), inset 0 0 0 1px rgba(42,39,35,.035);
+    transition:transform .08s;
+  }
+  .num:active{ transform:translateY(1px); }
+  .num .d{ font-family:var(--f-mono); font-weight:400; font-size:22px; line-height:1; color:var(--ink); font-variant-numeric:tabular-nums; }
+  .t-fonts .num .d{ font-family:var(--f-serif); font-weight:460; font-feature-settings:"tnum" 1,"lnum" 1; }
+  .num.dim{ opacity:.32; }
+  .num .dots{ display:grid; grid-template:repeat(3,1fr)/repeat(3,1fr); gap:2.5px; width:21px; height:21px; }
+  .num .dots i{ width:4px; height:4px; border-radius:50%; background:rgba(154,145,131,.22); }
+  .num .dots i.f{ background:var(--signal); }
+
+  .home{ height:5px; width:128px; border-radius:3px; background:var(--ink); opacity:.18; margin:16px auto 4px; }
+
+  /* ── legend ── */
+  .legend{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; max-width:430px; }
+  .voice{ display:flex; align-items:center; gap:9px; background:var(--surface); border:1px solid rgba(42,39,35,.06); border-radius:11px; padding:9px 14px; }
+  .voice .sample{ font-size:24px; line-height:1; width:24px; text-align:center; }
+  .voice .s-print{ font-family:var(--f-serif); font-weight:440; color:var(--ink); }
+  .voice .s-pen{ font-family:var(--f-pen); font-style:italic; color:var(--pen); }
+  .voice .s-meter{ font-family:var(--f-mono); color:var(--ink-mid); font-size:19px; }
+  .voice .meta b{ display:block; font-size:12.5px; color:var(--ink); font-family:-apple-system,"PingFang SC",sans-serif; }
+  .voice .meta span{ font-size:10.5px; color:var(--ink-soft); letter-spacing:.04em; }
+
+  .foot{ font-size:11.5px; color:var(--ink-soft); text-align:center; max-width:430px; line-height:1.7; font-family:-apple-system,"PingFang SC",sans-serif; }
+</style>
+</head>
+<body>
+
+  <div class="head">
+    <h1>数独 · <b>精装修</b> 预览</h1>
+    <p>同一块棋盘，切换三个杠杆看效果：题目数字从 DM Mono 换成 Fraunces（印 vs 写），网格分级，加报纸题签。<br>可以单独开关每一项 —— 点棋盘空格选中、点下方数字写入，感受「印」与「写」的对照。</p>
+    <div class="ab" style="margin-top:14px;">
+      <button id="m-before">现状</button>
+      <button id="m-after" class="on">精装修</button>
+    </div>
+    <div class="subs">
+      <label><input type="checkbox" id="c-fonts" checked><span class="dot"></span>字体三声</label>
+      <label><input type="checkbox" id="c-grid" checked><span class="dot"></span>网格层级</label>
+      <label><input type="checkbox" id="c-slug" checked><span class="dot"></span>报纸题签</label>
+    </div>
+  </div>
+
+  <div class="phone">
+    <div class="screen t-fonts t-grid t-slug" id="screen">
+      <!-- masthead -->
+      <div class="masthead">
+        <span class="wordmark">sudoku<span class="pt">.</span></span>
+      </div>
+
+      <!-- toolbar under the masthead: difficulty button (left) + icon buttons (right) -->
+      <div class="toolbar">
+        <button class="diffbtn" id="diffbtn">中等 <span class="chev">▾</span></button>
+        <span class="icons">
+          <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 15V4M8.5 7.5 12 4l3.5 3.5"/><path d="M6 11.5V19h12v-7.5"/></svg></span>
+          <span class="ic"><svg viewBox="0 0 24 24"><path d="M7 4h10v16l-5-4-5 4z"/></svg></span>
+          <span class="ic"><svg viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M18 4v3.2h-3.2"/></svg></span>
+          <span class="ic"><svg viewBox="0 0 24 24"><circle class="fdot" cx="6" cy="12" r="1.5"/><circle class="fdot" cx="12" cy="12" r="1.5"/><circle class="fdot" cx="18" cy="12" r="1.5"/></svg></span>
+        </span>
+      </div>
+
+      <!-- newspaper slug -->
+      <div class="slug">
+        <span class="rule"></span>
+        <span class="txt">SUDOKU · No.0610 ·
+          <span class="st on">★</span><span class="st on">★</span><span class="st">★</span><span class="st">★</span>
+          · <b id="slugLabel">中等</b></span>
+        <span class="rule"></span>
+      </div>
+
+      <!-- info -->
+      <div class="info">
+        <span class="miss"><span class="x">✕</span> 1<span style="opacity:.55">/3</span></span>
+        <span class="sp"></span>
+        <span class="timer"><span class="led"></span>04:17</span>
+      </div>
+
+      <!-- board -->
+      <div class="board">
+        <div class="cells" id="cells"></div>
+        <svg class="grid" viewBox="0 0 9 9" preserveAspectRatio="none" id="gridsvg"></svg>
+      </div>
+
+      <!-- tools -->
+      <div class="tools">
+        <div class="tool"><div class="ico"><svg viewBox="0 0 24 24"><path d="M9 7 5 11l4 4"/><path d="M5 11h9a5 5 0 0 1 0 10h-2"/></svg></div><span class="lbl">撤销</span></div>
+        <div class="tool"><div class="ico"><svg viewBox="0 0 24 24"><path d="M5.5 15 13 7.5l5 5L11 20H8z"/><path d="M7 20h11"/></svg></div><span class="lbl">擦除</span></div>
+        <div class="tool"><div class="ico"><svg viewBox="0 0 24 24"><path d="M5 19l3.5-.8L20 6.7 17.3 4 5.8 15.5z"/><path d="M14.5 6.5l3 3"/></svg></div><span class="lbl">笔记</span></div>
+        <div class="tool"><div class="ico"><svg viewBox="0 0 24 24"><path d="M9.5 18h5M10.5 21h3"/><path d="M12 3a6 6 0 0 1 3.8 10.7c-.7.6-1 1.3-1 2.3H9.2c0-1-.3-1.7-1-2.3A6 6 0 0 1 12 3z"/></svg><span class="bdg">3</span></div><span class="lbl">提示</span></div>
+      </div>
+
+      <!-- keypad -->
+      <div class="pad" id="pad"></div>
+
+      <div class="home"></div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="voice"><span class="sample s-print">5</span><span class="meta"><b>印 · Fraunces</b><span>题目给定数字</span></span></div>
+    <div class="voice"><span class="sample s-pen">4</span><span class="meta"><b>写 · Baskerville</b><span>你填入的答案</span></span></div>
+    <div class="voice"><span class="sample s-meter">04:17</span><span class="meta"><b>仪表 · DM Mono</b><span>时间 · 计数 · 标签</span></span></div>
+  </div>
+
+  <div class="foot">这页只演示「排版/字体/网格/题签」的视觉效果。功能层（按技法评级、教下一步的提示、每日一题、剪报分享）不在这版里。</div>
+
+<script>
+  const PUZ = "530070000600195000098000060800060003400803001700020006060000280000419005000080079";
+  const SOL = "534678912672195348198342567859761423426853791713924856961537284287419635345286179";
+
+  let val   = [...PUZ].map(c => +c);
+  const given = [...PUZ].map(c => c !== '0');
+
+  // pre-seeded mid-game state — penned answers (correct) + one wrong + a few pencil notes
+  const seedUser  = {2:4, 11:2, 18:1, 28:5, 37:2, 38:6, 54:9, 72:3};
+  const seedWrong = {47:5};                 // r5c2, 正解=3，写错成 5
+  for (const k in seedUser)  val[+k] = seedUser[k];
+  for (const k in seedWrong) val[+k] = seedWrong[k];
+  const notes = {5:[2,8], 21:[3,7], 63:[2,3]};
+
+  let selected = 38;                        // 选中那枚手写的 6
+
+  function isPeer(i, s){
+    if (i === s) return false;
+    const r=i/9|0, c=i%9, sr=s/9|0, sc=s%9;
+    return r===sr || c===sc || ((r/3|0)===(sr/3|0) && (c/3|0)===(sc/3|0));
+  }
+
+  const cellsEl = document.getElementById('cells');
+  const padEl   = document.getElementById('pad');
+
+  function render(){
+    const selVal = selected != null ? val[selected] : 0;
+    let html = '';
+    for (let i = 0; i < 81; i++){
+      const cls = ['cell'];
+      if (given[i]) cls.push('given');
+      else if (val[i] !== 0) cls.push(val[i] === +SOL[i] ? 'user' : 'wrong');
+
+      if (i === selected) cls.push('selected');
+      else if (selVal !== 0 && val[i] === selVal) cls.push('same');
+      else if (selected != null && isPeer(i, selected)) cls.push('peer');
+
+      let inner = '';
+      if (val[i] !== 0) inner = `<span class="val">${val[i]}</span>`;
+      else if (notes[i]){
+        const set = new Set(notes[i]);
+        inner = '<div class="notes">' +
+          [1,2,3,4,5,6,7,8,9].map(n => `<span>${set.has(n) ? n : ''}</span>`).join('') + '</div>';
+      }
+      html += `<div class="${cls.join(' ')}" data-i="${i}">${inner}</div>`;
+    }
+    cellsEl.innerHTML = html;
+
+    // keypad
+    const count = Array(10).fill(0);
+    for (let i = 0; i < 81; i++) if (val[i]) count[val[i]]++;
+    let ph = '';
+    for (let n = 1; n <= 9; n++){
+      const placed = count[n], dim = placed >= 9;
+      const dots = Array.from({length:9}, (_,k) => `<i class="${k < placed ? 'f' : ''}"></i>`).join('');
+      ph += `<button class="num${dim ? ' dim' : ''}" data-n="${n}"><span class="d">${n}</span><div class="dots">${dots}</div></button>`;
+    }
+    padEl.innerHTML = ph;
+  }
+
+  // grid lines (SVG, non-scaling stroke so px widths hold at any size)
+  function drawGrid(){
+    let s = '';
+    for (let k = 1; k < 9; k++){
+      const cls = k % 3 === 0 ? 'box' : 'thin';   // box lines (3,6) heavier; styled via CSS so --vars resolve
+      s += `<line class="${cls}" x1="${k}" y1="0" x2="${k}" y2="9"/>`;
+      s += `<line class="${cls}" x1="0" y1="${k}" x2="9" y2="${k}"/>`;
+    }
+    document.getElementById('gridsvg').innerHTML = s;
+  }
+
+  cellsEl.addEventListener('click', e => {
+    const c = e.target.closest('.cell'); if (!c) return;
+    selected = +c.dataset.i; render();
+  });
+  padEl.addEventListener('click', e => {
+    const b = e.target.closest('.num'); if (!b || selected == null || given[selected]) return;
+    val[selected] = +b.dataset.n; delete notes[selected]; render();
+  });
+  // erase tool (3rd-from... the 擦除 button)
+  document.querySelectorAll('.tool')[1].addEventListener('click', () => {
+    if (selected == null || given[selected]) return;
+    val[selected] = 0; render();
+  });
+
+  // ── toggles ──
+  const screen = document.getElementById('screen');
+  const cFonts = document.getElementById('c-fonts');
+  const cGrid  = document.getElementById('c-grid');
+  const cSlug  = document.getElementById('c-slug');
+  function apply(){
+    screen.classList.toggle('t-fonts', cFonts.checked);
+    screen.classList.toggle('t-grid',  cGrid.checked);
+    screen.classList.toggle('t-slug',  cSlug.checked);
+    const all = cFonts.checked && cGrid.checked && cSlug.checked;
+    const none = !cFonts.checked && !cGrid.checked && !cSlug.checked;
+    document.getElementById('m-after').classList.toggle('on', all);
+    document.getElementById('m-before').classList.toggle('on', none);
+  }
+  [cFonts, cGrid, cSlug].forEach(c => c.addEventListener('change', apply));
+  document.getElementById('m-after').onclick  = () => { cFonts.checked = cGrid.checked = cSlug.checked = true;  apply(); };
+  document.getElementById('m-before').onclick = () => { cFonts.checked = cGrid.checked = cSlug.checked = false; apply(); };
+
+  // .t-grid swaps the line-hierarchy CSS vars
+  const style = document.createElement('style');
+  style.textContent = `
+    .t-grid .board{ --box-color:#B0A693; --box-w:2; --frame-color:#3C3024; --frame-w:2px; }
+  `;
+  document.head.appendChild(style);
+
+  // difficulty button cycles the four levels (the old segmented picker collapsed into one button)
+  const DIFFS = [['简单',1],['中等',2],['困难',3],['大师',4]];
+  let diffIdx = 1;
+  function setDiff(){
+    const [label, stars] = DIFFS[diffIdx];
+    document.getElementById('diffbtn').innerHTML = `${label} <span class="chev">▾</span>`;
+    const sl = document.getElementById('slugLabel'); if (sl) sl.textContent = label;
+    document.querySelectorAll('.slug .st').forEach((el,k) => el.classList.toggle('on', k < stars));
+  }
+  document.getElementById('diffbtn').onclick = () => { diffIdx = (diffIdx + 1) % 4; setDiff(); };
+
+  drawGrid(); render(); apply(); setDiff();
+</script>
+</body>
+</html>

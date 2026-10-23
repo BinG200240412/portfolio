@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>蔡正阳 — caizheNGyaNG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --mono:"JetBrains Mono","Noto Sans SC",monospace;
+    --sans:"Noto Sans SC","Helvetica Neue",sans-serif;
+    --serif:"Instrument Serif","Noto Serif SC",serif;
+    --ink:#15140f; --red:#ff2200;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{height:100%}
+  body{min-height:100%;background:#fff;color:var(--ink);
+    font-family:var(--mono);-webkit-font-smoothing:antialiased;overflow:hidden}
+  body.expanded{overflow:auto}
+
+  /* ============ 中枢：打字机 ============ */
+  #stage{position:fixed;inset:0;z-index:10;display:grid;place-items:center;background:#fff;
+    transition:opacity .7s ease,transform .7s cubic-bezier(.4,0,.2,1)}
+  #stage.gone{opacity:0;transform:translateY(-44px);pointer-events:none}
+
+  .line{display:inline-flex;align-items:center;font-size:clamp(28px,4vw,40px);line-height:1;z-index:2}
+  .text{display:inline-block;white-space:pre}
+  .ch{display:inline-block;animation:pop .18s cubic-bezier(.2,.8,.2,1.2) both}
+  @keyframes pop{0%{opacity:0;transform:translateY(.06em) scale(.5)}100%{opacity:1;transform:none}}
+
+  .dot{position:relative;flex:0 0 auto;width:.2em;height:.2em;margin-left:.36em;
+    border-radius:50%;background:var(--red);
+    transition:transform .2s cubic-bezier(.2,.8,.2,1.2),margin-left .5s cubic-bezier(.2,.8,.2,1)}
+  .dot::before{content:"";position:absolute;inset:-16px;border-radius:50%}
+  /* idle 睁眼：虹膜环绕红瞳画出 */
+  .dot::after{content:"";position:absolute;left:50%;top:50%;width:34px;height:34px;
+    border:1px solid var(--ink);border-radius:50%;
+    transform:translate(-50%,-50%) scale(.25);opacity:0;pointer-events:none;
+    transition:transform .7s cubic-bezier(.2,.8,.2,1.2),opacity .6s}
+  .dot.watching::after{transform:translate(-50%,-50%) scale(1);opacity:.85}
+  /* 首屏提示：久不点击 → 红点右移留距 + 画出圆边提醒可点击（圆边不碰字符） */
+  .dot.hinting{margin-left:.78em}
+  .dot.hinting::after{transform:translate(-50%,-50%) scale(1);opacity:.7;animation:hintPulse 2.4s ease-in-out infinite}
+  @keyframes hintPulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.7}50%{transform:translate(-50%,-50%) scale(1.16);opacity:.32}}
+  .dot.watching{animation:irisPulse 2.6s ease-in-out infinite}
+  @keyframes irisPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+  .dot.clickable{cursor:pointer;animation:breathe 1.4s ease-in-out infinite}
+  .dot.clickable:hover{transform:scale(1.5)}
+  @keyframes breathe{0%,100%{opacity:1}50%{opacity:.28}}
+
+  /* 中枢菜单模式（hub / works 共用） */
+  .caption,.menu,.hint{position:absolute;left:50%;top:50%;opacity:0;pointer-events:none;
+    transition:opacity .6s ease .1s}
+  #stage.works .caption,#stage.works .menu,#stage.works .hint{opacity:1}
+  #stage.works .menu{pointer-events:auto}
+  .caption{transform:translate(-50%,calc(-50% - 78px));white-space:nowrap;
+    font-size:11px;letter-spacing:.34em;color:#bdbdbd;text-transform:uppercase}
+  .menu{transform:translate(-50%,calc(-50% + 58px));display:flex;flex-wrap:wrap;
+    justify-content:center;gap:13px 26px;width:min(92vw,820px)}
+  .mi{display:inline-flex;align-items:baseline;gap:.5em;cursor:pointer;
+    font-size:13px;letter-spacing:.02em;color:#a0a0a0;transition:color .25s}
+  .mi .mn{font-size:10px;color:#d0d0d0;font-variant-numeric:tabular-nums;transition:color .25s}
+  .mi:hover,.mi.active{color:var(--ink)}
+  .mi:hover .mn,.mi.active .mn{color:var(--red)}
+  /* hub 顶层三选项：略大、更分明 */
+  #stage.hublv .menu{gap:18px 40px}
+  #stage.hublv .mi{font-size:16px;letter-spacing:.04em}
+  .hint{transform:translate(-50%,calc(-50% + 104px));white-space:nowrap;
+    font-size:10px;letter-spacing:.26em;color:#d4d4d4;text-transform:uppercase}
+
+  /* ============ 角标按钮 ============ */
+  #back,#toHub{position:fixed;top:26px;z-index:50;display:inline-flex;align-items:center;gap:9px;
+    background:none;border:0;cursor:pointer;font:inherit;font-size:12px;letter-spacing:.14em;
+    color:#9a9a9a;text-transform:uppercase;opacity:0;pointer-events:none;
+    transition:opacity .5s ease,color .25s}
+  #back{right:30px}#toHub{left:30px}
+  body.expanded #back{opacity:1;pointer-events:auto}
+  body.works-mode #toHub{opacity:1;pointer-events:auto}
+  #back:hover,#toHub:hover{color:var(--ink)}
+  #back .bd,#toHub .bd{width:7px;height:7px;border-radius:50%;background:var(--red)}
+
+  /* ============ 进板块：极简淡出 ============ */
+  #stage.faded{opacity:0;pointer-events:none;transition:opacity .45s ease}
+
+  /* ============ 板块落地页 ============ */
+  #section{position:fixed;inset:0;z-index:42;background:#fff;overflow-y:auto;
+    opacity:0;visibility:hidden;transition:opacity .55s ease,visibility .55s}
+  .sec-bar{position:sticky;top:0;z-index:2;background:rgba(255,255,255,.88);backdrop-filter:blur(8px);
+    padding:22px 30px;text-align:right;font-family:var(--mono);font-size:12px;letter-spacing:.16em;
+    color:#9a9a9a;border-bottom:1px solid #eee}
+  .sec-bar .sec-no{color:var(--red);margin-right:12px}
+  .board-wrap{padding:34px 16px 90px}
+  .board{display:block;width:100%;max-width:1080px;margin:0 auto}
+  #section.on{opacity:1;visibility:visible}
+  .rv2{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+  #section.on .rv2{opacity:1;transform:none}
+  #section.on .rv2:nth-child(1){transition-delay:.14s}
+  #section.on .rv2:nth-child(2){transition-delay:.26s}
+  #section.on .rv2:nth-child(3){transition-delay:.38s}
+  .sec-inner{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:8vw}
+  .sec-no{font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:var(--red);margin-bottom:22px}
+  .sec-title{font-family:var(--serif);font-weight:500;font-size:clamp(40px,8vw,104px);line-height:1.04;
+    letter-spacing:.01em;display:inline-flex;align-items:center}
+  .sec-title .rd{width:.12em;height:.12em;border-radius:50%;background:var(--red);margin-left:.22em}
+  .sec-note{margin-top:26px;font-family:var(--mono);font-size:12px;letter-spacing:.16em;
+    color:#bdbdbd;text-transform:uppercase}
+  #secBack{position:fixed;top:22px;left:24px;z-index:50;display:inline-flex;align-items:center;gap:9px;
+    background:rgba(16,16,14,.6);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.13);
+    border-radius:30px;padding:9px 16px 9px 13px;cursor:pointer;font:inherit;font-size:12px;letter-spacing:.14em;
+    color:#ececec;text-transform:uppercase;opacity:0;pointer-events:none;
+    transition:opacity .5s,background .25s,transform .25s}
+  #section.on ~ #secBack,#secBack.on{opacity:1;pointer-events:auto}
+  #secBack:hover{background:rgba(34,34,30,.82);transform:translateX(-1px)}
+  #secBack .bd{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 8px 1px rgba(255,43,24,.5)}
+  /* 原生板块页：iframe 全屏铺入 */
+  #section.native{background:#0b0b0a}
+  .native-frame{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+
+  /* ============ 内容页：简历 / 报名动机 ============ */
+  #resume,#motive{display:none;position:relative;z-index:1;max-width:920px;margin:0 auto;
+    padding:clamp(40px,7vw,96px) clamp(24px,5vw,72px) 120px}
+  #resume.live,#motive.live{display:block}
+  .rv{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+  #resume.reveal .rv,#motive.reveal .rv{opacity:1;transform:none}
+  #resume.reveal .rv:nth-child(1),#motive.reveal .rv:nth-child(1){transition-delay:.04s}
+  #resume.reveal .rv:nth-child(2),#motive.reveal .rv:nth-child(2){transition-delay:.16s}
+  #resume.reveal .rv:nth-child(3),#motive.reveal .rv:nth-child(3){transition-delay:.28s}
+  #resume.reveal .rv:nth-child(4),#motive.reveal .rv:nth-child(4){transition-delay:.40s}
+  #resume.reveal .rv:nth-child(5),#motive.reveal .rv:nth-child(5){transition-delay:.52s}
+  #resume.reveal .rv:nth-child(6){transition-delay:.62s}
+  .cv-head{margin-bottom:clamp(30px,5vw,52px)}
+  .cv-head h1{font-family:var(--serif);font-size:clamp(48px,7.5vw,82px);font-weight:600;letter-spacing:.02em;
+    display:inline-flex;align-items:baseline}
+  .cv-head h1 .rd{width:.13em;height:.13em;border-radius:50%;background:var(--red);margin-left:.16em;align-self:center}
+  .cv-head .latin{font-family:var(--mono);font-size:clamp(14px,2vw,18px);letter-spacing:.2em;color:#b9b9b9;margin-top:.5em}
+  .tags{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 clamp(34px,5vw,52px)}
+  .tags span{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:#5f5b52;
+    border:1px solid #ddd8cd;border-radius:30px;padding:7px 15px;background:#faf9f5;white-space:nowrap;
+    display:inline-flex;align-items:center;gap:8px;transition:color .2s,border-color .2s,background .2s}
+  .tags span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--red);opacity:.78}
+  .tags span:hover{color:var(--ink);border-color:#c9c2b3;background:#fff}
+  .intro{max-width:620px;margin-bottom:clamp(34px,5vw,56px)}
+  .intro p{font-family:var(--sans);font-size:14.5px;line-height:2;color:#333;margin-bottom:1.2em}
+  .intro p:last-child{margin-bottom:0}.intro .em{color:var(--ink)}
+  .intro .lead{font-size:16px;color:var(--ink);font-weight:400}
+  .portrait{display:flex;justify-content:center;margin:clamp(20px,4vw,40px) 0 clamp(40px,6vw,64px)}
+  .portrait img{width:clamp(240px,38vw,340px);height:auto;filter:grayscale(1) contrast(1.02)}
+  .contact{list-style:none;margin-bottom:clamp(48px,7vw,80px);display:grid;gap:9px;font-size:13.5px}
+  .contact li{display:flex;gap:1.2em}.contact .k{color:#9a9a9a;min-width:5.2em}.contact .v{color:var(--ink)}
+  .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+  .cols section{padding:0 clamp(18px,2.6vw,34px);border-left:1px solid #e3e3e3}
+  .cols section:first-child{padding-left:0;border-left:0}
+  .cols h2{font-family:var(--serif);font-size:clamp(21px,2.6vw,28px);font-weight:600;margin-bottom:1.3em}
+  .cols ul{list-style:none;display:grid;gap:1em}
+  .cols li{font-family:var(--sans);font-size:12.5px;line-height:1.7;color:#444}.cols .lead{color:#9a9a9a}
+  /* 报名动机落款 */
+  .motive-sign{font-family:var(--serif);font-style:italic;font-size:clamp(24px,4vw,40px);
+    line-height:1.4;color:var(--ink);margin-top:clamp(40px,6vw,68px);max-width:18ch}
+  .motive-sign .rd{color:var(--red);font-style:normal}
+  @media(max-width:720px){.cols{grid-template-columns:1fr;gap:36px}
+    .cols section{padding:0;border-left:0;border-top:1px solid #e3e3e3;padding-top:28px}
+    .cols section:first-child{border-top:0;padding-top:0}}
+</style>
+</head>
+<body>
+
+  <!-- 中枢 -->
+  <div id="stage">
+    <div class="caption" id="cap">蔡正阳 — Portfolio</div>
+    <div class="line"><span class="text" id="text"></span><span class="dot" id="dot" role="button" aria-label="揭晓 / 展开"></span></div>
+    <nav class="menu" id="menu"></nav>
+    <div class="hint" id="hint">悬停浏览 · 点击进入</div>
+  </div>
+
+  <button id="back"><span class="bd"></span>返回</button>
+  <button id="toHub"><span class="bd"></span>返回</button>
+
+  <!-- 板块落地 -->
+  <section id="section"></section>
+  <button id="secBack"><span class="bd"></span>作品集</button>
+
+  <!-- 关于我 / 简历 -->
+  <main id="resume" aria-hidden="true">
+    <header class="cv-head rv"><h1>蔡正阳<span class="rd"></span></h1><div class="latin">caizheNGyaNG · About Me</div></header>
+    <div class="tags rv">
+      <span>资深影迷</span><span>独立开发者</span><span>XR 艺术家</span><span>AI 艺术家</span>
+      <span>交互设计师</span><span>vibe coder</span><span>网页艺术</span><span>AI 影像探索</span>
+      <span>装置艺术</span><span>策展助理</span>
+    </div>
+    <div class="intro rv">
+      <p>对 ai 抱有极大热情，日常学习主要就是玩各种 ai，并从中发觉。最近极感兴趣 <span class="em">vibe coding</span>、网页艺术，并计划在下一阶段探索 ai 影像制作。看到这个工作坊，想从中交流学习，探索 ai 影像的边界。</p>
+      <p>常接触电影，尤其感兴趣科幻题材——《2001 太空漫游》《银翼杀手》《大都会》《阿基拉》。也颇爱人文题材影片，《随风而逝》《一一》……</p>
+    </div>
+    <figure class="portrait rv"><img src="assets/portrait.jpg" alt="蔡正阳"></figure>
+    <ul class="contact rv">
+      <li><span class="k">年龄</span><span class="v">24</span></li>
+      <li><span class="k">籍贯</span><span class="v">江苏常州</span></li>
+      <li><span class="k">邮箱</span><span class="v">bing2002czy@gmail.com</span></li>
+      <li><span class="k">电话</span><span class="v">18961198692</span></li>
+      <li><span class="k">英语素养</span><span class="v">CET6</span></li>
+    </ul>
+    <div class="cols rv">
+      <section><h2>教育背景</h2><ul>
+        <li><span class="lead">院校</span>　中国美术学院</li>
+        <li><span class="lead">专业</span>　AI 与智能设计</li>
+        <li><span class="lead">年级</span>　研究生一年级在读</li>
+        <li><span class="lead">主要研究方向</span>　AI 哲思 · Vibe Coding · AI 生图 · AI 生成视频 · XR 开发 · 交互设计</li>
+      </ul></section>
+      <section><h2>个人履历</h2><ul>
+        <li>2021 年　参与中建地产平面项目</li>
+        <li>2022 年　负责西藏航空物料设计及落地，交互公众号及其推文</li>
+        <li>2022 年　负责子东设计事务所 logo 设计</li>
+        <li>中国设计教育大会 —— 视觉工作组</li>
+        <li>DIA · 中国设计智造大奖 —— 布展策划</li>
+        <li>中国美术学院 · 药食同源 XR 工作坊策划</li>
+        <li>中国美术学院 · 南特国际设计学院 · 空间 XR 联合课程美学指导</li>
+      </ul></section>
+      <section><h2>主要荣誉</h2><ul>
+        <li>大学生创新创业训练计划项目</li>
+        <li>2023 BEDA — 英国生态设计奖</li>
+        <li>2023 BICC — 中英国际创意大赛</li>
+        <li>绚丽年华 · 第十六届全国美育教学成果展</li>
+        <li>东方设计奖 · 全国高校创新设计大赛</li>
+        <li>第 11 届未来设计师 · 全国高校数字艺术设计大赛</li>
+        <li>DIA · 中国设计智造大奖</li>
+      </ul></section>
+    </div>
+  </main>
+
+  <!-- 本次报名动机 -->
+  <main id="motive" aria-hidden="true">
+    <header class="cv-head rv"><h1>本次报名动机<span class="rd"></span></h1><div class="latin">Why I Apply · 阿里 × 国美 跨媒体工作坊</div></header>
+    <div class="intro rv">
+      <p class="lead">我做的东西，一直在两件事之间来回：用 AI 去造一个世界，也对 AI 本身发问。</p>
+      <p>一边用它复原良渚、生成场景、搭可触摸的交互装置；一边在《漂移之屋》《More than Human》里追问——当 AI 开始读懂、预测、甚至改写我们，人还剩下什么。这两条线，一条向外造世界，一条向内照见自己。</p>
+      <p>这次阿里 × 国美的工作坊，正好站在「设计 × 技术 × 批判」的交叉点上，也正是我最想深入的地方。我想认真探索 <span class="em">AI 影像</span>的边界——不只是把它当生产力工具，而是把它当成一种新的语言、一面照见我们自己的镜子。</p>
+      <p>我也始终相信，<span class="em">判断力比工具更重要</span>。AI 让产出变得廉价，于是「为什么做、做成什么样」的取舍，反而成了唯一稀缺的东西。我希望在这里，和一群同样较真的人，把这件事往深里做。</p>
+    </div>
+    <p class="motive-sign rv">用 AI 造世界，<br>也对 AI 发问<span class="rd">.</span></p>
+  </main>
+
+<script>
+const QUESTION="Who am I ?", NAME="CaizheNGyaNG", HOME="作品集";
+const SECTIONS=["vibe coding","AI 3D 工作流搭建","XR 文旅项目","More than Human","装置艺术","更多作品集"];
+const HUB=[
+  {label:"关于我", act:()=>expandPage('resume')},
+  {label:"作品集", act:showWorks},
+  {label:"本次报名动机", act:()=>expandPage('motive')},
+];
+const $=id=>document.getElementById(id);
+const textEl=$('text'), dotEl=$('dot'), stage=$('stage'), resume=$('resume'), motive=$('motive'),
+      menuEl=$('menu'), cap=$('cap'), hint=$('hint'), backBtn=$('back'), toHubBtn=$('toHub'),
+      section=$('section'), secBack=$('secBack');
+const TYPE=130, ERASE=70, wait=ms=>new Promise(r=>setTimeout(r,ms));
+
+/* ---- 打字机引擎 ---- */
+let current="",target="",pumping=false,settlers=[];
+function addChar(c){const s=document.createElement('span');s.className='ch';s.textContent=c;textEl.appendChild(s);}
+function delChar(){if(textEl.lastChild)textEl.removeChild(textEl.lastChild);}
+function pump(){if(pumping)return;pumping=true;(async()=>{
+  while(current!==target){let p=0;while(p<current.length&&p<target.length&&current[p]===target[p])p++;
+    if(current.length>p){delChar();current=current.slice(0,-1);await wait(ERASE);}
+    else{const c=target[current.length];addChar(c);current+=c;await wait(TYPE);}}
+  pumping=false;const s=settlers;settlers=[];s.forEach(f=>f());})();}
+function morphTo(w){target=w;pump();}
+function settle(w){target=w;pump();return new Promise(res=>{(current===target&&!pumping)?res():settlers.push(res);});}
+
+/* ---- 状态机 ---- */
+let phase='typing';
+function setClickable(on){dotEl.classList.toggle('clickable',on);}
+/* 首屏点击提示：进入可点击态后，~7s 没点击就画出圆边提醒 */
+let hintT=null;
+function armHint(){clearTimeout(hintT);dotEl.classList.remove('hinting');
+  hintT=setTimeout(()=>{if((phase==='question'||phase==='name')&&dotEl.classList.contains('clickable'))dotEl.classList.add('hinting');},7000);}
+function disarmHint(){clearTimeout(hintT);dotEl.classList.remove('hinting');}
+async function intro(){await settle(QUESTION);phase='question';setClickable(true);armHint();}
+async function revealName(){disarmHint();phase='typing';setClickable(false);await settle(NAME);phase='name';setClickable(true);armHint();}
+
+/* ---- 菜单渲染（hub 顶层 / works 作品层） ---- */
+function buildItem(label,no,onEnter,onLeave,onClick){
+  const a=document.createElement('a');a.className='mi';
+  a.innerHTML=`<span class="mn">0${no}</span>${label}`;
+  a.addEventListener('mouseenter',onEnter);
+  a.addEventListener('mouseleave',onLeave);
+  a.addEventListener('click',onClick);
+  return a;
+}
+function renderMenu(level){
+  menuEl.innerHTML='';
+  if(level==='hub'){
+    HUB.forEach((it,i)=>menuEl.appendChild(buildItem(it.label,i+1,
+      ()=>{markActivity();if(phase==='hub')morphTo(it.label);},
+      ()=>{if(phase==='hub')morphTo(NAME);},
+      ()=>{if(phase==='hub')it.act();})));
+  }else{
+    SECTIONS.forEach((name,i)=>menuEl.appendChild(buildItem(name,i+1,
+      ()=>{markActivity();if(phase==='works')morphTo(name);},
+      ()=>{if(phase==='works')morphTo(HOME);},
+      ()=>{if(phase==='works')enterSection(name,'0'+(i+1));})));
+  }
+}
+
+/* ---- 顶层三段：关于我 / 作品集 / 报名动机 ---- */
+function showHub(){
+  phase='hub';setClickable(false);
+  resume.classList.remove('reveal','live');motive.classList.remove('reveal','live');
+  resume.setAttribute('aria-hidden','true');motive.setAttribute('aria-hidden','true');
+  document.body.classList.remove('expanded','works-mode');
+  if(section.classList.contains('on')){section.classList.remove('on','native');secBack.classList.remove('on');}
+  window.scrollTo(0,0);
+  stage.classList.remove('faded','gone');stage.classList.add('works','hublv');
+  renderMenu('hub');cap.textContent='蔡正阳 — 评审导览 / Guide';hint.textContent='三个方面 · 全面了解';
+  morphTo(NAME);markActivity();
+}
+function showWorks(){
+  phase='works';setClickable(false);
+  resume.classList.remove('reveal','live');motive.classList.remove('reveal','live');
+  resume.setAttribute('aria-hidden','true');motive.setAttribute('aria-hidden','true');
+  if(section.classList.contains('on')){section.classList.remove('on','native');secBack.classList.remove('on');}
+  document.body.classList.remove('expanded');document.body.classList.add('works-mode');
+  window.scrollTo(0,0);
+  stage.classList.remove('faded','gone','hublv');stage.classList.add('works');
+  renderMenu('works');cap.textContent='蔡正阳 — Selected Works';hint.textContent='悬停浏览 · 点击进入';
+  morphTo(HOME);markActivity();
+}
+function expandPage(which){
+  phase=which;setClickable(false);
+  document.body.classList.remove('works-mode');
+  stage.classList.add('gone');stage.classList.remove('works','hublv');
+  const m=which==='resume'?resume:motive, other=which==='resume'?motive:resume;
+  other.setAttribute('aria-hidden','true');other.classList.remove('reveal','live');
+  m.setAttribute('aria-hidden','false');m.classList.add('live');
+  document.body.classList.add('expanded');window.scrollTo(0,0);
+  requestAnimationFrame(()=>m.classList.add('reveal'));
+}
+
+dotEl.addEventListener('click',()=>{disarmHint();if(phase==='question')revealName();else if(phase==='name')showHub();});
+backBtn.addEventListener('click',()=>{if(phase==='resume'||phase==='motive')showHub();});
+toHubBtn.addEventListener('click',()=>{if(phase==='works')showHub();});
+secBack.addEventListener('click',()=>{if(phase==='section')showWorks();});
+
+/* ---- 进板块：极简淡出 ---- */
+/* 原生重建页（可编辑元素，非贴图） */
+const SECTION_PAGE={
+  "vibe coding":"sections/sudoku.html",
+  "AI 3D 工作流搭建":"sections/ai3d.html",
+  "XR 文旅项目":"sections/xr.html",
+  "More than Human":"sections/drift.html",
+  "装置艺术":"sections/qianli.html",
+  "更多作品集":"sections/more.html",
+};
+function enterSection(name,no){
+  if(phase!=='works')return;phase='transit';clearWatch();
+  document.body.classList.remove('works-mode');
+  const page=SECTION_PAGE[name];
+  if(page){
+    section.classList.add('native');
+    section.innerHTML=`<iframe class="native-frame" src="${page}" title="${name}" loading="eager"></iframe>`;
+  }else{
+    section.classList.remove('native');
+    section.innerHTML=`<div class="sec-inner"><div class="sec-no rv2">${no}</div>`+
+      `<h1 class="sec-title rv2">${name}<span class="rd"></span></h1>`+
+      `<p class="sec-note rv2">内容即将填充 · Content coming</p></div>`;
+  }
+  section.scrollTop=0;
+  stage.classList.add('faded');
+  setTimeout(()=>{section.classList.add('on');secBack.classList.add('on');phase='section';},430);
+}
+
+/* ====== idle 睁眼：你撒手，它看你（hub / works 时生效） ====== */
+let lastAct=performance.now(),watching=false;
+function markActivity(){lastAct=performance.now();if(watching)clearWatch();}
+function clearWatch(){watching=false;dotEl.classList.remove('watching');}
+['mousemove','mousedown','keydown','wheel','touchstart'].forEach(ev=>addEventListener(ev,markActivity,{passive:true}));
+setInterval(()=>{if((phase==='works'||phase==='hub')&&!watching&&performance.now()-lastAct>3500){watching=true;dotEl.classList.add('watching');}},400);
+
+intro();
+</script>
+</body>
+</html>
