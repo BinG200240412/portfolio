@@ -74,9 +74,9 @@
   #sudoku-active-image{max-height:58svh}
 }
 @media(max-width:720px) and (max-height:540px){
-  .hero{padding:72px 26px 46px;justify-content:flex-end}
-  .sudoku-board-angle{left:calc(var(--board-size) * -.9);top:calc(var(--board-size) * -.5)}
-  .hero-main{width:48%}.hero h1{font-size:12vw}
+  .hero{padding:72px 26px 46px;justify-content:flex-start}
+  .sudoku-board-angle{left:calc(var(--board-size) * -.18);top:calc(var(--board-size) * -1.08)}
+  .hero-main{width:100%}.hero h1{font-size:12vw}
 }
 @media(prefers-reduced-motion:reduce){.sudoku-screen-tab,#sudoku-active-open,.sudoku-action,.sudoku-action svg{transition:none}}
 @media(forced-colors:active){.sudoku-hero-art{display:none}}

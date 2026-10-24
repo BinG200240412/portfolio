@@ -150,7 +150,7 @@
     };
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => { if (entry.isIntersecting) reveal(entry.target); });
-    }, { rootMargin: '0px 0px -12% 0px', threshold: 0 });
+    }, { rootMargin: '0px 0px -48px 0px', threshold: 0 });
     story.querySelectorAll('.case-chapter').forEach(chapter => {
       [...chapter.children].forEach((node, index) => {
         node.classList.add('case-reveal', 'is-reveal-pending');
