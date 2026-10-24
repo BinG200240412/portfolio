@@ -18,7 +18,7 @@
 <script defer src="assets/matrix-gorilla.js?v=interactive-objects-20261024"></script>
 <script defer src="assets/matrix-field.js?v=focused-works-20261024"></script>
 <script defer src="assets/about-companion.js?v=portrait-and-companion-20261023"></script>
-<script defer src="assets/ambient-field.js?v=soft-particles-20261024"></script>
+<script defer src="assets/ambient-field.js?v=tidal-led-20261024"></script>
 <script defer src="assets/assistant-connection.js?v=assistant-preview-20261024"></script>
 <script defer src="assets/portfolio-assistant.js?v=assistant-bottom-20261024"></script>
 <style>
@@ -183,7 +183,7 @@
 <link rel="stylesheet" href="assets/theme.css?v=edge-to-edge-controls-20261024">
 <link rel="stylesheet" href="assets/matrix-field.css?v=interactive-objects-20261024">
 <link rel="stylesheet" href="assets/about.css?v=original-photo-right-20261024">
-<link rel="stylesheet" href="assets/ambient-field.css?v=soft-particles-20261024">
+<link rel="stylesheet" href="assets/ambient-field.css?v=tidal-led-20261024">
 <link rel="stylesheet" href="assets/portfolio-assistant.css?v=assistant-bottom-20261024">
 </head>
 <body class="portfolio-shell">
@@ -445,6 +445,7 @@ function enterSection(name){
     section.classList.add('native');
     const frameURL = new URL(page, location.href);
     frameURL.searchParams.set("lang", window.PortfolioI18n?.language || "zh");
+    frameURL.searchParams.set("ambient", "tidal-led-20261024");
     section.innerHTML=`<iframe class="native-frame" src="${frameURL.pathname + frameURL.search}" title="${tr(name)}" loading="eager"></iframe>`;
   }else{
     section.classList.remove('native');

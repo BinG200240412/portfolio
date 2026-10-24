@@ -1,5 +1,4 @@
-/* Independent background dust; source order keeps the matrix above stage dust.
-   About content must keep its existing positive stacking level above page dust. */
+/* A single flat-dot field sits below the content, never over artwork or text. */
 #ambient-page,
 #ambient-stage {
   display:block;
@@ -11,6 +10,8 @@
 }
 #ambient-page {position:fixed;inset:0;z-index:0}
 #ambient-stage {position:absolute;inset:0;z-index:0}
+body.ambient-document {position:relative;isolation:isolate}
+body.ambient-document > #ambient-page {z-index:-1}
 #ambient-page[hidden],
 #ambient-stage[hidden] {display:none}
 @media (forced-colors:active) {
