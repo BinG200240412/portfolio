@@ -1,21 +1,24 @@
+body.legacy-case.qianli-case{padding-top:0}
 .qianli-light-hero{isolation:isolate;background:var(--paper);overflow:hidden}
-.qianli-light-hero .hero-media{height:clamp(540px,calc(100svh - 82px),840px);background:var(--paper);border:0}
-#qianli-light-cover{display:block;width:100%;height:100%;touch-action:pan-y}
-.qianli-light-hero .hero-cap,.qianli-light-hero .hero-foot{max-width:1648px;margin-inline:auto;right:clamp(20px,5vw,64px);pointer-events:none}
-.qianli-light-hero .hero-cap{top:clamp(32px,4vw,60px)}
-.qianli-light-hero .title{color:var(--ink);text-shadow:none;font-size:clamp(58px,10.5vw,148px)}
-html[lang="en"] .qianli-light-hero .title{font-size:clamp(42px,8vw,118px);letter-spacing:-.035em;line-height:1.07}
+.qianli-light-hero .hero-media{height:100svh;min-height:480px;background:var(--paper);border:0}
+#qianli-light-cover{display:block;width:100%;height:100%;touch-action:pan-y;cursor:crosshair}
+#qianli-light-cover:focus-visible{outline:2px solid var(--jade);outline-offset:-7px}
+.qianli-light-hero .hero-cap,.qianli-light-hero .hero-foot{max-width:none;margin:0;left:clamp(22px,4.5vw,86px);right:clamp(22px,4.5vw,86px);pointer-events:none}
+.qianli-light-hero .hero-cap{top:clamp(90px,10vh,130px)}
+.qianli-light-hero .title{color:var(--ink);text-shadow:0 0 28px var(--paper);font-size:clamp(56px,6.2vw,104px)}
+html[lang="en"] .qianli-light-hero .title{font-size:clamp(42px,6.5vw,104px);letter-spacing:-.035em;line-height:1.07}
 .qianli-light-hero .eyebrow{color:var(--jade);text-shadow:none}
-.qianli-light-hero .hero-foot{bottom:30px}
-.qianli-light-hero .hero-foot .zh{color:var(--ink);font-size:clamp(18px,2.4vw,30px)}
-.qianli-light-hero .hero-foot .sub{color:var(--soft);text-shadow:none}
+.qianli-light-hero .hero-foot{bottom:clamp(26px,4vh,56px)}
+.qianli-light-hero .hero-foot .zh{color:var(--ink);font-size:clamp(18px,2.4vw,30px);text-shadow:0 0 18px var(--paper)}
+.qianli-light-hero .hero-foot .sub{color:var(--soft);text-shadow:0 0 12px var(--paper)}
+.qianli-light-hint{margin-top:10px;font:11px var(--mono);letter-spacing:.08em;color:var(--ink);text-transform:none}
 html[data-theme="light"] .qianli-light-hero .eyebrow{color:#39776e}
 @media(max-width:650px){
-  .qianli-light-hero .hero-media{height:clamp(560px,calc(100svh - 82px),760px)}
-  .qianli-light-hero .hero-cap{top:26px}
+  .qianli-light-hero .hero-cap{top:100px}
   .qianli-light-hero .eyebrow{font-size:10px;letter-spacing:.16em;margin-bottom:20px}
   .qianli-light-hero .hero-foot{bottom:30px;display:block}
   .qianli-light-hero .hero-foot .sub{margin-top:14px;text-align:left;font-size:10px}
+  .qianli-light-hint{font-size:10px}
 }
 @media(prefers-reduced-motion:reduce){.qianli-light-hero .eyebrow .dot{animation:none}}
 @media(forced-colors:active){#qianli-light-cover{opacity:.75}}
