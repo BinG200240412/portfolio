@@ -110,3 +110,85 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', controls);
   else controls();
 })();
+
+/* A filled, seven-row LED arrow for covers that conceal the next section. */
+(() => {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const patterns = ['0011100','0011100','0011100','1111111','0111110','0011100','0001000'];
+  function mount() {
+    const file = location.pathname.split('/').pop() || 'index.html';
+    const definitions = {
+      'sudoku.html': ['.sudoku-opening > .hero', '#intent', '--accent', 'center'],
+      'ai3d.html': ['#liangzhu-particle-cover', '.wrap > .intro', '--cover-accent', 'right'],
+      'qianli.html': ['.qianli-light-hero', '.wrap > .intro', '--jade', 'right'],
+      'xr.html': ['.gogo-hero', '#concept', '--gogo-accent', 'center'],
+      'drift.html': ['body > .hero', '.wrap > .intro', '--green', 'right'],
+      'design-skills.html': ['.skills-hero', '#newsprint', '--red', 'inline'],
+      'arright.html': ['.wrap > .hero', null, '--ink', 'center'],
+      'index.html': ['.about-hero', '.about-details', '--red', 'center'],
+    };
+    const definition = definitions[file];
+    if (!definition) return;
+    const [selector, destination, accent, position] = definition;
+    const hero = document.querySelector(selector);
+    const target = destination ? document.querySelector(destination) : hero?.nextElementSibling;
+    if (!hero || !target) return;
+    const cue = document.createElement('button');
+    cue.type = 'button'; cue.className = 'scroll-cue'; cue.hidden = true;
+    cue.dataset.position = position; cue.dataset.i18nIgnore = '';
+    const pixels = document.createElement('span');
+    pixels.className = 'scroll-cue-pixels'; pixels.setAttribute('aria-hidden', 'true');
+    patterns.forEach((row, y) => [...row].forEach((value, x) => {
+      if (value !== '1') return;
+      const dot = document.createElement('i'); dot.className = 'scroll-cue-led';
+      dot.style.gridColumn = String(x + 1); dot.style.gridRow = String(y + 1);
+      dot.style.setProperty('--led-row', String(y)); pixels.append(dot);
+    }));
+    cue.append(pixels);
+    if (!target.id) target.id = 'scroll-cue-destination';
+    cue.setAttribute('aria-controls', target.id);
+    cue.addEventListener('click', () => target.scrollIntoView({ behavior: reduced.matches ? 'instant' : 'smooth', block: 'start' }));
+    (position === 'inline' ? hero : document.body).append(cue);
+    let pending = 0;
+    function update() {
+      pending = 0;
+      const english = window.PortfolioI18n?.language === 'en';
+      const label = english ? 'Scroll down to explore' : '向下浏览';
+      cue.setAttribute('aria-label', label); cue.title = label;
+      const style = getComputedStyle(hero);
+      cue.style.color = style.getPropertyValue('--scroll-cue-accent').trim() || style.getPropertyValue(accent).trim() || 'var(--ink)';
+      cue.dataset.paused = String(document.hidden);
+      const rect = hero.getBoundingClientRect(), next = target.getBoundingClientRect();
+      const visible = position === 'inline'
+        ? true
+        : rect.top > -96 && rect.top < innerHeight * .45 && rect.bottom > innerHeight * .7
+          && next.top > innerHeight * .9 && document.documentElement.scrollHeight > innerHeight + 40;
+      cue.hidden = !visible;
+      if (position === 'inline') cue.dataset.paused = String(document.hidden || rect.bottom < 0 || rect.top > innerHeight);
+      if (!visible || position === 'inline') return;
+      // Use the viewport centre even when the cover's composition is right-aligned.
+      const left = position === 'right' ? innerWidth - Math.max(18, Math.min(44, innerWidth * .04)) - 48 : innerWidth / 2 - 24;
+      let bottom = Math.max(22, Math.min(34, innerHeight * .035));
+      for (const node of hero.querySelectorAll('.hero-foot,.gogo-chapter-nav')) {
+        const foot = node.getBoundingClientRect();
+        if (foot.left < left + 48 && foot.right > left && foot.top < innerHeight - bottom && foot.bottom > innerHeight - bottom - 52)
+          bottom = Math.max(bottom, innerHeight - foot.top + 12);
+      }
+      cue.style.left = `${left}px`; cue.style.bottom = `${bottom}px`;
+    }
+    function queue() { if (!pending) pending = requestAnimationFrame(update); }
+    addEventListener('scroll', queue, { passive: true });
+    addEventListener('resize', queue, { passive: true });
+    addEventListener('load', queue);
+    addEventListener('portfolio:language', queue); addEventListener('portfolio:navigation', queue);
+    document.addEventListener('visibilitychange', queue);
+    new MutationObserver(queue).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    if ('ResizeObserver' in window) {
+      const observer = new ResizeObserver(queue); observer.observe(hero); observer.observe(target);
+    }
+    document.fonts?.ready.then(queue);
+    update();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
+  else mount();
+})();

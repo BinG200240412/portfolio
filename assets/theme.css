@@ -70,6 +70,18 @@ body.portfolio-shell{--mono:var(--portfolio-font);--sans:var(--portfolio-font);-
 .theme-controls .language-option.is-current{color:var(--ink)}
 .theme-controls .language-zh-glyph{display:block;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter}
 .theme-controls ::selection{background:transparent;color:inherit}
+.scroll-cue{position:fixed;z-index:70;display:grid;place-items:center;width:48px;height:52px;margin:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.scroll-cue[hidden]{display:none}
+.scroll-cue:focus-visible{outline:1px solid currentColor;outline-offset:4px}
+.scroll-cue-pixels{display:grid;grid-template-columns:repeat(7,3px);grid-template-rows:repeat(7,3px);gap:2px;pointer-events:none}
+.scroll-cue-led{display:block;width:3px;height:3px;border-radius:50%;background:currentColor;opacity:.32;animation:scroll-led-flow 2.8s ease-in-out infinite;animation-delay:calc(var(--led-row) * .14s)}
+.scroll-cue[data-paused="true"] .scroll-cue-led{animation-play-state:paused}
+.scroll-cue[data-position="inline"]{position:relative;margin:20px auto 0}
+@keyframes scroll-led-flow{0%,7%,65%,100%{opacity:.32}27%{opacity:1}46%{opacity:.6}}
+.sudoku-scenes{--scroll-cue-accent:#7da479}
+html[data-theme="light"] .sudoku-scenes{--scroll-cue-accent:#416f41}
+@media(prefers-reduced-motion:reduce){.scroll-cue-led{animation:none;opacity:.75}}
+@media(forced-colors:active){.scroll-cue{color:ButtonText!important}.scroll-cue-led{animation:none;opacity:1;forced-color-adjust:none}}
 .portfolio-shell .line{font-size:clamp(42px,5vw,64px);font-weight:500;letter-spacing:.005em}
 .portfolio-shell .mi{font-size:16px;letter-spacing:.015em}
 .portfolio-shell .selected-works{display:flex;flex-wrap:wrap;justify-content:center;gap:9px 28px;width:100%}
