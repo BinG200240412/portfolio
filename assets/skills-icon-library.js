@@ -178,14 +178,21 @@
 
   function renderRibbons() {
     const rows = [icons.filter((_, i) => i % 2 === 0), icons.filter((_, i) => i % 2 === 1)];
+    // Each loop half must cover the viewport, including on wide monitors.
+    // The 64px cell width is a conservative minimum; gaps add more coverage.
+    const copies = rows.map(row => Math.max(1, Math.ceil(document.documentElement.clientWidth / Math.max(64, row.length * 64))));
+    const layout = copies.join(':');
+    if (ribbons.dataset.layout === layout) return;
+    ribbons.dataset.layout = layout;
+    ribbons.replaceChildren();
     rows.forEach((row, index) => {
       if (!row.length) return;
       const ribbon = el('div', 'il-ribbon');
       const track = el('div', `il-ribbon-track${index ? ' il-ribbon-track-reverse' : ''}`);
-      track.style.setProperty('--il-duration', `${Math.max(32, row.length * 4)}s`);
+      track.style.setProperty('--il-duration', `${Math.max(32, row.length * copies[index] * 4)}s`);
       for (let repeat = 0; repeat < 2; repeat++) {
         const group = el('div', 'il-ribbon-group');
-        row.forEach((icon, i) => {
+        Array.from({ length: copies[index] }, () => row).flat().forEach((icon, i) => {
           const cell = el('span', 'il-ribbon-cell');
           const artwork = displayArtwork(icon);
           artwork.style.setProperty('--il-drift-delay', `${-(i % 7)}s`);
@@ -446,6 +453,8 @@
       const libraryContent = el('div', 'il-library-content page-width');
       libraryContent.append(tools, selectionBar, status, grid);
       host.replaceChildren(showcase, libraryContent, dialog);
+      if ('ResizeObserver' in window) new ResizeObserver(renderRibbons).observe(ribbons);
+      else window.addEventListener('resize', renderRibbons);
       host.dataset.state = 'ready';
       host.dataset.count = String(icons.length);
       host.dataset.normalizedCount = String(artworkCache.size);
