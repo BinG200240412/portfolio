@@ -11,9 +11,7 @@
       driftLink: '查看漂移之屋',
       driftAlt: '漂移之屋的鱼眼视角房间与佩戴 MR 头显的体验者',
       driftTitle: '漂移之屋',
-      driftIntro: '让无意识的动作慢慢改变房间的 MR 装置概念。',
-      resources: '更多作品与资源',
-      archive: '旧作品集'
+      driftIntro: '让无意识的动作慢慢改变房间的 MR 装置概念。'
     },
     en: {
       title: 'Practice — Cai Zhengyang',
@@ -24,9 +22,7 @@
       driftLink: 'View The Drift',
       driftAlt: 'A fisheye view of The Drift room and a participant wearing an MR headset',
       driftTitle: 'The Drift',
-      driftIntro: 'An MR installation concept where unconscious actions gradually change a room.',
-      resources: 'More work and resources',
-      archive: 'Earlier portfolio'
+      driftIntro: 'An MR installation concept where unconscious actions gradually change a room.'
     }
   };
 

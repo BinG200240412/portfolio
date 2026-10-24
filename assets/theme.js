@@ -86,7 +86,7 @@
     const back = document.querySelector('.standalone-back');
     if (back) {
       const english = window.PortfolioI18n?.language === 'en';
-      const practiceDetail=['arright.html','drift.html','design-skills.html','more.html'].includes(location.pathname.split('/').pop());
+      const practiceDetail=['arright.html','drift.html'].includes(location.pathname.split('/').pop());
       const label = practiceDetail ? (english ? 'Back to Practice' : '返回练习') : (english ? 'Back to works' : '返回作品集');
       back.setAttribute('aria-label', label); back.title = label;
       back.querySelector('.return-label').textContent = label;

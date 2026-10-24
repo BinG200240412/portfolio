@@ -8,7 +8,7 @@
 <script src="assets/i18n-main.js?v=focused-works-20261024"></script>
 <script src="assets/i18n-cases.js?v=focused-copy-20261024"></script>
 <script src="assets/i18n.js?v=bilingual-20261023"></script>
-<script src="assets/theme.js?v=bare-controls-20261024"></script>
+<script src="assets/theme.js?v=peer-collections-20261024"></script>
 <script defer src="assets/matrix-motifs.js?v=sticker-collage-20261023"></script>
 <script defer src="assets/matrix-symbols.js?v=work-objects-20261023"></script>
 <script defer src="assets/matrix-models.js?v=interactive-objects-20261024"></script>
@@ -180,7 +180,7 @@
     .cols section{padding:0;border-left:0;border-top:1px solid #e3e3e3;padding-top:28px}
     .cols section:first-child{border-top:0;padding-top:0}}
 </style>
-<link rel="stylesheet" href="assets/theme.css?v=bare-controls-20261024">
+<link rel="stylesheet" href="assets/theme.css?v=peer-collections-20261024">
 <link rel="stylesheet" href="assets/matrix-field.css?v=interactive-objects-20261024">
 <link rel="stylesheet" href="assets/about.css?v=original-photo-right-20261024">
 <link rel="stylesheet" href="assets/ambient-field.css?v=soft-particles-20261024">
@@ -259,6 +259,7 @@
 const QUESTION="Who am I ?", NAME="CaizheNGyaNG", HOME="作品集";
 const tr = value => window.PortfolioI18n?.t(value) || value;
 const SECTIONS=["数独","良渚 · AI 3D","良渚 · XR","千里江山"];
+const COLLECTIONS=[{name:"练习",label:"Practice"},{name:"设计工具 · Skills",label:"Skills"},{name:"作品归档",label:"Archive"}];
 const HUB=[
   {label:"关于我", act:()=>expandPage('resume')},
   {label:"作品集", act:showWorks},
@@ -337,11 +338,12 @@ function renderMenu(level){
       ()=>{if(phase==='works')morphTo(tr(HOME));},
       ()=>{if(phase==='works')enterSection(name);})));
     menuEl.appendChild(selected);
-    const practice=buildItem(tr('练习'),
-      ()=>{markActivity();if(phase==='works')morphTo('Practice');},
+    const collections=document.createElement('div');collections.className='work-collections';
+    COLLECTIONS.forEach(item=>collections.appendChild(buildItem(item.label,
+      ()=>{markActivity();if(phase==='works')morphTo(item.label);},
       ()=>{if(phase==='works')morphTo(tr(HOME));},
-      ()=>{if(phase==='works')enterSection('练习');});
-    practice.classList.add('practice-entry');menuEl.appendChild(practice);
+      ()=>{if(phase==='works')enterSection(item.name);})));
+    menuEl.appendChild(collections);
   }
 }
 
@@ -416,7 +418,7 @@ secBack.addEventListener('click',()=>{
   if(phase!=='section')return;
   let path='';
   try{path=section.querySelector('iframe')?.contentWindow.location.pathname.split('/').pop();}catch(_){}
-  if(['arright.html','drift.html','design-skills.html','more.html'].includes(path)){
+  if(['arright.html','drift.html'].includes(path)){
     showWorks();enterSection('练习');
   }else showWorks();
 });
@@ -431,9 +433,9 @@ const SECTION_PAGE={
   "良渚 · XR":"sections/xr.html?v=flowing-cover-20261024",
   "漂移之屋":"sections/drift.html",
   "千里江山":"sections/qianli.html?v=qianli-ripples-20261024",
-  "设计工具 · Skills":"sections/design-skills.html",
-  "作品归档":"sections/more.html",
-  "练习":"sections/practice.html?v=focused-works-20261024",
+  "设计工具 · Skills":"sections/design-skills.html?v=peer-collections-20261024",
+  "作品归档":"sections/more.html?v=peer-collections-20261024",
+  "练习":"sections/practice.html?v=peer-collections-20261024",
 };
 function enterSection(name){
   if(phase!=='works')return;phase='transit';clearWatch();navigationChanged();
@@ -476,7 +478,7 @@ function updateBackLabels(){
   const english=window.PortfolioI18n?.language==='en';
   dotEl.setAttribute('aria-label',isAssistantAvailable()?(assistantOpen?(english?'Close AI conversation':'收起 AI 对话'):(english?'Open AI conversation':'打开 AI 对话')):(english?'Enter navigation':'进入导航'));
   let practiceDetail=false;
-  try{practiceDetail=['arright.html','drift.html','design-skills.html','more.html'].includes(section.querySelector('iframe')?.contentWindow.location.pathname.split('/').pop());}catch(_){}
+  try{practiceDetail=['arright.html','drift.html'].includes(section.querySelector('iframe')?.contentWindow.location.pathname.split('/').pop());}catch(_){}
   for(const button of [backBtn,toHubBtn,secBack]){
     const label=button===secBack?(practiceDetail?(english?'Back to Practice':'返回练习'):(english?'Back to works':'返回作品集')):(english?'Back to navigation':'返回导航');
     button.setAttribute('aria-label',label);button.title=label;
