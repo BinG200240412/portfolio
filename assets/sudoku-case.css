@@ -1,5 +1,5 @@
 /* The case study shares the hero's canvas; chapters add no opaque panels. */
-.sudoku-story{position:relative;width:calc(var(--layout-width) * .6);
+.sudoku-story{position:relative;width:calc(var(--layout-width) * .5);
   max-width:calc(100% - var(--layout-offset) - var(--copy-start));
   margin-left:calc(var(--layout-offset) + var(--copy-start));
   padding:clamp(72px,10svh,120px) var(--scene-gutter) 0 0;min-width:0}

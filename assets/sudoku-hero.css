@@ -1,9 +1,9 @@
 /* Board, type and story share one centred composition on wide displays. */
 .sudoku-scenes{--layout-width:min(100vw,1440px);
   --layout-offset:calc((100vw - var(--layout-width)) * .5);
-  --copy-start:calc(var(--layout-width) * .4);
+  --copy-start:calc(var(--layout-width) * .5);
   --scene-gutter:clamp(24px,calc(var(--layout-width) * .055),88px);--scene-progress:0;
-  --scene-drift:calc(var(--layout-width) * .02);
+  --scene-drift:calc(var(--layout-width) * .1);
   position:relative;isolation:isolate;width:100%;margin:0}
 .hero{position:relative;display:flex;align-items:center;justify-content:flex-end;
   width:var(--layout-width);max-width:100%;margin-inline:auto;
@@ -12,16 +12,16 @@
 .sudoku-hero-art{position:fixed;z-index:-1;inset:0;overflow:hidden;pointer-events:none;user-select:none}
 .sudoku-board-angle{--board-size:max(1440px,calc(var(--layout-width) * 1.42));
   position:absolute;width:var(--board-size);height:var(--board-size);
-  left:calc(var(--layout-offset) - var(--board-size) * .76 - var(--layout-width) * .16);top:calc(var(--board-size) * -.49);
+  left:calc(var(--layout-offset) - var(--board-size) * .76 - var(--layout-width) * .04);top:calc(var(--board-size) * -.49);
   transform:translateX(calc(-1 * var(--scene-drift) * var(--scene-progress))) rotate(-22deg);
   transform-origin:50% 50%;pointer-events:none}
 #sudoku-hero-matrix{display:block;width:100%;height:100%;pointer-events:none}
-.hero-main{position:relative;width:60%;margin:0;padding-right:var(--scene-gutter)}
+.hero-main{position:relative;width:50%;margin:0;padding-right:var(--scene-gutter);text-align:right}
 .hero h1{font-size:clamp(100px,calc(var(--layout-width) * .112),164px);font-weight:300;line-height:.95;
   letter-spacing:-.065em;white-space:nowrap}
 .hero h1 span{color:var(--accent)}
 .hero-line{margin-top:30px;font-size:17px;line-height:1.7;letter-spacing:.04em}
-.sudoku-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 26px;margin-top:36px}
+.sudoku-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:12px 26px;margin-top:36px}
 .sudoku-action{display:inline-flex;align-items:center;justify-content:space-between;gap:15px;min-height:46px;
   padding:7px 0;border-bottom:1px solid var(--soft);font-size:15px;line-height:1.5;color:var(--ink);
   transition:color .2s,border-color .2s}
@@ -31,7 +31,7 @@
 
 .sudoku-gallery{position:relative;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1fr);
   align-items:center;gap:clamp(24px,calc(var(--layout-width) * .03),60px);
-  width:calc(var(--layout-width) * .6);margin-left:calc(var(--layout-offset) + var(--copy-start));
+  width:calc(var(--layout-width) * .5);margin-left:calc(var(--layout-offset) + var(--copy-start));
   min-height:100svh;padding:72px var(--scene-gutter) 72px 0;background:transparent}
 .sudoku-gallery-copy{min-width:0;max-width:430px;justify-self:center}
 .sudoku-gallery-copy h2{font-size:clamp(26px,calc(var(--layout-width) * .034),42px);font-weight:300;line-height:1.5;letter-spacing:-.02em}
@@ -51,7 +51,7 @@
 .sudoku-scene-footer .case-link{display:inline-flex;align-items:center;min-height:44px;font-size:13px;color:var(--mid)}
 .sudoku-scene-footer .case-link:hover{color:var(--ink)}
 @media(max-width:1000px) and (min-width:721px){
-  .sudoku-board-angle{left:calc(var(--board-size) * -.84 - var(--layout-width) * .18)}
+  .sudoku-board-angle{left:calc(var(--layout-offset) + var(--copy-start) - var(--board-size) * 1.12 - 40px)}
   .hero h1{font-size:12vw}
 }
 @media(max-width:720px){
@@ -60,10 +60,10 @@
   .hero{min-height:100svh;align-items:flex-end;justify-content:flex-start;padding:96px 26px 12svh}
   .sudoku-board-angle{--board-size:clamp(1200px,250vw,1800px);
     left:calc(var(--board-size) * -.65);top:calc(var(--board-size) * -.6)}
-  .hero-main{width:100%;padding-right:0}
+  .hero-main{width:100%;padding-right:0;text-align:left}
   .hero h1{font-size:clamp(84px,22vw,150px)}
   .hero-line{font-size:15px;margin-top:24px}
-  .sudoku-actions{margin-top:24px;gap:10px 24px}
+  .sudoku-actions{justify-content:flex-start;margin-top:24px;gap:10px 24px}
   .sudoku-action{font-size:14px}
   .sudoku-gallery{grid-template-columns:1fr;gap:28px;width:100%;margin-left:0;padding:64px 26px 42px}
   .sudoku-gallery-copy{width:100%;max-width:none;justify-self:start}
