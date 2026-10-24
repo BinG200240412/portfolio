@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').matches) {
+  document.documentElement.classList.add('gogo-cover-pending');
+  setTimeout(() => document.documentElement.classList.remove('gogo-cover-pending'), 3000);
+}
+</script>
 <meta name="description" content="狗GO：以机器狗与 AR 眼镜串联良渚遗址公园中的文化线索，从核心概念、研究框架到体验流程。">
 <script src="../assets/i18n-main.js?v=focused-works-20261024"></script>
 <script src="../assets/i18n-cases.js?v=focused-copy-20261024"></script>
@@ -12,10 +18,12 @@
 <title>狗GO — 良渚遗址公园探索式体验设计</title>
 <link rel="stylesheet" href="../assets/theme.css?v=led-scroll-cue-20261024">
 <link rel="stylesheet" href="../assets/xr-page.css?v=large-chapters-20261024">
-<link rel="stylesheet" href="../assets/xr-dog-hero.css?v=large-chapters-20261024">
-<script src="../assets/xr-dog-matrix.js?v=flowing-cover-20261024" defer></script>
-<link rel="stylesheet" href="../assets/xr-image-fringe.css?v=edge-spill-20261024">
-<script defer src="../assets/xr-image-fringe.js?v=edge-spill-20261024"></script>
+<link rel="stylesheet" href="../assets/xr-dog-hero.css?v=hinged-cover-20261025">
+<script src="../assets/xr-dog-matrix.js?v=five-companions-20261025" defer></script>
+<link rel="stylesheet" href="../assets/xr-image-fringe.css?v=hinged-cover-20261025">
+<script defer src="../assets/xr-image-fringe.js?v=hinged-cover-20261025"></script>
+<script defer src="../assets/vendor/gsap/gsap.min.js"></script>
+<script defer src="../assets/xr-cover-motion.js?v=hinged-cover-20261025"></script>
 <link rel="stylesheet" href="../assets/ambient-field.css?v=tidal-led-20261024">
 <script defer src="../assets/ambient-field.js?v=tidal-led-20261024"></script>
 </head>
@@ -25,7 +33,7 @@
   <div class="gogo-hero-art" aria-hidden="true"><canvas id="gogo-dog-matrix"></canvas></div>
   <div class="gogo-hero-procession" aria-hidden="true"><canvas id="gogo-mini-matrix"></canvas></div>
   <div class="gogo-hero-stage">
-  <figure class="gogo-figure gogo-hero-photo"><button class="gogo-zoom" type="button" data-caption="游客佩戴头显，与机器狗一同停留在良渚的水岸" aria-label="游客佩戴头显，与机器狗一同停留在良渚的水岸" aria-haspopup="dialog"><img src="../assets/works/xr/originals/cover-f237d814.webp?v=opaque-cover-20261024" alt="游客佩戴头显，与机器狗一同停留在良渚的水岸" width="2400" height="1344" fetchpriority="high" decoding="async"></button><h1>狗GO<span class="gogo-title-dot" aria-hidden="true"></span></h1></figure>
+  <figure class="gogo-figure gogo-hero-photo"><div class="gogo-cover-leaf"><button class="gogo-zoom" type="button" data-caption="游客佩戴头显，与机器狗一同停留在良渚的水岸" aria-label="游客佩戴头显，与机器狗一同停留在良渚的水岸" aria-haspopup="dialog"><img src="../assets/works/xr/originals/cover-f237d814.webp?v=opaque-cover-20261024" alt="游客佩戴头显，与机器狗一同停留在良渚的水岸" width="2400" height="1344" fetchpriority="high" decoding="async"></button><h1>狗GO<span class="gogo-title-dot" aria-hidden="true"></span></h1></div></figure>
   <div class="gogo-hero-copy">
   <div class="gogo-title-row"><div><p class="gogo-project-name">良渚遗址公园探索式体验设计</p></div></div>
   <div class="gogo-opening"><p>让现代行走的路径，映射为古代生活的一日行程。</p><span>自由游览 → 发现线索 → 生成叙事</span></div>

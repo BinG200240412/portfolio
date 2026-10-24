@@ -16,7 +16,7 @@
   const miniInk = miniMask.getContext('2d', { alpha: true, willReadFrequently: true });
   if (!mainInk || !miniInk) return;
   let ink = mainInk;
-  const TAU = Math.PI * 2, FPS = 20;
+  const TAU = Math.PI * 2, FPS = 20, COMPANIONS = 5;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const forced = matchMedia('(forced-colors: active)');
   const dialog = document.getElementById('gogo-lightbox');
@@ -133,14 +133,17 @@
     ink = miniInk; pitch = miniPitch;
     ink.setTransform(1, 0, 0, 1, 0, 0); ink.clearRect(0, 0, miniMask.width, miniMask.height);
     // The companions cross the open top of the same scrolling composition.
-    const smallScale = compact ? .10 : .18;
+    const smallScale = compact ? Math.min(.10, miniWidth / (COMPANIONS * 560)) : .18;
     const smallWidth = 470 * smallScale;
-    const runway = miniWidth + smallWidth * 1.8;
-    const start = runway * .18;
-    for (let index = 0; index < 3; index++) {
-      const x = ((start + index * runway / 3 + time * (compact ? 8 : 15)) % runway) - smallWidth * .7;
+    const runway = miniWidth;
+    const start = runway * .1;
+    for (let index = 0; index < COMPANIONS; index++) {
+      const x = (start + index * runway / COMPANIONS + time * (compact ? 8 : 15)) % runway;
       const floor = miniHeight - (compact ? 17 : 15);
       dog(x, floor, smallScale, gait - index * .87, time + index * 2, true);
+      // Wrap the same companion through the clipped edge without disappearing.
+      if (x < smallWidth * .7) dog(x + runway, floor, smallScale, gait - index * .87, time + index * 2, true);
+      if (x > runway - smallWidth * .7) dog(x - runway, floor, smallScale, gait - index * .87, time + index * 2, true);
     }
     paintMask(miniContext, miniMask, miniInk, miniWidth, miniHeight, miniPitch, miniRatio);
   }
@@ -192,7 +195,7 @@
     mask.width = Math.ceil(width / mainPitch); mask.height = Math.ceil(height / mainPitch);
     if (miniCanvas) {
       miniWidth = Math.max(1, miniCanvas.clientWidth); miniHeight = Math.max(1, miniCanvas.clientHeight);
-      miniPitch = compact ? 2.5 : 3;
+      miniPitch = compact ? Math.min(2.5, Math.max(1, miniWidth / (COMPANIONS * 22))) : 3;
       miniRatio = Math.min(devicePixelRatio || 1, 1.5, 4096 / miniWidth);
       miniCanvas.width = Math.round(miniWidth * miniRatio); miniCanvas.height = Math.round(miniHeight * miniRatio);
       miniMask.width = Math.ceil(miniWidth / miniPitch); miniMask.height = Math.ceil(miniHeight / miniPitch);

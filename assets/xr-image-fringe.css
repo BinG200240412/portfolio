@@ -1,29 +1,9 @@
-/* The image stays intact. Flat, sampled LED dots spill beyond its edges. */
-.gogo-pixel-framed{overflow:visible!important;isolation:isolate;background:transparent!important}
-.gogo-pixel-framed>img{position:relative;z-index:1}
-.gogo-pixel-framed::after{z-index:3}
-.gogo-image-fringe{position:absolute;z-index:0;display:block;max-width:none;pointer-events:none;user-select:none}
-.gogo-image-fringe[data-fringe-state="idle"]{display:none}
-.gogo-figure:has(.gogo-pixel-framed)>figcaption{position:relative;padding-top:calc(var(--gogo-fringe-bleed,16px) + 13px)}
-.gogo-hero-photo:has(.gogo-pixel-framed){margin-bottom:max(0px,calc(var(--gogo-fringe-bleed,16px) - 10px))!important}
-.gogo-role-grid{gap:34px}
-.gogo-prototype-grid{gap:48px 40px}
-.gogo-prototype-grid,.gogo-controller-grid,.gogo-place-grid{padding-top:clamp(10px,3vw,40px)}
-.gogo-code-grid{margin-top:56px}
-.gogo-mode{padding-block:48px}
-.gogo-research-grid .gogo-figure:has(.gogo-pixel-framed){margin-top:calc(30px + var(--gogo-fringe-bleed,16px))}
-.gogo-semantics .gogo-figure:has(.gogo-pixel-framed){padding:0;background:transparent;color:inherit}
-.gogo-semantics .gogo-pixel-framed>img,.gogo-dark-art .gogo-pixel-framed>img{background:#212120}
-.gogo-semantics .gogo-figure:has(.gogo-pixel-framed) figcaption{color:var(--soft)}
-.gogo-dark-art .gogo-pixel-framed,.gogo-map .gogo-pixel-framed{padding:0}
-.gogo-map .gogo-pixel-framed>img{background:#fff}
-.gogo-controller .gogo-pixel-framed>img{background:#252620}
-@media(max-width:700px){
- .gogo-role-grid{gap:32px 24px}
- .gogo-prototype-grid{gap:34px}
- .gogo-code-grid{margin-top:38px}
- .gogo-mode{padding-block:27px}
- .gogo-figure:has(.gogo-pixel-framed)>figcaption{padding-top:calc(var(--gogo-fringe-bleed,12px) + 10px)}
-}
-@media(forced-colors:active){.gogo-image-fringe{display:none}}
-@media print{.gogo-image-fringe{display:none}}
+/* The cover alone casts a broad, coherent LED ripple on the page plane. */
+.gogo-hero-photo .gogo-pixel-framed{background:transparent}
+.gogo-hero-photo .gogo-pixel-framed>img{position:relative;z-index:1}
+.gogo-hero-photo .gogo-pixel-framed::after{z-index:3}
+.gogo-hero-photo .gogo-image-fringe{position:absolute;z-index:0;display:block;max-width:none;pointer-events:none;user-select:none;transform-origin:100% 50%}
+.gogo-hero-photo .gogo-image-fringe[data-fringe-state="idle"]{display:none}
+.gogo-hero-photo:has(.gogo-pixel-framed){margin-bottom:max(0px,calc(var(--gogo-fringe-bleed,24px) - 10px))!important}
+@media(forced-colors:active){.gogo-hero-photo .gogo-image-fringe{display:none}}
+@media print{.gogo-hero-photo .gogo-image-fringe{display:none}}

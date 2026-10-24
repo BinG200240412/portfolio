@@ -1,4 +1,4 @@
-/* Static, edge-sampled LED spills. The original image and its lightbox stay intact. */
+/* One coherent, edge-sampled LED shadow behind the hinged cover. */
 (() => {
   'use strict';
   const forced = matchMedia('(forced-colors: active)');
@@ -24,9 +24,14 @@
     return parts && parts.length >= 3 ? parts : [17, 17, 16, 1];
   }
   function geometry(image, button) {
-    const box = image.getBoundingClientRect(), parent = button.getBoundingClientRect();
+    const leaf = button.closest('.gogo-cover-leaf');
+    const scene = button.closest('.gogo-hero-photo').getBoundingClientRect();
+    // Layout dimensions remain stable while the leaf is rotating in 3D.
+    const box = { width: image.clientWidth, height: image.clientHeight };
     const fit = getComputedStyle(image).objectFit;
-    let width = box.width, height = box.height, x = box.left - parent.left, y = box.top - parent.top;
+    let width = box.width, height = box.height;
+    let x = leaf.offsetLeft + button.offsetLeft + image.offsetLeft;
+    let y = leaf.offsetTop + button.offsetTop + image.offsetTop;
     let sx = 0, sy = 0, sw = image.naturalWidth, sh = image.naturalHeight;
     if (fit === 'contain') {
       const scale = Math.min(width / sw, height / sh), w = sw * scale, h = sh * scale;
@@ -38,10 +43,9 @@
       const cropW = width / scale, cropH = height / scale;
       sx = (sw - cropW) / 2; sy = (sh - cropH) / 2; sw = cropW; sh = cropH;
     }
-    const desired = clamp(Math.min(width, height) * .16, 24, 66);
-    // Keep the spill inside the page, including a 320px phone viewport.
-    const bleed = Math.max(0, Math.floor(Math.min(desired, parent.left + x - 8,
-      innerWidth - (parent.left + x + width) - 8)));
+    const desired = clamp(Math.min(width, height) * .13, 32, 90);
+    // The right hinge is flush with the screen; its shadow ends on that edge.
+    const bleed = Math.max(0, Math.floor(Math.min(desired, scene.left + x - 8)));
     return { width, height, x, y, sx, sy, sw, sh, bleed };
   }
   function sample(entry, g) {
@@ -77,32 +81,40 @@
     }
     if (!pixels) return;
     const { width: w, height: h, bleed } = g;
-    const ratio = Math.min(devicePixelRatio || 1, 1.5, 4096 / (w + bleed * 2), 4096 / (h + bleed * 2));
-    canvas.width = Math.ceil((w + bleed * 2) * ratio);
+    const ratio = Math.min(devicePixelRatio || 1, 1.5, 4096 / (w + bleed), 4096 / (h + bleed * 2));
+    canvas.width = Math.ceil((w + bleed) * ratio);
     canvas.height = Math.ceil((h + bleed * 2) * ratio);
-    Object.assign(canvas.style, { width: `${w + bleed * 2}px`, height: `${h + bleed * 2}px`,
+    Object.assign(canvas.style, { width: `${w + bleed}px`, height: `${h + bleed * 2}px`,
       left: `${g.x - bleed}px`, top: `${g.y - bleed}px` });
     entry.figure.style.setProperty('--gogo-fringe-bleed', `${bleed}px`);
     const ctx = canvas.getContext('2d'); if (!ctx) return;
     ctx.setTransform(ratio, 0, 0, ratio, bleed * ratio, bleed * ratio);
     const bg = colour(getComputedStyle(document.body).backgroundColor);
-    const pitch = innerWidth <= 720 ? 4 : 5.5, radius = pitch * .35;
+    const pitch = innerWidth <= 720 ? 4 : 5.5, radius = pitch * .37;
     const seed = entry.seed;
     function dot(x, y, col, row) {
-      const dx = Math.max(-x, 0, x - w), dy = Math.max(-y, 0, y - h);
-      const distance = Math.hypot(dx, dy);
-      if (!distance || distance > bleed) return;
-      const tide = noise(x / 87, y / 87, seed) * .56 + noise(x / 29, y / 29, seed + 17) * .30
-        + noise(x / 12, y / 12, seed + 31) * .14;
-      const reach = bleed * (.12 + .88 * smooth(clamp((tide - .22) / .49, 0, 1)));
+      const corner = Math.min(26, w / 2, h / 2);
+      const qx = Math.abs(x - w / 2) - (w / 2 - corner);
+      const qy = Math.abs(y - h / 2) - (h / 2 - corner);
+      const distance = Math.hypot(Math.max(qx, 0), Math.max(qy, 0))
+        + Math.min(Math.max(qx, qy), 0) - corner;
+      if (distance <= 0 || distance > bleed) return;
+      const tide = noise(x / 220, y / 220, seed) * .7 + noise(x / 480, y / 480, seed + 17) * .3;
+      const wave = .5 + .5 * Math.sin(x / 140 + y / 190 + (seed >>> 0) / 1e8);
+      // A single joined silhouette, with smaller stepped inlets along its edge.
+      const inlet = noise(x / 42, y / 42, seed + 37);
+      const reach = pitch * Math.round(bleed * (.34 + .44 * (tide * .55 + wave * .45) + .22 * inlet) / pitch);
       const t = distance / reach;
-      if (t >= 1 || hash(col, row, seed + 53) > Math.pow(1 - t, .72) * .98) return;
+      if (t >= 1) return;
       // Continue the neighbouring colour outwards; never invent a gold/grey frame.
       const u = clamp(x / w, 0, 1), v = clamp(y / h, 0, 1);
       const px = Math.round(u * (pixels.width - 1)), py = Math.round(v * (pixels.height - 1));
       const at = (py * pixels.width + px) * 4;
       if (pixels.data[at + 3] < 80) return;
-      const mix = .05 + Math.pow(t, .9) * .86;
+      // Whole-dot colour terraces form two broad ripples; no random dropout.
+      const band = Math.round(t * 10) / 10;
+      const strength = Math.pow(1 - band, 1.12) * (.84 + .16 * Math.cos(band * TAU * 2));
+      const mix = 1 - strength * .76;
       const rgb = [0, 1, 2].map(k => Math.round(pixels.data[at + k] * (1 - mix) + bg[k] * mix));
       ctx.fillStyle = `rgb(${rgb.join(',')})`;
       ctx.beginPath(); ctx.arc(x, y, radius, 0, TAU); ctx.fill();
@@ -110,7 +122,7 @@
     // Only iterate the border strips, never every pixel of the full photograph.
     for (let row = Math.floor(-bleed / pitch); row <= Math.ceil((h + bleed) / pitch); row++) {
       const y = (row + .5) * pitch;
-      if (y < 0 || y > h) {
+      if (y < 26 || y > h - 26) {
         for (let col = Math.floor(-bleed / pitch); col <= Math.ceil((w + bleed) / pitch); col++) dot((col + .5) * pitch, y, col, row);
       } else {
         for (let col = Math.floor(-bleed / pitch); col < 0; col++) dot((col + .5) * pitch, y, col, row);
@@ -118,6 +130,7 @@
       }
     }
     entry.dirty = false; canvas.dataset.fringeState = 'ready';
+    entry.figure.dispatchEvent(new Event('gogo:cover-shadow-ready'));
   }
   function active() {
     return shown && !document.hidden && !forced.matches && (!host || host.classList.contains('on'));
@@ -145,7 +158,7 @@
     });
     queue();
   });
-  document.querySelectorAll('.gogo-zoom').forEach(button => {
+  document.querySelectorAll('.gogo-hero-photo .gogo-zoom').forEach(button => {
     const image = button.querySelector('img'), figure = button.closest('.gogo-figure');
     if (!image || !figure) return;
     const canvas = document.createElement('canvas');
@@ -155,7 +168,7 @@
     let seed = 2166136261;
     for (const letter of image.getAttribute('src').split('?')[0]) seed = Math.imul(seed ^ letter.charCodeAt(0), 16777619);
     const entry = { image, button, figure, canvas, seed, visible: false, dirty: true, sample: null, blocked: false };
-    entries.push(entry); button.classList.add('gogo-pixel-framed'); button.prepend(canvas);
+    entries.push(entry); button.classList.add('gogo-pixel-framed'); figure.prepend(canvas);
     image.addEventListener('load', () => {
       entry.sample = null; entry.dirty = true; entry.blocked = false;
       button.classList.add('gogo-pixel-framed'); queue();
@@ -166,6 +179,7 @@
   new MutationObserver(refresh).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   if (host) new MutationObserver(refresh).observe(host, { attributes: true, attributeFilter: ['class'] });
   document.addEventListener('visibilitychange', refresh);
+  addEventListener('resize', refresh, { passive: true });
   forced.addEventListener('change', refresh);
   addEventListener('pagehide', () => { shown = false; if (pending) cancelAnimationFrame(pending); pending = 0; entries.forEach(clear); });
   addEventListener('pageshow', () => { shown = true; refresh(); });
