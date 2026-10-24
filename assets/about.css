@@ -10,7 +10,19 @@ body.portfolio-shell #resume.live{
   gap:clamp(40px,6vw,76px);align-items:center;width:100%;min-width:0;
 }
 .about-portrait{
-  display:block;width:100%;max-width:320px;min-width:0;margin:0;justify-self:end;
+  --about-frame-size:32px;
+  --about-frame-image:url("works/xr/frame/carved-wood-dark.svg?v=carved-frame-20261025");
+  position:relative;display:block;width:100%;max-width:320px;min-width:0;
+  margin:0;padding:var(--about-frame-size);justify-self:end;
+}
+.about-portrait::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  border:var(--about-frame-size) solid transparent;
+  border-image-source:var(--about-frame-image);border-image-slice:64;
+  border-image-width:1;border-image-repeat:round;
+}
+html[data-theme="light"] .about-portrait{
+  --about-frame-image:url("works/xr/frame/carved-wood-light.svg?v=carved-frame-20261025");
 }
 .about-portrait>img{
   display:block;width:100%;height:auto;object-fit:contain;
@@ -68,7 +80,7 @@ html[lang="en"] #resume .about-details li{font-size:14px;line-height:1.7}
 @media(max-width:768px){
   body.portfolio-shell #resume{max-width:740px;padding:82px 28px 80px}
   .about-hero{grid-template-columns:minmax(0,1fr);gap:30px;justify-items:start}
-  .about-portrait{max-width:300px;width:min(100%,300px)}
+  .about-portrait{--about-frame-size:28px;max-width:300px;width:min(100%,300px)}
   .about-intro{width:100%}
   #resume .about-intro .cv-head h1{font-size:clamp(42px,7.5vw,60px)}
   #resume .about-intro .cv-head .latin{font-size:14px}
@@ -84,7 +96,7 @@ html[lang="en"] #resume .about-details li{font-size:14px;line-height:1.7}
 @media(max-width:480px){
   body.portfolio-shell #resume{padding:84px 24px 64px}
   .about-hero{gap:27px}
-  .about-portrait{width:min(100%,280px);max-width:280px}
+  .about-portrait{--about-frame-size:24px;width:min(100%,280px);max-width:280px}
   #resume .about-intro .cv-head{margin-bottom:23px}
   #resume .about-intro .cv-head h1{font-size:clamp(36px,8.9vw,45px)}
   #resume .about-intro .cv-head .latin{font-size:13px}
@@ -96,6 +108,7 @@ html[lang="en"] #resume .about-details li{font-size:14px;line-height:1.7}
   #about-companion{transition:none!important;will-change:auto!important}
 }
 @media(forced-colors:active){
+  .about-portrait::after{border-image:none;border:1px solid CanvasText}
   .about-portrait>img{forced-color-adjust:none}
   #about-companion{filter:none}
 }
