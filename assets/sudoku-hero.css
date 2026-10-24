@@ -1,37 +1,61 @@
-/* The board is larger than the frame: one LED corner enters from the upper left. */
-.page{--sudoku-gutter:clamp(22px,5.5vw,76px)}
-.hero{position:relative;isolation:isolate;display:flex;flex-direction:column;
-  min-height:clamp(560px,74svh,780px);padding:40px 0 54px}
-.sudoku-hero-art{position:absolute;z-index:-1;top:0;bottom:0;
-  left:calc(-1 * var(--sudoku-gutter));right:calc(-1 * var(--sudoku-gutter));
-  overflow:hidden;pointer-events:none;user-select:none}
-.sudoku-board-angle{--board-size:clamp(1100px,114vw,1720px);
+/* Edge-to-edge scenes: the living board belongs to the viewport, not a card. */
+.sudoku-scenes{--scene-gutter:clamp(24px,5.5vw,88px);width:100%;margin:0}
+.hero{position:relative;isolation:isolate;display:flex;align-items:center;justify-content:flex-end;
+  min-height:100svh;padding:72px var(--scene-gutter);background:var(--paper)}
+.sudoku-hero-art{position:absolute;z-index:-1;inset:0;overflow:hidden;pointer-events:none;user-select:none}
+.sudoku-board-angle{--board-size:clamp(1440px,142vw,2440px);
   position:absolute;width:var(--board-size);height:var(--board-size);
-  left:calc(var(--board-size) * -.72);top:calc(var(--board-size) * -.55);
+  left:calc(var(--board-size) * -.76);top:calc(var(--board-size) * -.49);
   transform:rotate(-22deg);transform-origin:50% 50%;pointer-events:none}
 #sudoku-hero-matrix{display:block;width:100%;height:100%;pointer-events:none}
-.hero .hero-kicker{position:relative;align-self:flex-end;display:flex;flex-direction:column;
-  width:52%;gap:7px;font-size:12px;line-height:1.65;letter-spacing:.03em}
-.hero .hero-kicker>span:last-child{text-align:left}
-.hero .hero-main{position:relative;display:block;width:52%;margin: auto 0 28px auto}
-.hero h1{font-size:clamp(100px,11.7vw,164px);line-height:.95;letter-spacing:-.065em}
-.hero .hero-line{margin-top:25px;font-size:17px}
-.hero .hero-aside{max-width:none;margin-top:25px;padding:0}
-.hero .hero-aside .project-type{margin-top:0}
+.hero-main{position:relative;width:42%;margin:0}
+.hero h1{font-size:clamp(100px,11.2vw,164px);font-weight:300;line-height:.95;
+  letter-spacing:-.065em;white-space:nowrap}
+.hero h1 span{color:var(--accent)}
+.hero-line{margin-top:30px;font-size:17px;line-height:1.7;letter-spacing:.04em}
+
+.sudoku-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:center;gap:clamp(40px,8vw,140px);
+  min-height:100svh;padding:72px var(--scene-gutter);background:var(--paper)}
+.sudoku-gallery-copy{min-width:0;max-width:430px;justify-self:center}
+.sudoku-gallery-copy h2{font-size:clamp(26px,3.4vw,42px);font-weight:300;line-height:1.5;letter-spacing:-.02em}
+.sudoku-gallery-copy>p{margin-top:15px;font-size:14px;line-height:1.85;color:var(--mid)}
+.sudoku-screen-tabs{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:38px}
+.sudoku-screen-tab{min-height:44px;font-size:14px;line-height:1.5;color:var(--soft);
+  border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.sudoku-screen-tab[aria-pressed="true"]{color:var(--ink);border-color:var(--accent)}
+.sudoku-screen-tab:hover{color:var(--ink)}
+#sudoku-gallery-status{font-size:12px;color:var(--mid)}
+.sudoku-gallery-figure{min-width:0;justify-self:center;text-align:center;max-width:100%;margin:0}
+#sudoku-active-open{display:block;position:relative;max-width:100%;transition:opacity .15s ease}
+#sudoku-active-open.is-switching{opacity:.25}
+#sudoku-active-image{display:block;width:auto;max-width:100%;height:auto;max-height:76svh;object-fit:contain}
+#sudoku-active-caption{margin-top:16px;font-size:12px;color:var(--soft)}
+.sudoku-scene-footer{display:flex;justify-content:flex-end;padding:20px var(--scene-gutter) 38px}
+.sudoku-scene-footer .case-link{display:inline-flex;align-items:center;min-height:44px;font-size:13px;color:var(--mid)}
+.sudoku-scene-footer .case-link:hover{color:var(--ink)}
 @media(max-width:1000px) and (min-width:721px){
+  .sudoku-board-angle{left:calc(var(--board-size) * -.84)}
   .hero h1{font-size:12vw}
-  .sudoku-board-angle{left:calc(var(--board-size) * -.76)}
 }
 @media(max-width:720px){
-  .hero{min-height:570px;padding-top:30px;padding-bottom:38px;gap:32px}
-  .sudoku-board-angle{--board-size:clamp(760px,180vw,1100px);
-    left:calc(var(--board-size) * -.62);top:calc(var(--board-size) * -.72)}
-  .hero .hero-kicker{width:100%;align-self:flex-start;margin-top:clamp(200px,calc(35vw + 60px),300px);
-    gap:5px;font-size:10px;overflow-wrap:anywhere}
-  .hero .hero-main{width:100%;margin: auto 0 24px}
-  .hero h1{font-size:clamp(86px,22vw,150px)}
-  .hero .hero-line{font-size:15px;margin-top:22px}
-  .hero .hero-aside{margin-top:20px}
+  .hero{align-items:flex-end;justify-content:flex-start;padding:96px 26px 12svh}
+  .sudoku-board-angle{--board-size:clamp(1200px,250vw,1800px);
+    left:calc(var(--board-size) * -.65);top:calc(var(--board-size) * -.6)}
+  .hero-main{width:100%}
+  .hero h1{font-size:clamp(84px,22vw,150px)}
+  .hero-line{font-size:15px;margin-top:24px}
+  .sudoku-gallery{grid-template-columns:1fr;gap:28px;padding:64px 26px 42px}
+  .sudoku-gallery-copy{width:100%;max-width:none;justify-self:start}
+  .sudoku-gallery-copy h2{font-size:26px}
+  .sudoku-gallery-copy>p{margin-top:10px;font-size:13px}
+  .sudoku-screen-tabs{margin-top:20px;gap:3px 20px}
+  .sudoku-screen-tab{font-size:13px}
+  #sudoku-active-image{max-height:58svh}
 }
-@media(max-width:400px){.hero{min-height:535px}.hero h1{font-size:23vw}}
+@media(max-width:720px) and (max-height:540px){
+  .hero{padding:72px 26px 46px;justify-content:flex-end}
+  .sudoku-board-angle{left:calc(var(--board-size) * -.9);top:calc(var(--board-size) * -.5)}
+  .hero-main{width:48%}.hero h1{font-size:12vw}
+}
+@media(prefers-reduced-motion:reduce){.sudoku-screen-tab,#sudoku-active-open{transition:none}}
 @media(forced-colors:active){.sudoku-hero-art{display:none}}
