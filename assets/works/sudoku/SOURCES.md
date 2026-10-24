@@ -2,6 +2,14 @@
 
 采集日期：2026-10-24。此目录用于第一版极简数独，Bundle ID `com.hanyuzhu.sudoku`、App Store ID `6775198044`；与美式报刊视觉探索的素材分开。
 
+## iPhone 机身外框
+
+2026-10-25 新增 `iphone-17-pro-max-deep-blue-portrait.png`，来自 [Apple Design Resources / Product Bezels](https://developer.apple.com/design/resources/#product-bezels) 的 [iPhone 17 官方素材包](https://devimages-cdn.apple.com/design/resources/download/Bezel-iPhone-17.dmg)。原文件名 `iPhone 17 Pro Max - Deep Blue - Portrait.png`，1470 × 3000，526,669 字节；按原始字节复制，未重绘、调色或重新编码。使用遵循 Apple 原包附带条款及其链接的 [Marketing Resources and Identity Guidelines](https://developer.apple.com/app-store/marketing/guidelines/)。
+
+屏幕开口坐标为 x=75、y=66，尺寸 1320 × 2868，与下列原始截图一致。网页以独立图层叠加机身，保留官方边框、按键和灵动岛相机细节；五张截图文件未修改。图库、辅导展示及放大查看复用同一机身，切换仅改变内部截图。
+
+SHA-256：`5201a518fd2d3c6f968ad522a195c24793d7583e1d011d618aa705383bdde4da`。
+
 ## 当前作品页的五张截图
 
 五张均来自同一份真实原生 App 开发构建：`1.2 (28)`，Debug / iOS Simulator。统一为中文界面、鼠尾绿 `.sage` 主题、6.9 寸 iPhone 17 Pro Max、iOS 26.5、1320 × 2868；状态栏固定 09:41。

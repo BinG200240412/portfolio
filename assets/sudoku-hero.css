@@ -42,10 +42,11 @@
 .sudoku-screen-tab[aria-pressed="true"]{color:var(--ink);border-color:var(--accent)}
 .sudoku-screen-tab:hover{color:var(--ink)}
 #sudoku-gallery-status{font-size:12px;color:var(--mid)}
-.sudoku-gallery-figure{min-width:0;justify-self:center;text-align:center;max-width:100%;margin:0}
-#sudoku-active-open{display:block;position:relative;max-width:100%;transition:opacity .15s ease}
-#sudoku-active-open.is-switching{opacity:.25}
-#sudoku-active-image{display:block;width:auto;max-width:100%;height:auto;max-height:76svh;object-fit:contain}
+.sudoku-gallery-figure{min-width:0;width:100%;justify-self:center;text-align:center;max-width:100%;margin:0}
+#sudoku-active-open{--phone-height:76svh;display:block;position:relative;
+  width:min(100%,calc(var(--phone-height) * .49));margin-inline:auto;cursor:zoom-in}
+#sudoku-active-open.is-switching #sudoku-active-image{opacity:.25}
+#sudoku-active-image{transition:opacity .15s ease}
 #sudoku-active-caption{margin-top:16px;font-size:12px;color:var(--soft)}
 .sudoku-scene-footer{display:flex;justify-content:flex-end;width:var(--layout-width);max-width:100%;margin-left:auto;margin-right:0;padding:20px var(--scene-gutter) 38px}
 .sudoku-scene-footer .case-link{display:inline-flex;align-items:center;min-height:44px;font-size:13px;color:var(--mid)}
@@ -73,12 +74,12 @@
   .sudoku-gallery-copy>p{margin-top:10px;font-size:13px}
   .sudoku-screen-tabs{margin-top:20px;gap:3px 20px}
   .sudoku-screen-tab{font-size:13px}
-  #sudoku-active-image{max-height:58svh}
+  #sudoku-active-open{--phone-height:58svh}
 }
 @media(max-width:720px) and (max-height:540px){
   .hero{padding:72px 26px 46px;justify-content:flex-start}
   .sudoku-board-angle{left:calc(var(--board-size) * -.18);top:calc(var(--board-size) * -1.08)}
   .hero-main{width:100%}.hero h1{font-size:12vw}
 }
-@media(prefers-reduced-motion:reduce){.sudoku-screen-tab,#sudoku-active-open,.sudoku-action,.sudoku-action svg{transition:none}}
+@media(prefers-reduced-motion:reduce){.sudoku-screen-tab,#sudoku-active-image,.sudoku-action,.sudoku-action svg{transition:none}}
 @media(forced-colors:active){.sudoku-hero-art{display:none}}

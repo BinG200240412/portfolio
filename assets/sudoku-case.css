@@ -17,10 +17,19 @@
 .case-lead{font-size:17px;line-height:2;max-width:42em;color:var(--mid)}
 .case-chapter h3{font-size:21px;line-height:1.45;font-weight:300}
 .case-intent h2{max-width:12ch;font-size:clamp(40px,calc(var(--layout-width) * .043),64px)}
+/* Apple iPhone 17 Pro Max PNG: 1470 x 3000, screen at (75,66), 1320 x 2868.
+ * Keep the screenshot separate so screen changes never fade the hardware. */
+.sudoku-device{display:block;position:relative;width:100%;aspect-ratio:1470/3000;isolation:isolate}
+.sudoku-device>.sudoku-device-screen{position:absolute;display:block;left:5.1020408163%;top:2.2%;
+  width:89.7959183673%;height:95.6%;max-width:none;max-height:none;
+  border-radius:14.393939% / 6.624826%;object-fit:contain}
+.sudoku-device::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:url("works/sudoku/iphone-17-pro-max-deep-blue-portrait.png") center/100% 100% no-repeat}
+.viewer-image.is-screen>.sudoku-device{width:min(440px,100%);flex:none;align-self:flex-start}
 .sudoku-story .sudoku-gallery{grid-template-columns:minmax(0,.85fr) minmax(0,1fr);gap:clamp(40px,6vw,96px);width:100%;min-height:0;margin:62px 0 0;padding:0}
 .sudoku-story .sudoku-gallery-copy{justify-self:start}
 .sudoku-story .sudoku-gallery-copy h3{font-size:24px;line-height:1.5}
-.sudoku-story #sudoku-active-image{max-height:min(800px,85svh)}
+.sudoku-story #sudoku-active-open{--phone-height:min(800px,85svh,calc(100svh - 168px))}
 .case-interaction-study{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(44px,6vw,96px);align-items:center;margin-top:52px}
 .case-study-board{width:100%;max-width:440px;aspect-ratio:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--soft)}
 .demo-cell{position:relative;display:grid;place-items:center;aspect-ratio:1;min-width:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:clamp(30px,calc(var(--layout-width) * .03),46px);transition:background .15s}
@@ -45,7 +54,6 @@
 .case-coach-panel p{font-size:16px;line-height:1.95;margin-top:18px;color:var(--mid)}
 .case-coach-figure{justify-self:center;max-width:340px;min-width:0;width:100%;margin:0}
 .case-coach-image{display:block;width:100%;cursor:zoom-in}
-.case-coach-image img{display:block;width:100%;height:auto}
 .case-continuity{margin-top:64px;border-top:1px solid var(--line);padding-top:28px}
 .case-continuity h3{font-size:27px;margin:15px 0}
 .case-continuity>p{font-size:15px;color:var(--mid);line-height:1.95}
@@ -64,7 +72,7 @@
   .sudoku-story .sudoku-gallery{grid-template-columns:1fr;gap:35px}
   .sudoku-story .sudoku-gallery-copy{width:100%;max-width:none}
   .sudoku-story .sudoku-screen-tabs{margin-top:20px}
-  .sudoku-story #sudoku-active-image{max-height:590px}
+  .sudoku-story #sudoku-active-open{--phone-height:min(590px,calc(100svh - 168px))}
   .case-interaction-study,.case-coach-study{grid-template-columns:1fr;gap:38px}
   .case-study-board{max-width:300px;justify-self:center}.case-coach-copy{order:1}.case-coach-figure{order:0}
 }
@@ -80,7 +88,7 @@
   .case-chapter h2{font-size:31px}.case-intent h2{font-size:41px;max-width:11ch}
   .case-lead{font-size:15px;line-height:1.95}
   .sudoku-story .sudoku-gallery{grid-template-columns:1fr;gap:30px;margin-top:42px}
-  .sudoku-story .sudoku-gallery-copy h3{font-size:22px}.sudoku-story #sudoku-active-image{max-height:61svh}
+  .sudoku-story .sudoku-gallery-copy h3{font-size:22px}.sudoku-story #sudoku-active-open{--phone-height:61svh}
   .case-interaction-study{grid-template-columns:1fr;gap:30px;margin-top:36px}
   .case-study-board{max-width:290px;justify-self:center}.demo-cell{font-size:39px}.demo-notes{font-size:16px}
   .case-demo-tools{gap:10px 24px;margin-top:18px}

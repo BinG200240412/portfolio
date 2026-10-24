@@ -20,13 +20,13 @@
 :root,[data-theme="dark"]{color-scheme:dark;--paper:#111210;--ink:#f0f0e8;--mid:#b8bab0;--soft:#83877b;--line:#34372f;--surface:#1b1d18;--accent:#b7bb9f;--photo-paper:#f4f1ea;--sans:"Noto Sans SC",sans-serif;--serif:Georgia,serif;--mono:monospace}
 [data-theme="light"]{color-scheme:light;--paper:#f5f4ed;--ink:#24261f;--mid:#666b5d;--soft:#8c9182;--line:#d6d8cb;--surface:#e9eade;--accent:#626c49}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:400 14px/1.85 var(--sans);-webkit-font-smoothing:antialiased}h1,h2,p,figure{margin:0}button,a{-webkit-tap-highlight-color:transparent;touch-action:manipulation}button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0}a{color:inherit;text-decoration:none}a:focus-visible,button:focus-visible{outline:1px solid var(--ink);outline-offset:7px}::selection{background:var(--ink);color:var(--paper)}
-.media-viewer{border:0;padding:0;background:var(--paper);color:var(--ink);max-width:none;max-height:none;width:100%;height:100%;margin:0;position:fixed;inset:0;overflow:auto}.media-viewer::backdrop{background:#000a}.viewer-bar{height:74px;position:sticky;top:0;z-index:2;background:var(--paper);display:flex;justify-content:space-between;align-items:center;padding:0 28px;gap:24px;border-bottom:1px solid var(--line)}#viewer-caption{font-size:11px;color:var(--mid)}.viewer-close{width:44px;height:44px;display:grid;place-items:center;font:28px/1 var(--mono)}.viewer-image{display:flex;justify-content:center;padding:30px 24px 50px;min-height:calc(100% - 74px)}.viewer-image img{width:auto;max-width:100%;height:auto;object-fit:contain;align-self:flex-start}.viewer-image.is-screen img{width:min(440px,100%)}
+.media-viewer{border:0;padding:0;background:var(--paper);color:var(--ink);max-width:none;max-height:none;width:100%;height:100%;margin:0;position:fixed;inset:0;overflow:auto}.media-viewer::backdrop{background:#000a}.viewer-bar{height:74px;position:sticky;top:0;z-index:2;background:var(--paper);display:flex;justify-content:space-between;align-items:center;padding:0 28px;gap:24px;border-bottom:1px solid var(--line)}#viewer-caption{font-size:11px;color:var(--mid)}.viewer-close{width:44px;height:44px;display:grid;place-items:center;font:28px/1 var(--mono)}.viewer-image{display:flex;justify-content:center;padding:30px 24px 50px;min-height:calc(100% - 74px)}.viewer-image>img{width:auto;max-width:100%;height:auto;object-fit:contain;align-self:flex-start}.viewer-image.is-screen>img{width:min(440px,100%)}
 @media(max-width:720px){.viewer-bar{height:66px;padding-inline:20px}.viewer-image{padding:20px 15px 35px;min-height:calc(100% - 66px)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 <link rel="stylesheet" href="../assets/theme.css?v=led-scroll-cue-20261024">
-<link rel="stylesheet" href="../assets/sudoku-hero.css?v=docked-board-20261024">
-<link rel="stylesheet" href="../assets/sudoku-case.css?v=docked-board-20261024">
+<link rel="stylesheet" href="../assets/sudoku-hero.css?v=iphone-device-20261025">
+<link rel="stylesheet" href="../assets/sudoku-case.css?v=iphone-device-20261025">
 <link rel="stylesheet" href="../assets/ambient-field.css?v=tidal-led-20261024">
 <script defer src="../assets/ambient-field.js?v=tidal-led-20261024"></script>
 </head>
@@ -75,7 +75,7 @@
       <p id="sudoku-gallery-status" role="status" aria-live="polite" hidden></p>
     </div>
     <figure class="sudoku-gallery-figure">
-      <button class="image-open" id="sudoku-active-open" type="button" data-image="../assets/works/sudoku/board.png?v=green-20261024" data-caption="主棋盘" data-kind="screen" aria-label="放大查看主棋盘截图"><img id="sudoku-active-image" src="../assets/works/sudoku/board.png?v=green-20261024" width="1320" height="2868" alt="数独主棋盘，鼠尾草绿色进度条与输入工具" decoding="async"></button>
+      <button class="image-open" id="sudoku-active-open" type="button" data-image="../assets/works/sudoku/board.png?v=green-20261024" data-caption="主棋盘" data-kind="screen" aria-label="放大查看主棋盘截图"><span class="sudoku-device"><img class="sudoku-device-screen" id="sudoku-active-image" src="../assets/works/sudoku/board.png?v=green-20261024" width="1320" height="2868" alt="数独主棋盘，鼠尾草绿色进度条与输入工具" decoding="async"></span></button>
       <figcaption id="sudoku-active-caption" class="case-sr-only">主棋盘</figcaption>
     </figure>
   </section>
@@ -108,7 +108,7 @@
           <div class="case-coach-panel" data-coach-panel="2" hidden><h3>卡住时，再往前一步。</h3><p>从当前线索出发，继续检查所在的行、列和宫，让下一步仍然属于自己的推理。</p></div>
           <p class="case-sr-only" data-coach-status role="status" aria-live="polite" data-i18n-ignore></p>
         </div>
-        <figure class="case-coach-figure"><button class="image-open case-coach-image" type="button" data-image="../assets/works/sudoku/coach.png?v=green-20261024" data-caption="分步辅导" data-kind="screen" aria-label="放大查看分步辅导截图"><img src="../assets/works/sudoku/coach.png?v=green-20261024" width="1320" height="2868" alt="离线分步辅导，用绿色框线标出隐性唯一的目标行和格子" loading="lazy" decoding="async"></button></figure>
+        <figure class="case-coach-figure"><button class="image-open case-coach-image" type="button" data-image="../assets/works/sudoku/coach.png?v=green-20261024" data-caption="分步辅导" data-kind="screen" aria-label="放大查看分步辅导截图"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/coach.png?v=green-20261024" width="1320" height="2868" alt="离线分步辅导，用绿色框线标出隐性唯一的目标行和格子" loading="lazy" decoding="async"></span></button></figure>
       </div>
     </section>
     <section class="case-chapter" id="iteration" aria-labelledby="iteration-title">
@@ -126,9 +126,11 @@
   let trigger=null,previousOverflow="";
   document.querySelectorAll(".image-open").forEach(button=>button.addEventListener("click",()=>{
     trigger=button;
-    const source=button.querySelector("img"),image=new Image();
+    const source=button.querySelector(".sudoku-device-screen, img"),image=new Image();
     image.src=button.dataset.image;image.alt=source.alt;
-    target.replaceChildren(image);target.className="viewer-image is-"+button.dataset.kind;
+    const device=source.closest(".sudoku-device")?.cloneNode(false);
+    if(device){image.className="sudoku-device-screen";image.width=1320;image.height=2868;device.append(image);}
+    target.replaceChildren(device||image);target.className="viewer-image is-"+button.dataset.kind;
     caption.textContent=button.dataset.caption;
     previousOverflow=document.body.style.overflow;document.body.style.overflow="hidden";
     viewer.showModal();viewer.scrollTop=0;viewer.querySelector("button").focus({preventScroll:true});
