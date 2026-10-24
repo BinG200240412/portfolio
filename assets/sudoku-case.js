@@ -137,10 +137,10 @@
   }
 
   function revealStory() {
-    const story = document.querySelector('.sudoku-story');
+    const story = document.querySelector('.sudoku-scenes');
     const motion = matchMedia('(prefers-reduced-motion: reduce)');
     if (!story || motion.matches || !('IntersectionObserver' in window)) return;
-    const groups = [...story.querySelectorAll('.case-chapter > *')];
+    const groups = [...story.querySelectorAll('.case-chapter > *')].filter(node => !node.matches('.sudoku-board-dock'));
     const pending = new Set(groups);
     const reveal = node => {
       node.classList.remove('is-reveal-pending');
@@ -152,7 +152,7 @@
       entries.forEach(entry => { if (entry.isIntersecting) reveal(entry.target); });
     }, { rootMargin: '0px 0px -48px 0px', threshold: 0 });
     story.querySelectorAll('.case-chapter').forEach(chapter => {
-      [...chapter.children].forEach((node, index) => {
+      [...chapter.children].filter(node => !node.matches('.sudoku-board-dock')).forEach((node, index) => {
         node.classList.add('case-reveal', 'is-reveal-pending');
         node.style.setProperty('--reveal-delay', `${Math.min(index * 55, 165)}ms`);
         observer.observe(node);

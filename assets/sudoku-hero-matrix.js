@@ -8,7 +8,6 @@
   const canvas=document.getElementById('sudoku-hero-matrix');
   const ctx=canvas?.getContext('2d',{alpha:true});
   if(!ctx)return;
-  const scenes=document.querySelector('.sudoku-scenes'),hero=scenes?.querySelector('.hero');
   const viewer=document.getElementById('media-viewer');
   const SIZE=1536,PITCH=8,ORIGIN=48,CELL=160,END=1488,GRID=193,RADIUS=2.55,FPS=20;
   // Reduced motion always shows this valid, uniquely solvable partial board.
@@ -94,7 +93,6 @@
   try {host=window.frameElement?.closest('#section')||null;} catch(_) {}
   let onScreen=true,pageShown=true,cacheDirty=true,sprites=[],pulseSprites=[],theme=themes.dark;
   let frame=0,lastFrame=0,elapsed=0,backing=SIZE;
-  let sceneFrame=0,sceneDirty=true,sceneProgress='';
   function state(cell,time) {
     if(time<cell.delay)return{from:cell.initial,to:cell.initial,progress:0,phase:'rest',pulse:-1};
     const age=time-cell.delay,period=cell.hold+cell.preheat+cell.duration,step=Math.floor(age/period);
@@ -106,21 +104,6 @@
   }
   function canDraw() {
     return onScreen&&pageShown&&!document.hidden&&!forced.matches&&!viewer?.open&&(!host||host.classList.contains('on'));
-  }
-  function sceneActive() {
-    return !!scenes&&!!hero&&pageShown&&!document.hidden&&!viewer?.open&&(!host||host.classList.contains('on'));
-  }
-  function updateSceneProgress() {
-    if(!scenes||!hero)return;
-    const value=Math.max(0,Math.min(1,(window.scrollY||0)/Math.max(1,hero.clientHeight*.85))).toFixed(4);
-    if(value!==sceneProgress) {scenes.style.setProperty('--scene-progress',value);sceneProgress=value;}
-    sceneDirty=false;
-  }
-  function queueSceneProgress() {
-    sceneDirty=true;if(sceneFrame||!sceneActive())return;
-    sceneFrame=requestAnimationFrame(()=>{
-      sceneFrame=0;if(sceneActive())updateSceneProgress();
-    });
   }
   function buildCache() {
     theme=themes[document.documentElement.dataset.theme==='light'?'light':'dark'];
@@ -168,8 +151,6 @@
   }
   function sync() {
     cancelAnimationFrame(frame);frame=0;lastFrame=0;
-    if(!sceneActive()) {cancelAnimationFrame(sceneFrame);sceneFrame=0;}
-    else if(sceneDirty)queueSceneProgress();
     canvas.style.visibility=forced.matches?'hidden':'';
     if(!canDraw())return;
     draw(elapsed);if(!reduced.matches)frame=requestAnimationFrame(tick);
@@ -181,8 +162,7 @@
     if(canvas.width!==backing)canvas.width=backing;if(canvas.height!==backing)canvas.height=backing;
     if(cache.width!==backing)cache.width=backing;if(cache.height!==backing)cache.height=backing;
     ctx.setTransform(backing/SIZE,0,0,backing/SIZE,0,0);
-    cancelAnimationFrame(sceneFrame);sceneFrame=0;
-    sceneDirty=true;updateSceneProgress();refresh();
+    refresh();
   }
   new MutationObserver(refresh).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
   if(host)new MutationObserver(sync).observe(host,{attributes:true,attributeFilter:['class']});
@@ -191,7 +171,7 @@
     onScreen=entries.some(entry=>entry.isIntersecting);sync();
   }).observe(canvas);
   if(typeof ResizeObserver==='function')new ResizeObserver(resize).observe(canvas);
-  addEventListener('resize',resize,{passive:true});addEventListener('scroll',queueSceneProgress,{passive:true});
+  addEventListener('resize',resize,{passive:true});
   document.addEventListener('visibilitychange',sync);
   reduced.addEventListener('change',sync);forced.addEventListener('change',sync);
   addEventListener('pagehide',()=>{pageShown=false;sync();});addEventListener('pageshow',()=>{pageShown=true;sync();});
