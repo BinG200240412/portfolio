@@ -4,7 +4,7 @@ html[data-theme="light"]{--paper:#f5f3ed;--bg:#f5f3ed;--bg2:#eeece5;--panel:#eae
 html{background:var(--paper);scrollbar-color:var(--faint) var(--paper)}
 body{background-color:var(--paper);color:var(--ink)}
 ::selection{background:var(--red);color:#fff}
-.theme-controls{position:fixed;z-index:90;right:18px;top:16px;display:flex;align-items:center;gap:8px;padding:0;background:none;border:0;border-radius:0;box-shadow:none;backdrop-filter:none}
+.theme-controls{position:fixed;z-index:90;right:18px;top:16px;display:flex;align-items:center;gap:8px;padding:0;background:none;border:0;border-radius:0;box-shadow:none;backdrop-filter:none;-webkit-user-select:none;user-select:none}
 .theme-controls button{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:0;background:none;color:var(--ink);cursor:pointer;position:relative;touch-action:manipulation;transition:opacity .18s ease}
 .appearance-icon{display:block;width:24px;height:24px}
 .theme-controls button:hover{opacity:.65}
@@ -66,9 +66,10 @@ html[data-theme="light"] .legacy-case [style*="color:#fff"]{color:var(--ink)!imp
 body,body *,body *::before,body *::after{font-family:var(--portfolio-font)!important;font-weight:300!important;font-synthesis:none}
 body.portfolio-shell{--mono:var(--portfolio-font);--sans:var(--portfolio-font);--serif:var(--portfolio-font)}
 .theme-controls .language-toggle{display:flex;align-items:center;justify-content:center;gap:7px;width:72px;margin:0;border:0;border-radius:0;color:var(--ink);font-size:16px;line-height:1;letter-spacing:0}
-.language-option{color:var(--soft)}
-.language-option.is-current{color:var(--ink)}
-.language-divider{color:var(--soft)}
+.theme-controls :is(.language-option,.language-divider){display:block;margin:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none;text-shadow:none;line-height:1;color:var(--soft)}
+.theme-controls .language-option.is-current{color:var(--ink)}
+.theme-controls .language-zh-glyph{display:block;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter}
+.theme-controls ::selection{background:transparent;color:inherit}
 .portfolio-shell .line{font-size:clamp(42px,5vw,64px);font-weight:500;letter-spacing:.005em}
 .portfolio-shell .mi{font-size:16px;letter-spacing:.015em}
 .portfolio-shell .selected-works{display:flex;flex-wrap:wrap;justify-content:center;gap:9px 28px;width:100%}

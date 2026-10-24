@@ -67,7 +67,7 @@
   const bytesLabel = bytes => bytes < 1024 ? `${bytes} B` : `${(bytes / 1024).toFixed(bytes < 10240 ? 1 : 0)} KB`;
 
   const showcase = el('div', 'il-showcase');
-  const showcaseHeader = el('div', 'il-showcase-header');
+  const showcaseHeader = el('div', 'il-showcase-header page-width');
   const motionLabel = el('span', 'il-overline');
   const motionButton = button('il-text-button il-motion-button', () => { userPaused = !userPaused; updateMotion(); });
   showcaseHeader.append(motionLabel, motionButton);
@@ -443,7 +443,9 @@
       try { await Promise.all(icons.map(icon => prepareArtwork(icon, stage))); }
       finally { stage.remove(); }
       renderRibbons();
-      host.replaceChildren(showcase, tools, selectionBar, status, grid, dialog);
+      const libraryContent = el('div', 'il-library-content page-width');
+      libraryContent.append(tools, selectionBar, status, grid);
+      host.replaceChildren(showcase, libraryContent, dialog);
       host.dataset.state = 'ready';
       host.dataset.count = String(icons.length);
       host.dataset.normalizedCount = String(artworkCache.size);

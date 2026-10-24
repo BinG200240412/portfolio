@@ -75,7 +75,7 @@
       const languageButton = document.createElement('button');
       languageButton.type = 'button';
       languageButton.className = 'language-toggle';
-      languageButton.innerHTML = '<span class="language-option" data-language="zh" lang="zh-CN" aria-hidden="true">中</span><span class="language-divider" aria-hidden="true">/</span><span class="language-option" data-language="en" lang="en" aria-hidden="true">EN</span>';
+      languageButton.innerHTML = '<span class="language-option" data-language="zh" lang="zh-CN" aria-hidden="true"><svg class="language-zh-glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1v14M2 4.5h12v7H2Z"/></svg></span><span class="language-divider" aria-hidden="true">/</span><span class="language-option" data-language="en" lang="en" aria-hidden="true">EN</span>';
       languageButton.addEventListener('click', () => window.PortfolioI18n?.setLanguage(window.PortfolioI18n.language === 'en' ? 'zh' : 'en'));
       host.appendChild(languageButton);
     }
