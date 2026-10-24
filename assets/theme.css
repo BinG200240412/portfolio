@@ -4,13 +4,11 @@ html[data-theme="light"]{--paper:#f5f3ed;--bg:#f5f3ed;--bg2:#eeece5;--panel:#eae
 html{background:var(--paper);scrollbar-color:var(--faint) var(--paper)}
 body{background-color:var(--paper);color:var(--ink)}
 ::selection{background:var(--red);color:#fff}
-.theme-controls{position:fixed;z-index:90;right:26px;top:23px;display:flex;align-items:center;gap:2px;padding:3px;background:var(--chrome);border:1px solid var(--line);border-radius:30px;backdrop-filter:blur(14px)}
-.theme-controls button{display:grid;place-items:center;width:32px;height:30px;border:0;border-radius:50%;background:none;cursor:pointer;position:relative}
-.theme-dot{display:block;width:13px;height:13px;border-radius:50%;border:1px solid #777}
-.dark-dot{background:#151515}.light-dot{background:#f5f3ed}
-.theme-controls button[aria-pressed="true"] .theme-dot{outline:1px solid var(--ink);outline-offset:4px}
-.theme-controls button:hover{background:var(--panel)}
-.theme-controls button:focus-visible,.standalone-back:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.theme-controls{position:fixed;z-index:90;right:18px;top:16px;display:flex;align-items:center;gap:8px;padding:0;background:none;border:0;border-radius:0;box-shadow:none;backdrop-filter:none}
+.theme-controls button{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:0;background:none;color:var(--ink);cursor:pointer;position:relative;touch-action:manipulation;transition:opacity .18s ease}
+.appearance-icon{display:block;width:24px;height:24px}
+.theme-controls button:hover{opacity:.65}
+.theme-controls button:focus-visible,.standalone-back:focus-visible{outline:1.5px solid var(--ink);outline-offset:2px}
 .standalone-back{position:fixed;left:26px;top:25px;z-index:90;color:var(--ink);text-decoration:none;font:12px "Portfolio Mono",monospace;background:var(--chrome);border:1px solid var(--line);border-radius:30px;padding:10px 15px}
 
 /* Site chrome changes colour; the work itself keeps its original colour. */
@@ -49,7 +47,7 @@ html[data-theme="light"] .legacy-case [style*="color:#fff"]{color:var(--ink)!imp
 .legacy-case.archive .dl:hover{background:var(--mid);box-shadow:none}
 .media-viewer .viewer-bar{height:130px;padding-top:70px}
 .media-viewer .viewer-image{min-height:calc(100% - 130px)}
-@media(max-width:600px){.theme-controls{top:17px;right:16px}.standalone-back{left:17px;top:19px}.portfolio-shell #back,.portfolio-shell #toHub{top:19px;left:20px}.portfolio-shell #secBack{top:17px;left:16px}.portfolio-shell .menu{max-width:90vw;gap:9px 20px}.portfolio-shell .mi{font-size:12px}.portfolio-shell #resume{padding-top:90px}.portfolio-shell .cv-head h1{font-size:clamp(36px,8vw,64px)}}
+@media(max-width:600px){.theme-controls{top:10px;right:10px}.standalone-back{left:17px;top:19px}.portfolio-shell #back,.portfolio-shell #toHub{top:19px;left:20px}.portfolio-shell #secBack{top:17px;left:16px}.portfolio-shell .menu{max-width:90vw;gap:9px 20px}.portfolio-shell .mi{font-size:12px}.portfolio-shell #resume{padding-top:90px}.portfolio-shell .cv-head h1{font-size:clamp(36px,8vw,64px)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 /* Latin: Josefin Slab Regular 400. Chinese: locally installed Lantinghei
@@ -67,9 +65,10 @@ html[data-theme="light"] .legacy-case [style*="color:#fff"]{color:var(--ink)!imp
    Slab still uses its genuine static 400 outlines for this requested weight. */
 body,body *,body *::before,body *::after{font-family:var(--portfolio-font)!important;font-weight:300!important;font-synthesis:none}
 body.portfolio-shell{--mono:var(--portfolio-font);--sans:var(--portfolio-font);--serif:var(--portfolio-font)}
-.theme-controls .language-toggle{width:35px;color:var(--ink);font-size:15px;font-weight:500;border-left:1px solid var(--line);border-radius:0 20px 20px 0;margin-left:3px}
-.theme-controls .language-toggle:hover{border-radius:20px}
-.theme-controls .language-toggle:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.theme-controls .language-toggle{display:flex;align-items:center;justify-content:center;gap:7px;width:72px;margin:0;border:0;border-radius:0;color:var(--ink);font-size:16px;line-height:1;letter-spacing:0}
+.language-option{color:var(--soft)}
+.language-option.is-current{color:var(--ink)}
+.language-divider{color:var(--soft)}
 .portfolio-shell .line{font-size:clamp(42px,5vw,64px);font-weight:500;letter-spacing:.005em}
 .portfolio-shell .mi{font-size:16px;letter-spacing:.015em}
 .portfolio-shell .selected-works{display:flex;flex-wrap:wrap;justify-content:center;gap:9px 28px;width:100%}
@@ -86,7 +85,7 @@ html[lang="en"] h1,html[lang="en"] h2,html[lang="en"] h3{overflow-wrap:normal}
 /* Reserve the wider appearance/language control in standalone project headers. */
 .topbar{padding-right:124px}
 @media(max-width:720px){.topbar{padding-right:110px}.topbar .store-link{white-space:normal;line-height:1.3;gap:8px}}
-@media(max-width:600px){.portfolio-shell .line{font-size:clamp(34px,9vw,42px)}.portfolio-shell .mi{font-size:15px}.portfolio-shell .menu{gap:5px 19px;max-width:90vw}.portfolio-shell #stage.hublv .mi{font-size:18px}html[lang="en"] .portfolio-shell .cols{grid-template-columns:1fr}.theme-controls .language-toggle{font-size:14px;width:32px}}
+@media(max-width:600px){.portfolio-shell .line{font-size:clamp(34px,9vw,42px)}.portfolio-shell .mi{font-size:15px}.portfolio-shell .menu{gap:5px 19px;max-width:90vw}.portfolio-shell #stage.hublv .mi{font-size:18px}html[lang="en"] .portfolio-shell .cols{grid-template-columns:1fr}.theme-controls .language-toggle{font-size:15px;width:64px;gap:6px}}
 
 /* Keep small English labels readable through size and contrast. */
 html[lang="en"] :is(.topbar,.meta-row,.eyebrow,.num,.hen,.h2en,.project-type,.section-no,.screen-caption,.screen-caption span,.art-number,.art-kind,.art-facts,.art-caption,.sample-label,.sample-foot,.foot,.case-footer,.hero-kicker,.pdfbar .pt,.linknote,.tags span){font-size:13px!important;letter-spacing:.04em}
