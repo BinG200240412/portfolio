@@ -1,9 +1,0 @@
-/* The cover alone casts a broad, coherent LED ripple on the page plane. */
-.gogo-hero-photo .gogo-pixel-framed{background:transparent}
-.gogo-hero-photo .gogo-pixel-framed>img{position:relative;z-index:1}
-.gogo-hero-photo .gogo-pixel-framed::after{z-index:3}
-.gogo-hero-photo .gogo-image-fringe{position:absolute;z-index:0;display:block;max-width:none;pointer-events:none;user-select:none;transform-origin:100% 50%}
-.gogo-hero-photo .gogo-image-fringe[data-fringe-state="idle"]{display:none}
-.gogo-hero-photo:has(.gogo-pixel-framed){margin-bottom:max(0px,calc(var(--gogo-fringe-bleed,24px) - 10px))!important}
-@media(forced-colors:active){.gogo-hero-photo .gogo-image-fringe{display:none}}
-@media print{.gogo-hero-photo .gogo-image-fringe{display:none}}

@@ -6,13 +6,12 @@
 .gogo-hero-procession{position:absolute;top:0;left:72px;right:160px;height:72px;z-index:2;overflow:hidden;pointer-events:none;user-select:none}
 #gogo-mini-matrix{display:block;width:100%;height:100%}
 .gogo-hero-stage{position:relative;z-index:1;width:calc(66.666667% - 32px);min-height:100svh;margin-left:auto;margin-right:0;padding:clamp(148px,16svh,230px) 0 64px;display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start;gap:28px}
-.gogo-hero-photo{position:relative;width:100%;margin:0!important;perspective:max(1800px,260vw);perspective-origin:100% 50%}
-.gogo-cover-leaf{position:relative;z-index:1;transform-origin:100% 50%;transform-style:preserve-3d;backface-visibility:hidden;border-radius:26px;overflow:hidden}
-.gogo-cover-pending .gogo-cover-leaf{visibility:hidden}
-.gogo-hero-photo[data-cover-motion="opening"] .gogo-cover-leaf{will-change:transform}
+.gogo-hero-photo{position:relative;width:100%;margin:0!important}
+.gogo-cover-panel{position:relative;z-index:1}
+.gogo-cover-pending .gogo-cover-panel{visibility:hidden}
+.gogo-hero-photo[data-cover-motion="opening"] .gogo-cover-panel{will-change:transform,opacity}
 .gogo-hero-photo img{width:100%;height:auto;max-height:none;object-fit:contain;object-position:right center}
-.gogo-hero-photo .gogo-zoom{background:none;overflow:hidden;border-radius:26px}
-.gogo-hero-photo .gogo-zoom>img{border-radius:26px}
+.gogo-hero-photo .gogo-zoom{background:none;overflow:hidden}
 .gogo-hero-photo h1{position:absolute;top:24px;right:26px;z-index:1;color:#eeeee5;text-align:right;font-size:clamp(58px,calc(var(--gogo-layout-width) * .055),84px);line-height:1.02;letter-spacing:-.065em;white-space:nowrap;pointer-events:none;text-shadow:0 1px 14px rgba(0,0,0,.22)}
 .gogo-hero .gogo-title-dot{width:6px;height:6px;margin-left:10px;background:#c2944a}
 .gogo-hero-copy{position:relative;width:calc(100% - var(--gogo-safe));margin-right:var(--gogo-safe);text-align:right;padding:0}

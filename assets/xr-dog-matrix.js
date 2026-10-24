@@ -7,6 +7,7 @@
   const canvas = document.getElementById('gogo-dog-matrix');
   const hero = canvas?.closest('.gogo-hero');
   const miniCanvas = document.getElementById('gogo-mini-matrix');
+  const photo = hero?.querySelector('.gogo-hero-photo');
   const context = canvas?.getContext('2d', { alpha: true });
   if (!hero || !context) return;
   const mask = document.createElement('canvas');
@@ -27,7 +28,7 @@
     light: ['#a5a69a', '#6a725f', '#394a39', '#946f2b'],
   };
   const roles = ['rgb(20,0,0)', 'rgb(75,0,0)', 'rgb(145,0,0)', 'rgb(235,0,0)'];
-  let width = 1, height = 1, pitch = 7, ratio = 1, mainPitch = 7;
+  let width = 1, height = 1, pitch = 7, ratio = 1, mainPitch = 7, coverTop = 0;
   let compact = false, miniWidth = 1, miniHeight = 1, miniPitch = 3, miniRatio = 1;
   let frame = 0, previous = 0, elapsed = 0;
   let onScreen = true, shown = true, colours = palettes.dark;
@@ -125,7 +126,8 @@
     const unit = Math.min(height * .00215, width / (compact ? 190 : 240), 3.6);
     // Withdraw slightly into the right edge of the cropped left-third field.
     const leadX = width * .98 - 276 * unit + Math.sin(time * .13) * unit * 5;
-    const ground = height * .905;
+    // The sensor head rises to the cover's top, including on narrow screens.
+    const ground = coverTop + 284 * unit;
     const gait = time * TAU / 2.15;
     dog(leadX, ground, unit, gait, time, false);
     paintMask(context, mask, mainInk, width, height, mainPitch, ratio);
@@ -188,6 +190,7 @@
   }
   function resize() {
     width = Math.max(1, canvas.clientWidth); height = Math.max(1, canvas.clientHeight);
+    coverTop = (photo?.getBoundingClientRect().top || 0) - canvas.getBoundingClientRect().top;
     compact = hero.clientWidth <= 720;
     mainPitch = compact ? 4.5 : 7;
     ratio = Math.min(devicePixelRatio || 1, 1.5, 4096 / width, 2160 / height);
