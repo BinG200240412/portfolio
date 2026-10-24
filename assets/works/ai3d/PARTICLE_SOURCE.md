@@ -13,3 +13,5 @@ The derived binary little-endian PLY includes XYZ, RGB and alpha (16 bytes per v
 `particle-cover.js` and `particle-cover.css` are specific to `sections/ai3d.html`. They use native WebGL with no CDN or runtime library, follow the existing `portfolio:language` event and preserve the site's shared theme, font and navigation. They pause drawing when the cover is outside the viewport or the page is hidden. Reduced-motion preferences disable autoplay. Mobile rendering uses a lower point and pixel budget; vertical scrolling and native pinch zoom remain available.
 
 The cover's local controls are translated within this page's script, so no shared translation file needs to change.
+
+The initial view automatically orbits so the 3D motion is visible immediately after loading. The `#liangzhu-particle-cover` anchor links directly to the cover rather than to a previously scrolled part of the article. Reduced-motion preferences still disable autoplay.

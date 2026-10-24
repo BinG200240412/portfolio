@@ -13,11 +13,11 @@
     zh: { close: '近景', orbit: '环绕', overhead: '俯瞰', hint: '拖动旋转', settings: '粒子设置', density: '疏密', flow: '漂动', spread: '散开', zoom: '观察距离', closer: '靠近', farther: '远离', pause: '暂停', play: '播放', loading: '正在展开这片良渚', failed: '粒子暂时无法载入，请刷新页面重试。', unavailable: '当前浏览器未能启用三维渲染，请开启硬件加速后重试。', lost: '三维渲染已暂停，正在等待恢复。', canvas: '可交互的良渚粒子封面。拖动旋转，方向键调整视角，加减键缩放，空格暂停。', group: '调整粒子封面', views: '切换观察视角' },
     en: { close: 'Close-up', orbit: 'Orbit', overhead: 'Above', hint: 'Drag to rotate', settings: 'Particles', density: 'Density', flow: 'Drift', spread: 'Scatter', zoom: 'Distance', closer: 'Move closer', farther: 'Move away', pause: 'Pause', play: 'Play', loading: 'Unfolding Liangzhu', failed: 'The particles could not load. Refresh this page to try again.', unavailable: '3D rendering is unavailable. Enable hardware acceleration to view this cover.', lost: '3D rendering is paused, waiting for recovery.', canvas: 'Interactive Liangzhu particle cover. Drag to rotate, arrow keys to change view, plus and minus to zoom, space to pause.', group: 'Adjust particle cover', views: 'Choose a viewpoint' }
   };
-  const state = { density: .7, flow: .4, spread: .16, playing: !reducedMotion.matches, view: 'close', yaw: 0, pitch: .22, distance: 2.9, time: 0, burst: 0 };
+  const state = { density: .7, flow: .55, spread: .24, playing: !reducedMotion.matches, view: 'orbit', yaw: -.3, pitch: .32, distance: 3.2, time: 0, burst: 0 };
   const camera = { yaw: state.yaw, pitch: state.pitch, distance: state.distance };
   const presets = {
     close: { yaw: 0, pitch: .22, distance: 2.9 },
-    orbit: { yaw: -.6, pitch: .4, distance: 3.8 },
+    orbit: { yaw: -.3, pitch: .32, distance: 3.2 },
     overhead: { yaw: -.15, pitch: 1.12, distance: 4.8 }
   };
   const tr = key => words[window.PortfolioI18n?.language === 'en' ? 'en' : 'zh'][key];
