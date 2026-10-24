@@ -5,6 +5,8 @@ window.PORTFOLIO_TRANSLATIONS = {
   "揭晓 / 展开": "Reveal / Explore",
   "返回": "Back",
   "作品集": "Works",
+  "数独": "Sudoku",
+  "练习": "Practice",
   "关于我": "About me",
   "蔡正阳": "Cai Zhengyang",
   "独立开发": "Independent development",

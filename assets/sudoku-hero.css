@@ -50,6 +50,14 @@
 .sudoku-scene-footer{display:flex;justify-content:flex-end;width:var(--layout-width);max-width:100%;margin-left:auto;margin-right:0;padding:20px var(--scene-gutter) 38px}
 .sudoku-scene-footer .case-link{display:inline-flex;align-items:center;min-height:44px;font-size:13px;color:var(--mid)}
 .sudoku-scene-footer .case-link:hover{color:var(--ink)}
+/* Wide monitors: half-screen ink, then a real shrink to one third.
+ * Keep the laptop composition intact. The canvas retains its cached size. */
+@media(min-width:1801px){
+  .sudoku-board-angle{left:0;top:0;transform-origin:0 0;
+    transform:scale(calc(1 - var(--scene-progress) / 3))}
+  #sudoku-hero-matrix{position:absolute;left:calc(50vw - var(--board-size) * 1.12);
+    top:calc(var(--board-size) * -.49);transform:rotate(-22deg);transform-origin:50% 50%}
+}
 @media(max-width:1000px) and (min-width:721px){
   .sudoku-board-angle{left:calc(var(--layout-offset) + var(--copy-start) - var(--board-size) * 1.12 - 40px)}
   .hero h1{font-size:12vw}

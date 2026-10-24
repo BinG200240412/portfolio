@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>蔡正阳 — Who am I</title>
 <meta name="description" content="蔡正阳的作品集。独立开发、交互与艺术。">
-<script src="assets/i18n-main.js?v=bilingual-20261023"></script>
-<script src="assets/i18n-cases.js?v=bilingual-20261023"></script>
+<script src="assets/i18n-main.js?v=focused-works-20261024"></script>
+<script src="assets/i18n-cases.js?v=focused-copy-20261024"></script>
 <script src="assets/i18n.js?v=bilingual-20261023"></script>
-<script src="assets/theme.js?v=diagonal-back-20261024"></script>
+<script src="assets/theme.js?v=focused-works-20261024"></script>
 <script defer src="assets/matrix-motifs.js?v=sticker-collage-20261023"></script>
 <script defer src="assets/matrix-symbols.js?v=work-objects-20261023"></script>
 <script defer src="assets/matrix-models.js?v=interactive-objects-20261024"></script>
@@ -16,7 +16,7 @@
 <script defer src="assets/matrix-project-stickers.js?v=interactive-objects-20261024"></script>
 <script defer src="assets/matrix-liangzhu.js?v=liangzhu-and-heart-20261023"></script>
 <script defer src="assets/matrix-gorilla.js?v=interactive-objects-20261024"></script>
-<script defer src="assets/matrix-field.js?v=staged-navigation-20261024"></script>
+<script defer src="assets/matrix-field.js?v=focused-works-20261024"></script>
 <script defer src="assets/about-companion.js?v=portrait-and-companion-20261023"></script>
 <script defer src="assets/ambient-field.js?v=soft-particles-20261024"></script>
 <script defer src="assets/assistant-connection.js?v=assistant-preview-20261024"></script>
@@ -180,7 +180,7 @@
     .cols section{padding:0;border-left:0;border-top:1px solid #e3e3e3;padding-top:28px}
     .cols section:first-child{border-top:0;padding-top:0}}
 </style>
-<link rel="stylesheet" href="assets/theme.css?v=lanting-light-20261024">
+<link rel="stylesheet" href="assets/theme.css?v=focused-works-20261024">
 <link rel="stylesheet" href="assets/matrix-field.css?v=interactive-objects-20261024">
 <link rel="stylesheet" href="assets/about.css?v=original-photo-right-20261024">
 <link rel="stylesheet" href="assets/ambient-field.css?v=soft-particles-20261024">
@@ -258,7 +258,7 @@
 <script>
 const QUESTION="Who am I ?", NAME="CaizheNGyaNG", HOME="作品集";
 const tr = value => window.PortfolioI18n?.t(value) || value;
-const SECTIONS=["arright","数独 · App","数独 · 视觉","良渚 · AI 3D","良渚 · XR","漂移之屋","千里江山","设计工具 · Skills","作品归档"];
+const SECTIONS=["数独","良渚 · AI 3D","良渚 · XR","千里江山"];
 const HUB=[
   {label:"关于我", act:()=>expandPage('resume')},
   {label:"作品集", act:showWorks},
@@ -313,9 +313,9 @@ async function intro(){
 }
 
 /* ---- 菜单渲染（hub 顶层 / works 作品层） ---- */
-function buildItem(label,no,onEnter,onLeave,onClick){
+function buildItem(label,onEnter,onLeave,onClick){
   const a=document.createElement('a');a.className='mi';a.href='#';
-  a.innerHTML=`<span class="mn">0${no}</span>${label}`;
+  a.textContent=label;
   a.addEventListener('mouseenter',onEnter);
   a.addEventListener('mouseleave',onLeave);
   a.addEventListener('click',event=>{event.preventDefault();onClick();});
@@ -326,21 +326,28 @@ function buildItem(label,no,onEnter,onLeave,onClick){
 function renderMenu(level){
   menuEl.innerHTML='';
   if(level==='hub'){
-    HUB.forEach((it,i)=>menuEl.appendChild(buildItem(tr(it.label),i+1,
+    HUB.forEach(it=>menuEl.appendChild(buildItem(tr(it.label),
       ()=>{markActivity();if(phase==='hub')morphTo(tr(it.label));},
       ()=>{if(phase==='hub')morphTo(NAME);},
       ()=>{if(phase==='hub')it.act();})));
   }else{
-    SECTIONS.forEach((name,i)=>menuEl.appendChild(buildItem(tr(name),i+1,
+    const selected=document.createElement('div');selected.className='selected-works';
+    SECTIONS.forEach(name=>selected.appendChild(buildItem(tr(name),
       ()=>{markActivity();if(phase==='works')morphTo(tr(name));},
       ()=>{if(phase==='works')morphTo(tr(HOME));},
-      ()=>{if(phase==='works')enterSection(name,'0'+(i+1));})));
+      ()=>{if(phase==='works')enterSection(name);})));
+    menuEl.appendChild(selected);
+    const practice=buildItem(tr('练习'),
+      ()=>{markActivity();if(phase==='works')morphTo('Practice');},
+      ()=>{if(phase==='works')morphTo(tr(HOME));},
+      ()=>{if(phase==='works')enterSection('练习');});
+    practice.classList.add('practice-entry');menuEl.appendChild(practice);
   }
 }
 
 /* ---- 顶层：关于我 / 作品集 ---- */
 function showHub(){
-  if(location.hash==='#about'){const url=new URL(location.href);url.hash='';history.replaceState(history.state,'',url);}
+  if(['#about','#works'].includes(location.hash)){const url=new URL(location.href);url.hash='';history.replaceState(history.state,'',url);}
   stage.inert=false;
   phase='hub';
   resume.classList.remove('reveal','live');
@@ -405,22 +412,30 @@ document.addEventListener('keydown',event=>{
 });
 backBtn.addEventListener('click',()=>{if(phase==='resume')showHub();});
 toHubBtn.addEventListener('click',()=>{if(phase==='works')showHub();});
-secBack.addEventListener('click',()=>{if(phase==='section')showWorks();});
+secBack.addEventListener('click',()=>{
+  if(phase!=='section')return;
+  let path='';
+  try{path=section.querySelector('iframe')?.contentWindow.location.pathname.split('/').pop();}catch(_){}
+  if(['arright.html','drift.html','design-skills.html','more.html'].includes(path)){
+    showWorks();enterSection('练习');
+  }else showWorks();
+});
+section.addEventListener('load',event=>{if(event.target.matches('iframe'))updateBackLabels();},true);
 
 /* ---- 进板块：极简淡出 ---- */
 /* 原生重建页（可编辑元素，非贴图） */
 const SECTION_PAGE={
   "arright":"sections/arright.html",
-  "数独 · App":"sections/sudoku.html?v=monitor-right-edge-20261024",
-  "数独 · 视觉":"sections/sudoku-visual.html",
+  "数独":"sections/sudoku.html?v=quiet-case-20261024",
   "良渚 · AI 3D":"sections/ai3d.html?v=particle-gesture-view-20261024",
-  "良渚 · XR":"sections/xr.html?v=walking-companions-20261024",
+  "良渚 · XR":"sections/xr.html?v=flowing-cover-20261024",
   "漂移之屋":"sections/drift.html",
   "千里江山":"sections/qianli.html?v=qianli-ripples-20261024",
   "设计工具 · Skills":"sections/design-skills.html",
   "作品归档":"sections/more.html",
+  "练习":"sections/practice.html?v=focused-works-20261024",
 };
-function enterSection(name,no){
+function enterSection(name){
   if(phase!=='works')return;phase='transit';clearWatch();navigationChanged();
   document.body.classList.remove('works-mode');
   const page=SECTION_PAGE[name];
@@ -431,8 +446,7 @@ function enterSection(name,no){
     section.innerHTML=`<iframe class="native-frame" src="${frameURL.pathname + frameURL.search}" title="${tr(name)}" loading="eager"></iframe>`;
   }else{
     section.classList.remove('native');
-    section.innerHTML=`<div class="sec-inner"><div class="sec-no rv2">${no}</div>`+
-      `<h1 class="sec-title rv2">${tr(name)}<span class="rd"></span></h1>`+
+    section.innerHTML=`<div class="sec-inner"><h1 class="sec-title rv2">${tr(name)}<span class="rd"></span></h1>`+
       `</div>`;
   }
   section.scrollTop=0;
@@ -443,7 +457,7 @@ function enterSection(name,no){
 
 // The same project pages open from the typographic menu and the LED objects.
 const OBJECT_PROJECTS = Object.freeze({
-  'sudoku':'数独 · App', 'sudoku-visual':'数独 · 视觉',
+  'sudoku':'数独',
   'robot-dog':'良渚 · XR', 'quest-3':'良渚 · XR',
   'arright':'arright', 'skill':'设计工具 · Skills', 'liangzhu':'良渚 · AI 3D',
 });
@@ -454,15 +468,17 @@ window.PortfolioNavigation = Object.freeze({
     const name = OBJECT_PROJECTS[key];
     if (!name || stage.inert || phase!=='works') return false;
     disarmHint(); markActivity();
-    enterSection(name, String(SECTIONS.indexOf(name) + 1).padStart(2, '0'));
+    enterSection(name);
     return true;
   },
 });
 function updateBackLabels(){
   const english=window.PortfolioI18n?.language==='en';
   dotEl.setAttribute('aria-label',isAssistantAvailable()?(assistantOpen?(english?'Close AI conversation':'收起 AI 对话'):(english?'Open AI conversation':'打开 AI 对话')):(english?'Enter navigation':'进入导航'));
+  let practiceDetail=false;
+  try{practiceDetail=['arright.html','drift.html','design-skills.html','more.html'].includes(section.querySelector('iframe')?.contentWindow.location.pathname.split('/').pop());}catch(_){}
   for(const button of [backBtn,toHubBtn,secBack]){
-    const label=button===secBack?(english?'Back to works':'返回作品集'):(english?'Back to navigation':'返回导航');
+    const label=button===secBack?(practiceDetail?(english?'Back to Practice':'返回练习'):(english?'Back to works':'返回作品集')):(english?'Back to navigation':'返回导航');
     button.setAttribute('aria-label',label);button.title=label;
   }
 }
@@ -483,11 +499,13 @@ addEventListener('portfolio:language', () => {
 function syncAboutRoute(){
   if(assistantOpen)window.PortfolioAssistant?.close();
   if(location.hash==='#about'&&phase!=='resume')expandPage('resume');
+  else if(location.hash==='#works')showWorks();
   else if(location.hash!=='#about'&&phase==='resume')showHub();
 }
 addEventListener('popstate',syncAboutRoute);
 addEventListener('hashchange',syncAboutRoute);
 if(location.hash==='#about')expandPage('resume');
+else if(location.hash==='#works')showWorks();
 else intro();
 </script>
 </body>
