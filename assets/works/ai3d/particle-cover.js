@@ -1,35 +1,27 @@
-/* Liangzhu's retained Marble point data, drawn as an animated particle cover. */
+/* Original Liangzhu points, with a fixed composition and pointer-controlled view. */
 (() => {
   'use strict';
   const root = document.querySelector('[data-particle-cover]');
   if (!root) return;
   const canvas = root.querySelector('canvas');
   const status = root.querySelector('[data-cover-status]');
-  const controls = root.querySelector('.cover-ui');
-  const motionButton = root.querySelector('[data-cover-motion]');
   const assetURL = new URL('liangzhu-village.ply', document.currentScript.src);
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const words = {
-    zh: { close: '近景', orbit: '环绕', overhead: '俯瞰', hint: '拖动旋转', settings: '粒子设置', density: '疏密', flow: '漂动', spread: '散开', zoom: '观察距离', closer: '靠近', farther: '远离', pause: '暂停', play: '播放', loading: '正在展开这片良渚', failed: '粒子暂时无法载入，请刷新页面重试。', unavailable: '当前浏览器未能启用三维渲染，请开启硬件加速后重试。', lost: '三维渲染已暂停，正在等待恢复。', canvas: '可交互的良渚粒子封面。拖动旋转，方向键调整视角，加减键缩放，空格暂停。', group: '调整粒子封面', views: '切换观察视角' },
-    en: { close: 'Close-up', orbit: 'Orbit', overhead: 'Above', hint: 'Drag to rotate', settings: 'Particles', density: 'Density', flow: 'Drift', spread: 'Scatter', zoom: 'Distance', closer: 'Move closer', farther: 'Move away', pause: 'Pause', play: 'Play', loading: 'Unfolding Liangzhu', failed: 'The particles could not load. Refresh this page to try again.', unavailable: '3D rendering is unavailable. Enable hardware acceleration to view this cover.', lost: '3D rendering is paused, waiting for recovery.', canvas: 'Interactive Liangzhu particle cover. Drag to rotate, arrow keys to change view, plus and minus to zoom, space to pause.', group: 'Adjust particle cover', views: 'Choose a viewpoint' }
+    zh: { loading: '正在展开这片良渚', failed: '粒子暂时无法载入，请刷新页面重试。', unavailable: '当前浏览器未能启用三维渲染，请开启硬件加速后重试。', lost: '三维渲染已暂停，正在等待恢复。', canvas: '可交互的良渚粒子封面。移动鼠标调整视角，触屏横向拖动，或使用方向键。' },
+    en: { loading: 'Unfolding Liangzhu', failed: 'The particles could not load. Refresh this page to try again.', unavailable: '3D rendering is unavailable. Enable hardware acceleration to view this cover.', lost: '3D rendering is paused, waiting for recovery.', canvas: 'Interactive Liangzhu particle cover. Move the pointer to change the view, drag horizontally on touchscreens, or use the arrow keys.' }
   };
-  // Frame the actual homestead, rather than orbiting the entire panoramic world.
+  // Full density, zero drift/scatter, and the previous zoom control's farthest distance.
+  // Point positions stay unchanged; only the camera angle responds to input.
   const subject = [0, -.3, 1.85];
-  const state = { density: .95, flow: .2, spread: .04, playing: !reducedMotion.matches, view: 'close', yaw: -.035, pitch: .18, distance: 1.75, time: 0, burst: 0 };
-  const camera = { yaw: state.yaw, pitch: state.pitch, distance: state.distance };
-  const presets = {
-    close: { yaw: -.035, pitch: .18, distance: 1.75 },
-    orbit: { yaw: .1, pitch: .26, distance: 1.95 },
-    overhead: { yaw: -.08, pitch: .68, distance: 2.25 }
-  };
+  const home = Object.freeze({ yaw: -.035, pitch: .18, distance: 4 });
+  const target = { yaw: home.yaw, pitch: home.pitch };
+  const camera = { ...target };
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const tr = key => words[window.PortfolioI18n?.language === 'en' ? 'en' : 'zh'][key];
   let statusKey = 'loading';
   function syncLabels() {
-    root.querySelectorAll('[data-cover-text]').forEach(el => { el.textContent = tr(el.dataset.coverText); });
-    root.querySelectorAll('[data-cover-label]').forEach(el => { el.setAttribute('aria-label', tr(el.dataset.coverLabel)); });
     canvas.setAttribute('aria-label', tr('canvas'));
-    motionButton.textContent = tr(state.playing ? 'pause' : 'play');
-    motionButton.setAttribute('aria-pressed', String(state.playing));
     if (!status.hidden) status.textContent = tr(statusKey);
   }
   function setStatus(key) { statusKey = key; status.hidden = false; status.textContent = tr(key); }
@@ -37,33 +29,25 @@
   syncLabels();
 
   const gl = canvas.getContext('webgl', { alpha: false, antialias: false, powerPreference: 'low-power' });
-  if (!gl) { setStatus('unavailable'); controls.hidden = true; return; }
-  let ready = false, lost = false, onScreen = true, raf = 0, last = 0, lastDraw = 0;
+  if (!gl) { setStatus('unavailable'); return; }
+  let ready = false, lost = false, onScreen = true, raf = 0, last = 0;
   let width = 1, height = 1, dpr = 1, frame = 0;
   let points, program, uniforms, buffers = [], shaders = [];
-  let dragging = false, previousX = 0, previousY = 0, hoverX = 0;
+  let dragging = false, previousX = 0;
 
   const vertexSource = `
     precision highp float;
     attribute vec3 aPosition; attribute vec4 aColor; attribute float aSeed;
     uniform mat4 uView; uniform mat4 uProjection;
-    uniform float uTime; uniform float uFlow; uniform float uSpread; uniform float uDpr; uniform float uBurst;
+    uniform float uDpr;
     varying vec4 vColor;
     void main() {
-      vec3 p = aPosition;
-      float phase = aSeed * 431.71;
-      float distanceScale = .08 + min(length(p.xz), 15.) * .018;
-      float drift = (.008 + uSpread * .5 + uBurst * .65) * distanceScale;
-      float t = uTime * uFlow * .9;
-      p += vec3(sin(phase + t), cos(phase * 1.7 + t * .8), sin(phase * .73 + t * .9)) * drift;
-      p.y += sin(p.x * .8 + p.z * .6 + t) * uFlow * .008;
-      vec4 view = uView * vec4(p, 1.);
+      vec4 view = uView * vec4(aPosition, 1.);
       gl_Position = uProjection * view;
       gl_PointSize = clamp(1.8 * uDpr * (.85 + aSeed * .3) * clamp(2.5 / max(-view.z, .1), .55, 1.65), 1., 5. * uDpr);
       float heightFade = 1. - smoothstep(2.8, 11., aPosition.y);
       float farFade = 1. - smoothstep(20., 45., length(aPosition.xz));
-      float pulse = .97 + .03 * sin(phase + t * .7);
-      vColor = vec4(aColor.rgb * 1.04, (.88 + .12 * aColor.a) * heightFade * farFade * pulse);
+      vColor = vec4(aColor.rgb * 1.04, (.88 + .12 * aColor.a) * heightFade * farFade);
     }`;
   const fragmentSource = `
     precision mediump float; varying vec4 vColor;
@@ -117,7 +101,7 @@
     attribute('aPosition', points.positions, 3, gl.FLOAT, false);
     attribute('aColor', points.colors, 4, gl.UNSIGNED_BYTE, true);
     attribute('aSeed', points.seeds, 1, gl.FLOAT, false);
-    uniforms = Object.fromEntries(['uView', 'uProjection', 'uTime', 'uFlow', 'uSpread', 'uDpr', 'uBurst'].map(name => [name, gl.getUniformLocation(program, name)]));
+    uniforms = Object.fromEntries(['uView', 'uProjection', 'uDpr'].map(name => [name, gl.getUniformLocation(program, name)]));
     gl.clearColor(6 / 255, 8 / 255, 8 / 255, 1);
     gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     gl.enable(gl.DEPTH_TEST); gl.depthFunc(gl.LEQUAL);
@@ -145,92 +129,67 @@
   function requestRender() {
     if (ready && !lost && !raf && onScreen && !document.hidden) raf = requestAnimationFrame(render);
   }
-  function suspend() { cancelAnimationFrame(raf); raf = 0; last = 0; lastDraw = 0; }
+  function suspend() { cancelAnimationFrame(raf); raf = 0; last = 0; }
   function render(now) {
     raf = 0;
-    // A cover has no need to consume a high-refresh display's full frame budget.
-    if (lastDraw && now - lastDraw < 1000 / 40 && state.playing) { requestRender(); return; }
-    lastDraw = now;
     const dt = last ? Math.min((now - last) / 1000, .06) : 0; last = now;
-    if (state.playing) {
-      state.time += dt;
-      state.burst = Math.max(0, state.burst - dt * .65);
-    }
     const ease = reducedMotion.matches ? 1 : Math.min(1, 1 - Math.exp(-Math.max(dt, 1 / 60) * 9));
     let settling = false;
-    for (const key of ['yaw', 'pitch', 'distance']) {
-      camera[key] += (state[key] - camera[key]) * ease;
-      if (Math.abs(state[key] - camera[key]) > .001) settling = true;
+    for (const key of ['yaw', 'pitch']) {
+      camera[key] += (target[key] - camera[key]) * ease;
+      if (Math.abs(target[key] - camera[key]) > .0001) settling = true;
+      else camera[key] = target[key];
     }
-    const breath = state.playing && !dragging ? Math.sin(state.time * .16) * (state.view === 'orbit' ? .12 : state.view === 'close' ? .018 : 0) : 0;
-    const yaw = camera.yaw + breath + hoverX * .012, pitch = camera.pitch, r = camera.distance;
+    const { yaw, pitch } = camera, r = home.distance;
     const eye = [subject[0] + Math.sin(yaw) * Math.cos(pitch) * r, subject[1] + Math.sin(pitch) * r, subject[2] - Math.cos(yaw) * Math.cos(pitch) * r];
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.uniformMatrix4fv(uniforms.uView, false, lookAt(eye, subject));
     gl.uniformMatrix4fv(uniforms.uProjection, false, projection());
-    for (const [name, value] of Object.entries({ uTime: state.time, uFlow: state.flow, uSpread: state.spread, uDpr: dpr, uBurst: state.burst })) gl.uniform1f(uniforms[name], value);
-    const count = Math.floor(Math.min(points.count, width < 640 ? 320000 : points.count) * state.density);
-    gl.drawArrays(gl.POINTS, 0, count);
-    canvas.dataset.frames = String(++frame); canvas.dataset.points = String(count);
-    canvas.dataset.view = state.view;
-    if (state.playing || settling) requestRender();
+    gl.uniform1f(uniforms.uDpr, dpr);
+    gl.drawArrays(gl.POINTS, 0, points.count);
+    canvas.dataset.frames = String(++frame); canvas.dataset.points = String(points.count);
+    if (settling) requestRender();
+    else last = 0;
   }
-  function syncViewButtons() {
-    root.querySelectorAll('[data-cover-view]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.coverView === state.view)));
-  }
-  function chooseView(view) {
-    Object.assign(state, presets[view]); state.view = view; hoverX = 0;
-    syncViewButtons(); requestRender();
-  }
-  function toggleMotion() { state.playing = !state.playing; last = 0; syncLabels(); requestRender(); }
-  root.querySelectorAll('[data-cover-view]').forEach(button => button.addEventListener('click', () => chooseView(button.dataset.coverView)));
-  root.querySelectorAll('[data-cover-param]').forEach(input => input.addEventListener('input', () => {
-    const value = Number(input.value);
-    state[input.dataset.coverParam] = value / 100;
-    input.closest('label').querySelector('output').textContent = `${value}%`;
-    requestRender();
-  }));
-  motionButton.addEventListener('click', toggleMotion);
-  root.querySelectorAll('[data-cover-zoom]').forEach(button => button.addEventListener('click', () => {
-    state.distance = Math.min(4, Math.max(1.15, state.distance * Number(button.dataset.coverZoom)));
-    requestRender();
-  }));
   canvas.addEventListener('pointerdown', event => {
     if (!event.isPrimary) return;
-    dragging = true; previousX = event.clientX; previousY = event.clientY;
+    if (event.pointerType === 'mouse') return;
+    dragging = true; previousX = event.clientX;
     canvas.setPointerCapture(event.pointerId);
-    if (event.pointerType === 'mouse') canvas.focus({ preventScroll: true });
   });
   canvas.addEventListener('pointermove', event => {
-    if (dragging) {
-      state.yaw = Math.max(-.7, Math.min(.7, state.yaw - (event.clientX - previousX) * .0025));
-      if (event.pointerType !== 'touch') state.pitch = Math.max(-.05, Math.min(.85, state.pitch + (event.clientY - previousY) * .002));
-      previousX = event.clientX; previousY = event.clientY;
-      state.view = 'free'; syncViewButtons();
-    } else if (event.pointerType === 'mouse') {
-      const bounds = canvas.getBoundingClientRect(); hoverX = (event.clientX - bounds.left) / width - .5;
+    if (event.pointerType === 'mouse') {
+      const bounds = canvas.getBoundingClientRect();
+      const x = clamp((event.clientX - bounds.left) / width, 0, 1) - .5;
+      const y = clamp((event.clientY - bounds.top) / height, 0, 1) - .5;
+      target.yaw = home.yaw + x * .32;
+      target.pitch = home.pitch + y * .14;
+    } else if (dragging) {
+      target.yaw = clamp(target.yaw - (event.clientX - previousX) * .0015, home.yaw - .16, home.yaw + .16);
+      previousX = event.clientX;
     }
     requestRender();
   });
   for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) canvas.addEventListener(type, () => { dragging = false; });
-  canvas.addEventListener('pointerleave', () => { hoverX = 0; requestRender(); });
-  canvas.addEventListener('dblclick', () => { state.burst = state.playing ? 1 : 0; requestRender(); });
+  canvas.addEventListener('pointerleave', event => {
+    if (event.pointerType !== 'mouse') return;
+    Object.assign(target, { yaw: home.yaw, pitch: home.pitch }); requestRender();
+  });
   canvas.addEventListener('keydown', event => {
     const keys = {
-      ArrowLeft: () => { state.yaw = Math.max(-.7, state.yaw - .06); }, ArrowRight: () => { state.yaw = Math.min(.7, state.yaw + .06); },
-      ArrowUp: () => { state.pitch = Math.min(.85, state.pitch + .05); }, ArrowDown: () => { state.pitch = Math.max(-.05, state.pitch - .05); },
-      '+': () => { state.distance = Math.max(1.15, state.distance - .15); }, '=': () => { state.distance = Math.max(1.15, state.distance - .15); },
-      '-': () => { state.distance = Math.min(4, state.distance + .15); }, ' ': toggleMotion
+      ArrowLeft: () => { target.yaw = clamp(target.yaw - .04, home.yaw - .16, home.yaw + .16); },
+      ArrowRight: () => { target.yaw = clamp(target.yaw + .04, home.yaw - .16, home.yaw + .16); },
+      ArrowUp: () => { target.pitch = clamp(target.pitch + .025, home.pitch - .07, home.pitch + .07); },
+      ArrowDown: () => { target.pitch = clamp(target.pitch - .025, home.pitch - .07, home.pitch + .07); }
     };
     if (!keys[event.key]) return;
     event.preventDefault(); keys[event.key]();
-    if (event.key.startsWith('Arrow')) { state.view = 'free'; syncViewButtons(); }
     requestRender();
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden) suspend(); else requestRender(); });
   addEventListener('pagehide', suspend);
   addEventListener('pageshow', requestRender);
-  reducedMotion.addEventListener('change', event => { state.playing = !event.matches; syncLabels(); requestRender(); });
+  reducedMotion.addEventListener('change', requestRender);
   new ResizeObserver(resize).observe(root);
   new IntersectionObserver(entries => {
     onScreen = entries[0].isIntersecting;
@@ -250,9 +209,9 @@
   }).then(buffer => {
     points = parsePLY(buffer); initializeGPU(); ready = true;
     canvas.dataset.ready = 'true'; status.hidden = true;
-    syncViewButtons(); requestRender();
+    requestRender();
   }).catch(error => {
     console.error('Liangzhu cover:', error);
-    canvas.dataset.ready = 'false'; setStatus('failed'); controls.hidden = true;
+    canvas.dataset.ready = 'false'; setStatus('failed');
   });
 })();

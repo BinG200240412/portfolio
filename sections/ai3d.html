@@ -157,8 +157,8 @@
   .pdfbar a svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8}
 </style>
 <link rel="stylesheet" href="../assets/theme.css?v=lanting-light-20261024">
-<link rel="stylesheet" href="../assets/works/ai3d/particle-cover.css?v=20261024-village-close">
-<script defer src="../assets/works/ai3d/particle-cover.js?v=20261024-village-close"></script>
+<link rel="stylesheet" href="../assets/works/ai3d/particle-cover.css?v=20261024-pointer-view">
+<script defer src="../assets/works/ai3d/particle-cover.js?v=20261024-pointer-view"></script>
 </head>
 <body class="legacy-case">
 <div class="wrap">
@@ -170,7 +170,7 @@
 
 <div class="hero particle-cover" id="liangzhu-particle-cover" data-particle-cover aria-labelledby="liangzhu-cover-title">
   <div class="hero-media">
-    <canvas id="liangzhu-cover" tabindex="0" role="img" aria-label="可交互的良渚粒子封面" data-i18n-ignore></canvas>
+    <canvas id="liangzhu-cover" tabindex="0" role="img" aria-label="可交互的良渚粒子封面。移动鼠标调整视角，触屏横向拖动，或使用方向键。" data-i18n-ignore></canvas>
     <div class="hero-scrim"></div>
   </div>
   <div class="hero-cap">
@@ -182,26 +182,6 @@
     <div class="sub">Spatial Cinema · 零成本场景搭建<br>Gaussian Splatting</div>
   </div>
   <div class="cover-status" data-cover-status role="status" data-i18n-ignore>正在展开这片良渚</div>
-  <div class="cover-ui" data-cover-label="group" aria-label="调整粒子封面" data-i18n-ignore>
-    <div class="cover-views" role="group" data-cover-label="views" aria-label="切换观察视角">
-      <button type="button" data-cover-view="close" data-cover-text="close" aria-pressed="true">近景</button>
-      <button type="button" data-cover-view="orbit" data-cover-text="orbit" aria-pressed="false">环绕</button>
-      <button type="button" data-cover-view="overhead" data-cover-text="overhead" aria-pressed="false">俯瞰</button>
-    </div>
-    <div class="cover-actions">
-      <span class="cover-hint" data-cover-text="hint">拖动旋转</span>
-      <button type="button" data-cover-motion aria-pressed="true">暂停</button>
-      <details class="cover-tuning">
-        <summary data-cover-text="settings">粒子设置</summary>
-        <div class="cover-tuning-panel">
-          <label class="cover-slider"><span data-cover-text="density">疏密</span><input type="range" min="10" max="100" value="95" data-cover-param="density" data-cover-label="density" aria-label="疏密"><output>95%</output></label>
-          <label class="cover-slider"><span data-cover-text="flow">漂动</span><input type="range" min="0" max="100" value="20" data-cover-param="flow" data-cover-label="flow" aria-label="漂动"><output>20%</output></label>
-          <label class="cover-slider"><span data-cover-text="spread">散开</span><input type="range" min="0" max="100" value="4" data-cover-param="spread" data-cover-label="spread" aria-label="散开"><output>4%</output></label>
-          <div class="cover-zoom"><span data-cover-text="zoom">观察距离</span><div><button type="button" data-cover-zoom="1.16" data-cover-label="farther" aria-label="远离">−</button><button type="button" data-cover-zoom="0.86" data-cover-label="closer" aria-label="靠近">+</button></div></div>
-        </div>
-      </details>
-    </div>
-  </div>
 </div>
 
 <div class="wrap">
