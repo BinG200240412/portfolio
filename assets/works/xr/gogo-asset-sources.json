@@ -1,6 +1,6 @@
 [
   {
-    "file": "originals/cover.webp",
+    "file": "originals/cover-f237d814.webp",
     "source": "06_良渚_狗GO_XR/01_原图/狗go封面.png",
     "source_dimensions": [
       11428,
@@ -11,7 +11,8 @@
       1344
     ],
     "source_sha256": "f237d8141e045f4f9f597916bf57993f1144b0b3b5eba65e0c729845f8c4ff2e",
-    "transform": "Web export from the replacement original; square edges, opaque image, no added crop, rounding or fade. Source file unchanged."
+    "transform": "Web export from the replacement original; square edges, opaque image, no added crop, rounding or fade. Source file unchanged.",
+    "compatibility_file": "originals/cover.webp"
   },
   {
     "file": "originals/cultural-cues.webp",
