@@ -1,4 +1,4 @@
-/* Original Liangzhu points, with a fixed composition and pointer-controlled view. */
+/* Original Liangzhu points, with fixed particle parameters and gesture controls. */
 (() => {
   'use strict';
   const root = document.querySelector('[data-particle-cover]');
@@ -8,15 +8,23 @@
   const assetURL = new URL('liangzhu-village.ply', document.currentScript.src);
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const words = {
-    zh: { loading: '正在展开这片良渚', failed: '粒子暂时无法载入，请刷新页面重试。', unavailable: '当前浏览器未能启用三维渲染，请开启硬件加速后重试。', lost: '三维渲染已暂停，正在等待恢复。', canvas: '可交互的良渚粒子封面。移动鼠标调整视角，触屏横向拖动，或使用方向键。' },
-    en: { loading: 'Unfolding Liangzhu', failed: 'The particles could not load. Refresh this page to try again.', unavailable: '3D rendering is unavailable. Enable hardware acceleration to view this cover.', lost: '3D rendering is paused, waiting for recovery.', canvas: 'Interactive Liangzhu particle cover. Move the pointer to change the view, drag horizontally on touchscreens, or use the arrow keys.' }
+    zh: { loading: '正在展开这片良渚', failed: '粒子暂时无法载入，请刷新页面重试。', unavailable: '当前浏览器未能启用三维渲染，请开启硬件加速后重试。', lost: '三维渲染已暂停，正在等待恢复。', canvas: '可交互的良渚粒子封面。拖动旋转，滚轮、触控板双指滑动或捏合缩放，双击循环切换近景、环绕、俯瞰和远景。也可使用方向键、加减键及数字键 1 至 4。' },
+    en: { loading: 'Unfolding Liangzhu', failed: 'The particles could not load. Refresh this page to try again.', unavailable: '3D rendering is unavailable. Enable hardware acceleration to view this cover.', lost: '3D rendering is paused, waiting for recovery.', canvas: 'Interactive Liangzhu particle cover. Drag to rotate; scroll or pinch to zoom; double-click to cycle close-up, orbit, overhead and wide views. Keyboard: arrows, plus/minus, and 1–4.' }
   };
-  // Full density, zero drift/scatter, and the previous zoom control's farthest distance.
-  // Point positions stay unchanged; only the camera angle responds to input.
+  // Full density and zero drift/scatter. Only the camera responds to input.
+  // Start at the farthest distance, and retain every view until the next gesture.
   const subject = [0, -.3, 1.85];
   const home = Object.freeze({ yaw: -.035, pitch: .18, distance: 4 });
-  const target = { yaw: home.yaw, pitch: home.pitch };
+  const presets = [
+    { name: 'wide', ...home },
+    { name: 'close', yaw: -.035, pitch: .18, distance: 1.75 },
+    { name: 'orbit', yaw: .28, pitch: .28, distance: 2.2 },
+    { name: 'overhead', yaw: -.08, pitch: .68, distance: 2.25 }
+  ];
+  const limits = { yaw: [-.7, .7], pitch: [-.05, .9], distance: [1.15, 4] };
+  const target = { ...home };
   const camera = { ...target };
+  let presetIndex = 0, viewName = 'wide';
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const tr = key => words[window.PortfolioI18n?.language === 'en' ? 'en' : 'zh'][key];
   let statusKey = 'loading';
@@ -33,7 +41,8 @@
   let ready = false, lost = false, onScreen = true, raf = 0, last = 0;
   let width = 1, height = 1, dpr = 1, frame = 0;
   let points, program, uniforms, buffers = [], shaders = [];
-  let dragging = false, previousX = 0;
+  let dragPointer = null, previousX = 0, previousY = 0;
+  let safariPinching = false, pinchDistance = home.distance;
 
   const vertexSource = `
     precision highp float;
@@ -135,12 +144,12 @@
     const dt = last ? Math.min((now - last) / 1000, .06) : 0; last = now;
     const ease = reducedMotion.matches ? 1 : Math.min(1, 1 - Math.exp(-Math.max(dt, 1 / 60) * 9));
     let settling = false;
-    for (const key of ['yaw', 'pitch']) {
+    for (const key of ['yaw', 'pitch', 'distance']) {
       camera[key] += (target[key] - camera[key]) * ease;
       if (Math.abs(target[key] - camera[key]) > .0001) settling = true;
       else camera[key] = target[key];
     }
-    const { yaw, pitch } = camera, r = home.distance;
+    const { yaw, pitch, distance: r } = camera;
     const eye = [subject[0] + Math.sin(yaw) * Math.cos(pitch) * r, subject[1] + Math.sin(pitch) * r, subject[2] - Math.cos(yaw) * Math.cos(pitch) * r];
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.uniformMatrix4fv(uniforms.uView, false, lookAt(eye, subject));
@@ -148,39 +157,80 @@
     gl.uniform1f(uniforms.uDpr, dpr);
     gl.drawArrays(gl.POINTS, 0, points.count);
     canvas.dataset.frames = String(++frame); canvas.dataset.points = String(points.count);
+    canvas.dataset.view = viewName;
+    canvas.dataset.distance = r.toFixed(3);
+    canvas.dataset.yaw = yaw.toFixed(4); canvas.dataset.pitch = pitch.toFixed(4);
     if (settling) requestRender();
     else last = 0;
   }
+  function chooseView(index) {
+    presetIndex = index; viewName = presets[index].name;
+    const { yaw, pitch, distance } = presets[index];
+    Object.assign(target, { yaw, pitch, distance }); requestRender();
+  }
+  function rotate(yawDelta, pitchDelta = 0) {
+    target.yaw = clamp(target.yaw + yawDelta, ...limits.yaw);
+    target.pitch = clamp(target.pitch + pitchDelta, ...limits.pitch);
+    viewName = 'free'; requestRender();
+  }
+  function zoom(distance) {
+    const next = clamp(distance, ...limits.distance);
+    if (Math.abs(next - target.distance) < .00001) return false;
+    target.distance = next; viewName = 'free'; requestRender(); return true;
+  }
   canvas.addEventListener('pointerdown', event => {
-    if (!event.isPrimary) return;
-    if (event.pointerType === 'mouse') return;
-    dragging = true; previousX = event.clientX;
+    if (!ready || !event.isPrimary || (event.pointerType === 'mouse' && event.button !== 0)) return;
+    dragPointer = event.pointerId; previousX = event.clientX; previousY = event.clientY;
+    canvas.classList.add('is-dragging');
     canvas.setPointerCapture(event.pointerId);
   });
   canvas.addEventListener('pointermove', event => {
-    if (event.pointerType === 'mouse') {
-      const bounds = canvas.getBoundingClientRect();
-      const x = clamp((event.clientX - bounds.left) / width, 0, 1) - .5;
-      const y = clamp((event.clientY - bounds.top) / height, 0, 1) - .5;
-      target.yaw = home.yaw + x * .32;
-      target.pitch = home.pitch + y * .14;
-    } else if (dragging) {
-      target.yaw = clamp(target.yaw - (event.clientX - previousX) * .0015, home.yaw - .16, home.yaw + .16);
-      previousX = event.clientX;
-    }
-    requestRender();
+    if (event.pointerId !== dragPointer) return;
+    rotate(-(event.clientX - previousX) * .003, event.pointerType === 'touch' ? 0 : (event.clientY - previousY) * .0025);
+    previousX = event.clientX; previousY = event.clientY;
   });
-  for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) canvas.addEventListener(type, () => { dragging = false; });
-  canvas.addEventListener('pointerleave', event => {
-    if (event.pointerType !== 'mouse') return;
-    Object.assign(target, { yaw: home.yaw, pitch: home.pitch }); requestRender();
+  for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) canvas.addEventListener(type, event => {
+    if (event.pointerId !== dragPointer) return;
+    dragPointer = null; canvas.classList.remove('is-dragging');
+  });
+  canvas.addEventListener('wheel', event => {
+    if (!ready || lost || !event.cancelable) return;
+    if (safariPinching) { event.preventDefault(); return; }
+    const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? height : 1;
+    const dx = event.deltaX * unit, dy = event.deltaY * unit;
+    if (!event.ctrlKey && Math.abs(dx) > Math.abs(dy) * 1.2) {
+      event.preventDefault(); rotate(-clamp(dx, -120, 120) * .002); return;
+    }
+    const changed = zoom(target.distance * Math.exp(clamp(dy, -120, 120) * (event.ctrlKey ? .008 : .0025)));
+    // At either distance limit, ordinary scrolling returns to the article.
+    if (changed || event.ctrlKey) event.preventDefault();
+  }, { passive: false });
+  // Safari on macOS exposes trackpad pinches as gesture events rather than ctrl-wheel.
+  canvas.addEventListener('gesturestart', event => {
+    if (!ready || lost || !matchMedia('(pointer: fine)').matches) return;
+    event.preventDefault(); safariPinching = true; pinchDistance = target.distance;
+  }, { passive: false });
+  canvas.addEventListener('gesturechange', event => {
+    if (!safariPinching) return;
+    event.preventDefault();
+    if (Number.isFinite(event.scale) && event.scale > 0) zoom(pinchDistance / event.scale);
+  }, { passive: false });
+  canvas.addEventListener('gestureend', event => {
+    if (!safariPinching) return;
+    event.preventDefault(); safariPinching = false;
+  }, { passive: false });
+  canvas.addEventListener('dblclick', event => {
+    if (!ready || lost) return;
+    event.preventDefault(); chooseView((presetIndex + 1) % presets.length);
   });
   canvas.addEventListener('keydown', event => {
     const keys = {
-      ArrowLeft: () => { target.yaw = clamp(target.yaw - .04, home.yaw - .16, home.yaw + .16); },
-      ArrowRight: () => { target.yaw = clamp(target.yaw + .04, home.yaw - .16, home.yaw + .16); },
-      ArrowUp: () => { target.pitch = clamp(target.pitch + .025, home.pitch - .07, home.pitch + .07); },
-      ArrowDown: () => { target.pitch = clamp(target.pitch - .025, home.pitch - .07, home.pitch + .07); }
+      ArrowLeft: () => rotate(-.06), ArrowRight: () => rotate(.06),
+      ArrowUp: () => rotate(0, .05), ArrowDown: () => rotate(0, -.05),
+      '+': () => zoom(target.distance * .86), '=': () => zoom(target.distance * .86),
+      '-': () => zoom(target.distance * 1.16),
+      '1': () => chooseView(0), '2': () => chooseView(1), '3': () => chooseView(2), '4': () => chooseView(3),
+      Home: () => chooseView(0)
     };
     if (!keys[event.key]) return;
     event.preventDefault(); keys[event.key]();
