@@ -14,9 +14,7 @@
     if (persist) {
       try { localStorage.setItem(key, theme); } catch (_) {}
     }
-    document.querySelectorAll('[data-set-theme]').forEach(button => {
-      button.setAttribute('aria-pressed', String(button.dataset.setTheme === theme));
-    });
+    updateThemeControl();
     document.querySelectorAll('iframe').forEach(frame => {
       frame.contentWindow?.postMessage({ type: 'portfolio:theme', theme }, location.origin);
     });
@@ -40,6 +38,17 @@
     }
   }, true);
 
+  function updateThemeControl() {
+    const english = window.PortfolioI18n?.language === 'en';
+    const label = theme === 'dark'
+      ? (english ? 'Switch to light appearance' : '切换到白色模式')
+      : (english ? 'Switch to dark appearance' : '切换到黑色模式');
+    document.querySelectorAll('[data-toggle-theme]').forEach(button => {
+      button.setAttribute('aria-label', label);
+      button.title = label;
+    });
+  }
+
   function controls() {
     let host = document.getElementById('themeControls');
     if (!host && window.top === window.self) {
@@ -61,15 +70,14 @@
       host.setAttribute('role', 'group');
       host.setAttribute('data-i18n-ignore', '');
       host.setAttribute('aria-label', tr('页面颜色与语言'));
-      host.innerHTML = '<button type="button" data-set-theme="dark" aria-label="黑色模式" title="黑色模式"><span class="theme-dot dark-dot" aria-hidden="true"></span></button><button type="button" data-set-theme="light" aria-label="白色模式" title="白色模式"><span class="theme-dot light-dot" aria-hidden="true"></span></button>';
+      host.innerHTML = '<button type="button" class="appearance-toggle" data-toggle-theme><svg class="appearance-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 0 0 0 17Z" fill="currentColor"/><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.25"/></svg></button>';
+      host.querySelector('[data-toggle-theme]').addEventListener('click', () => apply(theme === 'dark' ? 'light' : 'dark', true));
       const languageButton = document.createElement('button');
       languageButton.type = 'button';
       languageButton.className = 'language-toggle';
+      languageButton.innerHTML = '<span class="language-option" data-language="zh" lang="zh-CN" aria-hidden="true">中</span><span class="language-divider" aria-hidden="true">/</span><span class="language-option" data-language="en" lang="en" aria-hidden="true">EN</span>';
       languageButton.addEventListener('click', () => window.PortfolioI18n?.setLanguage(window.PortfolioI18n.language === 'en' ? 'zh' : 'en'));
       host.appendChild(languageButton);
-      host.querySelectorAll('[data-set-theme]').forEach(button => {
-        button.addEventListener('click', () => apply(button.dataset.setTheme, true));
-      });
     }
     updateLanguageControls();
     apply(theme);
@@ -87,14 +95,13 @@
     const host = document.getElementById('themeControls');
     if (!host) return;
     host.setAttribute('aria-label', tr('页面颜色与语言'));
-    host.querySelectorAll('[data-set-theme]').forEach(button => {
-      const label = tr(button.dataset.setTheme === 'dark' ? '黑色模式' : '白色模式');
-      button.setAttribute('aria-label', label); button.title = label;
-    });
+    updateThemeControl();
     const button = host.querySelector('.language-toggle');
     if (button) {
       const english = window.PortfolioI18n?.language === 'en';
-      button.textContent = english ? '中' : 'EN';
+      button.querySelectorAll('[data-language]').forEach(option => {
+        option.classList.toggle('is-current', option.dataset.language === (english ? 'en' : 'zh'));
+      });
       button.setAttribute('aria-label', english ? 'Switch to Chinese' : '切换到英文');
       button.title = button.getAttribute('aria-label');
     }
