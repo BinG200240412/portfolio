@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="../assets/i18n-main.js?v=green-sudoku-20261024"></script>
-<script src="../assets/i18n-cases.js?v=bilingual-20261023"></script>
-<script src="../assets/sudoku-case-i18n.js?v=five-chapters-20261024"></script>
+<script src="../assets/i18n-cases.js?v=focused-copy-20261024"></script>
+<script src="../assets/sudoku-case-i18n.js?v=clear-copy-20261024"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
-<script src="../assets/theme.js?v=diagonal-back-20261024"></script>
+<script src="../assets/theme.js?v=focused-works-20261024"></script>
 <script defer src="../assets/sudoku-hero-matrix.js?v=continuous-scroll-20261024"></script>
 <script defer src="../assets/sudoku-gallery.js?v=five-chapters-20261024"></script>
 <script defer src="../assets/sudoku-case.js?v=aligned-reveal-v2-20261024"></script>
@@ -21,16 +21,16 @@
 @media(max-width:720px){.viewer-bar{height:66px;padding-inline:20px}.viewer-image{padding:20px 15px 35px;min-height:calc(100% - 66px)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
-<link rel="stylesheet" href="../assets/theme.css?v=lanting-light-20261024">
+<link rel="stylesheet" href="../assets/theme.css?v=focused-works-20261024">
 <link rel="stylesheet" href="../assets/sudoku-hero.css?v=wide-half-third-20261024">
-<link rel="stylesheet" href="../assets/sudoku-case.css?v=wide-half-third-20261024">
+<link rel="stylesheet" href="../assets/sudoku-case.css?v=clear-copy-20261024">
 </head>
 <body>
 <main class="sudoku-scenes">
   <div class="sudoku-hero-art" aria-hidden="true" data-i18n-ignore><div class="sudoku-board-angle"><canvas id="sudoku-hero-matrix" aria-hidden="true"></canvas></div></div>
   <section class="hero" aria-labelledby="project-title">
     <div class="hero-main">
-      <h1 id="project-title">sudoku<span>.</span></h1><p class="hero-line">凡事有解。</p>
+      <h1 id="project-title">sudoku<span>.</span></h1>
       <nav class="sudoku-actions" aria-label="产品链接" data-i18n-ignore>
         <a class="sudoku-action" href="https://apps.apple.com/cn/app/sudoku-2026/id6775198044" target="_blank" rel="noopener noreferrer"><span data-label-zh="App Store 下载" data-label-en="Download on the App Store">App Store 下载</span><svg aria-hidden="true" width="15" height="15" viewBox="0 0 16 16"><path d="M3 13 13 3M4 3h9v9" fill="none" stroke="currentColor" stroke-width="1.25"/></svg></a>
         <a class="sudoku-action" href="https://sudoku.bing2002.com/" target="_blank" rel="noopener noreferrer"><span data-label-zh="访问官网" data-label-en="Visit the website">访问官网</span><svg aria-hidden="true" width="15" height="15" viewBox="0 0 16 16"><path d="M3 13 13 3M4 3h9v9" fill="none" stroke="currentColor" stroke-width="1.25"/></svg></a>
@@ -39,25 +39,22 @@
   </section>
   <div class="sudoku-story">
     <nav class="case-index" aria-label="数独项目目录">
-      <a href="#intent"><span aria-hidden="true">01</span><span>缘起</span></a>
-      <a href="#layout"><span aria-hidden="true">02</span><span>盘面</span></a>
-      <a href="#interaction"><span aria-hidden="true">03</span><span>操作</span></a>
-      <a href="#coaching"><span aria-hidden="true">04</span><span>辅导</span></a>
-      <a href="#iteration"><span aria-hidden="true">05</span><span>迭代</span></a>
+      <a href="#intent">缘起</a>
+      <a href="#layout">盘面</a>
+      <a href="#interaction">操作</a>
+      <a href="#coaching">辅导</a>
+      <a href="#iteration">迭代</a>
     </nav>
     <section class="case-chapter case-intent" id="intent" aria-labelledby="intent-title">
-      <header class="case-chapter-head"><p class="case-eyebrow"><span aria-hidden="true">01 / </span><span>设计目标</span></p><h2 id="intent-title">把注意力留给一道题。</h2></header>
+      <header class="case-chapter-head"><h2 id="intent-title">把注意力留给一道题。</h2></header>
       <p class="case-lead">围绕一局数独，保留清晰的盘面、必要的操作与克制的反馈。让观察与推理，成为这段体验的中心。</p>
-      <div class="case-intent-line" aria-label="从观察到落子的过程"><div><span class="case-intent-symbol" aria-hidden="true">?</span><h3>看见关系</h3><p>从数字与空格开始。</p></div><span class="case-connector" aria-hidden="true">→</span><div><span class="case-intent-symbol" aria-hidden="true">· · ·</span><h3>形成判断</h3><p>为推理留出时间。</p></div><span class="case-connector" aria-hidden="true">→</span><div><span class="case-intent-symbol case-accent" aria-hidden="true">5</span><h3>写下数字</h3><p>让反馈接住思路。</p></div></div>
-      <dl class="case-project-facts"><div><dt>设计与开发</dt><dd data-i18n-ignore>Cai Zhengyang</dd></div><div><dt>产品形态</dt><dd>原生 iOS 应用</dd></div><div><dt>项目进程</dt><dd>已上架 App Store</dd></div></dl>
     </section>
     <section class="case-chapter" id="layout" aria-labelledby="layout-title">
-      <header class="case-chapter-head"><p class="case-eyebrow"><span aria-hidden="true">02 / </span><span>盘面设计</span></p><h2 id="layout-title">让盘面有阅读顺序。</h2></header>
+      <header class="case-chapter-head"><h2 id="layout-title">让盘面有阅读顺序。</h2></header>
       <p class="case-lead">数字、候选笔记与选中关系各有自己的层级。用绿色强调进度与关键提示，把正在检查的关系留在眼前。</p>
-      <div class="case-reading-keys"><div><span class="case-type-sample" aria-hidden="true">1 2 3</span><h3>数字</h3><p>先看清已知条件。</p></div><div><span class="case-type-sample case-notes-sample" aria-hidden="true">2 5<br>7 9</span><h3>候选</h3><p>记下还未确定的可能。</p></div><div><span class="case-signal-sample" aria-hidden="true"></span><h3>信号</h3><p>用一种颜色标出关系。</p></div></div>
   <section class="sudoku-gallery" id="sudoku-gallery" aria-labelledby="product-heading" data-i18n-ignore>
     <div class="sudoku-gallery-copy">
-      <h3 id="product-heading">界面与交互</h3><p>棋盘、笔记与分步辅导。</p>
+      <h3 id="product-heading">界面与交互</h3>
       <div class="sudoku-screen-tabs" role="group" aria-label="界面与交互">
         <button class="sudoku-screen-tab" type="button" data-screen="board" data-image="../assets/works/sudoku/board.png?v=green-20261024" data-caption="主棋盘" data-alt="数独主棋盘，鼠尾草绿色进度条与输入工具" aria-pressed="true">主棋盘</button>
         <button class="sudoku-screen-tab" type="button" data-screen="coach" data-image="../assets/works/sudoku/coach.png?v=green-20261024" data-caption="分步辅导" data-alt="离线分步辅导，用绿色框线标出隐性唯一的目标行和格子" aria-pressed="false">分步辅导</button>
@@ -69,12 +66,12 @@
     </div>
     <figure class="sudoku-gallery-figure">
       <button class="image-open" id="sudoku-active-open" type="button" data-image="../assets/works/sudoku/board.png?v=green-20261024" data-caption="主棋盘" data-kind="screen" aria-label="放大查看主棋盘截图"><img id="sudoku-active-image" src="../assets/works/sudoku/board.png?v=green-20261024" width="1320" height="2868" alt="数独主棋盘，鼠尾草绿色进度条与输入工具" decoding="async"></button>
-      <figcaption id="sudoku-active-caption">主棋盘</figcaption>
+      <figcaption id="sudoku-active-caption" class="case-sr-only">主棋盘</figcaption>
     </figure>
   </section>
     </section>
     <section class="case-chapter" id="interaction" aria-labelledby="interaction-title">
-      <header class="case-chapter-head"><p class="case-eyebrow"><span aria-hidden="true">03 / </span><span>操作体验</span></p><h2 id="interaction-title">让操作接住思路。</h2></header>
+      <header class="case-chapter-head"><h2 id="interaction-title">让操作接住思路。</h2></header>
       <p class="case-lead">填数、笔记、橡皮与撤销围绕同一局组织。选中与关联高亮，让操作反馈接续正在进行的推理。</p>
       <div class="case-interaction-study" data-sudoku-demo data-demo-fill="5" data-demo-note="2 5">
         <div class="case-study-board" role="group" aria-label="可试用的九宫格操作示意">
@@ -88,32 +85,29 @@
           <button class="demo-cell" type="button" data-demo-cell="7" data-initial="" aria-pressed="false"><span class="demo-value"></span><span class="demo-notes"></span></button>
           <button class="demo-cell" type="button" data-demo-cell="8" data-initial="2" aria-pressed="false"><span class="demo-value">2</span><span class="demo-notes"></span></button>
         </div>
-        <div class="case-study-controls"><p class="case-small-label">交互示意</p><h3>从一个空格开始。</h3><p>选一个空格，试试填数、记下候选，再撤回上一步。</p><div class="case-demo-tools"><button type="button" data-demo-action="fill">填入 5</button><button type="button" data-demo-action="note">候选笔记</button><button type="button" data-demo-action="undo" disabled>撤销</button></div><button class="case-reset" type="button" data-demo-reset>重新开始</button><p class="case-demo-status" data-demo-status role="status" aria-live="polite" data-i18n-ignore></p></div>
+        <div class="case-study-controls"><p>选一个空格，试试填数、记下候选，再撤回上一步。</p><div class="case-demo-tools"><button type="button" data-demo-action="fill">填入 5</button><button type="button" data-demo-action="note">候选笔记</button><button type="button" data-demo-action="undo" disabled>撤销</button></div><button class="case-reset" type="button" data-demo-reset>重新开始</button><p class="case-demo-status" data-demo-status role="status" aria-live="polite" data-i18n-ignore></p></div>
       </div>
-      <div class="case-detail-line"><span>输入</span><span aria-hidden="true">→</span><span>反馈</span><span aria-hidden="true">→</span><span>继续推理</span></div>
     </section>
     <section class="case-chapter" id="coaching" aria-labelledby="coaching-title">
-      <header class="case-chapter-head"><p class="case-eyebrow"><span aria-hidden="true">04 / </span><span>分步辅导</span></p><h2 id="coaching-title">把提示拆成一次推理。</h2></header>
+      <header class="case-chapter-head"><h2 id="coaching-title">把提示拆成一次推理。</h2></header>
       <p class="case-lead">以内置离线“隐性唯一”辅导为例，先高亮值得观察的行与格子，再留出“先自己想想”的步骤。把注意力引向线索，也为自己判断留出时间。</p>
       <div class="case-coach-study" data-coach-demo data-step="0">
-        <div class="case-coach-copy"><div class="case-coach-steps" role="group" aria-label="辅导表达的三个层次"><button type="button" data-coach-step="0" aria-pressed="true"><span aria-hidden="true">01</span><span>看见线索</span></button><button type="button" data-coach-step="1" aria-pressed="false"><span aria-hidden="true">02</span><span>先自己想想</span></button><button type="button" data-coach-step="2" aria-pressed="false"><span aria-hidden="true">03</span><span>带着问题继续</span></button></div>
+        <div class="case-coach-copy"><div class="case-coach-steps" role="group" aria-label="辅导表达的三个层次"><button type="button" data-coach-step="0" aria-pressed="true">看见线索</button><button type="button" data-coach-step="1" aria-pressed="false">先自己想想</button><button type="button" data-coach-step="2" aria-pressed="false">带着问题继续</button></div>
           <div class="case-coach-panel" data-coach-panel="0"><h3>把观察范围变小。</h3><p>绿色把目标行与格子标出来，让下一次观察有明确的落点。</p></div>
           <div class="case-coach-panel" data-coach-panel="1" hidden><h3>在答案之前，留一个停顿。</h3><p>“先自己想想”把判断留给解题的人，而不是立刻替人填入数字。</p></div>
           <div class="case-coach-panel" data-coach-panel="2" hidden><h3>卡住时，再往前一步。</h3><p>从当前线索出发，继续检查所在的行、列和宫，让下一步仍然属于自己的推理。</p></div>
-          <p class="case-small-label">以当前辅导画面说明设计层次</p><p class="case-sr-only" data-coach-status role="status" aria-live="polite" data-i18n-ignore></p>
+          <p class="case-sr-only" data-coach-status role="status" aria-live="polite" data-i18n-ignore></p>
         </div>
-        <figure class="case-coach-figure"><button class="image-open case-coach-image" type="button" data-image="../assets/works/sudoku/coach.png?v=green-20261024" data-caption="分步辅导" data-kind="screen" aria-label="放大查看分步辅导截图"><img src="../assets/works/sudoku/coach.png?v=green-20261024" width="1320" height="2868" alt="离线分步辅导，用绿色框线标出隐性唯一的目标行和格子" loading="lazy" decoding="async"></button><figcaption>离线辅导 · 隐性唯一</figcaption></figure>
+        <figure class="case-coach-figure"><button class="image-open case-coach-image" type="button" data-image="../assets/works/sudoku/coach.png?v=green-20261024" data-caption="分步辅导" data-kind="screen" aria-label="放大查看分步辅导截图"><img src="../assets/works/sudoku/coach.png?v=green-20261024" width="1320" height="2868" alt="离线分步辅导，用绿色框线标出隐性唯一的目标行和格子" loading="lazy" decoding="async"></button></figure>
       </div>
     </section>
     <section class="case-chapter" id="iteration" aria-labelledby="iteration-title">
-      <header class="case-chapter-head"><p class="case-eyebrow"><span aria-hidden="true">05 / </span><span>产品迭代</span></p><h2 id="iteration-title">从原型走向完整产品。</h2></header>
+      <header class="case-chapter-head"><h2 id="iteration-title">从原型走向完整产品。</h2></header>
       <p class="case-lead">先用轻量网页原型打磨设计与交互，再将同一套设计和玩法逻辑带到原生 iOS。经典残局、本地保存与残局分享，接续了一局之外的练习与交流。</p>
-      <ol class="case-evolution"><li><span class="case-evolution-dot" aria-hidden="true"></span><span class="case-small-label">探索</span><h3>网页原型</h3><p>快速调整布局、操作与反馈。</p></li><li><span class="case-evolution-dot" aria-hidden="true"></span><span class="case-small-label">实现</span><h3>原生 iOS</h3><p>把同一套设计带到手机里。</p></li><li><span class="case-evolution-dot" aria-hidden="true"></span><span class="case-small-label">发布</span><h3>App Store</h3><p>让作品进入实际使用。</p></li></ol>
-      <div class="case-continuity"><p class="case-small-label">一局之外</p><h3>保存思路，也分享一道题。</h3><p>本地保留对局，重新打开继续；也把当前盘面分享给朋友。</p><div class="case-inline-actions"><button type="button" data-screen-jump="classics">看看经典残局 ↗</button><button type="button" data-screen-jump="share">看看残局分享 ↗</button></div></div>
-      <div class="case-closing"><p>凡事有解。</p><a class="sudoku-action" href="https://apps.apple.com/cn/app/sudoku-2026/id6775198044" target="_blank" rel="noopener noreferrer">前往 App Store<span aria-hidden="true">↗</span></a></div>
+      <div class="case-continuity"><h3>保存与分享</h3><p>本地保留对局，重新打开继续；也把当前盘面分享给朋友。</p><div class="case-inline-actions"><button type="button" data-screen-jump="classics">看看经典残局 ↗</button><button type="button" data-screen-jump="share">看看残局分享 ↗</button></div></div>
+      <div class="case-closing"><a class="sudoku-action" href="https://apps.apple.com/cn/app/sudoku-2026/id6775198044" target="_blank" rel="noopener noreferrer">前往 App Store<span aria-hidden="true">↗</span></a></div>
     </section>
   </div>
-  <footer class="sudoku-scene-footer"><a class="case-link" href="sudoku-visual.html">视觉系统 ↗</a></footer>
 </main>
 <dialog class="media-viewer" id="media-viewer" aria-labelledby="viewer-caption"><div class="viewer-bar"><p id="viewer-caption"></p><button class="viewer-close" aria-label="关闭大图">×</button></div><div class="viewer-image" id="viewer-image"></div></dialog>
 <script>

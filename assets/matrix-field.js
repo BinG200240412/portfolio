@@ -60,9 +60,9 @@
   ];
   const smooth = value => { const t = Math.max(0, Math.min(1, value)); return t * t * (3 - 2 * t); };
   const projects = {sudoku:'sudoku','robot-dog':'robot-dog','quest-3':'quest-3',arright:'arright',
-    skill:'skill','kiss-woman':'sudoku-visual','liangzhu-mask':'liangzhu','jade-cong':'liangzhu'};
+    skill:'skill','liangzhu-mask':'liangzhu','jade-cong':'liangzhu'};
   const names = {sudoku:['数独','Sudoku'],'robot-dog':['机器狗','Robot dog'],'quest-3':['Quest 3','Quest 3'],
-    arright:['Arright','Arright'],skill:['Skills','Skills'],'kiss-woman':['数独视觉系统','Sudoku visual system'],
+    arright:['Arright','Arright'],skill:['Skills','Skills'],
     'liangzhu-mask':['良渚','Liangzhu'],'jade-cong':['良渚','Liangzhu']};
   const hotspots = new Map();
   const sampleWeights = new Float32Array(9), sampleShades = new Float32Array(9);

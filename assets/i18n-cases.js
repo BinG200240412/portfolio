@@ -3,6 +3,20 @@
  * Chinese originals stay in the HTML; the shared language engine applies this data.
  */
 window.PORTFOLIO_CASE_TRANSLATIONS = {
+  "良渚相关现有场景": "Existing Liangzhu scenes",
+  "核心几何约束": "Panorama proportions",
+  "最终生成作品": "Generated panorama",
+  "Janus-Pro 反推语义": "Scene description inferred by Janus-Pro",
+  "全景输入 + 语义引导": "Panorama input and scene description",
+  "从原画提取矿物色，衍生灯光色板": "Mineral colours from the original painting become a palette for light",
+  "音光长卷": "Music-driven landscape scroll",
+  "光纤山峦": "Touch-lit fibre-optic mountains",
+  "体验流程示意 · 体验者 / AR 透镜模式 / 触发物体 / 外部观众": "Experience flow: participant, AR view, trigger objects and observers",
+  "空间渲染 · 数据扰动下的锚点物件": "Spatial study: anchor objects under data-driven changes",
+  "体验场域 · 顶视与现场": "Experience setting: overhead and on-site views",
+  "行为 → 参数": "Behaviour to parameters",
+  "演化中的状态": "Evolving states",
+  "分镜": "Storyboard",
   "DIC · 文创设计制造业协同创新中心": "DIC · Collaborative Innovation Center for Cultural and Creative Design & Manufacturing",
   "中国美术学院 · China Academy of Art": "China Academy of Art",
   "蔡正阳 · Caizhengyang": "Cai Zhengyang",

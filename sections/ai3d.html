@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="../assets/i18n-main.js?v=bilingual-20261023"></script>
-<script src="../assets/i18n-cases.js?v=bilingual-20261023"></script>
+<script src="../assets/i18n-main.js?v=focused-works-20261024"></script>
+<script src="../assets/i18n-cases.js?v=focused-copy-20261024"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
-<script src="../assets/theme.js?v=diagonal-back-20261024"></script>
+<script src="../assets/theme.js?v=focused-works-20261024"></script>
 <title>良渚复原 — AI 三维场景工作流</title>
 <style>
   :root{
@@ -156,52 +156,38 @@
   .pdfbar a:hover{transform:translateY(-1px);filter:brightness(1.08);box-shadow:0 10px 28px -12px rgba(0,0,0,.6)}
   .pdfbar a svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8}
 </style>
-<link rel="stylesheet" href="../assets/theme.css?v=lanting-light-20261024">
+<link rel="stylesheet" href="../assets/theme.css?v=focused-works-20261024">
 <link rel="stylesheet" href="../assets/works/ai3d/particle-cover.css?v=20261024-gesture-view">
 <script defer src="../assets/works/ai3d/particle-cover.js?v=20261024-gesture-view"></script>
 </head>
 <body class="legacy-case">
-<div class="wrap">
-  <header class="top">
-    <div>DIC · 文创设计制造业协同创新中心<br><b>中国美术学院 · China Academy of Art</b></div>
-    <div class="r">良渚遗址公园 · 三维场景复原<br><b>蔡正阳 · Caizhengyang</b></div>
-  </header>
-</div>
-
 <div class="hero particle-cover" id="liangzhu-particle-cover" data-particle-cover aria-labelledby="liangzhu-cover-title">
   <div class="hero-media">
     <canvas id="liangzhu-cover" tabindex="0" role="img" aria-label="可交互的良渚粒子封面。拖动旋转，滚动缩放，双击切换视角。" data-i18n-ignore></canvas>
     <div class="hero-scrim"></div>
   </div>
   <div class="hero-cap">
-    <div class="eyebrow"><span class="dot"></span>AI 3D · ComfyUI × Flux × Marble</div>
     <h1 class="title" id="liangzhu-cover-title">良渚复原</h1>
   </div>
   <div class="hero-foot">
     <div class="zh">关于良渚遗址公园相关场地复原的三维场景设计</div>
-    <div class="sub">Spatial Cinema · 零成本场景搭建<br>Gaussian Splatting</div>
   </div>
   <div class="cover-status" data-cover-status role="status" data-i18n-ignore>正在展开这片良渚</div>
 </div>
 
 <div class="wrap">
   <div class="intro">
-    <div class="meta-row rv">
-      <span>ComfyUI 工作流</span><span>Flux-Kontext</span><span>360° 全景 / HDRI</span><span>高斯泼溅 · VR 漫游</span>
-    </div>
     <p class="logline rv">把一张平面插画，<br>几分钟内变成可以<em>走进去</em>的良渚。</p>
   </div>
 
   <!-- ACT I -->
   <div class="actbar rv">
-    <div class="wf">Work Flow 01</div>
     <h2>风格重绘工作流</h2>
-    <div class="en">Style-Repaint · ComfyUI + Flux + LoRA</div>
     <p class="lead">用 ComfyUI 把良渚实景与参考画风重绘成统一的手绘风格场景——以图生图、双重 ControlNet 约束轮廓、三阶迭代采样，配合自训的"水乡泽国" LoRA 固化画风。</p>
   </div>
 
   <section class="s">
-    <div class="rail rv"><div class="num">01</div><div class="htitle">良渚背景调研</div><div class="hen">Background Research</div></div>
+    <div class="rail rv"><div class="htitle">良渚背景调研</div></div>
     <div class="body">
       <p class="lead rv">良渚古城是典型的"水乡泽国"神权国家。场景复原聚焦于三组核心特征：</p>
       <ul class="featlist rv">
@@ -211,43 +197,41 @@
       </ul>
       <figure class="inline-fig rv">
         <img src="../assets/works/ai3d/scenes.jpg" alt="良渚相关现有场景航拍">
-        <figcaption><span>02 · 良渚相关现有场景 / Existing Scenario</span><span>实景采集</span></figcaption>
+        <figcaption><span>良渚相关现有场景</span></figcaption>
       </figure>
     </div>
   </section>
 
   <section class="feat">
-    <div class="fhead rv"><div class="num">03</div><div class="htitle">风格预演</div><div class="hen" style="margin:0;align-self:flex-end;padding-bottom:6px">Style Preview</div></div>
+    <div class="fhead rv"><div class="htitle">风格预演</div></div>
     <p class="fintro rv">融合宫崎骏手绘美学，重构良渚水乡。盛夏积云下，柔光轻抚夯土宫殿与干栏木屋，清澈水道穿梭葱郁芦苇，营造清新治愈的史前梦境。</p>
     <figure class="rv">
       <img src="../assets/works/ai3d/preview.jpg" alt="风格预演 · 画风参考">
-      <figcaption><span>画风参考 · 手绘 / 治愈系</span><span>Mood</span></figcaption>
+      <figcaption><span>画风参考 · 手绘 / 治愈系</span></figcaption>
     </figure>
     <figure class="inline-fig rv">
       <img src="../assets/works/ai3d/pipeline.jpg" alt="重绘流程：输入预处理 → 提示词构建 → 双重 ControlNet → 三阶采样 → 模型选择">
-      <figcaption><span>ImageScale → WD14 → CR Text → 双 ControlNet → 三阶采样 → Flat-2D + LoRA</span><span>Pipeline</span></figcaption>
+      <figcaption><span>ImageScale → WD14 → CR Text → 双 ControlNet → 三阶采样 → Flat-2D + LoRA</span></figcaption>
     </figure>
   </section>
 
   <section class="feat">
-    <div class="fhead rv"><div class="num">04</div><div class="htitle">工作流一</div><div class="hen" style="margin:0;align-self:flex-end;padding-bottom:6px">Workflow-1</div></div>
+    <div class="fhead rv"><div class="htitle">工作流一</div></div>
     <p class="fintro rv">可输入在良渚一致公园采集的真实场景与相应艺术风格。<strong>LoRA</strong> 重点训练了"水乡泽国"的核心意象——精确捕捉莫角山夯土台基、干栏式木构与芦苇湿地的形态纹理，并固化清新治愈的色调。</p>
     <figure class="rv">
       <img src="../assets/works/ai3d/graph1.jpg" alt="工作流一 · ComfyUI 节点图，含 05 输出图片">
-      <figcaption><span>上传图像 · Checkpoint · LoRA · ControlNet · KSampler · 05 输出图片</span><span>ComfyUI Graph</span></figcaption>
+      <figcaption><span>上传图像 · Checkpoint · LoRA · ControlNet · KSampler · 05 输出图片</span></figcaption>
     </figure>
   </section>
 
   <!-- ACT II -->
   <div class="actbar rv">
-    <div class="wf">Work Flow 02</div>
     <h2>图生全景图工作流</h2>
-    <div class="en">Panoramic Image Workflow · Flux-Kontext</div>
     <p class="lead">把单张概念图延展成 360° 无缝全景，铺成可走进的 VR 环境底座——针对空间电影前期场景搭建的快速演示。</p>
   </div>
 
   <section class="s">
-    <div class="rail rv"><div class="num">07</div><div class="htitle">案例概念</div><div class="hen">Case Concept</div></div>
+    <div class="rail rv"><div class="htitle">案例概念</div></div>
     <div class="body">
       <p class="lead rv">为空间电影（Spatial Cinema）与游戏开发的前期制作，提供一套"<strong>零成本场景搭建</strong>"方案：把传统的 2D 概念设计图，瞬间转化为可进入、可探索的 3D VR 空间。</p>
       <p class="rv">在实景搭建或高精 3D 建模之前，导演与游戏制作人可以通过一张平面图，在几分钟内佩戴 VR 头显"走进"场景，评估空间感、光影氛围与构图，极大降低试错成本。</p>
@@ -255,7 +239,7 @@
   </section>
 
   <section class="feat">
-    <div class="fhead rv"><div class="num">08</div><div class="htitle">关键要点</div><div class="hen" style="margin:0;align-self:flex-end;padding-bottom:6px">Key Points</div></div>
+    <div class="fhead rv"><div class="htitle">关键要点</div></div>
     <div class="acts rv">
       <div class="act"><div class="an">IP-Adapter</div><div class="at">锁定画风</div><p>强制全景扩展区域严格继承首图的笔触与色调，拒绝画风割裂。</p></div>
       <div class="act"><div class="an">Seamless Tiling</div><div class="at">消除接缝</div><p>处理左右边界闭合，确保 VR 头显在 360° 视野内完美连贯。</p></div>
@@ -264,7 +248,7 @@
   </section>
 
   <section class="feat">
-    <div class="fhead rv"><div class="num">09</div><div class="htitle">实现过程</div><div class="hen" style="margin:0;align-self:flex-end;padding-bottom:6px">Implementation</div></div>
+    <div class="fhead rv"><div class="htitle">实现过程</div></div>
     <div class="twocol">
       <div class="rv">
         <p class="fintro" style="margin-bottom:18px">这一步采用 <strong>Flux-Kontext</strong> 技术路径，而非传统 IP-Adapter 拼接，逻辑更简练高效。流程通过 Flux 架构实现单图向 360° 全景的智能延展——输入单图经 VAEEncode 与 ReferenceLatent 转化为"视觉种子"，由 Kontext dev 模型配合专用全景 LoRA，在 "create a 360 hdr" 提示下自动补全视野盲区，最后由 UltimateSDUpscale 高清重绘，输出无缝 HDRI 贴图。</p>
@@ -279,67 +263,63 @@
       </div>
       <figure class="rv">
         <img src="../assets/works/ai3d/graph2.jpg" alt="图生全景图工作流 · 节点图（模型三件套 / 放大组件 / ControlNet 串联）">
-        <figcaption><span>模型三件套 · 放大组件 · ControlNet 串联</span><span>Flux-Kontext Graph</span></figcaption>
+        <figcaption><span>模型三件套 · 放大组件 · ControlNet 串联</span></figcaption>
       </figure>
     </div>
     <div class="callout rv">
-      <div class="ct">核心几何约束 · Geometry</div>
+      <div class="ct">核心几何约束</div>
       <p>全景图映射到球体时必须是 2:1——设成 1:1，VR 里的天顶与地底会被压扁，世界就变形了。</p>
     </div>
     <figure class="rv">
       <img src="../assets/works/ai3d/panorama11.jpg" alt="最终生成作品 · 360° 全景">
-      <figcaption><span>11 · 最终生成作品 / Finally Generated Work</span><span>360° Equirectangular</span></figcaption>
+      <figcaption><span>最终生成作品</span></figcaption>
     </figure>
   </section>
 
   <!-- ACT III -->
   <div class="actbar rv">
-    <div class="wf">Work Flow 03</div>
     <h2>Marble · 高斯泼溅</h2>
-    <div class="en">Gaussian Splatting · World Labs Marble</div>
     <p class="lead">把全景图喂进 World Labs 的 Marble，结合 Janus-Pro 反推的语义引导，一键生成可在浏览器与 VR 头显里自由漫游的高斯泼溅三维世界。</p>
   </div>
 
   <section class="feat">
-    <div class="fhead rv"><div class="num">12</div><div class="htitle">工作流程总说明</div><div class="hen" style="margin:0;align-self:flex-end;padding-bottom:6px">General Description</div></div>
+    <div class="fhead rv"><div class="htitle">工作流程总说明</div></div>
     <p class="fintro rv">风格化重绘 → 全景图扩展 → 提示词反推 → MARBLE 模型生成 → Gaussian Splatting。三段工作流首尾相接，把"一张实景照片"逐步推进成"一个可漫游的世界"。</p>
     <figure class="rv">
       <img src="../assets/works/ai3d/flow12.jpg" alt="工作流程总说明 · 全流程图">
-      <figcaption><span>重绘 → 全景 → 反推 → Marble → Splatting</span><span>Full Pipeline</span></figcaption>
+      <figcaption><span>重绘 → 全景 → 反推 → Marble → Splatting</span></figcaption>
     </figure>
   </section>
 
   <section class="feat">
-    <div class="fhead rv"><div class="num">13 / 14</div><div class="htitle">工作流三 · 输入到 Marble</div><div class="hen" style="margin:0;align-self:flex-end;padding-bottom:6px">Into Marble</div></div>
+    <div class="fhead rv"><div class="htitle">工作流三 · 输入到 Marble</div></div>
     <p class="fintro rv">用 <strong>Janus-Pro-7B</strong> 对全景图反推出详尽的英文场景描述（PANO → CLIP → TEXT），再将"全景图 + 语义引导"一并喂入 Marble 的 Create New World——2D 全景作为图像输入，文本作为语义引导。</p>
     <div class="twocol">
       <figure class="rv">
         <img src="../assets/works/ai3d/janus.jpg" alt="工作流三 · Janus-Pro 语义反推节点图">
-        <figcaption><span>13 · Janus-Pro 反推语义</span><span>Workflow-3</span></figcaption>
+        <figcaption><span>Janus-Pro 反推语义</span></figcaption>
       </figure>
       <figure class="rv">
         <img src="../assets/works/ai3d/marble_ui.jpg" alt="输入到 Marble · Create New World 界面">
-        <figcaption><span>14 · 全景输入 + 语义引导</span><span>Marble · World Labs</span></figcaption>
+        <figcaption><span>全景输入 + 语义引导</span></figcaption>
       </figure>
     </div>
     <figure class="inline-fig rv">
       <img src="../assets/works/ai3d/img_input.jpg" alt="图片输入 · 360° 全景">
-      <figcaption><span>图片输入 / Image Input · 360° 全景</span><span>Best @ 2:1 Equirectangular</span></figcaption>
+      <figcaption><span>图片输入 · 360° 全景</span></figcaption>
     </figure>
   </section>
 
   <section class="feat">
-    <div class="fhead rv"><div class="num">15</div><div class="htitle">输入场景模型</div><div class="hen" style="margin:0;align-self:flex-end;padding-bottom:6px">Input Scene Model</div></div>
+    <div class="fhead rv"><div class="htitle">输入场景模型</div></div>
     <p class="fintro rv">Marble 输出可探索的高斯泼溅（Gaussian Splatting）三维场景——从稀疏点云到完整渲染，每个世界都附带可在浏览器与 VR 头显中打开的链接，真正"走进"复原后的良渚。</p>
     <figure class="rv">
       <img src="../assets/works/ai3d/splat.jpg" alt="输入场景模型 · 高斯泼溅三维场景预览">
-      <figcaption><span>点云 → 高斯泼溅 → 可漫游世界</span><span>3D Gaussian Splatting</span></figcaption>
+      <figcaption><span>点云 → 高斯泼溅 → 可漫游世界</span></figcaption>
     </figure>
-    <p class="linknote rv"><b>WEB / VR Link</b> · marble.worldlabs.ai — 每个生成世界均可在浏览器或 VR 头显中实时漫游</p>
   </section>
 
   <section class="closing">
-    <div class="num rv">End · 走进良渚</div>
     <p class="big rv">在搭起一砖一瓦之前，<br><em>先走进去看一眼</em>。</p>
     <p class="tail rv">从一张航拍照片，到手绘风格场景，再到 360° 全景与可漫游的高斯泼溅世界——AI 让良渚的复原，从厚重的考古资料，变成可以真正"走进去"的一片土地。</p>
   </section>
@@ -347,14 +327,8 @@
 
 <div class="wrap">
   <div class="pdfbar">
-    <div class="pt">良渚三维场景复原 · 完整文档 · <b>PDF</b> · 可下载</div>
     <a href="../assets/works/ai3d/liangzhu-3d.pdf" download="蔡正阳-良渚三维场景复原.pdf"><svg viewBox="0 0 24 24"><path d="M12 3v12M7.5 10.5 12 15l4.5-4.5"/><path d="M5 19h14"/></svg>下载 PDF</a>
   </div>
-
-  <footer>
-    <span>良渚复原 · AI 三维场景工作流</span>
-    <span>中国美术学院 DIC · 2026</span>
-  </footer>
 </div>
 
 <script>
