@@ -1,334 +1,126 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh" data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="狗GO：以机器狗与 AR 眼镜串联良渚遗址公园中的文化线索，从核心概念、研究框架到体验流程。">
 <script src="../assets/i18n-main.js?v=bilingual-20261023"></script>
 <script src="../assets/i18n-cases.js?v=bilingual-20261023"></script>
+<script src="../assets/xr-page.js?v=three-chapters-20261024"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=diagonal-back-20261024"></script>
 <title>狗GO — 良渚遗址公园探索式体验设计</title>
-<style>
-  :root{
-    --bg:#0b0b0a; --bg2:#101010; --panel:#141413; --line:#262620; --line2:#33332a;
-    --ink:#eceae3; --soft:#bdbcb3; --dim:#86857c; --faint:#5c5b54;
-    --green:#c2944a; --green-d:#7d5f2c; --red:#ff2b18;
-    --mono:"JetBrains Mono",ui-monospace,monospace;
-    --serif:"Instrument Serif","Noto Serif SC",serif;
-    --sans:"Noto Sans SC",-apple-system,system-ui,sans-serif;
-    --disp:"Archivo","Helvetica Neue",sans-serif;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;
-    line-height:1.85;-webkit-font-smoothing:antialiased;
-    background-image:radial-gradient(120% 60% at 50% -10%,#16140d 0%,var(--bg) 55%);}
-  ::selection{background:var(--green-d);color:#fff}
-  .wrap{max-width:1200px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
-  a{color:inherit}
-
-  header.top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;
-    padding:26px 0 22px;border-bottom:1px solid var(--line);
-    font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
-  header.top .r{text-align:right;line-height:1.7}
-  header.top b{color:var(--soft);font-weight:500}
-
-  .hero{position:relative;margin:0}
-  .hero-media{position:relative;overflow:hidden;background:#000;border-bottom:1px solid var(--line)}
-  .hero-media img{display:block;width:100%;height:auto;opacity:.92}
-  .hero-scrim{position:absolute;inset:0;pointer-events:none;
-    background:linear-gradient(180deg,rgba(8,8,7,.72) 0%,rgba(8,8,7,.10) 30%,transparent 50%,rgba(8,8,7,.30) 100%)}
-  .hero-cap{position:absolute;left:clamp(20px,5vw,64px);top:clamp(20px,4vw,46px);right:64px}
-  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.34em;color:var(--green);
-    text-transform:uppercase;display:flex;align-items:center;gap:11px;margin-bottom:18px}
-  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--red);
-    box-shadow:0 0 0 0 rgba(255,43,24,.5);animation:blink 4.2s ease-in-out infinite}
-  @keyframes blink{0%,42%,100%{opacity:1;box-shadow:0 0 10px 1px rgba(255,43,24,.55)}
-    46%,52%{opacity:.18;box-shadow:0 0 0 0 rgba(255,43,24,0)}}
-  .title{font-family:var(--disp);font-weight:900;color:#fff;
-    font-size:clamp(46px,11vw,150px);line-height:.92;letter-spacing:-.02em;
-    text-shadow:0 2px 40px rgba(0,0,0,.55)}
-  .hero-foot{position:absolute;left:clamp(20px,5vw,64px);bottom:clamp(18px,3vw,34px);right:64px;
-    display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
-  .hero-foot .zh{font-family:var(--serif);font-size:clamp(22px,3.4vw,40px);color:#fff;line-height:1.1}
-  .hero-foot .sub{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--soft);
-    text-transform:uppercase;max-width:360px;text-align:right;line-height:1.7}
-
-  .intro{padding:clamp(46px,8vw,96px) 0 clamp(30px,5vw,60px);display:grid;grid-template-columns:1fr;gap:34px}
-  .meta-row{display:flex;flex-wrap:wrap;gap:10px 22px;font-family:var(--mono);font-size:11px;
-    letter-spacing:.1em;color:var(--dim);text-transform:uppercase;
-    padding-bottom:30px;border-bottom:1px solid var(--line)}
-  .meta-row span{display:inline-flex;align-items:center;gap:9px}
-  .meta-row span::before{content:"";width:5px;height:5px;background:var(--green);border-radius:50%}
-  .logline{font-family:var(--serif);font-weight:500;font-size:clamp(24px,3.6vw,42px);
-    line-height:1.45;color:var(--ink);max-width:26ch}
-  .logline em{font-style:italic;color:var(--green)}
-
-  section.s{padding:clamp(40px,6vw,74px) 0;border-top:1px solid var(--line);
-    display:grid;grid-template-columns:300px 1fr;gap:clamp(24px,5vw,72px);align-items:start}
-  section.s.full{display:block}
-  .rail{position:sticky;top:30px}
-  .num{font-family:var(--mono);font-size:12px;letter-spacing:.28em;color:var(--green);margin-bottom:16px}
-  .htitle{font-family:var(--serif);font-weight:500;font-size:clamp(28px,3.4vw,44px);line-height:1.08;color:var(--ink)}
-  .hen{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-top:12px}
-  .body{max-width:64ch}
-  .body p{font-size:clamp(15px,1.15vw,17px);color:var(--soft);margin-bottom:1.1em}
-  .body p:last-child{margin-bottom:0}
-  .body .lead{color:var(--ink);font-weight:400}
-  .body strong{color:var(--ink);font-weight:500}
-
-  figure{margin:0}
-  figure img{display:block;width:100%;height:auto;border:1px solid var(--line2);background:#000}
-  figcaption{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--faint);
-    text-transform:uppercase;margin-top:12px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
-  .inline-fig{margin-top:30px}
-  .feat{padding:clamp(34px,5vw,60px) 0;border-top:1px solid var(--line)}
-  .feat .fhead{display:flex;align-items:baseline;gap:18px;margin-bottom:14px;flex-wrap:wrap}
-  .feat .num{margin:0}
-  .feat .htitle{font-size:clamp(24px,3vw,38px)}
-  .feat .fintro{max-width:70ch;color:var(--soft);font-size:clamp(15px,1.15vw,17px);margin-bottom:30px}
-
-  /* sub-grid for research / flow blocks */
-  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px 28px}
-  .gcell h3{font-family:var(--serif);font-weight:500;font-size:clamp(19px,2vw,24px);color:var(--ink);margin-bottom:8px}
-  .gcell .en{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--green);text-transform:uppercase;margin-bottom:14px}
-  .gcell p{font-size:14.5px;line-height:1.75;color:var(--soft)}
-  .gcell p strong{color:var(--ink);font-weight:500}
-  .gcell figure{margin-top:16px}
-  .span2{grid-column:1/-1}
-
-  /* relation panel */
-  .core{margin:clamp(40px,6vw,72px) 0;padding:clamp(28px,4vw,52px);
-    background:linear-gradient(180deg,#16140d,#100f0b);border:1px solid var(--line2);border-radius:2px;position:relative;overflow:hidden}
-  .core::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--red)}
-  .core .ktag{font-family:var(--mono);font-size:11px;letter-spacing:.28em;color:var(--red);text-transform:uppercase;margin-bottom:10px}
-  .core h2{font-family:var(--serif);font-weight:500;font-size:clamp(26px,3.4vw,40px);line-height:1.12;color:#fff;margin-bottom:8px}
-  .core .h2en{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-bottom:30px}
-  .core .intro-p{color:var(--soft);max-width:66ch;margin-bottom:34px;font-size:clamp(15px,1.15vw,17px)}
-  .acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--line2)}
-  .act{background:#100f0b;padding:24px 22px}
-  .act .an{font-family:var(--mono);font-size:13px;color:var(--green);letter-spacing:.06em;margin-bottom:9px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-  .act .an b{color:#fff;font-weight:500;font-family:var(--serif);font-size:18px}
-  .act p{font-size:13.5px;line-height:1.7;color:var(--soft)}
-  .core .rfig{margin-top:1px}
-
-  /* dev log */
-  .devlog{font-family:var(--mono);font-size:12.5px;line-height:2.0;color:var(--soft);
-    background:#0e0d0a;border:1px solid var(--line2);padding:22px 24px;border-radius:2px}
-  .devlog .ln{display:block;white-space:pre-wrap}
-  .devlog .ln::before{content:"› ";color:var(--green)}
-  .twocol{display:grid;grid-template-columns:0.9fr 1.1fr;gap:clamp(24px,4vw,56px);align-items:start}
-
-  .closing{padding:clamp(60px,10vw,140px) 0 clamp(40px,6vw,80px);border-top:1px solid var(--line);text-align:center}
-  .closing .num{justify-content:center}
-  .closing .big{font-family:var(--serif);font-weight:500;font-size:clamp(30px,5.6vw,72px);line-height:1.18;color:#fff;max-width:20ch;margin:18px auto 0}
-  .closing .big em{font-style:italic;color:var(--green)}
-  .closing .tail{max-width:58ch;margin:42px auto 0;color:var(--soft);font-size:clamp(15px,1.2vw,17px)}
-
-  footer{border-top:1px solid var(--line);padding:30px 0 60px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;
-    font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--faint);text-transform:uppercase}
-
-  .rv{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
-  .rv.in{opacity:1;transform:none}
-
-  @media(max-width:820px){
-    section.s{grid-template-columns:1fr;gap:20px}
-    .rail{position:static}
-    .twocol{grid-template-columns:1fr}
-    .hero-foot .sub{text-align:left}
-    .hero-cap{right:20px}
-  }
-</style>
-<style>
-  .pdfbar{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
-    margin:clamp(34px,5vw,60px) 0 clamp(20px,3vw,30px);padding:24px clamp(20px,3vw,32px);
-    border:1px solid var(--line2);border-radius:4px;background:var(--bg2)}
-  .pdfbar .pt{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--dim);text-transform:uppercase}
-  .pdfbar .pt b{color:var(--ink);font-weight:500}
-  .pdfbar a{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;
-    letter-spacing:.12em;text-transform:uppercase;color:#0c0c0a;background:var(--green);border-radius:30px;
-    padding:12px 22px;white-space:nowrap;text-decoration:none;
-    transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
-  .pdfbar a:hover{transform:translateY(-1px);filter:brightness(1.08);box-shadow:0 10px 28px -12px rgba(0,0,0,.6)}
-  .pdfbar a svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8}
-</style>
 <link rel="stylesheet" href="../assets/theme.css?v=lanting-light-20261024">
+<link rel="stylesheet" href="../assets/xr-page.css?v=three-chapters-20261024">
 </head>
-<body class="legacy-case">
-<div class="wrap">
-  <header class="top">
-    <div>DIC · 文创设计制造业协同创新中心<br><b>中国美术学院 · China Academy of Art</b></div>
-    <div class="r">良渚遗址公园 · 探索式体验设计<br><b>蔡正阳 · Caizhengyang</b></div>
-  </header>
-</div>
-
-<div class="hero">
-  <div class="hero-media">
-    <img src="../assets/works/xr/hero.jpg" alt="游客佩戴 AR 眼镜与蔚蓝阿尔法机器狗在良渚遗址公园">
-    <div class="hero-scrim"></div>
-  </div>
-  <div class="hero-cap">
-    <div class="eyebrow"><span class="dot"></span>XR 文旅 · AR 眼镜 × 机器狗</div>
-    <div class="title">狗GO</div>
-  </div>
-  <div class="hero-foot">
-    <div class="zh">良渚遗址公园探索式体验设计</div>
-    <div class="sub">蔚蓝阿尔法机器狗 + AR 眼镜<br>微叙事线索系统</div>
-  </div>
-</div>
-
-<div class="wrap">
-  <div class="intro">
-    <div class="meta-row rv">
-      <span>良渚遗址公园</span><span>AR 眼镜 + 机器狗</span><span>微叙事线索系统</span><span>沉浸式生成叙事</span>
-    </div>
-    <p class="logline rv">让游客在现代行走的路径，<br>自然映射为古代生活的<em>一日行程</em>。</p>
-  </div>
-
-  <!-- 01 核心概念 -->
-  <section class="s">
-    <div class="rail rv"><div class="num">01</div><div class="htitle">核心概念</div><div class="hen">Core Concept</div></div>
-    <div class="body">
-      <p class="lead rv">本方案以<strong>蔚蓝阿尔法机器狗</strong>与 <strong>AR 眼镜</strong>为核心载体，构建一套基于良渚遗址公园的微叙事线索系统。游客在园区内自由游览，机器狗搭载 AR 眼镜持续跟随；在特定点位，机器狗提醒游客拿起 AR 眼镜收集文化线索，游览结束后，依据个性化路线与收集到的线索，生成专属的"古良渚一日"文化叙事路线。</p>
-      <p class="rv">系统强调文化信息的多源性与开放性：机器狗负责发现空间与搜集线索，AR 负责视觉、听觉等多模态呈现，两者协作形成动态的导览方式——让现代行走的路径，自然映射为古代生活的一日行程，使沉浸体验建立在真实空间感与个人化理解之上。</p>
-      <figure class="inline-fig rv">
-        <img src="../assets/works/xr/concept_thumbs.jpg" alt="AR 文化线索：稻穗、屋宇、玉器纹样">
-        <figcaption><span>AR 文化线索 · 稻作 / 器物 / 纹样</span><span>Cultural Cues</span></figcaption>
-      </figure>
-    </div>
-  </section>
-</div>
-
-<!-- 关系层 panel -->
-<div class="wrap">
-  <div class="core rv">
-    <div class="ktag">★ The Relationship</div>
-    <h2>"游客" 与 "机器狗" 的关系</h2>
-    <div class="h2en">Tourist × Robot Dog · Three Layers</div>
-    <p class="intro-p">不是工具与使用者，而是同行者。机器狗在物理、感知、叙事三个层面与游客协作，把一次普通的园区行走，逐步转译成一段可被记住、可被生成的文化叙事。</p>
-    <div class="acts">
-      <div class="act"><div class="an"><b>物理层</b>跟随与被跟随</div><p>游客自由游览 · 设备无感负重 · 机器狗保持安全距离</p></div>
-      <div class="act"><div class="an"><b>感知层</b>提示与响应</div><p>机器狗感知文化线索 · 用户主动收集 · 虚实结合</p></div>
-      <div class="act"><div class="an"><b>叙事层</b>行为与映射</div><p>交互行为映射 · 动态生成叙事 · 构建情感联结</p></div>
-    </div>
-    <figure class="rfig" style="margin-top:24px">
-      <img src="../assets/works/xr/relation.jpg" alt="如影随形的伴游者 / 时空线索的嗅探者 / 古今记忆的共建者 / 个人化理解的生成式叙事">
-      <figcaption><span>如影随形 · 时空嗅探 · 古今共建 · 生成式叙事</span><span>Roles</span></figcaption>
-    </figure>
-  </div>
-</div>
-
-<!-- 02 研究框架 -->
-<div class="wrap">
-  <section class="feat">
-    <div class="fhead rv"><div class="num">02</div><div class="htitle">研究框架</div><div class="hen" style="margin:0;align-self:flex-end;padding-bottom:6px">Research Framework</div></div>
-    <p class="fintro rv">把良渚的文化原型拆解为可被系统调用的"碎片"，再用空间、行为与场景把它们重新组织起来。</p>
-    <div class="grid3">
-      <div class="gcell rv">
-        <h3>文化语义层</h3><div class="en">Semantic Units</div>
-        <p>基于<strong>声音、纹样、光影、器物</strong>等原型，构建文化碎片库——水域的纹理光影、玉琮的几何母题、稻作文明的声景，沉淀为"文化碎片语义库"，为后续生成式叙事提供数据基础。</p>
-        <figure><img src="../assets/works/xr/mesh.jpg" alt="文化语义层 · 三维纹理光影"><figcaption><span>纹理光影 / 几何母题</span><span>Fig.02-A</span></figcaption></figure>
-      </div>
-      <div class="gcell rv">
-        <h3>用户行为研究</h3><div class="en">User Behavior</div>
-        <p>对园区中的<strong>休憩、亲子、休闲、商品、运动</strong>五类空间行为进行观察，作为触发机制与叙事节奏设计的依据。</p>
-        <figure><img src="../assets/works/xr/behavior.jpg" alt="用户行为研究 · 五类空间行为"><figcaption><span>休憩 / 亲子 / 休闲 / 商品 / 运动</span><span>Fig.02-B</span></figcaption></figure>
-      </div>
-      <div class="gcell rv">
-        <h3>系统结构模型</h3><div class="en">System Modules</div>
-        <p><strong>A 机器狗模块</strong>（环境识别·位置触发·短时提示）/ <strong>B AR 内容触发</strong>（点位生成声·影·纹，背部 tag 定位）/ <strong>C 文化碎片数据库</strong>（纹样·声景·光影·符号体系）/ <strong>D AI 叙事生成</strong>（碎片组合成"古良渚的一天"）。</p>
-        <figure><img src="../assets/works/xr/struct.jpg" alt="系统结构模型 · 四模块"><figcaption><span>机器狗 / AR / 数据库 / AI 叙事</span><span>Fig.02-C</span></figcaption></figure>
-      </div>
-      <div class="gcell span2 rv">
-        <h3>场景触发层</h3><div class="en">Scene Triggers · "让文化从地貌中自然冒出来"</div>
-        <p>将整个园区理解为一座沉浸式生成叙事的舞台，机器狗扮演"文化线索感应器"。每一类触发区释放对应的文化碎片——<strong>"声"</strong>（声音线索·农业节律·生命循环）、<strong>"影"</strong>（光影·水纹·涟漪影线）、<strong>"纹"</strong>（几何图形·礼制轴线·方位感）。稻田、水岸、苔地各自触发不同的碎片类型。</p>
-        <figure><img src="../assets/works/xr/trigger_iso.jpg" alt="场景触发层 · 等距场景与文化碎片爆炸图"><figcaption><span>声 / 影 / 纹 · 地貌触发</span><span>Fig.02-D</span></figcaption></figure>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- 03 体验流程 -->
-<div class="wrap">
-  <section class="feat">
-    <div class="fhead rv"><div class="num">03</div><div class="htitle">体验流程</div><div class="hen" style="margin:0;align-self:flex-end;padding-bottom:6px">Experience Flow</div></div>
-    <p class="fintro rv">三种体验模式、十余处地标、可生成的个性化游玩故事——把"逛公园"重新设计成一场可记录、可分享的考古叙事。</p>
-    <div class="grid3">
-      <div class="gcell rv">
-        <h3>体验模式</h3><div class="en">Three Modes</div>
-        <p><strong>考古模式</strong>——收集考古物料，重交互。<br><strong>合作探险</strong>——解锁剧情，重文化。<br><strong>合作探险</strong>——简单交互收集地点，重记录。</p>
-        <figure><img src="../assets/works/xr/exp_modes.jpg" alt="三种体验模式"><figcaption><span>交互 / 文化 / 记录</span><span>Fig.03-A</span></figcaption></figure>
-      </div>
-      <div class="gcell rv">
-        <h3>体验场所</h3><div class="en">Sites &amp; Stories</div>
-        <p>河边、高台、草地、林地、服务点……区域内布置不同的细分场景，配以不同剧情，<strong>为每位玩家生成各自的个性化游玩故事</strong>。</p>
-        <figure><img src="../assets/works/xr/dotmatrix.jpg" alt="体验场所 · 个性化游玩故事流"><figcaption><span>分区 → 个性化故事</span><span>Fig.03-B</span></figcaption></figure>
-      </div>
-      <div class="gcell rv">
-        <h3>交互分析</h3><div class="en">Interaction</div>
-        <p>通过机器狗手柄操控机器狗与 AR 眼镜中的虚拟物体交互，完成动作以推进剧情；不同场景需要不同动作触发解锁。<strong>① 界面初始化，手柄控制机器狗 · ② 摇杆操控特定位置 · ③ 按键控制特定姿态。</strong></p>
-        <figure><img src="../assets/works/xr/interaction.jpg" alt="交互分析 · 实时变形的运动场景与 3D 环境"><figcaption><span>Live morph · Interactive 3D</span><span>Fig.03-C</span></figcaption></figure>
-      </div>
-      <div class="gcell span2 rv">
-        <h3>体验流程框架</h3><div class="en">End-to-End Flow</div>
-        <p>游客入园 → 开始体验 → 经过体验场景 → 触发玩法 → 系统依据解锁地点用 AI 生成个性化游玩日志 → 上传至社交媒体。一条从"行走"到"叙事"再到"分享"的完整链路。</p>
-        <figure><img src="../assets/works/xr/flowframe.jpg" alt="体验流程框架 · 全链路桑基图"><figcaption><span>入园 → 玩法 → AI 日志 → 分享</span><span>Fig.03-D</span></figcaption></figure>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- 技术实现 -->
-<div class="wrap">
-  <section class="feat">
-    <div class="fhead rv"><div class="num">＋</div><div class="htitle">技术实现</div><div class="hen" style="margin:0;align-self:flex-end;padding-bottom:6px">Implementation</div></div>
-    <div class="twocol">
-      <div class="rv">
-        <p class="fintro" style="margin-bottom:18px">从手柄绑定、收集品挂载到打包测试——一份真实的开发日志，记录把概念落到 Meta Quest 3 上的全过程。</p>
-        <div class="devlog">
-          <span class="ln">绑定方块到手柄</span><span class="ln">删除手柄实时渲染</span><span class="ln">调整方块大小覆盖手柄</span><span class="ln">删除手部追踪</span><span class="ln">手柄面板必须完全暴露在 Meta 眼镜摄像头的检测区域</span><span class="ln">手柄盒安装（后期 3D 打印 / 或开发机器狗 SDK）</span><span class="ln">触碰到方块，方块消失</span><span class="ln">替换方块为收集品</span><span class="ln">出现新物品（鳄鱼纹样）</span><span class="ln">在收集品周围布置 6 个小收集品</span><span class="ln">写脚本挂载在主收集品与小收集品</span><span class="ln">根据场所调试具体位置</span><span class="ln">打包 APK 在 Meta Quest 3 上进行测试</span>
-        </div>
-      </div>
-      <figure class="rv">
-        <img src="../assets/works/xr/tech_shots.jpg" alt="技术实现 · 引擎与场景搭建截图">
-        <figcaption><span>自动旋转 / 收集品挂载 / 场景搭建</span><span>Unity · Meta Quest 3</span></figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <!-- 设计思路 -->
-  <section class="feat">
-    <div class="fhead rv"><div class="num">＋</div><div class="htitle">设计思路</div><div class="hen" style="margin:0;align-self:flex-end;padding-bottom:6px">Design Logic</div></div>
-    <p class="fintro rv">两条主线咬合成闭环：<strong>拾取文化线索</strong>（自由游览 → 机器狗发现 → 佩戴 AR → 获取线索）与 <strong>文化叙事重构</strong>（记录路径 → 路径转译 → 故事生成 → 个性化文化记忆）。游客、机器狗、AR 三方协作——主动跟随与情感联结、视觉呈现与个性化解读、位置信息与虚拟叠加。</p>
-    <figure class="rv">
-      <img src="../assets/works/xr/design.jpg" alt="设计思路 · 拾取与重构闭环，游客/机器狗/AR 协作三角">
-      <figcaption><span>拾取 → 重构 · 游客 / 机器狗 / AR</span><span>System Loop</span></figcaption>
-    </figure>
-  </section>
-
-  <!-- closing -->
-  <section class="closing">
-    <div class="num rv">End · 古良渚一日</div>
-    <p class="big rv">让文化，<em>从地貌中自然"冒出来"</em>。</p>
-    <p class="tail rv">不是把历史搬进屏幕，而是让游客在真实的行走里，与机器狗、与 AR、与这片土地一起，把"古良渚的一天"重新走一遍、生成一遍、分享出去。</p>
-  </section>
-</div>
-
-<div class="wrap">
-  <div class="pdfbar">
-    <div class="pt">《狗GO》完整展板 · <b>PDF</b> · 可下载</div>
-    <a href="../assets/works/xr/gogo.pdf" download="蔡正阳-狗GO-良渚遗址公园探索式体验设计.pdf"><svg viewBox="0 0 24 24"><path d="M12 3v12M7.5 10.5 12 15l4.5-4.5"/><path d="M5 19h14"/></svg>下载 PDF</a>
-  </div>
-
-  <footer>
-    <span>狗GO · 良渚遗址公园探索式体验设计</span>
-    <span>中国美术学院 DIC · 2026</span>
-  </footer>
-</div>
-
-<script>
-  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
-  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
-</script>
+<body class="gogo-case">
+<main id="gogo-main">
+<header class="gogo-hero gogo-wrap">
+  <div class="gogo-hero-meta"><span>中国美术学院 · DIC</span><span>XR 文旅 · AR 眼镜 × 机器狗</span></div>
+  <div class="gogo-title-row"><h1>狗GO<span class="gogo-title-dot" aria-hidden="true"></span></h1><div><p class="gogo-project-name">良渚遗址公园探索式体验设计</p><p class="gogo-byline">蔡正阳 · 交互与叙事体验设计</p></div></div>
+  <figure class="gogo-cover"><img src="../assets/works/xr/originals/cover.webp" width="2400" height="1411" alt="游客佩戴头显，与机器狗一同停留在良渚的水岸" fetchpriority="high" decoding="async"></figure>
+  <div class="gogo-opening"><p>让现代行走的路径，映射为古代生活的一日行程。</p><span>自由游览 → 发现线索 → 生成叙事</span></div>
+</header>
+<nav class="gogo-chapter-nav gogo-wrap" aria-label="项目章节">
+  <a href="#concept" aria-current="location"><span aria-hidden="true">01</span><span>核心概念</span></a>
+  <a href="#research"><span aria-hidden="true">02</span><span>研究框架</span></a>
+  <a href="#experience"><span aria-hidden="true">03</span><span>体验流程</span></a>
+</nav>
+<div class="gogo-wrap">
+<section class="gogo-chapter" id="concept" aria-labelledby="concept-title"><header class="gogo-chapter-head"><span class="gogo-number" aria-hidden="true">01</span><div><p class="gogo-kicker" data-i18n-ignore>Core Concept</p><h2 id="concept-title">核心概念</h2></div><p class="gogo-chapter-lead">一位同行者，一段属于自己的良渚记忆。</p></header>
+<div class="gogo-intro-grid"><p class="gogo-body-lead">以蔚蓝阿尔法机器狗与 AR 眼镜为载体，构建一套基于良渚遗址公园的微叙事线索系统。游客自由游览，机器狗携带眼镜持续跟随，在特定点位提示游客拿起 AR 眼镜，收集文化线索。</p><p>机器狗负责发现空间与搜集线索，AR 负责视觉、听觉等多模态呈现。游览结束后，系统根据行走路径与收集到的文化碎片，生成专属的“古良渚一日”。</p></div>
+<figure class="gogo-figure gogo-cue-strip"><button class="gogo-zoom" type="button" data-caption="AR 文化线索：稻作、屋宇与器物纹样" aria-label="AR 文化线索：稻作、屋宇与器物纹样" aria-haspopup="dialog"><img src="../assets/works/xr/originals/cultural-cues.webp" alt="AR 文化线索：稻作、屋宇与器物纹样" width="2496" height="444" loading="lazy" decoding="async"></button><figcaption>AR 文化线索：稻作、屋宇与器物纹样</figcaption></figure>
+<div class="gogo-subsection"><h3 class="gogo-subhead">“游客”与“机器狗”的关系</h3><div class="gogo-relationship">
+<article><span class="gogo-small-index">01 / <span>物理层</span></span><h4>跟随与被跟随</h4><p>游客自由游览，机器狗承载设备并保持安全距离。</p></article>
+<article><span class="gogo-small-index">02 / <span>感知层</span></span><h4>提示与响应</h4><p>机器狗感知文化线索，游客主动收集，在真实空间中叠加虚拟内容。</p></article>
+<article><span class="gogo-small-index">03 / <span>叙事层</span></span><h4>行为与映射</h4><p>将交互行为与游览路径转译为叙事，逐步建立个人化的文化记忆。</p></article>
+</div><div class="gogo-role-grid">
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="如影随形的伴游者" aria-label="如影随形的伴游者" aria-haspopup="dialog"><img src="../assets/works/xr/originals/role-companion.webp" alt="如影随形的伴游者" width="554" height="302" loading="lazy" decoding="async"></button><figcaption>如影随形的伴游者</figcaption></figure>
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="时空线索的嗅探者" aria-label="时空线索的嗅探者" aria-haspopup="dialog"><img src="../assets/works/xr/originals/role-sensing.webp" alt="时空线索的嗅探者" width="554" height="302" loading="lazy" decoding="async"></button><figcaption>时空线索的嗅探者</figcaption></figure>
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="古今记忆的共建者" aria-label="古今记忆的共建者" aria-haspopup="dialog"><img src="../assets/works/xr/originals/role-shared-memory.webp" alt="古今记忆的共建者" width="553" height="302" loading="lazy" decoding="async"></button><figcaption>古今记忆的共建者</figcaption></figure>
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="个人化理解的生成式叙事" aria-label="个人化理解的生成式叙事" aria-haspopup="dialog"><img src="../assets/works/xr/originals/role-story.webp" alt="个人化理解的生成式叙事" width="553" height="302" loading="lazy" decoding="async"></button><figcaption>个人化理解的生成式叙事</figcaption></figure>
+</div></div>
+<div class="gogo-subsection"><h3 class="gogo-subhead">设计思路</h3><div class="gogo-logic"><div class="gogo-logic-track"><h4>拾取文化线索</h4><ol>
+<li>自由游览</li>
+<li>机器狗发现线索</li>
+<li>佩戴 AR 眼镜</li>
+<li>获取文化线索</li>
+</ol></div><div class="gogo-logic-track"><h4>文化叙事重构</h4><ol>
+<li>记录游览路径</li>
+<li>路径转译</li>
+<li>故事生成</li>
+<li>个性化文化记忆</li>
+</ol></div></div><p class="gogo-note">游客、机器狗与 AR 三方协作：主动跟随与情感联结，视觉呈现与个性化解读，位置信息与虚拟叠加。</p></div>
+<div class="gogo-subsection"><h3 class="gogo-subhead">技术实现</h3><div class="gogo-implementation-head"><p>从手柄绑定、收集品挂载到 APK 打包测试，将线索的发现与收集落到 Unity 和 Meta Quest 3 的原型中。</p><span class="gogo-tech-label" data-i18n-ignore>Unity / Meta Quest 3</span></div><div class="gogo-prototype-grid">
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="原型测试 · 鳄鱼纹样收集品与手柄交互" aria-label="原型测试 · 鳄鱼纹样收集品与手柄交互" aria-haspopup="dialog"><img src="../assets/works/xr/originals/quest-collection.webp" alt="原型测试 · 鳄鱼纹样收集品与手柄交互" width="1508" height="976" loading="lazy" decoding="async"></button><figcaption>原型测试 · 鳄鱼纹样收集品与手柄交互</figcaption></figure>
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="原型测试 · 触发后出现的器物与场景效果" aria-label="原型测试 · 触发后出现的器物与场景效果" aria-haspopup="dialog"><img src="../assets/works/xr/originals/quest-reveal.webp" alt="原型测试 · 触发后出现的器物与场景效果" width="1508" height="984" loading="lazy" decoding="async"></button><figcaption>原型测试 · 触发后出现的器物与场景效果</figcaption></figure>
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="Unity 场景 · 主收集品与周围的小收集品" aria-label="Unity 场景 · 主收集品与周围的小收集品" aria-haspopup="dialog"><img src="../assets/works/xr/originals/unity-scene.webp" alt="Unity 场景 · 主收集品与周围的小收集品" width="1520" height="988" loading="lazy" decoding="async"></button><figcaption>Unity 场景 · 主收集品与周围的小收集品</figcaption></figure>
+</div><div class="gogo-code-grid">
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="自动旋转" aria-label="自动旋转" aria-haspopup="dialog"><img src="../assets/works/xr/originals/code-rotation.webp" alt="自动旋转" width="358" height="250" loading="lazy" decoding="async"></button><figcaption>自动旋转</figcaption></figure>
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="小收集品挂载" aria-label="小收集品挂载" aria-haspopup="dialog"><img src="../assets/works/xr/originals/code-small-items.webp" alt="小收集品挂载" width="356" height="246" loading="lazy" decoding="async"></button><figcaption>小收集品挂载</figcaption></figure>
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="主收集品挂载" aria-label="主收集品挂载" aria-haspopup="dialog"><img src="../assets/works/xr/originals/code-main-item.webp" alt="主收集品挂载" width="358" height="249" loading="lazy" decoding="async"></button><figcaption>主收集品挂载</figcaption></figure>
+</div><details class="gogo-devlog"><summary>开发日志<span aria-hidden="true">＋</span></summary><ol>
+<li>绑定方块到手柄，调整大小覆盖手柄。</li>
+<li>删除手柄实时渲染与手部追踪。</li>
+<li>手柄面板须暴露在 Meta 眼镜摄像头的检测区域。</li>
+<li>手柄盒安装；后续考虑 3D 打印或开发机器狗 SDK。</li>
+<li>触碰方块后消失，再替换为鳄鱼纹样收集品。</li>
+<li>在主收集品周围布置 6 个小收集品，并分别挂载脚本。</li>
+<li>根据场所调试位置，打包 APK，在 Meta Quest 3 上测试。</li>
+</ol></details></div></section>
+<section class="gogo-chapter" id="research" aria-labelledby="research-title"><header class="gogo-chapter-head"><span class="gogo-number" aria-hidden="true">02</span><div><p class="gogo-kicker" data-i18n-ignore>Research Framework</p><h2 id="research-title">研究框架</h2></div><p class="gogo-chapter-lead">让文化从地貌中自然“冒出来”。</p></header>
+<div class="gogo-research-grid"><div class="gogo-semantics"><h3 class="gogo-subhead">文化语义层</h3><p>从声音、纹样、光影与器物中提取文化原型，建立文化碎片语义库，为生成式叙事提供基础。</p>
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="文化碎片语义库 · 纹理、光影与几何母题" aria-label="文化碎片语义库 · 纹理、光影与几何母题" aria-haspopup="dialog"><img src="../assets/works/xr/originals/semantic-terrain.webp" alt="文化碎片语义库 · 纹理、光影与几何母题" width="658" height="370" loading="lazy" decoding="async"></button><figcaption>文化碎片语义库 · 纹理、光影与几何母题</figcaption></figure>
+<ul class="gogo-semantic-list">
+<li>水域的纹理光影</li>
+<li>图腾化的器物纹样</li>
+<li>玉琮的几何母题</li>
+<li>稻作文明的声景</li>
+</ul></div><div class="gogo-triggers"><h3 class="gogo-subhead">场景触发层</h3><p>把园区理解为一座沉浸式生成叙事的舞台。机器狗作为文化线索感应器，在稻田、水岸与苔地触发不同的文化碎片。</p>
+<figure class="gogo-figure gogo-dark-art"><button class="gogo-zoom" type="button" data-caption="场景触发 · 地貌、点位与文化碎片的空间关系" aria-label="场景触发 · 地貌、点位与文化碎片的空间关系" aria-haspopup="dialog"><img src="../assets/works/xr/originals/scene-axonometric.webp" alt="场景触发 · 地貌、点位与文化碎片的空间关系" width="2000" height="1545" loading="lazy" decoding="async"></button><figcaption>场景触发 · 地貌、点位与文化碎片的空间关系</figcaption></figure>
+<div class="gogo-trigger-keys">
+<div><h4>声</h4><p>农业节律 · 生命循环</p></div>
+<div><h4>影</h4><p>光影 · 水纹 · 涟漪</p></div>
+<div><h4>纹</h4><p>几何图形 · 礼制轴线</p></div>
+</div></div></div><div class="gogo-subsection"><h3 class="gogo-subhead">用户行为研究</h3><p class="gogo-section-text">观察园区中的五类空间行为，作为场景触发与叙事节奏的设计依据。</p><ul class="gogo-behaviors">
+<li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 28h30M12 25v12m24-12v12M16 12h16v13H16z"/></svg><span>休憩</span></li>
+<li><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="17" cy="12" r="4"/><circle cx="32" cy="18" r="3"/><path d="M17 18v14m-7-6 7-8 9 7 6-2v12m-17-3-5 10m9-10 6 10m7-7-5 7m5-7 6 7"/></svg><span>亲子</span></li>
+<li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 32h32M13 32l4-13 9 5 9-6M17 19l-3-7m12 12-3 8"/><circle cx="14" cy="8" r="3"/></svg><span>休闲</span></li>
+<li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 19h30v22H9zM7 19l5-11h24l5 11M17 19v-5m14 5v-5M20 41V28h9v13"/></svg><span>商品</span></li>
+<li><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="29" cy="8" r="4"/><path d="m25 15-8 10 10 6 7 12m-17-18-7 6m15-16 5 9 10-2M27 31l-12 9"/></svg><span>运动</span></li>
+</ul></div><div class="gogo-subsection"><h3 class="gogo-subhead">系统结构模型</h3><div class="gogo-system">
+<article><span class="gogo-module-letter" aria-hidden="true">A</span><h4>机器狗模块</h4><p>环境识别、位置触发、短时提示与眼镜承载。</p></article>
+<article><span class="gogo-module-letter" aria-hidden="true">B</span><h4>AR 内容触发</h4><p>依据点位呈现声、影、纹，基于背部 tag 定位，交互后记录文化碎片。</p></article>
+<article><span class="gogo-module-letter" aria-hidden="true">C</span><h4>文化碎片数据库</h4><p>纹样、声景、光影模拟，以及与考古资料对应的符号体系。</p></article>
+<article><span class="gogo-module-letter" aria-hidden="true">D</span><h4>AI 叙事生成</h4><p>组合收集到的碎片，输出“古良渚的一天”的个性化短片或影像。</p></article>
+</div></div></section>
+<section class="gogo-chapter" id="experience" aria-labelledby="experience-title"><header class="gogo-chapter-head"><span class="gogo-number" aria-hidden="true">03</span><div><p class="gogo-kicker" data-i18n-ignore>Experience Flow</p><h2 id="experience-title">体验流程</h2></div><p class="gogo-chapter-lead">同一座公园，走出不同的故事。</p></header>
+<div class="gogo-subsection gogo-first-subsection"><h3 class="gogo-subhead">体验模式</h3><div class="gogo-modes">
+<article class="gogo-mode"><div class="gogo-mode-copy"><span class="gogo-small-index">01 / <span>重交互</span></span><h4>考古模式</h4><p>收集考古物料，通过动作与发现推进体验。</p></div><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="考古模式 · 重交互" aria-label="考古模式 · 重交互" aria-haspopup="dialog"><img src="../assets/works/xr/originals/mode-archaeology.webp" alt="考古模式 · 重交互" width="813" height="268" loading="lazy" decoding="async"></button><figcaption>考古模式 · 重交互</figcaption></figure></article>
+<article class="gogo-mode"><div class="gogo-mode-copy"><span class="gogo-small-index">02 / <span>重文化</span></span><h4>合作探险</h4><p>合作解锁剧情，沿途理解文化线索之间的关联。</p></div><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="合作探险 · 重文化" aria-label="合作探险 · 重文化" aria-haspopup="dialog"><img src="../assets/works/xr/originals/mode-cultural.webp" alt="合作探险 · 重文化" width="826" height="273" loading="lazy" decoding="async"></button><figcaption>合作探险 · 重文化</figcaption></figure></article>
+<article class="gogo-mode"><div class="gogo-mode-copy"><span class="gogo-small-index">03 / <span>重记录</span></span><h4>合作探险</h4><p>通过简单交互收集地点，留下个人的游览记录。</p></div><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="合作探险 · 重记录" aria-label="合作探险 · 重记录" aria-haspopup="dialog"><img src="../assets/works/xr/originals/mode-record.webp" alt="合作探险 · 重记录" width="813" height="268" loading="lazy" decoding="async"></button><figcaption>合作探险 · 重记录</figcaption></figure></article>
+</div></div><div class="gogo-subsection"><h3 class="gogo-subhead">体验场所</h3><div class="gogo-place-grid">
+<figure class="gogo-figure gogo-map"><button class="gogo-zoom" type="button" data-caption="良渚遗址公园 · 原方案中的场地地图" aria-label="良渚遗址公园 · 原方案中的场地地图" aria-haspopup="dialog"><img src="../assets/works/xr/originals/park-map.webp" alt="良渚遗址公园 · 原方案中的场地地图" width="1080" height="1080" loading="lazy" decoding="async"></button><figcaption>良渚遗址公园 · 原方案中的场地地图</figcaption></figure>
+<div class="gogo-places"><p>河边、高台、草地、林地与服务点构成不同的体验场景。游客走过的地点与收集的线索，逐步汇成自己的游玩故事。</p><ul class="gogo-site-list">
+<li>河边</li>
+<li>高台</li>
+<li>草地</li>
+<li>林地</li>
+<li>服务点</li>
+</ul><div class="gogo-story-line"><span>行走路径 + 文化碎片</span><span aria-hidden="true">↓</span><p>生成个性化游玩故事</p><span class="gogo-formats" data-i18n-ignore>STORY / PLOG / VLOG</span></div></div></div></div>
+<div class="gogo-subsection"><h3 class="gogo-subhead">交互分析</h3><p class="gogo-section-text">通过手柄操控机器狗，与 AR 中的虚拟物体交互。不同场景需要不同的位置或姿态，动作完成后触发内容并推进剧情。</p><div class="gogo-controller-grid">
+<div class="gogo-controller"><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="界面初始化，手柄控制机器狗" aria-label="界面初始化，手柄控制机器狗" aria-haspopup="dialog"><img src="../assets/works/xr/originals/controller-start.webp" alt="界面初始化，手柄控制机器狗" width="472" height="317" loading="lazy" decoding="async"></button><figcaption>界面初始化，手柄控制机器狗</figcaption></figure><span class="gogo-controller-number" aria-hidden="true">01</span></div>
+<div class="gogo-controller"><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="控制摇杆，操控狗到特定位置" aria-label="控制摇杆，操控狗到特定位置" aria-haspopup="dialog"><img src="../assets/works/xr/originals/controller-position.webp" alt="控制摇杆，操控狗到特定位置" width="472" height="316" loading="lazy" decoding="async"></button><figcaption>控制摇杆，操控狗到特定位置</figcaption></figure><span class="gogo-controller-number" aria-hidden="true">02</span></div>
+<div class="gogo-controller"><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="控制按键，让狗做出特定姿态" aria-label="控制按键，让狗做出特定姿态" aria-haspopup="dialog"><img src="../assets/works/xr/originals/controller-pose.webp" alt="控制按键，让狗做出特定姿态" width="472" height="317" loading="lazy" decoding="async"></button><figcaption>控制按键，让狗做出特定姿态</figcaption></figure><span class="gogo-controller-number" aria-hidden="true">03</span></div>
+</div></div><div class="gogo-subsection"><h3 class="gogo-subhead">体验流程框架</h3><ol class="gogo-journey">
+<li><span aria-hidden="true">01</span><h4>入园</h4><p>游客入园，选择体验模式，前往机器狗中转站。</p></li>
+<li><span aria-hidden="true">02</span><h4>开始体验</h4><p>经过随机场景、重点地标与园内服务点。</p></li>
+<li><span aria-hidden="true">03</span><h4>触发玩法</h4><p>通过动作解锁场景，收集物品，更新游园进度。</p></li>
+<li><span aria-hidden="true">04</span><h4>生成日志</h4><p>AI 根据解锁地点与文化线索生成个性化游玩日志。</p></li>
+<li><span aria-hidden="true">05</span><h4>记录与分享</h4><p>保留游玩故事，并上传至社交媒体。</p></li>
+</ol></div></section>
+<footer class="gogo-footer"><div><p class="gogo-footer-title">古良渚一日，始于眼前的一步。</p><p>狗GO · 良渚遗址公园探索式体验设计</p></div><a class="gogo-download" href="../assets/works/xr/gogo.pdf" download="蔡正阳-狗GO-良渚遗址公园探索式体验设计.pdf">下载完整展板<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 19h14"/></svg></a></footer>
+</div></main>
+<dialog class="gogo-lightbox" id="gogo-lightbox" aria-labelledby="gogo-lightbox-caption"><div class="gogo-lightbox-bar"><p id="gogo-lightbox-caption"></p><form method="dialog"><button type="submit" aria-label="关闭图片">关闭<span aria-hidden="true">×</span></button></form></div><div class="gogo-lightbox-media"><img alt=""></div></dialog>
 </body>
 </html>

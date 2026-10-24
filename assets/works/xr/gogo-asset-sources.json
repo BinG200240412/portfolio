@@ -1,0 +1,244 @@
+[
+  {
+    "file": "originals/cover.webp",
+    "source": "06_良渚_狗GO_XR/01_原图/狗go封面.png",
+    "source_dimensions": [
+      10886,
+      6400
+    ],
+    "output_dimensions": [
+      2400,
+      1411
+    ],
+    "source_sha256": "29aaf6e0eb89135432287a2247335614b269557a28fffc2c7aa7f5116bd46a2a",
+    "transform": "Proportional web export only; original file unchanged."
+  },
+  {
+    "file": "originals/cultural-cues.webp",
+    "source": "06_良渚_狗GO_XR/01_原图/Group 1597883136.png",
+    "source_dimensions": [
+      2496,
+      444
+    ],
+    "output_dimensions": [
+      2496,
+      444
+    ],
+    "source_sha256": "891a4e8478d2bd1cbb313a43f2c32fb5073b01d5e0eed8e7e2f7b300778862ea",
+    "transform": "Proportional web export only; original file unchanged."
+  },
+  {
+    "file": "originals/unity-scene.webp",
+    "source": "06_良渚_狗GO_XR/01_原图/截屏2025-12-04 00.34.36 1.jpg",
+    "source_dimensions": [
+      1520,
+      988
+    ],
+    "output_dimensions": [
+      1520,
+      988
+    ],
+    "source_sha256": "a5886bfc65cfacb1850bef70c8e23495b8f6f188ff5eb85d1c37168c43783344",
+    "transform": "Proportional web export only; original file unchanged."
+  },
+  {
+    "file": "originals/quest-collection.webp",
+    "source": "06_良渚_狗GO_XR/01_原图/截屏2025-12-04 01.33.35 1.jpg",
+    "source_dimensions": [
+      1508,
+      976
+    ],
+    "output_dimensions": [
+      1508,
+      976
+    ],
+    "source_sha256": "d97814b75a31147f9152a27289101355faabefb9715c1bfd252bdc46dc25c3e2",
+    "transform": "Proportional web export only; original file unchanged."
+  },
+  {
+    "file": "originals/quest-reveal.webp",
+    "source": "06_良渚_狗GO_XR/01_原图/截屏2025-12-04 01.35.21 1.jpg",
+    "source_dimensions": [
+      1508,
+      984
+    ],
+    "output_dimensions": [
+      1508,
+      984
+    ],
+    "source_sha256": "009f1907405b308c2d87f7fb4c98de6a07fdd1bba68201f8280f77ac4d01fd83",
+    "transform": "Proportional web export only; original file unchanged."
+  },
+  {
+    "file": "originals/code-rotation.webp",
+    "source": "06_良渚_狗GO_XR/01_原图/截屏2025-12-04 00.38.29 1.png",
+    "source_dimensions": [
+      358,
+      250
+    ],
+    "output_dimensions": [
+      358,
+      250
+    ],
+    "source_sha256": "ba2f662a4f1df57d13b6dda73b0941dcb900df103899491487a68b7513b41f72",
+    "transform": "Proportional web export only; original file unchanged."
+  },
+  {
+    "file": "originals/code-small-items.webp",
+    "source": "06_良渚_狗GO_XR/01_原图/截屏2025-12-04 00.39.21 1.png",
+    "source_dimensions": [
+      356,
+      246
+    ],
+    "output_dimensions": [
+      356,
+      246
+    ],
+    "source_sha256": "2c24fe66268601fcd143007ec001c573ed8b5433ac4bf17ba4f8e1e1a1a2687c",
+    "transform": "Proportional web export only; original file unchanged."
+  },
+  {
+    "file": "originals/code-main-item.webp",
+    "source": "06_良渚_狗GO_XR/01_原图/截屏2025-12-04 00.39.49 1.png",
+    "source_dimensions": [
+      358,
+      249
+    ],
+    "output_dimensions": [
+      358,
+      249
+    ],
+    "source_sha256": "9384b89bea54c48d3155e68f5699a5390de55dd5cc27790f836e0b421e495898",
+    "transform": "Proportional web export only; original file unchanged."
+  },
+  {
+    "file": "originals/scene-axonometric.webp",
+    "source": "gogo.pdf",
+    "pdf_image_index": 105,
+    "output_dimensions": [
+      2000,
+      1545
+    ],
+    "transform": "Extracted standalone embedded image, not a screenshot or board crop."
+  },
+  {
+    "file": "originals/semantic-terrain.webp",
+    "source": "gogo.pdf",
+    "pdf_image_index": 109,
+    "output_dimensions": [
+      658,
+      370
+    ],
+    "transform": "Extracted standalone embedded image, not a screenshot or board crop."
+  },
+  {
+    "file": "originals/role-companion.webp",
+    "source": "gogo.pdf",
+    "pdf_image_index": 73,
+    "output_dimensions": [
+      554,
+      302
+    ],
+    "transform": "Extracted standalone embedded image, not a screenshot or board crop."
+  },
+  {
+    "file": "originals/role-sensing.webp",
+    "source": "gogo.pdf",
+    "pdf_image_index": 72,
+    "output_dimensions": [
+      554,
+      302
+    ],
+    "transform": "Extracted standalone embedded image, not a screenshot or board crop."
+  },
+  {
+    "file": "originals/role-shared-memory.webp",
+    "source": "gogo.pdf",
+    "pdf_image_index": 113,
+    "output_dimensions": [
+      553,
+      302
+    ],
+    "transform": "Extracted standalone embedded image, not a screenshot or board crop."
+  },
+  {
+    "file": "originals/role-story.webp",
+    "source": "gogo.pdf",
+    "pdf_image_index": 114,
+    "output_dimensions": [
+      553,
+      302
+    ],
+    "transform": "Extracted standalone embedded image, not a screenshot or board crop."
+  },
+  {
+    "file": "originals/mode-archaeology.webp",
+    "source": "gogo.pdf",
+    "pdf_image_index": 42,
+    "output_dimensions": [
+      813,
+      268
+    ],
+    "transform": "Extracted standalone embedded image, not a screenshot or board crop."
+  },
+  {
+    "file": "originals/mode-cultural.webp",
+    "source": "gogo.pdf",
+    "pdf_image_index": 43,
+    "output_dimensions": [
+      826,
+      273
+    ],
+    "transform": "Extracted standalone embedded image, not a screenshot or board crop."
+  },
+  {
+    "file": "originals/mode-record.webp",
+    "source": "gogo.pdf",
+    "pdf_image_index": 45,
+    "output_dimensions": [
+      813,
+      268
+    ],
+    "transform": "Extracted standalone embedded image, not a screenshot or board crop."
+  },
+  {
+    "file": "originals/controller-start.webp",
+    "source": "gogo.pdf",
+    "pdf_image_index": 64,
+    "output_dimensions": [
+      472,
+      317
+    ],
+    "transform": "Extracted standalone embedded image, not a screenshot or board crop."
+  },
+  {
+    "file": "originals/controller-position.webp",
+    "source": "gogo.pdf",
+    "pdf_image_index": 40,
+    "output_dimensions": [
+      472,
+      316
+    ],
+    "transform": "Extracted standalone embedded image, not a screenshot or board crop."
+  },
+  {
+    "file": "originals/controller-pose.webp",
+    "source": "gogo.pdf",
+    "pdf_image_index": 38,
+    "output_dimensions": [
+      472,
+      317
+    ],
+    "transform": "Extracted standalone embedded image, not a screenshot or board crop."
+  },
+  {
+    "file": "originals/park-map.webp",
+    "source": "gogo.pdf",
+    "pdf_image_index": 87,
+    "output_dimensions": [
+      1080,
+      1080
+    ],
+    "transform": "Extracted standalone embedded image, not a screenshot or board crop."
+  }
+]
