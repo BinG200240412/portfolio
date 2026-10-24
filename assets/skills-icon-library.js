@@ -1,4 +1,4 @@
-/* SVGs, with local filtering, selection and dependency-free ZIP export. */
+/* Geometry-normalised SVG previews; downloads keep the source SVG bytes. */
 (() => {
   'use strict';
   const host = document.getElementById('icon-library');
@@ -53,6 +53,7 @@
   host.append(loading);
   let icons = [], categories = [], activeCategory = '', selected = new Set();
   let openIcon = null, opener = null, busy = false, statusKey = '', statusCount = 0;
+  const artworkCache = new Map();
   let userPaused = false, inView = false;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const nameOf = icon => language === 'en' ? icon.titleEn || icon.title || icon.id : icon.title || icon.id;
@@ -110,9 +111,6 @@
   close.setAttribute('autofocus', '');
   close.textContent = '×';
   const preview = el('div', 'il-detail-preview');
-  const previewImage = el('img');
-  previewImage.alt = '';
-  preview.append(previewImage);
   const detail = el('div', 'il-detail');
   const detailCategory = el('p', 'il-overline');
   const detailTitle = el('h3', 'il-detail-title');
@@ -137,6 +135,47 @@
     else host.querySelector('.il-card-open')?.focus({ preventScroll: true });
   });
 
+  async function prepareArtwork(icon, stage) {
+    const response = await fetch(icon.src);
+    if (!response.ok) throw new Error(`SVG ${response.status}`);
+    const parsed = new DOMParser().parseFromString(await response.text(), 'image/svg+xml');
+    const source = parsed.documentElement;
+    if (source.localName !== 'svg' || parsed.querySelector('parsererror')) throw new Error('Invalid SVG');
+    const svg = document.importNode(source, true);
+    // The audited set contains SVG roots and filled paths. Keep every original
+    // path, fill rule and transform; only the preview ink inherits the theme.
+    svg.removeAttribute('width');
+    svg.removeAttribute('height');
+    svg.classList.add('il-artwork');
+    svg.setAttribute('fill', 'currentColor');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    svg.dataset.iconId = icon.id;
+    svg.dataset.sourceViewbox = source.getAttribute('viewBox') || '';
+    svg.querySelectorAll('[fill]').forEach(shape => {
+      if (!['none', 'transparent'].includes(shape.getAttribute('fill').toLowerCase())) shape.setAttribute('fill', 'currentColor');
+    });
+    const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    while (svg.firstChild) group.append(svg.firstChild);
+    svg.append(group);
+    stage.append(svg);
+    // The parent group's box includes each path's existing transform. Source
+    // canvas margins no longer determine how large the visible icon appears.
+    const bounds = group.getBBox();
+    const longest = Math.max(bounds.width, bounds.height);
+    if (!(longest > 0) || ![bounds.x, bounds.y, bounds.width, bounds.height].every(Number.isFinite)) throw new Error('Empty SVG');
+    const side = longest / .75;
+    const viewBox = [bounds.x + bounds.width / 2 - side / 2, bounds.y + bounds.height / 2 - side / 2, side, side];
+    svg.setAttribute('viewBox', viewBox.map(value => Number(value.toFixed(6))).join(' '));
+    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    svg.dataset.inkBounds = [bounds.x, bounds.y, bounds.width, bounds.height].map(value => Number(value.toFixed(6))).join(' ');
+    svg.dataset.normalized = 'true';
+    svg.remove();
+    artworkCache.set(icon.id, svg);
+  }
+
+  const displayArtwork = icon => artworkCache.get(icon.id).cloneNode(true);
+
   function renderRibbons() {
     const rows = [icons.filter((_, i) => i % 2 === 0), icons.filter((_, i) => i % 2 === 1)];
     rows.forEach((row, index) => {
@@ -148,12 +187,9 @@
         const group = el('div', 'il-ribbon-group');
         row.forEach((icon, i) => {
           const cell = el('span', 'il-ribbon-cell');
-          const img = el('img');
-          img.src = icon.src;
-          img.alt = '';
-          img.decoding = 'async';
-          img.style.setProperty('--il-drift-delay', `${-(i % 7)}s`);
-          cell.append(img);
+          const artwork = displayArtwork(icon);
+          artwork.style.setProperty('--il-drift-delay', `${-(i % 7)}s`);
+          cell.append(artwork);
           group.append(cell);
         });
         track.append(group);
@@ -191,19 +227,13 @@
     const visible = visibleIcons();
     total.textContent = w('found', visible.length);
     if (!visible.length) { grid.append(el('p', 'il-message', w('noResults'))); return; }
-    visible.forEach((icon, i) => {
+    visible.forEach(icon => {
       const card = el('article', 'il-card');
       card.dataset.iconId = icon.id;
       const open = button('il-card-open', () => openDetails(icon, open));
       open.setAttribute('aria-label', w('open', nameOf(icon)));
       const picture = el('span', 'il-card-picture');
-      const img = el('img');
-      img.src = icon.src;
-      img.alt = '';
-      img.loading = i < 8 ? 'eager' : 'lazy';
-      img.decoding = 'async';
-      if (icon.width && icon.height) { img.width = icon.width; img.height = icon.height; }
-      picture.append(img);
+      picture.append(displayArtwork(icon));
       const title = el('span', 'il-card-title', nameOf(icon));
       open.append(picture, title);
       const label = el('label', 'il-checkbox-label');
@@ -254,7 +284,7 @@
   function renderDetails() {
     if (!openIcon) return;
     const icon = openIcon;
-    previewImage.src = icon.src;
+    preview.replaceChildren(displayArtwork(icon));
     detailCategory.textContent = categoryOf(icon);
     detailTitle.textContent = nameOf(icon);
     detailFacts.replaceChildren();
@@ -303,7 +333,7 @@
     setTimeout(() => URL.revokeObjectURL(url), 30000);
   }
   async function originalBytes(icon) {
-    const response = await fetch(icon.src);
+    const response = await fetch(icon.downloadSrc || icon.src);
     if (!response.ok) throw new Error(`SVG ${response.status}`);
     return new Uint8Array(await response.arrayBuffer());
   }
@@ -397,7 +427,7 @@
 
   fetch(host.dataset.catalog || '../assets/works/design-skills/catalog.json')
     .then(response => { if (!response.ok) throw new Error(`Catalog ${response.status}`); return response.json(); })
-    .then(catalog => {
+    .then(async catalog => {
       const ids = new Set();
       icons = (catalog.icons || []).filter(icon => {
         if (!icon.id || !icon.src || ids.has(icon.id)) return false;
@@ -407,10 +437,16 @@
       if (!icons.length) { host.dataset.state = 'empty'; loading.textContent = w('empty'); return; }
       categories = [...new Set(icons.map(icon => icon.category || '图标'))];
       icons.forEach(icon => { if (!icon.category) icon.category = '图标'; });
+      const stage = el('div', 'il-measure-stage');
+      stage.setAttribute('aria-hidden', 'true');
+      host.append(stage);
+      try { await Promise.all(icons.map(icon => prepareArtwork(icon, stage))); }
+      finally { stage.remove(); }
       renderRibbons();
       host.replaceChildren(showcase, tools, selectionBar, status, grid, dialog);
       host.dataset.state = 'ready';
       host.dataset.count = String(icons.length);
+      host.dataset.normalizedCount = String(artworkCache.size);
       localize();
       if ('IntersectionObserver' in window) {
         const observer = new IntersectionObserver(entries => { inView = entries.some(entry => entry.isIntersecting); updateMotion(); }, { rootMargin: '100px' });
