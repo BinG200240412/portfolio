@@ -1,6 +1,6 @@
 /* A smaller framed poster, with all cover copy held inside the photograph. */
 .gogo-case{--gogo-stage-width:min(100vw,1440px);--gogo-page-safe:clamp(26px,calc(var(--gogo-stage-width) * .055),88px);padding-top:0}
-.gogo-hero{--gogo-layout-width:var(--gogo-stage-width);--gogo-safe:var(--gogo-page-safe);--gogo-frame:12px;--gogo-frame-ink:color-mix(in srgb,var(--ink) 42%,var(--paper));position:relative;isolation:auto;width:100%;min-height:100svh;margin:0;padding:0;overflow:clip}
+.gogo-hero{--gogo-layout-width:var(--gogo-stage-width);--gogo-safe:var(--gogo-page-safe);--gogo-frame:44px;--gogo-frame-art:url("works/xr/frame/carved-wood-dark.svg");position:relative;isolation:auto;width:100%;min-height:100svh;margin:0;padding:0;overflow:clip}
 .gogo-hero-art{position:absolute;inset:0 auto 0 0;width:33.333333%;z-index:0;overflow:hidden;clip-path:inset(0 3% 0 0);pointer-events:none;user-select:none}
 #gogo-dog-matrix{display:block;width:100%;height:100%;pointer-events:none}
 .gogo-hero-procession{position:absolute;top:0;left:72px;right:160px;height:72px;z-index:2;overflow:hidden;pointer-events:none;user-select:none}
@@ -8,7 +8,7 @@
 .gogo-hero-stage{position:relative;z-index:1;width:calc(60% - 16px);min-height:100svh;margin-left:auto;margin-right:0;padding:clamp(148px,16svh,230px) 0 64px;display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start}
 .gogo-hero-photo{position:relative;width:100%;margin:0!important}
 .gogo-cover-panel{position:relative;z-index:1;padding:var(--gogo-frame);background:var(--paper)}
-.gogo-cover-panel::before{content:"";position:absolute;inset:0;z-index:4;padding:var(--gogo-frame);background:radial-gradient(circle,var(--gogo-frame-ink) 1px,transparent 1.3px) 0 0/5px 5px;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;pointer-events:none}
+.gogo-cover-panel::before{content:"";position:absolute;inset:0;z-index:4;border:var(--gogo-frame) solid transparent;border-image-source:var(--gogo-frame-art);border-image-slice:64;border-image-width:1;border-image-repeat:round;pointer-events:none}
 .gogo-cover-panel::after{content:"";position:absolute;inset:var(--gogo-frame);z-index:1;background:linear-gradient(180deg,transparent 42%,color-mix(in srgb,var(--paper) 16%,transparent) 60%,color-mix(in srgb,var(--paper) 70%,transparent) 100%),linear-gradient(270deg,color-mix(in srgb,var(--paper) 58%,transparent),transparent 66%);pointer-events:none}
 .gogo-cover-pending .gogo-cover-panel{visibility:hidden}
 .gogo-hero-photo[data-cover-motion="opening"] .gogo-cover-panel{will-change:transform,opacity}
@@ -16,9 +16,9 @@
 .gogo-hero-photo .gogo-zoom{background:none;overflow:hidden}
 .gogo-hero-photo .gogo-zoom::before{content:"";position:absolute;inset:0;z-index:1;background:var(--paper);backdrop-filter:blur(5px);mask-image:linear-gradient(90deg,#000,transparent 6%,transparent 94%,#000),linear-gradient(180deg,#000,transparent 9%,transparent 91%,#000);mask-composite:add;pointer-events:none}
 .gogo-hero-photo .gogo-zoom::after{z-index:2}
-.gogo-hero-photo h1{position:absolute;top:30px;right:34px;z-index:2;color:var(--ink);text-align:right;font-size:clamp(58px,calc(var(--gogo-layout-width) * .05),76px);line-height:1.02;letter-spacing:-.065em;white-space:nowrap;pointer-events:none}
+.gogo-hero-photo h1{position:absolute;top:calc(var(--gogo-frame) + 18px);right:calc(var(--gogo-frame) + 22px);z-index:2;color:var(--ink);text-align:right;font-size:clamp(58px,calc(var(--gogo-layout-width) * .05),76px);line-height:1.02;letter-spacing:-.065em;white-space:nowrap;pointer-events:none}
 .gogo-hero .gogo-title-dot{width:6px;height:6px;margin-left:10px;background:var(--gogo-accent)}
-.gogo-hero-copy{position:absolute;right:34px;bottom:26px;z-index:3;width:calc(100% - 68px);margin:0;text-align:right;padding:0;color:var(--ink);pointer-events:none}
+.gogo-hero-copy{position:absolute;right:calc(var(--gogo-frame) + 22px);bottom:calc(var(--gogo-frame) + 14px);z-index:3;width:calc(100% - (var(--gogo-frame) + 22px) * 2);margin:0;text-align:right;padding:0;color:var(--ink);pointer-events:none}
 .gogo-hero .gogo-title-row{display:block;padding:0}
 .gogo-hero .gogo-project-name{max-width:28ch;margin:0 0 0 auto;font-size:clamp(19px,calc(var(--gogo-layout-width) * .015),24px);line-height:1.5}
 .gogo-hero .gogo-opening{display:block;padding:0;margin-top:12px}
@@ -29,11 +29,12 @@
 .gogo-hero .gogo-chapter-nav a>span:first-child{color:var(--gogo-accent);min-width:17px}
 html[lang="en"] .gogo-hero .gogo-project-name{max-width:37ch;font-size:21px}
 html[lang="en"] .gogo-hero .gogo-opening p{font-size:16px;max-width:37ch}
+html[data-theme="light"] .gogo-hero{--gogo-frame-art:url("works/xr/frame/carved-wood-light.svg")}
 @media(max-width:1100px) and (min-width:721px){
  .gogo-hero-stage{width:calc(62% - 16px);padding-top:140px}
  .gogo-hero-photo .gogo-zoom img{height:430px;object-fit:cover;object-position:42% center}
- .gogo-hero-photo h1{font-size:58px;top:26px;right:26px}
- .gogo-hero-copy{right:26px;bottom:24px;width:calc(100% - 52px)}
+ .gogo-hero-photo h1{font-size:58px;top:calc(var(--gogo-frame) + 14px);right:calc(var(--gogo-frame) + 18px)}
+ .gogo-hero-copy{right:calc(var(--gogo-frame) + 18px);bottom:calc(var(--gogo-frame) + 12px);width:calc(100% - (var(--gogo-frame) + 18px) * 2)}
  .gogo-hero .gogo-project-name{font-size:19px}
  .gogo-hero .gogo-opening p{font-size:15px}
  .gogo-hero .gogo-chapter-nav{gap:4px 16px}
@@ -42,17 +43,16 @@ html[lang="en"] .gogo-hero .gogo-opening p{font-size:16px;max-width:37ch}
  html[lang="en"] .gogo-hero .gogo-opening p{font-size:15px}
 }
 @media(max-width:720px){
- .gogo-hero{--gogo-frame:8px;min-height:max(760px,100svh)}
+ .gogo-hero{--gogo-frame:20px;min-height:max(760px,100svh)}
  .gogo-hero-art{top:116px;bottom:auto;height:390px}
  .gogo-hero-procession{left:62px;right:144px;height:58px}
  .gogo-hero-stage{width:calc(100% - 26px);min-height:max(760px,100svh);padding:144px 0 60px}
  .gogo-hero-photo{width:68%;align-self:flex-end}
- .gogo-cover-panel::before{background-size:4px 4px}
  .gogo-cover-panel::after{background:linear-gradient(180deg,transparent 20%,color-mix(in srgb,var(--paper) 80%,transparent)),linear-gradient(270deg,color-mix(in srgb,var(--paper) 74%,transparent),transparent)}
  .gogo-hero-photo .gogo-zoom img{height:480px;object-fit:cover;object-position:36% center}
- .gogo-hero-photo h1{font-size:clamp(32px,10vw,46px);top:23px;right:21px}
+ .gogo-hero-photo h1{font-size:clamp(32px,10vw,46px);top:calc(var(--gogo-frame) + 15px);right:calc(var(--gogo-frame) + 12px)}
  .gogo-hero .gogo-title-dot{width:4px;height:4px;margin-left:6px}
- .gogo-hero-copy{right:21px;bottom:20px;width:calc(100% - 42px)}
+ .gogo-hero-copy{right:calc(var(--gogo-frame) + 12px);bottom:calc(var(--gogo-frame) + 12px);width:calc(100% - (var(--gogo-frame) + 12px) * 2)}
  .gogo-hero .gogo-project-name{font-size:18px;line-height:1.55;max-width:none;text-wrap:balance}
  .gogo-hero .gogo-opening{margin-top:12px}
  .gogo-hero .gogo-opening p{font-size:14px;line-height:1.8;max-width:none;text-wrap:pretty}
@@ -62,6 +62,6 @@ html[lang="en"] .gogo-hero .gogo-opening p{font-size:16px;max-width:37ch}
  .gogo-hero .gogo-chapter-nav a>span:first-child{font-size:10px;min-width:15px}
  html[lang="en"] .gogo-hero .gogo-project-name{font-size:16px;max-width:23ch}
  html[lang="en"] .gogo-hero .gogo-opening p{font-size:13px;max-width:23ch}
- html[lang="en"] .gogo-hero .gogo-chapter-nav a>span:last-child{max-width:none}
+ html[lang="en"] .gogo-hero .gogo-chapter-nav a>span:last-child{max-width:14ch}
 }
 @media(forced-colors:active){.gogo-hero-art,.gogo-hero-procession,.gogo-cover-panel::before,.gogo-cover-panel::after,.gogo-hero-photo .gogo-zoom::before{display:none}.gogo-hero-copy{background:Canvas;color:CanvasText}}
