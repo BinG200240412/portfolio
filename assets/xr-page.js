@@ -1,4 +1,5 @@
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
+  "Unity 原型 · 手柄绑定与交互配置": "Unity prototype · Controller binding and interaction setup",
   "中国美术学院 · DIC": "China Academy of Art · DIC",
   "XR 文旅 · AR 眼镜 × 机器狗": "XR Experience · AR × Robot Dog",
   "狗GO": "GouGO",

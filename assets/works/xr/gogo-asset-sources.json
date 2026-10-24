@@ -3,15 +3,15 @@
     "file": "originals/cover.webp",
     "source": "06_良渚_狗GO_XR/01_原图/狗go封面.png",
     "source_dimensions": [
-      10886,
+      11428,
       6400
     ],
     "output_dimensions": [
       2400,
-      1411
+      1344
     ],
-    "source_sha256": "29aaf6e0eb89135432287a2247335614b269557a28fffc2c7aa7f5116bd46a2a",
-    "transform": "Proportional web export only; original file unchanged."
+    "source_sha256": "f237d8141e045f4f9f597916bf57993f1144b0b3b5eba65e0c729845f8c4ff2e",
+    "transform": "Web export from the replacement original; square edges, opaque image, no added crop, rounding or fade. Source file unchanged."
   },
   {
     "file": "originals/cultural-cues.webp",
@@ -29,87 +29,87 @@
   },
   {
     "file": "originals/unity-scene.webp",
-    "source": "06_良渚_狗GO_XR/01_原图/截屏2025-12-04 00.34.36 1.jpg",
+    "source": "06_良渚_狗GO_XR/01_原图/截屏2025-12-04 00.34.36 1.png",
     "source_dimensions": [
-      1520,
-      988
+      760,
+      494
     ],
     "output_dimensions": [
-      1520,
-      988
+      760,
+      494
     ],
-    "source_sha256": "a5886bfc65cfacb1850bef70c8e23495b8f6f188ff5eb85d1c37168c43783344",
-    "transform": "Proportional web export only; original file unchanged."
+    "source_sha256": "39e1605d9a5c5dcfff1fafa123edcf0b1475acf9d1c9be8eed67dfbb4b6ba1f4",
+    "transform": "Web export from the replacement original; square edges, opaque image, no added crop, rounding or fade. Source file unchanged."
   },
   {
     "file": "originals/quest-collection.webp",
-    "source": "06_良渚_狗GO_XR/01_原图/截屏2025-12-04 01.33.35 1.jpg",
+    "source": "06_良渚_狗GO_XR/01_原图/截屏2025-12-04 01.33.35 1.png",
     "source_dimensions": [
-      1508,
-      976
+      754,
+      488
     ],
     "output_dimensions": [
-      1508,
-      976
+      754,
+      488
     ],
-    "source_sha256": "d97814b75a31147f9152a27289101355faabefb9715c1bfd252bdc46dc25c3e2",
-    "transform": "Proportional web export only; original file unchanged."
+    "source_sha256": "7bb3bd9c6a1985b5e70d590908300ee276083f9db71265997a44e77142e93123",
+    "transform": "Web export from the replacement original; square edges, opaque image, no added crop, rounding or fade. Source file unchanged."
   },
   {
     "file": "originals/quest-reveal.webp",
-    "source": "06_良渚_狗GO_XR/01_原图/截屏2025-12-04 01.35.21 1.jpg",
+    "source": "06_良渚_狗GO_XR/01_原图/截屏2025-12-04 01.35.21 1.png",
     "source_dimensions": [
-      1508,
-      984
+      754,
+      492
     ],
     "output_dimensions": [
-      1508,
-      984
+      754,
+      492
     ],
-    "source_sha256": "009f1907405b308c2d87f7fb4c98de6a07fdd1bba68201f8280f77ac4d01fd83",
-    "transform": "Proportional web export only; original file unchanged."
+    "source_sha256": "f756198ee19920b404d0916af87bf361dd7cd30f4acac347e494361df05f2573",
+    "transform": "Web export from the replacement original; square edges, opaque image, no added crop, rounding or fade. Source file unchanged."
   },
   {
     "file": "originals/code-rotation.webp",
     "source": "06_良渚_狗GO_XR/01_原图/截屏2025-12-04 00.38.29 1.png",
     "source_dimensions": [
-      358,
-      250
+      716,
+      500
     ],
     "output_dimensions": [
-      358,
-      250
+      716,
+      500
     ],
-    "source_sha256": "ba2f662a4f1df57d13b6dda73b0941dcb900df103899491487a68b7513b41f72",
-    "transform": "Proportional web export only; original file unchanged."
+    "source_sha256": "45ac66161a188ac8919b14012e5555dd0b5f3a59036f6627d91fa0e2faf5c7d1",
+    "transform": "Web export from the replacement original; square edges, opaque image, no added crop, rounding or fade. Source file unchanged."
   },
   {
     "file": "originals/code-small-items.webp",
     "source": "06_良渚_狗GO_XR/01_原图/截屏2025-12-04 00.39.21 1.png",
     "source_dimensions": [
-      356,
-      246
+      712,
+      492
     ],
     "output_dimensions": [
-      356,
-      246
+      712,
+      492
     ],
-    "source_sha256": "2c24fe66268601fcd143007ec001c573ed8b5433ac4bf17ba4f8e1e1a1a2687c",
-    "transform": "Proportional web export only; original file unchanged."
+    "source_sha256": "61ea6d6588cd89fa97f6850858dda1e6b2b61ab50dde23e5f0b8909f3055e4a0",
+    "transform": "Web export from the replacement original; square edges, opaque image, no added crop, rounding or fade. Source file unchanged."
   },
   {
     "file": "originals/code-main-item.webp",
     "source": "06_良渚_狗GO_XR/01_原图/截屏2025-12-04 00.39.49 1.png",
     "source_dimensions": [
-      358,
-      249
+      716,
+      498
     ],
     "output_dimensions": [
-      358,
-      249
+      716,
+      498
     ],
-    "source_sha256": "9384b89bea54c48d3155e68f5699a5390de55dd5cc27790f836e0b421e495898",
-    "transform": "Proportional web export only; original file unchanged."
+    "source_sha256": "fcdec70d3cbd2f464b6a48775ac7db45cf9c8def8a3f1f22337b4157af92a71a",
+    "transform": "Web export from the replacement original; square edges, opaque image, no added crop, rounding or fade. Source file unchanged."
   },
   {
     "file": "originals/scene-axonometric.webp",
@@ -240,5 +240,19 @@
       1080
     ],
     "transform": "Extracted standalone embedded image, not a screenshot or board crop."
+  },
+  {
+    "file": "originals/unity-controller-binding.webp",
+    "source": "06_良渚_狗GO_XR/01_原图/截屏2025-12-04 00.35.12 1.png",
+    "source_dimensions": [
+      758,
+      492
+    ],
+    "output_dimensions": [
+      758,
+      492
+    ],
+    "source_sha256": "66060df8ef42a190547badc3e5a68b487e531dd61208827aac8f3d2623420292",
+    "transform": "Web export from the replacement original; square edges, opaque image, no added crop, rounding or fade. Source file unchanged."
   }
 ]
