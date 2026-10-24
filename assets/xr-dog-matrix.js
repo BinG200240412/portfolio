@@ -1,4 +1,4 @@
-/* GouGO's walking companions. Geometry is sampled on one shared LED lattice;
+/* GouGO's walking companions. Each field uses a uniform circular LED lattice;
  * every lit cell is a flat circular bead, including at the moving leg edges.
  * No image, font, sprite sheet, shader or third-party animation runtime.
  */
@@ -6,12 +6,16 @@
   'use strict';
   const canvas = document.getElementById('gogo-dog-matrix');
   const hero = canvas?.closest('.gogo-hero');
-  const stageNode = hero?.querySelector('.gogo-hero-stage');
+  const miniCanvas = document.getElementById('gogo-mini-matrix');
   const context = canvas?.getContext('2d', { alpha: true });
   if (!hero || !context) return;
   const mask = document.createElement('canvas');
-  const ink = mask.getContext('2d', { alpha: true, willReadFrequently: true });
-  if (!ink) return;
+  const mainInk = mask.getContext('2d', { alpha: true, willReadFrequently: true });
+  const miniContext = miniCanvas?.getContext('2d', { alpha: true });
+  const miniMask = document.createElement('canvas');
+  const miniInk = miniMask.getContext('2d', { alpha: true, willReadFrequently: true });
+  if (!mainInk || !miniInk) return;
+  let ink = mainInk;
   const TAU = Math.PI * 2, FPS = 20;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const forced = matchMedia('(forced-colors: active)');
@@ -23,8 +27,8 @@
     light: ['#a5a69a', '#6a725f', '#394a39', '#946f2b'],
   };
   const roles = ['rgb(20,0,0)', 'rgb(75,0,0)', 'rgb(145,0,0)', 'rgb(235,0,0)'];
-  let width = 1, height = 1, pitch = 7, ratio = 1;
-  let compositionWidth = 1, compositionOffset = 0;
+  let width = 1, height = 1, pitch = 7, ratio = 1, mainPitch = 7;
+  let compact = false, miniWidth = 1, miniHeight = 1, miniPitch = 3, miniRatio = 1;
   let frame = 0, previous = 0, elapsed = 0;
   let onScreen = true, shown = true, colours = palettes.dark;
 
@@ -116,40 +120,47 @@
   }
 
   function draw(time) {
+    ink = mainInk; pitch = mainPitch;
     ink.setTransform(1, 0, 0, 1, 0, 0); ink.clearRect(0, 0, mask.width, mask.height);
-    const compact = width <= 720;
-    const stage = compositionWidth, offset = compositionOffset;
-    const unit = compact ? Math.min(width / 405, height * .0012, 1.6)
-      : Math.min(stage * (width < 1100 ? .00105 : .00135), height * .00215, 3.4);
-    const leadX = (compact ? width * .27 : offset + stage * .10) + Math.sin(time * .13) * unit * 9;
-    const ground = compact ? Math.min(height * .52, 470) : height * .905;
+    const unit = Math.min(height * .00215, width / (compact ? 190 : 240), 3.6);
+    // The front of a much larger dog approaches the right of the left-third
+    // field. Its rear naturally extends beyond the left edge of the page.
+    const leadX = width * .94 - 276 * unit + Math.sin(time * .13) * unit * 5;
+    const ground = height * .905;
     const gait = time * TAU / 2.15;
     dog(leadX, ground, unit, gait, time, false);
-    // One continuous travelling line: wrap offscreen, then follow at a fixed
-    // distance. Every small dog also has its own phase of the walking cycle.
-    const smallScale = compact ? Math.max(.17, width / 2200) : Math.min(.43, Math.max(.28, width / 4500));
+    paintMask(context, mask, mainInk, width, height, mainPitch, ratio);
+    if (!miniContext) return;
+    ink = miniInk; pitch = miniPitch;
+    ink.setTransform(1, 0, 0, 1, 0, 0); ink.clearRect(0, 0, miniMask.width, miniMask.height);
+    // A separate, shallow field places the smaller companions in the top bar,
+    // above the shared header backing and between its navigation controls.
+    const smallScale = compact ? .10 : .18;
     const smallWidth = 470 * smallScale;
-    const runway = width + smallWidth * 1.8;
+    const runway = miniWidth + smallWidth * 1.8;
     const start = runway * .18;
     for (let index = 0; index < 3; index++) {
-      const x = ((start + index * runway / 3 + time * (compact ? 12 : 23)) % runway) - smallWidth * .7;
-      const floor = compact ? 172 - (index % 2) * 9 : Math.max(245, height * .205) - (index % 2) * 14;
+      const x = ((start + index * runway / 3 + time * (compact ? 8 : 15)) % runway) - smallWidth * .7;
+      const floor = miniHeight - (compact ? 12 : 9);
       dog(x, floor, smallScale, gait - index * .87, time + index * 2, true);
     }
-    const data = ink.getImageData(0, 0, mask.width, mask.height).data;
-    context.setTransform(ratio, 0, 0, ratio, 0, 0); context.clearRect(0, 0, width, height);
-    const radius = pitch * .319;
+    paintMask(miniContext, miniMask, miniInk, miniWidth, miniHeight, miniPitch, miniRatio);
+  }
+  function paintMask(target, source, reader, fieldWidth, fieldHeight, fieldPitch, fieldRatio) {
+    const data = reader.getImageData(0, 0, source.width, source.height).data;
+    target.setTransform(fieldRatio, 0, 0, fieldRatio, 0, 0); target.clearRect(0, 0, fieldWidth, fieldHeight);
+    const radius = fieldPitch * .319;
     for (let role = 0; role < 4; role++) {
-      context.fillStyle = colours[role]; context.beginPath();
-      for (let row = 0; row < mask.height; row++) for (let col = 0; col < mask.width; col++) {
-        const offset = (row * mask.width + col) * 4;
+      target.fillStyle = colours[role]; target.beginPath();
+      for (let row = 0; row < source.height; row++) for (let col = 0; col < source.width; col++) {
+        const offset = (row * source.width + col) * 4;
         if (data[offset + 3] < 130) continue;
         const r = data[offset], kind = r > 200 ? 3 : r > 110 ? 2 : r > 45 ? 1 : 0;
         if (kind !== role) continue;
-        const x = (col + .5) * pitch, y = (row + .5) * pitch;
-        context.moveTo(x + radius, y); context.arc(x, y, radius, 0, TAU);
+        const x = (col + .5) * fieldPitch, y = (row + .5) * fieldPitch;
+        target.moveTo(x + radius, y); target.arc(x, y, radius, 0, TAU);
       }
-      context.fill();
+      target.fill();
     }
   }
   function active() {
@@ -169,18 +180,25 @@
     cancelAnimationFrame(frame); frame = 0; previous = 0;
     colours = palettes[document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'];
     canvas.style.visibility = forced.matches ? 'hidden' : '';
+    if (miniCanvas) miniCanvas.style.visibility = forced.matches ? 'hidden' : '';
     if (!active()) return;
     draw(reduced.matches ? .31 : elapsed);
     if (!reduced.matches) frame = requestAnimationFrame(tick);
   }
   function resize() {
-    width = Math.max(1, hero.clientWidth); height = Math.max(1, hero.clientHeight);
-    compositionWidth = stageNode?.clientWidth || width;
-    compositionOffset = stageNode?.offsetLeft || 0;
-    pitch = width <= 720 ? 4.5 : 7;
+    width = Math.max(1, canvas.clientWidth); height = Math.max(1, canvas.clientHeight);
+    compact = hero.clientWidth <= 720;
+    mainPitch = compact ? 4.5 : 7;
     ratio = Math.min(devicePixelRatio || 1, 1.5, 4096 / width, 2160 / height);
     canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
-    mask.width = Math.ceil(width / pitch); mask.height = Math.ceil(height / pitch);
+    mask.width = Math.ceil(width / mainPitch); mask.height = Math.ceil(height / mainPitch);
+    if (miniCanvas) {
+      miniWidth = Math.max(1, miniCanvas.clientWidth); miniHeight = Math.max(1, miniCanvas.clientHeight);
+      miniPitch = compact ? 2.5 : 3;
+      miniRatio = Math.min(devicePixelRatio || 1, 1.5, 4096 / miniWidth);
+      miniCanvas.width = Math.round(miniWidth * miniRatio); miniCanvas.height = Math.round(miniHeight * miniRatio);
+      miniMask.width = Math.ceil(miniWidth / miniPitch); miniMask.height = Math.ceil(miniHeight / miniPitch);
+    }
     sync();
   }
   new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
@@ -189,7 +207,7 @@
   new IntersectionObserver(entries => { onScreen = entries.some(e => e.isIntersecting); sync(); }, { threshold: 0 }).observe(hero);
   new ResizeObserver(resize).observe(hero);
   document.addEventListener('visibilitychange', sync);
-  reduced.addEventListener('change', sync); forced.addEventListener('change', sync);
+  reduced.addEventListener('change', sync); forced.addEventListener('change', resize);
   addEventListener('pagehide', () => { shown = false; sync(); });
   addEventListener('pageshow', () => { shown = true; sync(); });
   resize();
