@@ -7,8 +7,8 @@
 <script src="../assets/i18n-cases.js?v=bilingual-20261023"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=diagonal-back-20261024"></script>
-<script defer src="../assets/sudoku-hero-matrix.js?v=living-fullscreen-20261024"></script>
-<script defer src="../assets/sudoku-gallery.js?v=living-fullscreen-20261024"></script>
+<script defer src="../assets/sudoku-hero-matrix.js?v=continuous-scroll-20261024"></script>
+<script defer src="../assets/sudoku-gallery.js?v=continuous-canvas-20261024"></script>
 <meta name="description" content="Sudoku.2026：变化的数独点阵与原生绿色界面。">
 <title>Sudoku — 原生数独</title>
 <style>
@@ -20,13 +20,19 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 <link rel="stylesheet" href="../assets/theme.css?v=lanting-light-20261024">
-<link rel="stylesheet" href="../assets/sudoku-hero.css?v=living-fullscreen-20261024">
+<link rel="stylesheet" href="../assets/sudoku-hero.css?v=continuous-scroll-20261024">
 </head>
 <body>
 <main class="sudoku-scenes">
+  <div class="sudoku-hero-art" aria-hidden="true" data-i18n-ignore><div class="sudoku-board-angle"><canvas id="sudoku-hero-matrix" aria-hidden="true"></canvas></div></div>
   <section class="hero" aria-labelledby="project-title">
-    <div class="sudoku-hero-art" aria-hidden="true" data-i18n-ignore><div class="sudoku-board-angle"><canvas id="sudoku-hero-matrix" aria-hidden="true"></canvas></div></div>
-    <div class="hero-main"><h1 id="project-title">sudoku<span>.</span></h1><p class="hero-line">凡事有解。</p></div>
+    <div class="hero-main">
+      <h1 id="project-title">sudoku<span>.</span></h1><p class="hero-line">凡事有解。</p>
+      <nav class="sudoku-actions" aria-label="产品链接" data-i18n-ignore>
+        <a class="sudoku-action" href="https://apps.apple.com/cn/app/sudoku-2026/id6775198044" target="_blank" rel="noopener noreferrer"><span data-label-zh="App Store 下载" data-label-en="Download on the App Store">App Store 下载</span><svg aria-hidden="true" width="15" height="15" viewBox="0 0 16 16"><path d="M3 13 13 3M4 3h9v9" fill="none" stroke="currentColor" stroke-width="1.25"/></svg></a>
+        <a class="sudoku-action" href="https://sudoku.bing2002.com/" target="_blank" rel="noopener noreferrer"><span data-label-zh="访问官网" data-label-en="Visit the website">访问官网</span><svg aria-hidden="true" width="15" height="15" viewBox="0 0 16 16"><path d="M3 13 13 3M4 3h9v9" fill="none" stroke="currentColor" stroke-width="1.25"/></svg></a>
+      </nav>
+    </div>
   </section>
   <section class="sudoku-gallery" id="sudoku-gallery" aria-labelledby="product-heading" data-i18n-ignore>
     <div class="sudoku-gallery-copy">

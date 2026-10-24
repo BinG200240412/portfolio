@@ -54,6 +54,11 @@
     }
 
     function metadata() {
+      const english = window.PortfolioI18n?.language === 'en';
+      document.querySelectorAll('.sudoku-actions [data-label-zh]').forEach(label => {
+        label.textContent = english ? label.dataset.labelEn : label.dataset.labelZh;
+      });
+      document.querySelector('.sudoku-actions')?.setAttribute('aria-label', english ? 'Product links' : '产品链接');
       copy.forEach(({ element, source }) => { element.textContent = t(source); });
       if (groupLabel) group.setAttribute('aria-label', t(groupLabel));
       items.forEach(item => {
