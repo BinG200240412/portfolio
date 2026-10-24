@@ -37,6 +37,32 @@ Output: PortfolioMapleCN-Light.woff2, 5,176,332 bytes.
 Output SHA-256: a3528f4537aa41ef8b9267d1d2d3042e9d073b23d3a3b81d67743ad026346f0c
 SIL OFL 1.1 and credits: OFL-MapleMono.txt, AUTHORS-MapleMono.txt.
 
+Comparison-only Chinese options (2026-10-25):
+PLIX / Plix Light v1.2, true weight 300, CJK-only WOFF2 renamed Portfolio Plix CN.
+Official upstream: https://github.com/cathree3/Plix
+Licence: OFL-Plix.txt, including the upstream IBM copyright and Plex reserved name.
+Output PortfolioPlixCN-Light.woff2: 3,681,280 bytes; 23,579 CJK mappings.
+SHA-256: a485cda106f1d54c5e910bab53dac155c3ddaf194c62b6aeb78e0f2a80deb934
+All 1,132 Han characters used on the current site are covered.
+
+Chogokuboso Gothic / 超極細ゴシック, original Regular weight 400; naturally thin outlines.
+Official source and web-use permission: https://font.websozai.jp/line-font-mihon.html
+Derived CJK-only WOFF2 from chogokubosogothic_5.ttf, renamed Portfolio UltraThin Gothic.
+The source maps some Chinese codepoints to empty outlines. A BoundsPen scan removed
+5,897 non-whitespace empty mappings, retaining 6,945 supported CJK codepoints and
+the legitimate U+3000 space. All remaining glyph drawing operations match the
+source exactly. No substitute glyphs were drawn into the font. Removing the empty
+mappings permits normal CSS fallback to PLIX, including for the name character 阳.
+Output: PortfolioUltraThinGothic.woff2, 1,045,652 bytes; native weight 400.
+Original TTF SHA-256: bd4ebe661508ac8fcc6093916b45ae75900626c997133a1bdaaa6c2cb90fb5a6
+Licence: LICENSE-Chogokuboso-Gothic.txt. Original copyright credit (also retained
+in the font): Line Font, M+ FONTS PROJECT.
+This Japanese font lacks some simplified Chinese characters (including 开发、设计、艺术实).
+The Gothic preview explicitly falls back to PLIX for missing characters; this is
+disclosed on the comparison page. Both options are limited to CJK in CSS, keeping
+English letters and digits on Portfolio Slab. Preview selection uses ?cjk=plix or
+?cjk=gothic only; the unqualified production URL continues to use Maple Mono CN.
+
 Previous Chinese choice (2026-10-24), no longer referenced — Lantinghei SC Extralight,
 PostScript name FZLTXHK--GBK1-0. The matching TC name is FZLTXHB--B51-0.
 These names were verified with macOS CoreText against its installed font assets.

@@ -8,7 +8,7 @@
 <script src="assets/i18n-main.js?v=focused-works-20261024"></script>
 <script src="assets/i18n-cases.js?v=focused-copy-20261024"></script>
 <script src="assets/i18n.js?v=bilingual-20261023"></script>
-<script src="assets/theme.js?v=linear-led-cue-20261025"></script>
+<script src="assets/theme.js?v=font-options-20261025"></script>
 <script defer src="assets/matrix-motifs.js?v=sticker-collage-20261023"></script>
 <script defer src="assets/matrix-symbols.js?v=work-objects-20261023"></script>
 <script defer src="assets/matrix-models.js?v=interactive-objects-20261024"></script>
@@ -180,7 +180,7 @@
     .cols section{padding:0;border-left:0;border-top:1px solid #e3e3e3;padding-top:28px}
     .cols section:first-child{border-top:0;padding-top:0}}
 </style>
-<link rel="stylesheet" href="assets/theme.css?v=maple-mono-cn-20261025">
+<link rel="stylesheet" href="assets/theme.css?v=font-options-20261025">
 <link rel="stylesheet" href="assets/matrix-field.css?v=interactive-objects-20261024">
 <link rel="stylesheet" href="assets/about.css?v=gray-pixel-portrait-frame-20261025">
 <link rel="stylesheet" href="assets/ambient-field.css?v=tidal-led-20261024">
@@ -447,6 +447,8 @@ function enterSection(name){
     frameURL.searchParams.set("lang", window.PortfolioI18n?.language || "zh");
     frameURL.searchParams.set("ambient", "tidal-led-20261024");
     frameURL.searchParams.set("cue", "linear-led-cue-20261025");
+    const fontPreview = document.documentElement.dataset.cjkPreview;
+    if (fontPreview) frameURL.searchParams.set("cjk", fontPreview);
     section.innerHTML=`<iframe class="native-frame" src="${frameURL.pathname + frameURL.search}" title="${tr(name)}" loading="eager"></iframe>`;
   }else{
     section.classList.remove('native');

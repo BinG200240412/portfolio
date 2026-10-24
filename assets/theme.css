@@ -60,7 +60,11 @@ html[data-theme="light"] .legacy-case [style*="color:#fff"]{color:var(--ink)!imp
 @font-face{font-family:"Portfolio Slab";src:url("fonts/PortfolioSlab-Regular.woff2") format("woff2");font-style:normal;font-weight:100 900;font-display:swap}
 @font-face{font-family:"Portfolio Slab";src:url("fonts/PortfolioSlab-Italic.woff2") format("woff2");font-style:italic;font-weight:100 900;font-display:swap}
 @font-face{font-family:"Portfolio Maple CN";src:url("fonts/PortfolioMapleCN-Light.woff2") format("woff2");font-style:normal;font-weight:300;font-display:swap;unicode-range:U+2E80-2FFF,U+3000-303F,U+3100-312F,U+31A0-31EF,U+3200-33FF,U+3400-4DBF,U+4E00-9FFF,U+F900-FAFF,U+FE10-FE1F,U+FE30-FE4F,U+FF00-FFEF,U+20000-323AF}
+@font-face{font-family:"Portfolio Plix CN";src:url("fonts/PortfolioPlixCN-Light.woff2") format("woff2");font-style:normal;font-weight:300;font-display:swap;unicode-range:U+2E80-2FFF,U+3000-303F,U+3100-312F,U+31A0-31EF,U+3200-33FF,U+3400-4DBF,U+4E00-9FFF,U+F900-FAFF,U+FE10-FE1F,U+FE30-FE4F,U+FF00-FFEF,U+20000-323AF}
+@font-face{font-family:"Portfolio UltraThin Gothic";src:url("fonts/PortfolioUltraThinGothic.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap;unicode-range:U+2E80-2FFF,U+3000-303F,U+3100-312F,U+31A0-31EF,U+3200-33FF,U+3400-4DBF,U+4E00-9FFF,U+F900-FAFF,U+FE10-FE1F,U+FE30-FE4F,U+FF00-FFEF,U+20000-323AF}
 :root{--portfolio-font:"Portfolio Maple CN","Portfolio Slab","PingFang SC","Microsoft YaHei",sans-serif}
+:root[data-cjk-preview="plix"]{--portfolio-font:"Portfolio Plix CN","Portfolio Slab","PingFang SC","Microsoft YaHei",sans-serif}
+:root[data-cjk-preview="gothic"]{--portfolio-font:"Portfolio UltraThin Gothic","Portfolio Plix CN","Portfolio Slab","PingFang SC","Microsoft YaHei",sans-serif}
 /* A legacy heading's 600/900 must not select or synthesize a heavier CJK face.
    Slab still uses its genuine static 400 outlines for this requested weight. */
 body,body *,body *::before,body *::after{font-family:var(--portfolio-font)!important;font-weight:300!important;font-synthesis:none}

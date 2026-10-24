@@ -1,5 +1,8 @@
 (() => {
   const key = 'portfolio-theme';
+  const requestedFont = new URL(location.href).searchParams.get('cjk');
+  const fontPreview = ['plix', 'gothic'].includes(requestedFont) ? requestedFont : null;
+  if (fontPreview) document.documentElement.dataset.cjkPreview = fontPreview;
   const tr = value => window.PortfolioI18n?.t(value) || value;
   const valid = value => value === 'dark' || value === 'light';
   let saved;
@@ -91,6 +94,11 @@
       back.setAttribute('aria-label', label); back.title = label;
       back.querySelector('.return-label').textContent = label;
       back.setAttribute('href', (practiceDetail ? 'practice.html?lang=' : '../index.html?lang=') + (english ? 'en' : 'zh') + (practiceDetail ? '' : '#works'));
+      if (fontPreview) {
+        const previewURL = new URL(back.getAttribute('href'), location.href);
+        previewURL.searchParams.set('cjk', fontPreview);
+        back.setAttribute('href', previewURL.pathname + previewURL.search + previewURL.hash);
+      }
     }
     const host = document.getElementById('themeControls');
     if (!host) return;
