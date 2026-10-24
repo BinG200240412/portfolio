@@ -8,7 +8,7 @@
 <script src="assets/i18n-main.js?v=focused-works-20261024"></script>
 <script src="assets/i18n-cases.js?v=focused-copy-20261024"></script>
 <script src="assets/i18n.js?v=bilingual-20261023"></script>
-<script src="assets/theme.js?v=led-scroll-cue-20261024"></script>
+<script src="assets/theme.js?v=led-scroll-cue-clearance-20261024"></script>
 <script defer src="assets/matrix-motifs.js?v=sticker-collage-20261023"></script>
 <script defer src="assets/matrix-symbols.js?v=work-objects-20261023"></script>
 <script defer src="assets/matrix-models.js?v=interactive-objects-20261024"></script>
@@ -446,7 +446,7 @@ function enterSection(name){
     const frameURL = new URL(page, location.href);
     frameURL.searchParams.set("lang", window.PortfolioI18n?.language || "zh");
     frameURL.searchParams.set("ambient", "tidal-led-20261024");
-    frameURL.searchParams.set("cue", "led-scroll-cue-20261024");
+    frameURL.searchParams.set("cue", "led-scroll-cue-clearance-20261024");
     section.innerHTML=`<iframe class="native-frame" src="${frameURL.pathname + frameURL.search}" title="${tr(name)}" loading="eager"></iframe>`;
   }else{
     section.classList.remove('native');

@@ -169,11 +169,17 @@
       // Use the viewport centre even when the cover's composition is right-aligned.
       const left = position === 'right' ? innerWidth - Math.max(18, Math.min(44, innerWidth * .04)) - 48 : innerWidth / 2 - 24;
       let bottom = Math.max(22, Math.min(34, innerHeight * .035));
-      for (const node of hero.querySelectorAll('.hero-foot,.gogo-chapter-nav')) {
-        const foot = node.getBoundingClientRect();
-        if (foot.left < left + 48 && foot.right > left && foot.top < innerHeight - bottom && foot.bottom > innerHeight - bottom - 52)
-          bottom = Math.max(bottom, innerHeight - foot.top + 12);
+      const obstacles = Array.from(hero.querySelectorAll('.hero-foot,.gogo-chapter-nav,.gogo-opening>p,.gogo-opening>span,.gogo-project-name'), node => node.getBoundingClientRect())
+        .filter(foot => foot.width > 0 && foot.height > 0 && foot.left < left + 48 && foot.right > left);
+      // Moving above one line can reach another. Each pass moves upward past
+      // one obstacle, so the number of obstacles also bounds the recheck.
+      for (let pass = 0; pass < obstacles.length; pass++) {
+        const edge = innerHeight - bottom;
+        const foot = obstacles.find(item => item.top < edge && item.bottom > edge - 52);
+        if (!foot) break;
+        bottom = innerHeight - foot.top + 12;
       }
+      if (innerHeight - bottom - 52 < 12) { cue.hidden = true; return; }
       cue.style.left = `${left}px`; cue.style.bottom = `${bottom}px`;
     }
     function queue() { if (!pending) pending = requestAnimationFrame(update); }
