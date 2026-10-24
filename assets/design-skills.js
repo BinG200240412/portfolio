@@ -16,6 +16,9 @@
   const prev = document.getElementById('archive-prev');
   const next = document.getElementById('archive-next');
   const position = document.getElementById('archive-position');
+  const initialHash = location.hash;
+  let userNavigated = false;
+  ['wheel', 'touchstart', 'keydown'].forEach(type => addEventListener(type, () => { userNavigated = true; }, {once:true, passive:true}));
   let entries = [], visible = [], active = 'all', shown = 0, current = -1, opener, columns = [], heights = [], columnCount = 0;
   const en = () => window.PortfolioI18n?.language === 'en';
   const tr = (zh, eng) => en() ? eng : zh;
@@ -131,6 +134,15 @@
     if (!response.ok) throw new Error('Archive unavailable'); return response.json();
   }).then(data => {
     entries = data.gallery; render();
+    // Finish the initial deep link after both the vector placeholders and type
+    // metrics are ready. Do not pull back a visitor who has already moved on.
+    document.fonts.ready.then(() => {
+      if (!userNavigated && location.hash === initialHash && initialHash) {
+        let target;
+        try { target = document.getElementById(decodeURIComponent(initialHash.slice(1))); } catch (_) {}
+        target?.scrollIntoView({block:'start', behavior:'instant'});
+      }
+    });
     // Reserve every tile from the outset; only nearby SVG images are fetched.
     if ('IntersectionObserver' in window) new IntersectionObserver(rows => {
       if (rows.some(row => row.isIntersecting) && shown < visible.length) showMore();
