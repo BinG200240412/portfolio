@@ -21,7 +21,7 @@ Output SHA-256:
 PortfolioSlab-Regular.woff2 48af577c0b48d4bbeda5af85b6464b41f8db2ef4aaf30be3ed6129a66a5534b4
 PortfolioSlab-Italic.woff2 ccb7b0adbab89f92769ebbb2c1b9f35de4482824cedaaaf2d32f2c0b96f34d1e
 
-Active Chinese typeface (2026-10-25) — Maple Mono CN Light, weight 300.
+Previous Chinese typeface (2026-10-25), no longer referenced — Maple Mono CN Light, weight 300.
 Official upstream and release:
 https://github.com/subframe7536/maple-font
 https://github.com/subframe7536/maple-font/releases/tag/v7.9
@@ -37,14 +37,23 @@ Output: PortfolioMapleCN-Light.woff2, 5,176,332 bytes.
 Output SHA-256: a3528f4537aa41ef8b9267d1d2d3042e9d073b23d3a3b81d67743ad026346f0c
 SIL OFL 1.1 and credits: OFL-MapleMono.txt, AUTHORS-MapleMono.txt.
 
-Comparison-only Chinese options (2026-10-25):
-PLIX / Plix Light v1.2, true weight 300, CJK-only WOFF2 renamed Portfolio Plix CN.
+Active Chinese typeface (2026-10-25) — PLIX / Plix Light v1.2, true weight 300.
+The comparison page and ?cjk=plix-extra offer real ExtraLight weight 200.
 Official upstream: https://github.com/cathree3/Plix
+Verified upstream commit: 9456532eaeeff7737dc7e72f86ecc0be62183f80
+Both official v1.2 archives were inspected: actual weights are 200, 300, 400,
+450, 500, 600, 700. There is no Thin/100; ExtraLight/200 is the lightest.
+Both full CJK-only WOFF2 faces are renamed Portfolio Plix CN and retain their
+original outlines, advances and OS/2 weights. Each has 23,579 CJK mappings;
+ASCII and Latin are excluded. All 1,135 Han characters used during conversion
+are covered. English letters and digits retain the unchanged Portfolio Slab.
 Licence: OFL-Plix.txt, including the upstream IBM copyright and Plex reserved name.
-Output PortfolioPlixCN-Light.woff2: 3,681,280 bytes; 23,579 CJK mappings.
+PortfolioPlixCN-Light.woff2: 3,681,280 bytes, true weight 300.
 SHA-256: a485cda106f1d54c5e910bab53dac155c3ddaf194c62b6aeb78e0f2a80deb934
-All 1,132 Han characters used on the current site are covered.
+PortfolioPlixCN-ExtraLight.woff2: 3,657,280 bytes, true weight 200.
+SHA-256: 6e5c51acb6f12a5e761218e8d74de26a7046829728522f8fa557ed8fbb768894
 
+Previous comparison option, no longer referenced:
 Chogokuboso Gothic / 超極細ゴシック, original Regular weight 400; naturally thin outlines.
 Official source and web-use permission: https://font.websozai.jp/line-font-mihon.html
 Derived CJK-only WOFF2 from chogokubosogothic_5.ttf, renamed Portfolio UltraThin Gothic.
@@ -58,10 +67,10 @@ Original TTF SHA-256: bd4ebe661508ac8fcc6093916b45ae75900626c997133a1bdaaa6c2cb9
 Licence: LICENSE-Chogokuboso-Gothic.txt. Original copyright credit (also retained
 in the font): Line Font, M+ FONTS PROJECT.
 This Japanese font lacks some simplified Chinese characters (including 开发、设计、艺术实).
-The Gothic preview explicitly falls back to PLIX for missing characters; this is
-disclosed on the comparison page. Both options are limited to CJK in CSS, keeping
-English letters and digits on Portfolio Slab. Preview selection uses ?cjk=plix or
-?cjk=gothic only; the unqualified production URL continues to use Maple Mono CN.
+The Gothic comparison was rejected because of missing simplified Chinese glyphs.
+Its historical asset and licence remain in the repository, but active CSS no
+longer references it. The comparison now shows PLIX Light 300 and ExtraLight 200;
+the unqualified production URL uses PLIX Light 300.
 
 Previous Chinese choice (2026-10-24), no longer referenced — Lantinghei SC Extralight,
 PostScript name FZLTXHK--GBK1-0. The matching TC name is FZLTXHB--B51-0.

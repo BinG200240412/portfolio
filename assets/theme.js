@@ -1,7 +1,7 @@
 (() => {
   const key = 'portfolio-theme';
   const requestedFont = new URL(location.href).searchParams.get('cjk');
-  const fontPreview = ['plix', 'gothic'].includes(requestedFont) ? requestedFont : null;
+  const fontPreview = ['plix', 'plix-extra'].includes(requestedFont) ? requestedFont : null;
   if (fontPreview) document.documentElement.dataset.cjkPreview = fontPreview;
   const tr = value => window.PortfolioI18n?.t(value) || value;
   const valid = value => value === 'dark' || value === 'light';

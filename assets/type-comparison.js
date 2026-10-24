@@ -1,11 +1,10 @@
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
-  '中文字体对比 — Who am I':'Chinese type comparison — Who am I',
-  '中文字体对比':'Chinese type comparison',
-  '相同字号与内容，比较两种中文字形。':'The same text and sizes, in two Chinese typefaces.',
+  'PLIX 字重对比 — Who am I':'PLIX weight comparison — Who am I',
+  'PLIX 字重对比':'PLIX weight comparison',
+  '相同字号与内容，比较两档粗细。':'The same text and sizes, in two weights.',
   '正文字号':'Body text size',
-  '普利世 · Light':'Plix · Light',
-  '完整覆盖当前网站的中文内容。':'Covers all Chinese text currently used on the site.',
-  '部分简体缺字，预览中用 PLIX 补齐。':'Some simplified Chinese characters use PLIX as a fallback.',
+  '当前网站使用的字重。':'The weight currently used on the site.',
+  '更细一档，字库覆盖相同。':'One step lighter, with the same character coverage.',
   '字体来源':'Font sources',
   '页面颜色与语言':'Appearance and language'
 });
