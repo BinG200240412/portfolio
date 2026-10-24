@@ -1,175 +1,80 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <script src="../assets/i18n-main.js?v=bilingual-20261023"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="BinG Design Skills：原生 SVG 版画档案、Figma 界面校正流程演示与可选择下载的手绘图标库。">
+<title>Design Skills — 蔡正阳</title>
+<script src="../assets/i18n-main.js?v=bilingual-20261023"></script>
 <script src="../assets/i18n-cases.js?v=bilingual-20261023"></script>
+<script src="../assets/skills-translations.js?v=skills-gallery-20261024"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=diagonal-back-20261024"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="BinG Design Skills：从数独与 arright 的设计实践中整理的三个工作流，包含 Figma 界面还原、手绘面型图标和老报纸版画。">
-  <title>Design Skills — 蔡正阳</title>
-  <style>
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth;scroll-padding-top:86px}
-    body{margin:0;font-family:"Portfolio Mono","PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}
-    h1,h2,p,figure{margin:0}
-    a{color:inherit;text-decoration:none}
-    a:focus-visible{outline:2px solid var(--red);outline-offset:6px}
-    .wrap{max-width:1380px;margin:auto;padding:96px clamp(22px,5.5vw,82px) 30px}
-    .eyebrow,.index,.meta,.sample-label,.step,.foot,.repo-link,.skill-name,.skill-link{font-size:10px;line-height:1.7;letter-spacing:.06em}
-    .eyebrow{display:flex;justify-content:space-between;gap:24px;color:var(--soft)}
-    .hero{padding:24px 0 52px}
-    .hero-line{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin:32px 0}
-    h1{font-size:clamp(64px,12.7vw,164px);font-weight:400;line-height:.96;letter-spacing:-.08em}
-    h1 .accent{display:inline-block;width:.12em;height:.12em;margin-left:.08em;border-radius:50%;vertical-align:.02em;overflow:hidden;line-height:0;background:var(--red);color:transparent}
-    .hero-note{max-width:290px;padding-bottom:8px}
-    .hero-note p{font-size:13px;line-height:1.9;color:var(--mid)}
-    .repo-link{display:inline-flex;gap:30px;margin-top:22px;padding-bottom:8px;border-bottom:1px solid var(--line2)}
-    .repo-link:hover,.skill-link:hover{color:var(--red)}
-    .contents{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));list-style:none;margin:42px 0 0;padding:0;border-top:1px solid var(--line)}
-    .contents a{display:flex;align-items:baseline;gap:16px;min-height:54px;padding:17px 12px 0 0;font-size:11px;color:var(--mid)}
-    .contents a:hover{color:var(--ink)}
-    .contents span{font-size:9px;color:var(--faint)}
-    .skill{display:grid;grid-template-columns:minmax(240px,.8fr) minmax(0,1.5fr);gap:clamp(30px,7vw,100px);padding:52px 0 66px;border-top:1px solid var(--line);scroll-margin-top:18px}
-    .index{color:var(--red);margin-bottom:34px}
-    .skill-name{color:var(--soft);overflow-wrap:anywhere;letter-spacing:0}
-    h2{font-size:clamp(25px,3.2vw,39px);font-weight:400;letter-spacing:-.04em;line-height:1.42;margin-top:16px}
-    .description{font-size:12px;line-height:1.9;color:var(--mid);margin-top:22px;max-width:30em}
-    .facts{margin:28px 0 30px;padding:0;list-style:none;color:var(--soft);font-size:10px;line-height:2}
-    .facts li{display:flex;gap:16px;border-top:1px solid var(--line);padding:7px 0}
-    .facts b{font-weight:400;color:var(--mid);min-width:4em}
-    .skill-link{display:inline-flex;gap:24px;border-bottom:1px solid var(--line2);padding-bottom:7px}
-    .sample{background:#eeece5;color:#41403d;min-width:0;position:relative;overflow:hidden}
-    .sample-label{position:absolute;top:20px;left:22px;right:22px;display:flex;justify-content:space-between;gap:12px;font-size:9px;color:#77766f}
-    .calibration{min-height:440px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:32px;padding:72px 34px 30px}
-    .steps{border-left:1px solid #c7c4bb;padding-left:20px}
-    .step{padding:13px 0;font-size:10px}
-    .step span{display:block;font-size:8px;color:#8b887e;margin-bottom:4px}
-    .phone{justify-self:center;position:relative;max-width:198px;width:100%;height:352px;overflow:hidden;border:1px solid #d2cec3;background:#f5f3ed}
-    .phone img{width:100%;height:auto;display:block}
-    .icon-sample{display:grid;place-items:center;min-height:420px;padding:30px 48px}
-    .icon-sample img{width:min(100%,370px);display:block;height:auto}
-    .sample-foot{position:absolute;bottom:18px;left:22px;right:22px;display:flex;justify-content:space-between;gap:12px;color:#77766f;font-size:9px;line-height:1.6}
-    .poster-sample{display:flex;justify-content:center;padding:64px 28px 54px}
-    .poster-sample img{width:min(100%,310px);height:auto;display:block;box-shadow:0 8px 28px #41403d12}
-    figcaption{font-size:9px;color:var(--soft);margin-top:12px;line-height:1.7}
-    .end{border-top:1px solid var(--line);padding:36px 0 50px;display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex-wrap:wrap}
-    .end p{font-size:13px;color:var(--mid);line-height:1.8}
-    .end .repo-link{margin:0}
-    .foot{display:flex;justify-content:space-between;gap:20px;color:var(--soft);border-top:1px solid var(--line);padding-top:20px;font-size:9px}
-    .foot a:hover{color:var(--ink)}
-    @media(min-width:1500px){.wrap{padding-top:110px}}
-    @media(max-width:700px){
-      .wrap{padding-top:92px}
-      .hero{padding:8px 0 32px}
-      .hero-line{display:block;margin:30px 0 0}
-      h1{font-size:clamp(64px,18vw,120px)}
-      .hero-note{margin-top:28px;max-width:27em;padding:0}
-      .hero-note p{font-size:12px}
-      .repo-link{margin-top:18px}
-      .contents{grid-template-columns:1fr;margin-top:32px}
-      .contents a{min-height:43px;padding-top:12px;border-bottom:1px solid var(--line);gap:20px}
-      .skill{grid-template-columns:1fr;gap:30px;padding:34px 0 42px}
-      .index{margin-bottom:22px}
-      h2{font-size:29px}
-      .description{margin-top:16px}
-      .facts{margin:22px 0}
-      .calibration{min-height:360px;padding:64px 22px 24px;gap:20px;grid-template-columns:.9fr 1.1fr}
-      .steps{padding-left:13px}
-      .phone{height:280px}
-      .step{font-size:9px}
-      .icon-sample{min-height:330px;padding-inline:32px}
-      .sample-label,.sample-foot{left:17px;right:17px;font-size:8px}
-      .poster-sample{padding:56px 30px 48px}
-      .end{padding-top:28px;padding-bottom:34px;gap:20px}
-      .foot{flex-wrap:wrap;gap:8px 20px}
-    }
-  </style>
-  <link rel="stylesheet" href="../assets/theme.css?v=lanting-light-20261024">
+<link rel="stylesheet" href="../assets/theme.css?v=lanting-light-20261024">
+<link rel="stylesheet" href="../assets/design-skills.css?v=skills-gallery-20261024">
+<link rel="stylesheet" href="../assets/skills-figma-demo.css?v=skills-gallery-20261024">
+<link rel="stylesheet" href="../assets/skills-icon-library.css?v=skills-gallery-20261024">
+<script defer src="../assets/design-skills.js?v=skills-gallery-20261024"></script>
+<script defer src="../assets/skills-figma-demo.js?v=skills-gallery-20261024"></script>
+<script defer src="../assets/skills-icon-library.js?v=skills-gallery-20261024"></script>
 </head>
-<body>
-  <main class="wrap">
-    <header class="hero">
-      <p class="eyebrow"><span>BinG / Design tools</span><span>03 Skills · 2026</span></p>
-      <div class="hero-line">
-        <h1>Design<br>Skills<span class="accent">.</span></h1>
-        <div class="hero-note">
-          <p>从数独与 arright 的设计实践中，<br>整理三个可以复用的工作流。</p>
-          <a class="repo-link" href="https://github.com/BinG200240412/bing-design-skills" target="_blank" rel="noopener noreferrer">查看 GitHub 仓库 <span aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-      <nav aria-label="三个设计工作流">
-        <ol class="contents">
-          <li><a href="#figma"><span>01</span>界面还原与校正</a></li>
-          <li><a href="#icons"><span>02</span>手绘面型图标</a></li>
-          <li><a href="#newsprint"><span>03</span>老报纸版画</a></li>
-        </ol>
-      </nav>
-    </header>
-
-    <article class="skill" id="figma" aria-labelledby="figma-title">
-      <div>
-        <p class="index">01 / Interface</p>
-        <p class="skill-name">UI—COPY—CODE—FIGMA</p>
-        <h2 id="figma-title">界面还原，<br>逐项校对。</h2>
-        <p class="description">保留 Figma 分组和原始资产，把字体、间距与布局带入 SwiftUI，再用模拟器截图比对。</p>
-        <ul class="facts"><li><b>输入</b>Figma 节点 / 现有界面</li><li><b>交付</b>界面代码 / 截图校验</li></ul>
-        <a class="skill-link" href="https://github.com/BinG200240412/bing-design-skills/blob/main/skills/ui-copy-code-figma/SKILL.md" target="_blank" rel="noopener noreferrer">查看界面还原 Skill <span aria-hidden="true">↗</span></a>
-      </div>
-      <figure>
-        <div class="sample calibration">
-          <div class="sample-label"><span>Figma → SwiftUI</span><span>工作流程示意</span></div>
-          <div class="steps"><p class="step"><span>01 / MEASURE</span>按分组测量</p><p class="step"><span>02 / EXPORT</span>导出原始资产</p><p class="step"><span>03 / BUILD</span>校正字体与布局</p><p class="step"><span>04 / COMPARE</span>截图比对</p></div>
-          <div class="phone"><img src="../assets/works/sudoku/board.png" width="1206" height="2622" alt="数独 App 的棋盘界面样本" loading="lazy" decoding="async"></div>
-        </div>
-        <figcaption>流程示意 · 界面样本来自数独作品。</figcaption>
-      </figure>
-    </article>
-
-    <article class="skill" id="icons" aria-labelledby="icons-title">
-      <div>
-        <p class="index">02 / Handcut</p>
-        <p class="skill-name">handcut-solid-icons</p>
-        <h2 id="icons-title">留一点手绘的<br>不规则。</h2>
-        <p class="description">用灰色实心块面建立图标语言，保留轻微歪扭和不对称，再描摹成可编辑的 SVG。</p>
-        <ul class="facts"><li><b>规范</b>#41403D / 实心面型</li><li><b>交付</b>SVG / 图像预览</li></ul>
-        <a class="skill-link" href="https://github.com/BinG200240412/bing-design-skills/blob/main/skills/handcut-solid-icons/SKILL.md" target="_blank" rel="noopener noreferrer">查看面型图标 Skill <span aria-hidden="true">↗</span></a>
-      </div>
-      <figure>
-        <div class="sample icon-sample">
-          <div class="sample-label"><span>Form / 001</span><span>SVG</span></div>
-          <img src="../assets/works/design-skills/solar-barque-reference.svg" width="1254" height="1254" alt="深灰色手绘面型太阳船图标，保留不对称的轮廓" loading="lazy" decoding="async">
-          <div class="sample-foot"><span>风格参考 / 太阳船</span><span>#41403D</span></div>
-        </div>
-        <figcaption>Skill 随附的风格参考。</figcaption>
-      </figure>
-    </article>
-
-    <article class="skill" id="newsprint" aria-labelledby="newsprint-title">
-      <div>
-        <p class="index">03 / Newsprint</p>
-        <p class="skill-name">sudoku-image-style</p>
-        <h2 id="newsprint-title">把印刷的痕迹<br>留下来。</h2>
-        <p class="description">铜版画排线与老报纸压印，保留缺墨、飞白和毛边；把生成、检查、去底与矢量化串成流程。</p>
-        <ul class="facts"><li><b>语言</b>黑白两色 / 粗糙印刷</li><li><b>检查</b>格线 / 两色纯度 / 文字残留</li></ul>
-        <a class="skill-link" href="https://github.com/BinG200240412/bing-design-skills/blob/main/skills/sudoku-image-style/SKILL.md" target="_blank" rel="noopener noreferrer">查看老报纸版画 Skill <span aria-hidden="true">↗</span></a>
-      </div>
-      <figure>
-        <div class="sample poster-sample">
-          <div class="sample-label"><span>Newsprint / 001</span><span>数独 · 视觉</span></div>
-          <img src="../assets/works/sudoku-refresh/hiring-poster.png" width="1200" height="1600" alt="数独校对员招聘海报，黑白人物版画与美式报刊标题" loading="lazy" decoding="async">
-          <div class="sample-foot"><span>视觉应用 / 招聘海报</span><span>2026</span></div>
-        </div>
-        <figcaption>相关视觉作品 · <a href="sudoku-visual.html">查看完整海报 ↗</a></figcaption>
-      </figure>
-    </article>
-
-    <div class="end">
-      <p>每个 Skill 都可以单独取用。</p>
-      <a class="repo-link" href="https://github.com/BinG200240412/bing-design-skills/archive/refs/heads/main.zip">下载三个 Skills <span aria-hidden="true">↓</span></a>
-    </div>
-    <footer class="foot"><span>BinG Design Skills / 流程整理</span><a href="https://github.com/BinG200240412/bing-design-skills/blob/main/PROVENANCE.md" target="_blank" rel="noopener noreferrer">内容与来源说明 ↗</a></footer>
-  </main>
+<body class="skills-page">
+<main>
+<header class="skills-hero page-width">
+<div class="eyebrow"><span>BinG / Design tools</span><span>03 Skills · 2026</span></div>
+<div class="hero-heading"><h1>Design<br>Skills<span class="accent">.</span></h1><div class="hero-note"><p>把反复做的事，<br>变成可复用的方法。</p><p class="hero-sub">从一张版画、一个界面、一枚图标出发。<br>看作品，也看它们如何被做出来。</p><a class="text-link" href="https://github.com/BinG200240412/bing-design-skills" target="_blank" rel="noopener noreferrer">GitHub / 三个工作流 <span aria-hidden="true">↗</span></a></div></div>
+<nav class="skills-index" aria-label="三个设计工作流">
+<a href="#newsprint"><span>01 / VISUAL</span><span>数独 · 版画档案</span><span aria-hidden="true">↓</span></a>
+<a href="#figma"><span>02 / INTERFACE</span><span>Figma · 还原与校正</span><span aria-hidden="true">↓</span></a>
+<a href="#icons"><span>03 / ICONS</span><span>手绘 · 图标库</span><span aria-hidden="true">↓</span></a>
+</nav></header>
+<section class="skill-chapter page-width" id="newsprint" aria-labelledby="newsprint-title">
+<div class="chapter-meta"><span>01 / VISUAL ARCHIVE</span><span>sudoku-image-style</span></div>
+<div class="chapter-heading"><h2 id="newsprint-title">把印刷的痕迹<br>留下来。</h2><div class="chapter-note"><p>铜版画的排线，老报纸的缺墨、飞白与毛边。<br>将散落在海报、每日挑战和 App 里的图像，收进同一面 SVG 展示墙。</p><a class="text-link" href="https://github.com/BinG200240412/bing-design-skills/blob/main/skills/sudoku-image-style/SKILL.md" target="_blank" rel="noopener noreferrer">查看版画 Skill <span aria-hidden="true">↗</span></a></div></div>
+<ol class="workflow workflow-six">
+<li><span>01 / TRANSLATE</span><h3>参考转绘</h3><p>锁定构图与两色印刷语言。</p></li>
+<li><span>02 / AUDIT</span><h3>审核画面</h3><p>检查墨量、格线与文字残留。</p></li>
+<li><span>03 / REPAIR</span><h3>修补与定色</h3><p>校对真实文字与数字，统一墨色。</p></li>
+<li><span>04 / CUTOUT</span><h3>去除底色</h3><p>保留排线与细小飞白。</p></li>
+<li><span>05 / VECTORIZE</span><h3>描摹为 SVG</h3><p>把纹理与轮廓留在矢量路径里。</p></li>
+<li><span>06 / VERIFY</span><h3>入库验证</h3><p>回渲、检查，再放进实际界面。</p></li>
+</ol>
+<div id="visual-archive" class="visual-archive" data-i18n-ignore>
+<div class="archive-toolbar"><div id="archive-filters" class="archive-filters" role="group" aria-label="筛选版画"></div><span id="archive-count" class="archive-count" aria-live="polite"></span></div>
+<div id="archive-wall" class="archive-wall" aria-label="数独 SVG 展示墙"></div>
+<div id="archive-sentinel" class="archive-sentinel"><button id="archive-more" type="button">继续浏览 ↓</button></div>
+<p class="archive-status" id="archive-status" role="status">正在整理 SVG 档案…</p>
+</div>
+<noscript><p>启用 JavaScript 浏览 SVG 档案。<a href="../assets/works/design-skills/catalog.json">查看完整素材清单 ↗</a></p></noscript>
+</section>
+<section class="skill-chapter page-width" id="figma" aria-labelledby="figma-title">
+<div class="chapter-meta"><span>02 / INTERFACE CALIBRATION</span><span>UI—COPY—CODE—FIGMA</span></div>
+<div class="chapter-heading"><h2 id="figma-title">不止相似，<br>逐项校对。</h2><div class="chapter-note"><p>先理解 Figma 分组，再量距离。<br>导出原始资产、还原字体与布局，最后回到截图，逐项比对。</p><a class="text-link" href="https://github.com/BinG200240412/bing-design-skills/blob/main/skills/ui-copy-code-figma/SKILL.md" target="_blank" rel="noopener noreferrer">查看界面还原 Skill <span aria-hidden="true">↗</span></a></div></div>
+<ol class="workflow">
+<li><span>01 / MEASURE</span><h3>按分组测量</h3><p>边界、对齐与间距一起核对。</p></li>
+<li><span>02 / EXPORT</span><h3>先导出原始资产</h3><p>保留 SVG 与真实字体。</p></li>
+<li><span>03 / BUILD</span><h3>还原原生界面</h3><p>在 SwiftUI 中保留既有行为。</p></li>
+<li><span>04 / COMPARE</span><h3>构建与截图比对</h3><p>模拟器校验，逐项修正偏差。</p></li>
+</ol>
+<div id="figma-demo" data-i18n-ignore></div>
+</section>
+<section class="skill-chapter page-width" id="icons" aria-labelledby="icons-title">
+<div class="chapter-meta"><span>03 / HANDCUT LIBRARY</span><span>handcut-solid-icons</span></div>
+<div class="chapter-heading"><h2 id="icons-title">留一点<br>手绘的不规则。</h2><div class="chapter-note"><p>同一种深灰，保留每一个轮廓的轻微歪扭。<br>点击图标细看，也可以选几枚，带走原始 SVG。</p><a class="text-link" href="https://github.com/BinG200240412/bing-design-skills/blob/main/skills/handcut-solid-icons/SKILL.md" target="_blank" rel="noopener noreferrer">查看面型图标 Skill <span aria-hidden="true">↗</span></a></div></div>
+<ol class="workflow">
+<li><span>01 / DEFINE</span><h3>确定主体</h3><p>用少量块面表达核心含义。</p></li>
+<li><span>02 / SHAPE</span><h3>形成手绘轮廓</h3><p>保留弯曲、参差与不对称。</p></li>
+<li><span>03 / VECTORIZE</span><h3>描摹与精确填色</h3><p>#41403D，透明底，真实路径。</p></li>
+<li><span>04 / CHECK</span><h3>缩小检查与交付</h3><p>检查孔洞、边缘与小尺寸辨识。</p></li>
+</ol>
+<div id="icon-library" data-i18n-ignore></div>
+</section>
+<footer class="skills-footer page-width"><div><p>方法可以复用，<br>判断留给自己。</p><a class="text-link" href="https://github.com/BinG200240412/bing-design-skills/archive/refs/heads/main.zip">下载三个 Skills <span aria-hidden="true">↓</span></a></div><div class="footer-meta"><span>BinG Design Skills / 2026</span><a href="https://github.com/BinG200240412/bing-design-skills/blob/main/PROVENANCE.md" target="_blank" rel="noopener noreferrer">内容与来源说明 ↗</a><a href="../index.html">返回作品集 ↖</a></div></footer>
+</main>
+<dialog class="archive-viewer" id="archive-viewer" data-i18n-ignore aria-labelledby="archive-viewer-title">
+<div class="archive-viewer-bar"><div><span class="viewer-kicker">SVG / ARCHIVE</span><h2 id="archive-viewer-title"></h2></div><div class="viewer-actions"><a id="archive-download" download>下载 SVG ↓</a><button id="archive-close" type="button" aria-label="关闭预览">×</button></div></div>
+<div class="archive-viewer-art"><img id="archive-viewer-image" alt=""></div>
+<div class="archive-viewer-foot"><button type="button" id="archive-prev" aria-label="上一张">←</button><span id="archive-position"></span><button type="button" id="archive-next" aria-label="下一张">→</button></div>
+</dialog>
 </body>
 </html>
