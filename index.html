@@ -20,7 +20,7 @@
 <script defer src="assets/about-companion.js?v=portrait-and-companion-20261023"></script>
 <script defer src="assets/ambient-field.js?v=soft-particles-20261024"></script>
 <script defer src="assets/assistant-connection.js?v=assistant-preview-20261024"></script>
-<script defer src="assets/portfolio-assistant.js?v=assistant-preview-20261024"></script>
+<script defer src="assets/portfolio-assistant.js?v=assistant-popover-20261024"></script>
 <style>
   :root{
     --mono:"JetBrains Mono","Noto Sans SC",monospace;
@@ -52,8 +52,11 @@
   .dot::before{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;
     transform:translate(-50%,-50%);border-radius:50%}
   .dot:focus-visible{outline:1px solid var(--ink);outline-offset:12px}
-  .dot.assistant-active{animation:none;opacity:1}
-  .dot.assistant-active::after{opacity:0;animation:none}
+  #dot.assistant-active,#dot.assistant-active:hover{animation:none;opacity:1;transform:none}
+  .dot.assistant-active::after{width:38px;height:38px;border-color:var(--red);
+    transform:translate(-50%,-50%) scale(1);opacity:.6;animation:assistantIris 5.6s ease-in-out infinite}
+  @keyframes assistantIris{0%,100%{transform:translate(-50%,-50%) scale(.86);opacity:.4}50%{transform:translate(-50%,-50%) scale(1.1);opacity:.68}}
+  @media(max-width:600px){.dot.assistant-active::after{width:28px;height:28px}}
   /* idle 睁眼：虹膜环绕红瞳画出 */
   .dot::after{content:"";position:absolute;left:50%;top:50%;width:34px;height:34px;
     border:1px solid var(--ink);border-radius:50%;
@@ -177,11 +180,11 @@
     .cols section{padding:0;border-left:0;border-top:1px solid #e3e3e3;padding-top:28px}
     .cols section:first-child{border-top:0;padding-top:0}}
 </style>
-<link rel="stylesheet" href="assets/theme.css?v=diagonal-back-20261024">
+<link rel="stylesheet" href="assets/theme.css?v=lanting-light-20261024">
 <link rel="stylesheet" href="assets/matrix-field.css?v=interactive-objects-20261024">
 <link rel="stylesheet" href="assets/about.css?v=original-photo-right-20261024">
 <link rel="stylesheet" href="assets/ambient-field.css?v=soft-particles-20261024">
-<link rel="stylesheet" href="assets/portfolio-assistant.css?v=assistant-preview-20261024">
+<link rel="stylesheet" href="assets/portfolio-assistant.css?v=assistant-popover-20261024">
 </head>
 <body class="portfolio-shell">
   <canvas id="ambient-page" aria-hidden="true" data-i18n-ignore></canvas>
@@ -282,27 +285,28 @@ function settle(w){target=w;pump();return new Promise(res=>{(current===target&&!
 let phase='typing', navigationEpoch=0, assistantOpen=false;
 function syncAssistantTrigger(){
   const available=['typing','question','hub','works'].includes(phase);
-  dotEl.classList.toggle('clickable',available&&!assistantOpen);
+  dotEl.classList.toggle('clickable',available);
   dotEl.classList.toggle('assistant-active',assistantOpen);
   dotEl.disabled=!available;
   dotEl.tabIndex=available?0:-1;
   dotEl.setAttribute('aria-expanded',String(assistantOpen));
+  updateBackLabels();
 }
 function disarmHint(){dotEl.classList.remove('hinting');}
-function navigationChanged(){
+function navigationChanged(reason='navigation'){
   navigationEpoch++;
-  stage.inert=assistantOpen||!['typing','question','hub','works'].includes(phase);
+  stage.inert=!['typing','question','hub','works'].includes(phase);
   syncAssistantTrigger();
   for(const [button,shown] of [[backBtn,phase==='resume'],[toHubBtn,phase==='works'],[secBack,phase==='section']]){
     button.hidden=!shown;button.disabled=!shown;button.tabIndex=shown?0:-1;
   }
   stage.classList.toggle('intro-active',phase==='typing'||phase==='question');
-  window.dispatchEvent(new CustomEvent('portfolio:navigation',{detail:{mode:phase}}));
+  window.dispatchEvent(new CustomEvent('portfolio:navigation',{detail:{mode:phase,reason}}));
 }
 async function intro(){
   navigationChanged();
   await settle(QUESTION);if(phase!=='typing')return;
-  phase='question';navigationChanged();
+  phase='question';navigationChanged('typing');
 }
 
 /* ---- 菜单渲染（hub 顶层 / works 作品层） ---- */
@@ -375,24 +379,23 @@ function expandPage(which){
 // An opening click anywhere in the scene reveals the name and both choices.
 // Object buttons receive the click first, so their small reactions still play.
 stage.addEventListener('click',()=>{
-  if(assistantOpen)return;
   if(phase==='typing'||phase==='question'){disarmHint();showHub();}
 });
 dotEl.addEventListener('click',event=>{
   event.stopPropagation();
   if(!['typing','question','hub','works'].includes(phase))return;
   disarmHint();clearWatch();
-  window.PortfolioAssistant?.open();
+  window.PortfolioAssistant?.toggle();
 });
 addEventListener('portfolio:assistant',event=>{
   const open=event.detail?.open===true;
   if(assistantOpen===open)return;
   assistantOpen=open;
   disarmHint();clearWatch();markActivity();
-  navigationChanged();
+  navigationChanged('assistant');
 });
 document.addEventListener('keydown',event=>{
-  if(event.defaultPrevented||assistantOpen||!(phase==='typing'||phase==='question'))return;
+  if(event.defaultPrevented||!(phase==='typing'||phase==='question'))return;
   if(event.target.closest('button,a,input,textarea,select,[role="button"]'))return;
   if(event.key==='Enter'||event.key===' '){event.preventDefault();showHub();}
 });
@@ -414,7 +417,7 @@ const SECTION_PAGE={
   "作品归档":"sections/more.html",
 };
 function enterSection(name,no){
-  if(phase!=='works'||assistantOpen)return;phase='transit';clearWatch();navigationChanged();
+  if(phase!=='works')return;phase='transit';clearWatch();navigationChanged();
   document.body.classList.remove('works-mode');
   const page=SECTION_PAGE[name];
   if(page){
@@ -452,7 +455,7 @@ window.PortfolioNavigation = Object.freeze({
 });
 function updateBackLabels(){
   const english=window.PortfolioI18n?.language==='en';
-  dotEl.setAttribute('aria-label',english?'Open AI conversation':'打开 AI 对话');
+  dotEl.setAttribute('aria-label',assistantOpen?(english?'Close AI conversation':'收起 AI 对话'):(english?'Open AI conversation':'打开 AI 对话'));
   for(const button of [backBtn,toHubBtn,secBack]){
     const label=button===secBack?(english?'Back to works':'返回作品集'):(english?'Back to navigation':'返回导航');
     button.setAttribute('aria-label',label);button.title=label;

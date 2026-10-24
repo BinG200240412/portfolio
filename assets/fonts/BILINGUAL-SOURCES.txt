@@ -21,6 +21,17 @@ Output SHA-256:
 PortfolioSlab-Regular.woff2 48af577c0b48d4bbeda5af85b6464b41f8db2ef4aaf30be3ed6129a66a5534b4
 PortfolioSlab-Italic.woff2 ccb7b0adbab89f92769ebbb2c1b9f35de4482824cedaaaf2d32f2c0b96f34d1e
 
+Active Chinese typeface (2026-10-24) — locally installed Lantinghei SC Extralight,
+PostScript name FZLTXHK--GBK1-0. The matching TC name is FZLTXHB--B51-0.
+These names were verified with macOS CoreText against its installed font assets.
+CSS uses local() only, with a CJK-only unicode range and a fixed thin outline.
+No Fangzheng font file is copied, embedded or redistributed with this website.
+Devices without the local face use PingFang SC Light or another available Light
+sans face. Consistent Fangzheng delivery across devices needs a web-font licence
+and authorised files/service configuration. Requested text weight is 300;
+English letters and numbers keep the unchanged static Slab Regular outlines.
+
+Legacy Chinese asset retained but no longer referenced:
 Portfolio GenWan Medium — subset of GenWanMin2 TW M (GenWanMin2TW-M), the simplified-Chinese font actually selected by Sudoku by BinG.
 Official upstream: https://github.com/ButTaiwan/genwan-font
 Local original: /Users/bing/Desktop/BinG_WORK/字体/GenWan/GenWan-M.ttf

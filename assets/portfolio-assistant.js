@@ -1,51 +1,52 @@
-/* Body-level modal UI. The connection module owns transport and credentials.
- * API: PortfolioAssistant.open(), close(), toggle(), isOpen(), clear().
- * State event: portfolio:assistant, detail {open:boolean}.
+/* A non-modal conversation popover anchored to the existing red #dot.
+ * API: PortfolioAssistant.open({focusClose?:boolean}), close({restoreFocus?:boolean}),
+ * toggle(), isOpen(), clear(). State event: portfolio:assistant {open:boolean}.
+ * The connection module owns transport. Only its ok/assistant result is a reply.
  */
 (() => {
   'use strict';
   if (window.PortfolioAssistant) return;
-  const dialog=document.createElement('dialog');
-  dialog.id='portfolio-assistant';dialog.className='pa-dialog';
-  dialog.setAttribute('aria-modal','true');dialog.setAttribute('aria-labelledby','pa-title');
-  dialog.setAttribute('aria-describedby','pa-status');dialog.setAttribute('data-i18n-ignore','');
-  dialog.innerHTML=`<div class="pa-window">
-    <header class="pa-head"><h2 class="pa-title" id="pa-title">Who am I</h2><button class="pa-close" type="button">×</button></header>
-    <div class="pa-beacon"><button class="pa-eye" type="button" aria-pressed="false"><span class="pa-orbits" aria-hidden="true"><span class="pa-ring pa-ring--one"></span><span class="pa-ring pa-ring--two"></span><span class="pa-ring pa-ring--three"></span><span class="pa-core"></span></span></button><p class="pa-status" id="pa-status" role="status"></p></div>
+  const popup=document.createElement('section');
+  popup.id='portfolio-assistant';popup.className='pa-popover';
+  popup.setAttribute('role','dialog');popup.setAttribute('aria-modal','false');
+  popup.setAttribute('aria-labelledby','pa-title');popup.setAttribute('aria-describedby','pa-status');
+  popup.setAttribute('data-i18n-ignore','');popup.setAttribute('aria-hidden','true');
+  popup.dataset.open='false';popup.inert=true;
+  popup.innerHTML=`<div class="pa-window">
+    <header class="pa-head"><h2 class="pa-title" id="pa-title"></h2><button class="pa-close" type="button">×</button></header>
+    <p class="pa-status" id="pa-status" role="status"></p>
     <section class="pa-panel"><div class="pa-log" role="log" aria-live="polite" aria-relevant="additions"></div><div class="pa-chips"></div><p class="pa-notice" role="status" hidden></p>
-      <form class="pa-form"><textarea class="pa-input" rows="2" maxlength="3000"></textarea><button class="pa-send" type="submit"></button></form>
-    </section><footer class="pa-foot"><span class="pa-key-hint"></span><button class="pa-clear" type="button" hidden></button></footer>
+      <form class="pa-form"><textarea class="pa-input" rows="1" maxlength="3000"></textarea><button class="pa-send" type="submit"></button></form>
+    </section><footer class="pa-foot"><button class="pa-clear" type="button" hidden></button></footer>
   </div>`;
-  document.body.appendChild(dialog);
-  const find=selector=>dialog.querySelector(selector);
+  document.body.appendChild(popup);
+  const find=selector=>popup.querySelector(selector),dot=()=>document.getElementById('dot');
   const input=find('.pa-input'),sendButton=find('.pa-send'),closeButton=find('.pa-close');
-  const eye=find('.pa-eye'),log=find('.pa-log'),chips=find('.pa-chips'),notice=find('.pa-notice');
-  const status=find('.pa-status'),clearButton=find('.pa-clear');
-  const messages=[];
+  const log=find('.pa-log'),chips=find('.pa-chips'),notice=find('.pa-notice');
+  const status=find('.pa-status'),clearButton=find('.pa-clear'),messages=[];
   let opened=false,busy=false,controller=null,generation=0,returnFocus=null;
-  let feedback='';
+  let feedback='',navigationMode=null;
   const copy={
-    zh:{close:'关闭对话',eye:'放大或缩小呼吸圈',preview:'界面预览 · AI 尚未连接',ready:'关于作品，你可以直接提问',pending:'等待回复…',
-      empty:'你想了解什么？',placeholder:'写下你的问题…',send:'发送',clear:'清空对话',hint:'Enter 发送 · Shift + Enter 换行',
-      offline:'AI 尚未连接。这是本地界面预览，暂时不会生成回答。',error:'暂时无法取得回复，请稍后再试。',
-      chips:['数独是怎么做的？','你如何使用 AI？','聊聊你的设计方法']},
-    en:{close:'Close conversation',eye:'Expand or shrink the breathing rings',preview:'Interface preview · AI not connected',ready:'Ask a question about the work',pending:'Waiting for a reply…',
-      empty:'What would you like to know?',placeholder:'Write your question…',send:'Send',clear:'Clear conversation',hint:'Enter to send · Shift + Enter for a new line',
-      offline:'AI is not connected. This is a local interface preview; no answer will be generated yet.',error:'A reply is unavailable right now. Please try again later.',
-      chips:['How was Sudoku made?','How do you use AI?','What is your design process?']},
+    zh:{title:'有什么想了解的？',close:'关闭对话',preview:'尚未连接',ready:'可以提问',pending:'等待回复…',
+      placeholder:'写下你的问题…',send:'发送',clear:'清空',
+      offline:'AI 尚未连接，暂时不会生成回答。',error:'暂时无法取得回复，请稍后再试。',
+      chips:['数独是怎么做的？','你如何使用 AI？','你的设计方法']},
+    en:{title:'What would you like to know?',close:'Close conversation',preview:'Not connected',ready:'Ready for a question',pending:'Waiting for a reply…',
+      placeholder:'Write your question…',send:'Send',clear:'Clear',
+      offline:'AI is not connected; no answer will be generated yet.',error:'A reply is unavailable right now. Please try again later.',
+      chips:['How was Sudoku made?','How do you use AI?','Your design process']},
   };
   const language=()=>window.PortfolioI18n?.language==='en'||document.documentElement.lang==='en'?'en':'zh';
   const text=()=>copy[language()];
   const configured=()=>!!window.PortfolioAssistantConnection&&window.PortfolioAssistantConnection.mode!=='not_connected';
   function update() {
-    const t=text();
+    const t=text();find('.pa-title').textContent=t.title;
     status.textContent=busy?t.pending:configured()?t.ready:t.preview;
-    closeButton.setAttribute('aria-label',t.close);eye.setAttribute('aria-label',t.eye);
+    closeButton.setAttribute('aria-label',t.close);
     input.placeholder=t.placeholder;input.setAttribute('aria-label',t.placeholder);
     sendButton.textContent=t.send;sendButton.disabled=busy||!input.value.trim();
     clearButton.textContent=t.clear;clearButton.hidden=!messages.length;
-    find('.pa-key-hint').textContent=t.hint;
-    dialog.classList.toggle('is-pending',busy);dialog.setAttribute('aria-busy',String(busy));
+    popup.classList.toggle('is-pending',busy);popup.setAttribute('aria-busy',String(busy));
     notice.hidden=!feedback;notice.textContent=feedback?t[feedback]||t.error:'';
     chips.replaceChildren();
     for (const question of t.chips) {
@@ -56,20 +57,18 @@
       });chips.appendChild(button);
     }
     chips.hidden=messages.length>0;
-    const empty=find('.pa-empty');if(empty)empty.textContent=t.empty;
   }
   function render() {
-    log.replaceChildren();
-    if (!messages.length) {
-      const empty=document.createElement('p');empty.className='pa-empty';empty.textContent=text().empty;log.appendChild(empty);
-    }
+    log.replaceChildren();log.hidden=!messages.length;
     for (const message of messages) {
       const block=document.createElement('div');block.className=`pa-message pa-message--${message.role}`;
       block.textContent=message.content;log.appendChild(block);
     }
     log.scrollTop=log.scrollHeight;update();
   }
-  function resizeInput() {input.style.height='auto';input.style.height=`${Math.min(120,Math.max(48,input.scrollHeight))}px`;}
+  function resizeInput() {
+    input.style.height='auto';input.style.height=`${Math.min(90,Math.max(30,input.scrollHeight))}px`;
+  }
   function abort() {generation++;controller?.abort();controller=null;busy=false;}
   function clear() {abort();messages.length=0;feedback='';render();if(opened)input.focus({preventScroll:true});}
   async function submit() {
@@ -92,57 +91,81 @@
       if(token===generation){controller=null;busy=false;render();}
     }
   }
-  function viewport() {
-    const visual=window.visualViewport;
-    const height=visual?.height||innerHeight;
-    dialog.dataset.compact=String(height<570);
-    dialog.style.setProperty('--pa-viewport',`${height}px`);
-    dialog.style.setProperty('--pa-visual-top',`${visual?.offsetTop||0}px`);
+  function position() {
+    if(!opened)return;
+    const anchor=dot();if(!anchor)return;
+    const visual=window.visualViewport,height=visual?.height||innerHeight,width=visual?.width||innerWidth;
+    const viewTop=visual?.offsetTop||0,viewLeft=visual?.offsetLeft||0;
+    const viewBottom=viewTop+height,rect=anchor.getBoundingClientRect(),margin=12;
+    const boxWidth=Math.min(popup.getBoundingClientRect().width||360,width-margin*2);
+    const left=Math.max(viewLeft+margin,Math.min(viewLeft+width-boxWidth-margin,rect.left+rect.width/2-boxWidth/2));
+    let top=rect.bottom+30,available=viewBottom-top-margin;
+    // A software keyboard can leave the anchor outside the visible viewport.
+    // Keep the composer reachable, while normally staying directly below it.
+    const anchorVisible=rect.bottom>=viewTop&&rect.top<=viewBottom;
+    if(!anchorVisible||available<95) {
+      top=Math.max(viewTop+margin,viewBottom-Math.min(300,height-margin*2)-margin);
+      available=viewBottom-top-margin;
+    }
+    const maxHeight=Math.max(0,Math.min(300,available));
+    popup.style.left=`${left}px`;popup.style.top=`${top}px`;popup.style.maxHeight=`${maxHeight}px`;
+    popup.style.setProperty('--pa-available-height',`${maxHeight}px`);
+    popup.style.setProperty('--pa-viewport',`${height}px`);
+    popup.dataset.compact=String(height<570);
   }
   function announce(open) {dispatchEvent(new CustomEvent('portfolio:assistant',{detail:{open}}));}
-  function open() {
+  function open(options={}) {
     if(opened)return;
-    returnFocus=document.activeElement;feedback='';opened=true;update();viewport();
-    announce(true);
-    dialog.showModal();
-    // Focus the close control first so opening never summons a mobile keyboard.
-    closeButton.focus({preventScroll:true});
+    returnFocus=document.activeElement;feedback='';opened=true;
+    popup.inert=false;popup.dataset.open='true';popup.setAttribute('aria-hidden','false');
+    update();position();popup.classList.add('is-visible');announce(true);
+    if(options?.focusClose)closeButton.focus({preventScroll:true});
   }
-  function close() {
+  function close(options={}) {
     if(!opened)return;
-    opened=false;abort();
-    // The shell restores its stage before the trigger receives focus again.
-    announce(false);
-    if(dialog.open)dialog.close();
-    if(returnFocus?.isConnected&&!returnFocus.closest('[inert]'))returnFocus.focus({preventScroll:true});
+    const focusedInside=popup.contains(document.activeElement);
+    opened=false;abort();popup.dataset.open='false';popup.classList.remove('is-visible');
+    popup.inert=true;popup.setAttribute('aria-hidden','true');announce(false);
+    if(options?.restoreFocus!==false&&focusedInside) {
+      const target=returnFocus?.isConnected&&!returnFocus.closest('[inert]')?returnFocus:dot();
+      if(target?.isConnected&&!target.closest('[inert]'))target.focus({preventScroll:true});
+    }
     returnFocus=null;update();
   }
-  closeButton.addEventListener('click',close);clearButton.addEventListener('click',clear);
-  eye.addEventListener('click',()=>eye.setAttribute('aria-pressed',String(eye.getAttribute('aria-pressed')!=='true')));
-  find('.pa-form').addEventListener('submit',event=>{event.preventDefault();event.stopPropagation();submit();});
+  function outside(event) {
+    if(!opened)return;
+    const anchor=dot(),path=event.composedPath?.()||[];
+    if(popup.contains(event.target)||anchor?.contains(event.target)||path.includes(popup)||path.includes(anchor))return;
+    close({restoreFocus:false});
+  }
+  closeButton.addEventListener('click',()=>close());clearButton.addEventListener('click',clear);
+  find('.pa-form').addEventListener('submit',event=>{event.preventDefault();submit();});
   input.addEventListener('input',()=>{resizeInput();sendButton.disabled=busy||!input.value.trim();});
-  dialog.addEventListener('cancel',event=>{event.preventDefault();close();});
-  dialog.addEventListener('close',()=>{if(opened&&!dialog.open)close();});
-  dialog.addEventListener('keydown',event=>{
-    event.stopPropagation();
-    if(event.key==='Escape'){event.preventDefault();close();return;}
-    if(event.key==='Enter'&&event.target===input&&!event.shiftKey&&!event.isComposing){event.preventDefault();submit();return;}
-    if(event.key!=='Tab')return;
-    const controls=Array.from(dialog.querySelectorAll('button:not(:disabled),textarea:not(:disabled),[tabindex="0"]'))
-      .filter(element=>!element.closest('[hidden]'));
-    const first=controls[0],last=controls[controls.length-1],focused=document.activeElement;
-    if(event.shiftKey&&(focused===first||!dialog.contains(focused))){event.preventDefault();last?.focus();}
-    else if(!event.shiftKey&&(focused===last||!dialog.contains(focused))){event.preventDefault();first?.focus();}
+  popup.addEventListener('keydown',event=>{
+    if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close();return;}
+    if(event.key==='Enter'&&event.target===input&&!event.shiftKey&&!event.isComposing){
+      event.preventDefault();event.stopPropagation();submit();
+    }
   });
-  dialog.addEventListener('click',event=>{
-    if(event.target!==dialog)return;
-    const rect=dialog.getBoundingClientRect();
-    if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)close();
+  document.addEventListener('keydown',event=>{
+    if(opened&&event.key==='Escape'){event.preventDefault();close();}
   });
-  addEventListener('portfolio:language',update);
-  addEventListener('resize',viewport,{passive:true});window.visualViewport?.addEventListener('resize',viewport,{passive:true});
-  window.visualViewport?.addEventListener('scroll',viewport,{passive:true});
-  addEventListener('pagehide',()=>{if(opened)close();});
-  window.PortfolioAssistant=Object.freeze({open,close,toggle:()=>opened?close():open(),isOpen:()=>opened,clear});
+  document.addEventListener('pointerdown',outside,true);
+  document.addEventListener('click',outside,true);
+  addEventListener('portfolio:navigation',event=>{
+    const mode=event.detail?.mode,reason=event.detail?.reason,previous=navigationMode;
+    if(typeof mode==='string')navigationMode=mode;
+    if(reason==='assistant'||reason==='typing')return;
+    if(opened&&(reason==='navigation'||(previous!==null&&typeof mode==='string'&&mode!==previous)))close({restoreFocus:false});
+  });
+  addEventListener('portfolio:language',()=>{update();position();});
+  addEventListener('resize',position,{passive:true});addEventListener('scroll',position,{passive:true});
+  window.visualViewport?.addEventListener('resize',position,{passive:true});
+  window.visualViewport?.addEventListener('scroll',position,{passive:true});
+  const layout=new ResizeObserver(position);
+  const line=dot()?.closest('.line');if(line)layout.observe(line);
+  if(dot())layout.observe(dot());
+  addEventListener('pagehide',()=>{if(opened)close({restoreFocus:false});});
+  window.PortfolioAssistant=Object.freeze({open,close,toggle:options=>opened?close(options):open(options),isOpen:()=>opened,clear});
   render();
 })();

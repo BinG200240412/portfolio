@@ -4,6 +4,10 @@
 
 ## UI 协议
 
+界面是原红点下方的非模态小浮窗。同一个红点打开或收起，保留首页文字、点阵背景和页面交互；点击窗外、按 Escape 或进入页面也会收起。没有独立二级界面或全屏遮罩。
+
+`PortfolioAssistant.open()` / `.close()` / `.toggle()` 管理浮窗。开关派发 `portfolio:assistant`，`detail.open` 为布尔值。导航广播使用 `detail.reason` 区分真正导航、助手开关及打字完成，避免浮窗自关；关闭只中止请求，不清除已输入的对话。
+
 加载 `assets/assistant-connection.js` 后使用：
 
 ```js

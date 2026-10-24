@@ -1,82 +1,47 @@
-.pa-dialog {
+/* A small conversation below the original red dot; the scene stays present. */
+.pa-popover {
   --pa-red:var(--red,#f04432);
-  position:fixed;top:calc(var(--pa-visual-top,0px) + var(--pa-viewport,100dvh)/2);
-  right:0;bottom:auto;left:0;transform:translateY(-50%);
-  width:min(650px,calc(100vw - 40px));max-width:none;
-  max-height:calc(var(--pa-viewport,100dvh) - 36px);margin:0 auto;padding:0;
-  border:0;background:transparent;color:var(--ink,#efeee9);overflow:visible;
-  font-family:var(--portfolio-font,"Portfolio Slab",serif);z-index:1000;
+  position:fixed;z-index:95;width:min(352px,calc(100vw - 24px));margin:0;padding:0;
+  border:1px solid var(--line,#333);border-radius:7px;background:var(--paper,#111110);
+  color:var(--ink,#efeee9);box-shadow:0 9px 30px #00000012;
+  opacity:0;visibility:hidden;pointer-events:none;transform:translateY(14px);
+  transition:opacity .2s ease,transform .25s ease,visibility 0s .25s;
 }
-.pa-dialog:not([open]) {display:none}
-.pa-dialog::backdrop {background:rgba(17,17,16,.92);backdrop-filter:blur(12px)}
-html[data-theme="light"] .pa-dialog::backdrop {background:rgba(245,243,237,.93)}
-.pa-window {display:flex;flex-direction:column;max-height:calc(var(--pa-viewport,100dvh) - 36px)}
-.pa-head {display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:42px}
-.pa-title {margin:0;font-size:16px;font-weight:400;letter-spacing:.025em}
-.pa-close {width:42px;height:42px;border:0;background:none;color:var(--soft,#aaa);font-size:29px;line-height:1;cursor:pointer}
-.pa-beacon {display:flex;flex:none;flex-direction:column;align-items:center;padding:6px 0 20px}
-.pa-dialog[open] .pa-beacon {animation:pa-arrive .65s cubic-bezier(.18,.76,.22,1) both}
-.pa-eye {display:flex;align-items:center;justify-content:center;width:144px;height:132px;margin:0;padding:0;border:0;background:none;cursor:pointer;color:var(--pa-red);touch-action:manipulation}
-.pa-orbits {display:block;flex:none;position:relative;width:124px;height:124px;transform:scale(1);transition:transform .7s cubic-bezier(.2,.8,.2,1)}
-.pa-eye[aria-pressed="true"] .pa-orbits {transform:scale(1.22)}
-.pa-ring,.pa-core {position:absolute;left:50%;top:50%;border-radius:50%;pointer-events:none}
-.pa-ring {border:1px solid currentColor;transform:translate(-50%,-50%);animation:pa-breathe 7.5s ease-in-out infinite}
-.pa-ring--one {width:49px;height:49px;opacity:.65}
-.pa-ring--two {width:83px;height:83px;opacity:.33;animation-delay:-.7s}
-.pa-ring--three {width:120px;height:120px;opacity:.18;animation-delay:-1.4s}
-.pa-core {width:15px;height:15px;background:currentColor;transform:translate(-50%,-50%);animation:pa-core 7.5s ease-in-out infinite}
-.pa-dialog.is-pending .pa-ring,.pa-dialog.is-pending .pa-core {animation-duration:3.8s}
-.pa-status {margin:1px 0 0;color:var(--soft,#aaa);font-size:13px;line-height:1.5;text-align:center}
-.pa-panel {display:flex;flex-direction:column;min-height:260px;max-height:calc(var(--pa-viewport,100dvh) - 250px);border:1px solid var(--line,#333);border-radius:5px;background:var(--paper,#111110);overflow:hidden}
-.pa-log {display:flex;flex:1;flex-direction:column;gap:17px;min-height:100px;overflow:auto;overscroll-behavior:contain;padding:22px 24px;scrollbar-width:thin}
-.pa-empty {margin:auto 0;padding:18px 0;color:var(--mid,#b7b6b0);font-size:20px;font-weight:400;line-height:1.5;text-align:center}
-.pa-message {flex:none;max-width:94%;font-size:16px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere}
-.pa-message--user {align-self:flex-end;max-width:88%;padding:9px 14px;border:1px solid var(--line,#333);border-radius:10px 10px 1px 10px;background:var(--bg2,#181817)}
-.pa-message--assistant {align-self:flex-start;padding:0 1px}
-.pa-chips {display:flex;flex:none;flex-wrap:wrap;justify-content:center;gap:7px;padding:0 18px 17px}
-.pa-chip {padding:7px 10px;border:1px solid var(--line,#333);border-radius:20px;background:none;color:var(--mid,#b7b6b0);font-size:13px;line-height:1.3;cursor:pointer}
-.pa-notice {margin:0;padding:0 22px 13px;color:var(--soft,#aaa);font-size:13px;line-height:1.55}
-.pa-form {display:flex;flex:none;align-items:flex-end;gap:12px;border-top:1px solid var(--line,#333);padding:13px 15px 12px 20px}
-.pa-input {display:block;flex:1;min-width:0;min-height:48px;max-height:120px;resize:none;margin:0;padding:5px 0;border:0;outline:none;background:none;color:var(--ink,#efeee9);font:inherit;font-size:16px;line-height:1.5}
-.pa-input::placeholder {color:var(--faint,#777)}
-.pa-send {flex:none;min-width:58px;min-height:42px;padding:8px 10px;border:1px solid var(--line2,#484841);border-radius:3px;background:none;color:var(--ink,#efeee9);font-size:15px;cursor:pointer}
-.pa-send:disabled {opacity:.35;cursor:default}
-.pa-foot {display:flex;align-items:center;justify-content:space-between;gap:15px;padding:10px 2px 0;color:var(--faint,#777);font-size:12px;line-height:1.4}
-.pa-clear {min-height:28px;padding:0;border:0;background:none;color:var(--soft,#aaa);font-size:12px;cursor:pointer}
-.pa-dialog [hidden] {display:none!important}
-.pa-dialog button:hover:not(:disabled) {color:var(--ink,#efeee9)}
-.pa-dialog .pa-eye:hover {color:var(--pa-red)}
-.pa-dialog button:focus-visible,.pa-input:focus-visible {outline:1px solid var(--pa-red);outline-offset:4px}
-@keyframes pa-arrive {from{opacity:0;transform:scale(.08)}to{opacity:1;transform:scale(1)}}
-@keyframes pa-breathe {0%,100%{transform:translate(-50%,-50%) scale(.92)}50%{transform:translate(-50%,-50%) scale(1.065)}}
-@keyframes pa-core {0%,100%{transform:translate(-50%,-50%) scale(.9)}50%{transform:translate(-50%,-50%) scale(1.08)}}
-@media(max-width:600px) {
-  .pa-dialog {width:calc(100vw - 28px);max-height:calc(var(--pa-viewport,100dvh) - 24px)}
-  .pa-window {max-height:calc(var(--pa-viewport,100dvh) - 24px)}
-  .pa-head {min-height:36px}.pa-title {font-size:15px}
-  .pa-beacon {padding:0 0 15px}.pa-eye {height:106px;width:126px}
-  .pa-orbits {transform:scale(.8)}.pa-eye[aria-pressed="true"] .pa-orbits {transform:scale(1)}
-  .pa-panel {min-height:220px;max-height:calc(var(--pa-viewport,100dvh) - 205px)}
-  .pa-log {padding:18px 17px;gap:15px}.pa-empty {font-size:19px}
-  .pa-message {font-size:16px}.pa-chips {padding:0 12px 14px;gap:6px}.pa-chip {font-size:12px}
-  .pa-form {gap:9px;padding:10px 11px 10px 15px}.pa-notice {padding:0 16px 12px}
-}
-/* A phone keyboard can shrink visualViewport without changing CSS media height. */
-.pa-dialog[data-compact="true"] .pa-eye {height:72px}
-.pa-dialog[data-compact="true"] .pa-orbits {transform:scale(.5)}
-.pa-dialog[data-compact="true"] .pa-eye[aria-pressed="true"] .pa-orbits {transform:scale(.55)}
-.pa-dialog[data-compact="true"] .pa-beacon {padding-bottom:8px}
-.pa-dialog[data-compact="true"] .pa-panel {min-height:0;max-height:calc(var(--pa-viewport,100dvh) - 170px)}
-.pa-dialog[data-compact="true"] .pa-log {min-height:0;padding-top:10px;padding-bottom:10px}
-.pa-dialog[data-compact="true"] .pa-empty {padding:4px 0;font-size:17px}
-.pa-dialog[data-compact="true"] .pa-chips {display:none}
-.pa-dialog[data-compact="true"] .pa-foot {padding-top:5px}
-@media(prefers-reduced-motion:reduce) {
-  .pa-dialog[open] .pa-beacon,.pa-ring,.pa-core {animation:none}
-  .pa-orbits {transition:none}
-}
+.pa-popover.is-visible {opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);transition-delay:0s}
+.pa-window {display:flex;flex-direction:column;max-height:var(--pa-available-height,300px);overflow:hidden}
+.pa-head {display:flex;flex:none;align-items:center;justify-content:space-between;gap:8px;padding:6px 6px 0 16px}
+.pa-title {margin:0;font-size:15px;font-weight:300;line-height:1.5;letter-spacing:.01em}
+.pa-close {display:grid;place-items:center;flex:none;width:36px;height:36px;margin:0;padding:0;border:0;background:none;color:var(--soft,#aaa);font-size:23px;line-height:1;cursor:pointer}
+.pa-status {flex:none;margin:0;padding:0 16px 12px;color:var(--soft,#aaa);font-size:12px;font-weight:300;line-height:1.4}
+.pa-panel {display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+.pa-log {display:flex;flex:1;flex-direction:column;gap:11px;min-height:0;overflow:auto;overscroll-behavior:contain;padding:0 16px 12px;scrollbar-width:thin}
+.pa-message {flex:none;max-width:96%;font-size:14px;font-weight:300;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+.pa-message--user {align-self:flex-end;max-width:92%;padding:6px 10px;border:1px solid var(--line,#333);border-radius:7px 7px 1px 7px;background:var(--bg2,#181817)}
+.pa-message--assistant {align-self:flex-start}
+.pa-chips {display:flex;flex:none;flex-wrap:wrap;gap:6px;padding:0 16px 15px}
+.pa-chip {min-height:30px;padding:5px 8px;border:1px solid var(--line,#333);border-radius:4px;background:none;color:var(--mid,#b7b6b0);font-size:12px;font-weight:300;line-height:1.4;cursor:pointer}
+.pa-notice {flex:none;margin:0;padding:0 16px 11px;color:var(--soft,#aaa);font-size:12px;font-weight:300;line-height:1.5}
+.pa-form {display:flex;flex:none;align-items:center;gap:8px;border-top:1px solid var(--line,#333);padding:7px 8px 7px 16px}
+.pa-input {display:block;flex:1;min-width:0;min-height:32px;max-height:90px;resize:none;margin:0;padding:5px 0;border:0;outline:none;background:none;color:var(--ink,#efeee9);font:inherit;font-size:16px;font-weight:300;line-height:1.5}
+.pa-input::placeholder {color:var(--soft,#aaa)}
+.pa-send {flex:none;min-width:46px;min-height:40px;padding:6px;border:0;border-radius:3px;background:none;color:var(--ink,#efeee9);font-size:13px;font-weight:300;cursor:pointer}
+.pa-send:disabled {opacity:.3;cursor:default}
+.pa-foot {display:flex;flex:none;justify-content:flex-end}
+.pa-clear {min-height:28px;margin:0 12px 3px;padding:0 4px;border:0;background:none;color:var(--soft,#aaa);font-size:11px;font-weight:300;cursor:pointer}
+.pa-popover [hidden] {display:none!important}
+.pa-popover button:hover:not(:disabled) {color:var(--ink,#efeee9);background:var(--bg2,#181817)}
+.pa-popover button:focus-visible,.pa-input:focus-visible {outline:1px solid var(--pa-red);outline-offset:2px}
+.pa-popover[data-compact="true"] .pa-head {padding-top:2px}
+.pa-popover[data-compact="true"] .pa-close {height:28px}
+.pa-popover[data-compact="true"] .pa-status {padding-bottom:4px}
+.pa-popover[data-compact="true"] .pa-chips {display:none}
+.pa-popover[data-compact="true"] .pa-form {padding-top:5px;padding-bottom:5px}
+.pa-popover[data-compact="true"] .pa-send {min-height:36px}
+.pa-popover[data-compact="true"] .pa-notice {font-size:11px;padding-bottom:5px;line-height:1.35}
+.pa-popover[data-compact="true"] .pa-log {padding-bottom:6px}
+.pa-popover[data-compact="true"] .pa-foot {display:none}
+@media(prefers-reduced-motion:reduce) {.pa-popover {transition:none;transform:none}}
 @media(forced-colors:active) {
-  .pa-ring {border-color:ButtonText}.pa-core {background:ButtonText}
-  .pa-panel,.pa-chip,.pa-send,.pa-message--user {border-color:ButtonText}
-  .pa-dialog::backdrop {background:Canvas}
+  .pa-popover {background:Canvas;color:CanvasText;border-color:CanvasText;box-shadow:none}
+  .pa-chip,.pa-message--user,.pa-form {border-color:CanvasText}
 }
