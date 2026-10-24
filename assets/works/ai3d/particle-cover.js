@@ -7,18 +7,20 @@
   const status = root.querySelector('[data-cover-status]');
   const controls = root.querySelector('.cover-ui');
   const motionButton = root.querySelector('[data-cover-motion]');
-  const assetURL = new URL('liangzhu-particles.ply', document.currentScript.src);
+  const assetURL = new URL('liangzhu-village.ply', document.currentScript.src);
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const words = {
     zh: { close: '近景', orbit: '环绕', overhead: '俯瞰', hint: '拖动旋转', settings: '粒子设置', density: '疏密', flow: '漂动', spread: '散开', zoom: '观察距离', closer: '靠近', farther: '远离', pause: '暂停', play: '播放', loading: '正在展开这片良渚', failed: '粒子暂时无法载入，请刷新页面重试。', unavailable: '当前浏览器未能启用三维渲染，请开启硬件加速后重试。', lost: '三维渲染已暂停，正在等待恢复。', canvas: '可交互的良渚粒子封面。拖动旋转，方向键调整视角，加减键缩放，空格暂停。', group: '调整粒子封面', views: '切换观察视角' },
     en: { close: 'Close-up', orbit: 'Orbit', overhead: 'Above', hint: 'Drag to rotate', settings: 'Particles', density: 'Density', flow: 'Drift', spread: 'Scatter', zoom: 'Distance', closer: 'Move closer', farther: 'Move away', pause: 'Pause', play: 'Play', loading: 'Unfolding Liangzhu', failed: 'The particles could not load. Refresh this page to try again.', unavailable: '3D rendering is unavailable. Enable hardware acceleration to view this cover.', lost: '3D rendering is paused, waiting for recovery.', canvas: 'Interactive Liangzhu particle cover. Drag to rotate, arrow keys to change view, plus and minus to zoom, space to pause.', group: 'Adjust particle cover', views: 'Choose a viewpoint' }
   };
-  const state = { density: .7, flow: .55, spread: .24, playing: !reducedMotion.matches, view: 'orbit', yaw: -.3, pitch: .32, distance: 3.2, time: 0, burst: 0 };
+  // Frame the actual homestead, rather than orbiting the entire panoramic world.
+  const subject = [0, -.3, 1.85];
+  const state = { density: .95, flow: .2, spread: .04, playing: !reducedMotion.matches, view: 'close', yaw: -.035, pitch: .18, distance: 1.75, time: 0, burst: 0 };
   const camera = { yaw: state.yaw, pitch: state.pitch, distance: state.distance };
   const presets = {
-    close: { yaw: 0, pitch: .22, distance: 2.9 },
-    orbit: { yaw: -.3, pitch: .32, distance: 3.2 },
-    overhead: { yaw: -.15, pitch: 1.12, distance: 4.8 }
+    close: { yaw: -.035, pitch: .18, distance: 1.75 },
+    orbit: { yaw: .1, pitch: .26, distance: 1.95 },
+    overhead: { yaw: -.08, pitch: .68, distance: 2.25 }
   };
   const tr = key => words[window.PortfolioI18n?.language === 'en' ? 'en' : 'zh'][key];
   let statusKey = 'loading';
@@ -50,25 +52,26 @@
     void main() {
       vec3 p = aPosition;
       float phase = aSeed * 431.71;
-      float distanceScale = .12 + min(length(p.xz), 15.) * .022;
-      float drift = (.025 + uSpread * 1.7 + uBurst * 2.4) * distanceScale;
+      float distanceScale = .08 + min(length(p.xz), 15.) * .018;
+      float drift = (.008 + uSpread * .5 + uBurst * .65) * distanceScale;
       float t = uTime * uFlow * .9;
       p += vec3(sin(phase + t), cos(phase * 1.7 + t * .8), sin(phase * .73 + t * .9)) * drift;
-      p.y += sin(p.x * .8 + p.z * .6 + t) * uFlow * .025;
+      p.y += sin(p.x * .8 + p.z * .6 + t) * uFlow * .008;
       vec4 view = uView * vec4(p, 1.);
       gl_Position = uProjection * view;
-      gl_PointSize = clamp(1.2 * uDpr * (.85 + aSeed * .45) * clamp(6. / max(-view.z, .1), .65, 2.1), 1., 7. * uDpr);
+      gl_PointSize = clamp(1.8 * uDpr * (.85 + aSeed * .3) * clamp(2.5 / max(-view.z, .1), .55, 1.65), 1., 5. * uDpr);
       float heightFade = 1. - smoothstep(2.8, 11., aPosition.y);
       float farFade = 1. - smoothstep(20., 45., length(aPosition.xz));
-      float pulse = .88 + .12 * sin(phase + t * .7);
-      vColor = vec4(pow(aColor.rgb, vec3(.8)) * 1.15, (.35 + .65 * aColor.a) * heightFade * farFade * pulse);
+      float pulse = .97 + .03 * sin(phase + t * .7);
+      vColor = vec4(aColor.rgb * 1.04, (.88 + .12 * aColor.a) * heightFade * farFade * pulse);
     }`;
   const fragmentSource = `
     precision mediump float; varying vec4 vColor;
     void main() {
       float r = length(gl_PointCoord - .5);
-      if (r > .5) discard;
-      gl_FragColor = vec4(vColor.rgb, vColor.a * (1. - smoothstep(.25, .5, r)));
+      float alpha = vColor.a * (1. - smoothstep(.35, .5, r));
+      if (r > .5 || alpha < .25) discard;
+      gl_FragColor = vec4(vColor.rgb, alpha);
     }`;
 
   function parsePLY(buffer) {
@@ -116,7 +119,8 @@
     attribute('aSeed', points.seeds, 1, gl.FLOAT, false);
     uniforms = Object.fromEntries(['uView', 'uProjection', 'uTime', 'uFlow', 'uSpread', 'uDpr', 'uBurst'].map(name => [name, gl.getUniformLocation(program, name)]));
     gl.clearColor(6 / 255, 8 / 255, 8 / 255, 1);
-    gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA); gl.disable(gl.DEPTH_TEST);
+    gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    gl.enable(gl.DEPTH_TEST); gl.depthFunc(gl.LEQUAL);
     resize();
   }
   function lookAt(eye, target) {
@@ -128,7 +132,7 @@
     return new Float32Array([x[0], y[0], z[0], 0, x[1], y[1], z[1], 0, x[2], y[2], z[2], 0, -dot(x), -dot(y), -dot(z), 1]);
   }
   function projection() {
-    const f = 1 / Math.tan(54 * Math.PI / 360), near = .08, far = 100;
+    const f = 1 / Math.tan((width < 640 ? 52 : 44) * Math.PI / 360), near = .06, far = 100;
     return new Float32Array([f / (width / height), 0, 0, 0, 0, f, 0, 0, 0, 0, (far + near) / (near - far), -1, 0, 0, 2 * far * near / (near - far), 0]);
   }
   function resize() {
@@ -151,7 +155,6 @@
     if (state.playing) {
       state.time += dt;
       state.burst = Math.max(0, state.burst - dt * .65);
-      if (state.view === 'orbit' && !dragging) state.yaw += dt * .045;
     }
     const ease = reducedMotion.matches ? 1 : Math.min(1, 1 - Math.exp(-Math.max(dt, 1 / 60) * 9));
     let settling = false;
@@ -159,14 +162,14 @@
       camera[key] += (state[key] - camera[key]) * ease;
       if (Math.abs(state[key] - camera[key]) > .001) settling = true;
     }
-    const breath = state.playing && state.view === 'close' ? Math.sin(state.time * .08) * .075 : 0;
-    const yaw = camera.yaw + breath + hoverX * .018, pitch = camera.pitch, r = camera.distance;
-    const eye = [Math.sin(yaw) * Math.cos(pitch) * r, Math.sin(pitch) * r + .15, -Math.cos(yaw) * Math.cos(pitch) * r];
-    gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.uniformMatrix4fv(uniforms.uView, false, lookAt(eye, [0, .05, .8]));
+    const breath = state.playing && !dragging ? Math.sin(state.time * .16) * (state.view === 'orbit' ? .12 : state.view === 'close' ? .018 : 0) : 0;
+    const yaw = camera.yaw + breath + hoverX * .012, pitch = camera.pitch, r = camera.distance;
+    const eye = [subject[0] + Math.sin(yaw) * Math.cos(pitch) * r, subject[1] + Math.sin(pitch) * r, subject[2] - Math.cos(yaw) * Math.cos(pitch) * r];
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.uniformMatrix4fv(uniforms.uView, false, lookAt(eye, subject));
     gl.uniformMatrix4fv(uniforms.uProjection, false, projection());
     for (const [name, value] of Object.entries({ uTime: state.time, uFlow: state.flow, uSpread: state.spread, uDpr: dpr, uBurst: state.burst })) gl.uniform1f(uniforms[name], value);
-    const count = Math.floor(Math.min(points.count, width < 640 ? 100000 : points.count) * state.density);
+    const count = Math.floor(Math.min(points.count, width < 640 ? 320000 : points.count) * state.density);
     gl.drawArrays(gl.POINTS, 0, count);
     canvas.dataset.frames = String(++frame); canvas.dataset.points = String(count);
     canvas.dataset.view = state.view;
@@ -189,7 +192,7 @@
   }));
   motionButton.addEventListener('click', toggleMotion);
   root.querySelectorAll('[data-cover-zoom]').forEach(button => button.addEventListener('click', () => {
-    state.distance = Math.min(12, Math.max(1.4, state.distance * Number(button.dataset.coverZoom)));
+    state.distance = Math.min(4, Math.max(1.15, state.distance * Number(button.dataset.coverZoom)));
     requestRender();
   }));
   canvas.addEventListener('pointerdown', event => {
@@ -200,8 +203,8 @@
   });
   canvas.addEventListener('pointermove', event => {
     if (dragging) {
-      state.yaw -= (event.clientX - previousX) * .004;
-      if (event.pointerType !== 'touch') state.pitch = Math.max(-.35, Math.min(1.3, state.pitch + (event.clientY - previousY) * .003));
+      state.yaw = Math.max(-.7, Math.min(.7, state.yaw - (event.clientX - previousX) * .0025));
+      if (event.pointerType !== 'touch') state.pitch = Math.max(-.05, Math.min(.85, state.pitch + (event.clientY - previousY) * .002));
       previousX = event.clientX; previousY = event.clientY;
       state.view = 'free'; syncViewButtons();
     } else if (event.pointerType === 'mouse') {
@@ -214,10 +217,10 @@
   canvas.addEventListener('dblclick', () => { state.burst = state.playing ? 1 : 0; requestRender(); });
   canvas.addEventListener('keydown', event => {
     const keys = {
-      ArrowLeft: () => { state.yaw -= .1; }, ArrowRight: () => { state.yaw += .1; },
-      ArrowUp: () => { state.pitch = Math.min(1.3, state.pitch + .07); }, ArrowDown: () => { state.pitch = Math.max(-.35, state.pitch - .07); },
-      '+': () => { state.distance = Math.max(1.4, state.distance - .3); }, '=': () => { state.distance = Math.max(1.4, state.distance - .3); },
-      '-': () => { state.distance = Math.min(12, state.distance + .3); }, ' ': toggleMotion
+      ArrowLeft: () => { state.yaw = Math.max(-.7, state.yaw - .06); }, ArrowRight: () => { state.yaw = Math.min(.7, state.yaw + .06); },
+      ArrowUp: () => { state.pitch = Math.min(.85, state.pitch + .05); }, ArrowDown: () => { state.pitch = Math.max(-.05, state.pitch - .05); },
+      '+': () => { state.distance = Math.max(1.15, state.distance - .15); }, '=': () => { state.distance = Math.max(1.15, state.distance - .15); },
+      '-': () => { state.distance = Math.min(4, state.distance + .15); }, ' ': toggleMotion
     };
     if (!keys[event.key]) return;
     event.preventDefault(); keys[event.key]();
