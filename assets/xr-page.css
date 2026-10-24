@@ -2,7 +2,7 @@
 .gogo-case{--gogo-accent:#c2944a;--gogo-grid:rgba(194,148,74,.10);margin:0;padding:88px 0 0;background:var(--paper);color:var(--ink);font-size:17px;line-height:1.85;-webkit-font-smoothing:antialiased}
 html[data-theme="light"] .gogo-case{--gogo-accent:#866020;--gogo-grid:rgba(134,96,32,.10)}
 .gogo-case *{box-sizing:border-box}
-.gogo-case::before{content:"";position:fixed;inset:0 0 auto;height:76px;background:var(--paper);z-index:35;pointer-events:none}
+.gogo-case .theme-controls,.gogo-case a.standalone-back{position:absolute}
 .gogo-case :is(h1,h2,h3,h4,p,figure,ol,ul){margin:0}
 .gogo-case :is(ul,ol){padding:0}
 .gogo-case a{color:inherit}
@@ -11,28 +11,24 @@ html[data-theme="light"] .gogo-case{--gogo-accent:#866020;--gogo-grid:rgba(134,9
 .gogo-case :is(button,a,summary):focus-visible{outline:2px solid var(--gogo-accent);outline-offset:6px}
 .gogo-case ::selection{background:var(--gogo-accent);color:var(--paper)}
 .gogo-wrap{width:min(1280px,calc(100% - 112px));margin-inline:auto}
-.gogo-hero-meta{display:flex;justify-content:space-between;gap:20px;color:var(--soft);font-size:13px;letter-spacing:.06em}
 .gogo-title-row{display:grid;grid-template-columns:1fr 1fr;align-items:end;gap:40px;padding:34px 0 30px}
 .gogo-title-row h1{font-size:clamp(70px,9.5vw,148px);line-height:1;letter-spacing:-.045em;white-space:nowrap}
 .gogo-title-dot{display:inline-block;width:9px;height:9px;background:var(--gogo-accent);border-radius:50%;vertical-align:baseline;margin-left:18px}
 .gogo-project-name{font-size:clamp(22px,2.3vw,32px);line-height:1.45;max-width:25ch}
-.gogo-byline{font-size:13px;color:var(--soft);padding-top:13px}
 .gogo-cover{position:relative;margin-inline:-56px!important}
 .gogo-cover img{width:100%;height:auto;max-height:64vh;object-fit:contain}
 .gogo-opening{position:relative;display:flex;justify-content:space-between;gap:36px;align-items:end;margin-top:-5px;padding:27px 0 40px}
 .gogo-opening p{font-size:clamp(21px,2.3vw,30px);line-height:1.65;max-width:24ch}
 .gogo-opening>span{font-size:14px;color:var(--soft);text-align:right}
-.gogo-chapter-nav{position:sticky;top:76px;z-index:30;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper);box-shadow:0 -16px 0 var(--paper);isolation:isolate}
+.gogo-chapter-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .gogo-chapter-nav a{display:flex;align-items:center;gap:20px;min-height:66px;text-decoration:none;font-size:18px;line-height:1.35;color:var(--soft);transition:color .15s}
 .gogo-chapter-nav a>span:first-child{font-size:14px;color:var(--gogo-accent);min-width:22px}
 .gogo-chapter-nav a[aria-current]{color:var(--ink)}
 .gogo-chapter-nav a[aria-current]::after{content:"";width:5px;height:5px;background:var(--gogo-accent);border-radius:50%}
 .gogo-chapter-nav a:hover{color:var(--ink)}
-.gogo-chapter{padding:100px 0 110px;scroll-margin-top:156px}
+.gogo-chapter{padding:100px 0 110px;scroll-margin-top:40px}
 .gogo-chapter+.gogo-chapter{border-top:1px solid var(--line)}
-.gogo-chapter-head{display:grid;grid-template-columns:100px minmax(250px,1fr) 1fr;gap:24px;align-items:center;margin-bottom:58px}
-.gogo-number{font-size:68px;line-height:1;color:var(--gogo-accent);letter-spacing:-.07em;align-self:start}
-.gogo-kicker{font-size:13px;letter-spacing:.1em;color:var(--soft);margin-bottom:11px!important}
+.gogo-chapter-head{display:grid;grid-template-columns:minmax(250px,1fr) 1fr;gap:24px;align-items:center;margin-bottom:58px}
 .gogo-chapter-head h2{font-size:clamp(32px,3.5vw,46px);line-height:1.2}
 .gogo-chapter-lead{font-size:24px;line-height:1.6;max-width:20ch;justify-self:end}
 .gogo-intro-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:70px;color:var(--soft)}
@@ -64,7 +60,6 @@ html[data-theme="light"] .gogo-case{--gogo-accent:#866020;--gogo-grid:rgba(134,9
 .gogo-note{font-size:15px;color:var(--soft);max-width:74ch;margin-top:28px!important}
 .gogo-implementation-head{display:flex;align-items:start;justify-content:space-between;gap:40px;margin-bottom:30px}
 .gogo-implementation-head p{max-width:58ch;color:var(--soft)}
-.gogo-tech-label{white-space:nowrap;font-size:13px;padding-top:6px;color:var(--gogo-accent)}
 .gogo-prototype-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px 24px}
 .gogo-prototype-grid .gogo-figure:last-child{grid-column:1/-1;width:calc(66.666% - 8px);margin-inline:auto}
 .gogo-prototype-grid .gogo-zoom{border-radius:10px;overflow:hidden;background:var(--panel)}
@@ -95,8 +90,7 @@ html[data-theme="light"] .gogo-case{--gogo-accent:#866020;--gogo-grid:rgba(134,9
 .gogo-system{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px}
 .gogo-system article{position:relative;padding-top:20px;border-top:1px solid var(--line2)}
 .gogo-system article:not(:last-child)::after{content:"→";position:absolute;top:6px;right:0;color:var(--gogo-accent)}
-.gogo-module-letter{font-size:48px;line-height:1;color:var(--gogo-accent)}
-.gogo-system h4{font-size:21px;line-height:1.45;margin:22px 0 14px!important}
+.gogo-system h4{font-size:21px;line-height:1.45;margin:0 0 14px!important}
 .gogo-system p{font-size:15px;color:var(--soft)}
 .gogo-first-subsection{margin-top:0}
 .gogo-modes{border-top:1px solid var(--line)}
@@ -115,11 +109,9 @@ html[data-theme="light"] .gogo-case{--gogo-accent:#866020;--gogo-grid:rgba(134,9
 .gogo-story-line{display:grid;gap:12px;justify-items:center;text-align:center;margin-top:40px;padding:30px 16px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background-image:radial-gradient(var(--gogo-grid) .75px,transparent .75px);background-size:12px 12px}
 .gogo-story-line>span{font-size:14px;color:var(--soft)}
 .gogo-story-line p{font-size:23px;line-height:1.5}
-.gogo-story-line .gogo-formats{font-size:12px;letter-spacing:.14em;color:var(--gogo-accent);padding-top:5px}
 .gogo-controller-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}
 .gogo-controller{position:relative}
 .gogo-controller .gogo-zoom{background:#252620}
-.gogo-controller-number{position:absolute;top:8px;left:12px;font-size:23px;line-height:1.5;color:#e1bc70}
 .gogo-controller figcaption{padding-left:0;max-width:29ch}
 .gogo-journey{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:25px;list-style:none;margin-top:40px!important}
 .gogo-journey li{position:relative;padding-top:20px;border-top:1px solid var(--gogo-accent)}
@@ -127,9 +119,7 @@ html[data-theme="light"] .gogo-case{--gogo-accent:#866020;--gogo-grid:rgba(134,9
 .gogo-journey li>span{font-size:13px;color:var(--gogo-accent)}
 .gogo-journey h4{font-size:23px;line-height:1.4;margin:12px 0!important}
 .gogo-journey p{font-size:15px;color:var(--soft)}
-.gogo-footer{border-top:1px solid var(--line);padding:60px 0 70px;display:flex;align-items:center;justify-content:space-between;gap:50px}
-.gogo-footer-title{font-size:28px;line-height:1.5;margin-bottom:15px!important}
-.gogo-footer p+p{font-size:13px;color:var(--soft)}
+.gogo-footer{border-top:1px solid var(--line);padding:60px 0 70px;display:flex;align-items:center;justify-content:flex-end;gap:50px}
 .gogo-download{display:inline-flex;align-items:center;gap:24px;flex:none;font-size:15px;text-decoration:none;border-bottom:1px solid var(--line2);padding:14px 0}
 .gogo-download:hover{border-color:var(--gogo-accent)}
 .gogo-download svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.2}
@@ -148,8 +138,7 @@ html[lang="en"] .gogo-chapter-lead{max-width:25ch}
 @media(max-width:1000px){
  .gogo-wrap{width:calc(100% - 64px)}
  .gogo-cover{margin-inline:-32px!important}
- .gogo-chapter-head{grid-template-columns:70px 1fr 1fr;gap:18px}
- .gogo-number{font-size:52px}
+ .gogo-chapter-head{grid-template-columns:1fr 1fr;gap:18px}
  .gogo-chapter-lead{font-size:21px}
  .gogo-intro-grid,.gogo-research-grid,.gogo-place-grid{gap:36px}
  .gogo-research-grid{grid-template-columns:1fr 1.2fr}
@@ -164,30 +153,22 @@ html[lang="en"] .gogo-chapter-lead{max-width:25ch}
 }
 @media(max-width:700px){
  .gogo-case{padding-top:80px;font-size:16px;line-height:1.85}
- .gogo-case::before{height:64px}
  .gogo-wrap{width:calc(100% - 40px)}
- .gogo-hero-meta{font-size:11px;gap:15px;line-height:1.5}
- .gogo-hero-meta span:first-child{max-width:13ch}
- .gogo-hero-meta span:last-child{max-width:22ch;text-align:right}
  .gogo-title-row{grid-template-columns:1fr;gap:26px;padding:26px 0 24px}
  .gogo-title-row h1{font-size:80px}
  .gogo-project-name{font-size:22px;max-width:19ch}
- .gogo-byline{font-size:12px;padding-top:10px}
  .gogo-cover{margin-inline:-20px!important}
  .gogo-cover img{max-height:none}
  .gogo-opening{display:block;padding:23px 0 32px}
  .gogo-opening p{font-size:23px;max-width:20ch}
  .gogo-opening>span{display:block;font-size:12px;text-align:left;margin-top:18px}
- .gogo-chapter-nav{top:64px;box-shadow:0 -12px 0 var(--paper)}
  .gogo-chapter-nav a{gap:7px;min-height:60px;font-size:15px}
  .gogo-chapter-nav a>span:first-child{font-size:12px;min-width:18px}
  .gogo-chapter-nav a[aria-current]::after{display:none}
- .gogo-chapter{padding:64px 0 70px;scroll-margin-top:142px}
- .gogo-chapter-head{grid-template-columns:52px 1fr;gap:20px;margin-bottom:32px}
- .gogo-number{font-size:43px;align-self:center}
- .gogo-kicker{font-size:11px;margin-bottom:8px!important}
+ .gogo-chapter{padding:64px 0 70px;scroll-margin-top:24px}
+ .gogo-chapter-head{grid-template-columns:1fr;gap:20px;margin-bottom:32px}
  .gogo-chapter-head h2{font-size:32px}
- .gogo-chapter-lead{grid-column:1/-1;justify-self:start;max-width:24ch;font-size:23px;padding-top:8px}
+ .gogo-chapter-lead{justify-self:start;max-width:24ch;font-size:23px;padding-top:8px}
  .gogo-intro-grid{grid-template-columns:1fr;gap:20px}
  .gogo-cue-strip{margin-top:28px!important}
  .gogo-cue-strip figcaption{text-align:left}
@@ -203,7 +184,6 @@ html[lang="en"] .gogo-chapter-lead{max-width:25ch}
  .gogo-logic-track ol{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
  .gogo-note{font-size:14px;margin-top:22px!important}
  .gogo-implementation-head{display:block;margin-bottom:24px}
- .gogo-tech-label{display:block;margin-top:14px}
  .gogo-prototype-grid{grid-template-columns:1fr;gap:26px}
  .gogo-prototype-grid .gogo-figure:last-child{width:100%;grid-column:auto}
  .gogo-code-grid{grid-template-columns:1fr;gap:26px;margin-top:30px;max-width:358px}
@@ -217,7 +197,6 @@ html[lang="en"] .gogo-chapter-lead{max-width:25ch}
  .gogo-behaviors li{font-size:14px;min-height:92px;padding-block:15px;gap:8px}
  .gogo-behaviors svg{width:31px;height:31px}
  .gogo-system{gap:30px 23px}
- .gogo-module-letter{font-size:38px}
  .gogo-system h4{font-size:19px;margin:16px 0 10px!important}
  .gogo-system p{font-size:14px}
  .gogo-first-subsection{margin-top:0}
@@ -236,7 +215,6 @@ html[lang="en"] .gogo-chapter-lead{max-width:25ch}
  .gogo-journey li:last-child{padding-bottom:0;border-left-color:transparent}
  .gogo-journey h4{font-size:22px;margin:7px 0 10px!important}
  .gogo-footer{display:block;padding:40px 0 50px}
- .gogo-footer-title{font-size:25px;max-width:17ch}
  .gogo-download{margin-top:25px;font-size:14px}
  .gogo-lightbox{width:calc(100vw - 24px);padding:15px;max-height:92vh}
  .gogo-lightbox-bar{gap:14px;font-size:13px}

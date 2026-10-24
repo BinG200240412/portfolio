@@ -123,9 +123,8 @@
     ink = mainInk; pitch = mainPitch;
     ink.setTransform(1, 0, 0, 1, 0, 0); ink.clearRect(0, 0, mask.width, mask.height);
     const unit = Math.min(height * .00215, width / (compact ? 190 : 240), 3.6);
-    // The front of a much larger dog approaches the right of the left-third
-    // field. Its rear naturally extends beyond the left edge of the page.
-    const leadX = width * .94 - 276 * unit + Math.sin(time * .13) * unit * 5;
+    // Withdraw slightly into the right edge of the cropped left-third field.
+    const leadX = width * .98 - 276 * unit + Math.sin(time * .13) * unit * 5;
     const ground = height * .905;
     const gait = time * TAU / 2.15;
     dog(leadX, ground, unit, gait, time, false);
@@ -133,15 +132,14 @@
     if (!miniContext) return;
     ink = miniInk; pitch = miniPitch;
     ink.setTransform(1, 0, 0, 1, 0, 0); ink.clearRect(0, 0, miniMask.width, miniMask.height);
-    // A separate, shallow field places the smaller companions in the top bar,
-    // above the shared header backing and between its navigation controls.
+    // The companions cross the open top of the same scrolling composition.
     const smallScale = compact ? .10 : .18;
     const smallWidth = 470 * smallScale;
     const runway = miniWidth + smallWidth * 1.8;
     const start = runway * .18;
     for (let index = 0; index < 3; index++) {
       const x = ((start + index * runway / 3 + time * (compact ? 8 : 15)) % runway) - smallWidth * .7;
-      const floor = miniHeight - (compact ? 12 : 9);
+      const floor = miniHeight - (compact ? 17 : 15);
       dog(x, floor, smallScale, gait - index * .87, time + index * 2, true);
     }
     paintMask(miniContext, miniMask, miniInk, miniWidth, miniHeight, miniPitch, miniRatio);
