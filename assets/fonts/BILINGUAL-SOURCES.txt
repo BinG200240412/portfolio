@@ -21,7 +21,23 @@ Output SHA-256:
 PortfolioSlab-Regular.woff2 48af577c0b48d4bbeda5af85b6464b41f8db2ef4aaf30be3ed6129a66a5534b4
 PortfolioSlab-Italic.woff2 ccb7b0adbab89f92769ebbb2c1b9f35de4482824cedaaaf2d32f2c0b96f34d1e
 
-Active Chinese typeface (2026-10-24) — locally installed Lantinghei SC Extralight,
+Active Chinese typeface (2026-10-25) — Maple Mono CN Light, weight 300.
+Official upstream and release:
+https://github.com/subframe7536/maple-font
+https://github.com/subframe7536/maple-font/releases/tag/v7.9
+Source: MapleMono-NF-CN-Light.ttf, Version 7.900, OS/2 usWeightClass 300.
+Source SHA-256: 18d3a65bf0bde03ea42a4a3f910da1c870bb9f7d1c735f99227ec5c0809566ea
+FontTools/Brotli exported only the shared stylesheet's full CJK Unicode ranges
+to WOFF2. All 21,083 supported CJK mappings remain; ASCII, Latin and Private Use
+Nerd Font mappings are excluded. Outlines are unchanged. The derived family is
+renamed Portfolio Maple CN, PostScript PortfolioMapleCN-Light.
+The complete supported CJK coverage permits future Chinese copy without rebuilding.
+English letters and digits retain the unchanged Portfolio Slab faces.
+Output: PortfolioMapleCN-Light.woff2, 5,176,332 bytes.
+Output SHA-256: a3528f4537aa41ef8b9267d1d2d3042e9d073b23d3a3b81d67743ad026346f0c
+SIL OFL 1.1 and credits: OFL-MapleMono.txt, AUTHORS-MapleMono.txt.
+
+Previous Chinese choice (2026-10-24), no longer referenced — Lantinghei SC Extralight,
 PostScript name FZLTXHK--GBK1-0. The matching TC name is FZLTXHB--B51-0.
 These names were verified with macOS CoreText against its installed font assets.
 CSS uses local() only, with a CJK-only unicode range and a fixed thin outline.
