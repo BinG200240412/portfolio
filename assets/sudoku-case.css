@@ -1,13 +1,14 @@
 /* The case study shares the hero's canvas; chapters add no opaque panels. */
 .sudoku-story{position:relative;width:calc(var(--layout-width) * .6);
-  max-width:calc(100% - var(--layout-offset) - var(--layout-width) * .4);
-  margin-left:calc(var(--layout-offset) + var(--layout-width) * .4);padding-right:var(--scene-gutter);min-width:0}
+  max-width:calc(100% - var(--layout-offset) - var(--copy-start));
+  margin-left:calc(var(--layout-offset) + var(--copy-start));
+  padding:clamp(72px,10svh,120px) var(--scene-gutter) 0 0;min-width:0}
 .case-index{position:sticky;top:74px;z-index:10;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
   gap:14px;padding:18px 0;background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .case-index a{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;min-height:28px;font-size:13px;line-height:1.4;color:var(--mid)}
 .case-index a>span:first-child{color:var(--accent);font-size:12px}
 .case-index a:hover{color:var(--ink)}
-.case-chapter{padding:92px 0 104px;scroll-margin-top:155px;min-width:0}
+.case-chapter{padding:112px 0 128px;scroll-margin-top:155px;min-width:0}
 .case-chapter+.case-chapter{border-top:1px solid var(--line)}
 .case-chapter-head{margin-bottom:30px}
 .case-eyebrow{display:flex;gap:13px;font-size:13px;line-height:1.6;color:var(--mid);margin-bottom:22px}
@@ -83,6 +84,10 @@
 .case-closing p{font-size:clamp(28px,calc(var(--layout-width) * .034),44px)}
 .case-closing .sudoku-action{font-size:14px}
 .case-sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+/* Content stays readable without JavaScript; motion is armed by the observer. */
+.case-reveal{transition:opacity .85s ease,transform .95s cubic-bezier(.2,.7,.2,1);transition-delay:var(--reveal-delay,0ms)}
+.case-reveal.is-reveal-pending{opacity:0;transform:translateY(30px)}
+.case-reveal:focus-within{opacity:1;transform:none;transition:none}
 @media(min-width:721px) and (max-width:1100px){
   .case-index{gap:7px}.case-index a{font-size:12px}
   .case-intent-line{gap:10px}.case-intent-line h3{font-size:16px}.case-intent-line p{font-size:12px}
@@ -98,9 +103,9 @@
   .case-evolution{gap:18px}.case-evolution h3{font-size:20px}
 }
 @media(max-width:720px){
-  .sudoku-story{width:100%;max-width:100%;margin-left:0;padding:0 26px}
+  .sudoku-story{width:100%;max-width:100%;margin-left:0;padding:72px 26px 0}
   .case-index{top:66px;gap:7px;padding:14px 0}.case-index a{font-size:12px;gap:4px 8px}
-  .case-chapter{padding:62px 0 72px;scroll-margin-top:145px}
+  .case-chapter{padding:76px 0 88px;scroll-margin-top:145px}
   .case-chapter-head{margin-bottom:22px}.case-eyebrow{font-size:12px;margin-bottom:16px}
   .case-chapter h2{font-size:31px}.case-intent h2{font-size:41px;max-width:11ch}
   .case-lead{font-size:15px;line-height:1.95}
@@ -124,4 +129,7 @@
   .case-continuity{margin-top:44px}.case-continuity h3{font-size:24px}
   .case-closing{gap:18px;margin-top:44px}.case-closing .sudoku-action{font-size:13px}
 }
-@media(prefers-reduced-motion:reduce){.demo-cell{transition:none}}
+@media(prefers-reduced-motion:reduce){
+  .demo-cell,.case-reveal{transition:none}
+  .case-reveal.is-reveal-pending{opacity:1;transform:none}
+}

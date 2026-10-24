@@ -136,7 +136,48 @@
     render();
   }
 
+  function revealStory() {
+    const story = document.querySelector('.sudoku-story');
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    if (!story || motion.matches || !('IntersectionObserver' in window)) return;
+    const groups = [...story.querySelectorAll('.case-chapter > *')];
+    const pending = new Set(groups);
+    const reveal = node => {
+      node.classList.remove('is-reveal-pending');
+      pending.delete(node);
+      observer.unobserve(node);
+      if (!pending.size) observer.disconnect();
+    };
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if (entry.isIntersecting) reveal(entry.target); });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0 });
+    story.querySelectorAll('.case-chapter').forEach(chapter => {
+      [...chapter.children].forEach((node, index) => {
+        node.classList.add('case-reveal', 'is-reveal-pending');
+        node.style.setProperty('--reveal-delay', `${Math.min(index * 55, 165)}ms`);
+        observer.observe(node);
+      });
+    });
+    // Direct links and keyboard navigation must never land in invisible content.
+    const revealHash = () => {
+      let target;
+      try { target = document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch (_) { return; }
+      const chapter = target?.closest('.case-chapter');
+      if (chapter) [...chapter.children].forEach(reveal);
+    };
+    revealHash();
+    addEventListener('hashchange', revealHash);
+    story.addEventListener('focusin', event => {
+      const group = event.target.closest('.case-reveal');
+      if (group) reveal(group);
+    });
+    motion.addEventListener('change', event => {
+      if (event.matches) [...pending].forEach(reveal);
+    });
+  }
+
   function init() {
+    revealStory();
     document.querySelectorAll('[data-sudoku-demo]').forEach(board);
     document.querySelectorAll('[data-coach-demo]').forEach(coach);
     addEventListener('portfolio:language', () => refreshers.forEach(refresh => refresh()));
