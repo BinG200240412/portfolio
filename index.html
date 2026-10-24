@@ -19,6 +19,8 @@
 <script defer src="assets/matrix-field.js?v=staged-navigation-20261024"></script>
 <script defer src="assets/about-companion.js?v=portrait-and-companion-20261023"></script>
 <script defer src="assets/ambient-field.js?v=soft-particles-20261024"></script>
+<script defer src="assets/assistant-connection.js?v=assistant-preview-20261024"></script>
+<script defer src="assets/portfolio-assistant.js?v=assistant-preview-20261024"></script>
 <style>
   :root{
     --mono:"JetBrains Mono","Noto Sans SC",monospace;
@@ -44,9 +46,14 @@
   @keyframes pop{0%{opacity:0;transform:translateY(.06em) scale(.5)}100%{opacity:1;transform:none}}
 
   .dot{position:relative;flex:0 0 auto;width:.2em;height:.2em;margin-left:.36em;
+    padding:0;border:0;font:inherit;appearance:none;
     border-radius:50%;background:var(--red);
     transition:transform .2s cubic-bezier(.2,.8,.2,1.2),margin-left .5s cubic-bezier(.2,.8,.2,1)}
-  .dot::before{content:"";position:absolute;inset:-16px;border-radius:50%}
+  .dot::before{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;
+    transform:translate(-50%,-50%);border-radius:50%}
+  .dot:focus-visible{outline:1px solid var(--ink);outline-offset:12px}
+  .dot.assistant-active{animation:none;opacity:1}
+  .dot.assistant-active::after{opacity:0;animation:none}
   /* idle 睁眼：虹膜环绕红瞳画出 */
   .dot::after{content:"";position:absolute;left:50%;top:50%;width:34px;height:34px;
     border:1px solid var(--ink);border-radius:50%;
@@ -174,6 +181,7 @@
 <link rel="stylesheet" href="assets/matrix-field.css?v=interactive-objects-20261024">
 <link rel="stylesheet" href="assets/about.css?v=original-photo-right-20261024">
 <link rel="stylesheet" href="assets/ambient-field.css?v=soft-particles-20261024">
+<link rel="stylesheet" href="assets/portfolio-assistant.css?v=assistant-preview-20261024">
 </head>
 <body class="portfolio-shell">
   <canvas id="ambient-page" aria-hidden="true" data-i18n-ignore></canvas>
@@ -185,7 +193,7 @@
     <canvas id="matrix-field" aria-hidden="true"></canvas>
     <button id="gorilla-hit" type="button" class="matrix-gorilla-hit" aria-pressed="false" aria-label="让猩猩的屁股变成红色爱心" data-i18n-ignore hidden></button>
     <div class="caption" id="cap" aria-hidden="true"></div>
-    <div class="line"><span class="text" id="text" data-i18n-ignore></span><span class="dot" id="dot" role="button" tabindex="0" aria-label="进入导航" data-i18n-ignore></span></div>
+    <div class="line"><span class="text" id="text" data-i18n-ignore></span><button class="dot" id="dot" type="button" aria-label="打开 AI 对话" aria-haspopup="dialog" aria-controls="portfolio-assistant" aria-expanded="false" data-i18n-ignore></button></div>
     <nav class="menu" id="menu" data-i18n-ignore></nav>
     <div class="hint" id="hint" aria-hidden="true"></div>
   </div>
@@ -271,14 +279,20 @@ function morphTo(w){target=w;pump();}
 function settle(w){target=w;pump();return new Promise(res=>{(current===target&&!pumping)?res():settlers.push(res);});}
 
 /* ---- 状态机 ---- */
-let phase='typing', navigationEpoch=0;
-function setClickable(on){
-  dotEl.classList.toggle('clickable',on);dotEl.tabIndex=on?0:-1;
-  dotEl.setAttribute('aria-disabled',String(!on));
+let phase='typing', navigationEpoch=0, assistantOpen=false;
+function syncAssistantTrigger(){
+  const available=['typing','question','hub','works'].includes(phase);
+  dotEl.classList.toggle('clickable',available&&!assistantOpen);
+  dotEl.classList.toggle('assistant-active',assistantOpen);
+  dotEl.disabled=!available;
+  dotEl.tabIndex=available?0:-1;
+  dotEl.setAttribute('aria-expanded',String(assistantOpen));
 }
 function disarmHint(){dotEl.classList.remove('hinting');}
 function navigationChanged(){
   navigationEpoch++;
+  stage.inert=assistantOpen||!['typing','question','hub','works'].includes(phase);
+  syncAssistantTrigger();
   for(const [button,shown] of [[backBtn,phase==='resume'],[toHubBtn,phase==='works'],[secBack,phase==='section']]){
     button.hidden=!shown;button.disabled=!shown;button.tabIndex=shown?0:-1;
   }
@@ -286,7 +300,7 @@ function navigationChanged(){
   window.dispatchEvent(new CustomEvent('portfolio:navigation',{detail:{mode:phase}}));
 }
 async function intro(){
-  setClickable(true);navigationChanged();
+  navigationChanged();
   await settle(QUESTION);if(phase!=='typing')return;
   phase='question';navigationChanged();
 }
@@ -321,7 +335,7 @@ function renderMenu(level){
 function showHub(){
   if(location.hash==='#about'){const url=new URL(location.href);url.hash='';history.replaceState(history.state,'',url);}
   stage.inert=false;
-  phase='hub';setClickable(false);
+  phase='hub';
   resume.classList.remove('reveal','live');
   resume.setAttribute('aria-hidden','true');
   document.body.classList.remove('expanded','works-mode');
@@ -333,7 +347,7 @@ function showHub(){
 }
 function showWorks(){
   stage.inert=false;
-  phase='works';setClickable(false);
+  phase='works';
   resume.classList.remove('reveal','live');
   resume.setAttribute('aria-hidden','true');
   if(section.classList.contains('on')){section.classList.remove('on','native');secBack.classList.remove('on');}
@@ -348,7 +362,7 @@ function expandPage(which){
   if(location.hash!=='#about'){const url=new URL(location.href);url.hash='about';history.pushState(history.state,'',url);}
   if(section.classList.contains('on')){section.classList.remove('on','native');secBack.classList.remove('on');}
   stage.inert=true;
-  phase=which;setClickable(false);
+  phase=which;
   document.body.classList.remove('works-mode');
   stage.classList.add('gone');stage.classList.remove('works','hublv');
   const m=resume;
@@ -361,11 +375,24 @@ function expandPage(which){
 // An opening click anywhere in the scene reveals the name and both choices.
 // Object buttons receive the click first, so their small reactions still play.
 stage.addEventListener('click',()=>{
+  if(assistantOpen)return;
   if(phase==='typing'||phase==='question'){disarmHint();showHub();}
 });
-dotEl.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();dotEl.click();}});
+dotEl.addEventListener('click',event=>{
+  event.stopPropagation();
+  if(!['typing','question','hub','works'].includes(phase))return;
+  disarmHint();clearWatch();
+  window.PortfolioAssistant?.open();
+});
+addEventListener('portfolio:assistant',event=>{
+  const open=event.detail?.open===true;
+  if(assistantOpen===open)return;
+  assistantOpen=open;
+  disarmHint();clearWatch();markActivity();
+  navigationChanged();
+});
 document.addEventListener('keydown',event=>{
-  if(event.defaultPrevented||!(phase==='typing'||phase==='question'))return;
+  if(event.defaultPrevented||assistantOpen||!(phase==='typing'||phase==='question'))return;
   if(event.target.closest('button,a,input,textarea,select,[role="button"]'))return;
   if(event.key==='Enter'||event.key===' '){event.preventDefault();showHub();}
 });
@@ -387,7 +414,7 @@ const SECTION_PAGE={
   "作品归档":"sections/more.html",
 };
 function enterSection(name,no){
-  if(phase!=='works')return;phase='transit';clearWatch();navigationChanged();
+  if(phase!=='works'||assistantOpen)return;phase='transit';clearWatch();navigationChanged();
   document.body.classList.remove('works-mode');
   const page=SECTION_PAGE[name];
   if(page){
@@ -425,7 +452,7 @@ window.PortfolioNavigation = Object.freeze({
 });
 function updateBackLabels(){
   const english=window.PortfolioI18n?.language==='en';
-  dotEl.setAttribute('aria-label',english?'Open navigation':'进入导航');
+  dotEl.setAttribute('aria-label',english?'Open AI conversation':'打开 AI 对话');
   for(const button of [backBtn,toHubBtn,secBack]){
     const label=button===secBack?(english?'Back to works':'返回作品集'):(english?'Back to navigation':'返回导航');
     button.setAttribute('aria-label',label);button.title=label;
@@ -438,7 +465,7 @@ let lastAct=performance.now(),watching=false;
 function markActivity(){lastAct=performance.now();if(watching)clearWatch();}
 function clearWatch(){watching=false;dotEl.classList.remove('watching');}
 ['mousemove','mousedown','keydown','wheel','touchstart'].forEach(ev=>addEventListener(ev,markActivity,{passive:true}));
-setInterval(()=>{if((phase==='works'||phase==='hub')&&!watching&&performance.now()-lastAct>3500){watching=true;dotEl.classList.add('watching');}},400);
+setInterval(()=>{if(!assistantOpen&&(phase==='works'||phase==='hub')&&!watching&&performance.now()-lastAct>3500){watching=true;dotEl.classList.add('watching');}},400);
 
 addEventListener('portfolio:language', () => {
   updateBackLabels();
@@ -446,6 +473,7 @@ addEventListener('portfolio:language', () => {
   else if (phase === 'works') { renderMenu('works'); morphTo(tr(HOME)); }
 });
 function syncAboutRoute(){
+  if(assistantOpen)window.PortfolioAssistant?.close();
   if(location.hash==='#about'&&phase!=='resume')expandPage('resume');
   else if(location.hash!=='#about'&&phase==='resume')showHub();
 }
