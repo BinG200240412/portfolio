@@ -1,4 +1,4 @@
-/* A non-modal conversation popover anchored to the existing red #dot.
+/* A non-modal conversation popover at the visible viewport's bottom centre.
  * API: PortfolioAssistant.open({focusClose?:boolean}), close({restoreFocus?:boolean}),
  * toggle(), isOpen(), clear(). State event: portfolio:assistant {open:boolean}.
  * The connection module owns transport. Only its ok/assistant result is a reply.
@@ -93,29 +93,24 @@
   }
   function position() {
     if(!opened)return;
-    const anchor=dot();if(!anchor)return;
     const visual=window.visualViewport,height=visual?.height||innerHeight,width=visual?.width||innerWidth;
     const viewTop=visual?.offsetTop||0,viewLeft=visual?.offsetLeft||0;
-    const viewBottom=viewTop+height,rect=anchor.getBoundingClientRect(),margin=12;
-    const boxWidth=Math.min(popup.getBoundingClientRect().width||360,width-margin*2);
-    const left=Math.max(viewLeft+margin,Math.min(viewLeft+width-boxWidth-margin,rect.left+rect.width/2-boxWidth/2));
-    let top=rect.bottom+30,available=viewBottom-top-margin;
-    // A software keyboard can leave the anchor outside the visible viewport.
-    // Keep the composer reachable, while normally staying directly below it.
-    const anchorVisible=rect.bottom>=viewTop&&rect.top<=viewBottom;
-    if(!anchorVisible||available<95) {
-      top=Math.max(viewTop+margin,viewBottom-Math.min(300,height-margin*2)-margin);
-      available=viewBottom-top-margin;
-    }
-    const maxHeight=Math.max(0,Math.min(300,available));
-    popup.style.left=`${left}px`;popup.style.top=`${top}px`;popup.style.maxHeight=`${maxHeight}px`;
-    popup.style.setProperty('--pa-available-height',`${maxHeight}px`);
+    const margin=12,boxWidth=Math.min(popup.getBoundingClientRect().width||352,width-margin*2);
+    const left=viewLeft+(width-boxWidth)/2;
+    // Fixed positioning uses the layout viewport; lift the bottom edge above
+    // a software keyboard, then retain the ordinary safe-area breathing room.
+    const bottom=Math.max(0,innerHeight-viewTop-height)+16;
+    const maxHeight=`max(0px, min(300px, calc(${Math.max(0,height-32)}px - env(safe-area-inset-bottom, 0px))))`;
+    popup.style.left=`${left}px`;popup.style.top='auto';
+    popup.style.bottom=`calc(${bottom}px + env(safe-area-inset-bottom, 0px))`;
+    popup.style.maxHeight=maxHeight;
+    popup.style.setProperty('--pa-available-height',maxHeight);
     popup.style.setProperty('--pa-viewport',`${height}px`);
     popup.dataset.compact=String(height<570);
   }
   function announce(open) {dispatchEvent(new CustomEvent('portfolio:assistant',{detail:{open}}));}
   function open(options={}) {
-    if(opened)return;
+    if(opened||window.PortfolioNavigation?.assistantAvailable?.()!==true)return;
     returnFocus=document.activeElement;feedback='';opened=true;
     popup.inert=false;popup.dataset.open='true';popup.setAttribute('aria-hidden','false');
     update();position();popup.classList.add('is-visible');announce(true);
@@ -162,9 +157,6 @@
   addEventListener('resize',position,{passive:true});addEventListener('scroll',position,{passive:true});
   window.visualViewport?.addEventListener('resize',position,{passive:true});
   window.visualViewport?.addEventListener('scroll',position,{passive:true});
-  const layout=new ResizeObserver(position);
-  const line=dot()?.closest('.line');if(line)layout.observe(line);
-  if(dot())layout.observe(dot());
   addEventListener('pagehide',()=>{if(opened)close({restoreFocus:false});});
   window.PortfolioAssistant=Object.freeze({open,close,toggle:options=>opened?close(options):open(options),isOpen:()=>opened,clear});
   render();

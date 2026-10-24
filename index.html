@@ -20,7 +20,7 @@
 <script defer src="assets/about-companion.js?v=portrait-and-companion-20261023"></script>
 <script defer src="assets/ambient-field.js?v=soft-particles-20261024"></script>
 <script defer src="assets/assistant-connection.js?v=assistant-preview-20261024"></script>
-<script defer src="assets/portfolio-assistant.js?v=assistant-popover-20261024"></script>
+<script defer src="assets/portfolio-assistant.js?v=assistant-bottom-20261024"></script>
 <style>
   :root{
     --mono:"JetBrains Mono","Noto Sans SC",monospace;
@@ -184,7 +184,7 @@
 <link rel="stylesheet" href="assets/matrix-field.css?v=interactive-objects-20261024">
 <link rel="stylesheet" href="assets/about.css?v=original-photo-right-20261024">
 <link rel="stylesheet" href="assets/ambient-field.css?v=soft-particles-20261024">
-<link rel="stylesheet" href="assets/portfolio-assistant.css?v=assistant-popover-20261024">
+<link rel="stylesheet" href="assets/portfolio-assistant.css?v=assistant-bottom-20261024">
 </head>
 <body class="portfolio-shell">
   <canvas id="ambient-page" aria-hidden="true" data-i18n-ignore></canvas>
@@ -196,7 +196,7 @@
     <canvas id="matrix-field" aria-hidden="true"></canvas>
     <button id="gorilla-hit" type="button" class="matrix-gorilla-hit" aria-pressed="false" aria-label="让猩猩的屁股变成红色爱心" data-i18n-ignore hidden></button>
     <div class="caption" id="cap" aria-hidden="true"></div>
-    <div class="line"><span class="text" id="text" data-i18n-ignore></span><button class="dot" id="dot" type="button" aria-label="打开 AI 对话" aria-haspopup="dialog" aria-controls="portfolio-assistant" aria-expanded="false" data-i18n-ignore></button></div>
+    <div class="line"><span class="text" id="text" data-i18n-ignore></span><button class="dot" id="dot" type="button" aria-label="进入导航" aria-controls="menu" aria-expanded="false" data-i18n-ignore></button></div>
     <nav class="menu" id="menu" data-i18n-ignore></nav>
     <div class="hint" id="hint" aria-hidden="true"></div>
   </div>
@@ -283,6 +283,7 @@ function settle(w){target=w;pump();return new Promise(res=>{(current===target&&!
 
 /* ---- 状态机 ---- */
 let phase='typing', navigationEpoch=0, assistantOpen=false;
+function isAssistantAvailable(){return (phase==='hub'||phase==='works')&&!stage.inert;}
 function syncAssistantTrigger(){
   const available=['typing','question','hub','works'].includes(phase);
   dotEl.classList.toggle('clickable',available);
@@ -290,6 +291,8 @@ function syncAssistantTrigger(){
   dotEl.disabled=!available;
   dotEl.tabIndex=available?0:-1;
   dotEl.setAttribute('aria-expanded',String(assistantOpen));
+  dotEl.setAttribute('aria-haspopup',isAssistantAvailable()?'dialog':'false');
+  dotEl.setAttribute('aria-controls',isAssistantAvailable()?'portfolio-assistant':'menu');
   updateBackLabels();
 }
 function disarmHint(){dotEl.classList.remove('hinting');}
@@ -383,8 +386,9 @@ stage.addEventListener('click',()=>{
 });
 dotEl.addEventListener('click',event=>{
   event.stopPropagation();
-  if(!['typing','question','hub','works'].includes(phase))return;
   disarmHint();clearWatch();
+  if(phase==='typing'||phase==='question'){showHub();return;}
+  if(!isAssistantAvailable())return;
   window.PortfolioAssistant?.toggle();
 });
 addEventListener('portfolio:assistant',event=>{
@@ -444,6 +448,7 @@ const OBJECT_PROJECTS = Object.freeze({
   'arright':'arright', 'skill':'设计工具 · Skills', 'liangzhu':'良渚 · AI 3D',
 });
 window.PortfolioNavigation = Object.freeze({
+  assistantAvailable:isAssistantAvailable,
   projectGate(){return phase==='works'&&!stage.inert?navigationEpoch:0;},
   openProject(key) {
     const name = OBJECT_PROJECTS[key];
@@ -455,7 +460,7 @@ window.PortfolioNavigation = Object.freeze({
 });
 function updateBackLabels(){
   const english=window.PortfolioI18n?.language==='en';
-  dotEl.setAttribute('aria-label',assistantOpen?(english?'Close AI conversation':'收起 AI 对话'):(english?'Open AI conversation':'打开 AI 对话'));
+  dotEl.setAttribute('aria-label',isAssistantAvailable()?(assistantOpen?(english?'Close AI conversation':'收起 AI 对话'):(english?'Open AI conversation':'打开 AI 对话')):(english?'Enter navigation':'进入导航'));
   for(const button of [backBtn,toHubBtn,secBack]){
     const label=button===secBack?(english?'Back to works':'返回作品集'):(english?'Back to navigation':'返回导航');
     button.setAttribute('aria-label',label);button.title=label;
