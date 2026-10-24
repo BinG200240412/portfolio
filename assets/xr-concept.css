@@ -1,35 +1,35 @@
 /* Core concept: a large film and three aligned stills, with an editorial column. */
-.gogo-concept-stage{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(320px,1fr);grid-template-areas:"media copy";gap:clamp(40px,5vw,80px);align-items:start}
+.gogo-concept-stage{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(320px,1fr);grid-template-areas:"media heading" "media details";grid-template-rows:auto auto;gap:0 clamp(40px,5vw,80px);align-items:start}
 .gogo-concept-media{grid-area:media;display:flex;flex-direction:column;gap:20px;min-width:0}
 .gogo-film{width:100%;background:#080808}
 .gogo-film video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;border:0;border-radius:0;background:#080808}
 .gogo-concept-media .gogo-cue-strip{width:100%;margin:0!important}
 .gogo-concept-media .gogo-cue-strip img{display:block;width:100%;height:auto}
-.gogo-concept-copy{grid-area:copy;min-width:0;text-align:right}
-.gogo-concept-copy .gogo-chapter-head{display:block;margin-bottom:30px}
-.gogo-concept-copy .gogo-chapter-heading{display:block}
-.gogo-concept-copy .gogo-chapter-number{display:block;font-size:88px;margin-bottom:22px}
-.gogo-concept-copy .gogo-chapter-head h2{font-size:clamp(48px,5.3vw,80px);line-height:1.15;max-width:none}
-.gogo-concept-copy .gogo-chapter-lead{font-size:22px;line-height:1.7;max-width:none;padding:0;margin-top:24px}
-.gogo-concept-copy .gogo-intro-grid{display:grid;grid-template-columns:1fr;gap:24px}
-.gogo-concept-copy .gogo-intro-grid p{font-size:16px;line-height:1.9;max-width:none;text-wrap:pretty}
+.gogo-concept-visual-page{display:contents}
+.gogo-concept-details{grid-area:details;min-width:0;text-align:right}
+.gogo-concept-stage .gogo-chapter-head{grid-area:heading;display:block;text-align:right;margin-bottom:30px}
+.gogo-concept-stage .gogo-chapter-heading{display:block}
+.gogo-concept-stage .gogo-chapter-number{display:block;font-size:88px;margin-bottom:22px}
+.gogo-concept-stage .gogo-chapter-head h2{font-size:clamp(48px,5.3vw,80px);line-height:1.15;max-width:none}
+.gogo-concept-stage .gogo-chapter-lead{font-size:22px;line-height:1.7;max-width:none;padding:0;margin-top:24px}
+.gogo-concept-stage .gogo-intro-grid{display:grid;grid-template-columns:1fr;gap:24px}
+.gogo-concept-stage .gogo-intro-grid p{font-size:16px;line-height:1.9;max-width:none;text-wrap:pretty}
 .gogo-concept-label{font-size:13px;color:var(--gogo-accent);margin-bottom:20px!important}
 .gogo-concept-caption{font-size:12px;line-height:1.8;color:var(--soft);margin-top:24px!important}
 @media(max-width:900px){
- .gogo-concept-stage{grid-template-columns:minmax(0,1fr);grid-template-areas:"heading" "media" "details";gap:32px}
- .gogo-concept-copy{display:contents}
- .gogo-concept-copy .gogo-chapter-head{grid-area:heading;margin-bottom:0}
+ .gogo-concept-stage{display:block}
+ .gogo-concept-stage .gogo-chapter-head{grid-area:heading;margin-bottom:0}
  .gogo-concept-details{grid-area:details}
- .gogo-concept-copy .gogo-chapter-number{font-size:64px;margin-bottom:20px}
- .gogo-concept-copy .gogo-chapter-head h2{font-size:56px}
- .gogo-concept-copy .gogo-chapter-lead{font-size:21px;margin-top:20px}
- .gogo-concept-copy .gogo-intro-grid{gap:18px}
- .gogo-concept-copy .gogo-intro-grid p{font-size:16px}
- .gogo-concept-copy .gogo-concept-caption{margin-top:20px!important}
+ .gogo-concept-stage .gogo-chapter-number{font-size:64px;margin-bottom:20px}
+ .gogo-concept-stage .gogo-chapter-head h2{font-size:56px}
+ .gogo-concept-stage .gogo-chapter-lead{font-size:21px;margin-top:20px}
+ .gogo-concept-stage .gogo-intro-grid{gap:18px}
+ .gogo-concept-stage .gogo-intro-grid p{font-size:16px}
+ .gogo-concept-stage .gogo-concept-caption{margin-top:20px!important}
  .gogo-concept-media{gap:14px}
 }
 @media(max-width:700px){
- .gogo-concept-copy .gogo-chapter-number{font-size:54px}
- .gogo-concept-copy .gogo-chapter-head h2{font-size:48px}
- .gogo-concept-copy .gogo-chapter-lead{font-size:20px}
+ .gogo-concept-stage .gogo-chapter-number{font-size:54px}
+ .gogo-concept-stage .gogo-chapter-head h2{font-size:48px}
+ .gogo-concept-stage .gogo-chapter-lead{font-size:20px}
 }

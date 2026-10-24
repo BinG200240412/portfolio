@@ -1,6 +1,6 @@
 /* A smaller framed poster, with all cover copy held inside the photograph. */
 .gogo-case{--gogo-stage-width:min(100vw,1440px);--gogo-page-safe:clamp(26px,calc(var(--gogo-stage-width) * .055),88px);padding-top:0}
-.gogo-hero{--gogo-layout-width:var(--gogo-stage-width);--gogo-safe:var(--gogo-page-safe);--gogo-frame:44px;--gogo-frame-art:url("works/xr/frame/carved-wood-dark.svg");position:relative;isolation:auto;width:100%;min-height:100svh;margin:0;padding:0;overflow:clip}
+.gogo-hero{--gogo-layout-width:var(--gogo-stage-width);--gogo-safe:var(--gogo-page-safe);--gogo-frame:20px;--gogo-frame-art:url("works/xr/frame/led-grey-dark.svg");position:relative;isolation:auto;width:100%;min-height:100svh;margin:0;padding:0;overflow:clip}
 .gogo-hero-art{position:absolute;inset:0 auto 0 0;width:33.333333%;z-index:0;overflow:hidden;clip-path:inset(0 3% 0 0);pointer-events:none;user-select:none}
 #gogo-dog-matrix{display:block;width:100%;height:100%;pointer-events:none}
 .gogo-hero-procession{position:absolute;top:0;left:72px;right:160px;height:72px;z-index:2;overflow:hidden;pointer-events:none;user-select:none}
@@ -8,7 +8,7 @@
 .gogo-hero-stage{position:relative;z-index:1;width:calc(60% - 16px);min-height:100svh;margin-left:auto;margin-right:0;padding:clamp(148px,16svh,230px) 0 64px;display:flex;flex-direction:column;align-items:flex-end;justify-content:flex-start}
 .gogo-hero-photo{position:relative;width:100%;margin:0!important}
 .gogo-cover-panel{position:relative;z-index:1;padding:var(--gogo-frame);background:var(--paper)}
-.gogo-cover-panel::before{content:"";position:absolute;inset:0;z-index:4;border:var(--gogo-frame) solid transparent;border-image-source:var(--gogo-frame-art);border-image-slice:64;border-image-width:1;border-image-repeat:round;pointer-events:none}
+.gogo-cover-panel::before{content:"";position:absolute;inset:0;z-index:4;border:var(--gogo-frame) solid transparent;border-image-source:var(--gogo-frame-art);border-image-slice:32;border-image-width:1;border-image-repeat:round;pointer-events:none}
 .gogo-cover-panel::after{content:"";position:absolute;inset:var(--gogo-frame);z-index:1;background:linear-gradient(180deg,transparent 42%,color-mix(in srgb,var(--paper) 16%,transparent) 60%,color-mix(in srgb,var(--paper) 70%,transparent) 100%),linear-gradient(270deg,color-mix(in srgb,var(--paper) 58%,transparent),transparent 66%);pointer-events:none}
 .gogo-cover-pending .gogo-cover-panel{visibility:hidden}
 .gogo-hero-photo[data-cover-motion="opening"] .gogo-cover-panel{will-change:transform,opacity}
@@ -29,7 +29,7 @@
 .gogo-hero .gogo-chapter-nav a>span:first-child{color:var(--gogo-accent);min-width:17px}
 html[lang="en"] .gogo-hero .gogo-project-name{max-width:37ch;font-size:21px}
 html[lang="en"] .gogo-hero .gogo-opening p{font-size:16px;max-width:37ch}
-html[data-theme="light"] .gogo-hero{--gogo-frame-art:url("works/xr/frame/carved-wood-light.svg")}
+html[data-theme="light"] .gogo-hero{--gogo-frame-art:url("works/xr/frame/led-grey-light.svg")}
 @media(max-width:1100px) and (min-width:721px){
  .gogo-hero-stage{width:calc(62% - 16px);padding-top:140px}
  .gogo-hero-photo .gogo-zoom img{height:430px;object-fit:cover;object-position:42% center}
@@ -43,7 +43,7 @@ html[data-theme="light"] .gogo-hero{--gogo-frame-art:url("works/xr/frame/carved-
  html[lang="en"] .gogo-hero .gogo-opening p{font-size:15px}
 }
 @media(max-width:720px){
- .gogo-hero{--gogo-frame:20px;min-height:max(760px,100svh)}
+ .gogo-hero{--gogo-frame:12px;min-height:max(760px,100svh)}
  .gogo-hero-art{top:116px;bottom:auto;height:390px}
  .gogo-hero-procession{left:62px;right:144px;height:58px}
  .gogo-hero-stage{width:calc(100% - 26px);min-height:max(760px,100svh);padding:144px 0 60px}
