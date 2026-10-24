@@ -111,10 +111,10 @@
   else controls();
 })();
 
-/* A filled, seven-row LED arrow for covers that conceal the next section. */
+/* A single-column LED shaft with a thin, open arrowhead. */
 (() => {
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const patterns = ['0011100','0011100','0011100','1111111','0111110','0011100','0001000'];
+  const patterns = ['0001000','0001000','0001000','1001001','0101010','0011100','0001000'];
   function mount() {
     const file = location.pathname.split('/').pop() || 'index.html';
     const definitions = {
