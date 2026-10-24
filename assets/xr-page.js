@@ -1,4 +1,7 @@
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
+  "狗GO 项目宣传片": "GouGO project film",
+  "项目宣传片": "Project film",
+  "下载宣传片": "Download the project film",
   "Unity 原型 · 手柄绑定与交互配置": "Unity prototype · Controller binding and interaction setup",
   "中国美术学院 · DIC": "China Academy of Art · DIC",
   "XR 文旅 · AR 眼镜 × 机器狗": "XR Experience · AR × Robot Dog",
@@ -157,6 +160,20 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
     });
     dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
     dialog.addEventListener('close', () => { fullImage.removeAttribute('src'); });
+    const films = [...document.querySelectorAll('.gogo-film video')];
+    const pauseFilms = () => films.forEach(film => film.pause());
+    const filmObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (!entry.isIntersecting && !entry.target.matches(':fullscreen') && !entry.target.webkitDisplayingFullscreen) entry.target.pause();
+    }));
+    films.forEach(film => filmObserver.observe(film));
+    document.addEventListener('visibilitychange', () => { if (document.hidden) pauseFilms(); });
+    addEventListener('pagehide', pauseFilms);
+    try {
+      const host = window.frameElement?.closest('#section');
+      if (host) new MutationObserver(() => {
+        if (!host.classList.contains('on')) pauseFilms();
+      }).observe(host, { attributes: true, attributeFilter: ['class'] });
+    } catch (_) {}
     const links = [...document.querySelectorAll('.gogo-chapter-nav a')];
     function updateChapter() {
       const sections = [...document.querySelectorAll('.gogo-chapter')];
