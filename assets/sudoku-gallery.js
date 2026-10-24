@@ -128,6 +128,13 @@
     }
 
     items.forEach(item => item.button.addEventListener('click', () => select(item)));
+    document.querySelectorAll('[data-screen-jump]').forEach(button => button.addEventListener('click', () => {
+      const item = items.find(item => item.id === button.dataset.screenJump);
+      if (!item) return;
+      select(item);
+      gallery.scrollIntoView({ behavior: reduced.matches ? 'auto' : 'smooth', block: 'center' });
+      item.button.focus({ preventScroll: true });
+    }));
     image.addEventListener('error', () => { failedCurrent = true; setError(true); });
     addEventListener('portfolio:language', metadata);
     addEventListener('pagehide', () => { generation++; settled(); });
