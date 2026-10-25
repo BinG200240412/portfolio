@@ -1,38 +1,27 @@
-/* Original PDF motifs are drawn point by point. One clock owns the entire scene. */
+/* Fixed LED cells: animation changes their light, never their screen position.
+ * Dog, glasses and cultural fragment use the original PDF motifs.
+ * Maps and narrative symbols are simplified diagrams of the original concept. */
 (() => {
   'use strict';
-  const page = document.querySelector('.gogo-logic-page');
-  const stage = page?.querySelector('.gogo-logic-network');
-  if (!stage) return;
-  const sourceURL = new URL('works/xr/logic/dot-assets.json?v=open-dot-network-20261025', document.currentScript.src);
-  const cards = [...stage.querySelectorAll('.gogo-logic-card')];
-  const canvases = [...stage.querySelectorAll('[data-dot]')];
-  const hub = stage.querySelector('.gogo-logic-hub');
-  const frames = [...cards,hub].map(element => {
-    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-    svg.classList.add('gogo-dot-frame');svg.setAttribute('aria-hidden','true');
-    element.prepend(svg);return {element,svg};
+  const page=document.querySelector('.gogo-logic-page'),stage=page?.querySelector('.gogo-logic-network');
+  if(!stage)return;
+  const sourceURL=new URL('works/xr/logic/dot-assets.json?v=open-dot-network-20261025',document.currentScript.src);
+  const cards=[...stage.querySelectorAll('.gogo-logic-card')],canvases=[...stage.querySelectorAll('[data-dot]')];
+  const hub=stage.querySelector('.gogo-logic-hub'),lineCanvas=stage.querySelector('.gogo-network-lines'),lineContext=lineCanvas.getContext('2d');
+  if(!lineContext)return;
+  const frames=[...cards,hub].map(element=>{
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('gogo-dot-frame');svg.setAttribute('aria-hidden','true');element.prepend(svg);return{element,svg};
   });
-  const lineCanvas = stage.querySelector('.gogo-network-lines');
-  const lineContext = lineCanvas.getContext('2d');
-  if (!lineContext) return;
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const forced = matchMedia('(forced-colors: active)');
-  const dialog = document.getElementById('gogo-lightbox');
-  let host = null;
-  try { host = window.frameElement?.closest('#section') || null; } catch (_) {}
-  const TAU = Math.PI * 2, FPS = 20;
-  const dark = ['#5c625b','#92988b','#c5cbb8','#e9eadb','#2e5660','#4b8890','#85c4cb','#c6e8e5','#3f583d','#6b8b59','#a0bc80','#cfdbac','#6e522d','#a98748','#cda866','#eee0ae'];
-  const light = ['#69765e','#4c613f','#304e28','#18331a','#4e7e80','#32676d','#1f4f62','#102d40','#697e45','#4b682c','#33541c','#1b3715','#96723b','#7a5425','#5d3d16','#3e260b'];
-  let data = null, loading = false, models = [], links = [], palette = dark;
-  let width = 1, height = 1, ratio = 1, hubBox = null;
-  let onScreen = false, shown = true, frame = 0, previous = 0, elapsed = 0;
-  let hover = null, focus = null, pinned = null;
-  let ink = '#efeee9', line = '#484841', accent = '#c2944a', flow = '#85c4cb';
-  const selected = () => pinned || hover || focus;
-  const clamp = (value, low = 0, high = 1) => Math.max(low, Math.min(high, value));
-  const mix = (a, b, t) => a + (b - a) * t;
-
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)'),forced=matchMedia('(forced-colors: active)'),dialog=document.getElementById('gogo-lightbox');
+  const TAU=Math.PI*2,FPS=12;
+  const dark=['#66725f','#96a18b','#ccd3bd','#f0f2e7','#356879','#5b9fac','#83d6de','#d5ffff','#455c3d','#74945d','#a2bf7b','#d5e8b6','#806036','#b38a48','#e5b761','#fff0bc'];
+  const light=['#9aa18f','#74806b','#4c5c43','#263b2d','#54838a','#316d7c','#145568','#082f44','#889878','#5d7948','#355c29','#214015','#ac8b55','#8d5f25','#68410e','#442805'];
+  let data=null,loading=false,models=[],links=[],palette=dark,width=1,height=1,ratio=1,hubBox=null,linePad=0;
+  let onScreen=false,shown=true,frame=0,previous=0,elapsed=0,hover=null,focus=null,pinned=null,host=null;
+  let line='#657362',accent='#c2944a',flow='#86d5df';
+  try{host=window.frameElement?.closest('#section')||null;}catch(_){}
+  const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),mix=(a,b,t)=>a+(b-a)*t;
+  const selected=()=>pinned||hover||focus;
   function outline({element,svg}) {
     const w=element.clientWidth,h=element.clientHeight,inset=2;
     const kind=element.dataset.node,cut=Math.min(18,w*.11,h*.11);
@@ -54,246 +43,189 @@
     svg.replaceChildren(circles);
   }
 
-  function dot(context, x, y, radius) {
-    context.moveTo(x + radius, y);
-    context.arc(x, y, radius, 0, TAU);
+
+  function poly(context,points,colour,weight=1.2,closed=false){
+    context.strokeStyle=colour;context.lineWidth=weight;context.lineJoin='miter';context.lineCap='butt';context.beginPath();
+    points.forEach((p,i)=>i?context.lineTo(p[0],p[1]):context.moveTo(p[0],p[1]));if(closed)context.closePath();context.stroke();
   }
-  function curve(points, t) {
-    const u = 1 - t;
-    return {
-      x: u*u*u*points[0].x + 3*u*u*t*points[1].x + 3*u*t*t*points[2].x + t*t*t*points[3].x,
-      y: u*u*u*points[0].y + 3*u*u*t*points[1].y + 3*u*t*t*points[2].y + t*t*t*points[3].y,
-    };
+  function arrow(context,a,b,colour,size=5){
+    const dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy)||1,ux=dx/length,uy=dy/length;
+    poly(context,[[b[0]-ux*size-uy*size*.55,b[1]-uy*size+ux*size*.55],b,[b[0]-ux*size+uy*size*.55,b[1]-uy*size-ux*size*.55]],colour,1.2);
   }
-  function along(points, t) {
-    const position = clamp(t) * (points.length - 1), index = Math.min(points.length - 2, Math.floor(position));
-    return { x: mix(points[index].x, points[index+1].x, position-index), y: mix(points[index].y, points[index+1].y, position-index) };
+  function makeModel(canvas){
+    const w=canvas.clientWidth,h=canvas.clientHeight,pitch=w<150?4.2:4.8,cols=Math.max(1,Math.floor(w/pitch)),rows=Math.max(1,Math.floor(h/pitch));
+    canvas.width=Math.round(w*ratio);canvas.height=Math.round(h*ratio);
+    const mask=document.createElement('canvas');mask.width=cols;mask.height=rows;
+    const centres=new Float32Array(cols*rows*2),ox=(w-cols*pitch)/2,oy=(h-rows*pitch)/2;
+    for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const i=r*cols+c;centres[i*2]=ox+(c+.5)*pitch;centres[i*2+1]=oy+(r+.5)*pitch;}
+    canvas.dataset.gridPitch=String(pitch);canvas.dataset.gridColumns=String(cols);canvas.dataset.gridRows=String(rows);
+    return{canvas,id:canvas.dataset.dot,context:canvas.getContext('2d'),w,h,pitch,cols,rows,centres,mask:mask.getContext('2d',{willReadFrequently:true}),poses:new Map()};
   }
-  function cloud(asset, box, key) {
-    const unit = Math.min(box.width / asset.width, box.height / asset.height) * .94;
-    const pitch = key==='voice'?3.8:width<600?5.2:7;
-    const step = Math.max(1, Math.ceil(pitch / unit));
-    const groups = Array.from({ length: 16 }, () => []);
-    // Pool occupied cells instead of dropping every other sample: thin route
-    // lines, glasses and legs must survive the smaller mobile lattice.
-    const cells = new Map(),edges = new Map();
-    asset.points.forEach(([x, y, role]) => {
-      const col=Math.floor(x/step), row=Math.floor(y/step), key=row*asset.width+col;
-      if(!cells.has(key))cells.set(key,{col,row,x:Math.min(asset.width-.5,col*step+step/2),y:Math.min(asset.height-.5,row*step+step/2),counts:Array(16).fill(0)});
-      cells.get(key).counts[role]++;
-      const edge=edges.get(row)||{min:col,max:col};edge.min=Math.min(edge.min,col);edge.max=Math.max(edge.max,col);edges.set(row,edge);
-    });
-    const sparseMap=['walk','route','translation','memory','hub'].includes(key);
-    cells.forEach(({col,row,x,y,counts})=>{
-      // A single textured source pixel must not fill an otherwise empty map cell.
-      // Keep its silhouette and bright route even when the surrounding fill drops out.
-      const edge=edges.get(row),boundary=col===edge.min||col===edge.max;
-      if(sparseMap&&!boundary&&!counts[6]&&!counts[7]&&counts.reduce((a,b)=>a+b,0)<step*step*.65)return;
-      let role=counts.indexOf(Math.max(...counts));
-      if(counts[6]||counts[7])role=counts[7]>counts[6]?7:6;
-      groups[role].push({x:(x-asset.width/2)*unit,y:(y-asset.height/2)*unit,u:x/asset.width,v:y/asset.height,role});
-    });
-    const peaks=new Map();
-    groups.forEach(points=>points.forEach(point=>peaks.set(point.u,Math.max(peaks.get(point.u)||0,Math.abs(point.y)))));
-    groups.forEach(points=>points.forEach(point=>{point.peak=peaks.get(point.u);}));
-    return { groups, cx: box.cx, cy: box.cy, width: asset.width*unit, height: asset.height*unit, radius: unit*step*.27 };
-  }
-  function drawCloud(context, model, time, motion = '') {
-    const gait = time * 5.2;
-    model.groups.forEach((points, role) => {
-      context.fillStyle = palette[role]; context.beginPath();
-      points.forEach(point => {
-        let x = point.x, y = point.y;
-        if (motion === 'dog') {
-          y += Math.sin(gait*2)*model.height*.012;
-          if (point.v > .52 && point.u < .98) {
-            const leg = Math.min(3, Math.floor(point.u*4.8));
-            const phase = gait + (leg % 2 ? Math.PI : 0), reach = clamp((point.v-.48)/.52);
-            x += Math.sin(phase)*model.width*.065*reach;
-            y -= Math.max(0, Math.cos(phase))*model.height*.08*reach;
-          }
-        } else if (motion === 'ar') {
-          const yaw = Math.sin(time*.75)*.48, roll = Math.sin(time*.43)*.045;
-          const z = (.35-(point.u-.5)**2-(point.v-.5)**2)*model.width*.2;
-          const depth = -x*Math.sin(yaw)+z*Math.cos(yaw), perspective = 1/(1+depth/(model.width*3));
-          x = (x*Math.cos(yaw)+z*Math.sin(yaw))*perspective; y *= perspective;
-          const oldX = x; x = x*Math.cos(roll)-y*Math.sin(roll); y = oldX*Math.sin(roll)+y*Math.cos(roll);
-        } else if (motion === 'voice') {
-          const amplitude=.32+.55*Math.abs(Math.sin(time*3.5+point.u*5))+.12*Math.sin(time*5.1-point.u*7);
-          if(Math.abs(y)>point.peak*amplitude)return;
-        } else if (motion === 'fragment') {
-          const turn = Math.sin(time*.7)*.05, oldX = x;
-          x = x*Math.cos(turn)-y*Math.sin(turn); y = oldX*Math.sin(turn)+y*Math.cos(turn)+Math.sin(time*1.3)*2;
-        } else if (motion === 'story') {
-          if (point.u < .28 || point.u > .73) {
-            x += Math.sin(time*1.1+point.v*4)*3; y += Math.cos(time*1.3+point.u*5)*3;
-          } else {
-            const breath = 1+Math.sin(time*1.8)*.018; x *= breath; y *= breath;
-          }
-        }
-        dot(context, model.cx+x, model.cy+y, model.radius);
-      });
-      context.fill();
+  // This is the only function that puts luminous beads on the screen. Its
+  // centres and radius are immutable until the layout is resized.
+  function paintCells(model,slots){
+    const c=model.context,groups=Array.from({length:16},()=>[]);
+    for(let i=0;i<slots.length;i++)if(slots[i])groups[slots[i]-1].push(i);
+    c.setTransform(ratio,0,0,ratio,0,0);c.clearRect(0,0,model.w,model.h);
+    groups.forEach((indices,role)=>{
+      c.fillStyle=palette[role];c.beginPath();indices.forEach(i=>{
+        const x=model.centres[i*2],y=model.centres[i*2+1],r=model.pitch*.319;c.moveTo(x+r,y);c.arc(x,y,r,0,TAU);
+      });c.fill();
     });
   }
-  function cache(model) {
-    const padding=model.radius+1, w=model.width+padding*2, h=model.height+padding*2;
-    const bitmap=document.createElement('canvas');bitmap.width=Math.ceil(w*ratio);bitmap.height=Math.ceil(h*ratio);
-    const context=bitmap.getContext('2d');context.scale(ratio,ratio);
-    drawCloud(context,{...model,cx:w/2,cy:h/2},0);
-    return {image:bitmap,padding,width:w,height:h};
-  }
-  function paintCache(context, model, bitmap) {
-    context.drawImage(bitmap.image,model.cx-model.width/2-bitmap.padding,model.cy-model.height/2-bitmap.padding,bitmap.width,bitmap.height);
-  }
-  function glowRoute(context, model, time) {
-    const head = (time*.17) % 1;
-    context.fillStyle = flow; context.globalAlpha=.55; context.beginPath();
-    model.groups.forEach((points, role) => {
-      if (Math.floor(role/4)===1 && role%4>=2)points.forEach(point=>dot(context,model.cx+point.x,model.cy+point.y,model.radius*.85));
-    });context.fill();context.globalAlpha=1;context.beginPath();
-    model.groups.forEach((points, role) => {
-      if (Math.floor(role/4) !== 1 || role%4 < 2) return;
-      points.forEach(point => { if (Math.abs(point.u-head) < .075) dot(context, model.cx+point.x, model.cy+point.y, model.radius*1.13); });
+  function sourceCells(model,key,zone,pose){
+    const cacheKey=key+':'+pose;if(model.poses.has(cacheKey))return model.poses.get(cacheKey);
+    const asset=data[key],slots=new Uint8Array(model.cols*model.rows),hist=new Uint16Array(slots.length*16);
+    const unit=Math.min(zone[2]/asset.width,zone[3]/asset.height)*.94,cx=zone[0]+zone[2]/2,cy=zone[1]+zone[3]/2;
+    const phase=pose/(key==='ar'?24:12)*TAU;
+    asset.points.forEach(([px,py,originalRole])=>{
+      const u=px/asset.width,v=py/asset.height;let x=(px-asset.width/2)*unit,y=(py-asset.height/2)*unit,role=originalRole;
+      if(key==='dog'){
+        role%=4;
+        if(v>.57){const leg=Math.min(3,Math.floor(u*4.8)),angle=phase+(leg%2?Math.PI:0),reach=clamp((v-.54)/.46);x+=Math.sin(angle)*asset.width*unit*.065*reach;y-=Math.max(0,Math.cos(angle))*asset.height*unit*.07*reach;}
+      }else if(key==='ar'){
+        const yaw=Math.sin(phase)*.48,z=(.35-(u-.5)**2-(v-.5)**2)*asset.width*unit*.16;x=x*Math.cos(yaw)+z*Math.sin(yaw);
+      }else if(key==='fragment')role=12+role%4;
+      const col=Math.floor(cx+x),row=Math.floor(cy+y);
+      if(col>=0&&row>=0&&col<model.cols&&row<model.rows)hist[(row*model.cols+col)*16+role]++;
     });
-    context.fill();
+    for(let i=0;i<slots.length;i++){let best=-1,count=0;for(let r=0;r<16;r++)if(hist[i*16+r]>count){best=r;count=hist[i*16+r];}if(best>=0)slots[i]=best+1;}
+    model.poses.set(cacheKey,slots);return slots;
   }
-  function mapPath(context, model, path, time, colour, phase = 0) {
-    const points = path.map(([x,y]) => ({ x: model.cx+(x-.5)*model.width, y: model.cy+(y-.5)*model.height }));
-    context.fillStyle = colour; context.globalAlpha=.55;context.beginPath();
-    for(let segment=0;segment<points.length-1;segment++){
-      const a=points[segment],b=points[segment+1],count=Math.ceil(Math.hypot(b.x-a.x,b.y-a.y)/5);
-      for(let i=0;i<count;i++)dot(context,mix(a.x,b.x,i/count),mix(a.y,b.y,i/count),1);
-    }context.fill();context.globalAlpha=1;
-    for (let tail = 3; tail >= 0; tail--) {
-      const progress = ((time*.12+phase-tail*.017)%1+1)%1, point = along(points, progress);
-      context.globalAlpha = 1-tail*.22; context.beginPath(); dot(context, point.x, point.y, tail ? 1.7 : 2.6); context.fill();
+  const colour=role=>'rgb('+((role+1)*12)+',0,0)';
+  const box=(m,x=0,y=0,w=1,h=1)=>[m.cols*x,m.rows*y,m.cols*w,m.rows*h];
+  const project=(b,p)=>[Math.floor(b[0]+p[0]*b[2])+.5,Math.floor(b[1]+p[1]*b[3])+.5];
+  function path(m,b,points,role,weight=1.15,closed=false){poly(m.mask,points.map(p=>project(b,p)),colour(role),weight,closed);}
+  function rectangle(m,b,role,weight=1.1){path(m,b,[[0,0],[1,0],[1,1],[0,1]],role,weight,true);}
+  function disc(m,b,x,y,r,role){const p=project(b,[x,y]);m.mask.fillStyle=colour(role);m.mask.beginPath();m.mask.arc(p[0],p[1],r,0,TAU);m.mask.fill();}
+  function readMask(m){
+    const pixels=m.mask.getImageData(0,0,m.cols,m.rows).data,slots=new Uint8Array(m.cols*m.rows);
+    for(let i=0;i<slots.length;i++)if(pixels[i*4+3]>95)slots[i]=clamp(Math.round(pixels[i*4]/12),1,16);
+    return slots;
+  }
+  function latticePath(m,b,points){
+    const out=[];
+    for(let n=0;n<points.length-1;n++){
+      const a=project(b,points[n]),z=project(b,points[n+1]);let x=Math.floor(a[0]),y=Math.floor(a[1]);const ex=Math.floor(z[0]),ey=Math.floor(z[1]),dx=Math.abs(ex-x),dy=-Math.abs(ey-y),sx=x<ex?1:-1,sy=y<ey?1:-1;let error=dx+dy;
+      for(;;){if(x>=0&&y>=0&&x<m.cols&&y<m.rows)out.push(y*m.cols+x);if(x===ex&&y===ey)break;const e=2*error;if(e>=dy){error+=dy;x+=sx;}if(e<=dx){error+=dx;y+=sy;}}
+    }return [...new Set(out)];
+  }
+  function signal(m,slots,b,points,time,role=7){
+    const cells=latticePath(m,b,points);if(!cells.length)return;
+    const head=Math.floor(time*7)%cells.length;for(let i=0;i<3;i++)slots[cells[(head+i)%cells.length]]=role+1;
+  }
+  const route=[[.13,.77],[.35,.77],[.35,.42],[.65,.42],[.65,.23],[.87,.23]];
+  function roadMap(m,b,role=6,plane=false){
+    path(m,b,plane?[[.12,.08],[.86,.08],[.99,.91],[.01,.91]]:[[.05,.08],[.95,.08],[.95,.92],[.05,.92]],1,1.1,true);
+    path(m,b,[[.31,.12],[.31,.88]],0,.8);path(m,b,[[.7,.12],[.7,.88]],0,.8);path(m,b,[[.1,.52],[.9,.52]],0,.8);
+    path(m,b,[[.12,.2],[.24,.2],[.24,.36],[.12,.36]],9,.85,true);path(m,b,[[.75,.65],[.88,.65],[.88,.81],[.75,.81]],9,.85,true);
+    path(m,b,route,role,1.25);disc(m,b,.13,.77,1.25,14);disc(m,b,.87,.23,1.25,14);
+  }
+  function story(m,b,time){
+    const brain=[[.5,.18],[.4,.12],[.3,.17],[.25,.28],[.25,.4],[.2,.48],[.27,.61],[.4,.65],[.5,.72],[.61,.65],[.73,.6],[.8,.48],[.75,.39],[.75,.27],[.65,.15],[.55,.13]];
+    path(m,b,brain,6,1.4,true);path(m,b,[[.5,.18],[.5,.65]],5,1);
+    path(m,b,[[.32,.3],[.42,.3],[.42,.43],[.34,.43]],5,1);path(m,b,[[.66,.3],[.57,.3],[.57,.51],[.68,.51]],5,1);
+    const clues=[[.07,.12],[.93,.13],[.06,.78],[.94,.78]];
+    clues.forEach((p,i)=>{const cell=[b[0]+(p[0]-.045)*b[2],b[1]+(p[1]-.06)*b[3],b[2]*.09,b[3]*.12];rectangle(m,cell,Math.floor(time*1.4)%4===i?14:12,1.1);path(m,b,[p,[p[0]<.5?.25:.75,p[1]]],1,.8);});
+  }
+  function cellsFor(m,time){
+    const full=box(m);
+    if(m.id==='dog'||m.id==='ar')return sourceCells(m,m.id,[1,1,m.cols-2,m.rows-2],Math.floor(time*(m.id==='ar'?6:8))%(m.id==='ar'?24:12));
+    m.mask.clearRect(0,0,m.cols,m.rows);let paths=[];
+    if(m.id==='walk'||m.id==='route'){
+      const b=box(m,.02,.03,.94,.92);roadMap(m,b);paths.push([b,route,7]);
+    }else if(m.id==='translation'){
+      const left=box(m,.01,.1,.35,.78),right=box(m,.64,.1,.35,.78);roadMap(m,left,6);roadMap(m,right,14);
+      path(m,full,[[.43,.5],[.57,.5]],1,1.4);path(m,full,[[.51,.34],[.58,.5],[.51,.66]],14,1.3);
+      paths.push([left,route,7],[right,route,15]);
+    }else if(m.id==='memory'){
+      rectangle(m,box(m,.1,.03,.8,.92),3,1.6);const b=box(m,.2,.12,.59,.5);roadMap(m,b);paths.push([b,route,7]);
+      path(m,full,[[.22,.72],[.75,.72]],1,1);path(m,full,[[.22,.81],[.61,.81]],1,1);path(m,full,[[.45,.9],[.55,.9]],3,1);
+    }else if(m.id==='story')story(m,full,time);
+    else if(m.id==='fragment'){
+      const bars=Math.max(5,Math.min(13,2*Math.floor((m.cols-2)/4)+1)),cx=m.cols*.5,cy=m.rows*.82,max=Math.max(2,Math.floor(m.rows*.1));
+      for(let i=0;i<bars;i++){const x=Math.round(cx+(i-(bars-1)/2)*2)+.5,level=1+Math.round(Math.abs(Math.sin(time*3.2+i*.65))*max);poly(m.mask,[[x,cy-level],[x,cy+level]],colour(6),1);}
+    }else if(m.id==='hub'){
+      const modern=box(m,.04,.55,.91,.18),ancient=box(m,.04,.8,.91,.18);roadMap(m,modern,6,true);roadMap(m,ancient,14,true);paths.push([modern,route,7],[ancient,route,15]);
+      path(m,full,[[.5,.74],[.5,.79]],1,1);path(m,full,[[.46,.76],[.5,.79],[.54,.76]],14,1);
+      const actors=[[.5,.12],[.18,.4],[.82,.4]],r=Math.min(27,m.w*.095)/m.pitch;
+      actors.forEach(p=>{const at=project(full,p);m.mask.strokeStyle=colour(13);m.mask.lineWidth=.9;m.mask.beginPath();m.mask.arc(at[0],at[1],r,0,TAU);m.mask.stroke();});
     }
-    context.globalAlpha = 1;
+    const slots=readMask(m);
+    paths.forEach(([b,p,role])=>signal(m,slots,b,p,time,role));
+    if(m.id==='fragment'){
+      const original=sourceCells(m,'fragment',[m.cols*.09,0,m.cols*.82,m.rows*.61],0);for(let i=0;i<slots.length;i++)if(original[i])slots[i]=original[i];
+    }
+    return slots;
   }
-  function drawHub(model, time) {
-    const { context, width: w, height: h, clouds, bitmap } = model;
-    paintCache(context, clouds[0], bitmap);
-    const actors = [{x:w*.5,y:h*.12},{x:w*.18,y:h*.4},{x:w*.82,y:h*.4}];
-    const ring = Math.min(27,w*.09);
-    context.fillStyle = line; context.beginPath();
-    actors.forEach((a,index) => {
-      const b = actors[(index+1)%3], length = Math.hypot(b.x-a.x,b.y-a.y), count = Math.ceil(length/6);
-      for (let i=0;i<=count;i++) {
-        const t=i/count, x=mix(a.x,b.x,t), y=mix(a.y,b.y,t);
-        if (Math.hypot(x-a.x,y-a.y)>ring+3 && Math.hypot(x-b.x,y-b.y)>ring+3) dot(context,x,y,1.2);
-      }
-    }); context.fill();
-    context.fillStyle = accent; context.beginPath();
-    actors.forEach((a,index) => {
-      for (let i=0;i<26;i++) { const angle=i/26*TAU; dot(context,a.x+Math.cos(angle)*ring,a.y+Math.sin(angle)*ring,1.4); }
-      const b=actors[(index+1)%3], t=(time*.16+index/3)%1, x=mix(a.x,b.x,t), y=mix(a.y,b.y,t);
-      if (Math.hypot(x-a.x,y-a.y)>ring+3 && Math.hypot(x-b.x,y-b.y)>ring+3) dot(context,x,y,2.4);
-    }); context.fill();
-    mapPath(context,clouds[0],[[.165,.31],[.3,.18],[.384,.173],[.49,.21],[.595,.278],[.71,.22],[.825,.143]],time,flow);
-    mapPath(context,clouds[0],[[.12,.82],[.25,.69],[.384,.66],[.49,.76],[.59,.83],[.76,.69]],time,accent,.12);
+  function hubRelations(m){
+    const c=m.context,actors=[[m.w*.5,m.h*.12],[m.w*.18,m.h*.4],[m.w*.82,m.h*.4]],ring=Math.min(27,m.w*.095)+4;
+    actors.forEach((a,i)=>{const b=actors[(i+1)%3],length=Math.hypot(b[0]-a[0],b[1]-a[1]),ux=(b[0]-a[0])/length,uy=(b[1]-a[1])/length,start=[a[0]+ux*ring,a[1]+uy*ring],end=[b[0]-ux*ring,b[1]-uy*ring];poly(c,[start,end],line,1.1);arrow(c,start,end,line,4);});
   }
-  function render(time) {
-    if (!data) return;
-    lineContext.setTransform(ratio,0,0,ratio,0,0); lineContext.clearRect(0,0,width,height);
-    const chosen = selected();
-    links.forEach((link,index) => {
-      lineContext.globalAlpha = chosen && chosen !== link.id ? .18 : .6;
-      lineContext.fillStyle = chosen === link.id ? (link.side === 'left' ? flow : accent) : line;
-      lineContext.beginPath(); link.dots.forEach(point => dot(lineContext,point.x,point.y,1.05)); lineContext.fill();
-      lineContext.globalAlpha = chosen && chosen !== link.id ? .25 : 1;
-      lineContext.fillStyle = link.side === 'left' ? flow : accent;
-      for (let tail=2;tail>=0;tail--) {
-        const t=((time*.19+index*.137-tail*.022)%1+1)%1, point=curve(link.curve,t);
-        lineContext.beginPath(); dot(lineContext,point.x,point.y,tail ? 1.5 : 2.5); lineContext.fill();
+  function render(time){
+    if(!data)return;
+    lineContext.setTransform(ratio,0,0,ratio,linePad*ratio,0);lineContext.clearRect(-linePad,0,width+linePad*2,height);
+    const chosen=selected();links.forEach(link=>{
+      const colour=chosen===link.id?(link.side==='left'?flow:accent):line;
+      lineContext.globalAlpha=(chosen&&chosen!==link.id) ? .3 : .85;poly(lineContext,link.points,colour,chosen===link.id?1.8:1.15);arrow(lineContext,link.points.at(-2),link.points.at(-1),colour,5);
+    });lineContext.globalAlpha=1;
+    models.forEach(m=>{paintCells(m,cellsFor(m,time));if(m.id==='hub')hubRelations(m);});
+  }
+  function connectors(boxes,hubBox,width,height,desktop){
+    return cards.map((card,index)=>{
+      const b=boxes[card.dataset.node],side=card.dataset.side,port=.16+(index%4)*.22;let points;
+      if(desktop){
+        if(side==='left'){
+          const a=[b.x+b.w,b.y+b.h/2],z=[hubBox.x,hubBox.y+hubBox.h*port];
+          if(card.dataset.node==='walk'){const lane=Math.min(a[0]+28,boxes.fragment.x-12),cross=(boxes.fragment.y+boxes.fragment.h+boxes.dog.y)/2,near=z[0]-13;points=[a,[lane,a[1]],[lane,cross],[near,cross],[near,z[1]],z];}
+          else if(card.dataset.node==='fragment'){const lane=z[0]-13;points=[a,[lane,a[1]],[lane,z[1]],z];}
+          else points=[a,[a[0]+22,a[1]],[z[0]-22,z[1]],z];
+        }else{
+          const a=[hubBox.x+hubBox.w,hubBox.y+hubBox.h*port],z=[b.x,b.y+b.h/2];
+          if(card.dataset.node==='memory'){const lane=a[0]+13,lower=Math.min(height-4,boxes.story.y+boxes.story.h+12),near=z[0]-13;points=[a,[lane,a[1]],[lane,lower],[near,lower],[near,z[1]],z];}
+          else if(card.dataset.node==='story'){const lane=(a[0]+z[0])/2;points=[a,[lane,a[1]],[lane,z[1]],z];}
+          else points=[a,[a[0]+22,a[1]],[z[0]-22,z[1]],z];
+        }
+      }else{
+        const lane=side==='left'?-10:width+10;
+        const a=side==='left'?[b.x,b.y+b.h/2]:[hubBox.x+hubBox.w,hubBox.y+hubBox.h*port];
+        const z=side==='left'?[hubBox.x,hubBox.y+hubBox.h*port]:[b.x+b.w,b.y+b.h/2];points=[a,[lane,a[1]],[lane,z[1]],z];
       }
-    }); lineContext.globalAlpha=1;
-    models.forEach(model => {
-      const {context,width:w,height:h,id,clouds,bitmap}=model;
-      context.setTransform(ratio,0,0,ratio,0,0); context.clearRect(0,0,w,h);
-      if (id === 'hub') { drawHub(model,time); return; }
-      if (id === 'fragment') { drawCloud(context,clouds[0],time,'fragment'); drawCloud(context,clouds[1],time,'voice'); return; }
-      if (id === 'dog' || id === 'ar' || id === 'story') drawCloud(context,clouds[0],time,id);
-      else {
-        paintCache(context,clouds[0],bitmap);
-        if (id === 'walk') mapPath(context,clouds[0],[[.14,.28],[.32,.48],[.45,.61],[.7,.54],[.86,.36]],time,accent);
-        else glowRoute(context,clouds[0],time);
-      }
+      return{id:card.dataset.node,side,points};
     });
   }
-  function resize() {
-    const rectangle=stage.getBoundingClientRect(); width=stage.clientWidth; height=stage.clientHeight;
-    ratio=Math.min(devicePixelRatio||1,1.5,4096/Math.max(1,width));
-    const styles=getComputedStyle(page), lightMode=document.documentElement.dataset.theme==='light';
-    ink=styles.getPropertyValue('--ink').trim(); line=lightMode?'#99988b':'#61665a'; accent=styles.getPropertyValue('--gogo-accent').trim(); flow=lightMode?'#194c55':'#a2dde1';
-    if(forced.matches){ink=styles.color;line=ink;accent=ink;flow=ink;}
-    palette=forced.matches?Array(16).fill(ink):(lightMode?light:dark);
-    lineCanvas.width=Math.round(width*ratio); lineCanvas.height=Math.round(height*ratio);
-    frames.forEach(outline);
-    const h=hub.getBoundingClientRect();hubBox={x:h.left-rectangle.left,y:h.top-rectangle.top,width:h.width,height:h.height};
-    links=cards.map((card,index) => {
-      const r=card.getBoundingClientRect(),side=card.dataset.side,x=r.left-rectangle.left,y=r.top-rectangle.top;
-      const port=.16+(index%4)*.22;
-      let start,end,c1,c2;
-      if (matchMedia('(min-width: 901px)').matches) {
-        start=side==='left'?{x:x+r.width,y:y+r.height/2}:{x:hubBox.x+hubBox.width,y:hubBox.y+hubBox.height*port};
-        end=side==='left'?{x:hubBox.x,y:hubBox.y+hubBox.height*port}:{x,y:y+r.height/2};
-        const bend=Math.max(22,Math.abs(end.x-start.x)*.5);
-        c1={x:start.x+bend,y:start.y};c2={x:end.x-bend,y:end.y};
-      } else {
-        const gutter=side==='left'?4:width-4;
-        start=side==='left'?{x:x+2,y:y+r.height/2}:{x:hubBox.x+hubBox.width-2,y:hubBox.y+hubBox.height*port};
-        end=side==='left'?{x:hubBox.x+2,y:hubBox.y+hubBox.height*port}:{x:x+r.width-2,y:y+r.height/2};
-        c1={x:gutter,y:start.y};c2={x:gutter,y:end.y};
-      }
-      const points=[start,c1,c2,end],length=Math.hypot(end.x-start.x,end.y-start.y),count=Math.max(6,Math.ceil(length/7));
-      return {id:card.dataset.node,side,curve:points,dots:Array.from({length:count+1},(_,i)=>curve(points,i/count))};
-    });
-    if (data) models=canvases.map(canvas => {
-      const context=canvas.getContext('2d'),w=canvas.clientWidth,h=canvas.clientHeight,id=canvas.dataset.dot;
-      canvas.width=Math.max(1,Math.round(w*ratio));canvas.height=Math.max(1,Math.round(h*ratio));
-      const boxes=id==='fragment'?(w<h*1.1?[{cx:w*.5,cy:h*.3,width:w*.84,height:h*.5},{cx:w*.5,cy:h*.78,width:w*.88,height:h*.23}]:[{cx:w*.26,cy:h*.5,width:w*.46,height:h*.83},{cx:w*.77,cy:h*.5,width:w*.38,height:h*.7}]):id==='hub'?[{cx:w*.5,cy:h*.77,width:w*.98,height:h*.43}]:[{cx:w*.5,cy:h*.5,width:w,height:h}];
-      const keys=id==='fragment'?['fragment','voice']:[id];
-      const clouds=keys.map((key,i)=>cloud(data[key],boxes[i],key));
-      return {context,id,width:w,height:h,clouds,bitmap:cache(clouds[0])};
-    });
-    sync();
+  function resize(){
+    const bounds=stage.getBoundingClientRect();width=stage.clientWidth;height=stage.clientHeight;ratio=Math.min(devicePixelRatio||1,1.5,4096/Math.max(1,width));
+    const styles=getComputedStyle(page),lightMode=document.documentElement.dataset.theme==='light';line=lightMode?'#778574':'#71806c';accent=styles.getPropertyValue('--gogo-accent').trim();flow=lightMode?'#195b6e':'#94e1e8';
+    palette=forced.matches?Array(16).fill(styles.color):(lightMode?light:dark);if(forced.matches){line=styles.color;accent=line;flow=line;}
+    linePad=matchMedia('(min-width:901px)').matches?0:12;lineCanvas.style.left=-linePad+'px';lineCanvas.style.right='auto';lineCanvas.style.width=(width+linePad*2)+'px';lineCanvas.width=Math.round((width+linePad*2)*ratio);lineCanvas.height=Math.round(height*ratio);frames.forEach(outline);
+    const rect=e=>{const r=e.getBoundingClientRect();return{x:r.left-bounds.left,y:r.top-bounds.top,w:r.width,h:r.height};};
+    hubBox=rect(hub);const boxes=Object.fromEntries(cards.map(e=>[e.dataset.node,rect(e)])),desktop=matchMedia('(min-width:901px)').matches;
+    links=connectors(boxes,hubBox,width,height,desktop);
+    if(data)models=canvases.map(makeModel);page.dataset.dotGrid='fixed';sync();
   }
-  function active() { return onScreen && shown && !document.hidden && !dialog?.open && (!host || host.classList.contains('on')); }
-  function tick(now) {
+  function active(){return onScreen&&shown&&!document.hidden&&!dialog?.open&&(!host||host.classList.contains('on'));}
+  function tick(now){
     frame=0;if(!active()||reduced.matches||forced.matches||!data)return;
-    if(!previous||now-previous>=1000/FPS){if(previous)elapsed+=Math.min(.12,(now-previous)/1000);previous=now;render(elapsed);}
-    frame=requestAnimationFrame(tick);
+    if(!previous||now-previous>=1000/FPS){if(previous)elapsed+=Math.min(.15,(now-previous)/1000);previous=now;render(elapsed);}frame=requestAnimationFrame(tick);
   }
-  function load() {
-    if(data||loading)return;loading=true;
-    fetch(sourceURL).then(response=>{if(!response.ok)throw Error('Dot assets unavailable');return response.json();}).then(result=>{
-      data=result.assets;page.dataset.dots='ready';resize();
-    }).catch(()=>{page.dataset.dots='unavailable';}).finally(()=>{loading=false;});
+  function load(){
+    if(data||loading)return;loading=true;fetch(sourceURL).then(r=>{if(!r.ok)throw Error('LED source unavailable');return r.json();}).then(result=>{data=result.assets;page.dataset.dots='ready';resize();}).catch(()=>{page.dataset.dots='unavailable';}).finally(()=>{loading=false;});
   }
-  function sync() {
-    cancelAnimationFrame(frame);frame=0;previous=0;
-    const visible=active();page.dataset.networkActive=visible?'true':'false';
-    page.dataset.networkMotion=!visible?'paused':!data?'loading':reduced.matches||forced.matches?'static':'running';
-    if(!visible)return;if(!data){load();return;}
-    render(reduced.matches || forced.matches ? .6 : elapsed);
-    if(!reduced.matches&&!forced.matches)frame=requestAnimationFrame(tick);
+  function sync(){
+    cancelAnimationFrame(frame);frame=0;previous=0;const visible=active();page.dataset.networkActive=visible?'true':'false';page.dataset.networkMotion=!visible?'paused':!data?'loading':reduced.matches||forced.matches?'static':'running';
+    if(!visible)return;if(!data){load();return;}render((reduced.matches||forced.matches) ? .6 : elapsed);if(!reduced.matches&&!forced.matches)frame=requestAnimationFrame(tick);
   }
-  function select() { cards.forEach(card=>card.setAttribute('aria-pressed',String(card.dataset.node===pinned)));if(active())render(reduced.matches || forced.matches ? .6 : elapsed); }
+  function select(){cards.forEach(e=>e.setAttribute('aria-pressed',String(e.dataset.node===pinned)));if(active())render((reduced.matches||forced.matches) ? .6 : elapsed);}
   cards.forEach(card=>{
-    card.addEventListener('pointerenter',()=>{hover=card.dataset.node;select();});
-    card.addEventListener('pointerleave',()=>{hover=null;select();});
-    card.addEventListener('focus',()=>{focus=card.dataset.node;select();});
-    card.addEventListener('blur',()=>{focus=null;select();});
-    card.addEventListener('click',()=>{pinned=pinned===card.dataset.node?null:card.dataset.node;select();});
+    card.addEventListener('pointerenter',()=>{hover=card.dataset.node;select();});card.addEventListener('pointerleave',()=>{hover=null;select();});
+    card.addEventListener('focus',()=>{focus=card.dataset.node;select();});card.addEventListener('blur',()=>{focus=null;select();});card.addEventListener('click',()=>{pinned=pinned===card.dataset.node?null:card.dataset.node;select();});
   });
-  page.addEventListener('keydown',event=>{if(event.key==='Escape'){pinned=null;select();}});
-  new IntersectionObserver(entries=>{onScreen=entries.some(entry=>entry.isIntersecting&&entry.intersectionRatio>=.01);sync();},{threshold:.01}).observe(page);
-  const observer=new ResizeObserver(resize);observer.observe(stage);canvases.forEach(canvas=>observer.observe(canvas));
+  page.addEventListener('keydown',e=>{if(e.key==='Escape'){pinned=null;select();}});
+  new IntersectionObserver(entries=>{onScreen=entries.some(e=>e.isIntersecting&&e.intersectionRatio>=.01);sync();},{threshold:.01}).observe(page);
+  const observer=new ResizeObserver(resize);observer.observe(stage);canvases.forEach(c=>observer.observe(c));
   new MutationObserver(resize).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
-  if(dialog)new MutationObserver(sync).observe(dialog,{attributes:true,attributeFilter:['open']});
-  if(host)new MutationObserver(sync).observe(host,{attributes:true,attributeFilter:['class']});
+  if(dialog)new MutationObserver(sync).observe(dialog,{attributes:true,attributeFilter:['open']});if(host)new MutationObserver(sync).observe(host,{attributes:true,attributeFilter:['class']});
   document.addEventListener('visibilitychange',sync);reduced.addEventListener('change',sync);forced.addEventListener('change',resize);
-  addEventListener('pagehide',()=>{shown=false;sync();});addEventListener('pageshow',()=>{shown=true;sync();});
-  document.fonts.ready.then(resize);resize();
+  addEventListener('pagehide',()=>{shown=false;sync();});addEventListener('pageshow',()=>{shown=true;sync();});document.fonts.ready.then(resize);resize();
 })();

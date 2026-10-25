@@ -17,9 +17,9 @@
 .gogo-dot-visual,.gogo-hub-visual{display:block;position:relative;min-height:0;min-width:0}
 .gogo-dot-visual canvas,.gogo-hub-visual canvas{display:block;position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .gogo-logic-card[data-node="walk"]{--x:1%;--y:8%;--w:22%;--h:25%}
-.gogo-logic-card[data-node="dog"]{--x:11%;--y:35%;--w:19%;--h:40%}
-.gogo-logic-card[data-node="ar"]{--x:1%;--y:77%;--w:25%;--h:20%}
-.gogo-logic-card[data-node="fragment"]{--x:28%;--y:2%;--w:10%;--h:30%}
+.gogo-logic-card[data-node="dog"]{--x:11%;--y:33%;--w:19%;--h:38%}
+.gogo-logic-card[data-node="ar"]{--x:1%;--y:75%;--w:25%;--h:24%}
+.gogo-logic-card[data-node="fragment"]{--x:26%;--y:2%;--w:12%;--h:30%}
 .gogo-logic-card[data-node="route"]{--x:72%;--y:4%;--w:18%;--h:34%}
 .gogo-logic-card[data-node="translation"]{--x:80%;--y:46%;--w:20%;--h:21%}
 .gogo-logic-card[data-node="story"]{--x:65%;--y:69%;--w:17%;--h:26%}
@@ -57,3 +57,6 @@ html[lang="en"] .gogo-hub-actor{font-size:12px}
  .gogo-logic-hub h4{font-size:20px}
  .gogo-hub-actor{font-size:13px}
 }
+
+.gogo-hub-era{position:absolute;left:5%;font-size:12px;line-height:1.2;color:var(--ink);pointer-events:none}
+.gogo-hub-modern{top:49%}.gogo-hub-ancient{top:75%}

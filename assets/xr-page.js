@@ -36,6 +36,8 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
   "设计思路": "Design Logic",
   "拾取文化线索与文化叙事重构": "Collecting clues and reconstructing a cultural narrative",
   "时空映射": "Mapping across time",
+  "现代路径": "Modern route",
+  "古代行程": "Ancient journey",
   "游客": "Visitor",
   "机器狗": "Robot dog",
   "行为数据 + 文化线索": "Behaviour data + Cultural clues",
