@@ -7,7 +7,7 @@ This folder contains the selected SVG files for the portfolio's Design Skills pa
 - `icons/`: 10 finished Widget/symbol/travel icons plus 33 Sudoku interface icons. The 33 interface copies use `#41403D` in place of `#000000`; their geometry is unchanged. These copies have `-41403d.svg` filenames and `inkNormalized: true` in the catalog. The source files are untouched.
 - `figma-settings-poster-group.svg`: the actual exported artwork group retained from the previous workflow illustration. The public page now uses the real editor recording below. The surrounding frame, ruler values and comparisons are illustrative, not a Figma recording or an iOS build capture.
 
-The page uses the SVGs directly, reserves image proportions and lazy-loads offscreen media. Both the artwork archive and icon library allow individual SVG downloads; the icon library also creates ZIPs locally from the selected SVGs.
+The page uses the SVGs directly, reserves image proportions and lazy-loads offscreen media. The public archive and icon library are presentation-only: visitors can filter, browse and enlarge the original vector previews. Asset export controls, selection tools and client-side ZIP generation are not included.
 
 Validate the catalog and payloads from the repository root:
 
@@ -21,4 +21,4 @@ Skill documentation: [BinG Design Skills](https://github.com/BinG200240412/bing-
 
 `video/figma-measurement-recording.mp4` captures the actual Figma editor for the Sudoku design file `DoF0k83XfjPwXxlDZl9rC9`: original layer bounds, a native red spacing ruler, and canvas zoom/navigation. It replaces the illustrative canvas in the public page. It is assembled from a continuous sequence of captured editor frames, preserving capture timing, and encoded as H.264 MP4. No simulated measurements or generated transitions are used. The page hides the native seek bar and provides only play/pause and replay.
 
-The icon display uses the original vector paths with a geometry-based square viewBox and theme colour; source downloads retain their original bytes.
+The icon display uses the original vector paths with a geometry-based square viewBox and theme colour. Source SVG files remain unchanged.

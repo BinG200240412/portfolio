@@ -12,7 +12,6 @@
   const viewer = document.getElementById('archive-viewer');
   const image = document.getElementById('archive-viewer-image');
   const title = document.getElementById('archive-viewer-title');
-  const download = document.getElementById('archive-download');
   const close = document.getElementById('archive-close');
   const prev = document.getElementById('archive-prev');
   const next = document.getElementById('archive-next');
@@ -49,7 +48,6 @@
     close.setAttribute('aria-label', tr('关闭预览', 'Close preview'));
     prev.setAttribute('aria-label', tr('上一张', 'Previous artwork'));
     next.setAttribute('aria-label', tr('下一张', 'Next artwork'));
-    download.textContent = tr('下载 SVG ↓', 'Download SVG ↓');
     filters.replaceChildren();
     ['all', ...Object.keys(categories).filter(key => key !== 'all' && entries.some(e => e.category === key))].forEach(key => {
       const button = document.createElement('button');
@@ -162,7 +160,6 @@
     current = index; const entry = visible[current];
     title.textContent = label(entry); image.src = entry.src; image.alt = label(entry);
     image.width = Math.round(entry.width); image.height = Math.round(entry.height);
-    download.href = entry.src; download.download = entry.filename || `${entry.id}.svg`;
     position.textContent = `${current + 1} / ${visible.length}`;
     prev.disabled = current === 0; next.disabled = current === visible.length - 1;
     viewer.scrollTop = 0;

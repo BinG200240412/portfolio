@@ -1,5 +1,5 @@
 window.PORTFOLIO_TRANSLATIONS = Object.assign({}, window.PORTFOLIO_TRANSLATIONS, {
-'BinG Design Skills：原生 SVG 版画档案、Figma 真实画布测量录屏与可选择下载的手绘图标库。':'BinG Design Skills: original SVG engravings, a real Figma editor measurement recording, and a downloadable handcut icon library.',
+'BinG Design Skills：原生 SVG 版画档案、Figma 真实画布测量录屏与可交互预览的手绘图标库。':'BinG Design Skills: original SVG engravings, a real Figma editor measurement recording, and interactive handcut icon previews.',
 '把反复做的事，':'The things we repeat,', '变成可复用的方法。':'made into reusable methods.',
 '从一张版画、一个界面、一枚图标出发。':'An engraving, an interface, an icon.', '看作品，也看它们如何被做出来。':'See the work, and how it is made.',
 'GitHub / 三个工作流':'GitHub / three workflows', '三个设计工作流':'Three design workflows',
@@ -23,12 +23,12 @@ window.PORTFOLIO_TRANSLATIONS = Object.assign({}, window.PORTFOLIO_TRANSLATIONS,
 '构建与截图比对':'Build & compare screenshots', '模拟器校验，逐项修正偏差。':'Verify in the simulator and correct each difference.',
 '留一点':'Keep a little', '手绘的不规则。':'hand-drawn irregularity.',
 '保留每一个轮廓的轻微歪扭，让图形自然融入页面。':'Keep the subtle irregularities, and let each shape belong to the page.',
-'点击图标细看，也可以选几枚，带走原始 SVG。':'Open an icon to inspect it, or choose a few SVGs to take with you.',
+'点击图标，放大查看原始矢量轮廓。':'Open an icon to inspect its original vector paths.',
 '查看面型图标 Skill':'Explore the handcut icon Skill',
 '确定主体':'Define the subject', '用少量块面表达核心含义。':'Express the idea with a few solid shapes.',
 '形成手绘轮廓':'Draw the contours', '保留弯曲、参差与不对称。':'Keep the curves, unevenness and asymmetry.',
 '描摹与精确填色':'Trace & set the colour', '#41403D，透明底，真实路径。':'#41403D, transparent backgrounds, real vector paths.',
 '缩小检查与交付':'Check small & deliver', '检查孔洞、边缘与小尺寸辨识。':'Check gaps, edges and recognition at small sizes.',
 '方法可以复用，':'Methods can be shared.', '判断留给自己。':'Judgment stays your own.',
-'下载三个 Skills':'Download the three Skills', '内容与来源说明 ↗':'Content & provenance ↗', '返回作品集 ↖':'Back to works ↖'
+'内容与来源说明 ↗':'Content & provenance ↗', '返回作品集 ↖':'Back to works ↖'
 });

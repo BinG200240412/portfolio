@@ -1,10 +1,10 @@
-/* Original source images stay individually addressable and work without JS. */
+/* Source images are displayed in the case and its viewer, without file links. */
 (() => {
   'use strict';
   // Re-align a direct chapter link once fonts settle. Leave scrolling alone
   // as soon as the reader interacts with the page.
   const hash = location.hash;
-  const target = hash && document.getElementById(hash.slice(1));
+  const target = hash ? document.getElementById(hash.slice(1)) : null;
   if (target?.matches('.q-panel')) {
     let interacted = false;
     const cancel = () => { interacted = true; };
@@ -22,34 +22,33 @@
   }
   const dialog = document.getElementById('qianli-viewer');
   if (!dialog || typeof dialog.showModal !== 'function') return;
-  const links = [...document.querySelectorAll('a.q-image')];
+  const previews = [...document.querySelectorAll('button.q-image[data-image]')];
   const image = dialog.querySelector('.q-viewer-content img');
   const caption = dialog.querySelector('#q-viewer-caption');
   // The original study is a vector asset, with an English text derivative.
-  const study = document.querySelector('a[href$="/tonality-study.svg"]');
+  const study = document.querySelector('button.q-image[data-image$="/tonality-study.svg"]');
   function language() {
     if (study) {
       const name = window.PortfolioI18n?.language === 'en' ? 'tonality-study-en.svg' : 'tonality-study.svg';
       const url = new URL('../assets/works/qianli/case/' + name, document.baseURI).href;
-      if (study.href !== url) study.href = url;
+      if (study.dataset.image !== url) study.dataset.image = url;
       if (study.querySelector('img').src !== url) study.querySelector('img').src = url;
     }
     if (dialog.open) show(current);
   }
   let current = 0, opener, savedOverflow;
   function show(index) {
-    current = (index + links.length) % links.length;
-    const link = links[current];
-    const label = link.getAttribute('data-caption') || link.querySelector('img').alt;
-    image.src = link.href;
+    current = (index + previews.length) % previews.length;
+    const preview = previews[current];
+    const label = preview.getAttribute('data-caption') || preview.querySelector('img').alt;
+    image.src = preview.dataset.image;
     image.alt = label;
-    image.classList.toggle('q-on-paper', Boolean(link.closest('.q-paper')));
+    image.classList.toggle('q-on-paper', Boolean(preview.closest('.q-paper')));
     caption.textContent = label;
   }
-  links.forEach((link, index) => link.addEventListener('click', event => {
-    if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  previews.forEach((preview, index) => preview.addEventListener('click', event => {
     event.preventDefault();
-    opener = link;
+    opener = preview;
     show(index);
     savedOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';

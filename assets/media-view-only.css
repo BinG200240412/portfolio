@@ -1,0 +1,9 @@
+/* Restrict media save gestures without changing text, controls or page layout. */
+img,picture,svg,canvas,video,audio,[data-media-zoomable] {
+  -webkit-touch-callout:none;
+  -webkit-user-drag:none;
+}
+img,picture,svg,canvas {
+  -webkit-user-select:none;
+  user-select:none;
+}

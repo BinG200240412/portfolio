@@ -53,13 +53,6 @@
     text-transform:uppercase;display:flex;gap:8px 18px;flex-wrap:wrap}
   .mid .meta span{display:inline-flex;align-items:center;gap:8px}
   .mid .meta span::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--accent)}
-  .dl{flex:0 0 auto;display:inline-flex;align-items:center;gap:11px;
-    font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#0d0d0b;
-    background:var(--accent);border-radius:30px;padding:13px 22px;cursor:pointer;white-space:nowrap;
-    transition:transform .2s ease,background .2s ease,box-shadow .2s ease;
-    box-shadow:0 6px 24px -10px rgba(205,187,142,.6)}
-  .dl:hover{background:#e3d4ac;transform:translateY(-1px);box-shadow:0 10px 30px -10px rgba(205,187,142,.7)}
-  .dl svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7}
 
   footer{margin-top:auto;border-top:1px solid var(--line);padding:26px 0 50px;
     font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--faint);text-transform:uppercase;
@@ -68,7 +61,6 @@
   @media(max-width:640px){
     .item{flex-wrap:wrap;gap:14px}
     .yr{min-width:auto}
-    .dl{width:100%;justify-content:center}
   }
 </style>
 <link rel="stylesheet" href="../assets/theme.css?v=language-ink-20261025">
@@ -78,6 +70,8 @@
 <script defer src="../assets/page-snap.js?v=site-layout-20261025"></script>
 <link rel="stylesheet" href="../assets/media-corners.css?v=diagonal-round-cuts-20261026">
 <script defer src="../assets/media-corners.js?v=deeper-selected-cuts-20261026"></script>
+<link rel="stylesheet" href="../assets/media-view-only.css?v=view-only-media-20261026">
+<script defer src="../assets/media-view-only.js?v=view-only-media-20261026"></script>
 </head>
 <body class="legacy-case archive">
 <div class="wrap">
@@ -95,22 +89,16 @@
       <div class="yr">2024</div>
       <div class="mid">
         <div class="ti">作品集 · 2024</div>
-        <div class="meta"><span>PDF</span><span>92 页</span><span>23.5 MB</span></div>
+        <div class="meta"><span>PDF</span><span>92 页</span></div>
       </div>
-      <a class="dl" href="../assets/works/more/portfolio-2024.pdf" download="蔡正阳-作品集2024.pdf">
-        <svg viewBox="0 0 24 24"><path d="M12 3v12M7.5 10.5 12 15l4.5-4.5"/><path d="M5 19h14"/></svg>下载
-      </a>
     </div>
 
     <div class="item">
       <div class="yr">2025</div>
       <div class="mid">
         <div class="ti">作品集 · 2025</div>
-        <div class="meta"><span>PDF</span><span>29 页</span><span>13.6 MB</span></div>
+        <div class="meta"><span>PDF</span><span>29 页</span></div>
       </div>
-      <a class="dl" href="../assets/works/more/portfolio-2025.pdf" download="蔡正阳-作品集2025.pdf">
-        <svg viewBox="0 0 24 24"><path d="M12 3v12M7.5 10.5 12 15l4.5-4.5"/><path d="M5 19h14"/></svg>下载
-      </a>
     </div>
   </section>
 

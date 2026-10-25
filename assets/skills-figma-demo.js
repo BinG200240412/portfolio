@@ -8,12 +8,12 @@
   let language = window.PortfolioI18n?.language === 'en' ? 'en' : 'zh';
   let userPaused = reduced.matches, visible = false;
   const words = {
-    zh: {label:'Figma / 实际操作录屏',source:'打开原始画板 ↗',pause:'暂停',play:'播放录屏',replay:'重播',title:'真实画布中的缩放与间距测量',note:'缩放画布 → 选择原始图层 → 查看 Figma 原生尺寸与间距。',caption:'数独界面 / 原生标尺与图层边界',error:'录屏暂时未载入，请刷新重试。'},
-    en: {label:'Figma / editor recording',source:'Open the original canvas ↗',pause:'Pause',play:'Play recording',replay:'Replay',title:'Zooming and measuring in the real canvas',note:'Zoom the canvas → select original layers → read Figma’s native dimensions and spacing.',caption:'Sudoku interface / native rulers and layer bounds',error:'The recording could not load. Please refresh.'}
+    zh: {label:'Figma / 实际操作录屏',pause:'暂停',play:'播放录屏',replay:'重播',title:'真实画布中的缩放与间距测量',note:'缩放画布 → 选择原始图层 → 查看 Figma 原生尺寸与间距。',caption:'数独界面 / 原生标尺与图层边界',error:'录屏暂时未载入，请刷新重试。'},
+    en: {label:'Figma / editor recording',pause:'Pause',play:'Play recording',replay:'Replay',title:'Zooming and measuring in the real canvas',note:'Zoom the canvas → select original layers → read Figma’s native dimensions and spacing.',caption:'Sudoku interface / native rulers and layer bounds',error:'The recording could not load. Please refresh.'}
   };
   const t = () => words[language];
   host.className = 'fg-recording';
-  host.innerHTML = `<div class="fg-recording-head"><span class="fg-recording-label"></span><a class="fg-recording-source" href="https://www.figma.com/design/DoF0k83XfjPwXxlDZl9rC9/2026作品集?node-id=3389-144465" target="_blank" rel="noopener noreferrer"></a></div><div class="fg-recording-stage"><video class="fg-recording-video" muted loop playsinline preload="metadata" disablepictureinpicture></video></div><div class="fg-recording-foot"><p class="fg-recording-caption"></p><div class="fg-recording-actions"><button class="fg-recording-replay" type="button"></button><button class="fg-recording-toggle" type="button"></button></div></div><p class="fg-recording-note"></p><p class="fg-recording-error" role="status" hidden></p>`;
+  host.innerHTML = `<div class="fg-recording-head"><span class="fg-recording-label"></span></div><div class="fg-recording-stage"><video class="fg-recording-video" muted loop playsinline preload="metadata" controlslist="nodownload" disablepictureinpicture></video></div><div class="fg-recording-foot"><p class="fg-recording-caption"></p><div class="fg-recording-actions"><button class="fg-recording-replay" type="button"></button><button class="fg-recording-toggle" type="button"></button></div></div><p class="fg-recording-note"></p><p class="fg-recording-error" role="status" hidden></p>`;
   const $ = selector => host.querySelector(selector);
   const video = $('.fg-recording-video');
   const toggle = $('.fg-recording-toggle');
@@ -24,7 +24,6 @@
   video.controls = false;
   function updateCopy() {
     $('.fg-recording-label').textContent = t().label;
-    $('.fg-recording-source').textContent = t().source;
     $('.fg-recording-caption').textContent = t().caption;
     $('.fg-recording-note').textContent = t().note;
     $('.fg-recording-replay').textContent = t().replay;
