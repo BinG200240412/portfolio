@@ -6,6 +6,7 @@
   if(!root||root.dataset.interactionReady)return;
   root.setAttribute('data-i18n-ignore','');root.setAttribute('data-media-corners-ignore','');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)'),forced=matchMedia('(forced-colors: active)');
+  const rowViewport=matchMedia('(min-width: 721px)');
   const dialog=document.getElementById('gogo-lightbox');
   let host=null,shown=true,frame=0,previous=0,lastAnnouncement=null;
   try{host=window.frameElement?.closest('#section')||null;}catch(_){}
@@ -26,13 +27,13 @@
   };
   const smallDog=pose=>`<svg viewBox="0 0 40 30" aria-hidden="true"><path d="${pose==='crouch'?'M6 13h22l5 4v4h-5l-3-3H11l-4 5H3l3-8Z':pose==='bow'?'M5 6h12l12 9 5 1v5h-6l-3-3-8-5-5 1-3 11H5l1-13Z':'M5 7h24l6 3v7h-6l-2-4H11L8 26H4l1-15Zm18 7h5l3 12h-5Z'}"/></svg>`;
   const dog=`<ellipse class="gin-floor" cx="202" cy="171" rx="91" ry="9"/><g class="gin-dog"><g class="gin-far-leg"><path class="gin-dog-limb" data-leg="rearFar"/><path class="gin-dog-limb" data-leg="frontFar"/></g><path class="gin-tail"/><path class="gin-dog-body"/><path class="gin-dog-limb" data-leg="rear"/><path class="gin-dog-limb" data-leg="front"/><circle class="gin-dog-joint" data-joint="rear" r="3"/><circle class="gin-dog-joint" data-joint="front" r="3"/><g class="gin-dog-head"><rect width="37" height="27" rx="7"/><rect class="gin-dog-eye" x="23" y="5" width="9" height="17" rx="3"/><circle class="gin-indicator" cx="27.5" cy="10" r="2"/></g></g>`;
-  const controller=`<g transform="translate(91 241) rotate(-17)"><path class="gin-controller" d="M-18-1C-23 19-18 48-12 74Q-9 86 2 83L17 78Q26 74 22 62L13 9Z"/><ellipse class="gin-controller-face" cx="0" cy="0" rx="42" ry="28"/><path class="gin-controller" fill-rule="evenodd" d="M-47-9C-45-34 40-34 47-9L42 6C31-10-31-12-42 7ZM-36-10C-25-22 27-22 36-10C20-18-21-18-36-10Z"/><ellipse class="gin-controller-detail" cx="-12" cy="-3" rx="10" ry="8"/><circle class="gin-controller-detail" cx="12" cy="4" r="4"/><circle class="gin-controller-detail" cx="21" cy="-7" r="4"/><path class="gin-controller-detail" d="M-7 29h5v28h-5z" opacity=".3"/></g><path class="gin-link" d="M148 247H184"/><path class="gin-arrow" d="m184 247-7-4v8Z"/>`;
+  const controller=`<g class="gin-handset" transform="translate(91 241) rotate(-17)"><path class="gin-controller" d="M-18-1C-23 19-18 48-12 74Q-9 86 2 83L17 78Q26 74 22 62L13 9Z"/><ellipse class="gin-controller-face" cx="0" cy="0" rx="42" ry="28"/><path class="gin-controller" fill-rule="evenodd" d="M-47-9C-45-34 40-34 47-9L42 6C31-10-31-12-42 7ZM-36-10C-25-22 27-22 36-10C20-18-21-18-36-10Z"/><ellipse class="gin-controller-detail" cx="-12" cy="-3" rx="10" ry="8"/><circle class="gin-controller-detail" cx="12" cy="4" r="4"/><circle class="gin-controller-detail" cx="21" cy="-7" r="4"/><path class="gin-controller-detail" d="M-7 29h5v28h-5z" opacity=".3"/></g><path class="gin-link" d="M148 247H184"/><path class="gin-arrow" d="m184 247-7-4v8Z"/>`;
   function buttons(kind){
     if(kind==='init')return `<button type="button" class="gin-control gin-power" data-action="power" data-label="power" aria-pressed="false"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M14 4v10M8.5 7.8a9 9 0 1 0 11 0"/></svg></button>`;
     if(kind==='move')return ['up','right','down','left'].map(direction=>`<button type="button" class="gin-control gin-${direction}" data-action="move" data-direction="${direction}" data-label="${direction}">${arrow(direction)}</button>`).join('')+'<span class="gin-pad-dot" aria-hidden="true"></span>';
     return ['stand','crouch','bow'].map(pose=>`<button type="button" class="gin-control gin-pose-control gin-pose-${pose}" data-action="pose" data-pose="${pose}" data-label="${pose}" aria-pressed="${pose==='stand'}">${smallDog(pose)}</button>`).join('');
   }
-  root.innerHTML=['init','move','pose'].map(kind=>`<section class="gin-demo" data-demo="${kind}" role="group"><div class="gin-scene"><svg class="gin-art" viewBox="0 0 420 360" aria-hidden="true" focusable="false">${dog}${controller}</svg><div class="gin-pad">${buttons(kind)}</div></div><h4 class="gin-title" data-title="${kind}"></h4></section>`).join('')+'<span class="gin-status" role="status" aria-live="polite"></span>';
+  root.innerHTML=['init','move','pose'].map(kind=>`<section class="gin-demo" data-demo="${kind}" role="group"><div class="gin-scene"><svg class="gin-art gin-dog-art" viewBox="0 0 420 360" aria-hidden="true" focusable="false">${dog}</svg><svg class="gin-art gin-handset-art" viewBox="0 0 420 360" aria-hidden="true" focusable="false">${controller}</svg><div class="gin-pad">${buttons(kind)}</div></div><h4 class="gin-title" data-title="${kind}"></h4></section>`).join('')+'<span class="gin-status" role="status" aria-live="polite"></span>';
   const status=root.querySelector('.gin-status');
   const models=Array.from(root.querySelectorAll('.gin-demo')).map(element=>({
     element,kind:element.dataset.demo,dog:element.querySelector('.gin-dog'),body:element.querySelector('.gin-dog-body'),head:element.querySelector('.gin-dog-head'),tail:element.querySelector('.gin-tail'),
@@ -40,6 +41,15 @@
     current:{...poses[element.dataset.demo==='init'?'crouch':'stand'],x:0,y:0},motion:null,visible:false,initialized:false,position:{x:0,y:0},pose:'stand'
   }));
   const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+  function layout(){
+    const rows=rowViewport.matches&&!!root.closest('.gogo-experience-pair');
+    root.dataset.interactionLayout=rows?'rows':'scenes';
+    models.forEach(model=>{
+      model.element.querySelector('.gin-dog-art').setAttribute('viewBox',rows?'50 45 300 145':'0 0 420 360');
+      model.element.querySelector('.gin-handset-art').setAttribute('viewBox',rows?'-58 -44 132 148':'0 0 420 360');
+      model.element.querySelector('.gin-handset').setAttribute('transform',rows?'rotate(-17)':'translate(91 241) rotate(-17)');
+    });
+  }
   function active(model){return model.visible&&shown&&!document.hidden&&!dialog?.open&&(!host||host.classList.contains('on'));}
   function announce(key){lastAnnouncement=key;status.textContent=text()[key];}
   function render(model,stride=0){
@@ -120,6 +130,7 @@
   if(host)new MutationObserver(sync).observe(host,{attributes:true,attributeFilter:['class']});
   new MutationObserver(language).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
   document.addEventListener('visibilitychange',sync);reduced.addEventListener('change',sync);forced.addEventListener('change',sync);
+  rowViewport.addEventListener('change',layout);
   addEventListener('portfolio:language',language);addEventListener('pagehide',()=>{shown=false;sync();});addEventListener('pageshow',()=>{shown=true;sync();});
-  root.dataset.interactionReady='true';root.dataset.interactionMotion='idle';language();
+  root.dataset.interactionReady='true';root.dataset.interactionMotion='idle';layout();language();
 })();
