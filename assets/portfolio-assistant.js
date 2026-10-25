@@ -15,26 +15,32 @@
   popup.setAttribute('role','dialog');popup.setAttribute('aria-modal','false');
   popup.setAttribute('aria-describedby','pa-status');
   popup.setAttribute('data-i18n-ignore','');popup.setAttribute('aria-hidden','true');
-  popup.dataset.open='false';popup.dataset.suspended=String(document.hidden);popup.inert=true;
+  popup.dataset.open='false';popup.dataset.voiceExpanded='false';popup.dataset.suspended=String(document.hidden);popup.inert=true;
   popup.innerHTML=`<div class="pa-window">
-    <div class="pa-top"><svg class="pa-wave" viewBox="0 0 112 36" aria-hidden="true" focusable="false">${waveform}</svg><button class="pa-close" type="button"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m5 5 10 10M15 5 5 15"/></svg></button></div>
     <div class="pa-history" hidden><div class="pa-log" role="log" aria-live="polite" aria-relevant="additions"></div><p class="pa-notice" role="status" hidden></p></div>
-    <form class="pa-form"><textarea class="pa-input" rows="1" maxlength="3000"></textarea><button class="pa-send" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 19V5m-5 5 5-5 5 5"/></svg></button></form>
+    <div class="pa-voice-panel" id="pa-voice-panel" aria-hidden="true"><div class="pa-voice-inner"><svg class="pa-wave" viewBox="0 0 112 36" aria-hidden="true" focusable="false">${waveform}</svg></div></div>
+    <form class="pa-form">
+      <button class="pa-voice-toggle" type="button" aria-controls="pa-voice-panel" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M6 11v1a6 6 0 0 0 12 0v-1M12 18v3m-3 0h6"/></svg></button>
+      <textarea class="pa-input" rows="1" maxlength="3000"></textarea>
+      <button class="pa-send" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 19V5m-5 5 5-5 5 5"/></svg></button>
+      <button class="pa-close" type="button"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m5 5 10 10M15 5 5 15"/></svg></button>
+    </form>
     <span class="pa-status" id="pa-status" role="status"></span>
   </div>`;
   document.body.appendChild(popup);
   const find=selector=>popup.querySelector(selector),dot=()=>document.getElementById('dot');
   const input=find('.pa-input'),sendButton=find('.pa-send'),closeButton=find('.pa-close');
+  const voiceButton=find('.pa-voice-toggle');
   const history=find('.pa-history'),log=find('.pa-log'),notice=find('.pa-notice');
   const status=find('.pa-status'),messages=[];
-  let opened=false,busy=false,controller=null,generation=0,returnFocus=null;
+  let opened=false,voiceExpanded=false,busy=false,controller=null,generation=0,returnFocus=null;
   let feedback='',navigationMode=null;
   const copy={
     zh:{title:'关于我的对话',close:'关闭对话',preview:'AI 尚未连接',ready:'可以提问',pending:'等待回复…',
-      placeholder:'输入问题',send:'发送',
+      placeholder:'你想问我什么？',send:'发送',voiceOpen:'展开语音面板',voiceClose:'收起语音面板',
       offline:'尚未接入',error:'暂时无法回复，请稍后再试。'},
     en:{title:'Ask about me',close:'Close conversation',preview:'AI is not connected',ready:'Ready for a question',pending:'Waiting for a reply…',
-      placeholder:'Your message',send:'Send',
+      placeholder:'Ask me a question',send:'Send',voiceOpen:'Expand voice panel',voiceClose:'Collapse voice panel',
       offline:'Not connected',error:'A reply is unavailable. Please try again later.'},
   };
   const language=()=>window.PortfolioI18n?.language==='en'||document.documentElement.lang==='en'?'en':'zh';
@@ -44,7 +50,10 @@
     const t=text();popup.setAttribute('aria-label',t.title);
     status.textContent=busy?t.pending:configured()?t.ready:t.preview;
     closeButton.setAttribute('aria-label',t.close);
-    input.placeholder='';input.setAttribute('aria-label',t.placeholder);
+    input.placeholder=t.placeholder;input.setAttribute('aria-label',t.placeholder);
+    popup.dataset.voiceExpanded=String(voiceExpanded);
+    voiceButton.setAttribute('aria-expanded',String(voiceExpanded));
+    voiceButton.setAttribute('aria-label',voiceExpanded?t.voiceClose:t.voiceOpen);
     sendButton.setAttribute('aria-label',t.send);sendButton.disabled=busy||!input.value.trim();
     popup.classList.toggle('is-pending',busy);popup.setAttribute('aria-busy',String(busy));
     const hasHistory=messages.length>0||!!feedback;
@@ -65,7 +74,7 @@
     input.style.height='auto';input.style.height=`${Math.min(maxHeight,Math.max(48,input.scrollHeight))}px`;
   }
   function abort() {generation++;controller?.abort();controller=null;busy=false;}
-  function clear() {abort();messages.length=0;feedback='';render();if(opened)input.focus({preventScroll:true});}
+  function clear() {abort();messages.length=0;feedback='';voiceExpanded=false;render();if(opened)input.focus({preventScroll:true});}
   async function submit() {
     const content=input.value.trim();if(!opened||busy||!content)return;
     if(!configured()){feedback='offline';render();return;}
@@ -115,7 +124,7 @@
   function close(options={}) {
     if(!opened)return;
     const focusedInside=popup.contains(document.activeElement);
-    opened=false;abort();popup.dataset.open='false';popup.classList.remove('is-visible');
+    opened=false;voiceExpanded=false;abort();popup.dataset.open='false';popup.classList.remove('is-visible');
     popup.inert=true;popup.setAttribute('aria-hidden','true');announce(false);
     if(options?.restoreFocus!==false&&focusedInside) {
       const target=returnFocus?.isConnected&&!returnFocus.closest('[inert]')?returnFocus:dot();
@@ -130,6 +139,11 @@
     close({restoreFocus:false});
   }
   closeButton.addEventListener('click',()=>close());
+  // This is the voice UI preview; capture and transport are not connected yet.
+  voiceButton.addEventListener('click',()=>{
+    if(!opened)return;
+    voiceExpanded=!voiceExpanded;update();position();
+  });
   find('.pa-form').addEventListener('submit',event=>{event.preventDefault();submit();});
   input.addEventListener('input',()=>{resizeInput();sendButton.disabled=busy||!input.value.trim();});
   popup.addEventListener('keydown',event=>{
