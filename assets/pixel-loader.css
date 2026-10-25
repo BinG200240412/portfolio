@@ -1,4 +1,4 @@
-/* Shared loading mark: four full, stepped blades rather than a line spinner. */
+/* Shared loading mark: full fan blades formed from uniform round LEDs. */
 .pixel-loader {
   --pixel-loader-size: 56px;
   --pixel-loader-speed: 1.28s;
@@ -26,12 +26,29 @@
   animation: pixel-loader-turn var(--pixel-loader-speed) steps(16, end) infinite;
 }
 
+/* Keep status announcements available without a visible loading caption. */
 .pixel-loader__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pixel-loader[data-loading-state="error"] .pixel-loader__label {
+  position: static;
+  width: auto;
+  height: auto;
   margin: 0;
+  overflow: visible;
+  clip-path: none;
+  white-space: normal;
   font-size: 15px;
   line-height: 1.5;
-  letter-spacing: .025em;
-  opacity: 1;
 }
 
 .project-loading-gate {

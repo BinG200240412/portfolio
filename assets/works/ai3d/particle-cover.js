@@ -6,7 +6,6 @@
   const canvas = root.querySelector('canvas');
   const status = root.querySelector('[data-cover-status]');
   const statusLabel = status.querySelector('[data-cover-label]');
-  const progressLabel = status.querySelector('[data-cover-progress]');
   const retry = status.querySelector('[data-cover-retry]');
   window.PortfolioLoading?.mount(status);
   const assetURL = new URL('liangzhu-village.ply', document.currentScript.src);
@@ -49,7 +48,6 @@
     canvas.setAttribute('aria-busy', String(!failed));
     canvas.dataset.ready = 'false';
     retry.hidden = !failed;
-    if (key !== 'loading') progressLabel.textContent = '';
     syncLabels();
     notifyParent(failed ? 'error' : 'loading');
   }
@@ -328,7 +326,7 @@
     const current = ++generation;
     controller?.abort(); controller = new AbortController();
     ready = false; presented = false; points = null; suspend(); disposeGPU();
-    setStatus('loading'); progressLabel.textContent = '';
+    setStatus('loading');
     try {
       const response = await fetch(assetURL, { signal: controller.signal });
       if (!response.ok) throw new Error(`PLY request failed: ${response.status}`);
@@ -343,7 +341,6 @@
           if (current !== generation) { await reader.cancel(); return; }
           if (done) break;
           chunks.push(value); received += value.byteLength;
-          progressLabel.textContent = `${Math.min(100, Math.floor(received / total * 100))}%`;
         }
         const bytes = new Uint8Array(received); let offset = 0;
         chunks.forEach(chunk => { bytes.set(chunk, offset); offset += chunk.byteLength; });

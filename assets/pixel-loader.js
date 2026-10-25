@@ -2,7 +2,29 @@
   'use strict';
 
   const svgNS = 'http://www.w3.org/2000/svg';
-  const blade = 'M20 18H18V12H20V8H22V4H26V2H30V4H34V8H36V12H34V14H30V16H24V18H22V20H20Z';
+  // One shared 2-unit grid keeps every fan bead the same size and spacing.
+  const fanRows = [
+    '....................',
+    '.............##.....',
+    '....##.....######...',
+    '..#####....######...',
+    '..#####...########..',
+    '.#######..########..',
+    '.#######.########...',
+    '..######.######.....',
+    '..##########........',
+    '....##########......',
+    '......##########....',
+    '........##########..',
+    '.....######.######..',
+    '...########.#######.',
+    '..########..#######.',
+    '..########...#####..',
+    '...######....#####..',
+    '...######.....##....',
+    '.....##.............',
+    '....................',
+  ];
 
   function fan() {
     const svg = document.createElementNS(svgNS, 'svg');
@@ -10,15 +32,16 @@
     svg.setAttribute('viewBox', '0 0 40 40');
     svg.setAttribute('fill', 'currentColor');
     svg.setAttribute('aria-hidden', 'true');
-    for (let angle = 0; angle < 360; angle += 90) {
-      const path = document.createElementNS(svgNS, 'path');
-      path.setAttribute('d', blade);
-      if (angle) path.setAttribute('transform', `rotate(${angle} 20 20)`);
-      svg.appendChild(path);
-    }
-    const hub = document.createElementNS(svgNS, 'path');
-    hub.setAttribute('d', 'M18 18H22V22H18Z');
-    svg.appendChild(hub);
+    fanRows.forEach((row, y) => {
+      [...row].forEach((cell, x) => {
+        if (cell !== '#') return;
+        const bead = document.createElementNS(svgNS, 'circle');
+        bead.setAttribute('cx', String(1 + x * 2));
+        bead.setAttribute('cy', String(1 + y * 2));
+        bead.setAttribute('r', '0.65');
+        svg.appendChild(bead);
+      });
+    });
     return svg;
   }
 
