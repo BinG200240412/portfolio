@@ -62,3 +62,7 @@ Apple 官方 [App Store 页面](https://apps.apple.com/cn/app/sudoku-2026/id6775
 2026-10-25：`iphone-duo-studio-base.png` 是按用户要求使用内置 imagegen 生成的白底双机产品场景，1254 × 1254。它是生成的机身与光影底图，不是官方 Apple 实拍照片；图中屏幕留白。提示词、四角映射及遮挡路径记录在 `docs/sudoku-mockup-production.md`。
 
 网页以独立图层将原始 `board.png` 与 `coach.png` 映射到两块屏幕；截图不交给图像模型重画，源文件未修改。`assets/sudoku-product-scene.js` 使用四点单应映射、屏幕轮廓裁剪与前机机壳遮挡，整组场景按比例缩放；放大时仍复用这套完整场景。第三部分分析图继续使用官方正视机身。
+
+### 黑色机身版本
+
+2026-10-25：按用户选择，将初始蓝色机身通过内置 imagegen 定向改色为中性黑色，保存为 `iphone-duo-studio-black.png`，1254 × 1254。保留原构图、四角映射、机壳遮挡和独立 App 截图图层。原蓝色底图保留为制作源。分析图、辅导及原图放大的正视机身使用仅作用于硬件伪元素的 CSS 去色与轻微压暗，官方原 PNG 和屏幕内容不修改。

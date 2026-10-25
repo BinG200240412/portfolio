@@ -4,7 +4,8 @@
 
 ## 交付资产
 
-- 白底双机底图：`assets/works/sudoku/iphone-duo-studio-base.png`，1254 × 1254，保留生成的原始 PNG。
+- 当前黑色双机底图：`assets/works/sudoku/iphone-duo-studio-black.png`，1254 × 1254；仅调整机身为中性黑色。
+- 初始蓝色底图：`assets/works/sudoku/iphone-duo-studio-base.png`，1254 × 1254，作为制作源保留。
 - 原始前屏：`assets/works/sudoku/board.png`，1320 × 2868。
 - 原始后屏：`assets/works/sudoku/coach.png`，1320 × 2868。
 - 可编辑贴屏与遮挡：`assets/sudoku-product-scene.js`、`assets/sudoku-character.css`，消费入口 `sections/sudoku.html#character`。
@@ -25,3 +26,9 @@ back:  [[643,47], [1045,73], [979,1035], [577,986]]
 ## 最终生成提示词
 
 Use case: product-mockup. Create one square, high resolution, photorealistic premium smartphone product photograph to serve as a website mockup base. Pure white seamless studio background (#ffffff), very soft natural grounded shadows. Exactly two realistic modern Apple iPhone Pro Max phones with deep blue metal chassis, portrait orientation, both displays facing the viewer. One phone is in the front at the lower left, the second is behind at the upper right, with a slight spatial overlap (about 10 percent of the rear phone), making their front-to-back depth unambiguous. Coherent single camera, telephoto product-photography perspective; accurate rigid rectangular planes, consistent thickness and physically correct camera perspective, no warped or bent screens. Front phone only slightly turned 8 degrees to camera and leaning about 5 degrees counterclockwise; rear phone slightly turned the other way 12 degrees and leaning about 4 degrees clockwise. Keep both full displays clearly visible, rear lower panel not substantially hidden. Fill most of the square frame with the two phones but leave 8 percent margin on all sides. Each display is a completely blank uniform matte white placeholder within a thin black bezel, with a realistic centered black Dynamic Island pill at the top. Standard iPhone screen proportions approximately 1320 by 2868; keep the display edges and four corner positions crisp and easy to map for later exact screenshot compositing. No text, no UI, no digits, no wallpaper, no lettering, no logos, no captions. Restrained high-end commercial hardware photography, soft key light from upper left and gentle rim highlights. No dramatic glare obscuring screen edges. No extra devices, no hands, no cables, no props. The white blank displays will be replaced later with real screenshots, so leave them absolutely empty.
+
+## 黑色机身修改提示词
+
+仍使用内置 imagegen 编辑初始底图；画布、屏幕四角与遮挡路径保持不变，截图继续按原坐标贴入。普通分析图与原图放大中的官方机身仅在 CSS 硬件伪元素上使用 grayscale(1) brightness(.9)，不处理 App 截图。
+
+Use case: precise-object-edit. Recolor this exact existing product photograph only. Change BOTH phones' deep blue metal chassis, rims and side buttons to neutral pure black / black titanium. No blue or cool blue tint should remain on the hardware. Keep realistic black-metal highlights and subtle grey specular reflections so the phones retain believable volume; do not turn the bodies into flat silhouettes. Invariants: preserve the entire photograph's geometry pixel-for-pixel as closely as possible: same 1254 by 1254 square canvas, identical positions, sizes, angles, front-to-back overlap, exact screen edges and rounded-corner boundaries, black Dynamic Islands, all side buttons, white blank screens, white background, shadows, lighting, crop and camera. The screen surfaces must remain completely blank white, no UI, no text, no extra marks. These exact display quadrilaterals are already mapped for separate real screenshot overlays, so do not alter or regenerate any contours or perspective. This is a surgical hardware COLOR CHANGE ONLY from blue to pure neutral black. No composition changes, no new objects, no added branding.

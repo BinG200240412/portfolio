@@ -28,7 +28,8 @@ html.sudoku-snap.sudoku-snap-suspended{scroll-snap-type:none;scroll-behavior:aut
   width:89.7959183673%;height:95.6%;max-width:none;max-height:none;
   border-radius:14.393939% / 6.624826%;object-fit:contain}
 .sudoku-device::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:url("works/sudoku/iphone-17-pro-max-deep-blue-portrait.png") center/100% 100% no-repeat}
+  background:url("works/sudoku/iphone-17-pro-max-deep-blue-portrait.png") center/100% 100% no-repeat;
+  filter:grayscale(1) brightness(.9)}
 .viewer-image.is-screen>.sudoku-device{width:min(440px,100%);flex:none;align-self:flex-start}
 .sudoku-story .sudoku-gallery{grid-template-columns:minmax(0,.85fr) minmax(0,1fr);gap:clamp(40px,6vw,96px);width:100%;min-height:0;margin:72px 0 0;padding:0}
 .sudoku-story .sudoku-gallery-copy{justify-self:start}
