@@ -34,7 +34,7 @@
     const style = getComputedStyle(surface);
     const padding = Math.min(12, Math.max(parseFloat(style.paddingTop) || 0, parseFloat(style.paddingLeft) || 0));
     const radius = video ? Math.min(10, Math.max(5, short * .035)) : Math.min(short * .15, Math.max(8, Math.min(26, short * .055)) + padding);
-    const active = video ? radius : Math.min(64, short * .22, radius * 2.1);
+    const active = video ? radius : Math.min(96, short * .34, radius * 3.4);
     surface.style.setProperty('--media-cut', `${radius.toFixed(2)}px`);
     surface.style.setProperty('--media-cut-active', `${active.toFixed(2)}px`);
     surface.style.setProperty('--media-corner-rest', cornerPath([radius, radius, radius, radius]));
