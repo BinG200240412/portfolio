@@ -190,20 +190,53 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
     });
     dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
     dialog.addEventListener('close', () => { fullImage.removeAttribute('src'); });
-    const films = [...document.querySelectorAll('.gogo-film video')];
-    const pauseFilms = () => films.forEach(film => film.pause());
-    const filmObserver = new IntersectionObserver(entries => entries.forEach(entry => {
-      if (!entry.isIntersecting && !entry.target.matches(':fullscreen') && !entry.target.webkitDisplayingFullscreen) entry.target.pause();
+    const films = new Map([...document.querySelectorAll('.gogo-film video')].map(film => {
+      film.muted = true;
+      return [film, { onScreen: false, eligible: false, pending: false, retry: false }];
     }));
-    films.forEach(film => filmObserver.observe(film));
-    document.addEventListener('visibilitychange', () => { if (document.hidden) pauseFilms(); });
-    addEventListener('pagehide', pauseFilms);
-    try {
-      const host = window.frameElement?.closest('#section');
-      if (host) new MutationObserver(() => {
-        if (!host.classList.contains('on')) pauseFilms();
-      }).observe(host, { attributes: true, attributeFilter: ['class'] });
-    } catch (_) {}
+    let shown = true, host = null;
+    try { host = window.frameElement?.closest('#section') || null; } catch (_) {}
+    function playFilm(film, state) {
+      if (!state.eligible || !state.retry || state.pending) return;
+      state.pending = true;
+      film.play().then(() => {
+        state.retry = false;
+        if (!state.eligible) film.pause();
+      }).catch(() => {
+        // A later media-ready event or a new visit can retry a blocked request.
+      }).finally(() => { state.pending = false; });
+    }
+    function syncFilms() {
+      const active = shown && !document.hidden && !dialog.open && (!host || host.classList.contains('on'));
+      films.forEach((state, film) => {
+        const eligible = active && (state.onScreen || film.matches(':fullscreen') || film.webkitDisplayingFullscreen);
+        if (eligible !== state.eligible) {
+          state.eligible = eligible;
+          state.retry = eligible;
+        }
+        if (eligible) playFilm(film, state);
+        else film.pause();
+      });
+    }
+    const filmObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        films.get(entry.target).onScreen = entry.isIntersecting && entry.intersectionRatio >= .35;
+      });
+      syncFilms();
+    }, { threshold: [0, .35] });
+    films.forEach((state, film) => {
+      filmObserver.observe(film);
+      film.addEventListener('loadeddata', () => playFilm(film, state));
+      film.addEventListener('canplay', () => playFilm(film, state));
+      film.addEventListener('webkitbeginfullscreen', syncFilms);
+      film.addEventListener('webkitendfullscreen', syncFilms);
+    });
+    new MutationObserver(syncFilms).observe(dialog, { attributes: true, attributeFilter: ['open'] });
+    if (host) new MutationObserver(syncFilms).observe(host, { attributes: true, attributeFilter: ['class'] });
+    document.addEventListener('visibilitychange', syncFilms);
+    document.addEventListener('fullscreenchange', syncFilms);
+    addEventListener('pagehide', () => { shown = false; syncFilms(); });
+    addEventListener('pageshow', () => { shown = true; syncFilms(); });
     const links = [...document.querySelectorAll('.gogo-chapter-nav a')];
     function updateChapter() {
       const sections = [...document.querySelectorAll('.gogo-chapter')];

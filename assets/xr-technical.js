@@ -7,12 +7,10 @@
   const track=page.querySelector('.gogo-technical-track');
   const original=page.querySelector('.gogo-technical-set');
   const toggle=page.querySelector('.gogo-reel-toggle');
-  const film=page.querySelector('video');
   const dialog=document.getElementById('gogo-lightbox');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const forced=matchMedia('(forced-colors: active)');
-  let onScreen=false,filmOnScreen=false,filmEligible=false,shown=true,paused=false,hovered=false,focused=false,host=null;
-  film.muted=true;
+  let onScreen=false,shown=true,paused=false,hovered=false,focused=false,host=null;
   try{host=window.frameElement?.closest('#section')||null;}catch(_){}
 
   function label(){
@@ -26,12 +24,6 @@
     page.classList.toggle('is-technical-running',running);
     page.classList.toggle('is-technical-browsing',focused);
     page.dataset.reelMotion=reduced.matches||forced.matches?'static':running?'running':'paused';
-    const canPlay=visible&&(filmOnScreen||film.matches(':fullscreen')||film.webkitDisplayingFullscreen);
-    if(canPlay!==filmEligible){
-      filmEligible=canPlay;
-      if(canPlay)film.play().catch(()=>{});
-      else film.pause();
-    }
     label();
   }
   function clone(){
@@ -71,9 +63,6 @@
   new IntersectionObserver(entries=>{
     onScreen=entries.some(entry=>entry.isIntersecting&&entry.intersectionRatio>=.01);sync();
   },{threshold:.01}).observe(page);
-  new IntersectionObserver(entries=>{
-    filmOnScreen=entries.some(entry=>entry.isIntersecting&&entry.intersectionRatio>=.35);sync();
-  },{threshold:.35}).observe(film);
   new ResizeObserver(resize).observe(page);
   if(dialog)new MutationObserver(sync).observe(dialog,{attributes:true,attributeFilter:['open']});
   if(host)new MutationObserver(sync).observe(host,{attributes:true,attributeFilter:['class']});
