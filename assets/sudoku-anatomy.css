@@ -1,0 +1,52 @@
+/* One real screen at the centre; notes branch towards the component they explain. */
+.sudoku-story .sudoku-gallery{display:block;margin-top:64px}
+.sudoku-story .sudoku-gallery-copy{max-width:680px;margin-inline:auto;text-align:center}
+.sudoku-story .sudoku-gallery-copy>p{min-height:3.7em;max-width:580px;margin:14px auto 0}
+.sudoku-story .sudoku-screen-tabs{justify-content:center;gap:8px 30px;margin-top:22px}
+.sudoku-anatomy{--anatomy-phone-height:600px;position:relative;isolation:isolate;min-height:calc(var(--anatomy-phone-height) + 64px + var(--annotation-extra,0px));margin-top:20px}
+.sudoku-anatomy .sudoku-gallery-figure{position:absolute;z-index:2;inset:32px 0 auto;pointer-events:none}
+.sudoku-story .sudoku-anatomy #sudoku-active-open{width:calc(var(--anatomy-phone-height) * .49);max-width:100%;pointer-events:auto}
+.anatomy-connections{position:absolute;z-index:0;inset:0;overflow:visible;width:100%;height:100%;pointer-events:none;color:var(--accent)}
+.anatomy-connection{fill:none;stroke:currentColor;stroke-width:1;opacity:.38;transition:opacity .22s,stroke-width .22s}
+.anatomy-node{fill:var(--paper);stroke:currentColor;stroke-width:1;opacity:.6;transition:opacity .22s}
+.anatomy-branch{fill:none;stroke:currentColor;stroke-width:.75;opacity:.18}
+.anatomy-connection.is-active{opacity:.95;stroke-width:1.45}
+.anatomy-node.is-active{fill:currentColor;opacity:1}
+.anatomy-callouts{position:absolute;inset:0;z-index:3;pointer-events:none}
+.anatomy-callout{position:absolute;left:var(--note-x);top:var(--note-y);width:22%;max-width:250px;min-height:70px;padding:10px 0;text-align:left;pointer-events:auto;transition:color .2s}
+.anatomy-callout[data-side="left"]{padding-right:18px}
+.anatomy-callout[data-side="right"]{padding-left:18px}
+.anatomy-callout::after{content:"";position:absolute;top:23px;width:5px;height:5px;border:1px solid var(--accent);border-radius:50%;background:var(--paper);transition:background .2s,box-shadow .2s}
+.anatomy-callout[data-side="left"]::after{right:0}
+.anatomy-callout[data-side="right"]::after{left:0}
+.anatomy-callout-title{display:block;font-size:19px;line-height:1.5;color:var(--ink)}
+.anatomy-callout-text{display:block;font-size:14px;line-height:1.85;color:var(--mid);margin-top:8px;text-wrap:pretty}
+.anatomy-callout[aria-pressed="true"] .anatomy-callout-title{color:var(--accent)}
+.anatomy-callout[aria-pressed="true"]::after{background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 12%,transparent)}
+.anatomy-highlight,.anatomy-target{position:absolute;z-index:2;pointer-events:none;opacity:0;transition:opacity .2s}
+.anatomy-highlight{border:1px solid #6e8865;border-radius:3px;background:rgb(138 151 131 / .12)}
+.anatomy-target{width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border:1px solid #fff;border-radius:50%;background:#637b58;box-shadow:0 0 0 4px rgb(138 151 131 / .2)}
+.sudoku-anatomy.has-active .anatomy-highlight,.sudoku-anatomy.has-active .anatomy-target{opacity:1}
+.anatomy-instruction{margin-top:12px;text-align:center;font-size:12px;line-height:1.8;color:var(--soft)}
+@media(min-width:721px) and (max-width:1100px){
+ .sudoku-anatomy{--anatomy-phone-height:520px}
+ .anatomy-callout{width:23%;max-width:none}
+ .anatomy-callout-title{font-size:17px}.anatomy-callout-text{font-size:13px;line-height:1.8}
+ .anatomy-callout[data-side="right"]{left:77%}
+}
+@media(max-width:720px){
+ .sudoku-story .sudoku-gallery{margin-top:44px}
+ .sudoku-story .sudoku-gallery-copy>p{min-height:5.55em;font-size:14px;max-width:400px}
+ .sudoku-story .sudoku-screen-tabs{gap:4px 22px;margin-top:16px}
+ .sudoku-anatomy{--anatomy-phone-height:470px;min-height:0;margin-top:28px}
+ .sudoku-anatomy .sudoku-gallery-figure{position:relative;inset:auto;padding-top:8px;margin-bottom:55px}
+ .sudoku-story .sudoku-anatomy #sudoku-active-open{width:min(72%,calc(var(--anatomy-phone-height) * .49))}
+ .anatomy-callouts{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 26px;pointer-events:auto}
+ .anatomy-callout,.anatomy-callout[data-side="left"],.anatomy-callout[data-side="right"]{position:relative;inset:auto;width:100%;max-width:none;min-height:0;padding:16px 0 12px;border-top:1px solid var(--line);background:var(--paper)}
+ .anatomy-callout::after,.anatomy-callout[data-side="left"]::after,.anatomy-callout[data-side="right"]::after{top:-3px;left:0;right:auto}
+ .anatomy-callout-title{font-size:17px}.anatomy-callout-text{font-size:13px;line-height:1.85}
+ .anatomy-instruction{margin-top:20px}
+}
+@media(prefers-reduced-motion:reduce){
+ .anatomy-connection,.anatomy-node,.anatomy-callout,.anatomy-callout::after,.anatomy-highlight,.anatomy-target{transition:none}
+}

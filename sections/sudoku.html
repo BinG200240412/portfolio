@@ -6,13 +6,15 @@
 <script src="../assets/i18n-main.js?v=green-sudoku-20261024"></script>
 <script src="../assets/i18n-cases.js?v=focused-copy-20261024"></script>
 <script src="../assets/sudoku-case-i18n.js?v=four-part-story-20261025"></script>
+<script src="../assets/sudoku-anatomy-data.js?v=component-network-20261025"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=language-ink-20261025"></script>
 <script defer src="../assets/vendor/gsap/gsap.min.js"></script>
 <script defer src="../assets/vendor/gsap/ScrollTrigger.min.js"></script>
 <script defer src="../assets/sudoku-hero-matrix.js?v=docked-board-20261024"></script>
 <script defer src="../assets/sudoku-scroll.js?v=site-layout-20261025"></script>
-<script defer src="../assets/sudoku-gallery.js?v=four-part-story-20261025"></script>
+<script defer src="../assets/sudoku-gallery.js?v=component-network-20261025"></script>
+<script defer src="../assets/sudoku-anatomy.js?v=component-network-20261025"></script>
 <script defer src="../assets/sudoku-case.js?v=docked-board-20261024"></script>
 <meta name="description" content="Sudoku.2026：创作理念、字体与外观、解题体验，以及原生产品的实现。">
 <title>Sudoku — 原生数独</title>
@@ -26,7 +28,8 @@
 </style>
 <link rel="stylesheet" href="../assets/theme.css?v=language-ink-20261025">
 <link rel="stylesheet" href="../assets/sudoku-hero.css?v=iphone-device-20261025">
-<link rel="stylesheet" href="../assets/sudoku-case.css?v=four-part-story-20261025">
+<link rel="stylesheet" href="../assets/sudoku-case.css?v=component-network-20261025">
+<link rel="stylesheet" href="../assets/sudoku-anatomy.css?v=component-network-20261025">
 <link rel="stylesheet" href="../assets/ambient-field.css?v=tidal-led-20261024">
 <script defer src="../assets/ambient-field.js?v=tidal-led-20261024"></script>
 <link rel="stylesheet" href="../assets/page-snap.css?v=site-layout-20261025">
@@ -102,7 +105,7 @@
       </header>
   <section class="sudoku-gallery" id="sudoku-gallery" aria-labelledby="product-heading" data-i18n-ignore>
     <div class="sudoku-gallery-copy">
-      <h3 id="product-heading">围绕一局，组织界面。</h3>
+      <h3 id="product-heading">把界面展开来看。</h3>
       <p id="sudoku-screen-summary">已知数字、填写和候选笔记各有层级，让正在观察的关系留在眼前。</p>
       <div class="sudoku-screen-tabs" role="group" aria-label="界面与交互">
         <button class="sudoku-screen-tab" type="button" data-screen="board" data-summary="已知数字、填写和候选笔记各有层级，让正在观察的关系留在眼前。" data-image="../assets/works/sudoku/board.png?v=green-20261024" data-caption="主棋盘" data-alt="数独主棋盘，鼠尾草绿色进度条与输入工具" aria-pressed="true">主棋盘</button>
@@ -113,10 +116,15 @@
       </div>
       <p id="sudoku-gallery-status" role="status" aria-live="polite" hidden></p>
     </div>
+    <div class="sudoku-anatomy" id="sudoku-anatomy">
+    <svg class="anatomy-connections" aria-hidden="true"></svg>
     <figure class="sudoku-gallery-figure">
       <button class="image-open" id="sudoku-active-open" type="button" data-image="../assets/works/sudoku/board.png?v=green-20261024" data-caption="主棋盘" data-kind="screen" aria-label="放大查看主棋盘截图"><span class="sudoku-device"><img class="sudoku-device-screen" id="sudoku-active-image" src="../assets/works/sudoku/board.png?v=green-20261024" width="1320" height="2868" alt="数独主棋盘，鼠尾草绿色进度条与输入工具" decoding="async"></span></button>
       <figcaption id="sudoku-active-caption" class="case-sr-only">主棋盘</figcaption>
     </figure>
+    <div class="anatomy-callouts" id="sudoku-anatomy-callouts"></div>
+    </div>
+    <p class="anatomy-instruction">选择一个组件，看看它在这一局里做什么。</p>
   </section>
       <div class="case-interaction-study case-flow-block" id="interaction" data-sudoku-demo data-demo-fill="5" data-demo-note="2 5">
         <div class="case-study-board" role="group" aria-label="可试用的九宫格操作示意">
