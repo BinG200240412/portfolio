@@ -1,0 +1,327 @@
+{
+  "figmaFile": "zhuMFpEI4lq8hiP0RRZ2hf",
+  "figmaPage": "4004:2087",
+  "sourceFrames": [
+    "4038:2186",
+    "4038:2202",
+    "4038:2232",
+    "4038:2274",
+    "4038:2365",
+    "4038:2427",
+    "4038:2576",
+    "4038:2591",
+    "4040:2215",
+    "4040:2245",
+    "4040:2273",
+    "4040:2294",
+    "4041:2239",
+    "4041:2322",
+    "4041:2352",
+    "4041:2398"
+  ],
+  "assets": [
+    {
+      "file": "painting.webp",
+      "frame": "17",
+      "figmaAsset": "c5120.png",
+      "width": 1024,
+      "height": 269
+    },
+    {
+      "file": "wood-cut.webp",
+      "frame": "22",
+      "figmaAsset": "7fabe.png",
+      "width": 1588,
+      "height": 888
+    },
+    {
+      "file": "wood-laser.webp",
+      "frame": "22",
+      "figmaAsset": "5e8cc.png",
+      "width": 1529,
+      "height": 899
+    },
+    {
+      "file": "wood-layers.webp",
+      "frame": "22",
+      "figmaAsset": "04a9d.png",
+      "width": 1534,
+      "height": 904
+    },
+    {
+      "file": "wood-paint.webp",
+      "frame": "22",
+      "figmaAsset": "e5c2f.png",
+      "width": 1532,
+      "height": 913
+    },
+    {
+      "file": "wood-colour.webp",
+      "frame": "22",
+      "figmaAsset": "af9ff.png",
+      "width": 1591,
+      "height": 913
+    },
+    {
+      "file": "wood-gold.webp",
+      "frame": "22",
+      "figmaAsset": "d84b6.png",
+      "width": 1517,
+      "height": 903
+    },
+    {
+      "file": "led-layout.webp",
+      "frame": "23",
+      "figmaAsset": "d5274.png",
+      "width": 513,
+      "height": 329
+    },
+    {
+      "file": "led-mount.webp",
+      "frame": "23",
+      "figmaAsset": "fbd39.png",
+      "width": 513,
+      "height": 331
+    },
+    {
+      "file": "led-wire.webp",
+      "frame": "23",
+      "figmaAsset": "93b78.png",
+      "width": 511,
+      "height": 334
+    },
+    {
+      "file": "led-drill.webp",
+      "frame": "23",
+      "figmaAsset": "048c9.png",
+      "width": 511,
+      "height": 333
+    },
+    {
+      "file": "led-first.webp",
+      "frame": "23",
+      "figmaAsset": "97739.png",
+      "width": 511,
+      "height": 329
+    },
+    {
+      "file": "led-finish.webp",
+      "frame": "23",
+      "figmaAsset": "c426b.png",
+      "width": 519,
+      "height": 329
+    },
+    {
+      "file": "music-detail.webp",
+      "frame": "24",
+      "figmaAsset": "47847.png",
+      "width": 729,
+      "height": 365
+    },
+    {
+      "file": "music-full.webp",
+      "frame": "24",
+      "figmaAsset": "d50fb.png",
+      "width": 1178,
+      "height": 314
+    },
+    {
+      "file": "music-light.webp",
+      "frame": "24",
+      "figmaAsset": "96802.png",
+      "width": 1644,
+      "height": 1079
+    },
+    {
+      "file": "fibre-drawing.webp",
+      "frame": "27",
+      "figmaAsset": "eb2e3.png",
+      "width": 528,
+      "height": 350
+    },
+    {
+      "file": "fibre-drill.webp",
+      "frame": "27",
+      "figmaAsset": "761a7.png",
+      "width": 536,
+      "height": 344
+    },
+    {
+      "file": "fibre-holes.webp",
+      "frame": "27",
+      "figmaAsset": "e23ef.png",
+      "width": 514,
+      "height": 342
+    },
+    {
+      "file": "fibre-zones.webp",
+      "frame": "27",
+      "figmaAsset": "ea09a.png",
+      "width": 522,
+      "height": 344
+    },
+    {
+      "file": "fibre-thread.webp",
+      "frame": "27",
+      "figmaAsset": "ffca5.png",
+      "width": 536,
+      "height": 343
+    },
+    {
+      "file": "fibre-front.webp",
+      "frame": "27",
+      "figmaAsset": "0e937.png",
+      "width": 521,
+      "height": 329
+    },
+    {
+      "file": "fibre-back.webp",
+      "frame": "28",
+      "figmaAsset": "0b6a7.png",
+      "width": 1304,
+      "height": 973
+    },
+    {
+      "file": "fibre-bundle.webp",
+      "frame": "28",
+      "figmaAsset": "f25bc.png",
+      "width": 1300,
+      "height": 976
+    },
+    {
+      "file": "fibre-box.webp",
+      "frame": "28",
+      "figmaAsset": "9917c.png",
+      "width": 1300,
+      "height": 970
+    },
+    {
+      "file": "fibre-test.webp",
+      "frame": "28",
+      "figmaAsset": "dba2b.png",
+      "width": 1294,
+      "height": 972
+    },
+    {
+      "file": "box-model.webp",
+      "frame": "28",
+      "figmaAsset": "0f96d.png",
+      "width": 1317,
+      "height": 444
+    },
+    {
+      "file": "box-mirror.webp",
+      "frame": "28",
+      "figmaAsset": "9f0f4.png",
+      "width": 1308,
+      "height": 937
+    },
+    {
+      "file": "box-spare.webp",
+      "frame": "28",
+      "figmaAsset": "92cbc.png",
+      "width": 1273,
+      "height": 947
+    },
+    {
+      "file": "box-inside.webp",
+      "frame": "28",
+      "figmaAsset": "2dff2.png",
+      "width": 1268,
+      "height": 967
+    },
+    {
+      "file": "sensor-mount.webp",
+      "frame": "28",
+      "figmaAsset": "77b9a.png",
+      "width": 518,
+      "height": 341
+    },
+    {
+      "file": "sensor-front.webp",
+      "frame": "28",
+      "figmaAsset": "239ef.png",
+      "width": 529,
+      "height": 338
+    },
+    {
+      "file": "sensor-finish.webp",
+      "frame": "28",
+      "figmaAsset": "f4171.png",
+      "width": 516,
+      "height": 326
+    },
+    {
+      "file": "sensor-drill.webp",
+      "frame": "28",
+      "figmaAsset": "29848.png",
+      "width": 521,
+      "height": 341
+    },
+    {
+      "file": "sensor-wire.webp",
+      "frame": "28",
+      "figmaAsset": "6bfa1.png",
+      "width": 525,
+      "height": 345
+    },
+    {
+      "file": "sensor-complete.webp",
+      "frame": "28",
+      "figmaAsset": "79170.png",
+      "width": 546,
+      "height": 346
+    },
+    {
+      "file": "touch-blue.webp",
+      "frame": "29",
+      "figmaAsset": "17cc9.png",
+      "width": 1909,
+      "height": 836
+    },
+    {
+      "file": "touch-white.webp",
+      "frame": "29",
+      "figmaAsset": "6acf9.png",
+      "width": 2125,
+      "height": 719
+    },
+    {
+      "file": "touch-violet.webp",
+      "frame": "29",
+      "figmaAsset": "6f4d7.png",
+      "width": 2200,
+      "height": 1445
+    },
+    {
+      "file": "colour-sample.webp",
+      "frame": "25",
+      "figmaAsset": "71b2d.png",
+      "width": 1067,
+      "height": 794
+    }
+  ],
+  "vectors": {
+    "mountain-contours.svg": "4038:2388",
+    "tonality-study.svg": "4038:2438",
+    "dots-colour.svg": "4057:2725",
+    "dots-sensors.svg": "4057:3630",
+    "dots-touch.svg": "4057:4535",
+    "dots-delay.svg": "4057:5440",
+    "mountain-sample.webp": "4057:2721 (individual masked mountain export)"
+  },
+  "notes": "Original image fills exported from Figma; WebP derivatives retain complete images. SVGs exported from native layers, dot coordinates rounded to 0.1 px and grouped by fill. Repeated slide navigation and headings removed. No source Figma nodes modified.",
+  "videos": {
+    "music-installation.mp4": {
+      "source": "https://6oj0ol.58u.cn/a/Roog1PW/",
+      "duration": 84.766667
+    },
+    "touch-installation.mp4": {
+      "source": "https://6oj0ol.58u.cn/a/OLmlyWw/",
+      "duration": 102.4
+    }
+  },
+  "derivedVectors": {
+    "tonality-study-en.svg": "English text derivative of tonality-study.svg"
+  }
+}
