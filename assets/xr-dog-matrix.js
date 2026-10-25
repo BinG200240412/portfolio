@@ -26,7 +26,7 @@
   const palettes = {
     dark: ['#62665d', '#a5aa98', '#d2d1bd', '#c2944a'],
     // Paper separates structural ink, the body and its sunlit panels.
-    light: ['#315c18', '#659b2e', '#b1d875', '#c58c26'],
+    light: ['#3e534a', '#7f9e8b', '#c0d0c3', '#527f9b'],
   };
   const roles = ['rgb(20,0,0)', 'rgb(75,0,0)', 'rgb(145,0,0)', 'rgb(235,0,0)'];
   let width = 1, height = 1, pitch = 7, ratio = 1, mainPitch = 7, coverTop = 0;
