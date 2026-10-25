@@ -161,6 +161,8 @@
 <script defer src="../assets/pixel-loader.js?v=dot-fan-20261025"></script>
 <link rel="stylesheet" href="../assets/works/ai3d/particle-cover.css?v=dot-fan-20261025">
 <script defer src="../assets/works/ai3d/particle-cover.js?v=dot-fan-20261025"></script>
+<link rel="stylesheet" href="../assets/works/ai3d/workflow/graph.css?v=20261026-native-graph-b4">
+<script defer src="../assets/works/ai3d/workflow/graph.js?v=20261026-native-graph-b4"></script>
 <link rel="stylesheet" href="../assets/ambient-field.css?v=tidal-led-20261024">
 <script defer src="../assets/ambient-field.js?v=tidal-led-20261024"></script>
 <link rel="stylesheet" href="../assets/page-snap.css?v=site-layout-20261025">
@@ -229,9 +231,23 @@
   <section class="feat">
     <div class="fhead rv"><div class="htitle">工作流一</div></div>
     <p class="fintro rv">可输入在良渚一致公园采集的真实场景与相应艺术风格。<strong>LoRA</strong> 重点训练了"水乡泽国"的核心意象——精确捕捉莫角山夯土台基、干栏式木构与芦苇湿地的形态纹理，并固化清新治愈的色调。</p>
-    <figure class="rv">
-      <img src="../assets/works/ai3d/graph1.jpg" alt="工作流一 · ComfyUI 节点图，含 05 输出图片">
-      <figcaption><span>上传图像 · Checkpoint · LoRA · ControlNet · KSampler · 05 输出图片</span></figcaption>
+    <figure class="rv" id="liangzhu-workflow" data-media-corners-ignore>
+      <div class="workflow-native" data-workflow-native data-i18n-ignore data-media-corners-ignore>
+        <div class="workflow-frame">
+          <div class="workflow-stage">
+            <svg role="group" tabindex="0" aria-label="可编辑的 ComfyUI 工作流复刻"></svg>
+            <p class="workflow-message" role="status">正在展开工作流</p>
+          </div>
+          <div class="workflow-bar">
+            <p data-workflow-text="hint">拖动节点 / 分组 · 双击看细节 · 捏合缩放</p>
+            <div class="workflow-buttons">
+              <button type="button" data-workflow-fit data-workflow-text="fit">适屏</button>
+              <button type="button" data-workflow-reset data-workflow-text="reset">复位</button>
+              <button type="button" data-workflow-expand data-workflow-text="expand">展开</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </figure>
   </section>
 

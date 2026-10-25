@@ -1,0 +1,9 @@
+# Liangzhu workflow reconstruction
+
+`graph.json` contains 26 independently positioned nodes, nine groups, 40 reconstructed connections, visible field values, and source-space geometry for the supplied 7376 × 3945 Figma export `Group 2.png`.
+
+The original PNG contains no embedded ComfyUI JSON. Node positions and dimensions were measured from its pixels; Chinese/English labels and visible values were checked against enlarged source crops. Cropped model filenames remain ellipsized, and unavailable values are left blank. Connections are reconstructed from the visible ports and workflow semantics, rather than recovered from the original graph file. This is an editable visual reconstruction, not a runnable ComfyUI workflow or an exact pixel-for-pixel conversion of the screenshot. The screenshot's faint platform watermarks are not recreated.
+
+`graph.js` draws native SVG groups, text, ports, Bézier links, and independently animated link particles. HTML fields inside SVG remain editable. Dragging nodes or groups updates their incident links; the blue lower-right group handles resize group boundaries. Double-click a node to focus it; blank-space dragging pans; Ctrl/Command-wheel and trackpad pinch zoom. Normal embedded-page scrolling remains native. Expanded view uses a modal dialog and pauses the site's page snapping via `media-detail-open`. Escape restores the original document and focus. Reset restores the source layout and fields.
+
+The original image upload control accepts an image solely for a local preview, using an object URL. No image, field value or layout is uploaded. The renderer loads only the local JSON, and uses no third-party scripts or generation backend. Motion pauses offscreen/when hidden; reduced-motion preferences hide the link particles. The shared particle cover, loading lifecycle, navigation, page snapping, and media-corner references remain intact.

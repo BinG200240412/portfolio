@@ -1,0 +1,57 @@
+.workflow-native{position:relative;margin:0;border:1px solid #4b5057;background:#202020;color:#c7c7c7;isolation:isolate;--wf-ink:#c7c7c7;--wf-line:#4b5057}
+.workflow-native[hidden]{display:none}
+.workflow-frame{position:relative;display:flex;flex-direction:column;background:#202020;color:#c7c7c7;min-width:0;overflow:hidden}
+.workflow-native .workflow-stage,.workflow-dialog .workflow-stage{position:relative;aspect-ratio:7376/3945;min-height:420px;overflow:hidden;background:#141414}
+.workflow-stage>svg{display:block;width:100%;height:100%;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.workflow-stage>svg.is-dragging{cursor:grabbing}
+.workflow-stage svg:focus-visible{outline:1px solid #9ec1df;outline-offset:-3px}
+.workflow-world text,.workflow-world input,.workflow-world textarea,.workflow-world button{font-family:Arial,"Microsoft YaHei","PingFang SC",sans-serif!important;font-weight:400!important;font-synthesis:none;letter-spacing:0!important}
+.workflow-world text{pointer-events:none}
+.wf-node{cursor:grab;outline:none}
+.wf-node .wf-node-body{fill:#333;stroke:#222;stroke-width:2}
+.wf-node[data-tone="negative"] .wf-node-body{fill:#553632}
+.wf-node .wf-node-head{fill:#333;stroke:#292929;stroke-width:1.5}
+.wf-node[data-tone="negative"] .wf-node-head{fill:#302222}
+.wf-node:hover .wf-node-body,.wf-node:focus-visible .wf-node-body{stroke:#8eacbe;stroke-width:3}
+.wf-node .wf-title{fill:#aaa;font-size:26px}
+.wf-node .wf-port-label{fill:#aaa;font-size:24px}
+.wf-node .wf-tag{fill:#101e0b}
+.wf-node .wf-tag-text{fill:#e8e8e8;font-size:24px}
+.wf-node .wf-widget{fill:#222;stroke:#888;stroke-width:2}
+.wf-node .wf-widget-label{fill:#bbb;font-size:23px}
+.wf-node .wf-help{fill:#e7a422;font-size:29px;font-weight:600!important}
+.wf-node .wf-dot{fill:#696969}
+.wf-port{stroke:#242424;stroke-width:2}
+.wf-group{cursor:grab;outline:none}
+.wf-group .wf-group-frame{fill:#4b7b9f;fill-opacity:.22;stroke:#4a6e8f;stroke-width:2}
+.wf-group .wf-group-head{fill:#344557;fill-opacity:.95}
+.wf-group .wf-group-title{font-size:47px;fill:#567fa0}
+.wf-group:hover .wf-group-frame,.wf-group:focus-visible .wf-group-frame{stroke:#78a9d0;stroke-width:3}
+.wf-group .wf-resize{fill:#5787a9;cursor:se-resize}
+.wf-link{fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;opacity:.92;pointer-events:none}
+.workflow-world.has-selection .wf-link{opacity:.18}
+.workflow-world.has-selection .wf-link.is-related{opacity:1;stroke-width:6}
+.wf-pulse{pointer-events:none;opacity:.85}
+.wf-field,.wf-text-field{box-sizing:border-box;display:block;width:100%;height:100%;margin:0;padding:0 4px;border:0;border-radius:0;color:#e6e6e6;background:transparent;font-size:23px!important;line-height:1.18!important;text-align:right;outline:none;min-width:0;user-select:text;-webkit-user-select:text}
+.wf-text-field{padding:5px 6px;background:#282828;resize:none;text-align:left;font-family:"DejaVu Sans Mono",Menlo,Consolas,monospace!important;font-size:22px!important;line-height:1.13!important;scrollbar-width:thin;scrollbar-color:#555 #282828}
+.wf-field:focus,.wf-text-field:focus{background:#262f35;box-shadow:inset 0 0 0 2px #8eb8d8}
+.wf-text-field::-webkit-scrollbar{width:5px}
+.wf-text-field::-webkit-scrollbar-thumb{background:#555}
+.wf-adjust{cursor:pointer;fill:#ccc;outline:none}
+.wf-adjust:hover,.wf-adjust:focus-visible{fill:white;filter:drop-shadow(0 0 3px #fff6)}
+.workflow-native .workflow-bar,.workflow-dialog .workflow-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:10px 15px;border-top:1px solid #4b5057;background:#202020;font-size:12px;color:#aeb5ba}
+.workflow-bar p{margin:0!important;color:#aeb5ba!important;font-size:12px!important;line-height:1.45!important;max-width:none!important}
+.workflow-bar .workflow-buttons{display:flex;align-items:center;gap:16px;flex:none}
+.workflow-bar button{border:0;padding:3px 0;background:none;color:#d1d6d9;font:inherit;white-space:nowrap;cursor:pointer;line-height:1.4}
+.workflow-bar button:hover{color:white}
+.workflow-bar button:focus-visible{outline:1px solid #9ec1df;outline-offset:4px}
+.workflow-message{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#bbc3c8;font-size:13px;padding:25px;pointer-events:none}
+.workflow-message[hidden]{display:none}
+.workflow-dialog{position:fixed;inset:0;max-width:none;max-height:none;width:100%;height:100%;margin:0;padding:0;border:0;outline:0;background:#141414;color:#c7c7c7}
+.workflow-dialog::backdrop{background:#111e}
+.workflow-dialog .workflow-frame{width:100%;height:100%}
+.workflow-dialog .workflow-stage{height:auto;flex:1;min-height:0}
+.workflow-dialog .workflow-stage>svg{touch-action:none}
+.workflow-dialog .workflow-bar{padding-inline:22px}
+@media(max-width:600px){.workflow-native .workflow-stage{height:560px;max-height:75svh;min-height:380px}.workflow-native .workflow-bar,.workflow-dialog .workflow-bar{align-items:flex-start;gap:8px;padding:10px 12px}.workflow-bar p{max-width:17em!important;font-size:11px!important}.workflow-bar .workflow-buttons{gap:11px}.workflow-bar button{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.wf-pulse{display:none}}
