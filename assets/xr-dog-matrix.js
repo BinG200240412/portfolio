@@ -25,7 +25,8 @@
   try { host = window.frameElement?.closest('#section') || null; } catch (_) {}
   const palettes = {
     dark: ['#62665d', '#a5aa98', '#d2d1bd', '#c2944a'],
-    light: ['#a5a69a', '#6a725f', '#394a39', '#946f2b'],
+    // Deep pigments keep the open dot lattice distinct against light paper.
+    light: ['#6b765f', '#34472c', '#152810', '#95630f'],
   };
   const roles = ['rgb(20,0,0)', 'rgb(75,0,0)', 'rgb(145,0,0)', 'rgb(235,0,0)'];
   let width = 1, height = 1, pitch = 7, ratio = 1, mainPitch = 7, coverTop = 0;
