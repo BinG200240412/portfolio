@@ -11,15 +11,13 @@
     [137,165,150],[165,145,179],[203,199,185],
     [82,90,93],[117,125,124],[224,219,204],[162,94,85],
     [205,204,197],[163,165,162],[118,123,122],[75,83,82]];
-  // Paper needs coloured ink, rather than dimmed light. Keep the same sage,
-  // rose, blue, ochre and mauve roles, with enough chroma to survive warm white.
-  const lightColours = [[95,106,83],[139,90,88],[77,112,139],[127,105,63],
-    [75,116,91],[117,91,137],[120,105,80],
-    [82,94,94],[91,111,105],[117,104,76],[147,98,91],
-    [76,83,82],[100,107,105],[110,118,111],[124,132,120],
-    [179,76,62],[44,111,166],[165,113,32],[34,130,91],[128,69,157]];
-  // On paper, a few camera windows, digits and small marks carry purer ink.
-  // The large surfaces retain their existing muted colours in both themes.
+  // Warm paper uses deeper ink with clearer chroma; dark mode keeps its light.
+  const lightColours = [[55,84,47],[142,63,70],[40,91,137],[139,91,20],
+    [40,104,70],[107,64,131],[78,84,76],
+    [40,51,53],[58,79,73],[105,85,49],[147,98,91],
+    [43,49,47],[70,79,74],[92,105,96],[111,125,112],
+    [185,54,49],[21,99,162],[159,98,7],[13,119,73],[116,44,152]];
+  // A few camera windows, digits and small marks carry purer accent ink.
   const lightAccentRoles = {
     'robot-dog':{3:16,4:18,8:16}, 'quest-3':{3:16,6:16},
     sudoku:{2:15}, arright:{3:17,4:18}, skill:{3:19,4:15},
@@ -311,8 +309,8 @@
     if (!sprites.length || !width || !height) return;
     ctx.clearRect(0, 0, width, height);
     // On paper, lit facets reveal more paper and shadows carry more ink.
-    const facets = dark ? [0,.48,.66,.84,1] : [0,1,.94,.86,.78];
-    const opacity = dark ? .76 : .92;
+    const facets = dark ? [0,.48,.66,.84,1] : [0,1,.96,.91,.86];
+    const opacity = dark ? .76 : 1;
     const libraries = [window.PortfolioGorillaMotif,window.PortfolioLiangzhuMotifs,
       window.PortfolioMatrix3D,window.PortfolioProjectStickers,window.PortfolioMatrixMotifs,window.PortfolioMatrixSymbols];
     gorillaReady = false;

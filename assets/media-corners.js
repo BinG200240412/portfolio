@@ -141,6 +141,13 @@
       }
     }
     if (existing) existing.setAttribute('data-media-zoomable', '');
+    // An ornamental portrait frame and printed sheets already own their edges.
+    // Keep the existing/generic viewer bindings above, without cutting them.
+    if (surface.matches('.about-portrait,.archive-paper')) {
+      surface.setAttribute('data-media-corners-exempt', '');
+      if (host) { host.setAttribute('data-media-zoomable', ''); press(host); }
+      return;
+    }
     decorate(surface, host);
   }
   function scan(root) {
