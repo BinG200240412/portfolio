@@ -46,3 +46,13 @@ Apple 官方 [App Store 页面](https://apps.apple.com/cn/app/sudoku-2026/id6775
 - `mynerve-regular.woff2` 与 `fraunces.woff2` 从 App 原始字体生成 ASCII 与常用标点子集，107 个码位无缺字；轮廓与原字体逐字比对一致，Fraunces 保留变量轴。原始文件信息及 OFL 授权全文见 `fonts-LICENSE.txt`。
 - 中文与 EB Garamond 样张复用现有 `assets/fonts/PortfolioGenWan-Medium.woff2`、`EBGaramond.woff2`，许可证位于相同字体目录。
 - `board-blue.png` 为既有旧英文界面，仅在「早期界面」对照中使用。它的数字字体与布局均不同于当前维护版本；不能作为当前界面的单纯换色示例。对照的当前画面使用本目录现有 `board.png`，明确标注为维护版本。
+
+## 第二部分的产品展示与组件细节
+
+2026-10-25：广告式双机展示复用原始 `board.png`、`coach.png` 和官方正视机身，用 CSS 透视变换统一改变整台手机的角度。未生成或重绘屏幕内容；两台均朝向观众，便于同时阅读盘面与辅导。
+
+组件细节使用 SVG viewBox 直接查看原始截图的局部，原文件未修改。源码依据（同一维护工程 `ios/Sources/`）：
+
+- `ContentView.swift:497` 的更多按钮使用 `.buttonStyle(.glass)` 与圆形边界；`ContentView.swift:536` 的暂停按钮使用 `.glassEffect(.regular.interactive(), in: Circle())`。仅 iOS 26+ 分支称为 Liquid Glass，低版本回退到 Material。
+- `ContentView.swift:971` 的数字键与 `BoardView.swift:143` 的盘面使用连续圆角 RoundedRectangle；未把它们描述为玻璃材质。
+- `Sheets.swift:98` 使用系统 TabView/Tab 与 `.tabBarOnly`，对应设置截图底部导航。

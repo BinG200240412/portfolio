@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="../assets/i18n-main.js?v=green-sudoku-20261024"></script>
 <script src="../assets/i18n-cases.js?v=focused-copy-20261024"></script>
-<script src="../assets/sudoku-case-i18n.js?v=four-part-story-20261025"></script>
+<script src="../assets/sudoku-case-i18n.js?v=product-campaign-20261025"></script>
 <script src="../assets/sudoku-anatomy-data.js?v=straight-anatomy-20261025"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=language-ink-20261025"></script>
@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="../assets/theme.css?v=language-ink-20261025">
 <link rel="stylesheet" href="../assets/sudoku-hero.css?v=iphone-device-20261025">
 <link rel="stylesheet" href="../assets/sudoku-case.css?v=straight-anatomy-20261025">
+<link rel="stylesheet" href="../assets/sudoku-character.css?v=product-campaign-20261025">
 <link rel="stylesheet" href="../assets/sudoku-anatomy.css?v=straight-anatomy-20261025">
 <link rel="stylesheet" href="../assets/ambient-field.css?v=tidal-led-20261024">
 <script defer src="../assets/ambient-field.js?v=tidal-led-20261024"></script>
@@ -58,16 +59,23 @@
   </div>
   <div class="sudoku-story">
     <section class="case-chapter case-character" id="character" aria-labelledby="character-title">
-      <header class="case-editorial-head">
-        <h2 id="character-title">希望它是什么样的软件</h2>
-        <p class="case-lead">清楚、安静，也保留一点纸笔的温度。让盘面成为注意力的中心，用字体区分题目与笔迹，用少量颜色提示关系，把思考的节奏留给解题的人。</p>
-      </header>
+      <div class="case-product-hero">
+        <div class="case-product-copy">
+          <h2 id="character-title">希望它是什么样的软件</h2>
+          <div class="case-app-wordmark case-product-wordmark" aria-label="sudoku" data-i18n-ignore>sudoku<span>.</span></div>
+          <p class="case-product-slogan">静下来，想一步。</p>
+        </div>
+        <div class="case-product-art" role="group" aria-label="主棋盘与分步辅导的 iPhone 透视展示">
+          <button class="image-open case-product-device case-product-device--coach" type="button" data-image="../assets/works/sudoku/coach.png?v=green-20261024" data-caption="分步辅导" data-kind="screen" aria-label="放大查看分步辅导截图"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/coach.png?v=green-20261024" width="1320" height="2868" alt="iPhone 上的数独分步辅导界面" decoding="async"></span></button>
+          <button class="image-open case-product-device case-product-device--board" type="button" data-image="../assets/works/sudoku/board.png?v=green-20261024" data-caption="主棋盘" data-kind="screen" aria-label="放大查看主棋盘截图"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/board.png?v=green-20261024" width="1320" height="2868" alt="iPhone 上的数独主棋盘界面" decoding="async"></span></button>
+        </div>
+      </div>
       <div class="case-type-study">
         <div class="case-type-identity">
           <div class="case-app-wordmark" aria-label="Fraunces 品牌字标">sudoku<span>.</span></div>
-          <h3>从字形开始，建立气质。</h3>
-          <p>Fraunces 构成柔和的品牌字标；源云明体与 EB Garamond 分别承接中文与英文，让文字和数字在同一套纸面气质里相处。</p>
-          <p class="case-type-chinese" lang="zh-CN" data-i18n-ignore>静下来，想一步。</p>
+          <h3>字形里的纸笔气质。</h3>
+          <p>Fraunces 的柔和曲线构成字标；源云明体与 EB Garamond 承接中文和英文。</p>
+          <p class="case-type-chinese" lang="zh-CN" data-i18n-ignore>简单　困难　大师</p>
           <span class="case-type-name">源云明体 · 中文标题与正文</span>
         </div>
         <div class="case-digit-studies">
@@ -83,6 +91,26 @@
           </div>
         </div>
       </div>
+      <section class="case-native-study" aria-labelledby="native-title">
+        <h3 id="native-title">融入 iOS 的形状与材质。</h3>
+        <div class="case-native-components">
+          <figure>
+            <div class="case-component-visual case-glass-controls">
+              <svg viewBox="20 470 170 170" role="img" aria-label="真实界面中的圆形暂停按钮"><image href="../assets/works/sudoku/board.png?v=green-20261024" width="1320" height="2868"/></svg>
+              <svg viewBox="1115 185 190 190" role="img" aria-label="真实界面中的圆形更多按钮"><image href="../assets/works/sudoku/board.png?v=green-20261024" width="1320" height="2868"/></svg>
+            </div>
+            <figcaption><h4>圆形玻璃按钮</h4><p>暂停与更多采用 iOS 26 原生 Liquid Glass。</p></figcaption>
+          </figure>
+          <figure>
+            <div class="case-component-visual"><svg viewBox="20 2260 430 260" role="img" aria-label="真实界面中带连续圆角的数字键"><image href="../assets/works/sudoku/board.png?v=green-20261024" width="1320" height="2868"/></svg></div>
+            <figcaption><h4>连续圆角</h4><p>数字键与盘面使用连续圆角，留下清楚的边界与轻阴影。</p></figcaption>
+          </figure>
+          <figure>
+            <div class="case-component-visual case-system-tabs"><svg viewBox="40 2580 1240 245" role="img" aria-label="真实设置界面中的系统底部导航"><image href="../assets/works/sudoku/settings.png?v=green-20261024" width="1320" height="2868"/></svg></div>
+            <figcaption><h4>系统导航</h4><p>沿用原生 TabView，保持熟悉的切换方式。</p></figcaption>
+          </figure>
+        </div>
+      </section>
       <div class="case-color-study">
         <div>
           <h3>用颜色提示，给盘面留白。</h3>

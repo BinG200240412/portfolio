@@ -1,0 +1,51 @@
+/* A product composition first; its typography, colour and native materials follow. */
+.case-product-hero{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:clamp(24px,3vw,48px);align-items:center;min-height:calc(100svh - 210px)}
+.case-product-copy{position:relative;z-index:2;min-width:0;padding-bottom:30px}
+.case-character .case-app-wordmark{white-space:nowrap}
+.case-product-copy #character-title{font-size:17px;line-height:1.8;letter-spacing:0;color:var(--mid);margin-bottom:38px}
+.case-product-copy .case-product-wordmark{font-size:clamp(46px,4.6vw,68px);margin-bottom:26px}
+.case-product-slogan{--portfolio-font:SudokuGenWan,serif;--portfolio-font-weight:500;font-family:SudokuGenWan,serif;font-size:clamp(38px,4.5vw,66px);line-height:1.5;letter-spacing:.025em;max-width:5.4em;text-wrap:balance}
+html[lang^="en"] .case-product-slogan{--portfolio-font:SudokuGaramond,serif;--portfolio-font-weight:400;font-family:SudokuGaramond,serif;letter-spacing:0;line-height:1.15;max-width:7.8em}
+.case-product-art{position:relative;isolation:isolate;min-width:0;height:clamp(620px,55vw,800px);perspective:1400px;perspective-origin:50% 45%}
+.case-product-device{position:absolute;display:block;width:clamp(225px,22.8vw,330px);aspect-ratio:1470/3000;transform-style:preserve-3d;cursor:zoom-in;filter:drop-shadow(14px 25px 15px rgb(0 0 0 / .15))}
+.case-product-device::before{content:"";position:absolute;inset:.3% .4%;border-radius:15% / 7.3%;background:linear-gradient(90deg,#0d111c,#617183 15%,#152033 40%,#243044 80%,#070b14);transform:translate3d(6px,0,-7px);box-shadow:0 0 0 1px #7e8a94}
+.case-product-device--board{z-index:2;left:0;top:11%;transform:rotateX(8deg) rotateY(-17deg) rotateZ(-9deg)}
+.case-product-device--coach{z-index:1;right:1%;top:0;transform:rotateX(7deg) rotateY(20deg) rotateZ(10deg) scale(.96)}
+.case-character .case-type-study{margin-top:48px}
+.case-native-study{margin-top:48px}
+.case-native-study>h3{font-size:27px;line-height:1.5}
+.case-native-components{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,4vw,64px);margin-top:32px}
+.case-native-components figure{min-width:0;margin:0}
+.case-component-visual{height:186px;display:flex;align-items:center;justify-content:center;gap:16px;padding:16px;background:#f5f4ed;border-radius:16px;overflow:hidden}
+.case-component-visual svg{display:block;width:min(100%,280px);height:auto;overflow:hidden}
+.case-glass-controls svg{width:min(42%,112px)}
+.case-system-tabs svg{width:100%}
+.case-native-components h4{font-size:19px;line-height:1.5;font-weight:300;margin:12px 0}
+.case-native-components p{font-size:14px;line-height:1.9;color:var(--mid);max-width:25em}
+@media(min-width:721px) and (max-width:1000px){
+ .case-product-hero{grid-template-columns:minmax(0,.68fr) minmax(0,1.32fr);gap:12px;min-height:620px}
+ .case-product-art{height:640px}.case-product-device{width:clamp(190px,25vw,250px)}
+ .case-product-device--board{left:-1%;top:14%}.case-product-device--coach{right:-1%}
+ .case-product-copy #character-title{font-size:15px;margin-bottom:30px}.case-product-copy .case-product-wordmark{font-size:48px}
+ .case-product-slogan{font-size:clamp(35px,4.6vw,46px)}
+ .case-native-components{gap:26px}.case-component-visual{height:150px}.case-native-components h4{font-size:18px}
+}
+@media(max-width:720px){
+ .case-product-hero{grid-template-columns:minmax(0,1fr);gap:30px;min-height:0}
+ .case-product-copy{padding:0;text-align:center}.case-product-copy #character-title{font-size:15px;margin-bottom:25px}
+ .case-product-copy .case-product-wordmark{font-size:48px;margin-bottom:12px}
+ .case-product-slogan{font-size:clamp(27px,8.5vw,48px);max-width:none;margin-inline:auto;white-space:nowrap}
+ html[lang^="en"] .case-product-slogan{font-size:clamp(37px,10vw,52px);max-width:8.2em;white-space:normal}
+ .case-product-art{height:clamp(370px,108vw,740px);perspective:1000px}
+ .case-product-device{width:53%;max-width:300px;filter:drop-shadow(8px 15px 10px rgb(0 0 0 / .14))}
+ .case-product-device--board{left:1%;top:8%;transform:rotateX(5deg) rotateY(-10deg) rotateZ(-6deg)}
+ .case-product-device--coach{right:1%;top:0;transform:rotateX(5deg) rotateY(12deg) rotateZ(6deg) scale(.96)}
+ .case-product-device::before{transform:translate3d(4px,0,-5px)}
+ .case-character .case-type-study{margin-top:30px}
+ .case-character .case-type-study .case-app-wordmark{font-size:clamp(68px,20vw,86px)}
+ .case-native-study{margin-top:38px}.case-native-study>h3{font-size:25px}
+ .case-native-components{grid-template-columns:minmax(0,1fr);gap:30px;margin-top:22px}
+ .case-component-visual{height:170px;justify-content:flex-start}
+ .case-glass-controls svg{width:105px}.case-component-visual svg{max-width:300px}
+ .case-native-components h4{margin-top:0}.case-native-components p{max-width:28em}
+}

@@ -102,5 +102,21 @@ Object.assign(window.PORTFOLIO_TRANSLATIONS ||= {}, {
 });
 
 Object.assign(window.PORTFOLIO_TRANSLATIONS, {
-  "当前维护版本的主棋盘，鼠尾绿强调与衬线数字": "The main board in the current maintenance build, with sage-green accents and serif digits"
+  "当前维护版本的主棋盘，鼠尾绿强调与衬线数字": "The main board in the current maintenance build, with sage-green accents and serif digits",
+  "主棋盘与分步辅导的 iPhone 透视展示": "Two angled iPhones showing the board and step-by-step coaching",
+  "iPhone 上的数独分步辅导界面": "Sudoku coaching on an iPhone",
+  "iPhone 上的数独主棋盘界面": "The Sudoku board on an iPhone",
+  "字形里的纸笔气质。": "The character of pen and paper.",
+  "Fraunces 的柔和曲线构成字标；源云明体与 EB Garamond 承接中文和英文。": "Soft Fraunces curves shape the wordmark. GenWanMin and EB Garamond carry Chinese and English.",
+  "融入 iOS 的形状与材质。": "Shapes and materials at home on iOS.",
+  "真实界面中的圆形暂停按钮": "The circular pause control from the actual app",
+  "真实界面中的圆形更多按钮": "The circular more control from the actual app",
+  "真实界面中带连续圆角的数字键": "Number keys with continuous corners from the actual app",
+  "真实设置界面中的系统底部导航": "The system tab bar from the actual settings screen",
+  "圆形玻璃按钮": "Circular glass controls",
+  "暂停与更多采用 iOS 26 原生 Liquid Glass。": "Pause and more use native Liquid Glass on iOS 26.",
+  "连续圆角": "Continuous corners",
+  "数字键与盘面使用连续圆角，留下清楚的边界与轻阴影。": "Number keys and the board use continuous corners, defined edges and soft shadows.",
+  "系统导航": "System navigation",
+  "沿用原生 TabView，保持熟悉的切换方式。": "Native TabView keeps navigation familiar."
 });
