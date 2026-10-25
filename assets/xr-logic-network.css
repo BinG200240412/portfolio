@@ -25,8 +25,9 @@ html[data-theme="dark"] :is(.gogo-logic-card[data-node="dog"],.gogo-logic-card[d
 .gogo-logic-hub>.gogo-dot-frame{color:var(--gogo-accent);opacity:.75}
 /* White paper needs ink contrast, while the dark display keeps its light levels. */
 @media(forced-colors:none){
- html[data-theme="light"] .gogo-dot-frame{opacity:.76}
- html[data-theme="light"] .gogo-logic-hub>.gogo-dot-frame{opacity:.96}
+ html[data-theme="light"] .gogo-logic-page{--gogo-accent:#a45800}
+ html[data-theme="light"] .gogo-dot-frame{color:#355c20;opacity:1}
+ html[data-theme="light"] .gogo-logic-hub>.gogo-dot-frame{color:var(--gogo-accent);opacity:1}
  html[data-theme="light"] .gogo-logic-hub>p{color:var(--mid)}
 }
 .gogo-dot-title{font-size:15px;line-height:1.4;color:var(--ink)}

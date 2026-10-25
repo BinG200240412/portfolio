@@ -11,15 +11,15 @@
     [137,165,150],[165,145,179],[203,199,185],
     [82,90,93],[117,125,124],[224,219,204],[162,94,85],
     [205,204,197],[163,165,162],[118,123,122],[75,83,82]];
-  // Warm paper uses deeper ink with clearer chroma; dark mode keeps its light.
-  const lightColours = [[55,84,47],[142,63,70],[40,91,137],[139,91,20],
-    [40,104,70],[107,64,131],[78,84,76],
-    [40,51,53],[58,79,73],[105,85,49],[147,98,91],
-    [43,49,47],[70,79,74],[92,105,96],[111,125,112],
-    [185,54,49],[21,99,162],[159,98,7],[13,119,73],[116,44,152]];
+  // Paper uses full-colour ink; the dark display keeps its original light levels.
+  const lightColours = [[17,83,39],[180,29,53],[8,78,173],[161,92,0],
+    [0,111,68],[113,24,165],[31,43,36],
+    [18,29,29],[34,62,47],[128,75,0],[153,63,70],
+    [21,28,24],[39,48,41],[57,72,60],[76,96,78],
+    [203,24,49],[0,88,192],[184,105,0],[0,133,71],[128,16,190]];
   // A few camera windows, digits and small marks carry purer accent ink.
   const lightAccentRoles = {
-    'robot-dog':{3:16,4:18,8:16}, 'quest-3':{3:16,6:16},
+    'robot-dog':{3:16,4:18,8:16}, 'quest-3':{1:2,3:16,4:2,6:16},
     sudoku:{2:15}, arright:{3:17,4:18}, skill:{3:19,4:15},
     'liangzhu-mask':{2:18,3:17},
   };
@@ -65,7 +65,7 @@
   const hotspots = new Map();
   const sampleWeights = new Float32Array(9), sampleShades = new Float32Array(9);
   const sampled = {role:0,coverage:0,shade:4};
-  let width = 0, height = 0, ledPitch = 3, items = [], quiet = [], sprites = [];
+  let width = 0, height = 0, ledPitch = 3, items = [], quiet = [], sprites = [], paperFacets = [];
   let dark = true, frame = 0, lastFrame = 0, elapsed = 0, pageShown = true;
   let morph = 0, morphTarget = 0, pointerX = 0, pointerY = 0, aimX = 0, aimY = 0;
   let gorillaReady = false, gorillaPlacement = null;
@@ -142,13 +142,17 @@
   }
   function makeSprites() {
     dark = document.documentElement.dataset.theme !== 'light';
-    sprites = (dark ? colours : lightColours).map(rgb => {
+    const spriteFor = rgb => {
       const sprite = document.createElement('canvas'); sprite.width = sprite.height = 24;
       const paint = sprite.getContext('2d');
       paint.fillStyle = 'rgb(' + rgb.map(Math.round).join(',') + ')';
       paint.beginPath(); paint.arc(12, 12, 6, 0, TAU); paint.fill();
       return sprite;
-    });
+    };
+    sprites = (dark ? colours : lightColours).map(spriteFor);
+    // Opaque colour steps describe the mesh faces without mixing them with white.
+    paperFacets = dark ? [] : lightColours.map(rgb => [0,.66,.78,.9,1]
+      .map(level => spriteFor(rgb.map(channel => channel * level))));
   }
   function clearance(x, y) {
     let light = 1;
@@ -308,8 +312,7 @@
   function draw(time) {
     if (!sprites.length || !width || !height) return;
     ctx.clearRect(0, 0, width, height);
-    // On paper, lit facets reveal more paper and shadows carry more ink.
-    const facets = dark ? [0,.48,.66,.84,1] : [0,1,.96,.91,.86];
+    const facets = [0,.48,.66,.84,1];
     const opacity = dark ? .76 : 1;
     const libraries = [window.PortfolioGorillaMotif,window.PortfolioLiangzhuMotifs,
       window.PortfolioMatrix3D,window.PortfolioProjectStickers,window.PortfolioMatrixMotifs,window.PortfolioMatrixSymbols];
@@ -349,9 +352,11 @@
           // fades near typography; there is no painted backdrop or central hole.
           // Flat stickers keep their full colour; both themes retain solid LEDs.
           const facet = image.shades ? facets[pixel.shade] : 1;
-          const ink=opacity*facet*pixel.coverage;
+          const ink=dark ? opacity*facet*pixel.coverage : 1;
           ctx.globalAlpha = light===1 ? ink : Math.min(ink,Math.max(.16,ink*light));
-          ctx.drawImage(sprites[accentRoles?.[pixel.role] ?? palette[pixel.role-1]],px-size/2,py-size/2,size,size);
+          const inkIndex=accentRoles?.[pixel.role] ?? palette[pixel.role-1];
+          const sprite=!dark && image.shades ? paperFacets[inkIndex][pixel.shade] : sprites[inkIndex];
+          ctx.drawImage(sprite,px-size/2,py-size/2,size,size);
         }
       }
     }

@@ -1,6 +1,11 @@
 /* Solid, native diagrams: the controller and its consequence share one scene. */
 #gogo-interaction-native{--gin-body:#b7c1b0;--gin-dark:#7e8b79;--gin-pod:#292c27;--gin-detail:#171a16;--gin-signal:var(--gogo-accent,#c2944a);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,3vw,56px);width:100%;min-width:0}
-html[data-theme="light"] #gogo-interaction-native{--gin-body:#465543;--gin-dark:#7a8774;--gin-pod:#e1e3da;--gin-detail:#f3f2ec}
+@media(forced-colors:none){
+ html[data-theme="light"] #gogo-interaction-native{--gin-body:#285d1f;--gin-dark:#507c2c;--gin-pod:#e1e3da;--gin-detail:#f3f2ec;--gin-signal:#b46800}
+ html[data-theme="light"] #gogo-interaction-native .gin-link,html[data-theme="light"] #gogo-interaction-native .gin-arrow{opacity:1}
+ html[data-theme="light"] #gogo-interaction-native .gin-far-leg{opacity:.76}
+ html[data-theme="light"] #gogo-interaction-native .gin-pad::before{opacity:.8}
+}
 #gogo-interaction-native .gin-demo{position:relative;min-width:0;margin:0;padding:0;background:none;border:0}
 #gogo-interaction-native .gin-scene{position:relative;width:100%;aspect-ratio:7/6;min-width:0;color:var(--gin-body)}
 #gogo-interaction-native .gin-art{display:block;width:100%;height:100%;overflow:visible}
