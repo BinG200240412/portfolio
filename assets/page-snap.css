@@ -1,0 +1,33 @@
+/* Shared work-page rule. min-height lets tall artwork and text keep their full
+   height; the browser permits free scrolling inside an oversized snap area. */
+html.portfolio-paged{scroll-snap-type:y mandatory;scroll-padding:0;scroll-behavior:smooth}
+.portfolio-snap-page{scroll-snap-align:start;scroll-snap-stop:always;scroll-margin:0;min-height:100svh;box-sizing:border-box}
+.portfolio-snap-end{scroll-snap-align:end}
+html.drift-paged body > .hero.portfolio-snap-cover{min-height:calc(100svh - 82px);scroll-margin-top:82px}
+html.drift-paged body > .hero .hero-media,html.drift-paged body > .hero .hero-media > img{height:calc(100svh - 82px)}
+html.drift-paged body > .hero .hero-media > img{object-fit:cover;object-position:center}
+html.portfolio-paged:has(dialog[open]){scroll-snap-type:none}
+.portfolio-snap-flow{display:flex;flex-direction:column;justify-content:center;padding-block:clamp(84px,10svh,120px)}
+.portfolio-snap-flow > :is(.intro,.actbar,section.s,section.feat,section.closing):first-child{padding-top:0}
+.portfolio-snap-flow > :is(.intro,.actbar,section.s,section.feat,section.closing):last-child{padding-bottom:0}
+.portfolio-snap-flow > .intro{padding-bottom:36px}
+html[data-snap-layout="skills"] .portfolio-snap-page{padding-top:clamp(90px,10svh,120px)}
+html[data-snap-layout="skills"] .skills-hero{display:flex;flex-direction:column;justify-content:center}
+html[data-snap-layout="arright"] .mobile-section{padding-block:90px;scroll-margin:0}
+html[data-snap-layout="practice"] .practice{min-height:100svh}
+html[data-snap-layout="archive"] .wrap{min-height:calc(100svh - 82px)}
+html[data-snap-layout="demo"] .portfolio-snap-flow{align-items:center;gap:22px}
+/* The About grid keeps its text/photo columns and the companion's own track. */
+html[data-snap-layout="about"]{--about-page-top:72px}
+html[data-snap-layout="about"] .about-hero{min-height:calc(100svh - var(--about-page-top));scroll-margin-top:var(--about-page-top)}
+html[data-snap-layout="about"] .about-details{align-content:center;padding-block:84px;scroll-margin-top:0}
+@media(max-width:768px){
+ html[data-snap-layout="about"]{--about-page-top:82px}
+ html[data-snap-layout="about"] .about-details{min-height:0;scroll-snap-align:none;padding:0}
+ html[data-snap-layout="about"] .about-details > .portfolio-snap-subpage{min-height:100svh;padding-block:84px;scroll-snap-align:start;scroll-snap-stop:always;scroll-margin:0}
+}
+@media(max-width:480px){html[data-snap-layout="about"]{--about-page-top:84px}}
+@media(max-width:700px){
+ html[data-snap-layout="practice"] .portfolio-snap-subpage{scroll-snap-align:start;scroll-snap-stop:always;scroll-margin-top:82px}
+}
+@media(prefers-reduced-motion:reduce){html.portfolio-paged{scroll-behavior:auto}}

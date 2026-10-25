@@ -78,7 +78,7 @@
       const languageButton = document.createElement('button');
       languageButton.type = 'button';
       languageButton.className = 'language-toggle';
-      languageButton.innerHTML = '<span class="language-option" data-language="zh" lang="zh-CN" aria-hidden="true"><svg class="language-zh-glyph" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 1v14M2 4.5h12v7H2Z"/></svg></span><span class="language-divider" aria-hidden="true">/</span><span class="language-option" data-language="en" lang="en" aria-hidden="true">EN</span>';
+      languageButton.innerHTML = '<span class="language-option" data-language="zh" lang="zh-CN" aria-hidden="true">中</span><span class="language-divider" aria-hidden="true">/</span><span class="language-option" data-language="en" lang="en" aria-hidden="true">EN</span>';
       languageButton.addEventListener('click', () => window.PortfolioI18n?.setLanguage(window.PortfolioI18n.language === 'en' ? 'zh' : 'en'));
       host.appendChild(languageButton);
     }
@@ -127,19 +127,22 @@
     const file = location.pathname.split('/').pop() || 'index.html';
     const definitions = {
       'sudoku.html': ['.sudoku-opening > .hero', '#intent', '--accent', 'center'],
-      'ai3d.html': ['#liangzhu-particle-cover', '.wrap > .intro', '--cover-accent', 'right'],
-      'qianli.html': ['.qianli-light-hero', '.wrap > .intro', '--jade', 'right'],
+      'ai3d.html': ['#liangzhu-particle-cover', '.wrap .intro', '--cover-accent', 'right'],
+      'qianli.html': ['.qianli-light-hero', '.wrap .intro', '--jade', 'right'],
       'xr.html': ['.gogo-hero', '#concept', '--gogo-accent', 'center'],
-      'drift.html': ['body > .hero', '.wrap > .intro', '--green', 'right'],
+      'drift.html': ['body > .hero', '.wrap .intro', '--green', 'right'],
       'design-skills.html': ['.skills-hero', '#newsprint', '--red', 'inline'],
-      'arright.html': ['.wrap > .hero', null, '--ink', 'center'],
+      'arright.html': ['.wrap .hero', null, '--ink', 'center'],
       'index.html': ['.about-hero', '.about-details', '--red', 'center'],
     };
     const definition = definitions[file];
     if (!definition) return;
     const [selector, destination, accent, position] = definition;
     const hero = document.querySelector(selector);
-    const target = destination ? document.querySelector(destination) : hero?.nextElementSibling;
+    const destinationNode = destination ? document.querySelector(destination) : hero?.nextElementSibling;
+    const heroPage = hero?.closest('.portfolio-snap-page');
+    let target = destinationNode?.closest('.portfolio-snap-page') || destinationNode;
+    if (heroPage && target === heroPage) target = heroPage.nextElementSibling;
     if (!hero || !target) return;
     const cue = document.createElement('button');
     cue.type = 'button'; cue.className = 'scroll-cue'; cue.hidden = true;

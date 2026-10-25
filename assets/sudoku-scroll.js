@@ -6,6 +6,15 @@
   const intro=opening?.querySelector('.sudoku-intro');
   const dock=intro?.querySelector('.sudoku-board-dock');
   const viewer=document.getElementById('media-viewer');
+  // Native chapter snapping shares the document scroller with ScrollTrigger;
+  // it never intercepts wheel/touch input or pins the board in a second scroller.
+  if(opening){
+    const root=document.documentElement;
+    root.classList.add('sudoku-snap');
+    const syncSnap=()=>root.classList.toggle('sudoku-snap-suspended',Boolean(viewer?.open));
+    if(viewer)new MutationObserver(syncSnap).observe(viewer,{attributes:true,attributeFilter:['open']});
+    syncSnap();
+  }
   const {gsap,ScrollTrigger}=window;
   if(!opening||!board||!dock||!gsap||!ScrollTrigger)return;
   gsap.registerPlugin(ScrollTrigger);

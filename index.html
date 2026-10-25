@@ -8,7 +8,7 @@
 <script src="assets/i18n-main.js?v=focused-works-20261024"></script>
 <script src="assets/i18n-cases.js?v=focused-copy-20261024"></script>
 <script src="assets/i18n.js?v=bilingual-20261023"></script>
-<script src="assets/theme.js?v=plix-extralight-20261025"></script>
+<script src="assets/theme.js?v=site-layout-20261025"></script>
 <script defer src="assets/matrix-motifs.js?v=sticker-collage-20261023"></script>
 <script defer src="assets/matrix-symbols.js?v=work-objects-20261023"></script>
 <script defer src="assets/matrix-models.js?v=interactive-objects-20261024"></script>
@@ -180,12 +180,14 @@
     .cols section{padding:0;border-left:0;border-top:1px solid #e3e3e3;padding-top:28px}
     .cols section:first-child{border-top:0;padding-top:0}}
 </style>
-<link rel="stylesheet" href="assets/theme.css?v=plix-extralight-20261025">
+<link rel="stylesheet" href="assets/theme.css?v=site-layout-20261025">
 <link rel="stylesheet" href="assets/works/ai3d/particle-cover.css?v=20261025-full-bleed">
 <link rel="stylesheet" href="assets/matrix-field.css?v=interactive-objects-20261024">
 <link rel="stylesheet" href="assets/about.css?v=gray-pixel-portrait-frame-20261025">
 <link rel="stylesheet" href="assets/ambient-field.css?v=tidal-led-20261024">
 <link rel="stylesheet" href="assets/portfolio-assistant.css?v=assistant-bottom-20261024">
+<link rel="stylesheet" href="assets/page-snap.css?v=site-layout-20261025">
+<script defer src="assets/page-snap.js?v=site-layout-20261025"></script>
 </head>
 <body class="portfolio-shell">
   <canvas id="ambient-page" aria-hidden="true" data-i18n-ignore></canvas>
@@ -431,7 +433,7 @@ const SECTION_PAGE={
   "arright":"sections/arright.html",
   "数独":"sections/sudoku.html?v=ai-learning-intent-20261024",
   "良渚 · AI 3D":"sections/ai3d.html?v=particle-full-bleed-20261025",
-  "良渚 · XR":"sections/xr.html?v=grey-snap-20261025",
+  "良渚 · XR":"sections/xr.html?v=cover-wordmark-20261025",
   "漂移之屋":"sections/drift.html",
   "千里江山":"sections/qianli.html?v=qianli-ripples-20261024",
   "设计工具 · Skills":"sections/design-skills.html?v=edge-to-edge-controls-20261024b",
@@ -447,7 +449,7 @@ function enterSection(name){
     const frameURL = new URL(page, location.href);
     frameURL.searchParams.set("lang", window.PortfolioI18n?.language || "zh");
     frameURL.searchParams.set("ambient", "tidal-led-20261024");
-    frameURL.searchParams.set("cue", "linear-led-cue-20261025");
+    frameURL.searchParams.set("cue", "site-layout-20261025");
     const fontPreview = document.documentElement.dataset.cjkPreview;
     if (fontPreview) frameURL.searchParams.set("cjk", fontPreview);
     section.innerHTML=`<iframe class="native-frame" src="${frameURL.pathname + frameURL.search}" title="${tr(name)}" loading="eager"></iframe>`;

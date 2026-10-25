@@ -68,10 +68,13 @@ html[data-theme="light"] .legacy-case [style*="color:#fff"]{color:var(--ink)!imp
    Slab still uses its genuine static 400 outlines for this requested weight. */
 body,body *,body *::before,body *::after{font-family:var(--portfolio-font)!important;font-weight:var(--portfolio-font-weight,200)!important;font-synthesis:none}
 body.portfolio-shell{--mono:var(--portfolio-font);--sans:var(--portfolio-font);--serif:var(--portfolio-font)}
-.theme-controls .language-toggle{display:flex;align-items:center;justify-content:center;gap:7px;width:72px;margin:0;border:0;border-radius:0;color:var(--ink);font-size:16px;line-height:1;letter-spacing:0}
+.theme-controls .language-toggle{--portfolio-font-weight:200;display:flex;align-items:center;justify-content:center;gap:7px;width:72px;margin:0;border:0;border-radius:0;color:var(--ink);font-size:16px;line-height:1;letter-spacing:0}
 .theme-controls :is(.language-option,.language-divider){display:block;margin:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none;text-shadow:none;line-height:1;color:var(--soft)}
 .theme-controls .language-option.is-current{color:var(--ink)}
-.theme-controls .language-zh-glyph{display:block;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter}
+/* Match the real PLIX 中 ink height to Slab capitals, rather than their em boxes. */
+.theme-controls .language-option[data-language="zh"]{font-size:1em}
+.theme-controls .language-option[data-language="en"]{font-size:1.25em;transform:translateY(.085em)}
+.theme-controls .language-divider{font-size:1.2em;transform:translateY(.11em)}
 .theme-controls ::selection{background:transparent;color:inherit}
 .scroll-cue{position:fixed;z-index:70;display:grid;place-items:center;width:48px;height:52px;margin:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .scroll-cue[hidden]{display:none}
