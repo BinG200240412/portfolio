@@ -21,5 +21,28 @@
       900
     ],
     "transform": "Proportional frame export from the project film."
+  },
+  "experience": {
+    "file": "gogo-experience.mp4",
+    "source": "06_良渚_狗GO_XR/05_源文件/ee0bf648169d67db349d09022575c618_raw.mp4",
+    "source_sha256": "423345d0c39f446dffaf9a8d32ad503eac2667efc988afb1eedc4fc453770046",
+    "source_bytes": 38855539,
+    "output_sha256": "506d2cb16a20965e53a4709f2e237a91b362884b5e31cc3adebce9f983bbd41f",
+    "output_bytes": 15220628,
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "duration_seconds": 25.635011,
+    "transform": "Full-length H.264/AAC web export, CRF 24, maximum video bitrate 5 Mbps, 128 kbps audio, faststart; source file unchanged."
+  },
+  "experience_poster": {
+    "file": "gogo-experience-poster.webp",
+    "source_time_seconds": 5,
+    "dimensions": [
+      1600,
+      900
+    ],
+    "transform": "Proportional frame export from the first-person demonstration."
   }
 }
