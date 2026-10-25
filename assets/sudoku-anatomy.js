@@ -13,14 +13,7 @@
     const t = source => window.PortfolioI18n?.t(source) ?? source;
     const hint = gallery.querySelector('.anatomy-instruction');
     const hintSource = hint?.textContent.trim();
-    const highlight = document.createElement('span');
-    highlight.className = 'anatomy-highlight';
-    const target = document.createElement('span');
-    target.className = 'anatomy-target';
-    highlight.setAttribute('aria-hidden', 'true');
-    target.setAttribute('aria-hidden', 'true');
-    device.append(highlight, target);
-    let items = [], buttons = [], paths = [], nodes = [], selected = -1, active = -1, frame = 0;
+    let items = [], buttons = [], paths = [], boxes = [], nodes = [], selected = -1, active = -1, frame = 0;
 
     function el(name, attributes) {
       const node = document.createElementNS(NS, name);
@@ -32,16 +25,8 @@
       stage.classList.toggle('has-active', index >= 0);
       buttons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
       paths.forEach((path, i) => path.classList.toggle('is-active', i === index));
+      boxes.forEach((box, i) => box.classList.toggle('is-active', i === index));
       nodes.forEach((node, i) => node.classList.toggle('is-active', i === index));
-      if (index < 0) return;
-      const item = items[index];
-      const [x, y, width, height] = item.bounds;
-      Object.assign(highlight.style, {
-        left: `${5.1020408163 + x * .897959183673}%`, top: `${2.2 + y * .956}%`,
-        width: `${width * .897959183673}%`, height: `${height * .956}%`,
-      });
-      target.style.left = `${5.1020408163 + item.anchor[0] * .897959183673}%`;
-      target.style.top = `${2.2 + item.anchor[1] * .956}%`;
     }
     function draw() {
       frame = 0;
@@ -73,32 +58,42 @@
         }
       });
       svg.setAttribute('viewBox', `0 0 ${rect.width} ${rect.height}`);
-      svg.replaceChildren(); paths = []; nodes = [];
-      const joints = { left: [], right: [] };
+      const leaders = el('g', {}), regions = el('g', {}), tips = el('g', {});
+      svg.replaceChildren(leaders, regions, tips); paths = []; boxes = []; nodes = [];
       items.forEach((item, i) => {
         const label = buttons[i].getBoundingClientRect();
         const left = item.side === 'left';
+        const [x, y, width, height] = item.bounds;
+        const box = {
+          x: photo.left - rect.left + photo.width * x / 100,
+          y: photo.top - rect.top + photo.height * y / 100,
+          width: photo.width * width / 100,
+          height: photo.height * height / 100,
+        };
         const start = {
           x: mobile ? label.left - rect.left + 2.5 : (left ? label.right - 2.5 : label.left + 2.5) - rect.left,
           y: mobile ? label.top - rect.top : label.top - rect.top + 25.5,
         };
-        const end = { x: photo.left - rect.left + photo.width * item.anchor[0] / 100,
-          y: photo.top - rect.top + photo.height * item.anchor[1] / 100 };
-        const edge = (left ? photo.left : photo.right) - rect.left;
-        const joint = { x: mobile ? start.x + (i % 2 ? 16 : -16) : (start.x + edge) / 2,
-          y: mobile ? photo.bottom - rect.top + 18 + i * 6 : start.y + (end.y - start.y) * .48 };
-        const d = mobile
-          ? `M ${start.x} ${start.y} C ${start.x} ${start.y - 28}, ${joint.x} ${joint.y + 20}, ${joint.x} ${joint.y} S ${end.x} ${end.y + 38}, ${end.x} ${end.y}`
-          : `M ${start.x} ${start.y} C ${joint.x} ${start.y}, ${joint.x - (left ? 18 : -18)} ${joint.y}, ${joint.x} ${joint.y} S ${edge + (left ? -12 : 12)} ${end.y}, ${end.x} ${end.y}`;
+        // Enter the actual component from its near edge, rather than stopping at the bezel.
+        const inset = Math.min(6, box.width / 2), yInset = Math.min(2, box.height / 2);
+        const end = {
+          x: left ? box.x + inset : box.x + box.width - inset,
+          y: Math.max(box.y + yInset, Math.min(box.y + box.height - yInset,
+            photo.top - rect.top + photo.height * item.anchor[1] / 100)),
+        };
+        const direction = left ? 1 : -1;
+        const distance = Math.max(0, direction * (end.x - start.x));
+        const firstX = mobile ? (left ? 8 + (i % 4) * 5 : rect.width - 8 - (i % 4) * 5)
+          : start.x + direction * Math.min(36, distance * .25);
+        const lastX = mobile ? (left ? photo.left - rect.left - 12 - (i % 4) * 4 : photo.right - rect.left + 12 + (i % 4) * 4)
+          : end.x - direction * Math.min(22, distance * .2);
+        const d = `M ${start.x} ${start.y} H ${firstX} L ${lastX} ${end.y} H ${end.x}`;
         const path = el('path', { d, class: 'anatomy-connection' });
-        const node = el('circle', { cx: joint.x, cy: joint.y, r: 2.6, class: 'anatomy-node' });
-        svg.append(path, node); paths.push(path); nodes.push(node);
-        joints[item.side].push(joint);
+        const region = el('rect', { ...box, class: 'anatomy-region' });
+        const node = el('circle', { cx: end.x, cy: end.y, r: 2, class: 'anatomy-node' });
+        leaders.append(path); regions.append(region); tips.append(node);
+        paths.push(path); boxes.push(region); nodes.push(node);
       });
-      if (!mobile) Object.values(joints).forEach(points => points.slice(1).forEach((point, i) => {
-        const previous = points[i], bow = point.x + (point.x < rect.width / 2 ? -24 : 24);
-        svg.prepend(el('path', { class: 'anatomy-branch', d: `M ${previous.x} ${previous.y} C ${bow} ${previous.y + 32}, ${bow} ${point.y - 32}, ${point.x} ${point.y}` }));
-      }));
       activate(active);
     }
     function schedule() { if (!frame) frame = requestAnimationFrame(draw); }
@@ -114,7 +109,9 @@
         const title = document.createElement('span'), text = document.createElement('span');
         title.className = 'anatomy-callout-title'; title.textContent = t(item.title);
         text.className = 'anatomy-callout-text'; text.textContent = t(item.text);
-        button.append(title, text); button.setAttribute('aria-pressed', 'false');
+        button.append(title);
+        if (item.text) button.append(text);
+        button.setAttribute('aria-pressed', 'false');
         button.setAttribute('aria-controls', 'sudoku-active-image');
         button.addEventListener('mouseenter', () => activate(i));
         button.addEventListener('mouseleave', () => activate(selected));
