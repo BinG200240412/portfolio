@@ -1,6 +1,8 @@
 /* A landscape made from the same discrete, round LEDs as the home page.
  * Mountain profiles and folds are geometry, with no image source.
- * The lattice stays still: only the light travels. No per-frame layout reads.
+ * Fixed LEDs show a continuously unfolding landscape. Cached world columns
+ * advance at three depths, while a travelling swell lifts the mountain ridges.
+ * No per-frame layout reads, image downloads or repeating panorama seam.
  */
 (() => {
   'use strict';
@@ -10,6 +12,8 @@
   if (!ctx || !hero) return;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const TAU = Math.PI * 2, FPS = 30, RIPPLE_LIFE=4.8;
+  const FIELD_DENSITY=300,FIELD_ROWS=400,FIELD_TOP=-.15;
+  const depths=[{speed:.50,swell:.014},{speed:.90,swell:.022},{speed:1.30,swell:.030}];
   const profiles = [
     [[-.08,.70],[.02,.62],[.10,.53],[.15,.60],[.22,.42],[.28,.34],[.33,.44],[.40,.62],[.46,.58],[.53,.43],[.59,.49],[.66,.39],[.72,.51],[.79,.60],[.86,.52],[.94,.64],[1.08,.61]],
     [[-.08,.74],[.01,.65],[.075,.49],[.13,.57],[.19,.64],[.24,.42],[.29,.29],[.32,.35],[.365,.56],[.41,.68],[.46,.64],[.51,.57],[.56,.64],[.605,.47],[.65,.36],[.69,.40],[.745,.57],[.80,.62],[.86,.68],[.94,.73],[1.08,.64]],
@@ -33,7 +37,10 @@
       ['#d7ccad','#c2ad7d','#ac9258','#92773c','#80622c','#6b4d22','#533818'],
     ],
   };
-  let width=0,height=0,pitch=5,points=[],sprites=[],glows=[],light=false;
+  const fields=depths.map(()=>new Map());
+  const fieldSample={alpha:0,ink:0};
+  let width=0,height=0,pitch=5,columns=[],sprites=[],glows=[],light=false;
+  let yScale=1.38,yOffset=-.12*1.38,lastPrune=0;
   let frame=0,lastFrame=0,elapsed=0,onScreen=true,shown=true;
   let aim=null,hit=null,pointerLevel=0,pulses=[];
   let parentSection=null;
@@ -51,8 +58,8 @@
     const hint=hero.querySelector('.qianli-light-hint');
     if(hint)hint.textContent=english ? 'Touch anywhere to send ripples of light' : '点击任意位置，让光泛起涟漪';
     canvas.setAttribute('aria-label',english
-      ? 'Touch the landscape to send ripples through the light beads. You can also press Enter or Space.'
-      : '点击山水，让点阵光珠从触碰处泛起涟漪；也可按 Enter 或空格。');
+      ? 'A continuously unfolding mountain scroll. Touch the landscape to send ripples through the light beads. You can also press Enter or Space.'
+      : '徐徐展开、起伏流动的点阵山水长卷。点击山水，让光珠泛起涟漪；也可按 Enter 或空格。');
   }
   function ridge(profile,x) {
     let i=0;while(i<profile.length-2 && x>profile[i+1][0])i++;
@@ -60,6 +67,75 @@
     // A little broken rock along the long, legible silhouette.
     return a[1]+(b[1]-a[1])*smooth(t)+
       Math.sin(x*173)*.0035+Math.sin(x*389+2)*.0018;
+  }
+  function noise1(x,seed) {
+    const cell=Math.floor(x),f=smooth(x-cell);
+    return hash(cell,seed)*(1-f)+hash(cell+1,seed)*f;
+  }
+  function worldRidge(layer,u) {
+    // The opening keeps the existing composition. Beyond it, continuous
+    // deterministic terrain extends indefinitely instead of wrapping a tile.
+    const broad=noise1(u*4.1+layer*1.7,21+layer);
+    const detail=noise1(u*10.7,51+layer),fine=noise1(u*27.3,83+layer);
+    const generated=layer===0 ? .33+broad*.23+detail*.08+fine*.025
+      : layer===1 ? .22+broad*.35+detail*.10+fine*.035
+      : .66+broad*.15+detail*.06+fine*.02;
+    const blend=smooth((u-.80)/.45);
+    return ridge(profiles[layer],u)*(1-blend)+generated*blend;
+  }
+  function fieldColumn(layer,index) {
+    const cache=fields[layer];
+    if(cache.has(index))return cache.get(index);
+    const u=index/FIELD_DENSITY,top=worldRidge(layer,u),base=[.825,.86,.90][layer];
+    const alpha=new Uint8Array(FIELD_ROWS),ink=new Uint8Array(FIELD_ROWS);
+    for(let row=0;row<FIELD_ROWS;row++) {
+      const y=FIELD_TOP+row/FIELD_DENSITY;
+      if(y<top || y>base)continue;
+      const grain=hash(index,row,layer);
+      if(grain<(layer===0?.09:.035))continue;
+      const depth=(y-top)/(base-top),edge=Math.exp(-(y-top)/.009);
+      const folds=Math.sin(u*64+depth*4.8+Math.sin(u*27)*2.3);
+      const facet=clamp(.46+folds*.32+Math.sin(u*171-depth*8)*.12+grain*.13);
+      const foot=smooth((1-depth)/.12);
+      alpha[row]=Math.round(clamp((.27+facet*.70+edge*.36)*foot*(layer===0?.55:layer===2?.86:1))*255);
+      const role=Math.round(clamp(facet*.76+edge*.30)*6);
+      const vein=Math.sin(u*16+depth*2.2)+Math.cos(u*31-depth*4)*.35;
+      let bank=layer===0 ? 3 : vein>.55 ? 1 : vein<-.55 ? 0 : 2;
+      if(layer===1 && depth>.25 && vein<.25)bank=3;
+      if(layer===2 && vein>.65 && grain>.62)bank=4;
+      ink[row]=bank*7+role;
+    }
+    const value={alpha,ink};cache.set(index,value);return value;
+  }
+  function columnView(layer,u,time) {
+    const world=u+time*.019*depths[layer].speed;
+    const sample=world*FIELD_DENSITY,index=Math.floor(sample);
+    const swell=depths[layer].swell*Math.sin(time*.42-world*TAU*1.35+layer*1.7)
+      +.008*Math.sin(time*.23+world*TAU*2.2+layer);
+    return {left:fieldColumn(layer,index),right:fieldColumn(layer,index+1),mix:sample-index,
+      shift:swell*FIELD_DENSITY,index};
+  }
+  function sampleField(view,row) {
+    const r=row-view.shift,y0=Math.floor(r),f=r-y0;
+    if(y0<0 || y0>=FIELD_ROWS-1)return null;
+    const a=view.left.alpha,b=view.right.alpha;
+    const left=a[y0]*(1-f)+a[y0+1]*f,right=b[y0]*(1-f)+b[y0+1]*f;
+    const alpha=(left*(1-view.mix)+right*view.mix)/255;
+    if(alpha<.015)return null;
+    const selected=left*(1-view.mix)>right*view.mix ? view.left : view.right;
+    const y=selected.alpha[y0]*(1-f)>selected.alpha[y0+1]*f ? y0 : y0+1;
+    fieldSample.alpha=alpha;fieldSample.ink=selected.ink[y];return fieldSample;
+  }
+  function pruneFields(time) {
+    if(time-lastPrune<2 || !columns.length)return;
+    lastPrune=time;
+    fields.forEach((cache,layer)=>{
+      if(cache.size<700)return;
+      const travel=time*.019*depths[layer].speed;
+      const first=Math.floor((columns[0].u+travel)*FIELD_DENSITY)-8;
+      const last=Math.ceil((columns[columns.length-1].u+travel)*FIELD_DENSITY)+8;
+      for(const index of cache.keys())if(index<first || index>last)cache.delete(index);
+    });
   }
   function makeSprites() {
     light=document.documentElement.dataset.theme==='light';
@@ -94,38 +170,18 @@
     // Portrait shows a close crop of the panorama, rather than squeezing the
     // entire mountain range into thin vertical spikes.
     const panorama=mobile ? Math.max(width,height*.9) : width,left=(width-panorama)/2;
-    const yMap=v=>mobile ? (v-.08)*1.30 : (v-.12)*1.38;
-    points=[];
-    for(let py=pitch/2;py<height;py+=pitch)for(let px=pitch/2;px<width;px+=pitch) {
-      const x=(px-left)/panorama,y=py/height;
-      const noise=hash(Math.round(px/pitch),Math.round(py/pitch));
-      let point=null;
-      for(let layer=0;layer<3;layer++) {
-        const top=yMap(ridge(profiles[layer],x));
-        const base=yMap([.825,.86,.90][layer]);
-        if(y<top || y>base)continue;
-        const depth=(y-top)/(base-top),edge=Math.exp(-(y-top)*height/(pitch*1.8));
-        // Slanting folds give volume without drawing connecting lines or faces.
-        const folds=Math.sin(x*64+depth*4.8+Math.sin(x*27)*2.3);
-        const fine=Math.sin(x*171-depth*8)*.12;
-        const facet=clamp(.46+folds*.32+fine+noise*.13);
-        const foot=smooth((1-depth)/.12);
-        const intensity=(.27+facet*.70+edge*.36)*foot*(layer===0?.55:layer===2?.86:1);
-        if(noise<(layer===0?.09:.035))continue;
-        const role=Math.round(clamp(facet*.76+edge*.30)*6);
-        const vein=Math.sin(x*16+depth*2.2)+Math.cos(x*31-depth*4)*.35;
-        let bank=layer===0 ? 3 : vein>.55 ? 1 : vein<-.55 ? 0 : 2;
-        if(layer===1 && depth>.25 && vein<.25)bank=3;
-        if(layer===2 && vein>.65 && noise>.62)bank=4;
-        // Preserve quiet space behind the title without cutting a rectangle
-        // out of the landscape; hills continue through the soft falloff.
+    yScale=mobile?1.30:1.38;yOffset=-(mobile?.08:.12)*yScale;
+    columns=[];
+    for(let px=pitch/2;px<width;px+=pitch) {
+      const column={u:(px-left)/panorama,points:[]};
+      for(let py=pitch/2;py<height;py+=pitch) {
+        const x=px/width,y=py/height,grain=hash(Math.round(px/pitch),Math.round(py/pitch));
         const titleQuiet=1-.70*Math.exp(-Math.pow((x-.15)/.23,4)-Math.pow((y-.17)/.16,4));
         const captionQuiet=.16+.84*smooth((1-y)/.22);
-        point={x:px,y:py,u:x,v:y,role,bank,alpha:clamp(intensity*titleQuiet*captionQuiet,.02,.98),edge,phase:noise*TAU,layer};
+        column.points.push({x:px,y:py,v:y,row:((y-yOffset)/yScale-FIELD_TOP)*FIELD_DENSITY,
+          quiet:titleQuiet*captionQuiet,phase:grain*TAU});
       }
-      // Unlit beads in the open sky let a touch anywhere reveal a complete
-      // wavefront. They disappear again after the ripple has passed.
-      points.push(point || {x:px,y:py,u:x,v:y,role:3,bank:1,alpha:0,edge:0,phase:noise*TAU,layer:4});
+      columns.push(column);
     }
     pulses=[];aim=null;hit=null;pointerLevel=0;makeSprites();sync();
   }
@@ -136,46 +192,55 @@
     const size=pitch*1.13;
     const speed=Math.max(220,Math.max(width,height)*.30),band=Math.max(9,pitch*1.6),gap=Math.max(70,pitch*8);
     const ripples=pulses.map(p=>({...p,age:time-p.time,radius:(time-p.time)*speed,fade:smooth((RIPPLE_LIFE-(time-p.time))/1.3)}));
-    for(const p of points) {
-      const breath=reduced.matches?1:.88+.12*Math.sin(time*.75+p.phase*.35);
-      const distance=p.u-wave+p.v*.10;
-      const traveling=reduced.matches || p.layer===4 ? 0 : Math.exp(-distance*distance/.006)*(.08+p.edge*.17);
-      let waking=0;
-      if(hit && pointerLevel>.005) {
-        const dx=p.x-hit.x,dy=p.y-hit.y;
-        const radius=Math.max(56,Math.min(width,height)*.14);
-        waking=Math.exp(-(dx*dx+dy*dy)/(radius*radius))*(p.layer===4?.14:.38)*pointerLevel;
-      }
-      for(const ripple of ripples) {
-        const d=Math.hypot(p.x-ripple.x,p.y-ripple.y);
-        let energy=0;
-        // Three separate crests, with dark space between them. The beads
-        // brighten in sequence as each crest passes, including in empty sky.
-        for(let crest=0;crest<3;crest++) {
-          const radius=ripple.radius-crest*gap;
-          if(radius<0)continue;
-          const ring=(d-radius)/band;
-          if(Math.abs(ring)<3)energy+=Math.exp(-ring*ring)*Math.pow(.67,crest);
+    for(const column of columns) {
+      const views=depths.map((_,layer)=>columnView(layer,column.u,time));
+      for(const p of column.points) {
+        let terrainAlpha=0,terrainInk=10,terrain=false;
+        for(let layer=0;layer<3;layer++) {
+          const sample=sampleField(views[layer],p.row);
+          if(sample) {terrainAlpha=sample.alpha;terrainInk=sample.ink;terrain=true;}
         }
-        const birth=Math.exp(-d*d/2600)*Math.exp(-ripple.age*3.5);
-        waking+=(energy*.85+birth*.75)*ripple.fade;
+        const breath=reduced.matches?1:.88+.12*Math.sin(time*.75+p.phase*.35);
+        const distance=p.x/width-wave+p.v*.10;
+        const traveling=reduced.matches || !terrain ? 0 : Math.exp(-distance*distance/.006)*.14;
+        let waking=0;
+        if(hit && pointerLevel>.005) {
+          const dx=p.x-hit.x,dy=p.y-hit.y;
+          const radius=Math.max(56,Math.min(width,height)*.14);
+          waking=Math.exp(-(dx*dx+dy*dy)/(radius*radius))*(terrain?.38:.14)*pointerLevel;
+        }
+        for(const ripple of ripples) {
+          const d=Math.hypot(p.x-ripple.x,p.y-ripple.y);
+          let energy=0;
+          // Three separate crests, with dark space between them. The beads
+          // brighten in sequence as each crest passes, including in empty sky.
+          for(let crest=0;crest<3;crest++) {
+            const radius=ripple.radius-crest*gap;
+            if(radius<0)continue;
+            const ring=(d-radius)/band;
+            if(Math.abs(ring)<3)energy+=Math.exp(-ring*ring)*Math.pow(.67,crest);
+          }
+          const birth=Math.exp(-d*d/2600)*Math.exp(-ripple.age*3.5);
+          waking+=(energy*.85+birth*.75)*ripple.fade;
+        }
+        if(!terrain && waking<.012)continue;
+        const alpha=clamp(terrainAlpha*p.quiet*breath+traveling+waking,0,.98);
+        if(alpha<.012)continue;
+        const role=Math.min(6,terrainInk%7+Math.round(waking*4));
+        const index=Math.floor(terrainInk/7)*7+role;
+        // Small light halos around the LEDs reinforce the travelling wave.
+        // There is deliberately no canvas arc/stroke for the circular wavefront.
+        const bloom=clamp(waking-.18)*.18+(terrain && role>=5?.035:0);
+        if(bloom>.025) {
+          ctx.globalAlpha=bloom*(light?.20:1);
+          ctx.drawImage(glows[index],p.x-size*1.2,p.y-size*1.2,size*2.4,size*2.4);
+        }
+        ctx.globalAlpha=alpha;
+        ctx.drawImage(sprites[index],p.x-size/2,p.y-size/2,size,size);
       }
-      if(p.layer===4 && waking<.012)continue;
-      const alpha=clamp(p.alpha*breath+traveling+waking,0,.98);
-      if(alpha<.012)continue;
-      const role=Math.min(6,p.role+Math.round(waking*4));
-      const index=p.bank*7+role;
-      // Small light halos around the LEDs reinforce the travelling wave.
-      // There is deliberately no canvas arc/stroke for the circular wavefront.
-      const bloom=clamp(waking-.18)*.18+(p.edge>.65?.035:0);
-      if(bloom>.025) {
-        ctx.globalAlpha=bloom*(light?.20:1);
-        ctx.drawImage(glows[index],p.x-size*1.2,p.y-size*1.2,size*2.4,size*2.4);
-      }
-      ctx.globalAlpha=alpha;
-      ctx.drawImage(sprites[index],p.x-size/2,p.y-size/2,size,size);
     }
     ctx.globalAlpha=1;
+    pruneFields(time);
   }
   function active() {
     return onScreen && shown && !document.hidden && (!parentSection || parentSection.classList.contains('on'));
@@ -201,7 +266,7 @@
     if(frame)cancelAnimationFrame(frame);
     frame=0;lastFrame=0;
     if(!active())return;
-    draw(reduced.matches?6:elapsed);
+    draw(elapsed);
     if(!reduced.matches)frame=requestAnimationFrame(tick);
   }
   function position(event) {
@@ -213,7 +278,7 @@
   },{passive:true});
   hero.addEventListener('pointerleave',()=>{aim=null;});
   function awaken(p) {
-    if(reduced.matches) {hit=p;pointerLevel=1;draw(6);return;}
+    if(reduced.matches) {hit=p;pointerLevel=1;draw(elapsed);return;}
     pulses.push({...p,time:elapsed});
     if(pulses.length>5)pulses.shift();
     draw(elapsed);
