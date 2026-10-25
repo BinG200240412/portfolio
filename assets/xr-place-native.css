@@ -1,0 +1,57 @@
+/* The original site mosaic, expressed as fixed native SVG cells. */
+.gogo-place-native-page{--place-0:#626460;--place-1:#83b0c4;--place-2:#aaa578;--place-3:#d4ebdd;--place-4:#81b597;--place-5:#ff9d9d;gap:28px}
+html[data-theme="light"] .gogo-place-native-page{--place-0:#b8bbb4;--place-1:#35748d;--place-2:#827443;--place-3:#7b9e87;--place-4:#397854;--place-5:#b2545b}
+.gogo-place-native-page>.gogo-subhead{margin-bottom:0!important}
+.gogo-native-place{display:grid;grid-template-columns:minmax(0,2.4fr) minmax(270px,.9fr);align-items:center;gap:40px}
+.gogo-place-drawing{position:relative;min-width:0}
+.gogo-place-drawing>svg{display:block;width:100%;height:auto;overflow:visible;aspect-ratio:1000/540}
+.gogo-place-cells circle{fill:var(--cell-colour);opacity:.88;transition:opacity .24s}
+.gogo-place-cells circle[data-place-type="0"]{opacity:.43}
+.gogo-place-cells.is-filtered circle{opacity:.16}
+.gogo-place-cells.is-filtered circle.is-current{opacity:1}
+.gogo-place-connections path{fill:none;stroke:var(--cell-colour);stroke-width:4;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0;opacity:.48;transition:opacity .24s}
+.gogo-place-connections.is-filtered path{opacity:.1}
+.gogo-place-connections.is-filtered path.is-current{opacity:.95}
+.gogo-place-legend{position:absolute;inset:0;pointer-events:none}
+.gogo-place-legend button{position:absolute;left:80%;top:var(--legend-y);transform:translateY(-50%);display:flex;align-items:center;gap:12px;min-height:44px;padding:8px 0;border:0;background:none;text-align:left;color:var(--ink);font-size:clamp(14px,1.3vw,18px);line-height:1.45;cursor:pointer;pointer-events:auto}
+.gogo-place-legend button::before{content:"";flex:none;width:10px;height:10px;border-radius:50%;background:var(--cell-colour)}
+.gogo-place-legend button.is-current{color:var(--cell-colour)}
+.gogo-place-legend button:focus-visible{outline:1px solid var(--cell-colour);outline-offset:4px}
+[data-place-type="0"]{--cell-colour:var(--place-0)}[data-place-type="1"]{--cell-colour:var(--place-1)}[data-place-type="2"]{--cell-colour:var(--place-2)}[data-place-type="3"]{--cell-colour:var(--place-3)}[data-place-type="4"]{--cell-colour:var(--place-4)}[data-place-type="5"]{--cell-colour:var(--place-5)}
+.gogo-place-players{display:grid;gap:12px;min-width:0}
+.gogo-place-players h4{font-size:23px;line-height:1.4;margin-bottom:12px!important}
+.gogo-player-sequence{border:0;border-bottom:1px solid var(--line);padding:16px 0;display:grid;gap:9px;min-width:0;width:100%;text-align:left;background:none;color:var(--soft);cursor:pointer}
+.gogo-player-sequence>span{font-size:12px;line-height:1.4;letter-spacing:.035em}
+.gogo-player-sequence svg{display:block;width:100%;height:auto;overflow:visible}
+.gogo-player-sequence circle{fill:var(--cell-colour);opacity:.62;transition:opacity .2s}
+.gogo-player-sequence[aria-pressed="true"]{color:var(--ink);border-color:var(--gogo-accent)}
+.gogo-player-sequence[aria-pressed="true"] circle{opacity:.35}
+.gogo-player-sequence circle.is-played{opacity:.8}
+.gogo-player-sequence circle.is-step{opacity:1;stroke:var(--ink);stroke-width:1.2}
+.gogo-place-playback{min-height:44px;display:flex;justify-content:space-between;gap:16px;align-items:center;font-size:13px;color:var(--soft)}
+.gogo-place-playback button{border:0;background:transparent;color:var(--ink);padding:10px 0;cursor:pointer}
+.gogo-place-playback[hidden]{display:none}
+.gogo-place-now{color:var(--cell-colour)}
+.gogo-experience-originals{font-size:13px;color:var(--soft)}
+.gogo-experience-originals summary{padding:8px 0;cursor:pointer;width:fit-content;list-style-position:inside}
+.gogo-experience-originals>div{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:32px;align-items:start;padding-top:24px}
+.gogo-experience-originals .gogo-map{width:min(100%,440px)}
+.gogo-experience-originals img{width:100%;height:auto}
+.gogo-interaction-originals>div{grid-template-columns:repeat(3,minmax(0,1fr))}
+.gogo-place-status{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.gogo-place-interaction-hint{font-size:13px;color:var(--soft);line-height:1.6;margin-top:10px!important}
+@media(min-width:901px) and (max-height:800px){.gogo-place-native-page{padding-block:28px;gap:20px}.gogo-native-place{grid-template-columns:minmax(0,2.8fr) minmax(240px,.9fr)}.gogo-place-players{gap:5px}.gogo-player-sequence{padding:10px 0}.gogo-place-players h4{font-size:21px;margin-bottom:5px!important}}
+@media(max-width:900px){
+ .gogo-native-place{grid-template-columns:minmax(0,1fr);gap:40px}
+ .gogo-place-drawing>svg{aspect-ratio:600/610}
+ .gogo-place-legend{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin-top:-8px}
+ .gogo-place-legend button{position:static;transform:none;display:flex;flex-direction:column;justify-content:flex-start;gap:8px;min-height:66px;padding:5px 0;text-align:center;font-size:13px;line-height:1.4;overflow-wrap:anywhere}
+ .gogo-place-players{grid-template-columns:1fr 1fr;column-gap:24px;row-gap:8px}
+ .gogo-place-players h4,.gogo-place-playback,.gogo-place-interaction-hint{grid-column:1/-1}
+ .gogo-place-players h4{font-size:22px;margin-bottom:0!important}
+ .gogo-player-sequence{padding:13px 0}
+ .gogo-experience-originals>div{grid-template-columns:1fr}
+}
+@media(max-width:540px){.gogo-place-native-page{padding-block:32px;gap:22px}.gogo-native-place{gap:24px}.gogo-place-players{column-gap:22px}.gogo-place-legend button{font-size:12px}.gogo-place-legend button::before{width:8px;height:8px}.gogo-place-players h4{font-size:21px}.gogo-place-interaction-hint{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.gogo-place-cells circle,.gogo-place-connections path,.gogo-player-sequence circle{transition:none}}
+@media(forced-colors:active){.gogo-place-native-page,html[data-theme] .gogo-place-native-page{--place-0:GrayText;--place-1:CanvasText;--place-2:CanvasText;--place-3:CanvasText;--place-4:CanvasText;--place-5:CanvasText}.gogo-place-connections path{opacity:.8}.gogo-place-cells circle{opacity:.85}.gogo-place-cells.is-filtered circle{opacity:.25}.gogo-place-cells.is-filtered circle.is-current{opacity:1}}

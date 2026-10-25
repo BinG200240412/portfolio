@@ -1,0 +1,41 @@
+/* Solid, native diagrams: the controller and its consequence share one scene. */
+#gogo-interaction-native{--gin-body:#b7c1b0;--gin-dark:#7e8b79;--gin-pod:#292c27;--gin-detail:#171a16;--gin-signal:var(--gogo-accent,#c2944a);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,3vw,56px);width:100%;min-width:0}
+html[data-theme="light"] #gogo-interaction-native{--gin-body:#465543;--gin-dark:#7a8774;--gin-pod:#e1e3da;--gin-detail:#f3f2ec}
+#gogo-interaction-native .gin-demo{position:relative;min-width:0;margin:0;padding:0;background:none;border:0}
+#gogo-interaction-native .gin-scene{position:relative;width:100%;aspect-ratio:7/6;min-width:0;color:var(--gin-body)}
+#gogo-interaction-native .gin-art{display:block;width:100%;height:100%;overflow:visible}
+#gogo-interaction-native .gin-controller{fill:var(--gin-dark)}
+#gogo-interaction-native .gin-controller-face{fill:var(--gin-body)}
+#gogo-interaction-native .gin-controller-detail{fill:var(--gin-detail)}
+#gogo-interaction-native .gin-floor{fill:var(--gin-body);opacity:.10}
+#gogo-interaction-native .gin-link{fill:none;stroke:var(--gin-dark);stroke-width:1.1;opacity:.55}
+#gogo-interaction-native .gin-arrow{fill:var(--gin-dark);opacity:.7}
+#gogo-interaction-native .gin-dog-body,#gogo-interaction-native .gin-dog-head{fill:var(--gin-body)}
+#gogo-interaction-native .gin-dog-limb{fill:none;stroke:var(--gin-body);stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+#gogo-interaction-native .gin-far-leg{opacity:.48}
+#gogo-interaction-native .gin-dog-joint{fill:var(--gin-detail)}
+#gogo-interaction-native .gin-dog-eye{fill:var(--gin-detail)}
+#gogo-interaction-native .gin-indicator{fill:var(--gin-signal)}
+#gogo-interaction-native .gin-demo[data-demo="init"][data-initialized="false"] .gin-indicator{fill:var(--gin-dark)}
+#gogo-interaction-native .gin-tail{fill:none;stroke:var(--gin-body);stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+#gogo-interaction-native .gin-pad{position:absolute;left:68%;top:69%;width:132px;height:132px;transform:translate(-50%,-50%);border-radius:50%;background:var(--gin-pod);box-shadow:inset 0 0 0 1px var(--gin-dark)}
+#gogo-interaction-native .gin-pad::before{content:"";position:absolute;inset:6px;border:1px solid var(--gin-dark);border-radius:50%;opacity:.38;pointer-events:none}
+#gogo-interaction-native .gin-control{position:absolute;display:grid;place-items:center;width:44px;height:44px;padding:0;margin:0;border:0;border-radius:50%;background:transparent;color:var(--gin-body);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#gogo-interaction-native .gin-control svg{display:block;width:24px;height:24px;fill:currentColor;pointer-events:none}
+#gogo-interaction-native .gin-control:hover,#gogo-interaction-native .gin-control:active,#gogo-interaction-native .gin-control[aria-pressed="true"]{color:var(--gin-signal);background:color-mix(in srgb,var(--gin-signal) 9%,transparent)}
+#gogo-interaction-native .gin-control:focus-visible{outline:1.5px solid var(--gin-signal);outline-offset:3px}
+#gogo-interaction-native .gin-power{left:34px;top:34px;width:64px;height:64px}
+#gogo-interaction-native .gin-power svg{width:29px;height:29px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+#gogo-interaction-native .gin-up{left:44px;top:0}
+#gogo-interaction-native .gin-right{left:88px;top:44px}
+#gogo-interaction-native .gin-down{left:44px;top:88px}
+#gogo-interaction-native .gin-left{left:0;top:44px}
+#gogo-interaction-native .gin-pad-dot{position:absolute;left:59px;top:59px;width:14px;height:14px;border-radius:50%;background:var(--gin-dark);pointer-events:none}
+#gogo-interaction-native .gin-pose-stand{left:44px;top:0}
+#gogo-interaction-native .gin-pose-crouch{left:1px;top:72px}
+#gogo-interaction-native .gin-pose-bow{left:87px;top:72px}
+#gogo-interaction-native .gin-pose-control svg{width:31px;height:26px}
+#gogo-interaction-native .gin-title{font-size:clamp(21px,1.8vw,26px);line-height:1.35;font-weight:inherit;margin:6px 0 0!important}
+#gogo-interaction-native .gin-status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(max-width:1000px){#gogo-interaction-native{grid-template-columns:1fr;gap:48px}#gogo-interaction-native .gin-demo{width:min(100%,440px);margin-inline:auto}#gogo-interaction-native .gin-title{font-size:25px}#gogo-interaction-native .gin-scene{aspect-ratio:7/6}}
+@media(forced-colors:active){#gogo-interaction-native{--gin-body:CanvasText;--gin-dark:GrayText;--gin-pod:Canvas;--gin-detail:Canvas;--gin-signal:Highlight}#gogo-interaction-native .gin-pad{border:1px solid CanvasText;box-shadow:none}#gogo-interaction-native .gin-control{forced-color-adjust:none}#gogo-interaction-native .gin-control[aria-pressed="true"]{outline:1px solid Highlight}#gogo-interaction-native .gin-floor{display:none}}
