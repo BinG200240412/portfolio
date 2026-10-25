@@ -243,8 +243,10 @@
   new ResizeObserver(resize).observe(root);
   new IntersectionObserver(entries => {
     onScreen = entries[0].isIntersecting;
+    document.body.classList.toggle('liangzhu-cover-on', onScreen);
+    window.frameElement?.toggleAttribute('data-particle-cover-on', onScreen);
     if (!onScreen) suspend(); else requestRender();
-  }, { threshold: 0 }).observe(root);
+  }, { threshold: 0, rootMargin: '-72px 0px 0px 0px' }).observe(root);
   canvas.addEventListener('webglcontextlost', event => {
     event.preventDefault(); lost = true; canvas.dataset.ready = 'false'; suspend(); setStatus('lost');
   });
