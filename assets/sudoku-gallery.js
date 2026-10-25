@@ -77,6 +77,8 @@
       caption.textContent = t(current.caption);
       if (summary) summary.textContent = t(current.summary);
       if (hasError) setError(true);
+      gallery.dataset.screen = current.id;
+      gallery.dispatchEvent(new CustomEvent('sudoku:screen', { detail: { screen: current.id } }));
     }
 
     function settled() {

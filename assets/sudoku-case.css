@@ -120,8 +120,8 @@ html.sudoku-snap.sudoku-snap-suspended{scroll-snap-type:none;scroll-behavior:aut
 .case-type-study{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(48px,7vw,112px);margin-top:72px;padding-block:44px 50px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .case-type-study p,.case-color-study p,.case-flow-head p,.case-session-grid p,.case-evolution-copy p{font-size:15px;line-height:1.95;color:var(--mid)}
 .case-type-study h3{margin-top:18px;margin-bottom:16px}
-.case-app-wordmark{--portfolio-font:SudokuFraunces,serif;--portfolio-font-weight:380;font-family:SudokuFraunces,serif;font-size:clamp(74px,8vw,126px);font-weight:380;font-variation-settings:"opsz" 144,"SOFT" 0,"WONK" 0;line-height:1;letter-spacing:-.065em}
-.case-app-wordmark span{color:#8A9783}
+.case-app-wordmark{--portfolio-font:SudokuFraunces,serif;--portfolio-font-weight:380;font-family:SudokuFraunces,serif;font-size:clamp(74px,8vw,126px);font-weight:380;font-optical-sizing:none;font-variation-settings:"wght" 380,"opsz" 144,"SOFT" 0,"WONK" 0;line-height:1;letter-spacing:0}
+.case-app-wordmark span{display:inline-block;margin-inline-start:.045em;color:#8A9783}
 .case-type-study p.case-type-chinese{--portfolio-font:SudokuGenWan,serif;--portfolio-font-weight:500;font:500 clamp(24px,2.7vw,38px)/1.6 SudokuGenWan,serif;color:var(--ink);margin-top:32px;margin-bottom:8px}
 .case-type-name{font-size:13px;color:var(--mid);line-height:1.6}
 .case-digit-studies{display:flex;flex-direction:column;justify-content:space-between;gap:36px;min-width:0}
