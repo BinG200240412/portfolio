@@ -51,7 +51,7 @@
   function resize(){
     w=canvas.clientWidth;h=canvas.clientHeight;ratio=Math.min(devicePixelRatio||1,2,4096/Math.max(1,w));
     canvas.width=Math.round(w*ratio);canvas.height=Math.round(h*ratio);light=document.documentElement.dataset.theme==='light';
-    ink=light?'#49664f':'#a9b8a0';glow=light?'#12596c':'#a6e9ed';warm=light?'#89591d':'#ebc483';
+    ink=light?'#254e35':'#a9b8a0';glow=light?'#006079':'#a6e9ed';warm=light?'#a5620e':'#ebc483';
     if(forced.matches)ink=glow=warm=getComputedStyle(canvas).color;
     project();canvas.dataset.terrainReady='true';canvas.dataset.terrainVertices=String(vertices.length);schedule();
   }
@@ -68,7 +68,7 @@
   function render(){
     context.setTransform(ratio,0,0,ratio,0,0);context.clearRect(0,0,w,h);
     // Continuous wire rows and columns establish the landform beneath its LEDs.
-    context.strokeStyle=ink;context.lineWidth=.65;context.globalAlpha=forced.matches?.8:light?.34:.32;context.beginPath();
+    context.strokeStyle=ink;context.lineWidth=.65;context.globalAlpha=forced.matches?.8:light?.62:.32;context.beginPath();
     for(let row=0;row<ROWS;row+=2)for(let col=0;col<COLS;col++){
       const p=points[row*COLS+col];col?context.lineTo(p.x,p.y):context.moveTo(p.x,p.y);
     }
@@ -78,7 +78,9 @@
     const groups=Array.from({length:8},()=>[]),radius=w<500?.83:1.05;
     vertices.forEach((v,i)=>{const energy=lighting(i);groups[energy>.06?3+Math.min(4,Math.floor(energy*5)):Math.min(2,Math.floor((v.y+.05)*3))].push(i);});
     groups.forEach((indices,group)=>{
-      context.fillStyle=group<3?ink:(selected>=0?warm:glow);context.globalAlpha=forced.matches?1:group<3?.57+group*.14:.46+(group-3)*.13;
+      context.fillStyle=group<3?ink:(selected>=0?warm:glow);
+      // Paper carries ink: preserve depth, but do not wash the mesh into white.
+      context.globalAlpha=forced.matches?1:light?(group<3?.82+group*.09:.72+(group-3)*.07):group<3?.57+group*.14:.46+(group-3)*.13;
       context.beginPath();indices.forEach(i=>{const p=points[i];context.moveTo(p.x+radius,p.y);context.arc(p.x,p.y,radius,0,TAU);});context.fill();
     });context.globalAlpha=1;dirty=false;
     canvas.dataset.terrainSelected=selected<0?'':vertices[selected].row+','+vertices[selected].col;

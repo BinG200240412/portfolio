@@ -1,6 +1,6 @@
 /* The original site mosaic, expressed as fixed native SVG cells. */
 .gogo-place-native-page{--place-0:#626460;--place-1:#83b0c4;--place-2:#aaa578;--place-3:#d4ebdd;--place-4:#81b597;--place-5:#ff9d9d;gap:28px}
-html[data-theme="light"] .gogo-place-native-page{--place-0:#b8bbb4;--place-1:#35748d;--place-2:#827443;--place-3:#7b9e87;--place-4:#397854;--place-5:#b2545b}
+html[data-theme="light"] .gogo-place-native-page{--place-0:#7b8378;--place-1:#145d7b;--place-2:#7b621b;--place-3:#4d875d;--place-4:#12623c;--place-5:#b2374c}
 .gogo-place-native-page>.gogo-subhead{margin-bottom:0!important}
 .gogo-native-place{display:grid;grid-template-columns:minmax(0,2.4fr) minmax(270px,.9fr);align-items:center;gap:40px}
 .gogo-place-drawing{position:relative;min-width:0}
@@ -53,5 +53,20 @@ html[data-theme="light"] .gogo-place-native-page{--place-0:#b8bbb4;--place-1:#35
  .gogo-experience-originals>div{grid-template-columns:1fr}
 }
 @media(max-width:540px){.gogo-place-native-page{padding-block:32px;gap:22px}.gogo-native-place{gap:24px}.gogo-place-players{column-gap:22px}.gogo-place-legend button{font-size:12px}.gogo-place-legend button::before{width:8px;height:8px}.gogo-place-players h4{font-size:21px}.gogo-place-interaction-hint{font-size:12px}}
+/* White paper needs opaque pigment, including the neutral cells that hold the
+ * mosaic together. Keep selection dimming, without losing the underlying map. */
+@media(forced-colors:none){
+ html[data-theme="light"] .gogo-place-cells circle{opacity:1}
+ html[data-theme="light"] .gogo-place-cells circle[data-place-type="0"]{opacity:.7}
+ html[data-theme="light"] .gogo-place-cells.is-filtered circle{opacity:.24}
+ html[data-theme="light"] .gogo-place-cells.is-filtered circle.is-current{opacity:1}
+ html[data-theme="light"] .gogo-place-connections path{opacity:.86}
+ html[data-theme="light"] .gogo-place-connections.is-filtered path{opacity:.25}
+ html[data-theme="light"] .gogo-place-connections.is-filtered path.is-current{opacity:1}
+ html[data-theme="light"] .gogo-player-sequence circle{opacity:.9}
+ html[data-theme="light"] .gogo-player-sequence[aria-pressed="true"] circle{opacity:.44}
+ html[data-theme="light"] .gogo-player-sequence[aria-pressed="true"] circle.is-played{opacity:.94}
+ html[data-theme="light"] .gogo-player-sequence[aria-pressed="true"] circle.is-step{opacity:1}
+}
 @media(prefers-reduced-motion:reduce){.gogo-place-cells circle,.gogo-place-connections path,.gogo-player-sequence circle{transition:none}}
 @media(forced-colors:active){.gogo-place-native-page,html[data-theme] .gogo-place-native-page{--place-0:GrayText;--place-1:CanvasText;--place-2:CanvasText;--place-3:CanvasText;--place-4:CanvasText;--place-5:CanvasText}.gogo-place-connections path{opacity:.8}.gogo-place-cells circle{opacity:.85}.gogo-place-cells.is-filtered circle{opacity:.25}.gogo-place-cells.is-filtered circle.is-current{opacity:1}}

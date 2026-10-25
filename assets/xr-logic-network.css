@@ -23,6 +23,12 @@ html[data-theme="dark"] :is(.gogo-logic-card[data-node="dog"],.gogo-logic-card[d
 .gogo-case .gogo-logic-card:focus-visible{outline:0}
 .gogo-logic-card:focus-visible .gogo-dot-frame circle{stroke:currentColor;stroke-width:.8px}
 .gogo-logic-hub>.gogo-dot-frame{color:var(--gogo-accent);opacity:.75}
+/* White paper needs ink contrast, while the dark display keeps its light levels. */
+@media(forced-colors:none){
+ html[data-theme="light"] .gogo-dot-frame{opacity:.76}
+ html[data-theme="light"] .gogo-logic-hub>.gogo-dot-frame{opacity:.96}
+ html[data-theme="light"] .gogo-logic-hub>p{color:var(--mid)}
+}
 .gogo-dot-title{font-size:15px;line-height:1.4;color:var(--ink)}
 .gogo-dot-visual,.gogo-hub-visual{display:block;position:relative;min-height:0;min-width:0}
 .gogo-dot-visual canvas,.gogo-hub-visual canvas{display:block;position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
