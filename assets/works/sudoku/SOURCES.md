@@ -66,3 +66,7 @@ Apple 官方 [App Store 页面](https://apps.apple.com/cn/app/sudoku-2026/id6775
 ### 黑色机身版本
 
 2026-10-25：按用户选择，将初始蓝色机身通过内置 imagegen 定向改色为中性黑色，保存为 `iphone-duo-studio-black.png`，1254 × 1254。保留原构图、四角映射、机壳遮挡和独立 App 截图图层。原蓝色底图保留为制作源。分析图、辅导及原图放大的正视机身使用仅作用于硬件伪元素的 CSS 去色与轻微压暗，官方原 PNG 和屏幕内容不修改。
+
+### 真正透明的 PNG 版本
+
+2026-10-25：按用户要求使用内置 imagegen 仅移除黑色双机摄影底图外部的白色背景，保存为 `iphone-duo-studio-black-transparent.png`，1254 × 1254、RGBA、有真实 alpha 通道；屏幕内部的白色留白保留供独立 App 截图覆盖。网页去掉双机与文案区域的白色底板，继承全站浅色/深色背景。原始截图、屏幕四角与前机遮挡保持原方案。完整合成另导出为 `iphone-duo-sudoku-transparent.png`，含两块真实 App 界面，可直接使用。

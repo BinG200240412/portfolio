@@ -121,6 +121,6 @@ Object.assign(window.PORTFOLIO_TRANSLATIONS, {
   "沿用原生 TabView，保持熟悉的切换方式。": "Native TabView keeps navigation familiar.",
   "双机产品展示": "Two-phone product scene",
   "放大查看双机产品展示": "Enlarge the two-phone product scene",
-  "白底双机展示，前方为主棋盘，后方为分步辅导": "Two iPhones on white, with the board in front and coaching behind",
+  "双机展示，前方为主棋盘，后方为分步辅导": "Two iPhones, with the board in front and coaching behind",
   "图片未能加载，请刷新页面。": "The image could not load. Please reload the page."
 });

@@ -1,5 +1,5 @@
 /* A product composition first; its typography, colour and native materials follow. */
-.case-product-hero{--ink:#20251e;--mid:#62685c;color:var(--ink);background:#fff;display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:clamp(24px,3vw,48px);align-items:center;min-height:calc(100svh - 210px)}
+.case-product-hero{color:var(--ink);display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:clamp(24px,3vw,48px);align-items:center;min-height:calc(100svh - 210px)}
 .case-product-copy{position:relative;z-index:2;min-width:0;padding:28px 0 28px 32px}
 .case-character .case-app-wordmark{white-space:nowrap}
 .case-product-copy #character-title{font-size:17px;line-height:1.8;letter-spacing:0;color:var(--mid);margin-bottom:38px}
@@ -8,11 +8,11 @@
 html[lang^="en"] .case-product-slogan{--portfolio-font:SudokuGaramond,serif;--portfolio-font-weight:400;font-family:SudokuGaramond,serif;letter-spacing:0;line-height:1.15;max-width:7.8em}
 .case-product-art{min-width:0;width:100%;align-self:center}
 .case-product-shot{display:block;width:100%;cursor:zoom-in}
-.case-phone-scene{display:block;position:relative;isolation:isolate;width:100%;aspect-ratio:1;overflow:hidden;background:#fff;opacity:0;transition:opacity .18s}
+.case-phone-scene{display:block;position:relative;isolation:isolate;width:100%;aspect-ratio:1;overflow:hidden;background:transparent;opacity:0;transition:opacity .18s}
 .case-phone-scene.is-ready{opacity:1}
 .case-phone-scene.is-failed{opacity:1}
 .case-phone-scene.is-failed .case-phone-canvas{visibility:hidden}
-.case-scene-feedback{position:absolute;inset:0;display:grid;place-content:center;padding:24px;color:#62685c;font-size:14px;line-height:1.8}
+.case-scene-feedback{position:absolute;inset:0;display:grid;place-content:center;padding:24px;color:var(--mid);font-size:14px;line-height:1.8}
 .case-scene-feedback[hidden]{display:none}
 .case-phone-canvas{position:absolute;display:block;left:0;top:0;width:1254px;height:1254px;transform-origin:0 0;transform:scale(var(--scene-scale,0))}
 .case-phone-base{display:block;width:1254px;height:1254px;max-width:none}
