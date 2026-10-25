@@ -1,47 +1,13 @@
-/* Concave media corners: four circular cuts, with transparent quarter discs.
- * JS supplies --media-cut / --media-cut-active in CSS pixels on each surface.
+/* Four transparent circular cuts morph into square notches when selected.
+ * Matching polygon vertices preserve a continuous, native CSS transition.
  * Mark the background-bearing visual surface, not its caption or controls bar.
  */
-@property --mc-tl { syntax: "<length>"; inherits: false; initial-value: 0px; }
-@property --mc-tr { syntax: "<length>"; inherits: false; initial-value: 0px; }
-@property --mc-br { syntax: "<length>"; inherits: false; initial-value: 0px; }
-@property --mc-bl { syntax: "<length>"; inherits: false; initial-value: 0px; }
-
 [data-media-corners] {
-  --mc-tl: var(--media-cut, 16px);
-  --mc-tr: var(--media-cut, 16px);
-  --mc-br: var(--media-cut, 16px);
-  --mc-bl: var(--media-cut, 16px);
-  --media-corner-mask:
-    radial-gradient(circle at top left,
-      #0000 0 calc(var(--mc-tl) - .5px), #000 calc(var(--mc-tl) + .5px)),
-    radial-gradient(circle at top right,
-      #0000 0 calc(var(--mc-tr) - .5px), #000 calc(var(--mc-tr) + .5px)),
-    radial-gradient(circle at bottom right,
-      #0000 0 calc(var(--mc-br) - .5px), #000 calc(var(--mc-br) + .5px)),
-    radial-gradient(circle at bottom left,
-      #0000 0 calc(var(--mc-bl) - .5px), #000 calc(var(--mc-bl) + .5px));
   border-radius: 0 !important;
-  -webkit-mask-image: var(--media-corner-mask);
-  -webkit-mask-size: 51% 51%;
-  -webkit-mask-position: top left, top right, bottom right, bottom left;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-origin: border-box;
-  -webkit-mask-clip: border-box;
-  -webkit-mask-composite: source-over;
-  mask-image: var(--media-corner-mask);
-  mask-size: 51% 51%;
-  mask-position: top left, top right, bottom right, bottom left;
-  mask-repeat: no-repeat;
-  mask-origin: border-box;
-  mask-clip: border-box;
-  mask-composite: add;
-  mask-mode: alpha;
-  transition:
-    --mc-tl 260ms cubic-bezier(.2, .7, .2, 1),
-    --mc-tr 260ms cubic-bezier(.2, .7, .2, 1),
-    --mc-br 260ms cubic-bezier(.2, .7, .2, 1),
-    --mc-bl 260ms cubic-bezier(.2, .7, .2, 1);
+  -webkit-mask-image: none;
+  mask-image: none;
+  clip-path: var(--media-corner-rest, inset(0));
+  transition: clip-path 420ms cubic-bezier(.22, .61, .36, 1);
 }
 
 [data-media-zoomable] { cursor: zoom-in; }
@@ -50,8 +16,7 @@
 @media (hover: hover) {
   [data-media-zoomable][data-media-corners]:hover,
   [data-media-zoomable]:hover [data-media-corners] {
-    --mc-tl: var(--media-cut-active, calc(var(--media-cut, 16px) * 1.75));
-    --mc-br: var(--media-cut-active, calc(var(--media-cut, 16px) * 1.75));
+    clip-path: var(--media-corner-selected, var(--media-corner-rest, inset(0)));
   }
 }
 
@@ -61,8 +26,7 @@
 [data-media-zoomable][data-media-corners]:is(:focus-visible, :has(:focus-visible), [data-media-press="true"]),
 [data-media-zoomable]:is(:focus-visible, :has(:focus-visible), [data-media-press="true"]) [data-media-corners],
 [data-media-zoomable] [data-media-corners][data-media-press="true"] {
-  --mc-tl: var(--media-cut-active, calc(var(--media-cut, 16px) * 1.75));
-  --mc-br: var(--media-cut-active, calc(var(--media-cut, 16px) * 1.75));
+  clip-path: var(--media-corner-selected, var(--media-corner-rest, inset(0)));
 }
 
 /* The changing cut is the affordance; remove the superseded corner arrow. */
@@ -75,8 +39,8 @@
 /* These figures used a solid mat beneath their image. Let the cut reveal the page. */
 :is(.q-panorama,.q-result-main,.q-film):has([data-media-corners]) { background: transparent; }
 .archive-tile[data-media-zoomable] .tile-label small { display: none; }
-video[data-media-corners]:fullscreen { -webkit-mask-image: none; mask-image: none; }
-video[data-media-corners]:-webkit-full-screen { -webkit-mask-image: none; mask-image: none; }
+video[data-media-corners]:fullscreen { -webkit-mask-image: none; mask-image: none; clip-path: none; }
+video[data-media-corners]:-webkit-full-screen { -webkit-mask-image: none; mask-image: none; clip-path: none; }
 
 /* Detail views keep every original pixel, without cutting a second set of corners. */
 html.media-detail-open { overflow: hidden; scroll-snap-type: none !important; }
