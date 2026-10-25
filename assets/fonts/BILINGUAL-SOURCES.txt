@@ -37,8 +37,8 @@ Output: PortfolioMapleCN-Light.woff2, 5,176,332 bytes.
 Output SHA-256: a3528f4537aa41ef8b9267d1d2d3042e9d073b23d3a3b81d67743ad026346f0c
 SIL OFL 1.1 and credits: OFL-MapleMono.txt, AUTHORS-MapleMono.txt.
 
-Active Chinese typeface (2026-10-25) — PLIX / Plix Light v1.2, true weight 300.
-The comparison page and ?cjk=plix-extra offer real ExtraLight weight 200.
+Active Chinese typeface (2026-10-25) — PLIX / Plix ExtraLight v1.2, true weight 200.
+The comparison page and ?cjk=plix offer real Light weight 300.
 Official upstream: https://github.com/cathree3/Plix
 Verified upstream commit: 9456532eaeeff7737dc7e72f86ecc0be62183f80
 Both official v1.2 archives were inspected: actual weights are 200, 300, 400,
@@ -70,7 +70,7 @@ This Japanese font lacks some simplified Chinese characters (including 开发、
 The Gothic comparison was rejected because of missing simplified Chinese glyphs.
 Its historical asset and licence remain in the repository, but active CSS no
 longer references it. The comparison now shows PLIX Light 300 and ExtraLight 200;
-the unqualified production URL uses PLIX Light 300.
+the unqualified production URL uses PLIX ExtraLight 200.
 
 Previous Chinese choice (2026-10-24), no longer referenced — Lantinghei SC Extralight,
 PostScript name FZLTXHK--GBK1-0. The matching TC name is FZLTXHB--B51-0.

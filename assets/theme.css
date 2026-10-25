@@ -50,7 +50,7 @@ html[data-theme="light"] .legacy-case [style*="color:#fff"]{color:var(--ink)!imp
 @media(max-width:600px){.theme-controls{top:10px;right:10px}.standalone-back{left:17px;top:19px}.portfolio-shell #back,.portfolio-shell #toHub{top:19px;left:20px}.portfolio-shell #secBack{top:17px;left:16px}.portfolio-shell .menu{max-width:90vw;gap:9px 20px}.portfolio-shell .mi{font-size:12px}.portfolio-shell #resume{padding-top:90px}.portfolio-shell .cv-head h1{font-size:clamp(36px,8vw,64px)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
-/* Latin: Josefin Slab Regular 400. Chinese: self-hosted PLIX Light 300.
+/* Latin: Josefin Slab Regular 400. Chinese: self-hosted PLIX ExtraLight 200.
    The derived CJK faces are renamed Portfolio Plix CN under their OFL licence.
    The CJK-only range
    keeps every Latin letter and digit on the unchanged self-hosted Slab face.
@@ -61,11 +61,12 @@ html[data-theme="light"] .legacy-case [style*="color:#fff"]{color:var(--ink)!imp
 @font-face{font-family:"Portfolio Slab";src:url("fonts/PortfolioSlab-Italic.woff2") format("woff2");font-style:italic;font-weight:100 900;font-display:swap}
 @font-face{font-family:"Portfolio Plix CN";src:url("fonts/PortfolioPlixCN-Light.woff2") format("woff2");font-style:normal;font-weight:300;font-display:swap;unicode-range:U+2E80-2FFF,U+3000-303F,U+3100-312F,U+31A0-31EF,U+3200-33FF,U+3400-4DBF,U+4E00-9FFF,U+F900-FAFF,U+FE10-FE1F,U+FE30-FE4F,U+FF00-FFEF,U+20000-323AF}
 @font-face{font-family:"Portfolio Plix CN";src:url("fonts/PortfolioPlixCN-ExtraLight.woff2") format("woff2");font-style:normal;font-weight:200;font-display:swap;unicode-range:U+2E80-2FFF,U+3000-303F,U+3100-312F,U+31A0-31EF,U+3200-33FF,U+3400-4DBF,U+4E00-9FFF,U+F900-FAFF,U+FE10-FE1F,U+FE30-FE4F,U+FF00-FFEF,U+20000-323AF}
-:root{--portfolio-font:"Portfolio Plix CN","Portfolio Slab","PingFang SC","Microsoft YaHei",sans-serif;--portfolio-font-weight:300}
+:root{--portfolio-font:"Portfolio Plix CN","Portfolio Slab","PingFang SC","Microsoft YaHei",sans-serif;--portfolio-font-weight:200}
+:root[data-cjk-preview="plix"]{--portfolio-font-weight:300}
 :root[data-cjk-preview="plix-extra"]{--portfolio-font-weight:200}
 /* A legacy heading's 600/900 must not select or synthesize a heavier CJK face.
    Slab still uses its genuine static 400 outlines for this requested weight. */
-body,body *,body *::before,body *::after{font-family:var(--portfolio-font)!important;font-weight:var(--portfolio-font-weight,300)!important;font-synthesis:none}
+body,body *,body *::before,body *::after{font-family:var(--portfolio-font)!important;font-weight:var(--portfolio-font-weight,200)!important;font-synthesis:none}
 body.portfolio-shell{--mono:var(--portfolio-font);--sans:var(--portfolio-font);--serif:var(--portfolio-font)}
 .theme-controls .language-toggle{display:flex;align-items:center;justify-content:center;gap:7px;width:72px;margin:0;border:0;border-radius:0;color:var(--ink);font-size:16px;line-height:1;letter-spacing:0}
 .theme-controls :is(.language-option,.language-divider){display:block;margin:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none;text-shadow:none;line-height:1;color:var(--soft)}

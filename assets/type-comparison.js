@@ -4,7 +4,7 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
   '相同字号与内容，比较两档粗细。':'The same text and sizes, in two weights.',
   '正文字号':'Body text size',
   '当前网站使用的字重。':'The weight currently used on the site.',
-  '更细一档，字库覆盖相同。':'One step lighter, with the same character coverage.',
+  '更厚一档，字库覆盖相同。':'One step heavier, with the same character coverage.',
   '字体来源':'Font sources',
   '页面颜色与语言':'Appearance and language'
 });
