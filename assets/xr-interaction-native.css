@@ -1,14 +1,14 @@
 /* Solid, native diagrams: the controller and its consequence share one scene. */
 #gogo-interaction-native{--gin-body:#b7c1b0;--gin-dark:#7e8b79;--gin-pod:#292c27;--gin-detail:#171a16;--gin-signal:var(--gogo-accent,#c2944a);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,3vw,56px);width:100%;min-width:0}
 @media(forced-colors:none){
- html[data-theme="light"] #gogo-interaction-native{--gin-body:#659b2e;--gin-dark:#385e22;--gin-pod:#e5edcf;--gin-detail:#f3f2ec;--gin-signal:#c58c26}
- html[data-theme="light"] #gogo-interaction-native .gin-link{stroke:#9ab56b;opacity:1}
- html[data-theme="light"] #gogo-interaction-native .gin-arrow{fill:#527a2e;opacity:1}
- html[data-theme="light"] #gogo-interaction-native .gin-dog-limb{stroke:#507d2b}
+ html[data-theme="light"] #gogo-interaction-native{--gin-body:#7f9271;--gin-dark:#52614d;--gin-pod:#e5e9dd;--gin-detail:#f3f2ec;--gin-signal:#ae9671}
+ html[data-theme="light"] #gogo-interaction-native .gin-link{stroke:#a4b099;opacity:1}
+ html[data-theme="light"] #gogo-interaction-native .gin-arrow{fill:#687b5e;opacity:1}
+ html[data-theme="light"] #gogo-interaction-native .gin-dog-limb{stroke:#687b5b}
  html[data-theme="light"] #gogo-interaction-native .gin-far-leg{opacity:1}
- html[data-theme="light"] #gogo-interaction-native .gin-far-leg .gin-dog-limb{stroke:#b1d17c}
- html[data-theme="light"] #gogo-interaction-native .gin-dog-eye{fill:#315c18}
- html[data-theme="light"] #gogo-interaction-native .gin-pad::before{border-color:#9bb571;opacity:1}
+ html[data-theme="light"] #gogo-interaction-native .gin-far-leg .gin-dog-limb{stroke:#bcc8a9}
+ html[data-theme="light"] #gogo-interaction-native .gin-dog-eye{fill:#4d6142}
+ html[data-theme="light"] #gogo-interaction-native .gin-pad::before{border-color:#a5b29a;opacity:1}
 }
 #gogo-interaction-native .gin-demo{position:relative;min-width:0;margin:0;padding:0;background:none;border:0}
 #gogo-interaction-native .gin-scene{position:relative;width:100%;aspect-ratio:7/6;min-width:0;color:var(--gin-body)}
