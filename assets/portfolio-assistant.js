@@ -6,68 +6,63 @@
 (() => {
   'use strict';
   if (window.PortfolioAssistant) return;
+  const columns=[1,1,3,3,5,7,5,3,1,3,5,7,9,7,5,3,1,3,5,7,5,3,1,3,3,1,1];
+  const waveform=columns.map((count,column)=>Array.from({length:count},(_,row)=>
+    `<circle cx="${4+column*4}" cy="${18+(row-(count-1)/2)*4}" r="1.1" style="--pa-column:${column}"/>`
+  ).join('')).join('');
   const popup=document.createElement('section');
   popup.id='portfolio-assistant';popup.className='pa-popover';
   popup.setAttribute('role','dialog');popup.setAttribute('aria-modal','false');
-  popup.setAttribute('aria-labelledby','pa-title');popup.setAttribute('aria-describedby','pa-status');
+  popup.setAttribute('aria-describedby','pa-status');
   popup.setAttribute('data-i18n-ignore','');popup.setAttribute('aria-hidden','true');
-  popup.dataset.open='false';popup.inert=true;
+  popup.dataset.open='false';popup.dataset.suspended=String(document.hidden);popup.inert=true;
   popup.innerHTML=`<div class="pa-window">
-    <header class="pa-head"><h2 class="pa-title" id="pa-title"></h2><button class="pa-close" type="button">×</button></header>
-    <p class="pa-status" id="pa-status" role="status"></p>
-    <section class="pa-panel"><div class="pa-log" role="log" aria-live="polite" aria-relevant="additions"></div><div class="pa-chips"></div><p class="pa-notice" role="status" hidden></p>
-      <form class="pa-form"><textarea class="pa-input" rows="1" maxlength="3000"></textarea><button class="pa-send" type="submit"></button></form>
-    </section><footer class="pa-foot"><button class="pa-clear" type="button" hidden></button></footer>
+    <div class="pa-top"><svg class="pa-wave" viewBox="0 0 112 36" aria-hidden="true" focusable="false">${waveform}</svg><button class="pa-close" type="button"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m5 5 10 10M15 5 5 15"/></svg></button></div>
+    <div class="pa-history" hidden><div class="pa-log" role="log" aria-live="polite" aria-relevant="additions"></div><p class="pa-notice" role="status" hidden></p></div>
+    <form class="pa-form"><textarea class="pa-input" rows="1" maxlength="3000"></textarea><button class="pa-send" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 19V5m-5 5 5-5 5 5"/></svg></button></form>
+    <span class="pa-status" id="pa-status" role="status"></span>
   </div>`;
   document.body.appendChild(popup);
   const find=selector=>popup.querySelector(selector),dot=()=>document.getElementById('dot');
   const input=find('.pa-input'),sendButton=find('.pa-send'),closeButton=find('.pa-close');
-  const log=find('.pa-log'),chips=find('.pa-chips'),notice=find('.pa-notice');
-  const status=find('.pa-status'),clearButton=find('.pa-clear'),messages=[];
+  const history=find('.pa-history'),log=find('.pa-log'),notice=find('.pa-notice');
+  const status=find('.pa-status'),messages=[];
   let opened=false,busy=false,controller=null,generation=0,returnFocus=null;
   let feedback='',navigationMode=null;
   const copy={
-    zh:{title:'有什么想了解的？',close:'关闭对话',preview:'尚未连接',ready:'可以提问',pending:'等待回复…',
-      placeholder:'写下你的问题…',send:'发送',clear:'清空',
-      offline:'AI 尚未连接，暂时不会生成回答。',error:'暂时无法取得回复，请稍后再试。',
-      chips:['数独是怎么做的？','你如何使用 AI？','你的设计方法']},
-    en:{title:'What would you like to know?',close:'Close conversation',preview:'Not connected',ready:'Ready for a question',pending:'Waiting for a reply…',
-      placeholder:'Write your question…',send:'Send',clear:'Clear',
-      offline:'AI is not connected; no answer will be generated yet.',error:'A reply is unavailable right now. Please try again later.',
-      chips:['How was Sudoku made?','How do you use AI?','Your design process']},
+    zh:{title:'关于我的对话',close:'关闭对话',preview:'AI 尚未连接',ready:'可以提问',pending:'等待回复…',
+      placeholder:'想了解什么？',send:'发送',
+      offline:'AI 尚未连接。',error:'暂时无法回复，请稍后再试。'},
+    en:{title:'Ask about me',close:'Close conversation',preview:'AI is not connected',ready:'Ready for a question',pending:'Waiting for a reply…',
+      placeholder:'Ask me something…',send:'Send',
+      offline:'AI is not connected yet.',error:'A reply is unavailable. Please try again later.'},
   };
   const language=()=>window.PortfolioI18n?.language==='en'||document.documentElement.lang==='en'?'en':'zh';
   const text=()=>copy[language()];
   const configured=()=>!!window.PortfolioAssistantConnection&&window.PortfolioAssistantConnection.mode!=='not_connected';
   function update() {
-    const t=text();find('.pa-title').textContent=t.title;
+    const t=text();popup.setAttribute('aria-label',t.title);
     status.textContent=busy?t.pending:configured()?t.ready:t.preview;
     closeButton.setAttribute('aria-label',t.close);
     input.placeholder=t.placeholder;input.setAttribute('aria-label',t.placeholder);
-    sendButton.textContent=t.send;sendButton.disabled=busy||!input.value.trim();
-    clearButton.textContent=t.clear;clearButton.hidden=!messages.length;
+    sendButton.setAttribute('aria-label',t.send);sendButton.disabled=busy||!input.value.trim();
     popup.classList.toggle('is-pending',busy);popup.setAttribute('aria-busy',String(busy));
+    const hasHistory=messages.length>0||!!feedback;
+    history.hidden=!hasHistory;popup.classList.toggle('has-history',hasHistory);
     notice.hidden=!feedback;notice.textContent=feedback?t[feedback]||t.error:'';
-    chips.replaceChildren();
-    for (const question of t.chips) {
-      const button=document.createElement('button');button.type='button';button.className='pa-chip';
-      button.textContent=question;button.disabled=busy;
-      button.addEventListener('click',()=>{
-        input.value=question;resizeInput();submit();input.focus({preventScroll:true});
-      });chips.appendChild(button);
-    }
-    chips.hidden=messages.length>0;
   }
   function render() {
-    log.replaceChildren();log.hidden=!messages.length;
+    log.replaceChildren();
     for (const message of messages) {
       const block=document.createElement('div');block.className=`pa-message pa-message--${message.role}`;
       block.textContent=message.content;log.appendChild(block);
     }
-    log.scrollTop=log.scrollHeight;update();
+    update();history.scrollTop=history.scrollHeight;
   }
   function resizeInput() {
-    input.style.height='auto';input.style.height=`${Math.min(90,Math.max(30,input.scrollHeight))}px`;
+    const viewportHeight=window.visualViewport?.height||innerHeight;
+    const maxHeight=Math.min(96,Math.max(44,viewportHeight*.22));
+    input.style.height='auto';input.style.height=`${Math.min(maxHeight,Math.max(44,input.scrollHeight))}px`;
   }
   function abort() {generation++;controller?.abort();controller=null;busy=false;}
   function clear() {abort();messages.length=0;feedback='';render();if(opened)input.focus({preventScroll:true});}
@@ -95,18 +90,18 @@
     if(!opened)return;
     const visual=window.visualViewport,height=visual?.height||innerHeight,width=visual?.width||innerWidth;
     const viewTop=visual?.offsetTop||0,viewLeft=visual?.offsetLeft||0;
-    const margin=12,boxWidth=Math.min(popup.getBoundingClientRect().width||352,width-margin*2);
+    const margin=12,boxWidth=Math.min(440,Math.max(0,width-margin*2));
     const left=viewLeft+(width-boxWidth)/2;
     // Fixed positioning uses the layout viewport; lift the bottom edge above
     // a software keyboard, then retain the ordinary safe-area breathing room.
     const bottom=Math.max(0,innerHeight-viewTop-height)+16;
-    const maxHeight=`max(0px, min(300px, calc(${Math.max(0,height-32)}px - env(safe-area-inset-bottom, 0px))))`;
-    popup.style.left=`${left}px`;popup.style.top='auto';
+    const maxHeight=`max(0px, min(480px, calc(${Math.max(0,height-32)}px - env(safe-area-inset-bottom, 0px))))`;
+    popup.style.width=`${boxWidth}px`;popup.style.left=`${left}px`;popup.style.top='auto';
     popup.style.bottom=`calc(${bottom}px + env(safe-area-inset-bottom, 0px))`;
     popup.style.maxHeight=maxHeight;
     popup.style.setProperty('--pa-available-height',maxHeight);
     popup.style.setProperty('--pa-viewport',`${height}px`);
-    popup.dataset.compact=String(height<570);
+    popup.dataset.compact=String(height<400);resizeInput();
   }
   function announce(open) {dispatchEvent(new CustomEvent('portfolio:assistant',{detail:{open}}));}
   function open(options={}) {
@@ -133,7 +128,7 @@
     if(popup.contains(event.target)||anchor?.contains(event.target)||path.includes(popup)||path.includes(anchor))return;
     close({restoreFocus:false});
   }
-  closeButton.addEventListener('click',()=>close());clearButton.addEventListener('click',clear);
+  closeButton.addEventListener('click',()=>close());
   find('.pa-form').addEventListener('submit',event=>{event.preventDefault();submit();});
   input.addEventListener('input',()=>{resizeInput();sendButton.disabled=busy||!input.value.trim();});
   popup.addEventListener('keydown',event=>{
@@ -147,6 +142,7 @@
   });
   document.addEventListener('pointerdown',outside,true);
   document.addEventListener('click',outside,true);
+  document.addEventListener('visibilitychange',()=>{popup.dataset.suspended=String(document.hidden);});
   addEventListener('portfolio:navigation',event=>{
     const mode=event.detail?.mode,reason=event.detail?.reason,previous=navigationMode;
     if(typeof mode==='string')navigationMode=mode;

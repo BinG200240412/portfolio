@@ -1,0 +1,34 @@
+/* Give the red pupil and its largest iris their own space beside the title. */
+#stage .line {
+  column-gap: clamp(22px, .5em, 32px);
+  max-width: calc(100vw - 32px);
+  padding-inline-end: 18px;
+}
+#stage .text {
+  min-width: 0;
+  max-width: 100%;
+  white-space: pre-wrap;
+  text-align: center;
+}
+#stage #dot {
+  --title-ring-size: 38px;
+  margin-left: 0;
+  top: var(--title-dot-offset, -.08em);
+  transform: none;
+  transition: top .18s ease, opacity .2s ease;
+}
+#stage #dot::after {
+  width: var(--title-ring-size);
+  height: var(--title-ring-size);
+}
+#stage #dot:is(:hover, .watching, .assistant-active) {
+  transform: none;
+}
+#stage #dot.watching { animation: none; }
+#stage #dot.watching::after { animation: assistantIris 5.6s ease-in-out infinite; }
+@media (max-width: 600px) {
+  #stage #dot { --title-ring-size: 28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #stage #dot, #stage #dot::after { animation: none !important; transition: none; }
+}
