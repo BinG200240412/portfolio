@@ -17,11 +17,23 @@
     [18,29,29],[34,62,47],[128,75,0],[153,63,70],
     [21,28,24],[39,48,41],[57,72,60],[76,96,78],
     [203,24,49],[0,88,192],[184,105,0],[0,133,71],[128,16,190]];
-  // A few camera windows, digits and small marks carry purer accent ink.
-  const lightAccentRoles = {
-    'robot-dog':{3:16,4:18,8:16}, 'quest-3':{1:2,3:16,4:2,6:16},
-    sudoku:{2:15}, arright:{3:17,4:18}, skill:{3:19,4:15},
-    'liangzhu-mask':{2:18,3:17},
+  // Material roles give each object its own light surfaces and dark structure.
+  const paperMaterials = {
+    'robot-dog':['#4b956a','#88b69a','#1260b0','#0c9166','#b92f48','#7ca88b','#213d31','#438bc9'],
+    'quest-3':['#689bc6','#7ab4ce','#125c9d','#287cba','#b43d53','#397fa9','#1f3d52','#56a3d6'],
+    gorilla:['#34433a','#a3b2a6','#758a7a','#1c2e23','#b35960'],
+    'jade-cong':['#59a479','#285c37','#bad1a2','#b57914'],
+    'liangzhu-mask':['#286743','#64a16b','#b4cba6','#bd891c'],
+    sudoku:['#24623c','#c23e56','#83ad8c','#23865b'],
+    skill:['#293b32','#a57dc3','#bd91d3','#be3555'],
+    'kiss-woman':['#364d3c','#b95864','#8ea891','#bb4355'],
+    arright:['#397a4b','#c18f2a','#91b39a','#3b9e66'],
+    clock:['#b37b19','#b34a5b','#c6b57f','#2f6342'],
+    heart:['#c05c70','#9973b4','#a3bab2','#c89a35'],
+    star:['#c58d2f','#b7586e','#dac291','#568b67'],
+    eye:['#76529c','#4486bd','#a8bbae','#be5870'],
+    bolt:['#bd851d','#8d62ad','#c7bfa1','#b94e67'],
+    spiral:['#528f6a','#c25b6e','#9fbdab','#9970b3'],
   };
   // Every object keeps its own small palette. A colour change is a hard boundary.
   const palettes = {
@@ -150,9 +162,15 @@
       return sprite;
     };
     sprites = (dark ? colours : lightColours).map(spriteFor);
-    // Opaque colour steps describe the mesh faces without mixing them with white.
-    paperFacets = dark ? [] : lightColours.map(rgb => [0,.66,.78,.9,1]
-      .map(level => spriteFor(rgb.map(channel => channel * level))));
+    // Faces progress from shadow to light in discrete opaque steps. Highlights
+    // get their own brighter pigment instead of lowering the whole object's alpha.
+    paperFacets = dark ? [] : Object.fromEntries(Object.entries(palettes).map(([id,roles]) => {
+      const materials=paperMaterials[id] || roles.map(index=>lightColours[index]);
+      return [id,materials.map(colour=>{
+        const rgb=Array.isArray(colour)?colour:[1,3,5].map(offset=>parseInt(colour.slice(offset,offset+2),16));
+        return [0,.6,.82,1,1.22].map(level=>spriteFor(rgb.map(channel=>Math.min(255,channel*level))));
+      })];
+    }));
   }
   function clearance(x, y) {
     let light = 1;
@@ -331,7 +349,6 @@
       const p = placement(item, time, image);
       const {pitch,x,y,cos,sin} = p, size = ledPitch * 1.4, palette = palettes[item.id];
       if (!palette) continue;
-      const accentRoles = dark ? null : lightAccentRoles[item.id];
       p.hitBox = inkBounds(image);
       if (entry && image.ready !== false && positionButton(entry.button,p)) entry.placement=p;
       if (item.id === 'gorilla' && source === window.PortfolioGorillaMotif && (image.ready === true || source.ready === true)) {
@@ -354,8 +371,8 @@
           const facet = image.shades ? facets[pixel.shade] : 1;
           const ink=dark ? opacity*facet*pixel.coverage : 1;
           ctx.globalAlpha = light===1 ? ink : Math.min(ink,Math.max(.16,ink*light));
-          const inkIndex=accentRoles?.[pixel.role] ?? palette[pixel.role-1];
-          const sprite=!dark && image.shades ? paperFacets[inkIndex][pixel.shade] : sprites[inkIndex];
+          const paperShade=image.shades && item.id!=='gorilla' ? pixel.shade : 3;
+          const sprite=dark ? sprites[palette[pixel.role-1]] : paperFacets[item.id][pixel.role-1][paperShade];
           ctx.drawImage(sprite,px-size/2,py-size/2,size,size);
         }
       }

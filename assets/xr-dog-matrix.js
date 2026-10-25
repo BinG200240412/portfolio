@@ -25,8 +25,8 @@
   try { host = window.frameElement?.closest('#section') || null; } catch (_) {}
   const palettes = {
     dark: ['#62665d', '#a5aa98', '#d2d1bd', '#c2944a'],
-    // Deep pigments keep the open dot lattice distinct against light paper.
-    light: ['#437519', '#245b0d', '#123b07', '#b46800'],
+    // Paper separates structural ink, the body and its sunlit panels.
+    light: ['#315c18', '#659b2e', '#b1d875', '#c58c26'],
   };
   const roles = ['rgb(20,0,0)', 'rgb(75,0,0)', 'rgb(145,0,0)', 'rgb(235,0,0)'];
   let width = 1, height = 1, pitch = 7, ratio = 1, mainPitch = 7, coverTop = 0;
@@ -74,12 +74,14 @@
     const bend = Math.sqrt(Math.max(0, upper * upper - along * along));
     const nx = dx / distance, ny = dy / distance;
     const knee = { x: hipX + nx * along - ny * bend, y: hipY + ny * along + nx * bend };
-    const limb = far ? 0 : 2, motor = far ? 0 : 1;
+    const paper = colours === palettes.light;
+    const limb = paper ? (far ? 2 : 1) : far ? 0 : 2;
+    const motor = paper ? (far ? 2 : 0) : far ? 0 : 1;
     bar(hipX, hipY, knee.x, knee.y, far ? 17 : 19, limb);
     bar(knee.x, knee.y, toe.x, toe.y, far ? 12 : 14, limb);
     if (!far) {
-      bar(hipX - 3, hipY + 5, knee.x - 2, knee.y - 3, 6, 1);
-      bar(knee.x + 2, knee.y + 4, toe.x + 1, toe.y - 2, 5, 1);
+      bar(hipX - 3, hipY + 5, knee.x - 2, knee.y - 3, 6, paper ? 0 : 1);
+      bar(knee.x + 2, knee.y + 4, toe.x + 1, toe.y - 2, 5, paper ? 0 : 1);
     }
     ring(hipX, hipY, far ? 21 : 24, far ? 10 : 13, limb, motor);
     ring(knee.x, knee.y, far ? 13 : 16, far ? 6 : 8, limb, motor);

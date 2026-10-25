@@ -18,13 +18,13 @@
 .has-relation-motion.is-relation-active .gogo-relation-arrow circle{animation-play-state:running}
 @keyframes gogo-relation-signal{0%,4%,19%,100%{opacity:.45}8%,13%{opacity:1}}
 @media(forced-colors:none){
- html[data-theme="light"] .gogo-relation-arrow{color:#a45800}
+ html[data-theme="light"] .gogo-relation-arrow{color:#c18d35}
  html[data-theme="light"] .gogo-relation-arrow circle{opacity:1}
 }
 @media(forced-colors:none) and (prefers-reduced-motion:no-preference){
  html[data-theme="light"] .has-relation-motion .gogo-relation-arrow circle{animation-name:gogo-relation-signal-paper}
 }
-@keyframes gogo-relation-signal-paper{0%,4%,19%,100%{fill:#914900;opacity:1}8%,13%{fill:#ca7800;opacity:1}}
+@keyframes gogo-relation-signal-paper{0%,4%,19%,100%{fill:#d9b76b;opacity:1}8%,13%{fill:#a45b00;opacity:1}}
 @media(max-width:1100px) and (min-width:901px){
  .gogo-relation-heading{grid-template-columns:54px 44px minmax(0,1fr);gap:12px}
  .gogo-relationship-page .gogo-relationship h4{font-size:22px}

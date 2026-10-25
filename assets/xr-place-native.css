@@ -1,6 +1,6 @@
 /* The original site mosaic, expressed as fixed native SVG cells. */
 .gogo-place-native-page{--place-0:#626460;--place-1:#83b0c4;--place-2:#aaa578;--place-3:#d4ebdd;--place-4:#81b597;--place-5:#ff9d9d;gap:28px}
-html[data-theme="light"] .gogo-place-native-page{--place-0:#485b3e;--place-1:#005e89;--place-2:#a25b00;--place-3:#397a19;--place-4:#00613b;--place-5:#bd2147}
+html[data-theme="light"] .gogo-place-native-page{--place-0:#a5b596;--place-1:#318eb0;--place-2:#c68720;--place-3:#77a53a;--place-4:#328b5b;--place-5:#cf5b71}
 .gogo-place-native-page>.gogo-subhead{margin-bottom:0!important}
 .gogo-native-place{display:grid;grid-template-columns:minmax(0,2.4fr) minmax(270px,.9fr);align-items:center;gap:40px}
 .gogo-place-drawing{position:relative;min-width:0}
@@ -53,20 +53,27 @@ html[data-theme="light"] .gogo-place-native-page{--place-0:#485b3e;--place-1:#00
  .gogo-experience-originals>div{grid-template-columns:1fr}
 }
 @media(max-width:540px){.gogo-place-native-page{padding-block:32px;gap:22px}.gogo-native-place{gap:24px}.gogo-place-players{column-gap:22px}.gogo-place-legend button{font-size:12px}.gogo-place-legend button::before{width:8px;height:8px}.gogo-place-players h4{font-size:21px}.gogo-place-interaction-hint{font-size:12px}}
-/* White paper needs opaque pigment, including the neutral cells that hold the
- * mosaic together. Keep selection dimming, without losing the underlying map. */
+/* Light support cells and traces sit behind the coloured places. Selection
+ * uses separate opaque ink levels, preserving each category's own hue. */
 @media(forced-colors:none){
+ html[data-theme="light"] .gogo-place-native-page [data-place-type="0"]{--cell-strong:#485b3e;--cell-soft:#c8d1bc;--cell-trace:#b6c3a9}
+ html[data-theme="light"] .gogo-place-native-page [data-place-type="1"]{--cell-strong:#005e89;--cell-soft:#b3d3dc;--cell-trace:#82b6c7}
+ html[data-theme="light"] .gogo-place-native-page [data-place-type="2"]{--cell-strong:#a25b00;--cell-soft:#e6cea0;--cell-trace:#d8b573}
+ html[data-theme="light"] .gogo-place-native-page [data-place-type="3"]{--cell-strong:#397a19;--cell-soft:#c8daa7;--cell-trace:#a7c97c}
+ html[data-theme="light"] .gogo-place-native-page [data-place-type="4"]{--cell-strong:#00613b;--cell-soft:#b2d4bc;--cell-trace:#80b59b}
+ html[data-theme="light"] .gogo-place-native-page [data-place-type="5"]{--cell-strong:#bd2147;--cell-soft:#e6b7c0;--cell-trace:#d893a1}
  html[data-theme="light"] .gogo-place-cells circle{opacity:1}
  html[data-theme="light"] .gogo-place-cells circle[data-place-type="0"]{opacity:1}
- html[data-theme="light"] .gogo-place-cells.is-filtered circle{opacity:.34}
- html[data-theme="light"] .gogo-place-cells.is-filtered circle.is-current{opacity:1}
- html[data-theme="light"] .gogo-place-connections path{opacity:1}
- html[data-theme="light"] .gogo-place-connections.is-filtered path{opacity:.36}
- html[data-theme="light"] .gogo-place-connections.is-filtered path.is-current{opacity:1}
+ html[data-theme="light"] .gogo-place-cells.is-filtered circle{fill:var(--cell-soft);opacity:1}
+ html[data-theme="light"] .gogo-place-cells.is-filtered circle.is-current{fill:var(--cell-strong);opacity:1}
+ html[data-theme="light"] .gogo-place-connections path{stroke:var(--cell-trace);opacity:1}
+ html[data-theme="light"] .gogo-place-connections.is-filtered path{stroke:var(--cell-soft);opacity:1}
+ html[data-theme="light"] .gogo-place-connections.is-filtered path.is-current{stroke:var(--cell-strong);opacity:1}
+ html[data-theme="light"] .gogo-place-legend button.is-current{color:var(--cell-strong)}
  html[data-theme="light"] .gogo-player-sequence circle{opacity:1}
- html[data-theme="light"] .gogo-player-sequence[aria-pressed="true"] circle{opacity:.58}
- html[data-theme="light"] .gogo-player-sequence[aria-pressed="true"] circle.is-played{opacity:1}
- html[data-theme="light"] .gogo-player-sequence[aria-pressed="true"] circle.is-step{opacity:1}
+ html[data-theme="light"] .gogo-player-sequence[aria-pressed="true"] circle{fill:var(--cell-soft);opacity:1}
+ html[data-theme="light"] .gogo-player-sequence[aria-pressed="true"] circle.is-played{fill:var(--cell-colour);opacity:1}
+ html[data-theme="light"] .gogo-player-sequence[aria-pressed="true"] circle.is-step{fill:var(--cell-strong);opacity:1}
 }
 @media(prefers-reduced-motion:reduce){.gogo-place-cells circle,.gogo-place-connections path,.gogo-player-sequence circle{transition:none}}
 @media(forced-colors:active){.gogo-place-native-page,html[data-theme] .gogo-place-native-page{--place-0:GrayText;--place-1:CanvasText;--place-2:CanvasText;--place-3:CanvasText;--place-4:CanvasText;--place-5:CanvasText}.gogo-place-connections path{opacity:.8}.gogo-place-cells circle{opacity:.85}.gogo-place-cells.is-filtered circle{opacity:.25}.gogo-place-cells.is-filtered circle.is-current{opacity:1}}

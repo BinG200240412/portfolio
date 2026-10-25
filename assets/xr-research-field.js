@@ -9,7 +9,7 @@
   const dialog=document.getElementById('gogo-lightbox'),reduced=matchMedia('(prefers-reduced-motion: reduce)'),forced=matchMedia('(forced-colors: active)');
   const COLS=65,ROWS=49,TAU=Math.PI*2,DEFAULT_YAW=-.48,DEFAULT_PITCH=.78;
   // Opaque pigments give paper the same depth cues without diluting each bead.
-  const paperDepth=['#3a6c28','#285920','#16461a'],paperGlow=['#00708c','#006782','#005d79','#00536f','#004966'],paperWarm=['#b66a00','#a85c00','#974f00','#854300','#743700'];
+  const paperDepth=['#9abd72','#659845','#326927'],paperGlow=['#87c7d4','#57b0c3','#2794af','#13758f','#07556f'],paperWarm=['#e5bf70','#d5a23b','#be841b','#a4680b','#814c04'];
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   function makeTerrain(cols,rows){
     const vertices=[];
@@ -53,7 +53,7 @@
   function resize(){
     w=canvas.clientWidth;h=canvas.clientHeight;ratio=Math.min(devicePixelRatio||1,2,4096/Math.max(1,w));
     canvas.width=Math.round(w*ratio);canvas.height=Math.round(h*ratio);light=document.documentElement.dataset.theme==='light';
-    ink=light?'#4a7040':'#a9b8a0';glow=light?'#00708c':'#a6e9ed';warm=light?'#b66a00':'#ebc483';
+    ink=light?'#9fba84':'#a9b8a0';glow=light?'#2794af':'#a6e9ed';warm=light?'#be841b':'#ebc483';
     if(forced.matches)ink=glow=warm=getComputedStyle(canvas).color;
     project();canvas.dataset.terrainReady='true';canvas.dataset.terrainVertices=String(vertices.length);schedule();
   }
@@ -70,13 +70,27 @@
   function render(){
     context.setTransform(ratio,0,0,ratio,0,0);context.clearRect(0,0,w,h);
     // Continuous wire rows and columns establish the landform beneath its LEDs.
-    context.strokeStyle=ink;context.lineWidth=.65;context.globalAlpha=forced.matches?.8:light?1:.32;context.beginPath();
-    for(let row=0;row<ROWS;row+=2)for(let col=0;col<COLS;col++){
-      const p=points[row*COLS+col];col?context.lineTo(p.x,p.y):context.moveTo(p.x,p.y);
+    context.strokeStyle=ink;context.lineWidth=.65;context.globalAlpha=forced.matches?.8:light?1:.32;
+    if(light&&!forced.matches){
+      // A few cross-sections carry the structure; the remaining mesh recedes.
+      ['#b5cc99','#7fa45d'].forEach((colour,tier)=>{
+        context.strokeStyle=colour;context.beginPath();
+        for(let row=0;row<ROWS;row+=2)if(Number(row%8===0)===tier)for(let col=0;col<COLS;col++){
+          const p=points[row*COLS+col];col?context.lineTo(p.x,p.y):context.moveTo(p.x,p.y);
+        }
+        for(let col=0;col<COLS;col+=2)if(Number(col%8===0)===tier)for(let row=0;row<ROWS;row++){
+          const p=points[row*COLS+col];row?context.lineTo(p.x,p.y):context.moveTo(p.x,p.y);
+        }context.stroke();
+      });
+    }else{
+      context.beginPath();
+      for(let row=0;row<ROWS;row+=2)for(let col=0;col<COLS;col++){
+        const p=points[row*COLS+col];col?context.lineTo(p.x,p.y):context.moveTo(p.x,p.y);
+      }
+      for(let col=0;col<COLS;col+=2)for(let row=0;row<ROWS;row++){
+        const p=points[row*COLS+col];row?context.lineTo(p.x,p.y):context.moveTo(p.x,p.y);
+      }context.stroke();
     }
-    for(let col=0;col<COLS;col+=2)for(let row=0;row<ROWS;row++){
-      const p=points[row*COLS+col];row?context.lineTo(p.x,p.y):context.moveTo(p.x,p.y);
-    }context.stroke();
     const groups=Array.from({length:8},()=>[]),radius=w<500?.83:1.05;
     vertices.forEach((v,i)=>{const energy=lighting(i);groups[energy>.06?3+Math.min(4,Math.floor(energy*5)):Math.min(2,Math.floor((v.y+.05)*3))].push(i);});
     groups.forEach((indices,group)=>{

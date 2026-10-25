@@ -15,7 +15,10 @@
   const reduced=matchMedia('(prefers-reduced-motion: reduce)'),forced=matchMedia('(forced-colors: active)'),dialog=document.getElementById('gogo-lightbox');
   const TAU=Math.PI*2,FPS=12;
   const dark=['#66725f','#96a18b','#ccd3bd','#f0f2e7','#356879','#5b9fac','#83d6de','#d5ffff','#455c3d','#74945d','#a2bf7b','#d5e8b6','#806036','#b38a48','#e5b761','#fff0bc'];
-  const light=['#367316','#245f0b','#194b08','#103606','#006f8e','#005e7e','#004d6b','#003b55','#5a7d0d','#416b07','#2b5705','#1b4004','#b66b00','#965400','#743d00','#522900'];
+  const light=['#b5c98d','#7b9e4b','#4f8027','#2b5517','#a7ced5','#5aa4b8','#1e849f','#075970','#c6d993','#98b94b','#6c9425','#426711','#e5bd6b','#ce9c3a','#ac7418','#7a4b08'];
+  // Source motifs keep their original shadow → body → highlight order. The
+  // native diagrams use the darker levels for structural lines and signals.
+  const lightSource=['#315c20','#538323','#83b144','#aacb6a','#0d5d78','#489bb2','#60b0c6','#89c6d2','#426711','#6c9425','#98b94b','#c6d993','#87541a','#b9882d','#d3aa54','#dfb757'];
   let data=null,loading=false,models=[],links=[],palette=dark,width=1,height=1,ratio=1,hubBox=null,linePad=0,paper=false;
   let onScreen=false,visibleRatio=0,shown=true,frame=0,previous=0,elapsed=0,hover=null,focus=null,pinned=null,host=null;
   let entryStarted=false,entryDone=false,entryAnimations=[];
@@ -61,7 +64,7 @@
     const centres=new Float32Array(cols*rows*2),ox=(w-cols*pitch)/2,oy=(h-rows*pitch)/2;
     for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const i=r*cols+c;centres[i*2]=ox+(c+.5)*pitch;centres[i*2+1]=oy+(r+.5)*pitch;}
     canvas.dataset.gridPitch=String(pitch);canvas.dataset.gridColumns=String(cols);canvas.dataset.gridRows=String(rows);
-    return{canvas,id:canvas.dataset.dot,context:canvas.getContext('2d'),w,h,pitch,cols,rows,centres,mask:mask.getContext('2d',{willReadFrequently:true}),poses:new Map()};
+    return{canvas,id:canvas.dataset.dot,context:canvas.getContext('2d'),w,h,pitch,cols,rows,centres,paperPalette:paper&&['dog','ar','fragment'].includes(canvas.dataset.dot)?lightSource:null,mask:mask.getContext('2d',{willReadFrequently:true}),poses:new Map()};
   }
   // This is the only function that puts luminous beads on the screen. Its
   // centres and radius are immutable until the layout is resized.
@@ -70,7 +73,7 @@
     for(let i=0;i<slots.length;i++)if(slots[i])groups[slots[i]-1].push(i);
     c.setTransform(ratio,0,0,ratio,0,0);c.clearRect(0,0,model.w,model.h);
     groups.forEach((indices,role)=>{
-      c.fillStyle=palette[role];c.beginPath();indices.forEach(i=>{
+      c.fillStyle=model.paperPalette?.[role]||palette[role];c.beginPath();indices.forEach(i=>{
         const x=model.centres[i*2],y=model.centres[i*2+1],r=model.pitch*.319;c.moveTo(x+r,y);c.arc(x,y,r,0,TAU);
       });c.fill();
     });
@@ -205,7 +208,7 @@
   }
   function resize(){
     width=stage.clientWidth;height=stage.clientHeight;ratio=Math.min(devicePixelRatio||1,1.5,4096/Math.max(1,width));
-    const styles=getComputedStyle(page),lightMode=document.documentElement.dataset.theme==='light';paper=lightMode&&!forced.matches;line=lightMode?'#2d5b1b':'#71806c';accent=styles.getPropertyValue('--gogo-accent').trim();flow=lightMode?'#006687':'#94e1e8';
+    const styles=getComputedStyle(page),lightMode=document.documentElement.dataset.theme==='light';paper=lightMode&&!forced.matches;line=lightMode?'#8daa71':'#71806c';accent=styles.getPropertyValue('--gogo-accent').trim();flow=lightMode?'#006687':'#94e1e8';
     palette=forced.matches?Array(16).fill(styles.color):(lightMode?light:dark);if(forced.matches){line=styles.color;accent=line;flow=line;}
     linePad=matchMedia('(min-width:901px)').matches?0:12;lineCanvas.style.left=-linePad+'px';lineCanvas.style.right='auto';lineCanvas.style.width=(width+linePad*2)+'px';lineCanvas.width=Math.round((width+linePad*2)*ratio);lineCanvas.height=Math.round(height*ratio);frames.forEach(outline);
     const rect=e=>({x:e.offsetLeft,y:e.offsetTop,w:e.offsetWidth,h:e.offsetHeight});
