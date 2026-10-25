@@ -27,7 +27,10 @@
     8:['01110','11011','11011','01110','11011','11011','01110'],
     9:['01110','11011','11011','01111','00011','00011','01110'],
   };
-  const accentCells=new Set(['0:1','1:3','4:5','6:7','8:8']);
+  // A cell keeps its own ink while its digit changes. The offset distributes
+  // warm and cool accents across the opening's lower-right crop as well.
+  const DIGIT_ROLE=3,COLOUR_COUNT=6;
+  const digitRole=(row,column)=>DIGIT_ROLE+(row*2+column)%COLOUR_COUNT;
   // About one third of cycle edges involve a blank. Most keep a strong digit
   // on screen; the lower-right crop starts with clear 6→5 and 9→7 changes.
   const changing=[
@@ -39,7 +42,7 @@
     [8,5,[0,9,7,5],.3,.35],[8,7,[7,9,6],0,.2],[8,8,[9,7,6,5],.15,.1],
   ].map(([row,column,values,delay,hold],index)=>({
     row,column,values,delay,hold,preheat:.9,duration:1.4+index%3*.1,
-    initial:Number(BOARD[row][column]),role:accentCells.has(`${row}:${column}`)?4:3,
+    initial:Number(BOARD[row][column]),role:digitRole(row,column),
     x:ORIGIN+column*CELL+40,y:ORIGIN+row*CELL+24,
   }));
   const changingKeys=new Set(changing.map(cell=>`${cell.row}:${cell.column}`));
@@ -72,19 +75,21 @@
   }
   for(let row=0;row<9;row++)for(let column=0;column<9;column++) {
     const value=Number(BOARD[row][column]);if(!value||changingKeys.has(`${row}:${column}`))continue;
-    const role=accentCells.has(`${row}:${column}`)?4:3;
+    const role=digitRole(row,column);
     for(const pixel of transitions.get(`${value}:${value}`))
       dot(ORIGIN+column*CELL+40+pixel.x,ORIGIN+row*CELL+24+pixel.y,role);
   }
-  const points=[[],[],[],[],[]];
+  const points=Array.from({length:DIGIT_ROLE+COLOUR_COUNT},()=>[]);
   for(let row=0;row<GRID;row++)for(let column=0;column<GRID;column++) {
     const role=roles[row*GRID+column];if(role)points[role].push([column*PITCH,row*PITCH]);
   }
   const themes={
-    dark:{colours:['','rgb(115,121,108)','rgb(146,155,134)','rgb(162,172,151)','rgb(125,164,121)'],
-      pulse:['rgb(106,158,113)','rgb(164,185,147)','rgb(218,220,201)'],alpha:[0,.68,.83,.94,.96]},
-    light:{colours:['','rgb(116,126,107)','rgb(77,92,71)','rgb(67,88,66)','rgb(65,111,65)'],
-      pulse:['rgb(50,91,57)','rgb(65,111,65)','rgb(91,130,82)'],alpha:[0,.74,.9,.94,.95]},
+    // Sage, teal, blue, ochre, rose and brick echo the App's six accents.
+    // Paper mode uses deeper inks; dark mode uses brighter pigment values.
+    dark:{colours:['','#73796C','#929B86','#A6B89A','#8EBCB5','#8FAED0','#D1B66F','#C49CA9','#D38E70'],
+      pulseTarget:255,pulse:[.12,.28,.46],alpha:[0,.68,.83,.96,.96,.96,.96,.96,.96]},
+    light:{colours:['','#747E6B','#4D5C47','#4D6A49','#3E7773','#43688E','#8B671E','#965B6D','#A34B2C'],
+      pulseTarget:0,pulse:[.04,.12,.2],alpha:[0,.74,.9,.96,.96,.96,.96,.96,.96]},
   };
   const cache=document.createElement('canvas'),paint=cache.getContext('2d',{alpha:true});
   if(!paint)return;
@@ -108,7 +113,7 @@
   function buildCache() {
     theme=themes[document.documentElement.dataset.theme==='light'?'light':'dark'];
     paint.setTransform(backing/SIZE,0,0,backing/SIZE,0,0);paint.clearRect(0,0,SIZE,SIZE);
-    for(let role=1;role<=4;role++) {
+    for(let role=1;role<points.length;role++) {
       paint.fillStyle=theme.colours[role];paint.globalAlpha=theme.alpha[role];
       for(const[x,y]of points[role]) {paint.beginPath();paint.arc(x,y,RADIUS,0,Math.PI*2);paint.fill();}
     }
@@ -118,7 +123,13 @@
       const p=sprite.getContext('2d');p.fillStyle=colour||'transparent';
       p.beginPath();p.arc(8,8,RADIUS*2,0,Math.PI*2);p.fill();return sprite;
     };
-    sprites=theme.colours.map(sprite);pulseSprites=theme.pulse.map(sprite);
+    const pulseColour=(colour,amount)=>{
+      const channels=[1,3,5].map(start=>parseInt(colour.slice(start,start+2),16));
+      return `rgb(${channels.map(value=>Math.round(value+(theme.pulseTarget-value)*amount)).join(',')})`;
+    };
+    sprites=theme.colours.map(sprite);
+    pulseSprites=theme.colours.map((colour,role)=>role<DIGIT_ROLE?[]:
+      theme.pulse.map(amount=>sprite(pulseColour(colour,amount))));
     cacheDirty=false;
   }
   function draw(time) {
@@ -132,7 +143,8 @@
         const changed=pixel.from!==pixel.to,switched=transition.progress>=pixel.threshold;
         if(!(changed&&switched?pixel.to:pixel.from))continue;
         const pop=changed&&switched&&transition.phase==='morph'&&transition.progress-pixel.threshold<.055;
-        const sprite=transition.pulse>=0?pulseSprites[transition.pulse]:pop?pulseSprites[2]:sprites[cell.role];
+        const sprite=transition.pulse>=0?pulseSprites[cell.role][transition.pulse]:
+          pop?pulseSprites[cell.role][2]:sprites[cell.role];
         // Binary point replacement keeps every surviving/common LED at full
         // ink strength. Only newly switched points get a brief solid pop.
         ctx.globalAlpha=theme.alpha[cell.role];
