@@ -1,5 +1,5 @@
-/* Four transparent circular cuts morph into square notches when selected.
- * Matching polygon vertices preserve a continuous, native CSS transition.
+/* Circular cuts deepen at the top left and bottom right when selected.
+ * Matching arc vertices preserve a continuous, native CSS transition.
  * Mark the background-bearing visual surface, not its caption or controls bar.
  */
 [data-media-corners] {

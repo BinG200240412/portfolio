@@ -9,9 +9,9 @@
   const english = () => window.PortfolioI18n?.language === 'en' || document.documentElement.lang === 'en';
   const label = image => image.alt || image.closest('figure')?.querySelector('figcaption')?.textContent.trim() || '';
 
-  // Matching vertices let the browser interpolate a circular notch into a square.
+  // Matching arc vertices let the browser deepen a notch without changing its curve.
   // Percentage anchors keep right/bottom edges attached even during layout changes.
-  function cornerPath(radii, square) {
+  function cornerPath(radii) {
     const points = [], segments = 12;
     const px = value => `${value.toFixed(3)}px`;
     const edge = value => `calc(100% - ${px(value)})`;
@@ -20,8 +20,7 @@
       for (let step = 0; step <= segments; step++) {
         const angle = (reverse ? segments - step : step) / segments * Math.PI / 2;
         const cosine = Math.cos(angle), sine = Math.sin(angle);
-        const scale = square ? 1 / Math.max(cosine, sine) : 1;
-        const x = radii[corner] * cosine * scale, y = radii[corner] * sine * scale;
+        const x = radii[corner] * cosine, y = radii[corner] * sine;
         points.push(`${corner === 1 || corner === 2 ? edge(x) : px(x)} ${corner === 2 || corner === 3 ? edge(y) : px(y)}`);
       }
     }
@@ -38,9 +37,8 @@
     const active = video ? radius : Math.min(64, short * .22, radius * 2.1);
     surface.style.setProperty('--media-cut', `${radius.toFixed(2)}px`);
     surface.style.setProperty('--media-cut-active', `${active.toFixed(2)}px`);
-    surface.style.setProperty('--media-corner-rest', cornerPath([radius, radius, radius, radius], false));
-    const shoulder = Math.min(active, radius * 1.25);
-    surface.style.setProperty('--media-corner-selected', cornerPath([active, shoulder, active, shoulder], !video));
+    surface.style.setProperty('--media-corner-rest', cornerPath([radius, radius, radius, radius]));
+    surface.style.setProperty('--media-corner-selected', cornerPath([active, radius, active, radius]));
   }
   const resize = typeof ResizeObserver === 'function' ? new ResizeObserver(entries => entries.forEach(entry => size(entry.target))) : null;
 
