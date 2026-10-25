@@ -1,0 +1,107 @@
+/* Concave media corners: four circular cuts, with transparent quarter discs.
+ * JS supplies --media-cut / --media-cut-active in CSS pixels on each surface.
+ * Mark the background-bearing visual surface, not its caption or controls bar.
+ */
+@property --mc-tl { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --mc-tr { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --mc-br { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --mc-bl { syntax: "<length>"; inherits: false; initial-value: 0px; }
+
+[data-media-corners] {
+  --mc-tl: var(--media-cut, 16px);
+  --mc-tr: var(--media-cut, 16px);
+  --mc-br: var(--media-cut, 16px);
+  --mc-bl: var(--media-cut, 16px);
+  --media-corner-mask:
+    radial-gradient(circle at top left,
+      #0000 0 calc(var(--mc-tl) - .5px), #000 calc(var(--mc-tl) + .5px)),
+    radial-gradient(circle at top right,
+      #0000 0 calc(var(--mc-tr) - .5px), #000 calc(var(--mc-tr) + .5px)),
+    radial-gradient(circle at bottom right,
+      #0000 0 calc(var(--mc-br) - .5px), #000 calc(var(--mc-br) + .5px)),
+    radial-gradient(circle at bottom left,
+      #0000 0 calc(var(--mc-bl) - .5px), #000 calc(var(--mc-bl) + .5px));
+  border-radius: 0 !important;
+  -webkit-mask-image: var(--media-corner-mask);
+  -webkit-mask-size: 51% 51%;
+  -webkit-mask-position: top left, top right, bottom right, bottom left;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-origin: border-box;
+  -webkit-mask-clip: border-box;
+  -webkit-mask-composite: source-over;
+  mask-image: var(--media-corner-mask);
+  mask-size: 51% 51%;
+  mask-position: top left, top right, bottom right, bottom left;
+  mask-repeat: no-repeat;
+  mask-origin: border-box;
+  mask-clip: border-box;
+  mask-composite: add;
+  mask-mode: alpha;
+  transition:
+    --mc-tl 260ms cubic-bezier(.2, .7, .2, 1),
+    --mc-tr 260ms cubic-bezier(.2, .7, .2, 1),
+    --mc-br 260ms cubic-bezier(.2, .7, .2, 1),
+    --mc-bl 260ms cubic-bezier(.2, .7, .2, 1);
+}
+
+[data-media-zoomable] { cursor: zoom-in; }
+
+/* The host can be the surface itself, or an existing link/button around it. */
+@media (hover: hover) {
+  [data-media-zoomable][data-media-corners]:hover,
+  [data-media-zoomable]:hover [data-media-corners] {
+    --mc-tl: var(--media-cut-active, calc(var(--media-cut, 16px) * 1.75));
+    --mc-br: var(--media-cut-active, calc(var(--media-cut, 16px) * 1.75));
+  }
+}
+
+/* :is() keeps the ordinary focus and press paths valid on older engines.
+ * A child control may hold keyboard focus when a media host contains controls.
+ */
+[data-media-zoomable][data-media-corners]:is(:focus-visible, :has(:focus-visible), [data-media-press="true"]),
+[data-media-zoomable]:is(:focus-visible, :has(:focus-visible), [data-media-press="true"]) [data-media-corners],
+[data-media-zoomable] [data-media-corners][data-media-press="true"] {
+  --mc-tl: var(--media-cut-active, calc(var(--media-cut, 16px) * 1.75));
+  --mc-br: var(--media-cut-active, calc(var(--media-cut, 16px) * 1.75));
+}
+
+/* The changing cut is the affordance; remove the superseded corner arrow. */
+.gogo-zoom[data-media-zoomable]::after { content: none !important; display: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-media-corners] { transition: none; }
+}
+
+/* These figures used a solid mat beneath their image. Let the cut reveal the page. */
+:is(.q-panorama,.q-result-main,.q-film):has([data-media-corners]) { background: transparent; }
+.archive-tile[data-media-zoomable] .tile-label small { display: none; }
+video[data-media-corners]:fullscreen { -webkit-mask-image: none; mask-image: none; }
+video[data-media-corners]:-webkit-full-screen { -webkit-mask-image: none; mask-image: none; }
+
+/* Detail views keep every original pixel, without cutting a second set of corners. */
+html.media-detail-open { overflow: hidden; scroll-snap-type: none !important; }
+.media-detail {
+  position: fixed; inset: 0; width: 100%; max-width: none;
+  height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0;
+  background: var(--paper,#111110); color: var(--ink,#efeee9);
+  overscroll-behavior: contain;
+}
+.media-detail::backdrop { background: #000a; }
+.media-detail-stage {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; min-height: 100%; padding: 64px clamp(16px,4vw,56px) 24px;
+}
+.media-detail-stage > img {
+  display: block; width: auto; height: auto; max-width: 100%;
+  max-height: calc(100dvh - 88px); object-fit: contain;
+  border: 0; background: none;
+}
+.media-detail-close {
+  position: fixed; z-index: 2; top: max(12px,env(safe-area-inset-top)); right: 16px;
+  display: grid; place-items: center; width: 44px; height: 44px;
+  padding: 0; border: 0; background: var(--paper,#111110); color: inherit; cursor: pointer;
+}
+.media-detail-close svg { width: 24px; height: 24px; }
+.media-detail-close:focus-visible { outline: 1px solid currentColor; outline-offset: -4px; }
+.media-detail-feedback { position: absolute; padding: 24px; font-size: 16px; }
+.media-detail-feedback[hidden] { display: none; }

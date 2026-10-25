@@ -192,6 +192,8 @@
 <link rel="stylesheet" href="assets/title-dot.css?v=quiet-chat-20261025">
 <link rel="stylesheet" href="assets/page-snap.css?v=site-layout-20261025">
 <script defer src="assets/page-snap.js?v=site-layout-20261025"></script>
+<link rel="stylesheet" href="assets/media-corners.css?v=concave-media-20261025">
+<script defer src="assets/media-corners.js?v=concave-media-20261025"></script>
 </head>
 <body class="portfolio-shell">
   <canvas id="ambient-page" aria-hidden="true" data-i18n-ignore></canvas>
@@ -473,7 +475,7 @@ function enterSection(name){
     const frameURL = new URL(page, location.href);
     frameURL.searchParams.set("lang", window.PortfolioI18n?.language || "zh");
     frameURL.searchParams.set("ambient", "tidal-led-20261024");
-    frameURL.searchParams.set("cue", "language-ink-20261025");
+    frameURL.searchParams.set("cue", "concave-media-20261025");
     const fontPreview = document.documentElement.dataset.cjkPreview;
     if (fontPreview) frameURL.searchParams.set("cjk", fontPreview);
     const frame=document.createElement('iframe');
