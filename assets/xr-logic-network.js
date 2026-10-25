@@ -227,7 +227,7 @@
   function enter(){
     if(entryDone)return;
     if(reduced.matches||forced.matches||typeof hub.animate!=='function'){settleEntry(true);return;}
-    if(entryStarted){entryAnimations.forEach(a=>active()?a.play():a.pause());return;}
+    if(entryStarted)return;
     if(!active()||!data||visibleRatio<Math.min(.25,innerHeight/Math.max(1,page.offsetHeight)*.4))return;
     entryStarted=true;page.dataset.networkEntry='running';
     const cx=hub.offsetLeft+hub.offsetWidth/2,cy=hub.offsetTop+hub.offsetHeight/2;
@@ -241,7 +241,7 @@
   }
   function sync(){
     cancelAnimationFrame(frame);frame=0;previous=0;const visible=active();page.dataset.networkActive=visible?'true':'false';page.dataset.networkMotion=!visible?'paused':!data?'loading':reduced.matches||forced.matches?'static':'running';
-    enter();entryAnimations.forEach(a=>visible?a.play():a.pause());
+    enter();entryAnimations.forEach(a=>{if(!visible&&a.playState==='running')a.pause();else if(visible&&a.playState==='paused')a.play();});
     if(!visible)return;if(!data){load();return;}render((reduced.matches||forced.matches) ? .6 : elapsed);if(!reduced.matches&&!forced.matches)frame=requestAnimationFrame(tick);
   }
   function select(){cards.forEach(e=>e.setAttribute('aria-pressed',String(e.dataset.node===pinned)));if(active())render((reduced.matches||forced.matches) ? .6 : elapsed);}
