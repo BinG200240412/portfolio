@@ -323,5 +323,15 @@
   },
   "derivedVectors": {
     "tonality-study-en.svg": "English text derivative of tonality-study.svg"
+  },
+  "vectorOverlays": {
+    "parent": "4057:2719",
+    "ellipsesRestored": 381,
+    "touchSymbol": "4057:6730",
+    "touchRings": [
+      "4057:6731",
+      "4057:6732"
+    ],
+    "note": "Sensor nodes, glow effects and delayed activation colour regions compose the complete SVG illustrations alongside their base point groups."
   }
 }
