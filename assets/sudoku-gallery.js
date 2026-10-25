@@ -8,6 +8,7 @@
     const opener = document.getElementById('sudoku-active-open');
     const image = document.getElementById('sudoku-active-image');
     const caption = document.getElementById('sudoku-active-caption');
+    const summary = document.getElementById('sudoku-screen-summary');
     if (!gallery || !opener || !image || !caption) return;
 
     gallery.setAttribute('data-i18n-ignore', '');
@@ -17,6 +18,7 @@
         button, id: button.dataset.screen, src: button.dataset.image,
         caption: button.dataset.caption || button.textContent.trim(),
         alt: button.dataset.alt || button.dataset.caption || button.textContent.trim(),
+        summary: button.dataset.summary || '',
       }));
     if (!items.length) return;
 
@@ -73,6 +75,7 @@
       image.width = 1320;
       image.height = 2868;
       caption.textContent = t(current.caption);
+      if (summary) summary.textContent = t(current.summary);
       if (hasError) setError(true);
     }
 

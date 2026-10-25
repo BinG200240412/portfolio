@@ -38,3 +38,11 @@ SHA-256：`5201a518fd2d3c6f968ad522a195c24793d7583e1d011d618aa705383bdde4da`。
 Apple 官方 [App Store 页面](https://apps.apple.com/cn/app/sudoku-2026/id6775198044) 与 [Lookup API](https://itunes.apple.com/lookup?id=6775198044&country=cn) 本次返回 `Sudoku.2026`、版本 `1.1.1`（2026-07-11）。当前作品页五张图来自上述 `1.2 (28)` 维护构建，不能称为线上 `1.1.1` 的全套商店截图。
 
 本次也核对了用户本地 `.../Sudoku.by BinG/Sudoku/iPhone截图-6.9寸/` 的绿色商店原图。其中主棋盘、英文设置与世界难题棋盘可用，但教练图处于等待态、没有干净分享图。为统一版本与语言，最终五张全部采用同次原生维护构建的截图。原有橙色截图源自 `.../Sudoku.by BinG/Sudoku/产品截图/` 的 2026-06-12 旧图，本次五个当前引用均已替换。
+
+## 作品页中的字体样张与迭代对照
+
+2026-10-25：字体样张按维护工程 `ios/Sources/Foundation.swift`、`BoardView.swift` 的实际调用核对。字标 Fraunces（wght 380、opsz 144、SOFT 0、WONK 0）；题目数字 EB Garamond（lining/tabular）；填写与候选笔记 Mynerve；中文标题与正文源云明体。网页正文字体仍由全站主题控制，仅样张和操作示意使用 App 字体。
+
+- `mynerve-regular.woff2` 与 `fraunces.woff2` 从 App 原始字体生成 ASCII 与常用标点子集，107 个码位无缺字；轮廓与原字体逐字比对一致，Fraunces 保留变量轴。原始文件信息及 OFL 授权全文见 `fonts-LICENSE.txt`。
+- 中文与 EB Garamond 样张复用现有 `assets/fonts/PortfolioGenWan-Medium.woff2`、`EBGaramond.woff2`，许可证位于相同字体目录。
+- `board-blue.png` 为既有旧英文界面，仅在「早期界面」对照中使用。它的数字字体与布局均不同于当前维护版本；不能作为当前界面的单纯换色示例。对照的当前画面使用本目录现有 `board.png`，明确标注为维护版本。

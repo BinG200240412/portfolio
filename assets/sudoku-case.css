@@ -4,9 +4,8 @@ html.sudoku-snap{scroll-snap-type:y mandatory;scroll-padding-block:0}
 html.sudoku-snap.sudoku-snap-suspended{scroll-snap-type:none;scroll-behavior:auto}
 .sudoku-opening>.hero,.sudoku-scenes .case-chapter{
   scroll-snap-align:start;scroll-snap-stop:always;scroll-margin-block:0;min-height:100svh}
-/* The sticky chapter index sits below the fixed site controls. Reserve its
- * space within each chapter instead of offsetting the entire snap position. */
-.sudoku-story>.case-chapter{padding-top:168px;scroll-margin-top:0}
+/* Chapters clear the site controls without a floating chapter navigation. */
+.sudoku-story>.case-chapter{padding-top:clamp(96px,12svh,144px);scroll-margin-top:0}
 /* Only the opening pairs the canvas with a text column. Later chapters use the whole stage. */
 .case-chapter.sudoku-intro{position:relative;display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1fr);
   align-items:center;gap:clamp(48px,8vw,160px);width:100%;max-width:1600px;min-height:100svh;
@@ -15,11 +14,7 @@ html.sudoku-snap.sudoku-snap-suspended{scroll-snap-type:none;scroll-behavior:aut
 .sudoku-intro-copy{min-width:0}
 .sudoku-story{position:relative;width:100%;max-width:1600px;margin:0 auto;
   padding:0 clamp(26px,5.5vw,88px);min-width:0}
-.case-index{position:sticky;top:74px;z-index:10;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:14px;padding:18px 0;background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.case-index a{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;min-height:28px;font-size:15px;line-height:1.4;color:var(--mid)}
-.case-index a:hover{color:var(--ink)}
-.case-chapter{padding:112px 0 128px;scroll-margin-top:155px;min-width:0}
+.case-chapter{padding:112px 0 128px;scroll-margin-top:84px;min-width:0}
 .case-chapter+.case-chapter{border-top:1px solid var(--line)}
 .case-chapter-head{margin-bottom:30px}
 .case-chapter h2{font-size:clamp(30px,calc(var(--layout-width) * .032),48px);line-height:1.35;letter-spacing:-.025em;text-wrap:balance}
@@ -35,10 +30,10 @@ html.sudoku-snap.sudoku-snap-suspended{scroll-snap-type:none;scroll-behavior:aut
 .sudoku-device::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
   background:url("works/sudoku/iphone-17-pro-max-deep-blue-portrait.png") center/100% 100% no-repeat}
 .viewer-image.is-screen>.sudoku-device{width:min(440px,100%);flex:none;align-self:flex-start}
-.sudoku-story .sudoku-gallery{grid-template-columns:minmax(0,.85fr) minmax(0,1fr);gap:clamp(40px,6vw,96px);width:100%;min-height:0;margin:62px 0 0;padding:0}
+.sudoku-story .sudoku-gallery{grid-template-columns:minmax(0,.85fr) minmax(0,1fr);gap:clamp(40px,6vw,96px);width:100%;min-height:0;margin:72px 0 0;padding:0}
 .sudoku-story .sudoku-gallery-copy{justify-self:start}
 .sudoku-story .sudoku-gallery-copy h3{font-size:24px;line-height:1.5}
-.sudoku-story #sudoku-active-open{--phone-height:min(800px,85svh,calc(100svh - 168px))}
+.sudoku-story #sudoku-active-open{--phone-height:min(760px,82svh,calc(100svh - 120px))}
 .case-interaction-study{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(44px,6vw,96px);align-items:center;margin-top:52px}
 .case-study-board{width:100%;max-width:440px;aspect-ratio:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--soft)}
 .demo-cell{position:relative;display:grid;place-items:center;aspect-ratio:1;min-width:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:clamp(30px,calc(var(--layout-width) * .03),46px);transition:background .15s}
@@ -47,6 +42,7 @@ html.sudoku-snap.sudoku-snap-suspended{scroll-snap-type:none;scroll-behavior:aut
 .demo-cell[data-initial=""] .demo-value{color:var(--accent)}
 .demo-notes{position:absolute;left:15%;top:15%;font-size:16px;line-height:1.5;letter-spacing:.2em;color:var(--mid)}
 .case-study-controls>p{font-size:16px;line-height:1.9;color:var(--mid)}
+.case-study-controls>h3{margin-bottom:20px}
 .case-demo-tools{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:26px}
 .case-demo-tools button{min-height:44px;border-bottom:1px solid var(--soft);font-size:15px}
 .case-demo-tools button:hover:not(:disabled){color:var(--accent);border-color:var(--accent)}
@@ -71,29 +67,28 @@ html.sudoku-snap.sudoku-snap-suspended{scroll-snap-type:none;scroll-behavior:aut
 .case-inline-actions button:hover{color:var(--accent);border-color:var(--accent)}
 .case-closing{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:35px;margin-top:66px}
 .case-closing .sudoku-action{font-size:15px}
+.case-closing>p{font-size:18px;line-height:1.8;color:var(--mid)}
 .case-sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 /* Content stays readable without JavaScript; motion is armed by the observer. */
 .case-reveal{transition:opacity .85s ease,transform .95s cubic-bezier(.2,.7,.2,1);transition-delay:var(--reveal-delay,0ms)}
 .case-reveal.is-reveal-pending{opacity:0;transform:translateY(30px)}
 .case-reveal:focus-within{opacity:1;transform:none;transition:none}
 @media(min-width:721px) and (max-width:1100px){
-  .case-index{gap:7px}
   .sudoku-story .sudoku-gallery{grid-template-columns:1fr;gap:35px}
   .sudoku-story .sudoku-gallery-copy{width:100%;max-width:none}
   .sudoku-story .sudoku-screen-tabs{margin-top:20px}
-  .sudoku-story #sudoku-active-open{--phone-height:min(590px,calc(100svh - 168px))}
+  .sudoku-story #sudoku-active-open{--phone-height:min(590px,calc(100svh - 120px))}
   .case-interaction-study,.case-coach-study{grid-template-columns:1fr;gap:38px}
   .case-study-board{max-width:300px;justify-self:center}.case-coach-copy{order:1}.case-coach-figure{order:0}
 }
 @media(max-width:720px){
-  .sudoku-story>.case-chapter{padding-top:148px}
+  .sudoku-story>.case-chapter{padding-top:90px}
   .case-chapter.sudoku-intro{grid-template-columns:minmax(0,1fr);gap:42px;align-content:center;
     padding:84px 26px 76px;min-height:100svh}
   .sudoku-board-dock{width:min(100%,380px,46svh)}
   .sudoku-intro-copy{width:100%}
   .sudoku-story{padding:0 26px}
-  .case-index{top:66px;gap:7px;padding:14px 0}.case-index a{font-size:14px;gap:4px 8px}
-  .case-chapter{padding:76px 0 88px;scroll-margin-top:145px}
+  .case-chapter{padding:76px 0 88px;scroll-margin-top:76px}
   .case-chapter-head{margin-bottom:22px}
   .case-chapter h2{font-size:31px}.case-intent h2{font-size:41px;max-width:11ch}
   .case-lead{font-size:15px;line-height:1.95}
@@ -112,4 +107,69 @@ html.sudoku-snap.sudoku-snap-suspended{scroll-snap-type:none;scroll-behavior:aut
   html.sudoku-snap{scroll-behavior:auto}
   .demo-cell,.case-reveal{transition:none}
   .case-reveal.is-reveal-pending{opacity:1;transform:none}
+}
+
+/* Page-local specimens use the same typefaces as the native App. */
+@font-face{font-family:SudokuGaramond;src:url("fonts/EBGaramond.woff2") format("woff2");font-display:swap;font-weight:400}
+@font-face{font-family:SudokuGenWan;src:url("fonts/PortfolioGenWan-Medium.woff2") format("woff2");font-display:swap;font-weight:500}
+@font-face{font-family:SudokuMynerve;src:url("works/sudoku/mynerve-regular.woff2") format("woff2");font-display:swap;font-weight:400}
+@font-face{font-family:SudokuFraunces;src:url("works/sudoku/fraunces.woff2") format("woff2");font-display:swap;font-weight:100 900}
+.case-editorial-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(40px,7vw,112px);align-items:start}
+.case-editorial-head h2{max-width:none}
+.case-editorial-head .case-lead{max-width:none}
+.case-type-study{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(48px,7vw,112px);margin-top:72px;padding-block:44px 50px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.case-type-study p,.case-color-study p,.case-flow-head p,.case-session-grid p,.case-evolution-copy p{font-size:15px;line-height:1.95;color:var(--mid)}
+.case-type-study h3{margin-top:18px;margin-bottom:16px}
+.case-app-wordmark{--portfolio-font:SudokuFraunces,serif;--portfolio-font-weight:380;font-family:SudokuFraunces,serif;font-size:clamp(74px,8vw,126px);font-weight:380;font-variation-settings:"opsz" 144,"SOFT" 0,"WONK" 0;line-height:1;letter-spacing:-.065em}
+.case-app-wordmark span{color:#8A9783}
+.case-type-study p.case-type-chinese{--portfolio-font:SudokuGenWan,serif;--portfolio-font-weight:500;font:500 clamp(24px,2.7vw,38px)/1.6 SudokuGenWan,serif;color:var(--ink);margin-top:32px;margin-bottom:8px}
+.case-type-name{font-size:13px;color:var(--mid);line-height:1.6}
+.case-digit-studies{display:flex;flex-direction:column;justify-content:space-between;gap:36px;min-width:0}
+.case-digit-study+ .case-digit-study{padding-top:28px;border-top:1px solid var(--line)}
+.case-given-specimen,.case-written-specimen{font-size:clamp(35px,4.6vw,70px);line-height:1.7;white-space:nowrap;letter-spacing:.03em;font-weight:400}
+.case-given-specimen{--portfolio-font:SudokuGaramond,serif;--portfolio-font-weight:400;font-family:SudokuGaramond,serif;font-variant-numeric:lining-nums tabular-nums}
+.case-written-specimen{--portfolio-font:SudokuMynerve,cursive;--portfolio-font-weight:400;font-family:SudokuMynerve,cursive;color:#8FA7B7}
+[data-theme="light"] .case-written-specimen{color:#2E4A66}
+.case-color-study{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(40px,7vw,112px);align-items:center;margin-top:44px}
+.case-color-study h3{margin-bottom:18px}
+.case-palette{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;min-width:0}
+.case-palette>div{display:flex;flex-direction:column;align-items:center;gap:15px;min-width:0}
+.case-palette i{display:block;width:clamp(24px,3.2vw,50px);aspect-ratio:1;border-radius:50%;background:var(--swatch)}
+.case-palette span{font-size:12px;text-align:center;line-height:1.5;color:var(--mid)}
+.case-flow-block{margin-top:96px;padding-top:72px;border-top:1px solid var(--line);scroll-margin-top:88px}
+.case-flow-head{max-width:740px}
+.case-flow-head h3{font-size:clamp(25px,2.7vw,36px);line-height:1.5;margin-bottom:20px}
+.case-coach-study{margin-top:36px}
+.case-study-board{--portfolio-font:SudokuGaramond,serif;--portfolio-font-weight:400;font-family:SudokuGaramond,serif;font-variant-numeric:lining-nums tabular-nums}
+.demo-cell[data-initial=""] .demo-value,.demo-notes{--portfolio-font:SudokuMynerve,cursive;--portfolio-font-weight:400;font-family:SudokuMynerve,cursive}
+.case-session-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px;margin-top:30px}
+.case-session-grid h4{font-size:20px;font-weight:300;margin:0 0 15px}
+.case-evolution{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,4vw,64px);margin-top:62px}
+.case-evolution figure{margin:0;min-width:0}
+.case-evolution-window{position:relative;display:block;width:100%;aspect-ratio:1.45;overflow:hidden;cursor:zoom-in;background:var(--surface)}
+.case-evolution-window>img{display:block;width:76%;height:auto;margin:24px auto 0}
+.case-evolution-window .sudoku-device{width:76%;margin:24px auto 0}
+.case-evolution figcaption{font-size:14px;color:var(--mid);margin-top:17px}
+.case-evolution-copy{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(40px,7vw,112px);margin-top:42px}
+.case-evolution-copy h3{font-size:26px;line-height:1.6;max-width:15em}
+.case-delivery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px;border-top:1px solid var(--line);margin:52px 0 0;padding-top:30px}
+.case-delivery>div{min-width:0}.case-delivery dt{font-size:13px;color:var(--mid);margin-bottom:10px}.case-delivery dd{font-size:17px;line-height:1.8;margin:0}
+@media(min-width:721px) and (max-width:1000px){
+ .case-type-study{gap:38px}.case-given-specimen,.case-written-specimen{font-size:clamp(30px,4.6vw,46px)}
+ .case-color-study{grid-template-columns:1fr;gap:30px}.case-palette{max-width:520px}.case-palette i{width:46px}
+}
+@media(max-width:720px){
+ .case-editorial-head,.case-type-study,.case-color-study,.case-evolution-copy{grid-template-columns:minmax(0,1fr);gap:28px}
+ .case-editorial-head h2{font-size:clamp(26px,7.6vw,31px);max-width:none}.case-type-study{margin-top:40px;padding-block:32px 34px;gap:34px}
+ .case-app-wordmark{font-size:86px}.case-type-study p,.case-color-study p,.case-flow-head p,.case-session-grid p,.case-evolution-copy p{font-size:14px;line-height:1.95}
+ .case-type-study p.case-type-chinese{font-size:28px;margin-top:24px}
+ .case-given-specimen,.case-written-specimen{font-size:clamp(32px,8.3vw,48px)}
+ .case-color-study{margin-top:34px}.case-palette{gap:8px}.case-palette i{width:32px}.case-palette span{font-size:11px}
+ .case-flow-block{margin-top:64px;padding-top:44px;scroll-margin-top:76px}.case-flow-head h3{font-size:26px}
+ .case-session-grid{grid-template-columns:minmax(0,1fr);gap:26px}.case-session-grid h4{font-size:20px;margin-bottom:10px}
+ .case-evolution{gap:24px;grid-template-columns:minmax(0,1fr);margin-top:40px}.case-evolution-window{aspect-ratio:1.25}
+ .case-evolution-window>img,.case-evolution-window .sudoku-device{width:80%;margin-top:20px}
+ .case-evolution-copy{margin-top:32px;gap:14px}.case-evolution-copy h3{font-size:25px}
+ .case-delivery{grid-template-columns:minmax(0,1fr);gap:25px;margin-top:38px;padding-top:26px}.case-delivery dd{font-size:16px}
+ .case-closing>p{font-size:16px}
 }
