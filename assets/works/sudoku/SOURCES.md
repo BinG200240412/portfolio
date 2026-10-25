@@ -56,3 +56,9 @@ Apple 官方 [App Store 页面](https://apps.apple.com/cn/app/sudoku-2026/id6775
 - `ContentView.swift:497` 的更多按钮使用 `.buttonStyle(.glass)` 与圆形边界；`ContentView.swift:536` 的暂停按钮使用 `.glassEffect(.regular.interactive(), in: Circle())`。仅 iOS 26+ 分支称为 Liquid Glass，低版本回退到 Material。
 - `ContentView.swift:971` 的数字键与 `BoardView.swift:143` 的盘面使用连续圆角 RoundedRectangle；未把它们描述为玻璃材质。
 - `Sheets.swift:98` 使用系统 TabView/Tab 与 `.tabBarOnly`，对应设置截图底部导航。
+
+## 白底双机摄影底图与精确贴屏（替换早前 CSS 机身透视）
+
+2026-10-25：`iphone-duo-studio-base.png` 是按用户要求使用内置 imagegen 生成的白底双机产品场景，1254 × 1254。它是生成的机身与光影底图，不是官方 Apple 实拍照片；图中屏幕留白。提示词、四角映射及遮挡路径记录在 `docs/sudoku-mockup-production.md`。
+
+网页以独立图层将原始 `board.png` 与 `coach.png` 映射到两块屏幕；截图不交给图像模型重画，源文件未修改。`assets/sudoku-product-scene.js` 使用四点单应映射、屏幕轮廓裁剪与前机机壳遮挡，整组场景按比例缩放；放大时仍复用这套完整场景。第三部分分析图继续使用官方正视机身。

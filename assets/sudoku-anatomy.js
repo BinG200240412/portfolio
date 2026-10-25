@@ -13,7 +13,7 @@
     const t = source => window.PortfolioI18n?.t(source) ?? source;
     const hint = gallery.querySelector('.anatomy-instruction');
     const hintSource = hint?.textContent.trim();
-    let items = [], buttons = [], paths = [], boxes = [], nodes = [], selected = -1, active = -1, frame = 0;
+    let items = [], buttons = [], paths = [], boxes = [], frames = [], nodes = [], selected = -1, active = -1, frame = 0;
 
     function el(name, attributes) {
       const node = document.createElementNS(NS, name);
@@ -26,6 +26,7 @@
       buttons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
       paths.forEach((path, i) => path.classList.toggle('is-active', i === index));
       boxes.forEach((box, i) => box.classList.toggle('is-active', i === index));
+      frames.forEach((box, i) => box.classList.toggle('is-active', i === index));
       nodes.forEach((node, i) => node.classList.toggle('is-active', i === index));
     }
     function draw() {
@@ -58,8 +59,8 @@
         }
       });
       svg.setAttribute('viewBox', `0 0 ${rect.width} ${rect.height}`);
-      const leaders = el('g', {}), regions = el('g', {}), tips = el('g', {});
-      svg.replaceChildren(leaders, regions, tips); paths = []; boxes = []; nodes = [];
+      const leaders = el('g', {}), regions = el('g', {}), outlines = el('g', {}), tips = el('g', {});
+      svg.replaceChildren(leaders, regions, outlines, tips); paths = []; boxes = []; frames = []; nodes = [];
       items.forEach((item, i) => {
         const label = buttons[i].getBoundingClientRect();
         const left = item.side === 'left';
@@ -70,9 +71,15 @@
           width: photo.width * width / 100,
           height: photo.height * height / 100,
         };
+        const labelBox = {
+          x: label.left - rect.left + .7,
+          y: label.top - rect.top + .7,
+          width: Math.max(0, label.width - 1.4),
+          height: Math.max(0, label.height - 1.4),
+        };
         const start = {
-          x: mobile ? label.left - rect.left + 2.5 : (left ? label.right - 2.5 : label.left + 2.5) - rect.left,
-          y: mobile ? label.top - rect.top : label.top - rect.top + 25.5,
+          x: (left !== mobile ? labelBox.x + labelBox.width : labelBox.x),
+          y: labelBox.y + labelBox.height / 2,
         };
         // Enter the actual component from its near edge, rather than stopping at the bezel.
         const inset = Math.min(6, box.width / 2), yInset = Math.min(2, box.height / 2);
@@ -82,17 +89,33 @@
             photo.top - rect.top + photo.height * item.anchor[1] / 100)),
         };
         const direction = left ? 1 : -1;
-        const distance = Math.max(0, direction * (end.x - start.x));
-        const firstX = mobile ? (left ? 8 + (i % 4) * 5 : rect.width - 8 - (i % 4) * 5)
-          : start.x + direction * Math.min(36, distance * .25);
-        const lastX = mobile ? (left ? photo.left - rect.left - 12 - (i % 4) * 4 : photo.right - rect.left + 12 + (i % 4) * 4)
-          : end.x - direction * Math.min(22, distance * .2);
-        const d = `M ${start.x} ${start.y} H ${firstX} L ${lastX} ${end.y} H ${end.x}`;
+        const deltaY = end.y - start.y;
+        const diagonalY = Math.sign(deltaY) * Math.min(20, Math.abs(deltaY));
+        let firstX, bendX;
+        if (mobile) {
+          // An active mobile leader travels outside the two-column labels, then
+          // returns horizontally to its exact control. Keep it within the page gutter.
+          const available = left ? rect.left - 4 : innerWidth - rect.right - 4;
+          const gutter = Math.max(0, Math.min(22, available));
+          const rail = left ? -gutter : rect.width + gutter;
+          firstX = start.x + (rail - start.x) * .7;
+          bendX = rail;
+        } else {
+          // Long horizontal runs carry the connection. A short diagonal and an
+          // optional vertical leg absorb the height difference without a long slash.
+          const distance = Math.max(0, direction * (end.x - start.x));
+          const diagonalX = Math.min(24, distance * .12);
+          const finalRun = Math.min(150, Math.max(22, distance * .38), distance - diagonalX);
+          firstX = start.x + direction * Math.max(0, distance - diagonalX - finalRun);
+          bendX = firstX + direction * diagonalX;
+        }
+        const d = `M ${start.x} ${start.y} H ${firstX} L ${bendX} ${start.y + diagonalY} V ${end.y} H ${end.x}`;
         const path = el('path', { d, class: 'anatomy-connection' });
         const region = el('rect', { ...box, class: 'anatomy-region' });
+        const outline = el('rect', { ...labelBox, class: 'anatomy-callout-frame' });
         const node = el('circle', { cx: end.x, cy: end.y, r: 2, class: 'anatomy-node' });
-        leaders.append(path); regions.append(region); tips.append(node);
-        paths.push(path); boxes.push(region); nodes.push(node);
+        leaders.append(path); regions.append(region); outlines.append(outline); tips.append(node);
+        paths.push(path); boxes.push(region); frames.push(outline); nodes.push(node);
       });
       activate(active);
     }

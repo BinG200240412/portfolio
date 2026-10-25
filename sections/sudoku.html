@@ -5,17 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="../assets/i18n-main.js?v=green-sudoku-20261024"></script>
 <script src="../assets/i18n-cases.js?v=focused-copy-20261024"></script>
-<script src="../assets/sudoku-case-i18n.js?v=product-campaign-20261025"></script>
-<script src="../assets/sudoku-anatomy-data.js?v=straight-anatomy-20261025"></script>
+<script src="../assets/sudoku-case-i18n.js?v=studio-dots-20261025"></script>
+<script src="../assets/sudoku-anatomy-data.js?v=studio-dots-20261025"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=language-ink-20261025"></script>
 <script defer src="../assets/vendor/gsap/gsap.min.js"></script>
 <script defer src="../assets/vendor/gsap/ScrollTrigger.min.js"></script>
 <script defer src="../assets/sudoku-hero-matrix.js?v=docked-board-20261024"></script>
 <script defer src="../assets/sudoku-scroll.js?v=site-layout-20261025"></script>
-<script defer src="../assets/sudoku-gallery.js?v=straight-anatomy-20261025"></script>
-<script defer src="../assets/sudoku-anatomy.js?v=straight-anatomy-20261025"></script>
+<script defer src="../assets/sudoku-gallery.js?v=studio-dots-20261025"></script>
+<script defer src="../assets/sudoku-anatomy.js?v=studio-dots-20261025"></script>
 <script defer src="../assets/sudoku-case.js?v=docked-board-20261024"></script>
+<script defer src="../assets/sudoku-product-scene.js?v=studio-dots-20261025"></script>
 <meta name="description" content="Sudoku.2026：创作理念、字体与外观、解题体验，以及原生产品的实现。">
 <title>Sudoku — 原生数独</title>
 <style>
@@ -28,9 +29,9 @@
 </style>
 <link rel="stylesheet" href="../assets/theme.css?v=language-ink-20261025">
 <link rel="stylesheet" href="../assets/sudoku-hero.css?v=iphone-device-20261025">
-<link rel="stylesheet" href="../assets/sudoku-case.css?v=straight-anatomy-20261025">
-<link rel="stylesheet" href="../assets/sudoku-character.css?v=product-campaign-20261025">
-<link rel="stylesheet" href="../assets/sudoku-anatomy.css?v=straight-anatomy-20261025">
+<link rel="stylesheet" href="../assets/sudoku-case.css?v=studio-dots-20261025">
+<link rel="stylesheet" href="../assets/sudoku-character.css?v=studio-dots-20261025">
+<link rel="stylesheet" href="../assets/sudoku-anatomy.css?v=studio-dots-20261025">
 <link rel="stylesheet" href="../assets/ambient-field.css?v=tidal-led-20261024">
 <script defer src="../assets/ambient-field.js?v=tidal-led-20261024"></script>
 <link rel="stylesheet" href="../assets/page-snap.css?v=site-layout-20261025">
@@ -67,9 +68,17 @@
           <div class="case-app-wordmark case-product-wordmark" aria-label="sudoku" data-i18n-ignore>sudoku<span>.</span></div>
           <p class="case-product-slogan">静下来，想一步。</p>
         </div>
-        <div class="case-product-art" role="group" aria-label="主棋盘与分步辅导的 iPhone 透视展示">
-          <button class="image-open case-product-device case-product-device--coach" type="button" data-image="../assets/works/sudoku/coach.png?v=green-20261024" data-caption="分步辅导" data-kind="screen" aria-label="放大查看分步辅导截图"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/coach.png?v=green-20261024" width="1320" height="2868" alt="iPhone 上的数独分步辅导界面" decoding="async"></span></button>
-          <button class="image-open case-product-device case-product-device--board" type="button" data-image="../assets/works/sudoku/board.png?v=green-20261024" data-caption="主棋盘" data-kind="screen" aria-label="放大查看主棋盘截图"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/board.png?v=green-20261024" width="1320" height="2868" alt="iPhone 上的数独主棋盘界面" decoding="async"></span></button>
+        <div class="case-product-art">
+          <button class="image-open case-product-shot" type="button" data-image="../assets/works/sudoku/iphone-duo-studio-base.png" data-caption="双机产品展示" data-kind="mockup" aria-label="放大查看双机产品展示">
+            <span class="case-phone-scene" role="group" aria-label="白底双机展示，前方为主棋盘，后方为分步辅导" data-media-corners-ignore>
+              <span class="case-phone-canvas">
+                <img class="case-phone-base" src="../assets/works/sudoku/iphone-duo-studio-base.png" width="1254" height="1254" alt="" decoding="async">
+                <span class="case-phone-clip case-phone-clip--back"><span class="case-phone-occlusion"><img class="case-phone-screen" data-scene-screen="back" src="../assets/works/sudoku/coach.png?v=green-20261024" width="1320" height="2868" alt="" decoding="async"></span></span>
+                <span class="case-phone-clip case-phone-clip--front"><img class="case-phone-screen" data-scene-screen="front" src="../assets/works/sudoku/board.png?v=green-20261024" width="1320" height="2868" alt="" decoding="async"></span>
+              </span>
+              <span class="case-scene-feedback" role="status" data-i18n-ignore hidden></span>
+            </span>
+          </button>
         </div>
       </div>
       <div class="case-type-study">
@@ -226,11 +235,16 @@
   let trigger=null,previousOverflow="";
   document.querySelectorAll(".image-open").forEach(button=>button.addEventListener("click",()=>{
     trigger=button;
+    const scene=button.querySelector('.case-phone-scene');
+    if(scene){
+      target.replaceChildren(scene.cloneNode(true));target.className='viewer-image is-mockup';
+    }else{
     const source=button.querySelector(".sudoku-device-screen, img"),image=new Image();
     image.src=button.dataset.image;image.alt=source.alt;
     const device=source.closest(".sudoku-device")?.cloneNode(false);
     if(device){image.className="sudoku-device-screen";image.width=1320;image.height=2868;device.append(image);}
     target.replaceChildren(device||image);target.className="viewer-image is-"+button.dataset.kind;
+    }
     caption.textContent=button.dataset.caption;
     previousOverflow=document.body.style.overflow;document.body.style.overflow="hidden";
     viewer.showModal();viewer.scrollTop=0;viewer.querySelector("button").focus({preventScroll:true});
