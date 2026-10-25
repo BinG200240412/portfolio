@@ -1,0 +1,54 @@
+/* A working prototype above a screen-wide, continuous strip of original images. */
+.gogo-technical-page.gogo-snap-page{justify-content:space-between;gap:clamp(28px,4svh,56px);padding-block:clamp(32px,4svh,56px);min-width:0}
+.gogo-technical-stage{display:grid;grid-template-columns:minmax(0,.55fr) minmax(0,1fr);gap:clamp(36px,4vw,64px);align-items:stretch}
+.gogo-technical-copy{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+.gogo-technical-copy .gogo-subhead{font-size:clamp(52px,5.6vw,84px);line-height:1.18;margin-bottom:26px;max-width:100%;overflow-wrap:normal}
+html[lang="en"] .gogo-technical-copy .gogo-subhead{font-size:clamp(38px,4.7vw,72px)}
+.gogo-technical-copy>p{font-size:15px;line-height:1.9;color:var(--soft);max-width:28ch}
+.gogo-technical-copy .gogo-devlog{width:100%;margin-top:auto;padding-top:28px;border:0;max-width:36ch}
+.gogo-technical-copy .gogo-devlog summary{font-size:13px}
+.gogo-technical-copy .gogo-devlog ol{font-size:14px;line-height:1.9}
+.gogo-technical-film{align-self:start;min-width:0;background:transparent}
+.gogo-technical-film video{width:100%;aspect-ratio:16/9;object-fit:contain;background:#080808}
+.gogo-technical-film figcaption{margin-top:10px;padding-top:0;color:var(--soft);text-align:right}
+.gogo-technical-gallery{min-width:0}
+.gogo-technical-tools{display:flex;justify-content:flex-end;min-height:30px;margin-bottom:8px}
+.gogo-reel-toggle{display:grid;place-items:center;width:30px;height:30px;padding:5px;border:0;background:transparent;color:var(--soft);cursor:pointer}
+.gogo-reel-toggle:hover{color:var(--ink)}
+.gogo-reel-toggle svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.4}
+.gogo-reel-play{display:none}
+.gogo-reel-toggle[aria-pressed="true"] .gogo-reel-pause{display:none}
+.gogo-reel-toggle[aria-pressed="true"] .gogo-reel-play{display:block}
+.gogo-technical-reel{--reel-gap:20px;--reel-card:clamp(232px,23vw,320px);width:var(--reel-width,100%);margin-left:var(--reel-offset,0px);overflow:hidden}
+.gogo-technical-track{display:flex;width:max-content;transform:translate3d(calc(-1 * var(--reel-period,0px)),0,0);animation:gogo-technical-drift var(--reel-duration,100s) linear infinite;animation-play-state:paused}
+.is-technical-running .gogo-technical-track{animation-play-state:running;will-change:transform}
+.gogo-technical-set{display:flex;gap:var(--reel-gap);padding-right:var(--reel-gap);flex:none}
+.gogo-technical-set>.gogo-figure{width:var(--reel-card);flex:none}
+.gogo-technical-set :is(.gogo-zoom,.gogo-reel-visual){display:block;width:100%;height:auto;aspect-ratio:3/2;overflow:hidden;background:var(--panel);cursor:zoom-in}
+.gogo-technical-set img{display:block;width:100%;height:100%;object-fit:contain}
+.gogo-technical-set figcaption{min-height:3.4em;margin-top:10px;padding:0 2px;color:var(--soft);text-align:left}
+.gogo-technical-page.is-technical-browsing .gogo-technical-reel{overflow-x:auto;scrollbar-width:thin}
+.gogo-technical-page.is-technical-browsing .gogo-technical-track{animation:none;transform:none;will-change:auto}
+.gogo-technical-page.is-technical-browsing [data-reel-clone]{display:none}
+@keyframes gogo-technical-drift{from{transform:translate3d(calc(-1 * var(--reel-period,0px)),0,0)}to{transform:translate3d(0,0,0)}}
+@media(min-width:901px) and (max-height:800px){
+ .gogo-technical-page.gogo-snap-page{padding-block:24px;gap:24px}
+ .gogo-technical-reel{--reel-card:224px;--reel-gap:16px}
+ .gogo-technical-copy .gogo-subhead{font-size:clamp(48px,5vw,64px);margin-bottom:20px}
+ .gogo-technical-copy>p{font-size:14px;line-height:1.8}
+ .gogo-technical-film{width:min(100%,calc((100svh - 360px) * 16 / 9));justify-self:end}
+}
+@media(max-width:900px){
+ .gogo-technical-stage{grid-template-columns:1fr;gap:30px}
+ .gogo-technical-copy .gogo-subhead{font-size:clamp(46px,8vw,64px);margin-bottom:20px}
+ html[lang="en"] .gogo-technical-copy .gogo-subhead{font-size:clamp(36px,8vw,64px)}
+ .gogo-technical-copy>p{font-size:15px;max-width:40ch}
+ .gogo-technical-copy .gogo-devlog{margin-top:20px;padding-top:0;max-width:100%}
+ .gogo-technical-reel{--reel-card:232px;--reel-gap:16px}
+}
+@media(prefers-reduced-motion:reduce),(forced-colors:active){
+ .gogo-technical-reel{overflow-x:auto;scrollbar-width:thin}
+ .gogo-technical-track{animation:none;transform:none!important;will-change:auto!important}
+ [data-reel-clone]{display:none}
+ .gogo-reel-toggle{display:none}
+}

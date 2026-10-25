@@ -12,7 +12,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 <meta name="description" content="狗GO：以机器狗与 AR 眼镜串联良渚遗址公园中的文化线索，从核心概念、研究框架到体验流程。">
 <script src="../assets/i18n-main.js?v=focused-works-20261024"></script>
 <script src="../assets/i18n-cases.js?v=focused-copy-20261024"></script>
-<script src="../assets/xr-page.js?v=dot-network-20261025"></script>
+<script src="../assets/xr-page.js?v=technical-film-20261025"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=language-ink-20261025"></script>
 <title>狗GO — 良渚遗址公园探索式体验设计</title>
@@ -22,6 +22,8 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 <link rel="stylesheet" href="../assets/xr-scroll-pages.css?v=grey-snap-20261025">
 <link rel="stylesheet" href="../assets/xr-relationship.css?v=relationship-flow-20261025">
 <script defer src="../assets/xr-relationship.js?v=relationship-flow-20261025"></script>
+<link rel="stylesheet" href="../assets/xr-technical.css?v=technical-film-20261025">
+<script defer src="../assets/xr-technical.js?v=technical-film-20261025"></script>
 <link rel="stylesheet" href="../assets/xr-logic-network.css?v=dot-network-20261025">
 <script defer src="../assets/xr-logic-network.js?v=dot-network-20261025"></script>
 <link rel="stylesheet" href="../assets/xr-dog-hero.css?v=cover-wordmark-20261025">
@@ -96,16 +98,11 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 </div>
 <p class="gogo-note">游客、机器狗与 AR 三方协作：主动跟随与情感联结，视觉呈现与个性化解读，位置信息与虚拟叠加。</p>
 </section>
-<div class="gogo-subsection gogo-snap-page"><h3 class="gogo-subhead">技术实现</h3><div class="gogo-implementation-head"><p>从手柄绑定、收集品挂载到 APK 打包测试，将线索的发现与收集落到 Unity 和 Meta Quest 3 的原型中。</p></div><div class="gogo-prototype-grid">
-<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="原型测试 · 鳄鱼纹样收集品与手柄交互" aria-label="原型测试 · 鳄鱼纹样收集品与手柄交互" aria-haspopup="dialog"><img src="../assets/works/xr/originals/quest-collection.webp?v=straight-originals-20261024" alt="原型测试 · 鳄鱼纹样收集品与手柄交互" width="754" height="488" loading="lazy" decoding="async"></button><figcaption>原型测试 · 鳄鱼纹样收集品与手柄交互</figcaption></figure>
-<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="原型测试 · 触发后出现的器物与场景效果" aria-label="原型测试 · 触发后出现的器物与场景效果" aria-haspopup="dialog"><img src="../assets/works/xr/originals/quest-reveal.webp?v=straight-originals-20261024" alt="原型测试 · 触发后出现的器物与场景效果" width="754" height="492" loading="lazy" decoding="async"></button><figcaption>原型测试 · 触发后出现的器物与场景效果</figcaption></figure>
-<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="Unity 场景 · 主收集品与周围的小收集品" aria-label="Unity 场景 · 主收集品与周围的小收集品" aria-haspopup="dialog"><img src="../assets/works/xr/originals/unity-scene.webp?v=straight-originals-20261024" alt="Unity 场景 · 主收集品与周围的小收集品" width="760" height="494" loading="lazy" decoding="async"></button><figcaption>Unity 场景 · 主收集品与周围的小收集品</figcaption></figure>
-<figure class="gogo-figure"><button class="gogo-zoom" type="button" data-caption="Unity 原型 · 手柄绑定与交互配置" aria-label="Unity 原型 · 手柄绑定与交互配置" aria-haspopup="dialog"><img src="../assets/works/xr/originals/unity-controller-binding.webp?v=straight-originals-20261024" alt="Unity 原型 · 手柄绑定与交互配置" width="758" height="492" loading="lazy" decoding="async"></button><figcaption>Unity 原型 · 手柄绑定与交互配置</figcaption></figure>
-</div><div class="gogo-code-grid">
-<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="自动旋转" aria-label="自动旋转" aria-haspopup="dialog"><img src="../assets/works/xr/originals/code-rotation.webp?v=straight-originals-20261024" alt="自动旋转" width="716" height="500" loading="lazy" decoding="async"></button><figcaption>自动旋转</figcaption></figure>
-<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="小收集品挂载" aria-label="小收集品挂载" aria-haspopup="dialog"><img src="../assets/works/xr/originals/code-small-items.webp?v=straight-originals-20261024" alt="小收集品挂载" width="712" height="492" loading="lazy" decoding="async"></button><figcaption>小收集品挂载</figcaption></figure>
-<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="主收集品挂载" aria-label="主收集品挂载" aria-haspopup="dialog"><img src="../assets/works/xr/originals/code-main-item.webp?v=straight-originals-20261024" alt="主收集品挂载" width="716" height="498" loading="lazy" decoding="async"></button><figcaption>主收集品挂载</figcaption></figure>
-</div><details class="gogo-devlog"><summary>开发日志<span aria-hidden="true">＋</span></summary><ol>
+<section class="gogo-subsection gogo-snap-page gogo-technical-page" id="implementation" aria-labelledby="implementation-title">
+<div class="gogo-technical-stage">
+<div class="gogo-technical-copy"><h3 class="gogo-subhead" id="implementation-title">技术实现</h3>
+<p>从手柄绑定、收集品挂载到 APK 打包测试，将线索的发现与收集落到 Unity 和 Meta Quest 3 的原型中。</p>
+<details class="gogo-devlog"><summary>开发日志<span aria-hidden="true">＋</span></summary><ol>
 <li>绑定方块到手柄，调整大小覆盖手柄。</li>
 <li>删除手柄实时渲染与手部追踪。</li>
 <li>手柄面板须暴露在 Meta 眼镜摄像头的检测区域。</li>
@@ -113,7 +110,22 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 <li>触碰方块后消失，再替换为鳄鱼纹样收集品。</li>
 <li>在主收集品周围布置 6 个小收集品，并分别挂载脚本。</li>
 <li>根据场所调试位置，打包 APK，在 Meta Quest 3 上测试。</li>
-</ol></details></div></div></section>
+</ol></details></div>
+<figure class="gogo-figure gogo-film gogo-technical-film"><video controls playsinline preload="metadata" poster="../assets/works/xr/media/gogo-experience-poster.webp" width="1920" height="1080" aria-label="狗GO 第一人称实机演示"><source src="../assets/works/xr/media/gogo-experience.mp4" type="video/mp4"><a href="../assets/works/xr/media/gogo-experience.mp4">下载实机演示</a></video><figcaption>第一人称实机演示</figcaption></figure>
+</div>
+<div class="gogo-technical-gallery">
+<div class="gogo-technical-tools"><button class="gogo-reel-toggle" type="button" aria-label="暂停图片移动" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="gogo-reel-pause" d="M8 5v14M16 5v14"/><path class="gogo-reel-play" d="m8 5 10 7-10 7Z"/></svg></button></div>
+<div class="gogo-technical-reel" role="group" aria-label="技术实现图片"><div class="gogo-technical-track"><div class="gogo-technical-set">
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="原型测试 · 鳄鱼纹样收集品与手柄交互" aria-label="原型测试 · 鳄鱼纹样收集品与手柄交互" aria-haspopup="dialog"><img src="../assets/works/xr/originals/quest-collection.webp?v=straight-originals-20261024" alt="原型测试 · 鳄鱼纹样收集品与手柄交互" width="754" height="488" loading="lazy" decoding="async"></button><figcaption>原型测试 · 鳄鱼纹样收集品与手柄交互</figcaption></figure>
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="原型测试 · 触发后出现的器物与场景效果" aria-label="原型测试 · 触发后出现的器物与场景效果" aria-haspopup="dialog"><img src="../assets/works/xr/originals/quest-reveal.webp?v=straight-originals-20261024" alt="原型测试 · 触发后出现的器物与场景效果" width="754" height="492" loading="lazy" decoding="async"></button><figcaption>原型测试 · 触发后出现的器物与场景效果</figcaption></figure>
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="Unity 场景 · 主收集品与周围的小收集品" aria-label="Unity 场景 · 主收集品与周围的小收集品" aria-haspopup="dialog"><img src="../assets/works/xr/originals/unity-scene.webp?v=straight-originals-20261024" alt="Unity 场景 · 主收集品与周围的小收集品" width="760" height="494" loading="lazy" decoding="async"></button><figcaption>Unity 场景 · 主收集品与周围的小收集品</figcaption></figure>
+<figure class="gogo-figure"><button class="gogo-zoom" type="button" data-caption="Unity 原型 · 手柄绑定与交互配置" aria-label="Unity 原型 · 手柄绑定与交互配置" aria-haspopup="dialog"><img src="../assets/works/xr/originals/unity-controller-binding.webp?v=straight-originals-20261024" alt="Unity 原型 · 手柄绑定与交互配置" width="758" height="492" loading="lazy" decoding="async"></button><figcaption>Unity 原型 · 手柄绑定与交互配置</figcaption></figure>
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="自动旋转" aria-label="自动旋转" aria-haspopup="dialog"><img src="../assets/works/xr/originals/code-rotation.webp?v=straight-originals-20261024" alt="自动旋转" width="716" height="500" loading="lazy" decoding="async"></button><figcaption>自动旋转</figcaption></figure>
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="小收集品挂载" aria-label="小收集品挂载" aria-haspopup="dialog"><img src="../assets/works/xr/originals/code-small-items.webp?v=straight-originals-20261024" alt="小收集品挂载" width="712" height="492" loading="lazy" decoding="async"></button><figcaption>小收集品挂载</figcaption></figure>
+<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="主收集品挂载" aria-label="主收集品挂载" aria-haspopup="dialog"><img src="../assets/works/xr/originals/code-main-item.webp?v=straight-originals-20261024" alt="主收集品挂载" width="716" height="498" loading="lazy" decoding="async"></button><figcaption>主收集品挂载</figcaption></figure>
+</div></div></div>
+</div>
+</section></div></section>
 <section class="gogo-chapter" id="research" aria-labelledby="research-title"><div class="gogo-wrap gogo-chapter-inner"><div class="gogo-snap-page"><header class="gogo-chapter-head"><div class="gogo-chapter-heading"><span class="gogo-chapter-number" aria-hidden="true">02</span><h2 id="research-title">研究框架</h2></div><p class="gogo-chapter-lead">让文化从地貌中自然“冒出来”。</p></header>
 <div class="gogo-research-grid"><div class="gogo-semantics"><h3 class="gogo-subhead">文化语义层</h3><p>从声音、纹样、光影与器物中提取文化原型，建立文化碎片语义库，为生成式叙事提供基础。</p>
 <figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="文化碎片语义库 · 纹理、光影与几何母题" aria-label="文化碎片语义库 · 纹理、光影与几何母题" aria-haspopup="dialog"><img src="../assets/works/xr/originals/semantic-terrain.webp" alt="文化碎片语义库 · 纹理、光影与几何母题" width="658" height="370" loading="lazy" decoding="async"></button><figcaption>文化碎片语义库 · 纹理、光影与几何母题</figcaption></figure>
