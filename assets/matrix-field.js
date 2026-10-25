@@ -19,7 +19,7 @@
     [203,24,49],[0,88,192],[184,105,0],[0,133,71],[128,16,190]];
   // Material roles give each object its own light surfaces and dark structure.
   const paperMaterials = {
-    'robot-dog':['#4b956a','#88b69a','#1260b0','#0c9166','#b92f48','#7ca88b','#213d31','#438bc9'],
+    'robot-dog':['#9d9d9c','#c7c7c4','#414344','#b08d4f','#8b7654','#bcbcb9','#2f3133','#b99a62'],
     'quest-3':['#689bc6','#7ab4ce','#125c9d','#287cba','#b43d53','#397fa9','#1f3d52','#56a3d6'],
     gorilla:['#34433a','#a3b2a6','#758a7a','#1c2e23','#b35960'],
     'jade-cong':['#59a479','#285c37','#bad1a2','#b57914'],
