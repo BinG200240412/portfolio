@@ -31,11 +31,11 @@
   let feedback='',navigationMode=null;
   const copy={
     zh:{title:'关于我的对话',close:'关闭对话',preview:'AI 尚未连接',ready:'可以提问',pending:'等待回复…',
-      placeholder:'想了解什么？',send:'发送',
-      offline:'AI 尚未连接。',error:'暂时无法回复，请稍后再试。'},
+      placeholder:'输入问题',send:'发送',
+      offline:'尚未接入',error:'暂时无法回复，请稍后再试。'},
     en:{title:'Ask about me',close:'Close conversation',preview:'AI is not connected',ready:'Ready for a question',pending:'Waiting for a reply…',
-      placeholder:'Ask me something…',send:'Send',
-      offline:'AI is not connected yet.',error:'A reply is unavailable. Please try again later.'},
+      placeholder:'Your message',send:'Send',
+      offline:'Not connected',error:'A reply is unavailable. Please try again later.'},
   };
   const language=()=>window.PortfolioI18n?.language==='en'||document.documentElement.lang==='en'?'en':'zh';
   const text=()=>copy[language()];
@@ -44,11 +44,11 @@
     const t=text();popup.setAttribute('aria-label',t.title);
     status.textContent=busy?t.pending:configured()?t.ready:t.preview;
     closeButton.setAttribute('aria-label',t.close);
-    input.placeholder=t.placeholder;input.setAttribute('aria-label',t.placeholder);
+    input.placeholder='';input.setAttribute('aria-label',t.placeholder);
     sendButton.setAttribute('aria-label',t.send);sendButton.disabled=busy||!input.value.trim();
     popup.classList.toggle('is-pending',busy);popup.setAttribute('aria-busy',String(busy));
     const hasHistory=messages.length>0||!!feedback;
-    history.hidden=!hasHistory;popup.classList.toggle('has-history',hasHistory);
+    history.hidden=!hasHistory;popup.classList.toggle('has-history',hasHistory);popup.classList.toggle('has-messages',messages.length>0);
     notice.hidden=!feedback;notice.textContent=feedback?t[feedback]||t.error:'';
   }
   function render() {
@@ -61,13 +61,14 @@
   }
   function resizeInput() {
     const viewportHeight=window.visualViewport?.height||innerHeight;
-    const maxHeight=Math.min(96,Math.max(44,viewportHeight*.22));
-    input.style.height='auto';input.style.height=`${Math.min(maxHeight,Math.max(44,input.scrollHeight))}px`;
+    const maxHeight=Math.min(96,Math.max(48,viewportHeight*.22));
+    input.style.height='auto';input.style.height=`${Math.min(maxHeight,Math.max(48,input.scrollHeight))}px`;
   }
   function abort() {generation++;controller?.abort();controller=null;busy=false;}
   function clear() {abort();messages.length=0;feedback='';render();if(opened)input.focus({preventScroll:true});}
   async function submit() {
     const content=input.value.trim();if(!opened||busy||!content)return;
+    if(!configured()){feedback='offline';render();return;}
     messages.push({role:'user',content});input.value='';resizeInput();feedback='';busy=true;
     const token=++generation;controller=new AbortController();render();
     try {
