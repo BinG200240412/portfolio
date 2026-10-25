@@ -24,9 +24,9 @@
   let host = null;
   try { host = window.frameElement?.closest('#section') || null; } catch (_) {}
   const palettes = {
-    dark: ['#62665d', '#a5aa98', '#d2d1bd', '#c2944a'],
-    // Paper separates structural ink, the body and its sunlit panels.
-    light: ['#3e534a', '#7f9e8b', '#c0d0c3', '#527f9b'],
+    dark: ['#66696d', '#bcbcb9', '#f0f0ed', '#b08d4f'],
+    // Match the photographed dog: graphite joints, a silver shell and pale panels.
+    light: ['#2f3133', '#9d9d9c', '#cbccca', '#9c782f'],
   };
   const roles = ['rgb(20,0,0)', 'rgb(75,0,0)', 'rgb(145,0,0)', 'rgb(235,0,0)'];
   let width = 1, height = 1, pitch = 7, ratio = 1, mainPitch = 7, coverTop = 0;
@@ -75,8 +75,8 @@
     const nx = dx / distance, ny = dy / distance;
     const knee = { x: hipX + nx * along - ny * bend, y: hipY + ny * along + nx * bend };
     const paper = colours === palettes.light;
-    const limb = paper ? (far ? 2 : 1) : far ? 0 : 2;
-    const motor = paper ? (far ? 2 : 0) : far ? 0 : 1;
+    const limb = 0;
+    const motor = far ? 0 : 1;
     bar(hipX, hipY, knee.x, knee.y, far ? 17 : 19, limb);
     bar(knee.x, knee.y, toe.x, toe.y, far ? 12 : 14, limb);
     if (!far) {

@@ -8,7 +8,7 @@
 .gogo-logic-card,.gogo-logic-hub{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);z-index:2;border:0;background:transparent;border-radius:0;box-shadow:none}
 .gogo-logic-card{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:8px;padding:12px;text-align:left;cursor:pointer;min-width:0}
 .gogo-logic-card::before,.gogo-logic-hub::before{content:"";position:absolute;inset:0;z-index:-1;clip-path:var(--logic-wash-shape,inset(0));background:rgba(var(--logic-tint,0,0,0),var(--logic-wash,0));pointer-events:none}
-.gogo-logic-card[data-node="dog"]{--logic-tint:133,169,105;--logic-wash:.085}
+.gogo-logic-card[data-node="dog"]{--logic-tint:126,132,141;--logic-wash:.075}
 .gogo-logic-card[data-node="fragment"]{--logic-tint:212,168,83;--logic-wash:.09}
 .gogo-logic-card[data-node="route"]{--logic-tint:77,173,188;--logic-wash:.07}
 .gogo-logic-card[data-node="story"]{--logic-tint:159,133,188;--logic-wash:.075}
@@ -17,7 +17,7 @@
 html[data-theme="dark"] :is(.gogo-logic-card[data-node="dog"],.gogo-logic-card[data-node="fragment"],.gogo-logic-card[data-node="route"],.gogo-logic-card[data-node="story"],.gogo-logic-card[data-node="memory"]){--logic-wash:.12}
 .is-entry-pending :is(.gogo-logic-card,.gogo-logic-hub,.gogo-network-lines){opacity:0}
 @media(forced-colors:active){.gogo-logic-card::before,.gogo-logic-hub::before{display:none}}
-.gogo-dot-frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;color:var(--ink);opacity:.38;overflow:visible}
+.gogo-dot-frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;color:var(--ink);opacity:.55;overflow:visible}
 .gogo-dot-frame circle{fill:currentColor}
 .gogo-logic-card:is(:hover,:focus-visible,[aria-pressed="true"]) .gogo-dot-frame{color:var(--gogo-accent);opacity:1}
 .gogo-case .gogo-logic-card:focus-visible{outline:0}
@@ -26,7 +26,7 @@ html[data-theme="dark"] :is(.gogo-logic-card[data-node="dog"],.gogo-logic-card[d
 /* White paper needs ink contrast, while the dark display keeps its light levels. */
 @media(forced-colors:none){
  html[data-theme="light"] .gogo-logic-page{--gogo-accent:#9c5f08}
- html[data-theme="light"] .gogo-dot-frame{color:#6e8f43;opacity:1}
+ html[data-theme="light"] .gogo-dot-frame{color:#76808d;opacity:.8}
  html[data-theme="light"] .gogo-logic-hub>.gogo-dot-frame{color:#9d6b16;opacity:1}
  html[data-theme="light"] .gogo-logic-hub>p{color:var(--mid)}
 }

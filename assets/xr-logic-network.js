@@ -14,15 +14,15 @@
   });
   const reduced=matchMedia('(prefers-reduced-motion: reduce)'),forced=matchMedia('(forced-colors: active)'),dialog=document.getElementById('gogo-lightbox');
   const TAU=Math.PI*2,FPS=12;
-  const dark=['#66725f','#96a18b','#ccd3bd','#f0f2e7','#356879','#5b9fac','#83d6de','#d5ffff','#455c3d','#74945d','#a2bf7b','#d5e8b6','#806036','#b38a48','#e5b761','#fff0bc'];
-  const light=['#8bb942','#558c26','#2f6e12','#194b08','#78bdcc','#2488aa','#006f95','#064661','#badc68','#82a82a','#5b880e','#345805','#deaa38','#c78a15','#9d5d06','#663701'];
-  // Source motifs keep their original shadow → body → highlight order. The
-  // native diagrams use the darker levels for structural lines and signals.
-  const lightSource=['#1f480e','#3e8611','#68b021','#91cd3b','#063c58','#007a9f','#249db8','#58b5c9','#345805','#5b880e','#82a82a','#badc68','#6b3708','#aa6609','#ce8d15','#dfaa25'];
+  const dark=['#62666b','#a0a3a7','#d5d7d9','#f4f4f1','#264b69','#4e87af','#8bc7e6','#def3ff','#46505f','#7a899c','#b2c0d2','#e3ecf5','#705326','#aa803e','#dfb56b','#fff0c7'];
+  const light=['#a9afb7','#535e6d','#303b4b','#151c26','#91b5cb','#447d9f','#155377','#092f48','#c3cbd5','#919eaf','#59687d','#2b394f','#d6bb89','#ad863f','#7d581e','#503310'];
+  // Original-source motifs run from shadow to highlight; the native diagrams
+  // run from pale grid to structural ink. Keep those two role orders distinct.
+  const lightSource=['#202326','#505459','#858b91','#b8bdc2','#102e47','#205e82','#5998b7','#a3d1e3','#2b394f','#59687d','#919eaf','#c3cbd5','#503310','#846023','#b48c49','#d7b77d'];
   let data=null,loading=false,models=[],links=[],palette=dark,width=1,height=1,ratio=1,hubBox=null,linePad=0,paper=false;
   let onScreen=false,visibleRatio=0,shown=true,frame=0,previous=0,elapsed=0,hover=null,focus=null,pinned=null,host=null;
   let entryStarted=false,entryDone=false,entryAnimations=[];
-  let line='#657362',accent='#c2944a',flow='#86d5df';
+  let line='#929aa5',accent='#c2944a',flow='#86d5df';
   try{host=window.frameElement?.closest('#section')||null;}catch(_){}
   const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),mix=(a,b,t)=>a+(b-a)*t;
   const selected=()=>pinned||hover||focus;
@@ -208,7 +208,7 @@
   }
   function resize(){
     width=stage.clientWidth;height=stage.clientHeight;ratio=Math.min(devicePixelRatio||1,1.5,4096/Math.max(1,width));
-    const styles=getComputedStyle(page),lightMode=document.documentElement.dataset.theme==='light';paper=lightMode&&!forced.matches;line=lightMode?'#64883b':'#71806c';accent=styles.getPropertyValue('--gogo-accent').trim();flow=lightMode?'#006687':'#94e1e8';
+    const styles=getComputedStyle(page),lightMode=document.documentElement.dataset.theme==='light';paper=lightMode&&!forced.matches;line=lightMode?'#68717e':'#929aa5';accent=styles.getPropertyValue('--gogo-accent').trim();flow=lightMode?'#155377':'#9fd2ed';
     palette=forced.matches?Array(16).fill(styles.color):(lightMode?light:dark);if(forced.matches){line=styles.color;accent=line;flow=line;}
     linePad=matchMedia('(min-width:901px)').matches?0:12;lineCanvas.style.left=-linePad+'px';lineCanvas.style.right='auto';lineCanvas.style.width=(width+linePad*2)+'px';lineCanvas.width=Math.round((width+linePad*2)*ratio);lineCanvas.height=Math.round(height*ratio);frames.forEach(outline);
     const rect=e=>({x:e.offsetLeft,y:e.offsetTop,w:e.offsetWidth,h:e.offsetHeight});

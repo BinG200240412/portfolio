@@ -1,14 +1,14 @@
 /* Solid, native diagrams: the controller and its consequence share one scene. */
-#gogo-interaction-native{--gin-body:#b7c1b0;--gin-dark:#7e8b79;--gin-pod:#292c27;--gin-detail:#171a16;--gin-signal:var(--gogo-accent,#c2944a);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,3vw,56px);width:100%;min-width:0}
+#gogo-interaction-native{--gin-body:#c4c6c9;--gin-dark:#81858b;--gin-pod:#292c30;--gin-detail:#17191c;--gin-signal:var(--gogo-accent,#c2944a);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,3vw,56px);width:100%;min-width:0}
 @media(forced-colors:none){
- html[data-theme="light"] #gogo-interaction-native{--gin-body:#7f9271;--gin-dark:#52614d;--gin-pod:#e5e9dd;--gin-detail:#f3f2ec;--gin-signal:#ae9671}
- html[data-theme="light"] #gogo-interaction-native .gin-link{stroke:#a4b099;opacity:1}
- html[data-theme="light"] #gogo-interaction-native .gin-arrow{fill:#687b5e;opacity:1}
- html[data-theme="light"] #gogo-interaction-native .gin-dog-limb{stroke:#687b5b}
+ html[data-theme="light"] #gogo-interaction-native{--gin-body:#96999e;--gin-dark:#5d626a;--gin-pod:#e5e7e9;--gin-detail:#f3f2ec;--gin-signal:#9c782f}
+ html[data-theme="light"] #gogo-interaction-native .gin-link{stroke:#a0a7b0;opacity:1}
+ html[data-theme="light"] #gogo-interaction-native .gin-arrow{fill:#626b78;opacity:1}
+ html[data-theme="light"] #gogo-interaction-native .gin-dog-limb{stroke:#41464e}
  html[data-theme="light"] #gogo-interaction-native .gin-far-leg{opacity:1}
- html[data-theme="light"] #gogo-interaction-native .gin-far-leg .gin-dog-limb{stroke:#bcc8a9}
- html[data-theme="light"] #gogo-interaction-native .gin-dog-eye{fill:#4d6142}
- html[data-theme="light"] #gogo-interaction-native .gin-pad::before{border-color:#a5b29a;opacity:1}
+ html[data-theme="light"] #gogo-interaction-native .gin-far-leg .gin-dog-limb{stroke:#aab0b8}
+ html[data-theme="light"] #gogo-interaction-native .gin-dog-eye{fill:#2f343c}
+ html[data-theme="light"] #gogo-interaction-native .gin-pad::before{border-color:#a9aeb5;opacity:1}
 }
 #gogo-interaction-native .gin-demo{position:relative;min-width:0;margin:0;padding:0;background:none;border:0}
 #gogo-interaction-native .gin-scene{position:relative;width:100%;aspect-ratio:7/6;min-width:0;color:var(--gin-body)}

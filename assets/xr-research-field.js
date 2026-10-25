@@ -9,7 +9,7 @@
   const dialog=document.getElementById('gogo-lightbox'),reduced=matchMedia('(prefers-reduced-motion: reduce)'),forced=matchMedia('(forced-colors: active)');
   const COLS=65,ROWS=49,TAU=Math.PI*2,DEFAULT_YAW=-.48,DEFAULT_PITCH=.78;
   // Opaque pigments give paper the same depth cues without diluting each bead.
-  const paperDepth=['#9abd72','#659845','#326927'],paperGlow=['#87c7d4','#57b0c3','#2794af','#13758f','#07556f'],paperWarm=['#e5bf70','#d5a23b','#be841b','#a4680b','#814c04'];
+  const paperDepth=['#bfc1c4','#8e9196','#53585f'],paperGlow=['#cbd0d6','#aab1ba','#858f9b','#586676','#2e3b4d'],paperWarm=['#ddc797','#c6a56c','#a67f41','#805d2b','#604019'];
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   function makeTerrain(cols,rows){
     const vertices=[];
@@ -42,7 +42,7 @@
   const vertices=makeTerrain(COLS,ROWS);
   let points=[],w=1,h=1,ratio=1,yaw=DEFAULT_YAW,pitch=DEFAULT_PITCH,hover=-1,selected=-1,gesture=null;
   let onScreen=false,shown=true,host=null,frame=0,lastFrame=0,clock=0,pulses=[],introduced=false,dirty=true;
-  let light=false,ink='#8b9887',glow='#a8e4df',warm='#e6bc78';
+  let light=false,ink='#bfc3c9',glow='#f4f5f6',warm='#e6c28d';
   try{host=window.frameElement?.closest('#section')||null;}catch(_){}
   function active(){return onScreen&&shown&&!document.hidden&&!dialog?.open&&(!host||host.classList.contains('on'));}
   function announce(zh,en){status.textContent=document.documentElement.lang.startsWith('en')?en:zh;}
@@ -53,7 +53,7 @@
   function resize(){
     w=canvas.clientWidth;h=canvas.clientHeight;ratio=Math.min(devicePixelRatio||1,2,4096/Math.max(1,w));
     canvas.width=Math.round(w*ratio);canvas.height=Math.round(h*ratio);light=document.documentElement.dataset.theme==='light';
-    ink=light?'#9fba84':'#a9b8a0';glow=light?'#2794af':'#a6e9ed';warm=light?'#be841b':'#ebc483';
+    ink=light?'#737780':'#c3c6cc';glow=light?'#252a32':'#f5f6f7';warm=light?'#a57735':'#e6c28d';
     if(forced.matches)ink=glow=warm=getComputedStyle(canvas).color;
     project();canvas.dataset.terrainReady='true';canvas.dataset.terrainVertices=String(vertices.length);schedule();
   }
@@ -73,7 +73,7 @@
     context.strokeStyle=ink;context.lineWidth=.65;context.globalAlpha=forced.matches?.8:light?1:.32;
     if(light&&!forced.matches){
       // A few cross-sections carry the structure; the remaining mesh recedes.
-      ['#b5cc99','#7fa45d'].forEach((colour,tier)=>{
+      ['#cbd0d5','#939aa4'].forEach((colour,tier)=>{
         context.strokeStyle=colour;context.beginPath();
         for(let row=0;row<ROWS;row+=2)if(Number(row%8===0)===tier)for(let col=0;col<COLS;col++){
           const p=points[row*COLS+col];col?context.lineTo(p.x,p.y):context.moveTo(p.x,p.y);
