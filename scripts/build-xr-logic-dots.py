@@ -6,7 +6,7 @@ coordinates, rather than displaying raster pictures under a dot-pattern overlay.
 from pathlib import Path
 import hashlib
 import json
-from PIL import Image
+from PIL import Image, ImageChops, ImageFilter
 from pypdf import PdfReader
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,7 +45,7 @@ def main():
     result = {
         "source": "gogo.pdf",
         "sourceSha256": hashlib.sha256(SOURCE.read_bytes()).hexdigest(),
-        "method": "Embedded original images, cropped to individual motifs, then sampled to a uniform dot lattice. No board screenshot.",
+        "method": "Embedded original images, cropped to individual motifs, then sampled to a uniform dot lattice. Map fields retain local relief and route highlights; flat fields are omitted. No board screenshot.",
         "assets": {},
     }
     for name, (index, crop, columns, remove_white) in SPECS.items():
@@ -53,11 +53,18 @@ def main():
         image = original.crop(crop) if crop else original
         rows = round(columns * image.height / image.width)
         sample = image.resize((columns, rows), Image.Resampling.LANCZOS)
+        # Keep the map's route and relief rather than filling its flat colour fields.
+        grayscale = sample.convert("L")
+        relief = ImageChops.difference(grayscale.filter(ImageFilter.MaxFilter(3)), grayscale.filter(ImageFilter.MinFilter(3)))
+        sparse_map = name in {"walk", "route", "translation", "memory", "hub"}
         points = []
         for y in range(rows):
             for x in range(columns):
                 red, green, blue, alpha = sample.getpixel((x, y))
                 if alpha < 80 or (remove_white and min(red, green, blue) > 242):
+                    continue
+                route_light = green > 120 and blue > 120 and blue > red * 1.15 and green > red * 1.1
+                if sparse_map and relief.getpixel((x, y)) < 18 and not route_light:
                     continue
                 points.append([x, y, colour_role(red, green, blue)])
         result["assets"][name] = {

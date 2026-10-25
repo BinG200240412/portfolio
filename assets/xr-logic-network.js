@@ -4,10 +4,15 @@
   const page = document.querySelector('.gogo-logic-page');
   const stage = page?.querySelector('.gogo-logic-network');
   if (!stage) return;
-  const sourceURL = new URL('works/xr/logic/dot-assets.json?v=dot-network-20261025', document.currentScript.src);
+  const sourceURL = new URL('works/xr/logic/dot-assets.json?v=open-dot-network-20261025', document.currentScript.src);
   const cards = [...stage.querySelectorAll('.gogo-logic-card')];
   const canvases = [...stage.querySelectorAll('[data-dot]')];
   const hub = stage.querySelector('.gogo-logic-hub');
+  const frames = [...cards,hub].map(element => {
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    svg.classList.add('gogo-dot-frame');svg.setAttribute('aria-hidden','true');
+    element.prepend(svg);return {element,svg};
+  });
   const lineCanvas = stage.querySelector('.gogo-network-lines');
   const lineContext = lineCanvas.getContext('2d');
   if (!lineContext) return;
@@ -28,6 +33,27 @@
   const clamp = (value, low = 0, high = 1) => Math.max(low, Math.min(high, value));
   const mix = (a, b, t) => a + (b - a) * t;
 
+  function outline({element,svg}) {
+    const w=element.clientWidth,h=element.clientHeight,inset=2;
+    const kind=element.dataset.node,cut=Math.min(18,w*.11,h*.11);
+    const points=kind==='ar'||kind==='story'||element===hub
+      ? [[inset+cut,inset],[w-inset-cut,inset],[w-inset,inset+cut],[w-inset,h-inset-cut],[w-inset-cut,h-inset],[inset+cut,h-inset],[inset,h-inset-cut],[inset,inset+cut]]
+      : kind==='dog'||kind==='route'
+      ? [[inset+cut,inset],[w-inset-cut,inset],[w-inset-cut,inset+cut*.5],[w-inset,inset+cut*.5],[w-inset,h-inset-cut],[w-inset-cut*.5,h-inset-cut],[w-inset-cut*.5,h-inset],[inset+cut,h-inset],[inset+cut,h-inset-cut*.5],[inset,h-inset-cut*.5],[inset,inset+cut],[inset+cut,inset+cut]]
+      : [[inset,inset],[w-inset,inset],[w-inset,h-inset],[inset,h-inset]];
+    svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+    const circles=document.createDocumentFragment();
+    points.forEach((a,index)=>{
+      const b=points[(index+1)%points.length],count=Math.max(1,Math.round(Math.hypot(b[0]-a[0],b[1]-a[1])/8));
+      for(let i=0;i<count;i++){
+        const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
+        circle.setAttribute('cx',mix(a[0],b[0],i/count));circle.setAttribute('cy',mix(a[1],b[1],i/count));circle.setAttribute('r','1.1');
+        circles.append(circle);
+      }
+    });
+    svg.replaceChildren(circles);
+  }
+
   function dot(context, x, y, radius) {
     context.moveTo(x + radius, y);
     context.arc(x, y, radius, 0, TAU);
@@ -43,19 +69,26 @@
     const position = clamp(t) * (points.length - 1), index = Math.min(points.length - 2, Math.floor(position));
     return { x: mix(points[index].x, points[index+1].x, position-index), y: mix(points[index].y, points[index+1].y, position-index) };
   }
-  function cloud(asset, box) {
+  function cloud(asset, box, key) {
     const unit = Math.min(box.width / asset.width, box.height / asset.height) * .94;
-    const step = Math.max(1, Math.ceil(2.25 / unit));
+    const pitch = key==='voice'?3.8:width<600?5.2:7;
+    const step = Math.max(1, Math.ceil(pitch / unit));
     const groups = Array.from({ length: 16 }, () => []);
     // Pool occupied cells instead of dropping every other sample: thin route
     // lines, glasses and legs must survive the smaller mobile lattice.
-    const cells = new Map();
+    const cells = new Map(),edges = new Map();
     asset.points.forEach(([x, y, role]) => {
       const col=Math.floor(x/step), row=Math.floor(y/step), key=row*asset.width+col;
-      if(!cells.has(key))cells.set(key,{x:col*step+step/2,y:row*step+step/2,counts:Array(16).fill(0)});
+      if(!cells.has(key))cells.set(key,{col,row,x:Math.min(asset.width-.5,col*step+step/2),y:Math.min(asset.height-.5,row*step+step/2),counts:Array(16).fill(0)});
       cells.get(key).counts[role]++;
+      const edge=edges.get(row)||{min:col,max:col};edge.min=Math.min(edge.min,col);edge.max=Math.max(edge.max,col);edges.set(row,edge);
     });
-    cells.forEach(({x,y,counts})=>{
+    const sparseMap=['walk','route','translation','memory','hub'].includes(key);
+    cells.forEach(({col,row,x,y,counts})=>{
+      // A single textured source pixel must not fill an otherwise empty map cell.
+      // Keep its silhouette and bright route even when the surrounding fill drops out.
+      const edge=edges.get(row),boundary=col===edge.min||col===edge.max;
+      if(sparseMap&&!boundary&&!counts[6]&&!counts[7]&&counts.reduce((a,b)=>a+b,0)<step*step*.65)return;
       let role=counts.indexOf(Math.max(...counts));
       if(counts[6]||counts[7])role=counts[7]>counts[6]?7:6;
       groups[role].push({x:(x-asset.width/2)*unit,y:(y-asset.height/2)*unit,u:x/asset.width,v:y/asset.height,role});
@@ -63,7 +96,7 @@
     const peaks=new Map();
     groups.forEach(points=>points.forEach(point=>peaks.set(point.u,Math.max(peaks.get(point.u)||0,Math.abs(point.y)))));
     groups.forEach(points=>points.forEach(point=>{point.peak=peaks.get(point.u);}));
-    return { groups, cx: box.cx, cy: box.cy, width: asset.width*unit, height: asset.height*unit, radius: unit*step*.3 };
+    return { groups, cx: box.cx, cy: box.cy, width: asset.width*unit, height: asset.height*unit, radius: unit*step*.27 };
   }
   function drawCloud(context, model, time, motion = '') {
     const gait = time * 5.2;
@@ -196,6 +229,7 @@
     if(forced.matches){ink=styles.color;line=ink;accent=ink;flow=ink;}
     palette=forced.matches?Array(16).fill(ink):(lightMode?light:dark);
     lineCanvas.width=Math.round(width*ratio); lineCanvas.height=Math.round(height*ratio);
+    frames.forEach(outline);
     const h=hub.getBoundingClientRect();hubBox={x:h.left-rectangle.left,y:h.top-rectangle.top,width:h.width,height:h.height};
     links=cards.map((card,index) => {
       const r=card.getBoundingClientRect(),side=card.dataset.side,x=r.left-rectangle.left,y=r.top-rectangle.top;
@@ -218,9 +252,9 @@
     if (data) models=canvases.map(canvas => {
       const context=canvas.getContext('2d'),w=canvas.clientWidth,h=canvas.clientHeight,id=canvas.dataset.dot;
       canvas.width=Math.max(1,Math.round(w*ratio));canvas.height=Math.max(1,Math.round(h*ratio));
-      const boxes=id==='fragment'?[{cx:w*.26,cy:h*.5,width:w*.46,height:h*.83},{cx:w*.77,cy:h*.5,width:w*.38,height:h*.7}]:id==='hub'?[{cx:w*.5,cy:h*.77,width:w*.98,height:h*.43}]:[{cx:w*.5,cy:h*.5,width:w,height:h}];
+      const boxes=id==='fragment'?(w<h*1.1?[{cx:w*.5,cy:h*.3,width:w*.84,height:h*.5},{cx:w*.5,cy:h*.78,width:w*.88,height:h*.23}]:[{cx:w*.26,cy:h*.5,width:w*.46,height:h*.83},{cx:w*.77,cy:h*.5,width:w*.38,height:h*.7}]):id==='hub'?[{cx:w*.5,cy:h*.77,width:w*.98,height:h*.43}]:[{cx:w*.5,cy:h*.5,width:w,height:h}];
       const keys=id==='fragment'?['fragment','voice']:[id];
-      const clouds=keys.map((key,i)=>cloud(data[key],boxes[i]));
+      const clouds=keys.map((key,i)=>cloud(data[key],boxes[i],key));
       return {context,id,width:w,height:h,clouds,bitmap:cache(clouds[0])};
     });
     sync();
