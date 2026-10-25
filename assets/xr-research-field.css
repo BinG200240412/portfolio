@@ -1,0 +1,51 @@
+/* A live geometric field replaces the research-board screenshot. */
+.gogo-research-page.gogo-snap-page{padding-block:clamp(32px,4svh,56px);gap:28px}
+.gogo-research-head h2{font-size:clamp(46px,5vw,72px);line-height:1.2;letter-spacing:-.035em}
+.gogo-research-live{display:grid;grid-template-columns:minmax(0,2.5fr) minmax(260px,.9fr);gap:clamp(30px,4vw,64px);align-items:center}
+.gogo-terrain-shell{position:relative;min-width:0;height:clamp(430px,58svh,650px);background:transparent;isolation:isolate}
+#gogo-research-terrain{display:block;width:100%;height:100%;touch-action:pan-y;cursor:grab;outline-offset:4px}
+#gogo-research-terrain:active{cursor:grabbing}
+.gogo-terrain-tools{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:13px;line-height:1.5;color:var(--soft);pointer-events:none}
+.gogo-terrain-reset{padding:8px 0 8px 16px;min-height:40px;border:0;background:transparent;cursor:pointer;color:var(--ink);pointer-events:auto}
+.gogo-terrain-status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.gogo-research-notes{display:grid;gap:36px;align-content:center;min-width:0}
+.gogo-research-notes .gogo-subhead{font-size:25px;line-height:1.3;margin-bottom:18px!important}
+.gogo-research-notes p{font-size:15px;line-height:1.85;color:var(--soft)}
+.gogo-research-notes .gogo-semantic-list{grid-template-columns:1fr;gap:0;margin-top:14px!important}
+.gogo-research-notes .gogo-semantic-list li{padding:7px 0;font-size:14px;border:0}
+.gogo-research-notes .gogo-trigger-keys{margin-top:16px;gap:14px;grid-template-columns:1fr}
+.gogo-research-notes .gogo-trigger-keys>div{display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:baseline}
+.gogo-research-notes .gogo-trigger-keys h4{font-size:17px;margin:0!important}
+.gogo-research-notes .gogo-trigger-keys p{font-size:14px;line-height:1.6}
+.gogo-research-originals{font-size:13px;color:var(--soft)}
+.gogo-research-originals summary{cursor:pointer;display:list-item;list-style-position:inside;width:fit-content;padding:8px 0}
+.gogo-research-originals>div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);align-items:start;gap:32px;padding-top:24px}
+.gogo-research-originals img{width:100%;height:auto}
+.gogo-research-originals .gogo-figure{background:transparent;padding:0}
+@media(min-width:901px) and (max-height:800px){
+ .gogo-research-page.gogo-snap-page{padding-block:24px;gap:16px}
+ .gogo-research-head h2{font-size:50px}
+ .gogo-terrain-shell{height:470px}
+ .gogo-research-notes{gap:22px}
+ .gogo-research-notes .gogo-subhead{font-size:22px;margin-bottom:10px!important}
+ .gogo-research-notes .gogo-semantic-list li{padding:4px 0}
+}
+@media(max-width:900px){
+ .gogo-research-live{grid-template-columns:1fr;gap:36px}
+ .gogo-research-head h2{font-size:44px}
+ .gogo-terrain-shell{height:420px}
+ .gogo-research-notes{grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+ .gogo-research-notes .gogo-subhead{font-size:23px}
+ .gogo-research-originals>div{grid-template-columns:1fr}
+}
+@media(max-width:540px){
+ .gogo-research-page.gogo-snap-page{padding-block:32px;gap:24px}
+ .gogo-research-head h2{font-size:38px}
+ .gogo-terrain-shell{height:370px}
+ .gogo-research-notes{grid-template-columns:1fr;gap:30px}
+ .gogo-research-notes .gogo-semantic-list{grid-template-columns:1fr 1fr;column-gap:22px}
+ .gogo-research-notes .gogo-trigger-keys{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+ .gogo-research-notes .gogo-trigger-keys>div{display:block}
+ .gogo-research-notes .gogo-trigger-keys h4{margin-bottom:8px!important}
+ .gogo-terrain-tools{font-size:12px}
+}

@@ -12,7 +12,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 <meta name="description" content="狗GO：以机器狗与 AR 眼镜串联良渚遗址公园中的文化线索，从核心概念、研究框架到体验流程。">
 <script src="../assets/i18n-main.js?v=focused-works-20261024"></script>
 <script src="../assets/i18n-cases.js?v=focused-copy-20261024"></script>
-<script src="../assets/xr-page.js?v=fixed-led-network-20261025"></script>
+<script src="../assets/xr-page.js?v=research-field-20261025"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=language-ink-20261025"></script>
 <title>狗GO — 良渚遗址公园探索式体验设计</title>
@@ -24,8 +24,10 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 <script defer src="../assets/xr-relationship.js?v=relationship-flow-20261025"></script>
 <link rel="stylesheet" href="../assets/xr-technical.css?v=technical-film-20261025">
 <script defer src="../assets/xr-technical.js?v=technical-autoplay-20261025"></script>
-<link rel="stylesheet" href="../assets/xr-logic-network.css?v=fixed-led-network-20261025">
-<script defer src="../assets/xr-logic-network.js?v=fixed-led-network-20261025"></script>
+<link rel="stylesheet" href="../assets/xr-research-field.css?v=research-field-20261025">
+<script defer src="../assets/xr-research-field.js?v=research-field-20261025"></script>
+<link rel="stylesheet" href="../assets/xr-logic-network.css?v=research-field-20261025">
+<script defer src="../assets/xr-logic-network.js?v=research-field-20261025"></script>
 <link rel="stylesheet" href="../assets/xr-dog-hero.css?v=cover-wordmark-20261025">
 <script src="../assets/xr-dog-matrix.js?v=light-dog-contrast-20261025" defer></script>
 <script defer src="../assets/vendor/gsap/gsap.min.js"></script>
@@ -43,7 +45,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
   <div class="gogo-hero-art" aria-hidden="true"><canvas id="gogo-dog-matrix"></canvas></div>
   <div class="gogo-hero-procession" aria-hidden="true"><canvas id="gogo-mini-matrix"></canvas></div>
   <div class="gogo-hero-stage">
-  <figure class="gogo-figure gogo-hero-photo"><div class="gogo-cover-panel"><button class="gogo-zoom" type="button" data-caption="游客佩戴头显，与机器狗一同停留在良渚的水岸" aria-label="游客佩戴头显，与机器狗一同停留在良渚的水岸" aria-haspopup="dialog"><img src="../assets/works/xr/originals/cover-f237d814.webp?v=opaque-cover-20261024" alt="游客佩戴头显，与机器狗一同停留在良渚的水岸" width="2400" height="1344" fetchpriority="high" decoding="async"></button><h1 data-i18n-ignore translate="no">狗GO</h1>
+  <figure class="gogo-figure gogo-hero-photo"><div class="gogo-cover-panel" data-media-corners-ignore><button class="gogo-zoom" type="button" data-caption="游客佩戴头显，与机器狗一同停留在良渚的水岸" aria-label="游客佩戴头显，与机器狗一同停留在良渚的水岸" aria-haspopup="dialog"><img src="../assets/works/xr/originals/cover-f237d814.webp?v=opaque-cover-20261024" alt="游客佩戴头显，与机器狗一同停留在良渚的水岸" width="2400" height="1344" fetchpriority="high" decoding="async"></button><h1 data-i18n-ignore translate="no">狗GO</h1>
   <div class="gogo-hero-copy">
   <div class="gogo-title-row"><div><p class="gogo-project-name">良渚遗址公园探索式体验设计</p></div></div>
   <div class="gogo-opening"><p>让现代行走的路径，映射为古代生活的一日行程。</p></div>
@@ -127,21 +129,27 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 </div></div></div>
 </div>
 </section></div></section>
-<section class="gogo-chapter" id="research" aria-labelledby="research-title"><div class="gogo-wrap gogo-chapter-inner"><div class="gogo-snap-page"><header class="gogo-chapter-head"><div class="gogo-chapter-heading"><span class="gogo-chapter-number" aria-hidden="true">02</span><h2 id="research-title">研究框架</h2></div><p class="gogo-chapter-lead">让文化从地貌中自然“冒出来”。</p></header>
-<div class="gogo-research-grid"><div class="gogo-semantics"><h3 class="gogo-subhead">文化语义层</h3><p>从声音、纹样、光影与器物中提取文化原型，建立文化碎片语义库，为生成式叙事提供基础。</p>
-<figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="文化碎片语义库 · 纹理、光影与几何母题" aria-label="文化碎片语义库 · 纹理、光影与几何母题" aria-haspopup="dialog"><img src="../assets/works/xr/originals/semantic-terrain.webp" alt="文化碎片语义库 · 纹理、光影与几何母题" width="658" height="370" loading="lazy" decoding="async"></button><figcaption>文化碎片语义库 · 纹理、光影与几何母题</figcaption></figure>
-<ul class="gogo-semantic-list">
+<section class="gogo-chapter" id="research" aria-labelledby="research-title"><div class="gogo-wrap gogo-chapter-inner">
+<section class="gogo-snap-page gogo-research-page" id="research-field" aria-labelledby="research-title">
+<header class="gogo-research-head"><h2 id="research-title">研究框架</h2></header>
+<div class="gogo-research-live">
+<div class="gogo-terrain-shell" data-media-corners-ignore>
+<canvas id="gogo-research-terrain" tabindex="0" role="group" aria-label="点阵地形：拖动查看，点击点亮，方向键旋转，回车点亮网格"></canvas>
+<div class="gogo-terrain-tools"><span>拖动查看 · 点击点亮</span><button type="button" class="gogo-terrain-reset">重置视角</button></div>
+<span class="gogo-terrain-status" role="status" aria-live="polite"></span>
+</div>
+<div class="gogo-research-notes">
+<div class="gogo-semantics"><h3 class="gogo-subhead">文化语义层</h3><p>声音、纹样、光影与器物，构成文化碎片语义库。</p><ul class="gogo-semantic-list">
 <li>水域的纹理光影</li>
 <li>图腾化的器物纹样</li>
 <li>玉琮的几何母题</li>
 <li>稻作文明的声景</li>
-</ul></div><div class="gogo-triggers"><h3 class="gogo-subhead">场景触发层</h3><p>把园区理解为一座沉浸式生成叙事的舞台。机器狗作为文化线索感应器，在稻田、水岸与苔地触发不同的文化碎片。</p>
-<figure class="gogo-figure gogo-dark-art"><button class="gogo-zoom" type="button" data-caption="场景触发 · 地貌、点位与文化碎片的空间关系" aria-label="场景触发 · 地貌、点位与文化碎片的空间关系" aria-haspopup="dialog"><img src="../assets/works/xr/originals/scene-axonometric.webp" alt="场景触发 · 地貌、点位与文化碎片的空间关系" width="2000" height="1545" loading="lazy" decoding="async"></button><figcaption>场景触发 · 地貌、点位与文化碎片的空间关系</figcaption></figure>
-<div class="gogo-trigger-keys">
-<div><h4>声</h4><p>农业节律 · 生命循环</p></div>
-<div><h4>影</h4><p>光影 · 水纹 · 涟漪</p></div>
-<div><h4>纹</h4><p>几何图形 · 礼制轴线</p></div>
-</div></div></div></div><div class="gogo-subsection gogo-snap-page"><h3 class="gogo-subhead">用户行为研究</h3><p class="gogo-section-text">观察园区中的五类空间行为，作为场景触发与叙事节奏的设计依据。</p><ul class="gogo-behaviors">
+</ul></div>
+<div class="gogo-triggers"><h3 class="gogo-subhead">场景触发层</h3><p>稻田、水岸与苔地，对应不同的文化线索。</p><div class="gogo-trigger-keys"><div><h4>声</h4><p>农业节律 · 生命循环</p></div><div><h4>影</h4><p>光影 · 水纹 · 涟漪</p></div><div><h4>纹</h4><p>几何图形 · 礼制轴线</p></div></div></div>
+</div>
+</div>
+<details class="gogo-research-originals"><summary>原方案图示</summary><div><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="文化碎片语义库 · 纹理、光影与几何母题" aria-label="文化碎片语义库 · 纹理、光影与几何母题" aria-haspopup="dialog"><img src="../assets/works/xr/originals/semantic-terrain.webp" alt="文化碎片语义库 · 纹理、光影与几何母题" width="658" height="370" loading="lazy" decoding="async"></button><figcaption>文化碎片语义库 · 纹理、光影与几何母题</figcaption></figure><figure class="gogo-figure gogo-dark-art"><button class="gogo-zoom" type="button" data-caption="场景触发 · 地貌、点位与文化碎片的空间关系" aria-label="场景触发 · 地貌、点位与文化碎片的空间关系" aria-haspopup="dialog"><img src="../assets/works/xr/originals/scene-axonometric.webp" alt="场景触发 · 地貌、点位与文化碎片的空间关系" width="2000" height="1545" loading="lazy" decoding="async"></button><figcaption>场景触发 · 地貌、点位与文化碎片的空间关系</figcaption></figure></div></details>
+</section><div class="gogo-subsection gogo-snap-page"><h3 class="gogo-subhead">用户行为研究</h3><p class="gogo-section-text">观察园区中的五类空间行为，作为场景触发与叙事节奏的设计依据。</p><ul class="gogo-behaviors">
 <li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 28h30M12 25v12m24-12v12M16 12h16v13H16z"/></svg><span>休憩</span></li>
 <li><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="17" cy="12" r="4"/><circle cx="32" cy="18" r="3"/><path d="M17 18v14m-7-6 7-8 9 7 6-2v12m-17-3-5 10m9-10 6 10m7-7-5 7m5-7 6 7"/></svg><span>亲子</span></li>
 <li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 32h32M13 32l4-13 9 5 9-6M17 19l-3-7m12 12-3 8"/><circle cx="14" cy="8" r="3"/></svg><span>休闲</span></li>
