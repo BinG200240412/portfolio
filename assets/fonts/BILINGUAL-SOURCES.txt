@@ -95,3 +95,9 @@ instances from the same Josefin Slab source, OFL-JosefinSlab.txt.
 EBGaramond.woff2 / EBGaramond-Italic.woff2 — official Google Fonts source:
 https://github.com/google/fonts/tree/main/ofl/ebgaramond
 SIL OFL 1.1: OFL-EBGaramond.txt.
+
+Language toggle marks (2026-10-25): original outlines for PLIX ExtraLight 200 中
+and Portfolio Slab Regular 400 EN and slash are inlined in assets/theme.js.
+Each has its own tight ink-bounds viewBox and the same CSS height. EN retains
+the original advance spacing; no hand-drawn or synthetic strokes are used.
+This avoids differing text metrics shifting the visible marks vertically.

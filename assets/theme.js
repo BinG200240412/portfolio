@@ -1,5 +1,7 @@
 (() => {
   const key = 'portfolio-theme';
+  // Original PLIX/Slab outlines; tight bounds align visible ink, not font line boxes.
+  const languageMarks = Object.freeze({"zh":"<svg class=\"language-mark\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"116 -831 768 902\" width=\"11.920177\" height=\"14\" aria-hidden=\"true\" focusable=\"false\"><path fill=\"currentColor\" transform=\"scale(1 -1)\" d=\"M507 831H477V627H116V143H147V231H477V-71H507V231H853V143H884V627H507ZM147 599H477V259H147ZM507 259V599H853V259Z\"/></svg>","en":"<svg class=\"language-mark\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"35 -700 1347 732\" width=\"25.762295\" height=\"14\" aria-hidden=\"true\" focusable=\"false\"><path fill=\"currentColor\" transform=\"scale(1 -1)\" d=\"M536 0V154H497V39H148V333H483V373H148V661H483V546H522V700H35V661H107V39H35V0ZM1298 661H1382V700H1181V661H1257V92L1260 60L1241 86L714 700H606V661H687V39H606V0H807V39H728V602L726 631L744 608L1298 -32Z\"/></svg>","divider":"<svg class=\"language-mark\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"17 -736 319 755\" width=\"5.915232\" height=\"14\" aria-hidden=\"true\" focusable=\"false\"><path fill=\"currentColor\" transform=\"scale(1 -1)\" d=\"M58 -19Q128 171 197.0 358.5Q266 546 336 736H295Q225 546 156.0 358.5Q87 171 17 -19Z\"/></svg>"});
   const requestedFont = new URL(location.href).searchParams.get('cjk');
   const fontPreview = ['plix', 'plix-extra'].includes(requestedFont) ? requestedFont : null;
   if (fontPreview) document.documentElement.dataset.cjkPreview = fontPreview;
@@ -78,7 +80,7 @@
       const languageButton = document.createElement('button');
       languageButton.type = 'button';
       languageButton.className = 'language-toggle';
-      languageButton.innerHTML = '<span class="language-option" data-language="zh" lang="zh-CN" aria-hidden="true">中</span><span class="language-divider" aria-hidden="true">/</span><span class="language-option" data-language="en" lang="en" aria-hidden="true">EN</span>';
+      languageButton.innerHTML = '<span class="language-option" data-language="zh" lang="zh-CN" aria-hidden="true">' + languageMarks.zh + '</span><span class="language-divider" aria-hidden="true">' + languageMarks.divider + '</span><span class="language-option" data-language="en" lang="en" aria-hidden="true">' + languageMarks.en + '</span>';
       languageButton.addEventListener('click', () => window.PortfolioI18n?.setLanguage(window.PortfolioI18n.language === 'en' ? 'zh' : 'en'));
       host.appendChild(languageButton);
     }
