@@ -10,8 +10,8 @@
   const svg = host.querySelector('svg'), message = host.querySelector('.workflow-message');
   const expandButton = host.querySelector('[data-workflow-expand]');
   const words = {
-    zh: { hint: '拖动节点 / 分组 · 双击看细节 · 捏合缩放', fit: '适屏', reset: '复位', expand: '展开', collapse: '收起', loading: '正在展开工作流', error: '工作流暂时无法载入，请刷新重试。', canvas: '可编辑的 ComfyUI 工作流复刻。拖动节点或蓝色分组，空白处拖动画面；双击看细节，Ctrl 或 Command 加滚动缩放。选中节点后方向键移动，按 0 适屏。参数编辑仅用于工作流演示。' },
-    en: { hint: 'Drag nodes / groups · Double-click to focus · Pinch to zoom', fit: 'Fit', reset: 'Reset', expand: 'Expand', collapse: 'Close', loading: 'Unfolding the workflow', error: 'The workflow could not load. Refresh to retry.', canvas: 'Editable ComfyUI workflow reconstruction. Drag nodes or blue groups; drag blank space to pan, double-click to focus, Ctrl or Command plus scroll to zoom. Arrow keys move a focused node; 0 fits the graph. Parameter edits are for this visual demonstration.' }
+    zh: { hint: '拖动节点 / 分组 · 双击看细节 · 捏合缩放', fit: '适屏', reset: '复位', expand: '展开', collapse: '收起', loading: '正在展开工作流', error: '工作流暂时无法载入，请刷新重试。', canvas: '可编辑的 ComfyUI 工作流复刻。拖动节点或点阵分组，空白处拖动画面；双击看细节，Ctrl 或 Command 加滚动缩放。选中节点后方向键移动，按 0 适屏。参数编辑仅用于工作流演示。' },
+    en: { hint: 'Drag nodes / groups · Double-click to focus · Pinch to zoom', fit: 'Fit', reset: 'Reset', expand: 'Expand', collapse: 'Close', loading: 'Unfolding the workflow', error: 'The workflow could not load. Refresh to retry.', canvas: 'Editable ComfyUI workflow reconstruction. Drag nodes or dotted groups; drag blank space to pan, double-click to focus, Ctrl or Command plus scroll to zoom. Arrow keys move a focused node; 0 fits the graph. Parameter edits are for this visual demonstration.' }
   };
   const tr = key => words[window.PortfolioI18n?.language === 'en' ? 'en' : 'zh'][key];
   let data, original, world, nodeLayer, groupLayer, linkLayer, pulseLayer, width = 1, height = 1;
@@ -58,7 +58,7 @@
     tx = width / 2 - (r.x + r.w / 2) * scale; ty = height / 2 - (r.y + r.h / 2) * scale; transform();
   }
   const nodeById = id => data.nodes.find(n => n.id === Number(id));
-  const color = type => data.colors[type] || '#7b8390';
+  const color = type => `var(--wf-${type},#67818b)`;
   function label(parent, text, x, y, cls, attrs = {}) { parent.append(S('text', { x, y, class: cls, ...attrs }, text)); }
   function group(g) {
     const e = S('g', { class: 'wf-group', 'data-group': g.id, tabindex: 0, role: 'group', 'aria-label': `${g.title} · ${g.nodes.length} nodes` });
@@ -79,14 +79,14 @@
     f.append(input); parent.append(f);
   }
   function node(n) {
-    const e = S('g', { class: 'wf-node', 'data-node': n.id, 'data-tone': n.tone || '', tabindex: 0, role: 'group', 'aria-label': `${n.title} #${n.id}` });
-    e.append(S('rect', { class: 'wf-node-body', width: n.w, height: n.h, rx: 17 }));
-    e.append(S('path', { class: 'wf-node-head', d: `M17 0H${n.w - 17}Q${n.w} 0 ${n.w} 17V51H0V17Q0 0 17 0Z` }));
-    e.append(S('circle', { class: 'wf-dot', cx: 31, cy: 25, r: 10 }));
+    const e = S('g', { class: 'wf-node', 'data-node': n.id, 'data-tone': n.tone || '', tabindex: 0, role: 'group', 'aria-label': `${n.title} #${n.id}`, style: `--wf-node-accent:${color(n.outputs[0]?.type || n.inputs[0]?.type)}` });
+    e.append(S('rect', { class: 'wf-node-body', width: n.w, height: n.h, rx: 8 }));
+    e.append(S('path', { class: 'wf-node-head', d: `M8 0H${n.w - 8}Q${n.w} 0 ${n.w} 8V51H0V8Q0 0 8 0Z` }));
+    for (let row = 0; row < 3; row++) for (let col = 0; col < 3; col++) e.append(S('circle', { class: 'wf-dot', cx: 24 + col * 7, cy: 18 + row * 7, r: 2.3 }));
     label(e, n.title, 62, 34, 'wf-title');
     const tagWidth = Math.max(73, n.tag.length * 12.5 + 22);
     e.append(S('rect', { class: 'wf-tag', x: n.w - tagWidth - 10, y: -46, width: tagWidth, height: 37, rx: 8 }));
-    label(e, n.tag, n.w - 21, -19, 'wf-tag-text', { 'text-anchor': 'end' });
+    label(e, n.tag.replace(/\s*🦊/gu, ''), n.w - 21, -19, 'wf-tag-text', { 'text-anchor': 'end' });
     if (n.help) label(e, '?', n.w - 29, 35, 'wf-help', { 'text-anchor': 'middle' });
     for (const [direction, ports] of [['in', n.inputs], ['out', n.outputs]]) {
       ports.forEach((p, index) => {
@@ -97,7 +97,7 @@
     }
     n.widgets.forEach((w, i) => {
       const left = 32, right = n.w - 32;
-      e.append(S('rect', { class: 'wf-widget', x: left, y: w.y - 18, width: right - left, height: 36, rx: 19 }));
+      e.append(S('rect', { class: 'wf-widget', x: left, y: w.y - 18, width: right - left, height: 36, rx: 6 }));
       const labelWidth = Math.min(n.w * .43, Math.max(115, w.label.length * 23 + 8));
       label(e, w.label, left + 30, w.y + 8, 'wf-widget-label');
       field(e, n, i, true, { x: labelWidth + 40, y: w.y - 16, width: Math.max(80, n.w - labelWidth - 108), height: 33 });
@@ -109,7 +109,7 @@
     if (n.text) field(e, n, 0, false, { x: n.text.x, y: n.text.y, width: n.text.w, height: n.text.h });
     if (n.file) {
       const button = S('g', { 'data-load-node': n.id, role: 'button', tabindex: 0, 'aria-label': '选择图片，仅在本地预览', style: 'cursor:pointer' });
-      button.append(S('rect', { x: 24, y: 166, width: n.w - 48, height: 36, fill: '#222', stroke: '#777', 'stroke-width': 2 }));
+      button.append(S('rect', { class: 'wf-upload-surface', x: 24, y: 166, width: n.w - 48, height: 36, rx: 6 }));
       label(button, '选择文件上传', n.w / 2, 192, 'wf-widget-label', { 'text-anchor': 'middle' }); e.append(button);
       if (uploaded.has(n.id)) e.append(S('image', { href: uploaded.get(n.id), x: 24, y: 224, width: n.w - 48, height: n.h - 248, preserveAspectRatio: 'xMidYMid meet' }));
     }
@@ -138,13 +138,7 @@
   }
   function render() {
     svg.replaceChildren(); elements.clear(); groupElements.clear(); links.clear();
-    const defs = S('defs');
-    const grid = S('pattern', { id: 'workflow-grid', width: 18, height: 18, patternUnits: 'userSpaceOnUse' });
-    grid.append(S('path', { d: 'M18 0H0V18', fill: 'none', stroke: '#181818', 'stroke-width': 1, opacity: .45 })); defs.append(grid); svg.append(defs);
     world = S('g', { class: 'workflow-world' }); svg.append(world);
-    const background = S('g', { 'aria-hidden': 'true', 'data-world-background': '' });
-    const bgPath = data.background.map(([x,y,w,h]) => `M${x} ${y}h${w}v${h}h-${w}Z`).join('');
-    background.append(S('path', { d: bgPath, fill: '#212121' }), S('path', { d: bgPath, fill: 'url(#workflow-grid)' })); world.append(background);
     groupLayer = S('g'); linkLayer = S('g'); pulseLayer = S('g'); nodeLayer = S('g');
     world.append(groupLayer, linkLayer, pulseLayer, nodeLayer);
     data.groups.forEach(group);
