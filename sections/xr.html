@@ -27,6 +27,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 <link rel="stylesheet" href="../assets/xr-place-native.css?v=neutral-materials-20261026">
 <script defer src="../assets/xr-place-native.js?v=native-experience-20261025"></script>
 <link rel="stylesheet" href="../assets/xr-interaction-native.css?v=neutral-materials-20261026">
+<link rel="stylesheet" href="../assets/xr-experience-pair.css?v=paired-experience-20261026">
 <script defer src="../assets/xr-interaction-native.js?v=native-experience-20261025"></script>
 <link rel="stylesheet" href="../assets/xr-research-field.css?v=research-field-20261025">
 <script defer src="../assets/xr-research-field.js?v=neutral-materials-20261026"></script>
@@ -165,12 +166,22 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 <article><h4>文化碎片数据库</h4><p>纹样、声景、光影模拟，以及与考古资料对应的符号体系。</p></article>
 <article><h4>AI 叙事生成</h4><p>组合收集到的碎片，输出“古良渚的一天”的个性化短片或影像。</p></article>
 </div></div></div></section>
-<section class="gogo-chapter" id="experience" aria-labelledby="experience-title"><div class="gogo-wrap gogo-chapter-inner"><div class="gogo-snap-page"><header class="gogo-chapter-head"><div class="gogo-chapter-heading"><span class="gogo-chapter-number" aria-hidden="true">03</span><h2 id="experience-title">体验流程</h2></div><p class="gogo-chapter-lead">同一座公园，走出不同的故事。</p></header>
-<div class="gogo-subsection gogo-first-subsection"><h3 class="gogo-subhead">体验模式</h3><div class="gogo-modes">
+<section class="gogo-chapter" id="experience" aria-labelledby="experience-title"><div class="gogo-wrap gogo-chapter-inner"><section class="gogo-snap-page gogo-experience-pair" id="experience-modes" aria-labelledby="experience-title">
+<header class="gogo-chapter-head"><h2 id="experience-title">体验流程</h2></header>
+<div class="gogo-experience-columns">
+<section class="gogo-mode-panel" aria-labelledby="experience-modes-title"><h3 class="gogo-subhead" id="experience-modes-title">体验模式</h3>
+<div class="gogo-modes">
 <article class="gogo-mode"><div class="gogo-mode-copy"><span class="gogo-small-index"><span>重交互</span></span><h4>考古模式</h4><p>收集考古物料，通过动作与发现推进体验。</p></div><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="考古模式 · 重交互" aria-label="考古模式 · 重交互" aria-haspopup="dialog"><img src="../assets/works/xr/originals/mode-archaeology.webp" alt="考古模式 · 重交互" width="813" height="268" loading="lazy" decoding="async"></button><figcaption>考古模式 · 重交互</figcaption></figure></article>
 <article class="gogo-mode"><div class="gogo-mode-copy"><span class="gogo-small-index"><span>重文化</span></span><h4>合作探险</h4><p>合作解锁剧情，沿途理解文化线索之间的关联。</p></div><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="合作探险 · 重文化" aria-label="合作探险 · 重文化" aria-haspopup="dialog"><img src="../assets/works/xr/originals/mode-cultural.webp" alt="合作探险 · 重文化" width="826" height="273" loading="lazy" decoding="async"></button><figcaption>合作探险 · 重文化</figcaption></figure></article>
 <article class="gogo-mode"><div class="gogo-mode-copy"><span class="gogo-small-index"><span>重记录</span></span><h4>合作探险</h4><p>通过简单交互收集地点，留下个人的游览记录。</p></div><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="合作探险 · 重记录" aria-label="合作探险 · 重记录" aria-haspopup="dialog"><img src="../assets/works/xr/originals/mode-record.webp" alt="合作探险 · 重记录" width="813" height="268" loading="lazy" decoding="async"></button><figcaption>合作探险 · 重记录</figcaption></figure></article>
-</div></div></div><section class="gogo-subsection gogo-snap-page gogo-place-native-page" id="experience-places" aria-labelledby="experience-places-title">
+</div></section>
+<section class="gogo-interaction-page gogo-interaction-panel" id="interaction-analysis" aria-labelledby="interaction-analysis-title">
+<h3 class="gogo-subhead" id="interaction-analysis-title">交互分析</h3>
+<div id="gogo-interaction-native"></div>
+<details class="gogo-experience-originals gogo-interaction-originals"><summary>原方案图示</summary><div><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="界面初始化，手柄控制机器狗" aria-label="界面初始化，手柄控制机器狗" aria-haspopup="dialog"><img src="../assets/works/xr/originals/controller-start.webp" alt="界面初始化，手柄控制机器狗" width="472" height="317" loading="lazy" decoding="async"></button><figcaption>界面初始化，手柄控制机器狗</figcaption></figure><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="控制摇杆，操控狗到特定位置" aria-label="控制摇杆，操控狗到特定位置" aria-haspopup="dialog"><img src="../assets/works/xr/originals/controller-position.webp" alt="控制摇杆，操控狗到特定位置" width="472" height="316" loading="lazy" decoding="async"></button><figcaption>控制摇杆，操控狗到特定位置</figcaption></figure><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="控制按键，让狗做出特定姿态" aria-label="控制按键，让狗做出特定姿态" aria-haspopup="dialog"><img src="../assets/works/xr/originals/controller-pose.webp" alt="控制按键，让狗做出特定姿态" width="472" height="317" loading="lazy" decoding="async"></button><figcaption>控制按键，让狗做出特定姿态</figcaption></figure></div></details>
+</section>
+</div></section>
+<section class="gogo-subsection gogo-snap-page gogo-place-native-page" id="experience-places" aria-labelledby="experience-places-title">
 <h3 class="gogo-subhead" id="experience-places-title">体验场所</h3>
 <div class="gogo-native-place">
 <div class="gogo-place-drawing"><svg class="gogo-place-svg" viewBox="0 0 1000 540" role="img" aria-label="原方案场所点阵：河边、高台、草地、林地与服务点"><g class="gogo-place-connections"></g><g class="gogo-place-cells"></g></svg>
@@ -183,11 +194,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 <figure class="gogo-figure"><button class="gogo-zoom" type="button" data-caption="原展板：五类场所与游客点位组合" aria-label="原展板：五类场所与游客点位组合" aria-haspopup="dialog"><img src="../assets/works/xr/experience/place-source.webp" width="1848" height="1560" alt="原展板：五类场所与游客点位组合" loading="lazy" decoding="async"></button></figure>
 <figure class="gogo-figure gogo-map"><button class="gogo-zoom" type="button" data-caption="良渚遗址公园 · 原方案中的场地地图" aria-label="良渚遗址公园 · 原方案中的场地地图" aria-haspopup="dialog"><img src="../assets/works/xr/originals/park-map.webp" alt="良渚遗址公园 · 原方案中的场地地图" width="1080" height="1080" loading="lazy" decoding="async"></button><figcaption>良渚遗址公园 · 原方案中的场地地图</figcaption></figure></div></details>
 </section>
-<section class="gogo-subsection gogo-snap-page gogo-interaction-page" id="interaction-analysis" aria-labelledby="interaction-analysis-title">
-<h3 class="gogo-subhead" id="interaction-analysis-title">交互分析</h3>
-<div id="gogo-interaction-native"></div>
-<details class="gogo-experience-originals gogo-interaction-originals"><summary>原方案图示</summary><div><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="界面初始化，手柄控制机器狗" aria-label="界面初始化，手柄控制机器狗" aria-haspopup="dialog"><img src="../assets/works/xr/originals/controller-start.webp" alt="界面初始化，手柄控制机器狗" width="472" height="317" loading="lazy" decoding="async"></button><figcaption>界面初始化，手柄控制机器狗</figcaption></figure><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="控制摇杆，操控狗到特定位置" aria-label="控制摇杆，操控狗到特定位置" aria-haspopup="dialog"><img src="../assets/works/xr/originals/controller-position.webp" alt="控制摇杆，操控狗到特定位置" width="472" height="316" loading="lazy" decoding="async"></button><figcaption>控制摇杆，操控狗到特定位置</figcaption></figure><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="控制按键，让狗做出特定姿态" aria-label="控制按键，让狗做出特定姿态" aria-haspopup="dialog"><img src="../assets/works/xr/originals/controller-pose.webp" alt="控制按键，让狗做出特定姿态" width="472" height="317" loading="lazy" decoding="async"></button><figcaption>控制按键，让狗做出特定姿态</figcaption></figure></div></details>
-</section><div class="gogo-subsection gogo-snap-page"><h3 class="gogo-subhead">体验流程框架</h3><ol class="gogo-journey">
+<div class="gogo-subsection gogo-snap-page"><h3 class="gogo-subhead">体验流程框架</h3><ol class="gogo-journey">
 <li><span aria-hidden="true">01</span><h4>入园</h4><p>游客入园，选择体验模式，前往机器狗中转站。</p></li>
 <li><span aria-hidden="true">02</span><h4>开始体验</h4><p>经过随机场景、重点地标与园内服务点。</p></li>
 <li><span aria-hidden="true">03</span><h4>触发玩法</h4><p>通过动作解锁场景，收集物品，更新游园进度。</p></li>

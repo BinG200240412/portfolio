@@ -1,0 +1,50 @@
+/* Modes and controls belong to one experience spread. */
+.gogo-experience-pair.gogo-snap-page{padding-block:clamp(32px,4svh,56px)}
+.gogo-experience-pair>.gogo-chapter-head{display:block;margin-bottom:32px}
+.gogo-case .gogo-experience-pair>.gogo-chapter-head h2{font-size:clamp(44px,4.5vw,64px);line-height:1.15;max-width:none}
+.gogo-experience-columns{display:grid;grid-template-columns:minmax(330px,.9fr) minmax(680px,1.1fr);gap:clamp(40px,4vw,64px);align-items:start}
+.gogo-experience-columns>section{min-width:0}
+.gogo-experience-columns>section>.gogo-subhead{font-size:28px;line-height:1.4;margin-bottom:24px!important}
+.gogo-experience-pair .gogo-modes{border:0}
+.gogo-experience-pair .gogo-mode{grid-template-columns:minmax(0,1fr) minmax(130px,.9fr);gap:22px;padding:16px 0;align-items:center}
+.gogo-experience-pair .gogo-mode:first-child{padding-top:0}
+.gogo-experience-pair .gogo-mode:last-child{padding-bottom:0;border-bottom:0}
+.gogo-experience-pair .gogo-mode-copy h4{font-size:23px;line-height:1.35;margin:6px 0!important}
+.gogo-experience-pair .gogo-mode-copy p{font-size:15px;line-height:1.7;max-width:30ch}
+.gogo-experience-pair .gogo-mode figure{width:100%;max-width:270px;justify-self:end}
+.gogo-experience-pair .gogo-experience-originals{margin-top:20px}
+.gogo-experience-pair #gogo-interaction-native{gap:20px}
+.gogo-experience-pair #interaction-analysis{scroll-margin-top:140px}
+@media(min-width:721px){
+ .gogo-experience-pair #gogo-interaction-native{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .gogo-experience-pair #gogo-interaction-native .gin-demo{width:100%;max-width:none;margin:0}
+ .gogo-experience-pair #gogo-interaction-native .gin-scene{height:auto;min-height:250px;aspect-ratio:7/7.6}
+ .gogo-experience-pair #gogo-interaction-native .gin-art{height:auto}
+ .gogo-experience-pair #gogo-interaction-native .gin-title{font-size:21px}
+}
+@media(min-width:1200px) and (max-height:800px){
+ .gogo-experience-pair.gogo-snap-page{padding-block:24px}
+ .gogo-experience-pair>.gogo-chapter-head{margin-bottom:24px}
+ .gogo-case .gogo-experience-pair>.gogo-chapter-head h2{font-size:50px}
+ .gogo-experience-columns>section>.gogo-subhead{font-size:26px;margin-bottom:20px!important}
+ .gogo-experience-pair .gogo-mode{padding-block:12px}
+}
+@media(max-width:1199px){
+ .gogo-experience-columns{grid-template-columns:minmax(0,1fr);gap:48px}
+ .gogo-experience-pair .gogo-mode{grid-template-columns:minmax(0,1fr) minmax(180px,.9fr)}
+ .gogo-experience-pair .gogo-mode figure{max-width:320px}
+ .gogo-experience-pair #interaction-analysis{scroll-margin-top:32px}
+}
+@media(min-width:721px) and (max-width:1199px){.gogo-experience-pair #gogo-interaction-native{gap:16px}}
+@media(max-width:720px){
+ .gogo-experience-pair>.gogo-chapter-head{margin-bottom:28px}
+ .gogo-case .gogo-experience-pair>.gogo-chapter-head h2{font-size:42px}
+ .gogo-experience-columns{gap:40px}
+ .gogo-experience-columns>section>.gogo-subhead{font-size:26px;margin-bottom:20px!important}
+ .gogo-experience-pair .gogo-mode{grid-template-columns:minmax(0,1fr) minmax(120px,.9fr);gap:18px;padding-block:14px}
+ .gogo-experience-pair .gogo-mode-copy h4{font-size:22px}
+ .gogo-experience-pair #gogo-interaction-native{gap:28px}
+ .gogo-experience-pair #gogo-interaction-native .gin-demo{max-width:360px}
+ .gogo-experience-pair #gogo-interaction-native .gin-scene{max-width:320px;margin-inline:auto}
+ .gogo-experience-pair #gogo-interaction-native .gin-title{font-size:22px}
+}
