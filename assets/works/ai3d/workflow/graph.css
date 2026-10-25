@@ -53,5 +53,5 @@
 .workflow-dialog .workflow-stage{height:auto;flex:1;min-height:0}
 .workflow-dialog .workflow-stage>svg{touch-action:none}
 .workflow-dialog .workflow-bar{padding-inline:22px}
-@media(max-width:600px){.workflow-native .workflow-stage{height:560px;max-height:75svh;min-height:380px}.workflow-native .workflow-bar,.workflow-dialog .workflow-bar{align-items:flex-start;gap:8px;padding:10px 12px}.workflow-bar p{max-width:17em!important;font-size:11px!important}.workflow-bar .workflow-buttons{gap:11px}.workflow-bar button{font-size:11px}}
+@media(max-width:600px){.workflow-native .workflow-stage{height:auto;min-height:0}.workflow-native .workflow-bar,.workflow-dialog .workflow-bar{align-items:flex-start;gap:8px;padding:10px 12px}.workflow-bar p{max-width:17em!important;font-size:11px!important}.workflow-bar .workflow-buttons{gap:11px}.workflow-bar button{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.wf-pulse{display:none}}
