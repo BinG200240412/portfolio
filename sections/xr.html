@@ -12,7 +12,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 <meta name="description" content="狗GO：以机器狗与 AR 眼镜串联良渚遗址公园中的文化线索，从核心概念、研究框架到体验流程。">
 <script src="../assets/i18n-main.js?v=focused-works-20261024"></script>
 <script src="../assets/i18n-cases.js?v=focused-copy-20261024"></script>
-<script src="../assets/xr-page.js?v=concept-film-20261025"></script>
+<script src="../assets/xr-page.js?v=dot-network-20261025"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=language-ink-20261025"></script>
 <title>狗GO — 良渚遗址公园探索式体验设计</title>
@@ -22,6 +22,8 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 <link rel="stylesheet" href="../assets/xr-scroll-pages.css?v=grey-snap-20261025">
 <link rel="stylesheet" href="../assets/xr-relationship.css?v=relationship-flow-20261025">
 <script defer src="../assets/xr-relationship.js?v=relationship-flow-20261025"></script>
+<link rel="stylesheet" href="../assets/xr-logic-network.css?v=dot-network-20261025">
+<script defer src="../assets/xr-logic-network.js?v=dot-network-20261025"></script>
 <link rel="stylesheet" href="../assets/xr-dog-hero.css?v=cover-wordmark-20261025">
 <script src="../assets/xr-dog-matrix.js?v=light-dog-contrast-20261025" defer></script>
 <script defer src="../assets/vendor/gsap/gsap.min.js"></script>
@@ -76,17 +78,24 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 </div>
 </div>
 </section>
-<div class="gogo-subsection gogo-snap-page"><h3 class="gogo-subhead">设计思路</h3><div class="gogo-logic"><div class="gogo-logic-track"><h4>拾取文化线索</h4><ol>
-<li>自由游览</li>
-<li>机器狗发现线索</li>
-<li>佩戴 AR 眼镜</li>
-<li>获取文化线索</li>
-</ol></div><div class="gogo-logic-track"><h4>文化叙事重构</h4><ol>
-<li>记录游览路径</li>
-<li>路径转译</li>
-<li>故事生成</li>
-<li>个性化文化记忆</li>
-</ol></div></div><p class="gogo-note">游客、机器狗与 AR 三方协作：主动跟随与情感联结，视觉呈现与个性化解读，位置信息与虚拟叠加。</p></div>
+<section class="gogo-subsection gogo-snap-page gogo-logic-page" id="design-logic" aria-labelledby="design-logic-title">
+<h3 class="gogo-subhead" id="design-logic-title">设计思路</h3>
+<div class="gogo-logic-network" role="group" aria-label="拾取文化线索与文化叙事重构">
+<canvas class="gogo-network-lines" aria-hidden="true"></canvas>
+<h4 class="gogo-network-side gogo-network-left">拾取文化线索</h4>
+<h4 class="gogo-network-side gogo-network-right">文化叙事重构</h4>
+<button class="gogo-logic-card" type="button" data-node="walk" data-side="left" aria-pressed="false"><span class="gogo-dot-visual"><canvas data-dot="walk" aria-hidden="true"></canvas></span><span class="gogo-dot-title">自由游览</span></button>
+<button class="gogo-logic-card" type="button" data-node="dog" data-side="left" aria-pressed="false"><span class="gogo-dot-visual"><canvas data-dot="dog" aria-hidden="true"></canvas></span><span class="gogo-dot-title">机器狗发现线索</span></button>
+<button class="gogo-logic-card" type="button" data-node="ar" data-side="left" aria-pressed="false"><span class="gogo-dot-visual"><canvas data-dot="ar" aria-hidden="true"></canvas></span><span class="gogo-dot-title">佩戴 AR 眼镜</span></button>
+<button class="gogo-logic-card" type="button" data-node="fragment" data-side="left" aria-pressed="false"><span class="gogo-dot-visual"><canvas data-dot="fragment" aria-hidden="true"></canvas></span><span class="gogo-dot-title">获取文化线索</span></button>
+<button class="gogo-logic-card" type="button" data-node="route" data-side="right" aria-pressed="false"><span class="gogo-dot-visual"><canvas data-dot="route" aria-hidden="true"></canvas></span><span class="gogo-dot-title">记录游览路径</span></button>
+<button class="gogo-logic-card" type="button" data-node="translation" data-side="right" aria-pressed="false"><span class="gogo-dot-visual"><canvas data-dot="translation" aria-hidden="true"></canvas></span><span class="gogo-dot-title">路径转译</span></button>
+<button class="gogo-logic-card" type="button" data-node="story" data-side="right" aria-pressed="false"><span class="gogo-dot-visual"><canvas data-dot="story" aria-hidden="true"></canvas></span><span class="gogo-dot-title">故事生成</span></button>
+<button class="gogo-logic-card" type="button" data-node="memory" data-side="right" aria-pressed="false"><span class="gogo-dot-visual"><canvas data-dot="memory" aria-hidden="true"></canvas></span><span class="gogo-dot-title">个性化文化记忆</span></button>
+<article class="gogo-logic-hub"><h4>时空映射</h4><div class="gogo-hub-visual"><canvas data-dot="hub" aria-hidden="true"></canvas><span class="gogo-hub-actor gogo-hub-visitor">游客</span><span class="gogo-hub-actor gogo-hub-dog">机器狗</span><span class="gogo-hub-actor gogo-hub-ar" data-i18n-ignore>AR</span></div><p>行为数据 + 文化线索</p></article>
+</div>
+<p class="gogo-note">游客、机器狗与 AR 三方协作：主动跟随与情感联结，视觉呈现与个性化解读，位置信息与虚拟叠加。</p>
+</section>
 <div class="gogo-subsection gogo-snap-page"><h3 class="gogo-subhead">技术实现</h3><div class="gogo-implementation-head"><p>从手柄绑定、收集品挂载到 APK 打包测试，将线索的发现与收集落到 Unity 和 Meta Quest 3 的原型中。</p></div><div class="gogo-prototype-grid">
 <figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="原型测试 · 鳄鱼纹样收集品与手柄交互" aria-label="原型测试 · 鳄鱼纹样收集品与手柄交互" aria-haspopup="dialog"><img src="../assets/works/xr/originals/quest-collection.webp?v=straight-originals-20261024" alt="原型测试 · 鳄鱼纹样收集品与手柄交互" width="754" height="488" loading="lazy" decoding="async"></button><figcaption>原型测试 · 鳄鱼纹样收集品与手柄交互</figcaption></figure>
 <figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="原型测试 · 触发后出现的器物与场景效果" aria-label="原型测试 · 触发后出现的器物与场景效果" aria-haspopup="dialog"><img src="../assets/works/xr/originals/quest-reveal.webp?v=straight-originals-20261024" alt="原型测试 · 触发后出现的器物与场景效果" width="754" height="492" loading="lazy" decoding="async"></button><figcaption>原型测试 · 触发后出现的器物与场景效果</figcaption></figure>

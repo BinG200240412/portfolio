@@ -1,0 +1,57 @@
+/* Scattered source motifs feed a central map, then become a personal narrative. */
+.gogo-logic-page{padding-block:clamp(32px,4svh,56px)}
+.gogo-logic-page>.gogo-subhead{font-size:clamp(30px,2.8vw,40px);line-height:1.35;margin-bottom:26px!important}
+.gogo-logic-network{position:relative;isolation:isolate;width:100%;height:clamp(600px,68svh,760px)}
+.gogo-network-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.gogo-network-side{position:absolute;top:0;font-size:17px;line-height:1.5;color:var(--gogo-accent);z-index:2}
+.gogo-network-left{left:1%}.gogo-network-right{right:1%}
+.gogo-logic-card,.gogo-logic-hub{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);z-index:2;border:1px solid var(--line2);background:var(--paper);border-radius:0;box-shadow:none}
+.gogo-logic-card{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:8px;padding:12px;text-align:left;cursor:pointer;transition:border-color .2s,background-color .2s;min-width:0}
+.gogo-logic-card:is(:hover,:focus-visible,[aria-pressed="true"]){border-color:var(--gogo-accent);background:color-mix(in srgb,var(--paper) 96%,var(--gogo-accent))}
+.gogo-dot-title{font-size:15px;line-height:1.4;color:var(--ink)}
+.gogo-dot-visual,.gogo-hub-visual{display:block;position:relative;min-height:0;min-width:0}
+.gogo-dot-visual canvas,.gogo-hub-visual canvas{display:block;position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.gogo-logic-card[data-node="walk"]{--x:1%;--y:6%;--w:20%;--h:23%}
+.gogo-logic-card[data-node="dog"]{--x:16%;--y:32%;--w:19%;--h:22%}
+.gogo-logic-card[data-node="ar"]{--x:0%;--y:55%;--w:21%;--h:23%}
+.gogo-logic-card[data-node="fragment"]{--x:14%;--y:78%;--w:20%;--h:21%}
+.gogo-logic-card[data-node="route"]{--x:77%;--y:6%;--w:23%;--h:24%}
+.gogo-logic-card[data-node="translation"]{--x:66%;--y:31%;--w:24%;--h:22%}
+.gogo-logic-card[data-node="story"]{--x:79%;--y:56%;--w:21%;--h:20%}
+.gogo-logic-card[data-node="memory"]{--x:66%;--y:78%;--w:23%;--h:22%}
+.gogo-logic-hub{--x:37%;--y:20%;--w:26%;--h:62%;padding:14px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:8px;border-color:var(--gogo-accent)}
+.gogo-logic-hub h4{font-size:20px;line-height:1.4;text-align:center;color:var(--ink)}
+.gogo-logic-hub>p{font-size:12px;line-height:1.5;text-align:center;color:var(--soft)}
+.gogo-hub-actor{position:absolute;transform:translate(-50%,-50%);font-size:13px;line-height:1.3;white-space:nowrap;color:var(--ink);pointer-events:none}
+.gogo-hub-visitor{left:50%;top:12%}.gogo-hub-dog{left:18%;top:40%}.gogo-hub-ar{left:82%;top:40%}
+.gogo-logic-page>.gogo-note{font-size:13px;line-height:1.7;margin-top:22px!important;max-width:none;color:var(--soft)}
+html[lang="en"] .gogo-dot-title{font-size:14px}
+html[lang="en"] .gogo-logic-hub h4{font-size:17px}
+html[lang="en"] .gogo-hub-actor{font-size:12px}
+@media(min-width:901px) and (max-height:800px){
+ .gogo-logic-page{padding-block:28px}
+ .gogo-logic-page>.gogo-subhead{font-size:34px;margin-bottom:20px!important}
+ .gogo-logic-network{height:540px}
+ .gogo-logic-page>.gogo-note{margin-top:12px!important}
+ .gogo-logic-card{padding:9px;gap:6px}
+}
+@media(max-width:900px){
+ .gogo-logic-page>.gogo-subhead{font-size:28px}
+ .gogo-logic-network{height:1600px}
+ .gogo-network-side{font-size:15px;max-width:45%}
+ .gogo-network-right{text-align:right}
+ .gogo-logic-card{padding:10px;gap:8px}
+ .gogo-dot-title,html[lang="en"] .gogo-dot-title{font-size:13px}
+ .gogo-logic-card[data-node="walk"]{--x:0%;--y:4%;--w:45%;--h:10.5%}
+ .gogo-logic-card[data-node="dog"]{--x:4%;--y:17%;--w:45%;--h:10.5%}
+ .gogo-logic-card[data-node="ar"]{--x:0%;--y:65%;--w:45%;--h:10.5%}
+ .gogo-logic-card[data-node="fragment"]{--x:4%;--y:82%;--w:45%;--h:10.5%}
+ .gogo-logic-card[data-node="route"]{--x:55%;--y:10%;--w:45%;--h:10.5%}
+ .gogo-logic-card[data-node="translation"]{--x:51%;--y:26%;--w:45%;--h:10.5%}
+ .gogo-logic-card[data-node="story"]{--x:55%;--y:70%;--w:45%;--h:10.5%}
+ .gogo-logic-card[data-node="memory"]{--x:51%;--y:89%;--w:45%;--h:10.5%}
+ .gogo-logic-hub{--x:7%;--y:39%;--w:86%;--h:23.5%}
+ .gogo-logic-hub h4{font-size:20px}
+ .gogo-hub-actor{font-size:13px}
+ .gogo-logic-page>.gogo-note{font-size:13px;max-width:none}
+}
