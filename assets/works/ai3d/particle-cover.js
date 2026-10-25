@@ -5,11 +5,15 @@
   if (!root) return;
   const canvas = root.querySelector('canvas');
   const status = root.querySelector('[data-cover-status]');
+  const statusLabel = status.querySelector('[data-cover-label]');
+  const progressLabel = status.querySelector('[data-cover-progress]');
+  const retry = status.querySelector('[data-cover-retry]');
+  window.PortfolioLoading?.mount(status);
   const assetURL = new URL('liangzhu-village.ply', document.currentScript.src);
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const words = {
-    zh: { loading: '正在展开这片良渚', failed: '粒子暂时无法载入，请刷新页面重试。', unavailable: '当前浏览器未能启用三维渲染，请开启硬件加速后重试。', lost: '三维渲染已暂停，正在等待恢复。', canvas: '可交互的良渚粒子封面。拖动旋转，滚轮、触控板双指滑动或捏合缩放，双击循环切换近景、环绕、俯瞰和远景。也可使用方向键、加减键及数字键 1 至 4。' },
-    en: { loading: 'Unfolding Liangzhu', failed: 'The particles could not load. Refresh this page to try again.', unavailable: '3D rendering is unavailable. Enable hardware acceleration to view this cover.', lost: '3D rendering is paused, waiting for recovery.', canvas: 'Interactive Liangzhu particle cover. Drag to rotate; scroll or pinch to zoom; double-click to cycle close-up, orbit, overhead and wide views. Keyboard: arrows, plus/minus, and 1–4.' }
+    zh: { loading: '正在载入场景', preparing: '正在点亮场景', failed: '场景暂时未能载入。', unavailable: '当前浏览器无法显示三维场景。', lost: '正在恢复场景', retry: '重试', canvas: '可交互的良渚粒子封面。拖动旋转，滚轮、触控板双指滑动或捏合缩放，双击循环切换近景、环绕、俯瞰和远景。也可使用方向键、加减键及数字键 1 至 4。' },
+    en: { loading: 'Loading the scene', preparing: 'Lighting up the scene', failed: 'The scene could not load.', unavailable: '3D rendering is unavailable in this browser.', lost: 'Restoring the scene', retry: 'Retry', canvas: 'Interactive Liangzhu particle cover. Drag to rotate; scroll or pinch to zoom; double-click to cycle close-up, orbit, overhead and wide views. Keyboard: arrows, plus/minus, and 1–4.' }
   };
   // Full density and zero drift/scatter. Only the camera responds to input.
   // Start at the farthest distance, and retain every view until the next gesture.
@@ -28,17 +32,38 @@
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const tr = key => words[window.PortfolioI18n?.language === 'en' ? 'en' : 'zh'][key];
   let statusKey = 'loading';
+  function notifyParent(state) {
+    if (parent !== window) parent.postMessage({ type: 'portfolio:cover-state', state }, location.origin);
+  }
   function syncLabels() {
     canvas.setAttribute('aria-label', tr('canvas'));
-    if (!status.hidden) status.textContent = tr(statusKey);
+    statusLabel.textContent = tr(statusKey);
+    retry.textContent = tr('retry');
   }
-  function setStatus(key) { statusKey = key; status.hidden = false; status.textContent = tr(key); }
+  function setStatus(key) {
+    statusKey = key;
+    status.hidden = false;
+    status.dataset.state = key;
+    const failed = key === 'failed' || key === 'unavailable';
+    status.dataset.loadingState = failed ? 'error' : 'loading';
+    canvas.setAttribute('aria-busy', String(!failed));
+    canvas.dataset.ready = 'false';
+    retry.hidden = !failed;
+    if (key !== 'loading') progressLabel.textContent = '';
+    syncLabels();
+    notifyParent(failed ? 'error' : 'loading');
+  }
   addEventListener('portfolio:language', syncLabels);
-  syncLabels();
+  retry.addEventListener('click', () => { if (!gl) location.reload(); else loadPoints(); });
+  setStatus('loading');
 
   const gl = canvas.getContext('webgl', { alpha: false, antialias: false, powerPreference: 'low-power' });
   if (!gl) { setStatus('unavailable'); return; }
   let ready = false, lost = false, onScreen = true, raf = 0, last = 0;
+  let presented = false, presentationFrame = 0, pageShown = true, generation = 0, controller = null;
+  let host = null;
+  try { host = window.frameElement?.closest('#section') || null; } catch (_) {}
+  const active = () => pageShown && onScreen && !document.hidden && (!host || host.classList.contains('on'));
   let width = 1, height = 1, dpr = 1, frame = 0;
   let points, program, uniforms, buffers = [], shaders = [];
   let dragPointer = null, previousX = 0, previousY = 0;
@@ -116,6 +141,14 @@
     gl.enable(gl.DEPTH_TEST); gl.depthFunc(gl.LEQUAL);
     resize();
   }
+  function disposeGPU() {
+    if (!gl.isContextLost()) {
+      buffers.forEach(buffer => gl.deleteBuffer(buffer));
+      shaders.forEach(shader => gl.deleteShader(shader));
+      if (program) gl.deleteProgram(program);
+    }
+    buffers = []; shaders = []; program = null;
+  }
   function lookAt(eye, target) {
     const z = eye.map((n, i) => n - target[i]);
     let length = Math.hypot(...z); z.forEach((_, i) => { z[i] /= length; });
@@ -136,11 +169,15 @@
     requestRender();
   }
   function requestRender() {
-    if (ready && !lost && !raf && onScreen && !document.hidden) raf = requestAnimationFrame(render);
+    if (ready && !lost && !raf && active()) raf = requestAnimationFrame(render);
   }
-  function suspend() { cancelAnimationFrame(raf); raf = 0; last = 0; }
+  function suspend() {
+    cancelAnimationFrame(raf); cancelAnimationFrame(presentationFrame);
+    raf = 0; presentationFrame = 0; last = 0;
+  }
   function render(now) {
     raf = 0;
+    if (!ready || lost || !active()) return;
     const dt = last ? Math.min((now - last) / 1000, .06) : 0; last = now;
     const ease = reducedMotion.matches ? 1 : Math.min(1, 1 - Math.exp(-Math.max(dt, 1 / 60) * 9));
     let settling = false;
@@ -156,6 +193,25 @@
     gl.uniformMatrix4fv(uniforms.uProjection, false, projection());
     gl.uniform1f(uniforms.uDpr, dpr);
     gl.drawArrays(gl.POINTS, 0, points.count);
+    if (!presented) {
+      if (gl.isContextLost()) return;
+      if (gl.getError() !== gl.NO_ERROR) {
+        ready = false; setStatus('unavailable'); return;
+      }
+      // One successful draw must reach the next presentation opportunity before
+      // replacing the loading state. Downloads and iframe load are not ready.
+      if (!presentationFrame) {
+        const current = generation;
+        presentationFrame = requestAnimationFrame(() => {
+          presentationFrame = 0;
+          if (current !== generation || !ready || lost || !active() || gl.isContextLost()) return;
+          presented = true; canvas.dataset.ready = 'true';
+          status.dataset.state = 'ready'; status.dataset.loadingState = 'ready';
+          canvas.setAttribute('aria-busy', 'false'); status.hidden = true;
+          notifyParent('ready');
+        });
+      }
+    }
     canvas.dataset.frames = String(++frame); canvas.dataset.points = String(points.count);
     canvas.dataset.view = viewName;
     canvas.dataset.distance = r.toFixed(3);
@@ -224,6 +280,7 @@
     event.preventDefault(); chooseView((presetIndex + 1) % presets.length);
   });
   canvas.addEventListener('keydown', event => {
+    if (!ready || lost) return;
     const keys = {
       ArrowLeft: () => rotate(-.06), ArrowRight: () => rotate(.06),
       ArrowUp: () => rotate(0, .05), ArrowDown: () => rotate(0, -.05),
@@ -236,9 +293,11 @@
     event.preventDefault(); keys[event.key]();
     requestRender();
   });
-  document.addEventListener('visibilitychange', () => { if (document.hidden) suspend(); else requestRender(); });
-  addEventListener('pagehide', suspend);
-  addEventListener('pageshow', requestRender);
+  const syncActivity = () => { if (active()) requestRender(); else suspend(); };
+  document.addEventListener('visibilitychange', syncActivity);
+  addEventListener('pagehide', () => { pageShown = false; suspend(); });
+  addEventListener('pageshow', () => { pageShown = true; syncActivity(); });
+  if (host) new MutationObserver(syncActivity).observe(host, { attributes: true, attributeFilter: ['class'] });
   reducedMotion.addEventListener('change', requestRender);
   new ResizeObserver(resize).observe(root);
   new IntersectionObserver(entries => {
@@ -248,22 +307,55 @@
     if (!onScreen) suspend(); else requestRender();
   }, { threshold: 0, rootMargin: '-72px 0px 0px 0px' }).observe(root);
   canvas.addEventListener('webglcontextlost', event => {
-    event.preventDefault(); lost = true; canvas.dataset.ready = 'false'; suspend(); setStatus('lost');
+    event.preventDefault(); lost = true; ready = false; presented = false; suspend();
+    // Context restoration invalidates the previous GPU handles. Clear them
+    // while the context is lost, before a restored context can delete them.
+    disposeGPU(); uniforms = null; setStatus('lost');
   });
   canvas.addEventListener('webglcontextrestored', () => {
-    if (!points) return;
-    try { initializeGPU(); lost = false; canvas.dataset.ready = 'true'; status.hidden = true; requestRender(); }
+    lost = false;
+    if (points) prepareScene();
+    else if (controller) setStatus('loading');
+    else loadPoints();
+  });
+  function prepareScene() {
+    if (lost || gl.isContextLost()) { setStatus('lost'); return; }
+    setStatus('preparing'); ready = false; presented = false;
+    try { disposeGPU(); initializeGPU(); ready = true; requestRender(); }
     catch (error) { console.error('Liangzhu cover:', error); setStatus('unavailable'); }
-  });
-  fetch(assetURL).then(response => {
-    if (!response.ok) throw new Error(`PLY request failed: ${response.status}`);
-    return response.arrayBuffer();
-  }).then(buffer => {
-    points = parsePLY(buffer); initializeGPU(); ready = true;
-    canvas.dataset.ready = 'true'; status.hidden = true;
-    requestRender();
-  }).catch(error => {
-    console.error('Liangzhu cover:', error);
-    canvas.dataset.ready = 'false'; setStatus('failed');
-  });
+  }
+  async function loadPoints() {
+    const current = ++generation;
+    controller?.abort(); controller = new AbortController();
+    ready = false; presented = false; points = null; suspend(); disposeGPU();
+    setStatus('loading'); progressLabel.textContent = '';
+    try {
+      const response = await fetch(assetURL, { signal: controller.signal });
+      if (!response.ok) throw new Error(`PLY request failed: ${response.status}`);
+      const total = Number(response.headers.get('Content-Length'));
+      const encoding = response.headers.get('Content-Encoding');
+      let buffer;
+      if (response.body && total > 0 && (!encoding || encoding === 'identity')) {
+        const reader = response.body.getReader(), chunks = [];
+        let received = 0;
+        while (true) {
+          const { done, value } = await reader.read();
+          if (current !== generation) { await reader.cancel(); return; }
+          if (done) break;
+          chunks.push(value); received += value.byteLength;
+          progressLabel.textContent = `${Math.min(100, Math.floor(received / total * 100))}%`;
+        }
+        const bytes = new Uint8Array(received); let offset = 0;
+        chunks.forEach(chunk => { bytes.set(chunk, offset); offset += chunk.byteLength; });
+        buffer = bytes.buffer;
+      } else buffer = await response.arrayBuffer();
+      if (current !== generation) return;
+      setStatus('preparing');
+      points = parsePLY(buffer); prepareScene();
+    } catch (error) {
+      if (current !== generation || error.name === 'AbortError') return;
+      console.error('Liangzhu cover:', error); ready = false; setStatus('failed');
+    } finally { if (current === generation) controller = null; }
+  }
+  loadPoints();
 })();

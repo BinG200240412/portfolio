@@ -157,8 +157,10 @@
   .pdfbar a svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8}
 </style>
 <link rel="stylesheet" href="../assets/theme.css?v=site-layout-20261025">
-<link rel="stylesheet" href="../assets/works/ai3d/particle-cover.css?v=20261025-full-bleed">
-<script defer src="../assets/works/ai3d/particle-cover.js?v=20261025-full-bleed"></script>
+<link rel="stylesheet" href="../assets/pixel-loader.css?v=pixel-fan-20261025">
+<script defer src="../assets/pixel-loader.js?v=pixel-fan-20261025"></script>
+<link rel="stylesheet" href="../assets/works/ai3d/particle-cover.css?v=pixel-fan-20261025">
+<script defer src="../assets/works/ai3d/particle-cover.js?v=pixel-fan-20261025"></script>
 <link rel="stylesheet" href="../assets/ambient-field.css?v=tidal-led-20261024">
 <script defer src="../assets/ambient-field.js?v=tidal-led-20261024"></script>
 <link rel="stylesheet" href="../assets/page-snap.css?v=site-layout-20261025">
@@ -176,7 +178,11 @@
   <div class="hero-foot">
     <div class="zh">关于良渚遗址公园相关场地复原的三维场景设计</div>
   </div>
-  <div class="cover-status" data-cover-status role="status" data-i18n-ignore>正在展开这片良渚</div>
+  <div class="cover-status pixel-loader" data-cover-status data-pixel-loader role="status" aria-live="polite" data-i18n-ignore>
+    <p class="pixel-loader__label" data-cover-label>正在载入场景</p>
+    <span class="pixel-loader__progress" data-cover-progress aria-hidden="true"></span>
+    <button class="pixel-loader__retry" type="button" data-cover-retry hidden>重试</button>
+  </div>
 </div>
 
 <div class="wrap">

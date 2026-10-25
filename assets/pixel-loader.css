@@ -1,0 +1,85 @@
+/* Shared loading mark: four full, stepped blades rather than a line spinner. */
+.pixel-loader {
+  --pixel-loader-size: 56px;
+  --pixel-loader-speed: 1.28s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: inherit;
+  text-align: center;
+}
+
+.pixel-loader[hidden] {
+  display: none;
+}
+
+.pixel-loader__fan {
+  display: block;
+  flex: none;
+  width: var(--pixel-loader-size);
+  height: var(--pixel-loader-size);
+  overflow: visible;
+  fill: currentColor;
+  transform-origin: 50% 50%;
+  animation: pixel-loader-turn var(--pixel-loader-speed) steps(16, end) infinite;
+}
+
+.pixel-loader__label {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: .025em;
+  opacity: 1;
+}
+
+.project-loading-gate {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--paper, #f5f3ed);
+  color: var(--ink, #171715);
+}
+
+.project-loading-gate[data-loading-kind="ai3d"] {
+  background: #060808;
+  color: #bbc0b8;
+}
+
+.pixel-loader[data-loading-state="error"] .pixel-loader__fan {
+  animation: none;
+  opacity: .45;
+}
+
+.pixel-loader__retry {
+  padding: 3px 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.pixel-loader__retry:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 5px;
+}
+
+@keyframes pixel-loader-turn {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pixel-loader-breathe {
+  0%, 100% { opacity: .58; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-loader__fan {
+    animation: pixel-loader-breathe 2.6s ease-in-out infinite;
+  }
+}

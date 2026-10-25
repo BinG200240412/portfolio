@@ -9,6 +9,7 @@
 <script src="assets/i18n-cases.js?v=focused-copy-20261024"></script>
 <script src="assets/i18n.js?v=bilingual-20261023"></script>
 <script src="assets/theme.js?v=site-layout-20261025"></script>
+<script defer src="assets/pixel-loader.js?v=pixel-fan-20261025"></script>
 <script defer src="assets/matrix-motifs.js?v=sticker-collage-20261023"></script>
 <script defer src="assets/matrix-symbols.js?v=work-objects-20261023"></script>
 <script defer src="assets/matrix-models.js?v=interactive-objects-20261024"></script>
@@ -181,7 +182,8 @@
     .cols section:first-child{border-top:0;padding-top:0}}
 </style>
 <link rel="stylesheet" href="assets/theme.css?v=site-layout-20261025">
-<link rel="stylesheet" href="assets/works/ai3d/particle-cover.css?v=20261025-full-bleed">
+<link rel="stylesheet" href="assets/pixel-loader.css?v=pixel-fan-20261025">
+<link rel="stylesheet" href="assets/works/ai3d/particle-cover.css?v=pixel-fan-20261025">
 <link rel="stylesheet" href="assets/matrix-field.css?v=interactive-objects-20261024">
 <link rel="stylesheet" href="assets/about.css?v=gray-pixel-portrait-frame-20261025">
 <link rel="stylesheet" href="assets/ambient-field.css?v=tidal-led-20261024">
@@ -432,7 +434,7 @@ section.addEventListener('load',event=>{if(event.target.matches('iframe'))update
 const SECTION_PAGE={
   "arright":"sections/arright.html",
   "数独":"sections/sudoku.html?v=ai-learning-intent-20261024",
-  "良渚 · AI 3D":"sections/ai3d.html?v=particle-full-bleed-20261025",
+  "良渚 · AI 3D":"sections/ai3d.html?v=pixel-fan-20261025",
   "良渚 · XR":"sections/xr.html?v=cover-wordmark-20261025",
   "漂移之屋":"sections/drift.html",
   "千里江山":"sections/qianli.html?v=qianli-scroll-20261025",
@@ -440,6 +442,26 @@ const SECTION_PAGE={
   "作品归档":"sections/more.html?v=peer-collections-20261024",
   "练习":"sections/practice.html?v=peer-collections-20261024",
 };
+function updateProjectLoadingLabel(gate=section.querySelector('.project-loading-gate')){
+  if(!gate)return;
+  const english=window.PortfolioI18n?.language==='en';
+  const failed=gate.dataset.loadingState==='error';
+  gate.querySelector('.pixel-loader__label').textContent=failed
+    ?(english?'Unable to load this page.':'页面暂时未能加载。')
+    :(english?'Loading…':'正在加载…');
+  const retry=gate.querySelector('.pixel-loader__retry');
+  if(retry)retry.textContent=english?'Retry':'重试';
+}
+function dismissProjectLoading(frame){
+  if(section.querySelector('iframe')===frame)section.querySelector('.project-loading-gate')?.remove();
+}
+addEventListener('message',event=>{
+  const frame=section.querySelector('iframe');
+  if(!frame||event.origin!==location.origin||event.source!==frame.contentWindow)return;
+  if(event.data?.type==='portfolio:cover-state'&&['loading','ready','error'].includes(event.data.state)){
+    dismissProjectLoading(frame);
+  }
+});
 function enterSection(name){
   if(phase!=='works')return;phase='transit';clearWatch();navigationChanged();
   document.body.classList.remove('works-mode');
@@ -449,10 +471,35 @@ function enterSection(name){
     const frameURL = new URL(page, location.href);
     frameURL.searchParams.set("lang", window.PortfolioI18n?.language || "zh");
     frameURL.searchParams.set("ambient", "tidal-led-20261024");
-    frameURL.searchParams.set("cue", "site-layout-20261025");
+    frameURL.searchParams.set("cue", "pixel-fan-20261025");
     const fontPreview = document.documentElement.dataset.cjkPreview;
     if (fontPreview) frameURL.searchParams.set("cjk", fontPreview);
-    section.innerHTML=`<iframe class="native-frame" src="${frameURL.pathname + frameURL.search}" title="${tr(name)}" loading="eager"></iframe>`;
+    const frame=document.createElement('iframe');
+    frame.className='native-frame';frame.title=tr(name);frame.loading='eager';
+    const gate=window.PortfolioLoading.create('');
+    gate.classList.add('project-loading-gate');
+    gate.dataset.loadingState='loading';
+    if(frameURL.pathname.endsWith('/ai3d.html'))gate.dataset.loadingKind='ai3d';
+    updateProjectLoadingLabel(gate);
+    frame.addEventListener('load',()=>dismissProjectLoading(frame));
+    frame.addEventListener('error',()=>{
+      if(section.querySelector('iframe')!==frame)return;
+      gate.dataset.loadingState='error';
+      if(!gate.querySelector('.pixel-loader__retry')){
+        const retry=document.createElement('button');
+        retry.type='button';retry.className='pixel-loader__retry';
+        retry.addEventListener('click',()=>{
+          gate.dataset.loadingState='loading';retry.remove();
+          updateProjectLoadingLabel(gate);
+          frame.src=frameURL.pathname+frameURL.search;
+        });
+        gate.appendChild(retry);
+      }
+      updateProjectLoadingLabel(gate);
+      if(!gate.isConnected)section.appendChild(gate);
+    });
+    frame.src=frameURL.pathname+frameURL.search;
+    section.replaceChildren(frame,gate);
   }else{
     section.classList.remove('native');
     section.innerHTML=`<div class="sec-inner"><h1 class="sec-title rv2">${tr(name)}<span class="rd"></span></h1>`+
@@ -502,6 +549,7 @@ setInterval(()=>{if(!assistantOpen&&(phase==='works'||phase==='hub')&&!watching&
 
 addEventListener('portfolio:language', () => {
   updateBackLabels();
+  updateProjectLoadingLabel();
   if (phase === 'hub') { renderMenu('hub'); morphTo(NAME); }
   else if (phase === 'works') { renderMenu('works'); morphTo(tr(HOME)); }
 });
