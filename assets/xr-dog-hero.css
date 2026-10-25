@@ -16,17 +16,13 @@
 .gogo-hero-photo .gogo-zoom{background:none;overflow:hidden}
 .gogo-hero-photo .gogo-zoom::before{content:"";position:absolute;inset:0;z-index:1;background:var(--paper);backdrop-filter:blur(5px);mask-image:linear-gradient(90deg,#000,transparent 6%,transparent 94%,#000),linear-gradient(180deg,#000,transparent 9%,transparent 91%,#000);mask-composite:add;pointer-events:none}
 .gogo-hero-photo .gogo-zoom::after{z-index:2}
-.gogo-hero-photo h1{position:absolute;top:calc(var(--gogo-frame) + 18px);right:calc(var(--gogo-frame) + 22px);z-index:2;color:var(--ink);text-align:right;font-size:clamp(58px,calc(var(--gogo-layout-width) * .05),76px);line-height:1.02;letter-spacing:-.065em;white-space:nowrap;pointer-events:none}
-.gogo-hero .gogo-title-dot{width:6px;height:6px;margin-left:10px;background:var(--gogo-accent)}
+/* Expand only the wordmark outlines while retaining the shared light typefaces. */
+.gogo-hero-photo h1{position:absolute;top:calc(var(--gogo-frame) + 18px);right:calc(var(--gogo-frame) + 22px);z-index:2;color:var(--ink);text-align:right;font-size:clamp(58px,calc(var(--gogo-layout-width) * .05),76px);line-height:1.02;letter-spacing:-.035em;white-space:nowrap;pointer-events:none;-webkit-text-stroke:clamp(.5px,.055vw,.8px) currentColor;paint-order:stroke fill}
 .gogo-hero-copy{position:absolute;right:calc(var(--gogo-frame) + 22px);bottom:calc(var(--gogo-frame) + 14px);z-index:3;width:calc(100% - (var(--gogo-frame) + 22px) * 2);margin:0;text-align:right;padding:0;color:var(--ink);pointer-events:none}
 .gogo-hero .gogo-title-row{display:block;padding:0}
 .gogo-hero .gogo-project-name{max-width:28ch;margin:0 0 0 auto;font-size:clamp(19px,calc(var(--gogo-layout-width) * .015),24px);line-height:1.5}
 .gogo-hero .gogo-opening{display:block;padding:0;margin-top:12px}
 .gogo-hero .gogo-opening p{max-width:29ch;margin-left:auto;font-size:16px;line-height:1.7;color:var(--ink)}
-.gogo-hero .gogo-opening>span{display:block;font-size:12px;line-height:1.6;margin-top:8px;color:var(--gogo-accent)}
-.gogo-hero .gogo-chapter-nav{gap:10px 24px;margin-top:15px;pointer-events:auto}
-.gogo-hero .gogo-chapter-nav a{font-size:14px;color:var(--ink);min-height:32px}
-.gogo-hero .gogo-chapter-nav a>span:first-child{color:var(--gogo-accent);min-width:17px}
 html[lang="en"] .gogo-hero .gogo-project-name{max-width:37ch;font-size:21px}
 html[lang="en"] .gogo-hero .gogo-opening p{font-size:16px;max-width:37ch}
 html[data-theme="light"] .gogo-hero{--gogo-frame-art:url("works/xr/frame/led-grey-light.svg")}
@@ -37,8 +33,6 @@ html[data-theme="light"] .gogo-hero{--gogo-frame-art:url("works/xr/frame/led-gre
  .gogo-hero-copy{right:calc(var(--gogo-frame) + 18px);bottom:calc(var(--gogo-frame) + 12px);width:calc(100% - (var(--gogo-frame) + 18px) * 2)}
  .gogo-hero .gogo-project-name{font-size:19px}
  .gogo-hero .gogo-opening p{font-size:15px}
- .gogo-hero .gogo-chapter-nav{gap:4px 16px}
- .gogo-hero .gogo-chapter-nav a{font-size:13px}
  html[lang="en"] .gogo-hero .gogo-project-name{font-size:19px}
  html[lang="en"] .gogo-hero .gogo-opening p{font-size:15px}
 }
@@ -51,17 +45,11 @@ html[data-theme="light"] .gogo-hero{--gogo-frame-art:url("works/xr/frame/led-gre
  .gogo-cover-panel::after{background:linear-gradient(180deg,transparent 20%,color-mix(in srgb,var(--paper) 80%,transparent)),linear-gradient(270deg,color-mix(in srgb,var(--paper) 74%,transparent),transparent)}
  .gogo-hero-photo .gogo-zoom img{height:480px;object-fit:cover;object-position:36% center}
  .gogo-hero-photo h1{font-size:clamp(32px,10vw,46px);top:calc(var(--gogo-frame) + 15px);right:calc(var(--gogo-frame) + 12px)}
- .gogo-hero .gogo-title-dot{width:4px;height:4px;margin-left:6px}
  .gogo-hero-copy{right:calc(var(--gogo-frame) + 12px);bottom:calc(var(--gogo-frame) + 12px);width:calc(100% - (var(--gogo-frame) + 12px) * 2)}
  .gogo-hero .gogo-project-name{font-size:18px;line-height:1.55;max-width:none;text-wrap:balance}
  .gogo-hero .gogo-opening{margin-top:12px}
  .gogo-hero .gogo-opening p{font-size:14px;line-height:1.8;max-width:none;text-wrap:pretty}
- .gogo-hero .gogo-opening>span{font-size:10px;margin-top:8px;text-align:right}
- .gogo-hero .gogo-chapter-nav{display:grid;gap:3px;margin-top:12px;justify-content:end}
- .gogo-hero .gogo-chapter-nav a{font-size:12px;min-height:29px;gap:7px}
- .gogo-hero .gogo-chapter-nav a>span:first-child{font-size:10px;min-width:15px}
  html[lang="en"] .gogo-hero .gogo-project-name{font-size:16px;max-width:23ch}
  html[lang="en"] .gogo-hero .gogo-opening p{font-size:13px;max-width:23ch}
- html[lang="en"] .gogo-hero .gogo-chapter-nav a>span:last-child{max-width:14ch}
 }
 @media(forced-colors:active){.gogo-hero-art,.gogo-hero-procession,.gogo-cover-panel::before,.gogo-cover-panel::after,.gogo-hero-photo .gogo-zoom::before{display:none}.gogo-hero-copy{background:Canvas;color:CanvasText}}
