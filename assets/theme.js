@@ -10,9 +10,11 @@
   let saved;
   try { saved = localStorage.getItem(key); } catch (_) {}
   let theme = valid(saved) ? saved : 'dark';
+  let appearanceAngle = theme === 'light' ? 180 : 0;
 
   function apply(value, persist = false) {
     if (!valid(value)) return;
+    if (value !== theme) appearanceAngle += 180;
     theme = value;
     document.documentElement.dataset.theme = theme;
     document.documentElement.style.colorScheme = theme;
@@ -51,6 +53,7 @@
     document.querySelectorAll('[data-toggle-theme]').forEach(button => {
       button.setAttribute('aria-label', label);
       button.title = label;
+      button.style.setProperty('--appearance-angle', `${appearanceAngle}deg`);
     });
   }
 
