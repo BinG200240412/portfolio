@@ -1,0 +1,136 @@
+/* Three editorial roles across the portfolio. Original artwork, product
+   wordmarks, numeric specimens and diagram geometry keep their own scale. */
+:root {
+  --editorial-title: clamp(38px, 3.7vw, 50px);
+  --editorial-body: 18px;
+  --editorial-note: 14px;
+}
+
+/* 1. Section titles. A project's opening wordmark is part of its artwork. */
+#resume .about-intro h1,
+.gogo-case :is(h2, h3),
+.qianli-case .q-heading h2,
+.skills-page .chapter-heading h2,
+.sudoku-scenes h2,
+.liangzhu-case :is(.actbar h2, .htitle),
+.legacy-case:not(.liangzhu-case, .archive) :is(.htitle, .core h2),
+.legacy-case.archive :is(.hero h1, .yr),
+.arright-case main h2,
+.practice .practice-card h2 {
+  font-size: var(--editorial-title) !important;
+  line-height: 1.2 !important;
+  letter-spacing: -.025em !important;
+}
+
+/* 2. Reading text and smaller headings share one readable scale. */
+:is(.gogo-case, .qianli-case, .skills-page, .legacy-case, .arright-case)
+  :is(p, li, dt, dd),
+.sudoku-scenes :is(p, li, dt, dd, h3, h4),
+.practice .practice-card p,
+#resume :is(.intro p, .about-details h2, .about-details li),
+.gogo-case h4,
+.skills-page .workflow h3,
+.skills-page .workflow p,
+.skills-page .chapter-note p,
+.skills-page .skills-index a > span:first-child,
+.skills-page #icon-library .il-heading,
+.sudoku-scenes .anatomy-callout-title,
+.legacy-case :is(.featlist .k, .act .at, .mid .ti),
+.qianli-case :is(.q-paths b, .q-flow b, .q-flow span),
+.portfolio-shell .mi {
+  font-size: var(--editorial-body) !important;
+  line-height: 1.65 !important;
+  letter-spacing: 0 !important;
+}
+
+/* 3. Captions, source information and controls are the only small text. */
+body figcaption,
+:is(.gogo-case, .qianli-case, .skills-page, .legacy-case, .arright-case, .sudoku-scenes)
+  :is(small, .eyebrow, .meta-row, .num, .hen, .h2en, .linknote, .project-type,
+      .section-no, .screen-caption, .art-number, .art-kind, .art-facts,
+      .art-caption, .sample-label, .sample-foot, .hero-kicker, .pdfbar .pt),
+.gogo-case :is(.gogo-small-index, .gogo-concept-label, .gogo-concept-caption,
+                .gogo-logic-track li, .gogo-chapter-nav a, .gogo-dot-title,
+                .gogo-hub-era, .gogo-hub-actor, .gogo-terrain-tools,
+                .gogo-player-sequence span),
+.qianli-case :is(.q-palette span, .q-parameters dt, .q-paths small),
+.skills-page :is(.chapter-meta, .text-link, .archive-count, .archive-status,
+                 .tile-label, .footer-meta, .viewer-kicker, .archive-filters button,
+                 .archive-tools button, .archive-sentinel button, .fg-recording-label),
+.skills-page #icon-library :is(.il-overline, .il-text-button, .il-total,
+                               .il-subheading, .il-filter, .il-filter-count,
+                               .il-card-title, .il-detail-facts),
+.sudoku-scenes :is(.case-type-name, .case-palette span, .case-delivery dt,
+                   .sudoku-action span, .case-coach-steps button,
+                   .case-inline-actions button),
+#resume :is(.cv-head .latin, .contact, .tags span, .mi .mn),
+.legacy-case.archive .mid .meta {
+  font-size: var(--editorial-note) !important;
+  line-height: 1.55 !important;
+  letter-spacing: 0 !important;
+}
+
+/* A clear gap carries section rhythm. Thin rules around every text block do not. */
+.gogo-case :is(.gogo-chapter, .gogo-relationship, .gogo-logic-track li,
+               .gogo-devlog, .gogo-semantic-list li, .gogo-behaviors,
+               .gogo-system article, .gogo-modes, .gogo-mode,
+               .gogo-story-line, .gogo-journey li, .gogo-footer),
+.qianli-case :is(.q-panel, .q-paths > a, .q-elements dl > div,
+                 .q-flow li, .q-detail, .q-end),
+.skills-page :is(.skills-index, .skills-index a, .skill-chapter, .chapter-meta,
+                 .workflow li, .archive-toolbar, .text-link, .footer-meta),
+.skills-page .skills-footer > div:first-child,
+.legacy-case :is(header.top, .meta-row, .actbar, section.s, .feat,
+                 .featlist li, .speclist li, .closing, footer),
+.legacy-case.archive .item,
+.arright-case :is(.mechanics li, .mobile-section),
+.sudoku-scenes :is(.case-chapter, .case-type-study, .case-digit-study,
+                   .case-flow-block, .case-continuity, .case-coach-steps,
+                   .case-coach-steps button, .case-inline-actions button,
+                   .case-delivery),
+#resume .about-details > section {
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+}
+.gogo-case .gogo-relationship article + article {
+  border-top: 0 !important;
+}
+.skills-page .skills-index a + a,
+#resume .about-details > section { border-left: 0 !important; }
+.gogo-case .gogo-chapter-number { display: none !important; }
+.gogo-case .gogo-relationship { gap: clamp(28px, 4vw, 56px); }
+.gogo-case .gogo-relationship article { padding-block: 16px; }
+.qianli-case .q-elements dl { gap: 24px; }
+.qianli-case .q-elements dl > div { padding-bottom: 0; }
+.skills-page .workflow { gap: clamp(28px, 3vw, 44px); }
+#resume .about-details { gap: clamp(24px, 3vw, 48px); }
+#resume .about-details > section { padding-inline: 0; }
+
+/* Icon names must remain readable in the Skills gallery on narrow screens. */
+@media (max-width: 600px) {
+  .skills-page #icon-library .il-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px 12px;
+  }
+  .skills-page #icon-library .il-card-title { min-height: 0; }
+}
+
+@media (max-width: 700px) {
+  :root {
+    --editorial-title: clamp(32px, 8vw, 40px);
+    --editorial-body: 16px;
+    --editorial-note: 13px;
+  }
+  .skills-page .workflow,
+  .skills-page .workflow-six { grid-template-columns: 1fr; gap: 22px; }
+  .skills-page .workflow li {
+    display: grid;
+    grid-template-columns: minmax(0, 8em) minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+    padding-top: 0;
+  }
+  .skills-page .workflow h3,
+  .skills-page .workflow p { margin: 0; }
+  #resume .about-details { gap: 28px; }
+}
