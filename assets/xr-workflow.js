@@ -20,17 +20,28 @@
   }
   function draw(){
     const box=board.getBoundingClientRect();if(!box.width)return;
-    const columns=getComputedStyle(board).gridTemplateColumns.trim().split(/\s+/).length;
+    root.dataset.flowRows=innerWidth<=720?'4':'2';
     const fragment=document.createDocumentFragment();
     wires.setAttribute('viewBox',`0 0 ${box.width} ${box.height}`);
     for(const [from,to,route=0] of edges){
       const a=node(from),b=node(to),ar=a.getBoundingClientRect(),br=b.getBoundingClientRect();
-      const rowA=Math.floor(Number(a.closest('[data-stage]').dataset.stage)/columns),rowB=Math.floor(Number(b.closest('[data-stage]').dataset.stage)/columns);
-      const vertical=rowB>rowA;
-      const p=vertical?[[ar.left+ar.width/2-box.left,ar.bottom-box.top],[ar.left+ar.width/2-box.left,(ar.bottom+br.top)/2-box.top],[br.left+br.width/2-box.left,(ar.bottom+br.top)/2-box.top],[br.left+br.width/2-box.left,br.top-box.top]]:[[ar.right-box.left,ar.top+ar.height/2-box.top],[(ar.right+br.left)/2-box.left,ar.top+ar.height/2-box.top],[(ar.right+br.left)/2-box.left,br.top+br.height/2-box.top],[br.left-box.left,br.top+br.height/2-box.top]];
+      const acx=ar.left+ar.width/2-box.left,acy=ar.top+ar.height/2-box.top;
+      const bcx=br.left+br.width/2-box.left,bcy=br.top+br.height/2-box.top;
+      const rowTurn=Math.abs(acx-bcx)<Math.min(ar.width,br.width)*.65&&bcy>acy;
+      let p;
+      if(rowTurn){
+        // The last column turns around the outside of the diagram into the next row.
+        const right=acx>box.width/2,bus=right?box.width+16:-16;
+        const ax=right?ar.right-box.left:ar.left-box.left,bx=right?br.right-box.left:br.left-box.left;
+        p=[[ax,acy],[bus,acy],[bus,bcy],[bx,bcy]];
+      }else{
+        const forward=bcx>acx,ax=forward?ar.right-box.left:ar.left-box.left,bx=forward?br.left-box.left:br.right-box.left;
+        const elbow=(ax+bx)/2;p=[[ax,acy],[elbow,acy],[elbow,bcy],[bx,bcy]];
+      }
       fragment.append(element('path',{d:p.map(([x,y],i)=>(i?'L':'M')+x.toFixed(2)+' '+y.toFixed(2)).join(' '),class:'gw-edge','data-route':route,'data-from':from,'data-to':to}));
-      const [tipX,tipY]=p[p.length-1];
-      fragment.append(element('path',{d:vertical?`M${tipX-3} ${tipY-7}L${tipX} ${tipY-1}L${tipX+3} ${tipY-7}Z`:`M${tipX-7} ${tipY-3}L${tipX-1} ${tipY}L${tipX-7} ${tipY+3}Z`,class:'gw-flow-arrow','data-route':route}));
+      const [tipX,tipY]=p[p.length-1],[prevX,prevY]=p[p.length-2];
+      const theta=Math.atan2(tipY-prevY,tipX-prevX),ux=Math.cos(theta),uy=Math.sin(theta),nx=-uy,ny=ux;
+      fragment.append(element('path',{d:`M${tipX-ux*7+nx*3} ${tipY-uy*7+ny*3}L${tipX-ux} ${tipY-uy}L${tipX-ux*7-nx*3} ${tipY-uy*7-ny*3}Z`,class:'gw-flow-arrow','data-route':route}));
       let order=0;
       for(let i=1;i<p.length;i++){
         const [x,y]=p[i-1],[ex,ey]=p[i],length=Math.hypot(ex-x,ey-y),steps=Math.floor(length/14);

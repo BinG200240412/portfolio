@@ -1,4 +1,25 @@
-/* The source drawing is reconstructed as a scalable vector scene. */
-.gogo-interaction-trace{width:100%;background:#050706}
-.gogo-interaction-trace .gogo-zoom{padding:0}
-.gogo-interaction-trace img{display:block;width:100%;height:auto;aspect-ratio:1660/990}
+/* Transparent source contours; the page itself remains visible behind the scene. */
+.gogo-interaction-trace{--gi-label:var(--ink);width:100%;background:none}
+.gogo-interaction-trace .gogo-zoom,.gogo-controller-trace .gogo-zoom{padding:0;background:none}
+.gogo-interaction-trace .gogo-zoom::after,.gogo-controller-trace .gogo-zoom::after{display:none}
+.gi-svg-mount{display:block;width:100%;aspect-ratio:1660/990}
+.gi-svg-mount svg{display:block;width:100%;height:auto;overflow:visible}
+.gi-volume{opacity:0;clip-path:inset(100% 0 0);transition:opacity .8s ease,clip-path 1.5s cubic-bezier(.2,.7,.2,1)}
+.gi-labels{opacity:0;transition:opacity .7s ease .8s}
+.is-interaction-revealed .gi-volume{opacity:1;clip-path:inset(0)}
+.is-interaction-revealed .gi-labels{opacity:1}
+.gi-signal{opacity:0;animation:gi-signal 3s ease-in-out infinite;animation-play-state:paused}
+.is-interaction-active .gi-signal{animation-play-state:running}
+@keyframes gi-signal{0%,100%{opacity:0}40%,55%{opacity:.75}}
+.gogo-controller-traces{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:20px}
+.gogo-controller-trace{min-width:0;--gi-label:var(--ink);color:var(--ink)}
+.gogo-controller-trace .gi-svg-mount{aspect-ratio:472/317}
+.gogo-controller-trace svg{color:var(--ink)}
+.gi-controller-lines{clip-path:inset(0 100% 0 0);transition:clip-path 1.4s ease .25s}
+.is-interaction-revealed .gi-controller-lines{clip-path:inset(0)}
+.gogo-controller-trace:nth-child(2) .gi-controller-lines{transition-delay:.4s}
+.gogo-controller-trace:nth-child(3) .gi-controller-lines{transition-delay:.6s}
+.gogo-controller-trace figcaption{font-size:14px;line-height:1.6;padding-top:8px}
+@media(max-width:720px){.gogo-controller-traces{gap:12px}.gogo-controller-trace figcaption{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.gi-volume,.gi-labels,.gi-controller-lines{transition:none}.gi-signal{animation:none}}
+.gogo-interaction-trace .gi-labels text{font-family:Arial,Helvetica,sans-serif!important;font-weight:400}

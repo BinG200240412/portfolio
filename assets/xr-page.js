@@ -91,6 +91,7 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
   "玉琮的几何母题": "Geometric forms of jade cong",
   "稻作文明的声景": "Soundscapes of rice cultivation",
   "场景触发层": "Landscape triggers",
+  "地貌中的文化碎片": "Cultural fragments emerging from the landscape",
   "场景触发层：稻田、水岸与苔地分别触发声、影、纹，九组文化碎片与地貌点位相连": "Landscape triggers: rice fields, watersides and mossy ground release sound, light and patterns, linking nine cultural fragments to locations in the landscape",
   "把园区理解为一座沉浸式生成叙事的舞台。机器狗作为文化线索感应器，在稻田、水岸与苔地触发不同的文化碎片。": "Treat the park as a stage for immersive, generative narratives. The robot dog senses clues in rice fields, along the water and on mossy ground, releasing different cultural fragments.",
   "场景触发 · 地貌、点位与文化碎片的空间关系": "Landscape triggers · Spatial relationships between terrain, locations and cultural fragments",

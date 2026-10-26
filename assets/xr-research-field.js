@@ -33,7 +33,12 @@
     });
     const pad=w<500?16:26,usableH=Math.max(1,h-54),scale=Math.min(Math.max(1,w-pad*2)/(maxX-minX),Math.max(1,usableH-pad*2)/(maxY-minY));
     const cx=(minX+maxX)/2,cz=(minY+maxY)/2;
-    return projected.map(p=>({x:w/2+(p.x-cx)*scale,y:usableH/2+(p.y-cz)*scale,depth:p.depth}));
+    const result=projected.map(p=>({x:w/2+(p.x-cx)*scale,y:usableH/2+(p.y-cz)*scale,depth:p.depth}));
+    const plane=[[-1.6,-1.175],[1.6,-1.175],[1.6,1.175],[-1.6,1.175]].map(([x,z])=>{
+      const rx=x*cy+z*sy,rz=z*cy-x*sy;
+      return {x:w/2+(rx-cx)*scale,y:usableH/2+(rz*sp-cz)*scale};
+    });
+    Object.defineProperty(result,'planeCorners',{value:plane});return result;
   }
   function nearestVertex(points,x,y,radius=28){
     let best=-1,distance=radius*radius;
@@ -46,9 +51,46 @@
   try{host=window.frameElement?.closest('#section')||null;}catch(_){}
   function active(){return onScreen&&shown&&!document.hidden&&!dialog?.open&&(!host||host.classList.contains('on'));}
   function announce(zh,en){status.textContent=document.documentElement.lang.startsWith('en')?en:zh;}
+  const fragmentHost=shell.querySelector('.gogo-culture-fragments'),stems=shell.querySelector('.gogo-culture-stems');
+  const ns='http://www.w3.org/2000/svg';
+  const fragments=[
+    ['rice-sound','稻作声','Rice sound',.00,.22,33,12],['rice-tools','农具线框','Farm tools',.135,.13,25,21],['rice-soil','土地纹理','Soil patterns',.27,.06,18,29],
+    ['water-ripples','涟漪纹样','Water ripples',.49,.045,8,32],['water-reflections','水域反光','Reflected light',.64,.045,11,45],['water-soundscape','低频声景','Low soundscape',.79,.045,17,56],
+    ['moss-jade','玉器母题','Jade motifs',.00,.59,42,18],['moss-axis','礼制轴线','Ceremonial axis',.135,.66,44,29],['moss-geometry','台地几何','Terrace geometry',.27,.72,43,39]
+  ].map((data,i)=>{
+    const [file,zh,en,x,y,row,col]=data,button=document.createElement('button'),image=document.createElement('img'),caption=document.createElement('span');
+    button.type='button';button.className='gogo-culture-card gogo-zoom';button.setAttribute('aria-haspopup','dialog');button.setAttribute('aria-pressed','false');button.style.setProperty('--grow-delay',i*95+'ms');
+    image.src='../assets/works/xr/research/fragments/'+file+'.webp';image.width=510;image.height=660;image.alt='';image.draggable=false;
+    button.append(image,caption);fragmentHost.append(button);
+    const path=document.createElementNS(ns,'path'),pin=document.createElementNS(ns,'circle');path.setAttribute('pathLength','1');path.style.setProperty('--grow-delay',i*95+'ms');pin.setAttribute('r','3.5');stems.append(path,pin);
+    const index=row*COLS+col;
+    button.addEventListener('click',()=>{illuminate(index);announce(zh+'，已点亮对应地貌触发点',en+': landscape trigger illuminated');});
+    const lightPin=()=>{hover=index;dirty=true;schedule();},clearPin=()=>{hover=-1;dirty=true;schedule();};
+    button.addEventListener('pointerenter',lightPin);button.addEventListener('focus',lightPin);button.addEventListener('pointerleave',clearPin);button.addEventListener('blur',clearPin);
+    return {zh,en,x,y,index,button,caption,path,pin};
+  });
+  function translateFragments(){const en=document.documentElement.lang.startsWith('en');fragments.forEach(f=>{f.caption.textContent=en?f.en:f.zh;f.button.setAttribute('aria-label',en?f.en:f.zh);f.button.dataset.caption=en?f.en:f.zh;});}
+  translateFragments();addEventListener('portfolio:language',translateFragments);
+  const mapImage=new Image();mapImage.src='../assets/works/xr/research/fragments/park-plane.webp';mapImage.onload=()=>{dirty=true;schedule();};
+  let mapCorners=[];
+  function placePoint(p){return{x:p.x*.72+w*.22,y:p.y*.58+h*.37,depth:p.depth};}
   function project(){
-    points=projectTerrain(vertices,yaw,pitch,w,h);dirty=true;
-    canvas.dataset.terrainView=yaw.toFixed(3)+','+pitch.toFixed(3);
+    const projected=projectTerrain(vertices,yaw,pitch,w,h);points=projected.map(placePoint);mapCorners=projected.planeCorners.map(placePoint);dirty=true;
+    const cw=w<720?w*.145:Math.min(140,w*.1),imageHeight=cw*660/510;
+    stems.setAttribute('viewBox',`0 0 ${w} ${h}`);
+    fragments.forEach((f,i)=>{
+      const x=(w<720?[0,.16,.32,.5,.66,.82,0,.16,.32][i]:f.x)*w,y=f.y*h,pin=points[f.index],endX=x+cw*.5,endY=y+imageHeight;
+      f.button.style.setProperty('--card-x',x+'px');f.button.style.setProperty('--card-y',y+'px');f.button.style.setProperty('--card-width',cw+'px');
+      f.button.style.setProperty('--grow-distance',(pin.y-endY)+'px');f.button.style.setProperty('--grow-offset-x',(pin.x-endX)+'px');f.button.style.setProperty('--card-skew',i<6?'-14deg':'14deg');
+      const elbow=endY+Math.max(14,(pin.y-endY)*.4);f.path.setAttribute('d',`M${pin.x} ${pin.y}V${elbow}H${endX}V${endY}`);f.pin.setAttribute('cx',pin.x);f.pin.setAttribute('cy',pin.y);
+    });
+    canvas.dataset.terrainView=yaw.toFixed(3)+','+pitch.toFixed(3);canvas.dataset.mapPlane='projected';canvas.dataset.fragmentCount=String(fragments.length);
+  }
+  function drawMapPlane(){
+    if(!mapImage.complete||!mapImage.naturalWidth||forced.matches)return;
+    const [a,b,,d]=mapCorners;context.save();context.globalAlpha=light?.57:.72;
+    context.transform((b.x-a.x)/mapImage.width,(b.y-a.y)/mapImage.width,(d.x-a.x)/mapImage.height,(d.y-a.y)/mapImage.height,a.x,a.y);
+    context.drawImage(mapImage,0,0);context.restore();
   }
   function resize(){
     w=canvas.clientWidth;h=canvas.clientHeight;ratio=Math.min(devicePixelRatio||1,2,4096/Math.max(1,w));
@@ -69,6 +111,7 @@
   }
   function render(){
     context.setTransform(ratio,0,0,ratio,0,0);context.clearRect(0,0,w,h);
+    drawMapPlane();
     // Continuous wire rows and columns establish the landform beneath its LEDs.
     context.strokeStyle=ink;context.lineWidth=.65;context.globalAlpha=forced.matches?.8:light?1:.32;
     if(light&&!forced.matches){
@@ -98,7 +141,7 @@
       // Paper changes between solid ink levels; the dark display keeps its glow.
       context.globalAlpha=forced.matches?1:light?1:group<3?.57+group*.14:.46+(group-3)*.13;
       context.beginPath();indices.forEach(i=>{const p=points[i];context.moveTo(p.x+radius,p.y);context.arc(p.x,p.y,radius,0,TAU);});context.fill();
-    });context.globalAlpha=1;dirty=false;
+    });context.globalAlpha=1;dirty=false;fragments.forEach(f=>f.path.classList.toggle('is-hovered',f.index===hover));
     canvas.dataset.terrainSelected=selected<0?'':vertices[selected].row+','+vertices[selected].col;
   }
   function tick(now){
@@ -115,11 +158,11 @@
     cancelAnimationFrame(frame);frame=0;lastFrame=0;
     if(reduced.matches||forced.matches)pulses=[];
     if(!active()){canvas.dataset.terrainMotion='paused';return;}
-    if(!introduced){introduced=true;if(!reduced.matches&&!forced.matches)pulses.push({index:Math.floor(ROWS*.52)*COLS+Math.floor(COLS*.46),start:clock});}
+    if(!introduced){introduced=true;shell.classList.add('is-culture-revealed');if(!reduced.matches&&!forced.matches)pulses.push({index:Math.floor(ROWS*.52)*COLS+Math.floor(COLS*.46),start:clock});}
     dirty=true;schedule();
   }
   function illuminate(index){
-    if(index<0)return;selected=index;
+    if(index<0)return;selected=index;fragments.forEach(f=>{const active=f.index===index;f.button.setAttribute('aria-pressed',String(active));f.path.classList.toggle('is-selected',active);});
     if(!reduced.matches&&!forced.matches){pulses.push({index,start:clock});pulses=pulses.slice(-4);}
     dirty=true;schedule();announce('已点亮选中的地形网格','Selected terrain grid illuminated');
     const v=vertices[index];canvas.dispatchEvent(new CustomEvent('gogo:terrain-select',{bubbles:true,detail:{row:v.row,col:v.col,position:{x:v.x,y:v.y,z:v.z}}}));
@@ -148,7 +191,7 @@
   canvas.addEventListener('lostpointercapture',()=>{gesture=null;});
   canvas.addEventListener('pointerleave',()=>{if(!gesture){hover=-1;dirty=true;schedule();}});
   canvas.addEventListener('blur',()=>{hover=-1;dirty=true;schedule();});
-  function resetView(){yaw=DEFAULT_YAW;pitch=DEFAULT_PITCH;selected=hover=-1;pulses=[];project();schedule();announce('已重置地形视角','Terrain view reset');}
+  function resetView(){yaw=DEFAULT_YAW;pitch=DEFAULT_PITCH;selected=hover=-1;pulses=[];fragments.forEach(f=>{f.button.setAttribute('aria-pressed','false');f.path.classList.remove('is-selected','is-hovered');});project();schedule();announce('已重置地形视角','Terrain view reset');}
   reset.addEventListener('click',resetView);
   canvas.addEventListener('keydown',event=>{
     if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){
