@@ -2,6 +2,7 @@
   const canvas = document.getElementById('matrix-field');
   const stage = document.getElementById('stage');
   const gorillaButton = document.getElementById('gorilla-hit');
+  const speech = document.getElementById('matrix-speech');
   const ctx = canvas?.getContext('2d', { alpha: true });
   if (!ctx || !stage) return;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -82,6 +83,7 @@
   let morph = 0, morphTarget = 0, pointerX = 0, pointerY = 0, aimX = 0, aimY = 0;
   let gorillaReady = false, gorillaPlacement = null;
   let pending = null, maskSettling = 0;
+  let pointerHover = null, focusHover = null, menuPreview = null;
 
   function updateQuietZones() {
     // Paint the actual DOM glyphs, including individual typewriter spans and
@@ -148,6 +150,8 @@
     for (const item of items) if (projects[item.id]) { used.add(item.key); ensureHotspot(item); }
     for (const [key, entry] of hotspots) if (!used.has(key)) {
       if (pending?.entry === entry) pending = null;
+      if (pointerHover === entry) pointerHover = null;
+      if (focusHover === entry) focusHover = null;
       entry.button.remove(); hotspots.delete(key);
     }
     updateQuietZones(); draw(reduced.matches ? 6 : elapsed);
@@ -201,10 +205,23 @@
     button.setAttribute('data-project', projects[item.id]); button.setAttribute('data-motif', item.id);
     button.setAttribute('data-i18n-ignore', '');
     const entry = {button,id:item.id,project:projects[item.id],hover:0,hoverTarget:0,staticActive:0,placement:null};
-    const hover = value => { entry.hoverTarget = value; };
-    button.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') hover(1); });
-    button.addEventListener('pointerleave', () => hover(0));
-    button.addEventListener('focus', () => hover(1)); button.addEventListener('blur', () => hover(0));
+    const hover = () => {
+      entry.hoverTarget = pointerHover === entry || focusHover === entry ? 1 : 0;
+      updateSpeech();
+    };
+    button.addEventListener('pointerenter', event => {
+      if (event.pointerType === 'touch') return;
+      pointerHover = entry; hover();
+    });
+    button.addEventListener('pointerleave', () => {
+      if (pointerHover === entry) pointerHover = null;
+      hover();
+    });
+    button.addEventListener('focus', () => { focusHover = entry; hover(); });
+    button.addEventListener('blur', () => {
+      if (focusHover === entry) focusHover = null;
+      hover();
+    });
     button.addEventListener('click', () => {
       if (!visible() || !entry.placement || pending) return;
       const gate=projectGate();
@@ -236,6 +253,45 @@
       : works?`查看${names[entry.id][0]}`:`与${names[entry.id][0]}互动`;
     entry.button.setAttribute('aria-label',label); entry.button.title = label;
   }
+  function updateSpeech() {
+    if (!speech) return;
+    if (!visible() || !projectGate() || pending) {
+      speech.classList.remove('is-visible');
+      return;
+    }
+    let entry = pointerHover?.placement ? pointerHover : focusHover?.placement ? focusHover : null;
+    if (!entry && menuPreview) {
+      const candidates = [...hotspots.values()].filter(candidate =>
+        candidate.id === menuPreview && candidate.placement && !candidate.button.hidden);
+      candidates.sort((a,b) => {
+        const area = candidate => {
+          const p=candidate.placement, box=p.hitBox;
+          return box ? (box.x1-box.x0+1)*(box.y1-box.y0+1)*p.pitch*p.pitch : 0;
+        };
+        return area(b)-area(a);
+      });
+      entry = candidates[0] || null;
+    }
+    if (!entry || entry.button.hidden) {
+      speech.classList.remove('is-visible');
+      return;
+    }
+    const stageBox = stage.getBoundingClientRect();
+    const box = entry.button.getBoundingClientRect();
+    if (box.right <= stageBox.left || box.left >= stageBox.right ||
+        box.bottom <= stageBox.top || box.top >= stageBox.bottom) {
+      speech.classList.remove('is-visible');
+      return;
+    }
+    const maxX=Math.max(8,stage.clientWidth-78), maxY=Math.max(8,stage.clientHeight-60);
+    let x=box.right-stageBox.left-15;
+    const flipped=x+70>stage.clientWidth-8;
+    if(flipped)x=box.left-stageBox.left-55;
+    const y=Math.min(maxY,Math.max(8,box.top-stageBox.top+6));
+    speech.style.transform=`translate3d(${Math.min(maxX,Math.max(8,x))}px,${y}px,0)`;
+    speech.classList.toggle('is-flipped',flipped);
+    speech.classList.add('is-visible');
+  }
   function buttonVisibility() {
     const live = visible();
     if (gorillaButton) {
@@ -248,6 +304,7 @@
       entry.button.disabled = !shown || (!!pending && pending.entry !== entry);
       entry.button.setAttribute('aria-busy', String(pending?.entry === entry));
     }
+    updateSpeech();
   }
   function positionButton(button, p) {
     if (!button || !p) return false;
@@ -404,6 +461,7 @@
     if (!visible()) {
       pending = null;
       aimX = aimY = pointerX = pointerY = 0;
+      pointerHover=focusHover=null;
       for (const entry of hotspots.values()) {entry.hover=entry.hoverTarget=0;entry.staticActive=0;}
       buttonVisibility();
       return;
@@ -434,11 +492,32 @@
     });
     buttonLabel();
   }
+  const menu = document.getElementById('menu');
+  const motifFromMenu = target => target instanceof Element
+    ? target.closest('#menu .mi')?.dataset.matrixMotif || null : null;
+  menu?.addEventListener('pointerover',event => {
+    if (event.pointerType === 'touch') return;
+    menuPreview=motifFromMenu(event.target); updateSpeech();
+  });
+  menu?.addEventListener('pointerout',event => {
+    if (event.pointerType === 'touch') return;
+    menuPreview=motifFromMenu(event.relatedTarget); updateSpeech();
+  });
+  menu?.addEventListener('focusin',event => {
+    menuPreview=motifFromMenu(event.target); updateSpeech();
+  });
+  menu?.addEventListener('focusout',event => {
+    menuPreview=motifFromMenu(event.relatedTarget); updateSpeech();
+  });
   addEventListener('portfolio:language', () => {
     buttonLabel(); for (const entry of hotspots.values()) objectLabel(entry);
     updateQuietZones(); if (reduced.matches) draw(6);
   });
-  addEventListener('portfolio:navigation', () => {for (const entry of hotspots.values()) objectLabel(entry);});
+  addEventListener('portfolio:navigation', () => {
+    pointerHover=focusHover=menuPreview=null;
+    for (const entry of hotspots.values()) {entry.hoverTarget=0;objectLabel(entry);}
+    updateSpeech();
+  });
   addEventListener('portfolio:gorilla-ready', () => { draw(reduced.matches ? 6 : elapsed); });
   makeSprites(); resize();
   const layout = new ResizeObserver(() => { updateQuietZones(); if (reduced.matches) draw(6); });

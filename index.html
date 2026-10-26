@@ -17,7 +17,7 @@
 <script defer src="assets/matrix-project-stickers.js?v=interactive-objects-20261024"></script>
 <script defer src="assets/matrix-liangzhu.js?v=liangzhu-and-heart-20261023"></script>
 <script defer src="assets/matrix-gorilla.js?v=interactive-objects-20261024"></script>
-<script defer src="assets/matrix-field.js?v=neutral-robot-20261026"></script>
+<script defer src="assets/matrix-field.js?v=project-speech-20261027"></script>
 <script defer src="assets/about-companion.js?v=portrait-and-companion-20261023"></script>
 <script defer src="assets/ambient-field.js?v=tidal-led-20261024"></script>
 <script defer src="assets/assistant-connection.js?v=assistant-preview-20261024"></script>
@@ -185,7 +185,7 @@
 <link rel="stylesheet" href="assets/theme.css?v=language-optics-20261026">
 <link rel="stylesheet" href="assets/pixel-loader.css?v=dot-fan-20261025">
 <link rel="stylesheet" href="assets/works/ai3d/particle-cover.css?v=dot-fan-20261025">
-<link rel="stylesheet" href="assets/matrix-field.css?v=interactive-objects-20261024">
+<link rel="stylesheet" href="assets/matrix-field.css?v=project-speech-20261027">
 <link rel="stylesheet" href="assets/about.css?v=ornate-led-portrait-20261025">
 <link rel="stylesheet" href="assets/ambient-field.css?v=tidal-led-20261024">
 <link rel="stylesheet" href="assets/portfolio-assistant.css?v=integrated-voice-20261026">
@@ -209,6 +209,12 @@
     <canvas id="ambient-stage" aria-hidden="true" data-i18n-ignore></canvas>
     <canvas id="matrix-field" aria-hidden="true"></canvas>
     <button id="gorilla-hit" type="button" class="matrix-gorilla-hit" aria-pressed="false" aria-label="让猩猩的屁股变成红色爱心" data-i18n-ignore hidden></button>
+    <div id="matrix-speech" class="matrix-speech" aria-hidden="true" data-i18n-ignore>
+      <div class="matrix-speech-inner">
+        <svg viewBox="0 0 70 52" focusable="false" aria-hidden="true"><path d="M12 1H50V5H59V10H64V16H68V34H64V40H57V44H32L22 51V44H11V40H5V34H1V16H5V10H12Z"/></svg>
+        <span class="matrix-speech-dots"><i></i><i></i><i></i></span>
+      </div>
+    </div>
     <div class="caption" id="cap" aria-hidden="true"></div>
     <div class="line"><span class="text" id="text" data-i18n-ignore></span><button class="dot" id="dot" type="button" aria-label="进入导航" aria-controls="menu" aria-expanded="false" data-i18n-ignore></button></div>
     <nav class="menu" id="menu" data-i18n-ignore></nav>
@@ -274,6 +280,7 @@ const QUESTION="Who am I ?", NAME="CaizheNGyaNG", HOME="作品集";
 const tr = value => window.PortfolioI18n?.t(value) || value;
 const SECTIONS=["数独","茶弦记","良渚 · AI 3D","良渚 · XR","千里江山"];
 const COLLECTIONS=[{name:"练习",label:"Practice"},{name:"设计工具 · Skills",label:"Skills"},{name:"作品归档",label:"Archive"}];
+const WORK_MOTIFS={"数独":"sudoku","良渚 · AI 3D":"jade-cong","良渚 · XR":"robot-dog","设计工具 · Skills":"skill"};
 const HUB=[
   {label:"关于我", act:()=>expandPage('resume')},
   {label:"作品集", act:showWorks},
@@ -347,16 +354,20 @@ function renderMenu(level){
       ()=>{if(phase==='hub')it.act();})));
   }else{
     const selected=document.createElement('div');selected.className='selected-works';
-    SECTIONS.forEach(name=>selected.appendChild(buildItem(tr(name),
+    SECTIONS.forEach(name=>{const link=buildItem(tr(name),
       ()=>{markActivity();if(phase==='works')morphTo(tr(name));},
       ()=>{if(phase==='works')morphTo(tr(HOME));},
-      ()=>{if(phase==='works')enterSection(name);})));
+      ()=>{if(phase==='works')enterSection(name);});
+      if(WORK_MOTIFS[name])link.dataset.matrixMotif=WORK_MOTIFS[name];
+      selected.appendChild(link);});
     menuEl.appendChild(selected);
     const collections=document.createElement('div');collections.className='work-collections';
-    COLLECTIONS.forEach(item=>collections.appendChild(buildItem(item.label,
+    COLLECTIONS.forEach(item=>{const link=buildItem(item.label,
       ()=>{markActivity();if(phase==='works')morphTo(item.label);},
       ()=>{if(phase==='works')morphTo(tr(HOME));},
-      ()=>{if(phase==='works')enterSection(item.name);})));
+      ()=>{if(phase==='works')enterSection(item.name);});
+      if(WORK_MOTIFS[item.name])link.dataset.matrixMotif=WORK_MOTIFS[item.name];
+      collections.appendChild(link);});
     menuEl.appendChild(collections);
   }
 }
