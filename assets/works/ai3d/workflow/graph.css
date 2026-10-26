@@ -27,6 +27,7 @@ html[data-theme="dark"] .workflow-native{
   --wf-card-STRING:#493d2e;--wf-card-LIST:#36432a;--wf-card-OPTION:#344030
 }
 .workflow-figure{position:relative;width:var(--wf-screen-width,100vw);max-width:none;margin-inline:calc((100% - var(--wf-screen-width,100vw))/2)}
+.workflow-figure,.workflow-stage{scroll-margin-top:72px}
 .workflow-native{position:relative;margin:0;border:0;background:transparent;isolation:isolate}
 .workflow-native[hidden]{display:none}
 .workflow-frame{position:relative;display:flex;flex-direction:column;min-width:0;background:transparent}

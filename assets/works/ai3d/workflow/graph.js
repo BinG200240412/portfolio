@@ -265,9 +265,10 @@
       else if(event.key==='Enter'&&focused){event.preventDefault();focusRect(nodeById(focused.dataset.node));}
       else if(event.key==='Enter'&&event.target.closest('[data-load-node]')){event.preventDefault();loadImage(Number(event.target.closest('[data-load-node]').dataset.loadNode));}
     });
-    host.querySelector('[data-workflow-fit]').addEventListener('click',fit);
-    host.querySelector('[data-workflow-reader]').addEventListener('click',reader);
-    host.querySelector('[data-workflow-reset]').addEventListener('click',()=>{uploaded.forEach(url=>URL.revokeObjectURL(url));uploaded.clear();data=structuredClone(original);selected=null;render();reader();delete host.dataset.edited;});
+    const reveal = () => stage.scrollIntoView({block:'start',inline:'nearest',behavior:'instant'});
+    host.querySelector('[data-workflow-fit]').addEventListener('click',()=>{fit();reveal();});
+    host.querySelector('[data-workflow-reader]').addEventListener('click',()=>{reader();reveal();});
+    host.querySelector('[data-workflow-reset]').addEventListener('click',()=>{uploaded.forEach(url=>URL.revokeObjectURL(url));uploaded.clear();data=structuredClone(original);selected=null;render();reader();delete host.dataset.edited;reveal();});
     document.addEventListener('visibilitychange',syncMotion);reduced.addEventListener('change',syncMotion);
     new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;syncMotion();}).observe(host);
     fetch(graphURL).then(response=>{if(!response.ok)throw new Error(response.status);return response.json();}).then(value=>{
