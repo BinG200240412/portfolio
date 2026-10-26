@@ -6,8 +6,9 @@
 .gogo-relationship-page .gogo-relationship article:first-child{padding-top:0}
 .gogo-relationship-page .gogo-relationship article:last-child{padding-bottom:0}
 .gogo-relationship-page .gogo-relationship article+article{border-top:1px solid var(--line)}
-.gogo-relation-heading{display:grid;grid-template-columns:62px 60px minmax(0,1fr);gap:18px;align-items:center}
+.gogo-relation-heading{display:grid;grid-template-columns:80px 60px minmax(0,1fr);gap:18px;align-items:center}
 .gogo-relationship-page .gogo-small-index{font-size:15px;line-height:1.5;letter-spacing:0}
+body.gogo-case .gogo-relationship-page .gogo-relation-heading .gogo-small-index{font-size:var(--editorial-body,18px)!important;line-height:1.65!important;color:var(--ink)!important}
 .gogo-relationship-page .gogo-relationship h4{font-size:26px;line-height:1.4;letter-spacing:-.015em;margin:0!important}
 .gogo-relationship-page .gogo-relationship p{font-size:14px;line-height:1.8;max-width:38ch;margin-top:12px;color:var(--mid)}
 .gogo-relationship-page .gogo-role-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 20px;margin:0;min-width:0}
@@ -26,20 +27,20 @@
 }
 @keyframes gogo-relation-signal-paper{0%,4%,19%,100%{fill:#d9b76b;opacity:1}8%,13%{fill:#a45b00;opacity:1}}
 @media(max-width:1100px) and (min-width:901px){
- .gogo-relation-heading{grid-template-columns:54px 44px minmax(0,1fr);gap:12px}
+ .gogo-relation-heading{grid-template-columns:80px 44px minmax(0,1fr);gap:12px}
  .gogo-relationship-page .gogo-relationship h4{font-size:22px}
 }
 @media(max-width:900px){
  .gogo-relationship-layout{grid-template-columns:minmax(0,1fr);gap:36px}
  .gogo-relationship-page>.gogo-subhead{font-size:28px;margin-bottom:30px!important}
- .gogo-relation-heading{grid-template-columns:62px 54px minmax(0,1fr);gap:16px}
+ .gogo-relation-heading{grid-template-columns:80px 54px minmax(0,1fr);gap:16px}
  .gogo-relationship-page .gogo-relationship article{padding:20px 0}
  .gogo-relationship-page .gogo-relationship h4{font-size:24px}
  .gogo-relationship-page .gogo-relationship p{max-width:60ch}
 }
 @media(max-width:480px){
  .gogo-relationship-page>.gogo-subhead{font-size:26px}
- .gogo-relation-heading{grid-template-columns:54px 42px minmax(0,1fr);gap:12px}
+ .gogo-relation-heading{grid-template-columns:72px 42px minmax(0,1fr);gap:12px}
  .gogo-relationship-page .gogo-small-index{font-size:14px}
  .gogo-relationship-page .gogo-relationship h4{font-size:21px}
  .gogo-relationship-page .gogo-relationship p{font-size:13px;line-height:1.8;margin-top:10px}

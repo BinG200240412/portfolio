@@ -1,0 +1,69 @@
+{
+  "source": "assets/works/xr/gogo.pdf",
+  "source_sha256": "15a01fdb1a7924d51e3eae12215b6a389410a135c8600502fecf68cc80375722",
+  "radar_center": [
+    292.5,
+    5878
+  ],
+  "radar_radii": [
+    116.458,
+    117.294
+  ],
+  "radar_original_polygons": [
+    [
+      [
+        292.5,
+        5820.699
+      ],
+      [
+        369.129,
+        5878
+      ],
+      [
+        292.5,
+        5983.247
+      ],
+      [
+        259.991,
+        5878
+      ]
+    ],
+    [
+      [
+        292.5,
+        5845.256
+      ],
+      [
+        394.671,
+        5878
+      ],
+      [
+        292.5,
+        5910.743
+      ],
+      [
+        225.16,
+        5878
+      ]
+    ],
+    [
+      [
+        292.5,
+        5784.447
+      ],
+      [
+        343.586,
+        5878
+      ],
+      [
+        292.5,
+        5893.202
+      ],
+      [
+        270.441,
+        5878
+      ]
+    ]
+  ],
+  "note": "Polygon centreline vertices transcribed from the original PDF vector paths. These are the proposal profiles, not measured visitor data. The website preserves the arrival split, three scene branches, five place types, named landmarks, three play styles, collection, both journal branches and sharing."
+}

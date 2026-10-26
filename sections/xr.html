@@ -12,7 +12,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 <meta name="description" content="狗GO：以机器狗与 AR 眼镜串联良渚遗址公园中的文化线索，从核心概念、研究框架到体验流程。">
 <script src="../assets/i18n-main.js?v=focused-works-20261024"></script>
 <script src="../assets/i18n-cases.js?v=focused-copy-20261024"></script>
-<script src="../assets/xr-page.js?v=mode-icons-loop-20261026"></script>
+<script src="../assets/xr-page.js?v=native-workflow-20261026"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=active-chrome-20261026"></script>
 <title>狗GO — 良渚遗址公园探索式体验设计</title>
@@ -20,7 +20,9 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 <link rel="stylesheet" href="../assets/xr-page.css?v=large-chapters-20261024">
 <link rel="stylesheet" href="../assets/xr-concept.css?v=grey-snap-20261025">
 <link rel="stylesheet" href="../assets/xr-scroll-pages.css?v=grey-snap-20261025">
-<link rel="stylesheet" href="../assets/xr-relationship.css?v=material-light-20261026">
+<link rel="stylesheet" href="../assets/xr-relationship.css?v=relation-heading-20261026">
+<link rel="stylesheet" href="../assets/xr-workflow.css?v=native-workflow-20261026">
+<script defer src="../assets/xr-workflow.js?v=native-workflow-20261026"></script>
 <script defer src="../assets/xr-relationship.js?v=relationship-flow-20261025"></script>
 <link rel="stylesheet" href="../assets/xr-technical.css?v=technical-film-20261025">
 <script defer src="../assets/xr-technical.js?v=reel-motion-20261026"></script>
@@ -221,13 +223,38 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 <figure class="gogo-figure"><button class="gogo-zoom" type="button" data-caption="原展板：五类场所与游客点位组合" aria-label="原展板：五类场所与游客点位组合" aria-haspopup="dialog"><img src="../assets/works/xr/experience/place-source.webp" width="1848" height="1560" alt="原展板：五类场所与游客点位组合" loading="lazy" decoding="async"></button></figure>
 <figure class="gogo-figure gogo-map"><button class="gogo-zoom" type="button" data-caption="良渚遗址公园 · 原方案中的场地地图" aria-label="良渚遗址公园 · 原方案中的场地地图" aria-haspopup="dialog"><img src="../assets/works/xr/originals/park-map.webp" alt="良渚遗址公园 · 原方案中的场地地图" width="1080" height="1080" loading="lazy" decoding="async"></button><figcaption>良渚遗址公园 · 原方案中的场地地图</figcaption></figure></div></details>
 </section>
-<div class="gogo-subsection gogo-snap-page"><h3 class="gogo-subhead">体验流程框架</h3><ol class="gogo-journey">
-<li><span aria-hidden="true">01</span><h4>入园</h4><p>游客入园，选择体验模式，前往机器狗中转站。</p></li>
-<li><span aria-hidden="true">02</span><h4>开始体验</h4><p>经过随机场景、重点地标与园内服务点。</p></li>
-<li><span aria-hidden="true">03</span><h4>触发玩法</h4><p>通过动作解锁场景，收集物品，更新游园进度。</p></li>
-<li><span aria-hidden="true">04</span><h4>生成日志</h4><p>AI 根据解锁地点与文化线索生成个性化游玩日志。</p></li>
-<li><span aria-hidden="true">05</span><h4>记录与分享</h4><p>保留游玩故事，并上传至社交媒体。</p></li>
-</ol></div></div></section>
+<section class="gogo-subsection gogo-snap-page gogo-workflow" id="experience-workflow" aria-labelledby="experience-workflow-title" data-current-play="1">
+<header class="gw-heading"><div><h3 class="gogo-subhead" id="experience-workflow-title">体验流程框架</h3><p>体验模式 → 体验地点 → 体验交互方式</p></div><figure class="gw-radar"><svg id="gogo-workflow-radar" viewBox="0 0 300 245" role="img" aria-label="原方案三种玩法的体验性、故事性、记录性与交互性对比"><polygon class="gw-radar-grid" points="150,105 167,122 150,139 133,122"/><polygon class="gw-radar-grid" points="150,88 184,122 150,156 116,122"/><polygon class="gw-radar-grid" points="150,71 201,122 150,173 99,122"/><polygon class="gw-radar-grid" points="150,54 218,122 150,190 82,122"/><polygon class="gw-radar-grid" points="150,37 235,122 150,207 65,122"/><path class="gw-radar-grid" d="M150 37V207M65 122H235"/><text class="gw-radar-tick" x="155" y="125">0</text><text class="gw-radar-tick" x="155" y="108">20</text><text class="gw-radar-tick" x="155" y="91">40</text><text class="gw-radar-tick" x="155" y="74">60</text><text class="gw-radar-tick" x="155" y="57">80</text><text class="gw-radar-tick" x="155" y="40">100</text><text x="150" y="19" text-anchor="middle">体验性</text><text x="253" y="127">故事性</text><text x="150" y="231" text-anchor="middle">记录性</text><text x="47" y="127" text-anchor="end">交互性</text><polygon class="gw-radar-profile" data-profile="1" points="150.000,80.475 205.930,122.000 150.000,198.270 126.272,122.000"/><polygon class="gw-radar-profile" data-profile="2" points="150.000,98.271 224.572,122.000 150.000,145.728 100.850,122.000"/><polygon class="gw-radar-profile" data-profile="3" points="150.000,54.205 187.286,122.000 150.000,133.017 133.900,122.000"/></svg><div class="gw-radar-choices" role="group" aria-label="选择玩法"><button class="gw-radar-choice" type="button" data-play="1" aria-pressed="true" aria-controls="gogo-workflow-radar" aria-label="查看玩法1特征"><i aria-hidden="true"></i><span>玩法1</span></button><button class="gw-radar-choice" type="button" data-play="2" aria-pressed="false" aria-controls="gogo-workflow-radar" aria-label="查看玩法2特征"><i aria-hidden="true"></i><span>玩法2</span></button><button class="gw-radar-choice" type="button" data-play="3" aria-pressed="false" aria-controls="gogo-workflow-radar" aria-label="查看玩法3特征"><i aria-hidden="true"></i><span>玩法3</span></button></div></figure></header>
+<div class="gw-board"><svg class="gw-wires" aria-hidden="true"></svg>
+<div class="gw-column" data-stage="0"><div class="gw-node" data-flow-node="arrive" ><svg class="gw-arrive-icon" viewBox="0 0 60 72" aria-hidden="true"><circle cx="30" cy="10" r="6"/><path d="M20 70V34M40 70V34M13 45V28Q13 21 21 21H39Q47 21 47 28V45M21 21V42H39V21M30 43V70"/></svg><span>游客入园</span></div></div>
+<div class="gw-column" data-stage="1"><div class="gw-node" data-flow-node="begin" ><span>开始体验</span></div><div class="gw-node" data-flow-node="pass" ><span>经过体验场景</span></div></div>
+<div class="gw-column" data-stage="2"><div class="gw-node" data-flow-node="incidental" ><span>随机场景</span></div><div class="gw-node" data-flow-node="landmark" ><span>重点地标</span></div><div class="gw-node" data-flow-node="station" ><span>机器狗中转站</span></div></div>
+<div class="gw-column" data-stage="3"><div class="gw-node gw-sites" data-flow-node="sites"><svg class="gw-site-ring" viewBox="0 0 200 280" aria-hidden="true"><ellipse cx="100" cy="140" rx="94" ry="130"/><circle cx="70" cy="17" r="4"/><circle cx="177" cy="75" r="4"/><circle cx="189" cy="175" r="4"/><circle cx="118" cy="268" r="4"/><circle cx="11" cy="190" r="4"/></svg><ul class="gw-place-types">
+<li>河边</li>
+<li>高台</li>
+<li>草地</li>
+<li>林地</li>
+<li>服务点</li>
+</ul><ul class="gw-landmarks">
+<li>池中寺粮仓</li>
+<li>反山王陵</li>
+<li>陆城门</li>
+<li>钟家港</li>
+<li>莫角山</li>
+<li>散落各地</li>
+</ul></div></div>
+<div class="gw-column gw-play-column" data-stage="4" role="group" aria-label="选择玩法">
+<button class="gw-node" data-flow-node="play1" type="button" data-play="1" aria-pressed="true" aria-controls="gogo-workflow-radar" data-media-corners-ignore><img src="../assets/works/xr/originals/mode-archaeology.webp" alt="" width="813" height="268" loading="lazy" decoding="async"><span>玩法1</span></button>
+<button class="gw-node" data-flow-node="play2" type="button" data-play="2" aria-pressed="false" aria-controls="gogo-workflow-radar" data-media-corners-ignore><img src="../assets/works/xr/originals/mode-cultural.webp" alt="" width="813" height="268" loading="lazy" decoding="async"><span>玩法2</span></button>
+<button class="gw-node" data-flow-node="play3" type="button" data-play="3" aria-pressed="false" aria-controls="gogo-workflow-radar" data-media-corners-ignore><img src="../assets/works/xr/originals/mode-record.webp" alt="" width="813" height="268" loading="lazy" decoding="async"><span>玩法3</span></button>
+</div>
+<div class="gw-column" data-stage="5"><div class="gw-node" data-flow-node="collect" ><svg class="gw-collection-icon" viewBox="0 0 72 64" aria-hidden="true"><path d="m14 23 22-12 22 12v24L36 59 14 47ZM14 23l22 13 22-13M36 36v23M25 17l22 12"/><path d="M8 12h13M14 6v13M57 4l2 6 6 2-6 2-2 6-2-6-6-2 6-2Z"/></svg><span>收集考古物品</span><p>更新游园进度</p></div></div>
+<div class="gw-column gw-log-column" data-stage="6"><div class="gw-node" data-flow-node="ai-log" ><svg class="gw-log-map" viewBox="0 0 120 62" aria-hidden="true"><path d="M0 12H120M0 24H120M0 36H120M0 48H120M12 0V60M24 0V60M36 0V60M48 0V60M60 0V60M72 0V60M84 0V60M96 0V60M108 0V60"/><path class="gw-map-route" d="M12 48H36V24H72V12H108"/><circle cx="12" cy="48" r="3"/><circle cx="36" cy="24" r="3"/><circle cx="72" cy="12" r="3"/><circle cx="108" cy="12" r="3"/></svg><span>个性化游玩日志</span><p>根据解锁地点，由 AI 生成</p></div><div class="gw-node" data-flow-node="journal" ><svg class="gw-journal-icon" viewBox="0 0 64 72" aria-hidden="true"><path d="M12 4h27l13 13v51H12ZM39 4v16h13M21 31h23M21 41h23M21 51h16"/></svg><span>游玩日志</span></div></div>
+<div class="gw-column" data-stage="7"><div class="gw-node" data-flow-node="share" ><svg class="gw-share-icon" viewBox="0 0 64 64" aria-hidden="true"><path d="M12 38v17h40V38M32 43V8M18 22 32 8l14 14"/></svg><span>上传至社交媒体</span></div></div>
+</div>
+<p class="gw-status" role="status" aria-live="polite"></p>
+<details class="gogo-experience-originals gw-original"><summary>原方案图示</summary><figure class="gogo-figure"><button class="gogo-zoom" type="button" data-caption="原方案体验流程框架" aria-label="原方案体验流程框架" aria-haspopup="dialog"><img src="../assets/works/xr/flowframe.jpg" alt="原方案体验流程框架" width="10505" height="1677" loading="lazy" decoding="async"></button></figure></details>
+</section></div></section>
 </main>
 <dialog class="gogo-lightbox media-viewer" id="gogo-lightbox" aria-labelledby="gogo-lightbox-caption"><div class="gogo-lightbox-bar"><p id="gogo-lightbox-caption"></p><form method="dialog"><button type="submit" aria-label="关闭图片">关闭<span aria-hidden="true">×</span></button></form></div><div class="gogo-lightbox-media"><img alt=""></div></dialog>
 </body>
