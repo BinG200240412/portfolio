@@ -1,14 +1,15 @@
-/* Three editorial roles across the portfolio. Original artwork, product
-   wordmarks, numeric specimens and diagram geometry keep their own scale. */
+/* A descending editorial hierarchy. Original artwork, product wordmarks,
+   numeric specimens and diagram geometry keep their own scale. */
 :root {
   --editorial-title: clamp(38px, 3.7vw, 50px);
+  --editorial-subtitle: clamp(25px, 2.4vw, 31px);
   --editorial-body: 18px;
   --editorial-note: 14px;
 }
 
-/* 1. Section titles. A project's opening wordmark is part of its artwork. */
+/* 1. Chapter titles. A project's opening wordmark is part of its artwork. */
 #resume .about-intro h1,
-.gogo-case :is(h2, h3),
+.gogo-case h2,
 .qianli-case .q-heading h2,
 .skills-page .chapter-heading h2,
 .sudoku-scenes h2,
@@ -22,18 +23,29 @@
   letter-spacing: -.025em !important;
 }
 
-/* 2. Reading text and smaller headings share one readable scale. */
+/* 2. Subsections sit clearly below their parent chapter. */
+.gogo-case h3,
+.sudoku-scenes h3,
+#resume .about-details h2,
+.skills-page #icon-library .il-heading {
+  font-size: var(--editorial-subtitle) !important;
+  line-height: 1.3 !important;
+  letter-spacing: -.015em !important;
+  font-weight: 300 !important;
+  color: var(--ink) !important;
+}
+
+/* 3. Item titles and reading text share a scale; weight and ink separate them. */
 :is(.gogo-case, .qianli-case, .skills-page, .legacy-case, .arright-case)
   :is(p, li, dt, dd),
-.sudoku-scenes :is(p, li, dt, dd, h3, h4),
+.sudoku-scenes :is(p, li, dt, dd, h4),
 .practice .practice-card p,
-#resume :is(.intro p, .about-details h2, .about-details li),
+#resume :is(.intro p, .about-details li),
 .gogo-case h4,
 .skills-page .workflow h3,
 .skills-page .workflow p,
 .skills-page .chapter-note p,
 .skills-page .skills-index a > span:first-child,
-.skills-page #icon-library .il-heading,
 .sudoku-scenes .anatomy-callout-title,
 .legacy-case :is(.featlist .k, .act .at, .mid .ti),
 .qianli-case :is(.q-paths b, .q-flow b, .q-flow span),
@@ -42,6 +54,13 @@
   line-height: 1.65 !important;
   letter-spacing: 0 !important;
 }
+.gogo-case h4,
+.sudoku-scenes h4,
+.skills-page .workflow h3 {
+  font-weight: 300 !important;
+  color: var(--ink) !important;
+}
+.gogo-case .gogo-mode-copy p { color: var(--mid) !important; }
 
 /* 3. Captions, source information and controls are the only small text. */
 body figcaption,
@@ -69,6 +88,21 @@ body figcaption,
   line-height: 1.55 !important;
   letter-spacing: 0 !important;
 }
+
+/* Accent belongs to the dot artwork. Auxiliary words stay neutral and legible. */
+body.gogo-case .gogo-small-index {
+  font-size: clamp(15px, 1.3vw, 16px) !important;
+  font-weight: 300 !important;
+  color: var(--mid) !important;
+}
+body.gogo-case .gogo-small-index > span {
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  color: inherit !important;
+}
+.gogo-case .gogo-chapter-nav a > span:first-child { display: none; }
+.gogo-case .gogo-journey li > span { color: var(--mid) !important; }
+.gogo-case .gogo-network-side { color: var(--mid) !important; }
 
 /* A clear gap carries section rhythm. Thin rules around every text block do not. */
 .gogo-case :is(.gogo-chapter, .gogo-relationship, .gogo-logic-track li,
@@ -118,6 +152,7 @@ body figcaption,
 @media (max-width: 700px) {
   :root {
     --editorial-title: clamp(32px, 8vw, 40px);
+    --editorial-subtitle: clamp(22px, 6vw, 26px);
     --editorial-body: 16px;
     --editorial-note: 13px;
   }
