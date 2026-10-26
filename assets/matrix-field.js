@@ -7,18 +7,27 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const forcedColors = matchMedia('(forced-colors: active)');
   const TAU = Math.PI * 2;
-  // The speech contour uses the same physical LED cells as every motif.
-  const speechPath = [[6,0],[12,0],[14,1],[16,1],[18,3],[18,7],[16,9],
-    [10,9],[8,11],[7,9],[3,9],[1,8],[0,6],[0,4],[2,2],[4,2],[6,0]];
-  const speechCells = [...new Set(speechPath.flatMap((point,index) => {
-    if (!index) return [];
-    const from=speechPath[index-1], steps=Math.max(Math.abs(point[0]-from[0]),Math.abs(point[1]-from[1]));
-    return Array.from({length:steps+1},(_,step) => {
-      const x=Math.round(from[0]+(point[0]-from[0])*step/steps);
-      const y=Math.round(from[1]+(point[1]-from[1])*step/steps);
-      return `${x},${y}`;
-    });
-  }))].map(cell=>cell.split(',').map(Number));
+  // Vary the contour's LED count, never the size of its physical LEDs.
+  const speechShapes = new Map();
+  function speechShape(columns) {
+    if (speechShapes.has(columns)) return speechShapes.get(columns);
+    const rows=Math.round(columns*.55)+1, tipRow=rows+2;
+    const path=[[0,tipRow],[2,rows-1],[3,rows-1],[columns-3,rows-1],
+      [columns-1,rows-3],[columns-1,2],[columns-3,0],[3,0],
+      [1,2],[1,rows-3],[2,rows-1],[0,tipRow]];
+    const cells=[...new Set(path.flatMap((point,index) => {
+      if (!index) return [];
+      const from=path[index-1], steps=Math.max(Math.abs(point[0]-from[0]),Math.abs(point[1]-from[1]));
+      return Array.from({length:steps+1},(_,step) => {
+        const x=Math.round(from[0]+(point[0]-from[0])*step/steps);
+        const y=Math.round(from[1]+(point[1]-from[1])*step/steps);
+        return `${x},${y}`;
+      });
+    }))].map(cell=>cell.split(',').map(Number));
+    const shape={columns,rows,tipRow,cells};
+    speechShapes.set(columns,shape);
+    return shape;
+  }
   const colours = [[174,173,160],[178,136,132],[143,164,184],[186,170,120],
     [137,165,150],[165,145,179],[203,199,185],
     [82,90,93],[117,125,124],[224,219,204],[162,94,85],
@@ -96,6 +105,7 @@
   let pending = null, maskSettling = 0;
   let pointerHover = null, focusHover = null, menuPreview = null;
   let protectedBoxes = null;
+  let speechKey = null, speechBorn = 0;
 
   function updateQuietZones() {
     // Paint the actual DOM glyphs, including individual typewriter spans and
@@ -323,7 +333,7 @@
       Math.max(0,Math.min(a.bottom,b.bottom+padding)-Math.max(a.top,b.top-padding));
   }
   function drawSpeech(time,objectBoxes) {
-    if (!speechSprite || !visible() || !projectGate() || pending) return;
+    if (!speechSprite || !visible() || !projectGate() || pending) {speechKey=null;return;}
     let entry=pointerHover?.placement ? pointerHover : focusHover?.placement ? focusHover : null;
     if (!entry && menuPreview) {
       const area=candidate => {
@@ -334,17 +344,12 @@
         .filter(candidate=>candidate.id===menuPreview && candidate.placement && !candidate.button.hidden)
         .sort((a,b)=>area(b)-area(a))[0] || null;
     }
-    if (!entry || entry.button.hidden) return;
+    if (!entry || entry.button.hidden) {speechKey=null;return;}
     const own=objectBoxes.find(item=>item.key===entry.key)?.box;
     if (!own || own.right<0 || own.left>width || own.bottom<0 || own.top>height) return;
-    const pitch=ledPitch, bubbleWidth=19*pitch, bubbleHeight=12*pitch;
-    const candidates=[
-      {x:own.right+pitch,y:own.top+pitch,mirror:false},
-      {x:own.right+pitch,y:own.top+5*pitch,mirror:false},
-      {x:own.right-bubbleWidth*.25,y:own.top-bubbleHeight-pitch,mirror:false},
-      {x:own.left-bubbleWidth-pitch,y:own.top+pitch,mirror:true},
-      {x:own.left-bubbleWidth-pitch,y:own.top-bubbleHeight-pitch,mirror:true},
-    ];
+    const pitch=ledPitch, inkScale=Math.sqrt((own.right-own.left)*(own.bottom-own.top));
+    const preferredColumns=Math.max(9,Math.min(17,9+2*Math.round((inkScale-60)/32)));
+    const tipX=own.right, tipY=Math.max(3*pitch,Math.min(height-3*pitch,own.top));
     if (!protectedBoxes) {
       const stageBox=stage.getBoundingClientRect();
       protectedBoxes=[stage.querySelector('.line'),...stage.querySelectorAll('.menu .mi'),
@@ -354,30 +359,46 @@
           left:r.left-stageBox.left,right:r.right-stageBox.left,
           top:r.top-stageBox.top,bottom:r.bottom-stageBox.top};});
     }
-    const options=candidates.map((candidate,index)=>{
-      const x=Math.max(pitch,Math.min(width-bubbleWidth-pitch,candidate.x));
-      const y=Math.max(3*pitch,Math.min(height-bubbleHeight-pitch,candidate.y));
-      const box={left:x,right:x+bubbleWidth,top:y,bottom:y+bubbleHeight};
-      const obstruction=objectBoxes.reduce((sum,item)=>sum+(item.key===entry.key?0:intersection(box,item.box,pitch)*6),0);
-      const lettering=protectedBoxes.reduce((sum,textBox)=>sum+intersection(box,textBox,pitch)*24,0);
-      const displacement=(Math.abs(x-candidate.x)+Math.abs(y-candidate.y))*8;
-      return {...candidate,x,y,score:obstruction+lettering+intersection(box,own)*4+displacement+index*40};
-    });
+    const options=[];
+    for(let columns=preferredColumns;columns>=9;columns-=2){
+      const shape=speechShape(columns), bubbleWidth=(columns-1)*pitch, bubbleHeight=shape.tipRow*pitch;
+      for(const [index,flipX,flipY] of [[0,false,false],[1,true,false],[2,false,true],[3,true,true]]){
+        const x=tipX-(flipX?bubbleWidth:0), y=tipY-(flipY?0:bubbleHeight);
+        const box={left:x,right:x+bubbleWidth,top:y,bottom:y+bubbleHeight};
+        const overflow=Math.max(0,pitch-box.left)+Math.max(0,box.right-(width-pitch))+
+          Math.max(0,pitch-box.top)+Math.max(0,box.bottom-(height-pitch));
+        const obstruction=objectBoxes.reduce((sum,item)=>sum+(item.key===entry.key?0:intersection(box,item.box,pitch)*8),0);
+        const lettering=protectedBoxes.reduce((sum,textBox)=>sum+intersection(box,textBox,pitch)*30,0);
+        options.push({shape,x,y,flipX,flipY,score:overflow*500+obstruction+lettering+
+          intersection(box,own)*7+index*220+(preferredColumns-columns)*150});
+      }
+    }
     options.sort((a,b)=>a.score-b.score);
-    const {x,y,mirror}=options[0], size=pitch*1.4;
-    ctx.globalAlpha=dark?.88:.94;
-    for (const [column,row] of speechCells) {
-      const px=x+(mirror?18-column:column)*pitch, py=y+row*pitch;
+    const {shape,x,y,flipX,flipY}=options[0], size=pitch*1.4;
+    if(speechKey!==entry.key){speechKey=entry.key;speechBorn=time;}
+    const growth=reduced.matches?1:smooth((time-speechBorn)/.72);
+    for(let index=0;index<shape.cells.length;index++){
+      const reveal=smooth((growth-index/shape.cells.length*.78)/.22);
+      if(!reveal) continue;
+      const [column,row]=shape.cells[index];
+      const px=x+(flipX?shape.columns-1-column:column)*pitch;
+      const py=y+(flipY?shape.tipRow-row:row)*pitch;
+      ctx.globalAlpha=(dark?.88:.94)*reveal;
       ctx.drawImage(speechSprite,px-size/2,py-size/2,size,size);
     }
     for(let index=0;index<3;index++){
       const phase=((time-index*.22)%1.5+1.5)%1.5;
       const speaking=reduced.matches ? index===1 : phase<.34;
-      const column=4+index*5;
-      ctx.globalAlpha=speaking?1:.72;
-      for(let row=4;row<=5;row++) for(let offset=0;offset<=1;offset++){
-        const px=x+(mirror?18-column-offset:column+offset)*pitch;
-        const py=y+row*pitch-(speaking && !reduced.matches ? .25*pitch : 0);
+      const column=Math.round(shape.columns*(.27+index*.23));
+      const dotSize=shape.columns>=15?2:1;
+      const reveal=smooth((growth-.68-index*.045)/.22);
+      if(!reveal) continue;
+      ctx.globalAlpha=(speaking?1:.72)*reveal;
+      for(let row=0;row<dotSize;row++) for(let offset=0;offset<dotSize;offset++){
+        const px=x+(flipX?shape.columns-1-column-offset:column+offset)*pitch;
+        const dotRow=Math.round(shape.rows*.47)+row;
+        const py=y+(flipY?shape.tipRow-dotRow:dotRow)*pitch-
+          (speaking && !reduced.matches ? .25*pitch : 0);
         ctx.drawImage(speechSprite,px-size/2,py-size/2,size,size);
       }
     }
@@ -572,6 +593,7 @@
   });
   addEventListener('portfolio:navigation', () => {
     pointerHover=focusHover=menuPreview=null;
+    speechKey=null;
     for (const entry of hotspots.values()) {entry.hoverTarget=0;objectLabel(entry);}
     if (reduced.matches && visible()) draw(6);
   });
