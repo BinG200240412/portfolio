@@ -299,24 +299,76 @@
       990
     ],
     "source_sha256": "cf7ca1e0ed0f76e151d42299f432b442652fbec39771504e2c10975e4c38c09a",
-    "transform": "Colour-contour vector tracing of the complete supplied scene, with the black background removed. Original room planes, curved screen, sofa, user, wireframe robot dog, interface facets and leader positions retained. Callout lettering and leaders restored at original coordinates. VTracer colour precision 7, layer difference 3, filter speckle 2; no embedded raster. Mounted inline for theme-aware ink and reveal animation."
+    "transform": "Colour-contour vector tracing of the complete supplied scene, with the black background removed. Original room planes, curved screen, sofa, user, wireframe robot dog, interface facets and leader positions retained. Callout lettering and leaders restored at original coordinates. VTracer colour precision 7, layer difference 3, filter speckle 2; no embedded raster. Mounted inline for theme-aware ink and reveal animation.",
+    "status": "Archived automatic contour version; replaced in the page by the independently authored component model experience/interaction-scene.svg."
   },
   {
     "file": "experience/controller-start-traced.svg",
     "source": "originals/controller-start.webp",
     "source_sha256": "fa413261f3b36ba27e1322c38f6d52c5fbe0e2014dae2a88f3bf03440845d4ab",
-    "transform": "Original wireframe contours extracted to transparent vector paths. Luminance threshold 105, 3px morphological closing to reconnect weak source lines, VTracer binary tracing with filter speckle 2. No opaque image rectangle or embedded raster; source geometry and layout retained. Decorative corner sparkle omitted."
+    "transform": "Original wireframe contours extracted to transparent vector paths. Luminance threshold 105, 3px morphological closing to reconnect weak source lines, VTracer binary tracing with filter speckle 2. No opaque image rectangle or embedded raster; source geometry and layout retained. Decorative corner sparkle omitted.",
+    "status": "Archived contour version; replaced by continuous authored strokes in experience/controller-start-lines.svg."
   },
   {
     "file": "experience/controller-position-traced.svg",
     "source": "originals/controller-position.webp",
     "source_sha256": "79507bbc79b232d4a3017f38b365f259e511ed5027067868b8cfd1b69836dd96",
-    "transform": "Original wireframe contours extracted to transparent vector paths. Luminance threshold 105, 3px morphological closing to reconnect weak source lines, VTracer binary tracing with filter speckle 2. No opaque image rectangle or embedded raster; source geometry and layout retained. Decorative corner sparkle omitted."
+    "transform": "Original wireframe contours extracted to transparent vector paths. Luminance threshold 105, 3px morphological closing to reconnect weak source lines, VTracer binary tracing with filter speckle 2. No opaque image rectangle or embedded raster; source geometry and layout retained. Decorative corner sparkle omitted.",
+    "status": "Archived contour version; replaced by continuous authored strokes in experience/controller-position-lines.svg."
   },
   {
     "file": "experience/controller-pose-traced.svg",
     "source": "originals/controller-pose.webp",
     "source_sha256": "0b8f1ffc6476b1c80978cc7b2f32e2bc515a15ec84100a64e495e32d656e4095",
-    "transform": "Original wireframe contours extracted to transparent vector paths. Luminance threshold 105, 3px morphological closing to reconnect weak source lines, VTracer binary tracing with filter speckle 2. No opaque image rectangle or embedded raster; source geometry and layout retained. Decorative corner sparkle omitted."
+    "transform": "Original wireframe contours extracted to transparent vector paths. Luminance threshold 105, 3px morphological closing to reconnect weak source lines, VTracer binary tracing with filter speckle 2. No opaque image rectangle or embedded raster; source geometry and layout retained. Decorative corner sparkle omitted.",
+    "status": "Archived contour version; replaced by continuous authored strokes in experience/controller-pose-lines.svg."
+  },
+  {
+    "file": "experience/interaction-scene.svg",
+    "source": "06_良渚_狗GO_XR/01_原图/交互分析.png",
+    "source_sha256": "cf7ca1e0ed0f76e151d42299f432b442652fbec39771504e2c10975e4c38c09a",
+    "source_dimensions": [
+      1660,
+      990
+    ],
+    "output_dimensions": [
+      1660,
+      990
+    ],
+    "generator": "scripts/build-xr-interaction-scene.py",
+    "transform": "Authored SVG construction from the sample geometry: independent curved screen, floor, three room walls, three interface planes, sofa, headset user and a connected low-poly dog mesh. No raster embed, alpha extraction, automatic contour tracing or overall image reveal. Leaders are individual stroked paths and every label remains editable SVG text. Entry animation assembles the parts, draws leaders from their targets, then shows the labels."
+  },
+  {
+    "file": "experience/controller-start-lines.svg",
+    "source": "originals/controller-start.webp",
+    "source_sha256": "fa413261f3b36ba27e1322c38f6d52c5fbe0e2014dae2a88f3bf03440845d4ab",
+    "output_dimensions": [
+      472,
+      317
+    ],
+    "generator": "scripts/build-xr-interaction-scene.py",
+    "transform": "Authored continuous cubic curves for the wrist, palm, thumb, fingers and controller ring. Native circular control-pad rings, button lettering and connected robot-dog geometry. All contours use open stroked paths with round caps and joins; no automatic bitmap-to-contour conversion. Each real stroke can be drawn continuously during entry."
+  },
+  {
+    "file": "experience/controller-position-lines.svg",
+    "source": "originals/controller-position.webp",
+    "source_sha256": "79507bbc79b232d4a3017f38b365f259e511ed5027067868b8cfd1b69836dd96",
+    "output_dimensions": [
+      472,
+      317
+    ],
+    "generator": "scripts/build-xr-interaction-scene.py",
+    "transform": "Authored continuous cubic curves for the wrist, palm, thumb, fingers and controller ring. Native circular control-pad rings, button lettering and connected robot-dog geometry. All contours use open stroked paths with round caps and joins; no automatic bitmap-to-contour conversion. Each real stroke can be drawn continuously during entry."
+  },
+  {
+    "file": "experience/controller-pose-lines.svg",
+    "source": "originals/controller-pose.webp",
+    "source_sha256": "0b8f1ffc6476b1c80978cc7b2f32e2bc515a15ec84100a64e495e32d656e4095",
+    "output_dimensions": [
+      472,
+      317
+    ],
+    "generator": "scripts/build-xr-interaction-scene.py",
+    "transform": "Authored continuous cubic curves for the wrist, palm, thumb, fingers and controller ring. Native circular control-pad rings, button lettering and connected robot-dog geometry. All contours use open stroked paths with round caps and joins; no automatic bitmap-to-contour conversion. Each real stroke can be drawn continuously during entry."
   }
 ]

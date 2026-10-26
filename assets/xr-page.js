@@ -174,6 +174,8 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
   "服务点": "Service points",
   "行走路径 + 文化碎片": "Route + Cultural fragments",
   "生成个性化游玩故事": "Generate a personal story",
+  "重播": "Replay",
+  "重播交互示意动画": "Replay the interaction illustration",
   "交互分析": "Interaction",
   "通过手柄操控机器狗，与 AR 中的虚拟物体交互。不同场景需要不同的位置或姿态，动作完成后触发内容并推进剧情。": "Control the robot dog with a handheld controller and interact with virtual objects in AR. Each setting calls for a location or pose; completing the action unlocks content and advances the narrative.",
   "界面初始化，手柄控制机器狗": "Initialize the interface and take control of the dog",
