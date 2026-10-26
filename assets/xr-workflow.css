@@ -47,7 +47,7 @@ html[data-theme="dark"] .gogo-workflow{--gw-one:#83b0c4;--gw-two:#6ed094;--gw-th
 .gw-arrive-icon circle{fill:var(--mid);stroke:none}
 .gw-play-column{gap:16px}
 button.gw-node{width:100%;border:0;cursor:pointer;outline-offset:5px;font:inherit;font-size:var(--editorial-body,18px)}
-button.gw-node img{width:100%;max-width:220px;height:auto;aspect-ratio:3.05;object-fit:cover;opacity:.5;transition:opacity .2s}
+button.gw-node img{width:100%;max-width:220px;height:auto;aspect-ratio:3.05;object-fit:cover;opacity:.82;transition:opacity .2s}
 button.gw-node[aria-pressed="true"] img,button.gw-node:hover img{opacity:1}
 button.gw-node[aria-pressed="true"]>span{color:var(--gw-selected)}
 .gw-sites{position:relative;padding:24px 9px;gap:24px;min-height:290px}
