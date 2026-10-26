@@ -12,9 +12,13 @@
     rail.setAttribute('aria-label', '页面导航');
     rail.setAttribute('data-i18n-ignore', '');
     rail.hidden = true;
+    const beadTrack = document.createElement('div');
+    beadTrack.className = 'portfolio-page-beads';
+    beadTrack.setAttribute('aria-hidden', 'true');
+    rail.appendChild(beadTrack);
     document.body.appendChild(rail);
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-    let panels = [], buttons = [], active = -1, frame = 0;
+    let panels = [], buttons = [], beads = [], anchors = [], active = -1, frame = 0;
     const selector = file === 'sudoku.html'
       ? '.sudoku-opening > .hero, .sudoku-scenes .case-chapter'
       : file === 'xr.html'
@@ -44,47 +48,82 @@
       if (next === active) return;
       active = next;
       buttons.forEach((button, index) => {
-        const distance = Math.abs(index - active);
-        button.classList.toggle('is-current', distance === 0);
-        button.classList.toggle('is-near', distance === 1);
-        if (distance === 0) button.setAttribute('aria-current', 'step');
+        button.classList.toggle('is-current', index === active);
+        if (index === active) button.setAttribute('aria-current', 'step');
         else button.removeAttribute('aria-current');
+      });
+      const focus = anchors[active];
+      const pageStops = new Set(anchors);
+      beads.forEach((bead, index) => {
+        const distance = Math.abs(index - focus), direction = Math.sign(index - focus);
+        const side = distance > 0 && distance <= 5 ? direction * (1.2 + (5 - distance) * .72) : 0;
+        const retreat = distance > 0 && distance <= 3 ? direction * (4 - distance) * 1.4 : 0;
+        const size = distance === 0 ? 10 : pageStops.has(index) ? 4.5 : distance <= 2 ? 3.6 : 2.8;
+        const fade = distance === 0 ? 1 : Math.min(.76,
+          .24 + .48 * Math.exp(-distance / 9) + (pageStops.has(index) ? .13 : 0));
+        bead.style.setProperty('--bead-x', `${side.toFixed(2)}px`);
+        bead.style.setProperty('--bead-y', `${retreat.toFixed(2)}px`);
+        bead.style.setProperty('--bead-size', `${size}px`);
+        bead.style.setProperty('--bead-opacity', fade.toFixed(3));
       });
     }
     function schedule() { if (!frame) frame = requestAnimationFrame(sync); }
+    function refreshBeads() {
+      if (rail.hidden || !panels.length) return;
+      // Physical pitch follows viewport height, never the number of chapters.
+      const count = Math.max(30, Math.round(rail.clientHeight / 13));
+      if (count === beads.length && anchors.length === panels.length) return;
+      beads = Array.from({length:count}, (_, index) => {
+        const bead = document.createElement('span');
+        bead.className = 'portfolio-page-bead';
+        bead.style.top = `${index / (count - 1) * 100}%`;
+        return bead;
+      });
+      anchors = panels.map((_, index) => Math.round(index * (count - 1) / (panels.length - 1)));
+      beadTrack.replaceChildren(...beads);
+      buttons.forEach((button, index) => {
+        button.style.top = `${anchors[index] / (count - 1) * 100}%`;
+      });
+      active = -1;
+    }
     function rebuild(force = false) {
       rail.setAttribute('aria-label', document.documentElement.lang.startsWith('en')
         ? 'Page navigation' : '页面导航');
       const next = [...document.querySelectorAll(selector)].filter(isPanel);
       if (next.length < 2) {
-        panels = []; buttons = []; active = -1;
-        rail.replaceChildren(); rail.hidden = true;
+        panels = []; buttons = []; beads = []; anchors = []; active = -1;
+        rail.replaceChildren(beadTrack); beadTrack.replaceChildren(); rail.hidden = true;
         root.classList.remove('portfolio-dot-rail-on');
         return;
       }
       if (!force && next.length === panels.length && next.every((panel, i) => panel === panels[i])) {
+        refreshBeads();
         schedule(); return;
       }
-      panels = next; active = -1;
+      panels = next; anchors = []; active = -1;
       buttons = panels.map((panel, index) => {
         const button = document.createElement('button');
         button.type = 'button'; button.className = 'portfolio-page-point';
         button.setAttribute('aria-label', label(panel, index, panels.length));
-        const light = document.createElement('span');
-        light.className = 'portfolio-page-point-light';
-        light.setAttribute('aria-hidden', 'true');
-        button.appendChild(light);
         button.addEventListener('click', () => {
           panel.scrollIntoView({block:'start', behavior:reduced.matches ? 'auto' : 'smooth'});
           schedule();
         });
         return button;
       });
-      rail.replaceChildren(...buttons);
+      rail.replaceChildren(beadTrack, ...buttons);
       rail.hidden = false;
       root.classList.add('portfolio-dot-rail-on');
+      refreshBeads();
       schedule();
     }
+    rail.addEventListener('click', event => {
+      if (!panels.length || event.target.closest('.portfolio-page-point')) return;
+      const bounds = rail.getBoundingClientRect();
+      const fraction = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
+      panels[Math.round(fraction * (panels.length - 1))]
+        .scrollIntoView({block:'start', behavior:reduced.matches ? 'auto' : 'smooth'});
+    });
     addEventListener('scroll', schedule, {passive:true});
     addEventListener('resize', () => rebuild(), {passive:true});
     addEventListener('portfolio:language', () => rebuild(true));
