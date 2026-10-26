@@ -1,0 +1,14 @@
+{
+  "sources": [
+    {
+      "file": "visitor-behavior-source.png",
+      "sha256": "7389a2929cf9460e7ac4065578d4e7cc42929b37903586c6b790e77edc4b35df"
+    },
+    {
+      "file": "system-architecture-source.svg",
+      "sha256": "324529a477ec536a8454386c55c3da278d36b0f3eea3c48f5b8e2ce28c5caefa"
+    }
+  ],
+  "presentation": "Original illustrations are cropped only by SVG viewBox into five visitor scenes and four system modules; captions are live bilingual HTML. Light-mode SVG changes white cube strokes to graphite only. Full sources open in the existing in-page preview.",
+  "copy_source": "assets/works/xr/gogo.pdf, research section; visitor descriptions are transcribed from the supplied PNG."
+}

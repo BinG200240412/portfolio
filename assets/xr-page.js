@@ -99,6 +99,22 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
   "光影 · 水纹 · 涟漪": "Light and shade · Ripples",
   "纹": "Pattern",
   "几何图形 · 礼制轴线": "Geometry · Ceremonial axes",
+  "休息空间": "Rest spaces",
+  "亲子空间": "Family spaces",
+  "休闲空间": "Leisure spaces",
+  "商品空间": "Retail spaces",
+  "运动空间": "Exercise spaces",
+  "以个人利益最大化为目标的社交。": "Social interaction oriented toward personal benefit.",
+  "渴望获得性激励的社交。": "Social interaction motivated by rewards and encouragement.",
+  "以兴趣、爱好为纽带的社交。": "Social interaction built around shared interests and hobbies.",
+  "以身份认同、集体认同为驱动力的社交。": "Social interaction driven by personal and group identity.",
+  "以情感宣泄和个人价值认同为驱动力的社交。": "Social interaction driven by emotional expression and self-worth.",
+  "AR 内容触发模块": "AR content triggers",
+  "AI 叙事生成模块": "AI narrative generation",
+  "环境识别与位置触发；短时提示与眼镜承载。": "Environment sensing and location triggers; brief prompts and carrying the glasses.",
+  "依据点位生成声、影、纹；基于机器狗背部 tag 定位，交互后自动记录文化碎片。": "Trigger sound, light and patterns at each site. Position content using the tag on the dog’s back, then record the cultural fragments after interaction.",
+  "几何纹样库、声景库、光影模拟库，以及与考古资料对应的符号体系。": "Libraries of geometric motifs, soundscapes and simulated light, with symbols linked to archaeological records.",
+  "将收集到的碎片组合成“古良渚的一天”，输出个性化短片或影像。": "Combine the collected fragments into a day in ancient Liangzhu, presented as a personal film or visual narrative.",
   "用户行为研究": "Visitor behavior",
   "观察园区中的五类空间行为，作为场景触发与叙事节奏的设计依据。": "Observe five kinds of activity in the park to inform triggers and narrative pacing.",
   "休憩": "Rest",
@@ -182,8 +198,8 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
     document.querySelectorAll('.gogo-zoom').forEach(button => {
       button.addEventListener('click', () => {
         const image = button.querySelector('img');
-        fullImage.src = image.currentSrc || image.src;
-        fullImage.alt = image.alt;
+        fullImage.src = button.dataset.image || image.currentSrc || image.src;
+        fullImage.alt = image?.alt || button.getAttribute('aria-label');
         caption.textContent = button.dataset.caption;
         dialog.showModal();
       });

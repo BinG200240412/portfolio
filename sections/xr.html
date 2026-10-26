@@ -12,7 +12,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 <meta name="description" content="狗GO：以机器狗与 AR 眼镜串联良渚遗址公园中的文化线索，从核心概念、研究框架到体验流程。">
 <script src="../assets/i18n-main.js?v=focused-works-20261024"></script>
 <script src="../assets/i18n-cases.js?v=focused-copy-20261024"></script>
-<script src="../assets/xr-page.js?v=visible-films-20261026"></script>
+<script src="../assets/xr-page.js?v=research-pair-20261026"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=active-chrome-20261026"></script>
 <title>狗GO — 良渚遗址公园探索式体验设计</title>
@@ -30,6 +30,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 <link rel="stylesheet" href="../assets/xr-experience-pair.css?v=horizontal-demo-rows-20261026">
 <script defer src="../assets/xr-interaction-native.js?v=horizontal-demo-rows-20261026"></script>
 <link rel="stylesheet" href="../assets/xr-research-field.css?v=research-field-20261025">
+<link rel="stylesheet" href="../assets/xr-research-pair.css?v=research-pair-20261026">
 <script defer src="../assets/xr-research-field.js?v=neutral-materials-20261026"></script>
 <link rel="stylesheet" href="../assets/xr-logic-network.css?v=neutral-materials-20261026">
 <script defer src="../assets/xr-logic-network.js?v=neutral-materials-20261026"></script>
@@ -156,18 +157,39 @@ if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').mat
 </div>
 </div>
 <details class="gogo-research-originals"><summary>原方案图示</summary><div><figure class="gogo-figure "><button class="gogo-zoom" type="button" data-caption="文化碎片语义库 · 纹理、光影与几何母题" aria-label="文化碎片语义库 · 纹理、光影与几何母题" aria-haspopup="dialog"><img src="../assets/works/xr/originals/semantic-terrain.webp" alt="文化碎片语义库 · 纹理、光影与几何母题" width="658" height="370" loading="lazy" decoding="async"></button><figcaption>文化碎片语义库 · 纹理、光影与几何母题</figcaption></figure><figure class="gogo-figure gogo-dark-art"><button class="gogo-zoom" type="button" data-caption="场景触发 · 地貌、点位与文化碎片的空间关系" aria-label="场景触发 · 地貌、点位与文化碎片的空间关系" aria-haspopup="dialog"><img src="../assets/works/xr/originals/scene-axonometric.webp" alt="场景触发 · 地貌、点位与文化碎片的空间关系" width="2000" height="1545" loading="lazy" decoding="async"></button><figcaption>场景触发 · 地貌、点位与文化碎片的空间关系</figcaption></figure></div></details>
-</section><div class="gogo-subsection gogo-snap-page"><h3 class="gogo-subhead">用户行为研究</h3><p class="gogo-section-text">观察园区中的五类空间行为，作为场景触发与叙事节奏的设计依据。</p><ul class="gogo-behaviors">
-<li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 28h30M12 25v12m24-12v12M16 12h16v13H16z"/></svg><span>休憩</span></li>
-<li><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="17" cy="12" r="4"/><circle cx="32" cy="18" r="3"/><path d="M17 18v14m-7-6 7-8 9 7 6-2v12m-17-3-5 10m9-10 6 10m7-7-5 7m5-7 6 7"/></svg><span>亲子</span></li>
-<li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 32h32M13 32l4-13 9 5 9-6M17 19l-3-7m12 12-3 8"/><circle cx="14" cy="8" r="3"/></svg><span>休闲</span></li>
-<li><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 19h30v22H9zM7 19l5-11h24l5 11M17 19v-5m14 5v-5M20 41V28h9v13"/></svg><span>商品</span></li>
-<li><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="29" cy="8" r="4"/><path d="m25 15-8 10 10 6 7 12m-17-18-7 6m15-16 5 9 10-2M27 31l-12 9"/></svg><span>运动</span></li>
-</ul></div><div class="gogo-subsection gogo-snap-page"><h3 class="gogo-subhead">系统结构模型</h3><div class="gogo-system">
-<article><h4>机器狗模块</h4><p>环境识别、位置触发、短时提示与眼镜承载。</p></article>
-<article><h4>AR 内容触发</h4><p>依据点位呈现声、影、纹，基于背部 tag 定位，交互后记录文化碎片。</p></article>
-<article><h4>文化碎片数据库</h4><p>纹样、声景、光影模拟，以及与考古资料对应的符号体系。</p></article>
-<article><h4>AI 叙事生成</h4><p>组合收集到的碎片，输出“古良渚的一天”的个性化短片或影像。</p></article>
-</div></div></div></section>
+</section>
+<section class="gogo-snap-page gogo-research-pair" id="behavior-system" aria-labelledby="visitor-behavior-title">
+<section class="gogo-behavior-panel" id="visitor-behavior" aria-labelledby="visitor-behavior-title">
+<h3 class="gogo-subhead" id="visitor-behavior-title">用户行为研究</h3>
+<div class="gogo-behavior-studies">
+<article><h4>休息空间</h4>
+<button type="button" class="gogo-zoom gogo-research-sprite" data-media-corners-ignore data-image="../assets/works/xr/research/visitor-behavior-source.png" data-caption="用户行为研究" aria-label="休息空间" aria-haspopup="dialog"><svg class="gogo-behavior-art" viewBox="0.0 90 642.4 610" aria-hidden="true"><defs><clipPath id="gogo-research-window-0"><rect x="0.0" y="90" width="642.4" height="610"/></clipPath></defs><g clip-path="url(#gogo-research-window-0)"><image href="../assets/works/xr/research/visitor-behavior-source.png" width="3212" height="876"/></g></svg></button>
+<p>以个人利益最大化为目标的社交。</p></article>
+<article><h4>亲子空间</h4>
+<button type="button" class="gogo-zoom gogo-research-sprite" data-media-corners-ignore data-image="../assets/works/xr/research/visitor-behavior-source.png" data-caption="用户行为研究" aria-label="亲子空间" aria-haspopup="dialog"><svg class="gogo-behavior-art" viewBox="642.4 90 642.4 610" aria-hidden="true"><defs><clipPath id="gogo-research-window-1"><rect x="642.4" y="90" width="642.4" height="610"/></clipPath></defs><g clip-path="url(#gogo-research-window-1)"><image href="../assets/works/xr/research/visitor-behavior-source.png" width="3212" height="876"/></g></svg></button>
+<p>渴望获得性激励的社交。</p></article>
+<article><h4>休闲空间</h4>
+<button type="button" class="gogo-zoom gogo-research-sprite" data-media-corners-ignore data-image="../assets/works/xr/research/visitor-behavior-source.png" data-caption="用户行为研究" aria-label="休闲空间" aria-haspopup="dialog"><svg class="gogo-behavior-art" viewBox="1284.8 90 642.4 610" aria-hidden="true"><defs><clipPath id="gogo-research-window-2"><rect x="1284.8" y="90" width="642.4" height="610"/></clipPath></defs><g clip-path="url(#gogo-research-window-2)"><image href="../assets/works/xr/research/visitor-behavior-source.png" width="3212" height="876"/></g></svg></button>
+<p>以兴趣、爱好为纽带的社交。</p></article>
+<article><h4>商品空间</h4>
+<button type="button" class="gogo-zoom gogo-research-sprite" data-media-corners-ignore data-image="../assets/works/xr/research/visitor-behavior-source.png" data-caption="用户行为研究" aria-label="商品空间" aria-haspopup="dialog"><svg class="gogo-behavior-art" viewBox="1927.2 90 642.4 610" aria-hidden="true"><defs><clipPath id="gogo-research-window-3"><rect x="1927.2" y="90" width="642.4" height="610"/></clipPath></defs><g clip-path="url(#gogo-research-window-3)"><image href="../assets/works/xr/research/visitor-behavior-source.png" width="3212" height="876"/></g></svg></button>
+<p>以身份认同、集体认同为驱动力的社交。</p></article>
+<article><h4>运动空间</h4>
+<button type="button" class="gogo-zoom gogo-research-sprite" data-media-corners-ignore data-image="../assets/works/xr/research/visitor-behavior-source.png" data-caption="用户行为研究" aria-label="运动空间" aria-haspopup="dialog"><svg class="gogo-behavior-art" viewBox="2569.6 90 642.4 610" aria-hidden="true"><defs><clipPath id="gogo-research-window-4"><rect x="2569.6" y="90" width="642.4" height="610"/></clipPath></defs><g clip-path="url(#gogo-research-window-4)"><image href="../assets/works/xr/research/visitor-behavior-source.png" width="3212" height="876"/></g></svg></button>
+<p>以情感宣泄和个人价值认同为驱动力的社交。</p></article>
+</div></section>
+<section class="gogo-system-panel" id="system-architecture" aria-labelledby="system-architecture-title">
+<h3 class="gogo-subhead" id="system-architecture-title">系统结构模型</h3>
+<div class="gogo-system-studies">
+<article><button type="button" class="gogo-zoom gogo-research-sprite" data-media-corners-ignore data-image="../assets/works/xr/research/system-architecture-source.svg" data-caption="系统结构模型" aria-label="机器狗模块" aria-haspopup="dialog"><svg class="gogo-system-art" viewBox="0 0 179 140" aria-hidden="true"><defs><clipPath id="gogo-research-window-5"><rect x="0" y="0" width="179" height="140"/></clipPath></defs><g clip-path="url(#gogo-research-window-5)"><image class="gogo-system-dark" href="../assets/works/xr/research/system-architecture-source.svg" width="853" height="140"/><image class="gogo-system-light" href="../assets/works/xr/research/system-architecture-light.svg" width="853" height="140"/></g></svg></button>
+<h4>机器狗模块</h4><p>环境识别与位置触发；短时提示与眼镜承载。</p></article>
+<article><button type="button" class="gogo-zoom gogo-research-sprite" data-media-corners-ignore data-image="../assets/works/xr/research/system-architecture-source.svg" data-caption="系统结构模型" aria-label="AR 内容触发模块" aria-haspopup="dialog"><svg class="gogo-system-art" viewBox="220 0 179 140" aria-hidden="true"><defs><clipPath id="gogo-research-window-6"><rect x="220" y="0" width="179" height="140"/></clipPath></defs><g clip-path="url(#gogo-research-window-6)"><image class="gogo-system-dark" href="../assets/works/xr/research/system-architecture-source.svg" width="853" height="140"/><image class="gogo-system-light" href="../assets/works/xr/research/system-architecture-light.svg" width="853" height="140"/></g></svg></button>
+<h4>AR 内容触发模块</h4><p>依据点位生成声、影、纹；基于机器狗背部 tag 定位，交互后自动记录文化碎片。</p></article>
+<article><button type="button" class="gogo-zoom gogo-research-sprite" data-media-corners-ignore data-image="../assets/works/xr/research/system-architecture-source.svg" data-caption="系统结构模型" aria-label="文化碎片数据库" aria-haspopup="dialog"><svg class="gogo-system-art" viewBox="448 0 179 140" aria-hidden="true"><defs><clipPath id="gogo-research-window-7"><rect x="448" y="0" width="179" height="140"/></clipPath></defs><g clip-path="url(#gogo-research-window-7)"><image class="gogo-system-dark" href="../assets/works/xr/research/system-architecture-source.svg" width="853" height="140"/><image class="gogo-system-light" href="../assets/works/xr/research/system-architecture-light.svg" width="853" height="140"/></g></svg></button>
+<h4>文化碎片数据库</h4><p>几何纹样库、声景库、光影模拟库，以及与考古资料对应的符号体系。</p></article>
+<article><button type="button" class="gogo-zoom gogo-research-sprite" data-media-corners-ignore data-image="../assets/works/xr/research/system-architecture-source.svg" data-caption="系统结构模型" aria-label="AI 叙事生成模块" aria-haspopup="dialog"><svg class="gogo-system-art" viewBox="674 0 179 140" aria-hidden="true"><defs><clipPath id="gogo-research-window-8"><rect x="674" y="0" width="179" height="140"/></clipPath></defs><g clip-path="url(#gogo-research-window-8)"><image class="gogo-system-dark" href="../assets/works/xr/research/system-architecture-source.svg" width="853" height="140"/><image class="gogo-system-light" href="../assets/works/xr/research/system-architecture-light.svg" width="853" height="140"/></g></svg></button>
+<h4>AI 叙事生成模块</h4><p>将收集到的碎片组合成“古良渚的一天”，输出个性化短片或影像。</p></article>
+</div></section></section></div></section>
 <section class="gogo-chapter" id="experience" aria-labelledby="experience-title"><div class="gogo-wrap gogo-chapter-inner"><section class="gogo-snap-page gogo-experience-pair" id="experience-modes" aria-labelledby="experience-title">
 <header class="gogo-chapter-head"><h2 id="experience-title">体验流程</h2></header>
 <div class="gogo-experience-columns">
