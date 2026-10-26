@@ -95,12 +95,15 @@
   function sudoku(time, variant, options = {}) {
     const pixels = sudokuBase.slice();
     const active = Number.isFinite(options?.active) ? Math.max(0,Math.min(1,options.active)) : 0;
-    if (active > 0) {
-      // Four actual digit permutations during the click progress, not a colour flash.
-      // Reduced motion holds one distinct arrangement throughout the feedback.
-      const step = options.reduced ? 1 : Math.min(4,1 + Math.floor(active * 4));
+    const hover = !options.reduced && Number.isFinite(options?.hover) ? Math.max(0,Math.min(1,options.hover)) : 0;
+    if (active > 0 || hover > .18) {
+      // Hover previews the puzzle by changing actual glyphs; click keeps its
+      // short, directed permutation before the case study opens.
+      const step = active > 0 ? options.reduced ? 1 : Math.min(4,1 + Math.floor(active * 4))
+        : 1 + (Math.floor(time * 3.4 + variant) % 4);
       const digits = [1,3,5,2,8];
       [[6,5,1],[35,5,2],[21,20,1],[6,34,2],[35,34,1]].forEach(([x,y,role],index) => {
+        if (active === 0 && (index + Math.floor(time * 3.4 + variant)) % 3 !== 0) return;
         rect(pixels,x,y,7,9,0);
         sudokuDigits[digits[(index + step) % digits.length]].forEach((row,dy) => {
           for (let dx=0;dx<row.length;dx++) if (row[dx] === '1') dot(pixels,x+dx,y+dy,role);

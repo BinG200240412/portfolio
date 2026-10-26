@@ -105,11 +105,11 @@
   }
   const mask = makeMask();
 
-  function cong(time, variant) {
+  function cong(time, variant, hover = 0) {
     const r = raster();
     // A short square prism. Slow yaw changes facet width, not the defining shape.
-    const yaw = .37 + Math.sin(time * .28 + variant * .3) * .12;
-    const tilt = .52 + Math.sin(time * .23 + .4) * .035;
+    const yaw = .37 + Math.sin(time * .28 + variant * .3) * .12 + hover * Math.sin(time * 1.7) * .35;
+    const tilt = .52 + Math.sin(time * .23 + .4) * .035 + hover * Math.sin(time * 1.1) * .06;
     const cy = Math.cos(yaw), sy = Math.sin(yaw), ct = Math.cos(tilt), st = Math.sin(tilt);
     function project(x,y,z) {
       const u = x * cy + z * sy, depth = -x * sy + z * cy;
@@ -149,16 +149,31 @@
     // Restrained engraved lip; no glow or continuous colour gradient.
     const rim = ring(.69);
     for (let i=0;i<rim.length;i++) r.line(rim[i],rim[(i+1)%rim.length],1,1,3);
+    if (hover > .12) {
+      const glint=Math.floor(time * 8) % rim.length;
+      for(let i=0;i<4;i++) r.dot(...rim[(glint+i)%rim.length],4,4);
+    }
     return r;
   }
 
   window.PortfolioLiangzhuMotifs = {
     ids: Object.freeze(['liangzhu-mask','jade-cong']),
-    render(id,time=0,variant=0) {
+    render(id,time=0,variant=0,options={}) {
       const t = Number.isFinite(time) ? Math.max(0,time) : 0;
       const v = Number.isFinite(variant) ? variant : 0;
-      const image = id === 'liangzhu-mask' ? mask : id === 'jade-cong' ? cong(t,v) : raster();
-      return {width:SIZE,height:SIZE,pixels:image.pixels.slice(),shades:image.shades.slice()};
+      const hover = !options.reduced && Number.isFinite(options.hover) ? Math.max(0,Math.min(1,options.hover)) : 0;
+      const image = id === 'liangzhu-mask' ? mask : id === 'jade-cong' ? cong(t,v,hover) : raster();
+      const pixels=image.pixels.slice(), shades=image.shades.slice();
+      if (id === 'liangzhu-mask' && hover > .12) {
+        const angle=t*3.5;
+        for (const eye of [18,46]) for(let i=0;i<3;i++) {
+          const x=Math.round(eye+Math.cos(angle+i*.24)*5);
+          const y=Math.round(43+Math.sin(angle+i*.24)*3);
+          const index=y*SIZE+x;
+          pixels[index]=4;shades[index]=4;
+        }
+      }
+      return {width:SIZE,height:SIZE,pixels,shades};
     },
   };
 })();

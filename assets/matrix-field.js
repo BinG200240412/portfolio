@@ -75,7 +75,7 @@
     ['heart',.97,.155,.05,.17], ['arright',.075,.435,.17,-.18],
     ['star',.29,.305,.045,-.1], ['jade-cong',.65,.36,.115,.05],
     ['quest-3',.875,.49,.43,.07], ['heart',.79,.28,.055,.15],
-    ['kiss-woman',.13,.835,.205,-.11], ['sudoku',.50,.855,.235,.11],
+    ['kiss-woman',.13,.835,.205,-.11], ['sudoku',.55,.855,.235,.11],
     ['liangzhu-mask',.765,.805,.17,-.05], ['bolt',.68,.745,.045,.16],
     ['clock',.965,.91,.106,.15], ['heart',.33,.965,.045,.16],
     ['arright',.335,.715,.085,.14], ['spiral',.80,.98,.074,-.15],
@@ -98,7 +98,7 @@
   const hotspots = new Map();
   const sampleWeights = new Float32Array(9), sampleShades = new Float32Array(9);
   const sampled = {role:0,coverage:0,shade:4};
-  let width = 0, height = 0, ledPitch = 3, items = [], quiet = [], sprites = [], paperFacets = [], speechSprite = null;
+  let width = 0, height = 0, ledPitch = 3, items = [], quiet = [], sprites = [], paperFacets = [], speechSprite = null, scanSprite = null;
   let dark = true, frame = 0, lastFrame = 0, elapsed = 0, pageShown = true;
   let morph = 0, morphTarget = 0, pointerX = 0, pointerY = 0, aimX = 0, aimY = 0;
   let gorillaReady = false, gorillaPlacement = null;
@@ -190,6 +190,7 @@
     };
     sprites = (dark ? colours : lightColours).map(spriteFor);
     speechSprite = spriteFor(dark ? [205,204,197] : [35,42,39]);
+    scanSprite = spriteFor(dark ? [139,186,209] : [19,91,147]);
     // Faces progress from shadow to light in discrete opaque steps. Highlights
     // get their own brighter pigment instead of lowering the whole object's alpha.
     paperFacets = dark ? [] : Object.fromEntries(Object.entries(palettes).map(([id,roles]) => {
@@ -213,11 +214,14 @@
     const gorilla = item.id === 'gorilla';
     const entry = hotspots.get(item.key), active = pending && pending.entry === entry ? pending.progress : 0;
     const beat = reduced.matches ? 0 : Math.sin(active * Math.PI);
+    const run = item.id === 'robot-dog' && !reduced.matches ? entry?.hover || 0 : 0;
+    const stride=entry?.gaitPhase || 0;
     const angle = item.angle + .035 * Math.sin(time * .23 + item.phase) +
-      (gorilla ? pointerX * .025 : Math.sin(active * TAU) * .055);
+      (gorilla ? pointerX * .025 : Math.sin(active * TAU) * .055) + run * .025 * Math.sin(stride);
     return {
-      x: item.x + Math.sin(time * .28 + item.phase) * 4 + (gorilla ? pointerX * 2 : 0),
-      y: item.y + Math.sin(time * .31 + item.phase * 1.3) * 4 + (gorilla ? pointerY * 1.5 : -beat * 5),
+      x: item.x + Math.sin(time * .28 + item.phase) * 4 + (gorilla ? pointerX * 2 : 0) + run * Math.sin(stride*.5) * 3,
+      y: item.y + Math.sin(time * .31 + item.phase * 1.3) * 4 + (gorilla ? pointerY * 1.5 : -beat * 5)
+        - run * (2 + Math.abs(Math.sin(stride * 2)) * 3),
       angle, cos:Math.cos(angle), sin:Math.sin(angle), pitch:item.size / image.width * (1 + beat * .045),
       width:image.width, height:image.height, hitBox:image.hitBox,
     };
@@ -228,9 +232,10 @@
     button.type = 'button'; button.className = 'matrix-object-hit'; button.hidden = true;
     button.setAttribute('data-project', projects[item.id]); button.setAttribute('data-motif', item.id);
     button.setAttribute('data-i18n-ignore', '');
-    const entry = {button,key:item.key,id:item.id,project:projects[item.id],hover:0,hoverTarget:0,staticActive:0,placement:null};
+    const entry = {button,key:item.key,id:item.id,project:projects[item.id],hover:0,hoverTarget:0,
+      gaitPhase:0,staticActive:0,placement:null};
     const hover = () => {
-      entry.hoverTarget = pointerHover === entry || focusHover === entry ? 1 : 0;
+      syncHoverTargets();
       if (reduced.matches) draw(6);
     };
     button.addEventListener('pointerenter', event => {
@@ -258,6 +263,10 @@
       pending = {entry,progress:0,gate}; buttonVisibility();
     });
     hotspots.set(item.key, entry); stage.appendChild(button); objectLabel(entry);
+  }
+  function syncHoverTargets() {
+    for (const entry of hotspots.values()) entry.hoverTarget =
+      pointerHover === entry || focusHover === entry || menuPreview === entry.id ? 1 : 0;
   }
   function projectGate() {
     const gate=window.PortfolioNavigation?.projectGate?.();
@@ -452,16 +461,44 @@
     const follow = 1 - Math.exp(-dt * 12);
     pointerX += (aimX - pointerX) * follow;
     pointerY += (aimY - pointerY) * follow;
-    for (const entry of hotspots.values()) entry.hover += (entry.hoverTarget-entry.hover)*follow;
+    for (const entry of hotspots.values()) {
+      entry.hover += (entry.hoverTarget-entry.hover)*follow;
+      if (entry.id === 'robot-dog') entry.gaitPhase += dt * (2.7 + entry.hover * 8);
+    }
     if (pending) {
       pending.progress = Math.min(1,pending.progress+dt/.65);
       if (pending.progress >= 1) finishPending();
     }
   }
+  function drawQuestScan(bounds,hover,time) {
+    if (!scanSprite || hover < .04 || reduced.matches) return;
+    const pitch=ledPitch, size=pitch*1.4;
+    const cx=bounds.left+pitch*2, cy=(bounds.top+bounds.bottom)/2;
+    const reach=Math.min(48,(bounds.right-bounds.left)*.27);
+    for(let ring=0;ring<3;ring++){
+      const travel=((time*.78-ring/3)%1+1)%1;
+      const radius=8+travel*reach;
+      ctx.globalAlpha=hover*(1-travel)*.85;
+      for(let step=0;step<=16;step++){
+        const angle=Math.PI*(.52+step*.06);
+        const px=cx+Math.cos(angle)*radius, py=cy+Math.sin(angle)*radius;
+        if(px<0||px>width||py<0||py>height||clearance(px,py)<.75)continue;
+        ctx.drawImage(scanSprite,px-size/2,py-size/2,size,size);
+      }
+    }
+    const sweep=((time*.68)%1+1)%1;
+    const x=bounds.left+(bounds.right-bounds.left)*(.18+.64*sweep);
+    ctx.globalAlpha=hover*.7;
+    for(let y=bounds.top+(bounds.bottom-bounds.top)*.24;y<bounds.bottom-(bounds.bottom-bounds.top)*.24;y+=pitch*1.4){
+      if(clearance(x,y)<.75)continue;
+      ctx.drawImage(scanSprite,x-size/2,y-size/2,size,size);
+    }
+    ctx.globalAlpha=1;
+  }
   function draw(time) {
     if (!sprites.length || !width || !height) return;
     ctx.clearRect(0, 0, width, height);
-    const objectBoxes=[];
+    const objectBoxes=[], projectEffects=[];
     const facets = [0,.48,.66,.84,1];
     const opacity = dark ? .76 : 1;
     const libraries = [window.PortfolioGorillaMotif,window.PortfolioLiangzhuMotifs,
@@ -474,7 +511,7 @@
       if (!source?.ids.includes(item.id)) continue;
       const entry = hotspots.get(item.key);
       const options = {active:pending && pending.entry===entry ? pending.progress : reduced.matches ? entry?.staticActive || 0 : 0,
-        hover:reduced.matches ? 0 : entry?.hover || 0,reduced:reduced.matches};
+        hover:reduced.matches ? 0 : entry?.hover || 0,gaitPhase:entry?.gaitPhase,reduced:reduced.matches};
       if (item.id === 'gorilla') Object.assign(options,{morph:smooth(morph),pointerX,pointerY});
       const image = source.render(item.id, time * item.speed, item.variant, options);
       if (!image?.pixels || !image.width || !image.height) continue;
@@ -484,6 +521,8 @@
       p.hitBox = inkBounds(image);
       const bounds=objectBox(p);
       if (bounds) objectBoxes.push({key:item.key,box:bounds});
+      if (bounds && item.id === 'quest-3' && entry?.hover > .04)
+        projectEffects.push({bounds,hover:entry.hover});
       if (entry && image.ready !== false && positionButton(entry.button,p)) entry.placement=p;
       if (item.id === 'gorilla' && source === window.PortfolioGorillaMotif && (image.ready === true || source.ready === true)) {
         gorillaPlacement = p;
@@ -512,6 +551,7 @@
       }
     }
     ctx.globalAlpha = 1;
+    for(const effect of projectEffects) drawQuestScan(effect.bounds,effect.hover,time);
     buttonVisibility();
     drawSpeech(time,objectBoxes);
   }
@@ -575,17 +615,17 @@
     ? target.closest('#menu .mi')?.dataset.matrixMotif || null : null;
   menu?.addEventListener('pointerover',event => {
     if (event.pointerType === 'touch') return;
-    menuPreview=motifFromMenu(event.target); if (reduced.matches) draw(6);
+    menuPreview=motifFromMenu(event.target); syncHoverTargets(); if (reduced.matches) draw(6);
   });
   menu?.addEventListener('pointerout',event => {
     if (event.pointerType === 'touch') return;
-    menuPreview=motifFromMenu(event.relatedTarget); if (reduced.matches) draw(6);
+    menuPreview=motifFromMenu(event.relatedTarget); syncHoverTargets(); if (reduced.matches) draw(6);
   });
   menu?.addEventListener('focusin',event => {
-    menuPreview=motifFromMenu(event.target); if (reduced.matches) draw(6);
+    menuPreview=motifFromMenu(event.target); syncHoverTargets(); if (reduced.matches) draw(6);
   });
   menu?.addEventListener('focusout',event => {
-    menuPreview=motifFromMenu(event.relatedTarget); if (reduced.matches) draw(6);
+    menuPreview=motifFromMenu(event.relatedTarget); syncHoverTargets(); if (reduced.matches) draw(6);
   });
   addEventListener('portfolio:language', () => {
     buttonLabel(); for (const entry of hotspots.values()) objectLabel(entry);
