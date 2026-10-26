@@ -20,23 +20,36 @@
   }
   function draw(){
     const box=board.getBoundingClientRect();if(!box.width)return;
-    root.dataset.flowRows=innerWidth<=720?'4':'2';
+    root.dataset.flowRows=innerWidth<=720?'5':'2';
     const fragment=document.createDocumentFragment();
     wires.setAttribute('viewBox',`0 0 ${box.width} ${box.height}`);
     for(const [from,to,route=0] of edges){
       const a=node(from),b=node(to),ar=a.getBoundingClientRect(),br=b.getBoundingClientRect();
       const acx=ar.left+ar.width/2-box.left,acy=ar.top+ar.height/2-box.top;
       const bcx=br.left+br.width/2-box.left,bcy=br.top+br.height/2-box.top;
-      const rowTurn=Math.abs(acx-bcx)<Math.min(ar.width,br.width)*.65&&bcy>acy;
+      const stageA=a.closest('[data-stage]').getBoundingClientRect(),stageB=b.closest('[data-stage]').getBoundingClientRect();
+      const nextRow=stageB.top>=stageA.bottom-2;
       let p;
-      if(rowTurn){
-        // The last column turns around the outside of the diagram into the next row.
-        const right=acx>box.width/2,bus=right?box.width+16:-16;
-        const ax=right?ar.right-box.left:ar.left-box.left,bx=right?br.right-box.left:br.left-box.left;
-        p=[[ax,acy],[bus,acy],[bus,bcy],[bx,bcy]];
+      if(from==='sites'){
+        const right=innerWidth>720,bus=right?box.width+16:-16;
+        const bx=right?br.right-box.left:br.left-box.left;
+        if(right)p=[[ar.right-box.left,acy],[bus,acy],[bus,bcy],[bx,bcy]];
+        else{
+          const lane=(stageA.bottom+stageB.top)/2-box.top;
+          p=[[acx,ar.bottom-box.top],[acx,lane],[bus,lane],[bus,bcy],[bx,bcy]];
+        }
+      }else if(nextRow){
+        // The lower journal branch goes around the AI journal instead of through its artwork and caption.
+        const lane=(stageA.bottom+stageB.top)/2-box.top;
+        p=from==='begin'
+          ?[[ar.right-box.left,acy],[box.width+12,acy],[box.width+12,lane],[bcx,lane],[bcx,br.top-box.top]]
+          :to==='journal'
+          ?[[acx,ar.bottom-box.top],[acx,lane],[box.width+12,lane],[box.width+12,bcy],[br.right-box.left,bcy]]
+          :[[acx,ar.bottom-box.top],[acx,lane],[bcx,lane],[bcx,br.top-box.top]];
       }else{
         const forward=bcx>acx,ax=forward?ar.right-box.left:ar.left-box.left,bx=forward?br.left-box.left:br.right-box.left;
-        const elbow=(ax+bx)/2;p=[[ax,acy],[elbow,acy],[elbow,bcy],[bx,bcy]];
+        const elbow=forward?(stageA.right+stageB.left)/2-box.left:(stageA.left+stageB.right)/2-box.left;
+        p=[[ax,acy],[elbow,acy],[elbow,bcy],[bx,bcy]];
       }
       fragment.append(element('path',{d:p.map(([x,y],i)=>(i?'L':'M')+x.toFixed(2)+' '+y.toFixed(2)).join(' '),class:'gw-edge','data-route':route,'data-from':from,'data-to':to}));
       const [tipX,tipY]=p[p.length-1],[prevX,prevY]=p[p.length-2];

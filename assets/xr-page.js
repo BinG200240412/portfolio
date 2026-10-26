@@ -212,6 +212,8 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
   "查看玩法1特征": "View Play 1 profile",
   "查看玩法2特征": "View Play 2 profile",
   "查看玩法3特征": "View Play 3 profile",
+  "考古收集物品": "Archaeological collectibles",
+  "根据解锁地点生成个性化游玩日志": "Generate a personal visit journal from unlocked places",
   "体验流程框架": "The complete experience",
   "入园": "Arrive",
   "游客入园，选择体验模式，前往机器狗中转站。": "Enter the park, choose a mode and visit the robot dog station.",

@@ -1,0 +1,103 @@
+{
+  "source_pdf": "assets/works/xr/gogo.pdf",
+  "pdf_sha256": "15a01fdb1a7924d51e3eae12215b6a389410a135c8600502fecf68cc80375722",
+  "photos": [
+    {
+      "file": "arrive.png",
+      "source_file": "Gemini_Generated_Image_2mw67z2mw67z2mw6.png",
+      "source_sha256": "ea31493be29bc8894e43076adccad10e05092fda38db704d757d1cbf8ae8471e",
+      "dimensions": [
+        176,
+        108
+      ],
+      "transform": "Byte-identical supplied photograph; displayed without cropping or recoloring."
+    },
+    {
+      "file": "begin.png",
+      "source_file": "Gemini_Generated_Image_8kc9tc8kc9tc8kc9.png",
+      "source_sha256": "b2d93a8f583c9cf99b8cf40597e6fadfdad9ba265842e70ebb08ef57ce594d30",
+      "dimensions": [
+        166,
+        106
+      ],
+      "transform": "Byte-identical supplied photograph; displayed without cropping or recoloring."
+    },
+    {
+      "file": "scene.png",
+      "source_file": "Gemini_Generated_Image_ifiunqifiunqifiu.png",
+      "source_sha256": "bde14c2239cfcf27b05d572a8dcab93b01f9966c67963295f8c95e6d1a901d69",
+      "dimensions": [
+        160,
+        100
+      ],
+      "transform": "Byte-identical supplied photograph; displayed without cropping or recoloring."
+    },
+    {
+      "file": "landmark.png",
+      "source_file": "59c6397b2d4e810bc55f4aaec03c6fd6 1.png",
+      "source_sha256": "9214ef5d8d3123c4893a443f50c4c90426cd2b5aad0bce35e56c5c7dde7be104",
+      "dimensions": [
+        160,
+        120
+      ],
+      "transform": "Byte-identical supplied photograph; displayed without cropping or recoloring."
+    },
+    {
+      "file": "station.png",
+      "source_file": "Gemini_Generated_Image_vxdbv0vxdbv0vxdb.png",
+      "source_sha256": "b6ab97800fd93424e43661087c749646524f949aa23d007c483da70222f6a7c6",
+      "dimensions": [
+        156,
+        98
+      ],
+      "transform": "Byte-identical supplied photograph; displayed without cropping or recoloring."
+    },
+    {
+      "file": "play1.png",
+      "source_file": "Gemini_Generated_Image_hz19exhz19exhz19.png",
+      "source_sha256": "cc0e402b6dd09fd5d04ef00e68bdf9954006053a0a744263528a9fe911ff78a5",
+      "dimensions": [
+        164,
+        102
+      ],
+      "transform": "Byte-identical supplied photograph; displayed without cropping or recoloring."
+    },
+    {
+      "file": "play2.png",
+      "source_file": "Gemini_Generated_Image_1lqpaf1lqpaf1lqp.png",
+      "source_sha256": "bebea2b7b62d9130435346ffc43c8d097b6d115d887bc1c7f2230520796ee9bd",
+      "dimensions": [
+        162,
+        100
+      ],
+      "transform": "Byte-identical supplied photograph; displayed without cropping or recoloring."
+    },
+    {
+      "file": "play3.png",
+      "source_file": "Gemini_Generated_Image_nl281anl281anl28.png",
+      "source_sha256": "abfd2f2ab97e26334d32a34e5472586a921587a6ebac8ad6ac53c0f990036383",
+      "dimensions": [
+        162,
+        110
+      ],
+      "transform": "Byte-identical supplied photograph; displayed without cropping or recoloring."
+    }
+  ],
+  "placements": {
+    "arrive": "arrive.png",
+    "begin": "begin.png",
+    "pass": "scene.png",
+    "incidental": "scene.png",
+    "landmark": "landmark.png",
+    "station": "station.png",
+    "play1": "play1.png",
+    "play2": "play2.png",
+    "play3": "play3.png"
+  },
+  "vectors": {
+    "collection.svg": "Original jade forms and collection tray, PDF curves; container omitted.",
+    "journal-route.svg": "Original grid, curved route and all seven flags, PDF curves; container omitted.",
+    "social-upload.svg": "Original upload and Xiaohongshu glyph contours, native UPLOAD text; opaque tiles omitted.",
+    "journal.svg": "Original journal-page glyph, PDF curves; container omitted."
+  }
+}
