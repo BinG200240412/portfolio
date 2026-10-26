@@ -4,6 +4,98 @@
   'use strict';
   const root = document.documentElement;
   const file = location.pathname.split('/').pop() || 'index.html';
+  // The right-hand rail mirrors the actual snap panels in each document. It
+  // never drives wheel input, so tall panels can still be read at their pace.
+  function installPageRail() {
+    const rail = document.createElement('nav');
+    rail.className = 'portfolio-page-rail';
+    rail.setAttribute('aria-label', '页面导航');
+    rail.setAttribute('data-i18n-ignore', '');
+    rail.hidden = true;
+    document.body.appendChild(rail);
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    let panels = [], buttons = [], active = -1, frame = 0;
+    const selector = file === 'sudoku.html'
+      ? '.sudoku-opening > .hero, .sudoku-scenes .case-chapter'
+      : file === 'xr.html'
+        ? '.gogo-hero, .gogo-snap-page, .gogo-concept-visual-page, .gogo-concept-details, .gogo-interaction-page'
+        : file === 'index.html'
+          ? '.about-hero, .about-details, .about-details > section'
+          : '.portfolio-snap-page';
+    const isPanel = element => element.getClientRects().length > 0 &&
+      getComputedStyle(element).scrollSnapAlign !== 'none' &&
+      getComputedStyle(element).scrollSnapAlign !== 'auto';
+    const label = (element, index, total) => {
+      const heading = element.querySelector('h1,h2,h3');
+      const name = heading?.textContent?.replace(/\s+/g, ' ').trim().slice(0, 42);
+      const english = document.documentElement.lang.startsWith('en');
+      return english ? `Go to page ${index + 1} of ${total}${name ? `: ${name}` : ''}`
+        : `跳转到第 ${index + 1} / ${total} 页${name ? `：${name}` : ''}`;
+    };
+    function sync() {
+      frame = 0;
+      if (!panels.length) return;
+      const line = innerHeight * .42;
+      let next = 0;
+      for (let i = 1; i < panels.length; i++) {
+        if (panels[i].getBoundingClientRect().top <= line) next = i;
+        else break;
+      }
+      if (next === active) return;
+      active = next;
+      buttons.forEach((button, index) => {
+        const distance = Math.abs(index - active);
+        button.classList.toggle('is-current', distance === 0);
+        button.classList.toggle('is-near', distance === 1);
+        if (distance === 0) button.setAttribute('aria-current', 'step');
+        else button.removeAttribute('aria-current');
+      });
+    }
+    function schedule() { if (!frame) frame = requestAnimationFrame(sync); }
+    function rebuild(force = false) {
+      rail.setAttribute('aria-label', document.documentElement.lang.startsWith('en')
+        ? 'Page navigation' : '页面导航');
+      const next = [...document.querySelectorAll(selector)].filter(isPanel);
+      if (next.length < 2) {
+        panels = []; buttons = []; active = -1;
+        rail.replaceChildren(); rail.hidden = true;
+        root.classList.remove('portfolio-dot-rail-on');
+        return;
+      }
+      if (!force && next.length === panels.length && next.every((panel, i) => panel === panels[i])) {
+        schedule(); return;
+      }
+      panels = next; active = -1;
+      buttons = panels.map((panel, index) => {
+        const button = document.createElement('button');
+        button.type = 'button'; button.className = 'portfolio-page-point';
+        button.setAttribute('aria-label', label(panel, index, panels.length));
+        const light = document.createElement('span');
+        light.className = 'portfolio-page-point-light';
+        light.setAttribute('aria-hidden', 'true');
+        button.appendChild(light);
+        button.addEventListener('click', () => {
+          panel.scrollIntoView({block:'start', behavior:reduced.matches ? 'auto' : 'smooth'});
+          schedule();
+        });
+        return button;
+      });
+      rail.replaceChildren(...buttons);
+      rail.hidden = false;
+      root.classList.add('portfolio-dot-rail-on');
+      schedule();
+    }
+    addEventListener('scroll', schedule, {passive:true});
+    addEventListener('resize', () => rebuild(), {passive:true});
+    addEventListener('portfolio:language', () => rebuild(true));
+    if (file === 'index.html') {
+      addEventListener('portfolio:navigation', () => rebuild());
+    }
+    rebuild();
+  }
+  if (document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', installPageRail, {once:true});
+  else installPageRail();
   // These two works already have page-specific geometry and the same snap rule.
   if (file === 'xr.html' || file === 'sudoku.html') return;
   const page = element => {

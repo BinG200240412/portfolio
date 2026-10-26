@@ -31,3 +31,37 @@ html[data-snap-layout="about"] .about-details{align-content:center;padding-block
  html[data-snap-layout="practice"] .portfolio-snap-subpage{scroll-snap-align:start;scroll-snap-stop:always;scroll-margin-top:82px}
 }
 @media(prefers-reduced-motion:reduce){html.portfolio-paged{scroll-behavior:auto}}
+
+/* A single vertical row of LED points replaces the browser track. The active
+   row grows in layout, so its neighbours actually move away on page changes. */
+html.portfolio-dot-rail-on{scrollbar-width:none}
+html.portfolio-dot-rail-on::-webkit-scrollbar{display:none}
+.portfolio-page-rail{position:fixed;z-index:85;top:50%;right:0;
+  transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:1px;
+  width:34px;margin:0;padding:0;color:var(--ink,#efeee9)}
+.portfolio-page-rail[hidden]{display:none}
+.portfolio-page-point{display:grid;place-items:center;flex:0 0 17px;width:34px;min-width:0;
+  margin:0;padding:0;border:0;border-radius:0;background:none;color:inherit;cursor:pointer;
+  transition:flex-basis .42s cubic-bezier(.22,1,.36,1);-webkit-tap-highlight-color:transparent}
+.portfolio-page-point.is-near{flex-basis:21px}
+.portfolio-page-point.is-current{flex-basis:31px}
+.portfolio-page-point-light{display:block;width:4px;height:4px;border-radius:50%;
+  background:currentColor;opacity:.48;transform:scale(1);
+  transition:width .42s cubic-bezier(.22,1,.36,1),height .42s cubic-bezier(.22,1,.36,1),
+    opacity .3s ease}
+.portfolio-page-point.is-near .portfolio-page-point-light{width:5px;height:5px;opacity:.66}
+.portfolio-page-point.is-current .portfolio-page-point-light{width:10px;height:10px;opacity:1}
+.portfolio-page-point:hover .portfolio-page-point-light{opacity:1}
+.portfolio-page-point:focus-visible{outline:1px solid currentColor;outline-offset:-3px}
+html:has(dialog[open]) .portfolio-page-rail,html:has(.gogo-lightbox[open]) .portfolio-page-rail{
+  opacity:0;pointer-events:none}
+@media(max-width:600px){
+ .portfolio-page-rail{width:28px}
+ .portfolio-page-point{width:28px;flex-basis:22px}
+ .portfolio-page-point.is-near{flex-basis:26px}
+ .portfolio-page-point.is-current{flex-basis:36px}
+}
+@media(prefers-reduced-motion:reduce){
+ .portfolio-page-point,.portfolio-page-point-light{transition:none}
+}
+@media(forced-colors:active){.portfolio-page-rail{color:CanvasText}}
