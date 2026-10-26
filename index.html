@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>蔡正阳 — Who am I</title>
 <meta name="description" content="蔡正阳的作品集。独立开发、交互与艺术。">
-<script src="assets/i18n-main.js?v=focused-works-20261024"></script>
+<script src="assets/i18n-main.js?v=tea-20261026"></script>
 <script src="assets/i18n-cases.js?v=focused-copy-20261024"></script>
 <script src="assets/i18n.js?v=bilingual-20261023"></script>
 <script src="assets/theme.js?v=active-chrome-20261026"></script>
@@ -272,7 +272,7 @@
 <script>
 const QUESTION="Who am I ?", NAME="CaizheNGyaNG", HOME="作品集";
 const tr = value => window.PortfolioI18n?.t(value) || value;
-const SECTIONS=["数独","良渚 · AI 3D","良渚 · XR","千里江山"];
+const SECTIONS=["数独","茶弦记","良渚 · AI 3D","良渚 · XR","千里江山"];
 const COLLECTIONS=[{name:"练习",label:"Practice"},{name:"设计工具 · Skills",label:"Skills"},{name:"作品归档",label:"Archive"}];
 const HUB=[
   {label:"关于我", act:()=>expandPage('resume')},
@@ -441,6 +441,7 @@ section.addEventListener('load',event=>{if(event.target.matches('iframe'))update
 /* ---- 进板块：极简淡出 ---- */
 /* 原生重建页（可编辑元素，非贴图） */
 const SECTION_PAGE={
+  "茶弦记":"sections/tea.html?v=tea-20261026",
   "arright":"sections/arright.html",
   "数独":"sections/sudoku.html?v=coloured-components-20261026",
   "良渚 · AI 3D":"sections/ai3d.html?v=workflow-screen-wide-20261026-r3",

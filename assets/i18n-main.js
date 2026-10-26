@@ -6,6 +6,7 @@ window.PORTFOLIO_TRANSLATIONS = {
   "返回": "Back",
   "作品集": "Works",
   "数独": "Sudoku",
+  "茶弦记": "Tea String Chronicles",
   "练习": "Practice",
   "关于我": "About me",
   "蔡正阳": "Cai Zhengyang",

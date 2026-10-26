@@ -47,6 +47,10 @@
       });
       flush();
     });
+  } else if (file === 'tea.html') {
+    root.dataset.snapLayout = 'tea';
+    document.querySelectorAll('main > .tea-page').forEach(page);
+    document.querySelector('.tea-cover')?.classList.add('portfolio-snap-cover');
   } else if (file === 'design-skills.html') {
     root.dataset.snapLayout = 'skills';
     document.querySelectorAll('main > .skills-hero,main > .skill-chapter').forEach(page);

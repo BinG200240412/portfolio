@@ -1,0 +1,683 @@
+{
+  "sources": {
+    "space": {
+      "file": "/Users/bing/Desktop/Frame 322.png",
+      "size": [
+        7680,
+        8660
+      ]
+    },
+    "culture": {
+      "file": "/Users/bing/Desktop/展板_01(2).png",
+      "size": [
+        18519,
+        20456
+      ]
+    }
+  },
+  "assets": [
+    {
+      "file": "board-space.webp",
+      "source": "space",
+      "crop_pixels": [
+        0,
+        0,
+        7680,
+        8660
+      ],
+      "size": [
+        1600,
+        1804
+      ],
+      "content": "完整原始展板预览"
+    },
+    {
+      "file": "board-space-detail.webp",
+      "source": "space",
+      "crop_pixels": [
+        0,
+        0,
+        7680,
+        8660
+      ],
+      "size": [
+        3000,
+        3383
+      ],
+      "content": "完整原始展板预览"
+    },
+    {
+      "file": "board-culture.webp",
+      "source": "culture",
+      "crop_pixels": [
+        0,
+        0,
+        18519,
+        20456
+      ],
+      "size": [
+        1600,
+        1767
+      ],
+      "content": "完整原始展板预览"
+    },
+    {
+      "file": "board-culture-detail.webp",
+      "source": "culture",
+      "crop_pixels": [
+        0,
+        0,
+        18519,
+        20456
+      ],
+      "size": [
+        3000,
+        3314
+      ],
+      "content": "完整原始展板预览"
+    },
+    {
+      "file": "hero-ritual.webp",
+      "source": "space",
+      "crop_pixels": [
+        5376,
+        2202,
+        7526,
+        3978
+      ],
+      "size": [
+        1800,
+        1487
+      ],
+      "content": "中央击拂交互场景"
+    },
+    {
+      "file": "space-projection.webp",
+      "source": "space",
+      "crop_pixels": [
+        200,
+        2207,
+        2616,
+        3195
+      ],
+      "size": [
+        2200,
+        900
+      ],
+      "content": "醒茶沉浸投影场景"
+    },
+    {
+      "file": "space-rhythm.webp",
+      "source": "space",
+      "crop_pixels": [
+        200,
+        3277,
+        2616,
+        4403
+      ],
+      "size": [
+        2200,
+        1025
+      ],
+      "content": "碾罗成律沉浸投影场景"
+    },
+    {
+      "file": "space-etiquette.webp",
+      "source": "space",
+      "crop_pixels": [
+        200,
+        4541,
+        2616,
+        5617
+      ],
+      "size": [
+        2200,
+        980
+      ],
+      "content": "行盏入礼沉浸投影场景"
+    },
+    {
+      "file": "space-overview.webp",
+      "source": "space",
+      "crop_pixels": [
+        205,
+        410,
+        2975,
+        1818
+      ],
+      "size": [
+        2400,
+        1220
+      ],
+      "content": "展厅四幕玩法动线轴测"
+    },
+    {
+      "file": "space-behavior.webp",
+      "source": "space",
+      "crop_pixels": [
+        3922,
+        410,
+        7526,
+        1848
+      ],
+      "size": [
+        2600,
+        1037
+      ],
+      "content": "空间行为分析与交互动线"
+    },
+    {
+      "file": "space-center.webp",
+      "source": "space",
+      "crop_pixels": [
+        3917,
+        2202,
+        5309,
+        3016
+      ],
+      "size": [
+        1392,
+        814
+      ],
+      "content": "中央环形展厅俯视效果"
+    },
+    {
+      "file": "merchandise.webp",
+      "source": "space",
+      "crop_pixels": [
+        179,
+        6067,
+        3738,
+        6661
+      ],
+      "size": [
+        2400,
+        401
+      ],
+      "content": "茶杯与茶百戏周边三联图"
+    },
+    {
+      "file": "merchandise-cup.webp",
+      "source": "space",
+      "crop_pixels": [
+        179,
+        6067,
+        1403,
+        6656
+      ],
+      "size": [
+        1200,
+        577
+      ],
+      "content": "茶杯与浮雕杯盖"
+    },
+    {
+      "file": "merchandise-painting.webp",
+      "source": "space",
+      "crop_pixels": [
+        1500,
+        6067,
+        2514,
+        6656
+      ],
+      "size": [
+        1014,
+        589
+      ],
+      "content": "清水茶百戏绘制体验"
+    },
+    {
+      "file": "merchandise-collection.webp",
+      "source": "space",
+      "crop_pixels": [
+        2621,
+        6067,
+        3732,
+        6656
+      ],
+      "size": [
+        1111,
+        589
+      ],
+      "content": "五色奖赏茶杯陈列"
+    },
+    {
+      "file": "display-language.webp",
+      "source": "space",
+      "crop_pixels": [
+        3942,
+        5028,
+        5637,
+        5627
+      ],
+      "size": [
+        1695,
+        599
+      ],
+      "content": "展具几何语言与色彩材质"
+    },
+    {
+      "file": "display-system.webp",
+      "source": "space",
+      "crop_pixels": [
+        3953,
+        5729,
+        6354,
+        6717
+      ],
+      "size": [
+        2200,
+        905
+      ],
+      "content": "茶展展架家族效果图"
+    },
+    {
+      "file": "space-sketches.webp",
+      "source": "space",
+      "crop_pixels": [
+        3978,
+        7634,
+        6129,
+        8520
+      ],
+      "size": [
+        2000,
+        824
+      ],
+      "content": "展厅空间草图推演"
+    },
+    {
+      "file": "research-jingshan.webp",
+      "source": "culture",
+      "crop_pixels": [
+        963,
+        6198,
+        8568,
+        12111
+      ],
+      "size": [
+        2800,
+        2177
+      ],
+      "content": "径山寺文化与实地调研地图"
+    },
+    {
+      "file": "tea-steps.webp",
+      "source": "culture",
+      "crop_pixels": [
+        951,
+        15161,
+        8815,
+        16186
+      ],
+      "size": [
+        2400,
+        313
+      ],
+      "content": "宋代点茶八步流程图",
+      "operation": "crop plus source-pixel montage; no redraw",
+      "source_patch": {
+        "remove_neighbor_marker_pixels": [
+          951,
+          16099,
+          1056,
+          16186
+        ],
+        "replacement_crop_pixels": [
+          988,
+          20223,
+          1093,
+          20309
+        ]
+      }
+    },
+    {
+      "file": "tea-masters.webp",
+      "source": "culture",
+      "crop_pixels": [
+        802,
+        16803,
+        4049,
+        20099
+      ],
+      "size": [
+        1600,
+        1715
+      ],
+      "content": "茶百戏工具十二茶先生",
+      "operation": "4 by 3 montage of 12 rectangular source crops; no redraw",
+      "parts": [
+        {
+          "row": 1,
+          "column": 1,
+          "crop_pixels": [
+            802,
+            16791,
+            1580,
+            17889
+          ],
+          "destination_pixels": [
+            43,
+            68
+          ]
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "crop_pixels": [
+            1667,
+            16791,
+            2432,
+            17889
+          ],
+          "destination_pixels": [
+            913,
+            68
+          ]
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "crop_pixels": [
+            2457,
+            16791,
+            3296,
+            17889
+          ],
+          "destination_pixels": [
+            1740,
+            68
+          ]
+        },
+        {
+          "row": 1,
+          "column": 4,
+          "crop_pixels": [
+            3309,
+            16791,
+            4019,
+            17889
+          ],
+          "destination_pixels": [
+            2669,
+            68
+          ]
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "crop_pixels": [
+            802,
+            17902,
+            1580,
+            18902
+          ],
+          "destination_pixels": [
+            43,
+            1352
+          ]
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "crop_pixels": [
+            1667,
+            17902,
+            2432,
+            18902
+          ],
+          "destination_pixels": [
+            913,
+            1352
+          ]
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "crop_pixels": [
+            2457,
+            17902,
+            3296,
+            18902
+          ],
+          "destination_pixels": [
+            1740,
+            1352
+          ]
+        },
+        {
+          "row": 2,
+          "column": 4,
+          "crop_pixels": [
+            3309,
+            17902,
+            4019,
+            18902
+          ],
+          "destination_pixels": [
+            2669,
+            1352
+          ]
+        },
+        {
+          "row": 3,
+          "column": 1,
+          "crop_pixels": [
+            802,
+            18914,
+            1580,
+            20075
+          ],
+          "destination_pixels": [
+            43,
+            2507
+          ]
+        },
+        {
+          "row": 3,
+          "column": 2,
+          "crop_pixels": [
+            1667,
+            18914,
+            2432,
+            20075
+          ],
+          "destination_pixels": [
+            913,
+            2507
+          ]
+        },
+        {
+          "row": 3,
+          "column": 3,
+          "crop_pixels": [
+            2457,
+            18914,
+            3296,
+            20075
+          ],
+          "destination_pixels": [
+            1740,
+            2507
+          ]
+        },
+        {
+          "row": 3,
+          "column": 4,
+          "crop_pixels": [
+            3309,
+            18914,
+            4019,
+            20075
+          ],
+          "destination_pixels": [
+            2669,
+            2507
+          ]
+        }
+      ],
+      "background_source_crop_pixels": [
+        864,
+        20223,
+        4012,
+        20371
+      ]
+    },
+    {
+      "file": "tea-tools.webp",
+      "source": "culture",
+      "crop_pixels": [
+        4099,
+        16395,
+        8951,
+        20050
+      ],
+      "size": [
+        1800,
+        1356
+      ],
+      "content": "十二先生原型器物关系图"
+    },
+    {
+      "file": "game-wake.webp",
+      "source": "culture",
+      "crop_pixels": [
+        9870,
+        9259,
+        11857,
+        10375
+      ],
+      "size": [
+        1300,
+        730
+      ],
+      "content": "醒茶如禅视觉概念",
+      "operation": "exact rectangular boundary of the UI screenshot embedded in the original board"
+    },
+    {
+      "file": "game-grind.webp",
+      "source": "culture",
+      "crop_pixels": [
+        11909,
+        9220,
+        13964,
+        10414
+      ],
+      "size": [
+        1300,
+        755
+      ],
+      "content": "碾罗成律视觉概念",
+      "operation": "exact rectangular boundary of the UI screenshot embedded in the original board",
+      "source_limit": "The original embedded screenshot truncates the lower ring and lower score legend at its bottom edge; the source board contains no lower pixels."
+    },
+    {
+      "file": "game-ritual.webp",
+      "source": "culture",
+      "crop_pixels": [
+        13965,
+        9269,
+        15947,
+        10365
+      ],
+      "size": [
+        1300,
+        719
+      ],
+      "content": "行盏入礼视觉概念",
+      "operation": "exact rectangular boundary of the UI screenshot embedded in the original board"
+    },
+    {
+      "file": "game-whisk.webp",
+      "source": "culture",
+      "crop_pixels": [
+        16030,
+        9201,
+        18080,
+        10421
+      ],
+      "size": [
+        1300,
+        774
+      ],
+      "content": "击拂斗弦视觉概念",
+      "operation": "exact rectangular boundary of the UI screenshot embedded in the original board",
+      "source_limit": "The original embedded screenshot truncates the lower sieve and grindstone icon circles at source y=10421; the source board contains no lower pixels. Header and return button are fully retained."
+    },
+    {
+      "file": "gameplay-wake.webp",
+      "source": "culture",
+      "crop_pixels": [
+        9815,
+        13321,
+        11766,
+        14741
+      ],
+      "size": [
+        1400,
+        1019
+      ],
+      "content": "醒茶如禅游戏画面"
+    },
+    {
+      "file": "gameplay-grind.webp",
+      "source": "culture",
+      "crop_pixels": [
+        11976,
+        13321,
+        14099,
+        14741
+      ],
+      "size": [
+        1400,
+        936
+      ],
+      "content": "碾罗成律游戏画面"
+    },
+    {
+      "file": "gameplay-ritual.webp",
+      "source": "culture",
+      "crop_pixels": [
+        14321,
+        13321,
+        16062,
+        14741
+      ],
+      "size": [
+        1400,
+        1142
+      ],
+      "content": "行盏入礼游戏画面"
+    },
+    {
+      "file": "gameplay-whisk.webp",
+      "source": "culture",
+      "crop_pixels": [
+        16284,
+        13321,
+        18038,
+        14741
+      ],
+      "size": [
+        1400,
+        1133
+      ],
+      "content": "击拂成弦游戏画面"
+    },
+    {
+      "file": "rewards.webp",
+      "source": "culture",
+      "crop_pixels": [
+        11272,
+        16408,
+        16074,
+        19939
+      ],
+      "size": [
+        2000,
+        1471
+      ],
+      "content": "十二先生图鉴与关卡奖励"
+    }
+  ]
+}

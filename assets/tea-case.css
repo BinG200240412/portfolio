@@ -1,0 +1,164 @@
+/* Tea String Chronicles — original exhibition artwork, with an open editorial frame. */
+:root{--tea-jade:#80b4a2;--tea-strong:#a3cabb;--tea-gold:#b9a174}
+html[data-theme="light"]{--tea-jade:#386c5c;--tea-strong:#2b6150;--tea-gold:#796338}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body.tea-case{margin:0;line-height:1.65;-webkit-font-smoothing:antialiased}
+html[data-theme="dark"] body.tea-case{--mid:#ced0c8;--soft:#b9c2b9;--dim:#9ca99f}
+html[data-theme="light"] body.tea-case{--mid:#4b574e;--soft:#556659;--dim:#56675e}
+.tea-case a{color:inherit;text-decoration:none}
+.tea-case img{display:block;width:100%;height:auto}
+.tea-case figure{margin:0;min-width:0}
+.tea-case button{font:inherit}
+.tea-case [hidden]{display:none!important}
+.tea-case p,.tea-case h1,.tea-case h2,.tea-case h3{margin:0}
+.tea-page{width:min(1440px,100%);margin-inline:auto;padding:clamp(96px,11vh,138px) clamp(24px,6vw,96px);display:flex;flex-direction:column;justify-content:center;gap:clamp(30px,4vw,54px)}
+.tea-case h2{font-size:var(--editorial-title);line-height:1.3;letter-spacing:-.03em;max-width:23ch}
+.tea-case h3{font-size:var(--editorial-subtitle);line-height:1.4;letter-spacing:-.02em;margin-bottom:16px}
+.tea-case p{font-size:var(--editorial-body);line-height:1.85;color:var(--mid)}
+.tea-case figcaption{margin-top:12px;font-size:14px;line-height:1.65;color:var(--dim);letter-spacing:0}
+.tea-heading{display:grid;grid-template-columns:1fr minmax(270px,.62fr);gap:clamp(24px,5vw,90px);align-items:end}
+.tea-heading p{max-width:42ch;justify-self:end}
+.tea-cover{display:grid;grid-template-columns:.78fr 1.22fr;grid-template-rows:1fr auto;align-items:center;column-gap:6%;row-gap:40px;min-height:100svh;padding-top:112px;padding-bottom:42px}
+.tea-cover .tea-type{font-size:14px;color:var(--tea-jade);margin-bottom:36px}
+.tea-cover h1{font-size:clamp(76px,8.5vw,126px);line-height:1.2;letter-spacing:.03em;margin:0 0 22px -.05em;white-space:nowrap}
+.tea-cover .tea-english{font-size:clamp(25px,3vw,43px);line-height:1.05;letter-spacing:-.025em;color:var(--tea-jade);margin-bottom:44px}
+.tea-cover .tea-cover-intro{max-width:29ch;line-height:1.9;color:var(--mid)}
+.tea-enter{display:inline-flex;align-items:center;gap:26px;margin-top:32px;font-size:16px;color:var(--ink)}
+.tea-enter span{color:var(--tea-jade);transition:transform .25s ease}
+.tea-enter:hover span{transform:translateY(5px)}
+.tea-cover-figure img{height:auto}
+.tea-cover-figure figcaption{text-align:right}
+.tea-index{grid-column:1/-1;display:flex;gap:16px 32px;flex-wrap:wrap;justify-content:space-between;font-size:14px;color:var(--soft);padding-top:16px}
+.tea-index a{padding-block:8px}
+.tea-index a:hover,.tea-index a:focus-visible{color:var(--tea-strong)}
+.tea-heading-wide{grid-template-columns:1.2fr .8fr}
+.tea-heading-wide h2{max-width:none}
+.tea-research-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:5%;align-items:center}
+.tea-origin-side{display:flex;flex-direction:column;gap:48px}
+.tea-origin-note{max-width:34ch;margin-left:8%}
+.tea-origin-side figure{width:100%}
+.tea-origin-side figure img{background:#17130e}
+.tea-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;position:relative}
+.tea-tabs button{appearance:none;border:0;background:transparent;color:var(--soft);text-align:left;padding:22px 20px;cursor:pointer;border-bottom:1px solid var(--line);transition:color .2s ease,background .2s ease;min-width:0}
+.tea-tabs button span{display:block;font-size:25px;line-height:1.4}
+.tea-tabs button small{display:block;font-size:14px;color:var(--dim);margin-top:8px;line-height:1.6}
+.tea-tabs button[aria-selected="true"]{color:var(--tea-strong);border-bottom:2px solid var(--tea-jade);background:color-mix(in srgb,var(--tea-jade) 6%,transparent)}
+.tea-tabs button:hover{color:var(--ink);background:color-mix(in srgb,var(--tea-jade) 5%,transparent)}
+.tea-tabs button:focus-visible,.tea-case a:focus-visible{outline:1.5px solid var(--tea-jade);outline-offset:5px}
+.tea-game-panel:focus-visible{outline:1px solid var(--tea-jade);outline-offset:8px}
+.tea-game-art{width:100%;background:#101716}
+.tea-game-panel{display:grid;grid-template-columns:1.65fr 1fr;gap:5%;align-items:center}
+.tea-game-art img{height:auto;background:#101716}
+.tea-game-bottom{display:flex;flex-direction:column;gap:28px;align-items:start}
+.tea-game-bottom h3{font-size:var(--editorial-subtitle)}
+.tea-game-bottom p{max-width:40ch}
+.tea-game-bottom figure{max-width:440px;justify-self:end;width:100%}
+.tea-game-bottom figure img{height:auto;max-height:260px;object-fit:contain;background:#101716}
+.tea-action-line{display:flex;gap:15px;list-style:none;padding:0;margin:22px 0 0;color:var(--tea-jade);font-size:16px}
+.tea-action-line li+li::before{content:"→";margin-right:15px;opacity:.55}
+.tea-case .tea-note{font-size:14px;color:var(--dim);margin-top:-18px}
+.tea-masters-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:7%;align-items:center}
+.tea-masters-portrait img{max-height:680px;object-fit:contain;object-position:left;background:#17130e}
+.tea-master-story{display:flex;flex-direction:column;gap:42px}
+.tea-master-story>div{max-width:35ch}
+.tea-master-story figure img{background:#101716}
+.tea-panorama img{width:100%;aspect-ratio:2.44;object-fit:cover}
+.tea-immersion-pair{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.tea-immersion-pair img{aspect-ratio:2.1;object-fit:cover}
+.tea-space-map{width:90%;margin-inline:auto!important}
+.tea-space-pair{display:grid;grid-template-columns:1.4fr .6fr;gap:32px;align-items:center}
+.tea-space-pair img{max-height:350px;object-fit:contain}
+.tea-objects-grid{display:grid;grid-template-columns:1fr 1fr;gap:5%;align-items:center}
+.tea-objects-grid>figure img{object-fit:contain;max-height:640px}
+.tea-objects-side{display:flex;flex-direction:column;gap:32px}
+.tea-objects-side p{max-width:36ch}
+.tea-merchandise-gallery{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.tea-merchandise-gallery figure:last-child{grid-column:1/-1}
+.tea-board-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+.tea-board-grid img{max-height:640px;object-fit:contain;object-position:top}
+.tea-board-open{display:block;border:0;background:none;padding:0;width:100%;color:inherit;cursor:zoom-in}
+.tea-board-open:focus-visible{outline:1.5px solid var(--tea-jade);outline-offset:6px}
+.tea-board-viewer{position:fixed;inset:0;width:100vw;max-width:none;height:100dvh;max-height:none;padding:0;margin:0;border:0;background:var(--paper);color:var(--ink);overflow:hidden}
+.tea-board-viewer::backdrop{background:var(--paper)}
+.tea-board-bar{height:86px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 4vw;border-bottom:1px solid var(--line)}
+.tea-board-bar h2{font-size:18px;line-height:1.5;max-width:none}
+.tea-board-tools{display:flex;align-items:center;gap:12px}
+.tea-board-tools button{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:8px 14px;font-size:16px;min-width:42px;cursor:pointer}
+.tea-board-tools button:disabled{opacity:.3;cursor:default}
+.tea-board-tools button:focus-visible{outline:1px solid var(--tea-jade);outline-offset:3px}
+.tea-board-tools output{font-size:14px;min-width:4ch;text-align:center}
+.tea-board-scroll{height:calc(100dvh - 86px);overflow:auto;overscroll-behavior:contain;background:var(--bg2);padding:24px;scrollbar-gutter:stable}
+.tea-board-scroll img{display:block;width:var(--board-width,100%);max-width:none;height:auto;margin-inline:auto}
+html.tea-board-detail-open{overflow:hidden;scroll-snap-type:none}
+.tea-footer{display:flex;justify-content:space-between;align-items:end;gap:25px;flex-wrap:wrap;padding-top:20px}
+.tea-footer span{font-size:14px;color:var(--dim)}
+.tea-footer p,.tea-footer a{font-size:14px;line-height:1.8}
+.tea-footer>p{max-width:28ch}
+.tea-footer a{color:var(--tea-strong)}
+@media(min-width:1600px){.tea-cover-figure img{max-height:72svh;object-fit:cover}.tea-game-art img{max-height:580px}}
+@media(max-width:900px){
+ .tea-page{padding-inline:6vw;gap:32px}
+ .tea-cover{column-gap:4%;grid-template-columns:.85fr 1.15fr}
+ .tea-cover h1{font-size:clamp(65px,9vw,90px)}
+ .tea-cover .tea-type{margin-bottom:28px}
+ .tea-cover .tea-english{margin-bottom:30px}
+ .tea-heading,.tea-heading-wide{grid-template-columns:1fr;gap:20px}
+ .tea-heading p{max-width:56ch;justify-self:start}
+ .tea-research-grid{grid-template-columns:1fr 1fr;gap:30px}
+ .tea-origin-note{margin-left:0}
+ .tea-tabs button{padding:18px 10px}
+ .tea-tabs button span{font-size:22px}
+ .tea-tabs button small{font-size:13px}
+ .tea-masters-grid{gap:35px}
+ .tea-space-map{width:100%}
+}
+@media(max-width:600px){
+ :root{--editorial-title:clamp(32px,8.2vw,40px);--editorial-subtitle:25px;--editorial-body:18px}
+ .tea-page{padding:94px 24px 64px;gap:28px;min-height:100svh}
+ .tea-cover{display:flex;align-items:stretch;gap:30px;padding-top:105px}
+ .tea-cover .tea-type{margin-bottom:22px;font-size:14px}
+ .tea-cover h1{font-size:86px;margin-bottom:14px}
+ .tea-cover .tea-english{font-size:30px;margin-bottom:24px}
+ .tea-cover .tea-english br{display:none}
+ .tea-cover .tea-english br::after{content:" "}
+ .tea-cover .tea-cover-intro{max-width:none}
+ .tea-enter{margin-top:20px}
+ .tea-cover-figure img{aspect-ratio:1.2}
+ .tea-index{justify-content:start;gap:4px 22px;padding-top:0}
+ .tea-index a{font-size:14px}
+ .tea-research-grid,.tea-masters-grid,.tea-objects-grid{grid-template-columns:1fr;gap:32px}
+ .tea-origin-side{gap:26px}
+ .tea-origin-note{max-width:none}
+ .tea-heading h2 br{display:none}
+ .tea-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px}
+ .tea-tabs button{padding:14px 8px;min-height:94px}
+ .tea-tabs button span{font-size:21px;white-space:normal}
+ .tea-tabs button small{font-size:13px;margin-top:8px;line-height:1.5}
+ .tea-game-panel{display:block}
+ .tea-game-art img{aspect-ratio:auto;min-height:170px}
+ .tea-game-bottom{gap:26px;margin-top:26px}
+ .tea-game-bottom figure{max-width:none;justify-self:stretch}
+ .tea-master-story{gap:30px}
+ .tea-masters-portrait img{max-height:none}
+ .tea-panorama img{aspect-ratio:2.1}
+ .tea-immersion-pair,.tea-space-pair{grid-template-columns:1fr;gap:28px}
+ .tea-immersion-pair img{aspect-ratio:auto}
+ .tea-space-pair img{max-height:none}
+ .tea-space-pair figure:last-child{width:75%;margin-inline:auto}
+ .tea-objects-grid>figure img{max-height:none}
+ .tea-board-grid{gap:20px}
+ .tea-board-grid img{max-height:none}
+ .tea-board-bar{height:126px;align-items:start;flex-direction:column;gap:14px;padding:16px 20px}
+ .tea-board-bar h2{font-size:16px}
+ .tea-board-tools{width:100%;gap:8px}
+ .tea-board-tools button{font-size:14px;padding:7px 10px}
+ .tea-board-tools button:last-child{margin-left:auto}
+ .tea-board-scroll{height:calc(100dvh - 126px);padding:12px}
+ .tea-footer{align-items:start;gap:22px}
+ .tea-footer>p{max-width:none}
+ .tea-case figcaption{font-size:13px}
+ html[lang="en"] .tea-tabs button span{white-space:normal;font-size:18px}
+ html[lang="en"] .tea-tabs button small{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.tea-enter span{transition:none}}

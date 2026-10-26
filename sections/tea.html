@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="茶弦记：以宋代点茶为叙事线索，将茶百戏、音游与展厅空间连接的体验设计。">
+<script src="../assets/i18n-main.js?v=tea-20261026"></script>
+<script src="../assets/i18n-cases.js?v=focused-copy-20261024"></script>
+<script src="../assets/tea-i18n.js?v=tea-20261026"></script>
+<script src="../assets/i18n.js?v=bilingual-20261023"></script>
+<script src="../assets/theme.js?v=tea-20261026"></script>
+<title>茶弦记 — 茶文化展厅与游戏体验设计</title>
+<link rel="stylesheet" href="../assets/theme.css?v=language-optics-20261026">
+<link rel="stylesheet" href="../assets/editorial-hierarchy.css?v=stepped-type-20261026">
+<link rel="stylesheet" href="../assets/page-snap.css?v=site-layout-20261025">
+<link rel="stylesheet" href="../assets/media-corners.css?v=video-preview-detail-20261026">
+<link rel="stylesheet" href="../assets/video-detail.css?v=video-preview-detail-20261026">
+<link rel="stylesheet" href="../assets/media-view-only.css?v=view-only-media-20261026">
+<link rel="stylesheet" href="../assets/tea-case.css?v=tea-20261026">
+<script defer src="../assets/page-snap.js?v=tea-20261026"></script>
+<script defer src="../assets/video-detail.js?v=video-preview-detail-20261026"></script>
+<script defer src="../assets/media-corners.js?v=video-preview-detail-20261026"></script>
+<script defer src="../assets/media-view-only.js?v=view-only-media-20261026"></script>
+<script defer src="../assets/tea-case.js?v=tea-20261026"></script>
+</head>
+<body class="tea-case">
+<main>
+  <section id="cover" class="tea-cover tea-page" aria-labelledby="tea-title">
+    <div class="tea-cover-copy">
+      <p class="tea-type">茶文化展厅 · 游戏体验设计</p>
+      <h1 id="tea-title" data-i18n-ignore>茶弦记</h1>
+      <p class="tea-english" lang="en" data-i18n-ignore>Tea String<br> Chronicles</p>
+      <p class="tea-cover-intro">以茶为弦，以器为谱。<br>让一场宋代茶事，成为可以亲身参与的游戏。</p>
+      <a class="tea-enter" href="#journey">走进四段茶事 <span aria-hidden="true">↓</span></a>
+    </div>
+    <figure class="tea-cover-figure">
+      <img src="../assets/works/tea/hero-ritual.webp" alt="茶弦记核心展厅效果图：观众在环绕投影与茶盏之间参与击拂体验" fetchpriority="high" decoding="async" width="1800" height="1487">
+      <figcaption>击拂体验 · 空间效果图</figcaption>
+    </figure>
+    <nav class="tea-index" aria-label="项目章节">
+      <a href="#origin">茶事的起点</a>
+      <a href="#journey">四段游戏</a>
+      <a href="#masters">十二茶先生</a>
+      <a href="#space">展厅空间</a>
+      <a href="#objects">器物与日常</a>
+    </nav>
+  </section>
+
+  <section id="origin" class="tea-page tea-origin" aria-labelledby="origin-title">
+    <div class="tea-heading tea-heading-wide">
+      <h2 id="origin-title">点茶为何不能像咖啡拉花一样<br>有趣又日常？</h2>
+      <p>从径山寺茶宴与宋代点茶流程出发，把采茶、碾罗、行盏、击拂转译成连续的游戏体验。观众在动作、声音与器物之间，重新认识一盏茶。</p>
+    </div>
+    <div class="tea-research-grid">
+      <figure>
+        <img src="../assets/works/tea/research-jingshan.webp" alt="径山寺调研地图，汇集文化溯源、场景观察、器物研究与茶宴流程" loading="lazy" decoding="async" width="2800" height="2177">
+        <figcaption>径山寺 · 场域与茶宴调研</figcaption>
+      </figure>
+      <div class="tea-origin-side">
+        <div class="tea-origin-note">
+          <h3>从观看，到入席</h3>
+          <p>茶的知识被放进一条可行走的体验路径：先收集声音、准备茶末，再学习茶礼，最后在击拂中完成自己的茶事。</p>
+        </div>
+        <figure>
+          <img src="../assets/works/tea/tea-steps.webp" alt="宋代点茶步骤的器物图示" loading="lazy" decoding="async" width="2400" height="313">
+          <figcaption>点茶动作与器物研究</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="journey" class="tea-page tea-journey" aria-labelledby="journey-title">
+    <div class="tea-heading">
+      <h2 id="journey-title">把茶事，谱成四段游戏</h2>
+      <p>从一片茶叶到一盏茶汤，声音、手作与身体依次进入体验。</p>
+    </div>
+    <div class="tea-tabs" role="tablist" aria-label="四段茶事">
+      <button id="tab-wake" type="button" role="tab" aria-selected="true" aria-controls="panel-wake" tabindex="0"><span>醒茶如禅</span><small>采集茶音</small></button>
+      <button id="tab-grind" type="button" role="tab" aria-selected="false" aria-controls="panel-grind" tabindex="-1"><span>碾罗成律</span><small>碾茶 · 罗茶</small></button>
+      <button id="tab-ritual" type="button" role="tab" aria-selected="false" aria-controls="panel-ritual" tabindex="-1"><span>行盏入礼</span><small>身体与茶礼</small></button>
+      <button id="tab-whisk" type="button" role="tab" aria-selected="false" aria-controls="panel-whisk" tabindex="-1"><span>击拂斗弦</span><small>击拂与合奏</small></button>
+    </div>
+    <div class="tea-game-panels">
+      <article id="panel-wake" class="tea-game-panel" role="tabpanel" aria-labelledby="tab-wake" tabindex="0">
+        <figure class="tea-game-art"><img src="../assets/works/tea/game-wake.webp" alt="醒茶如禅关卡概念界面" loading="lazy" decoding="async" width="1300" height="730"></figure>
+        <div class="tea-game-bottom"><div><h3>让茶山先被听见</h3><p>从采集茶芽与茶音开始，用声音唤醒茶事的第一段旅程。</p><ul class="tea-action-line"><li>听辨</li><li>采集</li><li>唤醒</li></ul></div><figure><img src="../assets/works/tea/gameplay-wake.webp" alt="醒茶关卡的游戏画面设计" loading="lazy" decoding="async" width="1400" height="1019"><figcaption>游戏画面设计</figcaption></figure></div>
+      </article>
+      <article id="panel-grind" class="tea-game-panel" role="tabpanel" aria-labelledby="tab-grind" tabindex="0" hidden>
+        <figure class="tea-game-art"><img src="../assets/works/tea/game-grind.webp" alt="碾罗成律关卡概念界面" loading="lazy" decoding="async" width="1300" height="755"></figure>
+        <div class="tea-game-bottom"><div><h3>把茶末，磨进节奏</h3><p>以点击、滑动与圆环判定完成碎茶、磨茶和罗茶，让备茶的手作节奏成为音乐的一部分。</p><ul class="tea-action-line"><li>碾碎</li><li>磨细</li><li>过筛</li></ul></div><figure><img src="../assets/works/tea/gameplay-grind.webp" alt="碾罗关卡的游戏画面设计" loading="lazy" decoding="async" width="1400" height="936"><figcaption>游戏画面设计</figcaption></figure></div>
+      </article>
+      <article id="panel-ritual" class="tea-game-panel" role="tabpanel" aria-labelledby="tab-ritual" tabindex="0" hidden>
+        <figure class="tea-game-art"><img src="../assets/works/tea/game-ritual.webp" alt="行盏入礼关卡概念界面" loading="lazy" decoding="async" width="1300" height="719"></figure>
+        <div class="tea-game-bottom"><div><h3>用身体，读懂茶礼</h3><p>以身体动作识别完成叉手、持盏、转身与奉茶，把礼仪化为参与者自己的身体记忆。</p><ul class="tea-action-line"><li>叉手</li><li>持盏</li><li>奉茶</li></ul></div><figure><img src="../assets/works/tea/gameplay-ritual.webp" alt="行盏关卡的游戏画面设计" loading="lazy" decoding="async" width="1400" height="1142"><figcaption>游戏画面设计</figcaption></figure></div>
+      </article>
+      <article id="panel-whisk" class="tea-game-panel" role="tabpanel" aria-labelledby="tab-whisk" tabindex="0" hidden>
+        <figure class="tea-game-art"><img src="../assets/works/tea/game-whisk.webp" alt="击拂音游关卡概念界面" loading="lazy" decoding="async" width="1300" height="774"></figure>
+        <div class="tea-game-bottom"><div><h3>让击拂，成为合奏</h3><p>茶筅与茶盏成为交互的中心。击拂动作与音乐、水纹、粒子相互呼应，在与十二茶先生的对决中完成最后一关。</p><ul class="tea-action-line"><li>击拂</li><li>共振</li><li>对决</li></ul></div><figure><img src="../assets/works/tea/gameplay-whisk.webp" alt="击拂关卡的游戏画面设计" loading="lazy" decoding="async" width="1400" height="1133"><figcaption>游戏画面设计</figcaption></figure></div>
+      </article>
+    </div>
+    <p class="tea-note">点击关卡切换设计画面</p>
+  </section>
+
+  <section id="masters" class="tea-page tea-masters" aria-labelledby="masters-title">
+    <div class="tea-heading"><h2 id="masters-title">器物有了自己的角色</h2><p>十二件茶事器具化身「十二茶先生」，让器物的形、用途与性格进入同一个游戏世界。</p></div>
+    <div class="tea-masters-grid">
+      <figure class="tea-masters-portrait"><img src="../assets/works/tea/tea-masters.webp" alt="十二茶先生角色设计，以宋代茶具造型发展角色形象" loading="lazy" decoding="async" width="1600" height="1715"><figcaption>十二茶先生 · 角色与器物关系</figcaption></figure>
+      <div class="tea-master-story">
+        <div><h3>以器入戏</h3><p>茶筅、茶瓶、茶盏等器物的轮廓，成为角色服饰与姿态的起点；认出角色，也是在认识点茶工具。</p></div>
+        <figure><img src="../assets/works/tea/rewards.webp" alt="茶弦记的角色收集、徽章与关卡奖励界面" loading="lazy" decoding="async" width="2000" height="1471"><figcaption>角色收集与关卡奖励</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="immersion" class="tea-page tea-immersion" aria-labelledby="immersion-title">
+    <div class="tea-heading"><h2 id="immersion-title">让整间茶厅，回应你的动作</h2><p>以投影把人物、茶音与动作反馈带入空间，让数字体验围绕真实器物展开。</p></div>
+    <figure class="tea-panorama"><img src="../assets/works/tea/space-projection.webp" alt="茶厅全景效果图，茶先生与青绿色粒子投影环绕实体器物" loading="lazy" decoding="async" width="2200" height="900"><figcaption>醒茶 · 茶山与茶音进入空间</figcaption></figure>
+    <div class="tea-immersion-pair">
+      <figure><img src="../assets/works/tea/space-rhythm.webp" alt="碾罗体验空间效果图，观众在实体操作台前参与粒子与节奏互动" loading="lazy" decoding="async" width="2200" height="1025"><figcaption>碾罗 · 手作节奏的可视化</figcaption></figure>
+      <figure><img src="../assets/works/tea/space-etiquette.webp" alt="行盏体验空间效果图，观众用身体动作回应投影中的茶先生" loading="lazy" decoding="async" width="2200" height="980"><figcaption>行盏 · 身体与数字角色对话</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="space" class="tea-page tea-space" aria-labelledby="space-title">
+    <div class="tea-heading"><h2 id="space-title">四段茶事，一条入席的路径</h2><p>展陈动线连接知识、手作、茶礼与音游；中央击拂区把前序体验汇合成一场对决。</p></div>
+    <figure class="tea-space-map"><img src="../assets/works/tea/space-overview.webp" alt="茶弦记四区游戏体验与展厅动线轴测图" loading="lazy" decoding="async" width="2400" height="1220"><figcaption>展厅布局与玩法逻辑</figcaption></figure>
+    <div class="tea-space-pair">
+      <figure><img src="../assets/works/tea/space-behavior.webp" alt="空间行为分析图，呈现漫步、驻留、观赏与交互等观众行为" loading="lazy" decoding="async" width="2600" height="1037"><figcaption>观众的移动、驻留与交互</figcaption></figure>
+      <figure><img src="../assets/works/tea/space-center.webp" alt="环绕投影的中央击拂体验区俯视效果图" loading="lazy" decoding="async" width="1392" height="814"><figcaption>中央击拂区 · 环绕投影</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="objects" class="tea-page tea-objects" aria-labelledby="objects-title">
+    <div class="tea-heading"><h2 id="objects-title">把展厅里的茶，带回日常</h2><p>展具从传统器物与建筑形态中提取结构；茶杯、茶模与绘制工具，把游戏奖励延续成可以亲手完成的茶百戏。</p></div>
+    <div class="tea-objects-grid">
+      <figure><img src="../assets/works/tea/display-system.webp" alt="茶文化展具设计，包含柱式展台、器物陈列与场景组合" loading="lazy" decoding="async" width="2200" height="905"><figcaption>展具语言与陈列系统</figcaption></figure>
+      <div class="tea-objects-side"><div class="tea-merchandise-gallery">
+        <figure><img src="../assets/works/tea/merchandise-cup.webp" alt="茶弦记茶杯与浮雕茶模设计" loading="lazy" decoding="async" width="1200" height="577"></figure>
+        <figure><img src="../assets/works/tea/merchandise-painting.webp" alt="用绘制工具在茶沫上完成茶百戏的体验效果图" loading="lazy" decoding="async" width="1014" height="589"></figure>
+        <figure><img src="../assets/works/tea/merchandise-collection.webp" alt="茶弦记五色茶杯周边陈列效果图" loading="lazy" decoding="async" width="1111" height="589"><figcaption>茶饮周边 · 茶百戏手作</figcaption></figure>
+      </div><p>从关卡奖励，到执笔绘茶，再到饮下自己完成的一盏茶，体验在真实的手作中收束。</p></div>
+    </div>
+  </section>
+
+  <section id="boards" class="tea-page tea-archive" aria-labelledby="boards-title">
+    <div class="tea-heading"><h2 id="boards-title">完整设计展板</h2><p>文化研究、游戏系统、空间与器物的完整记录。</p></div>
+    <div class="tea-board-grid">
+      <figure><button type="button" class="tea-board-open image-open" data-board="culture" aria-label="放大阅读文化调研与游戏系统展板" aria-haspopup="dialog"><img src="../assets/works/tea/board-culture.webp" alt="茶弦记完整展板：文化调研、点茶流程、角色与四关游戏设计" loading="lazy" decoding="async" width="1600" height="1767"></button><figcaption>文化调研与游戏系统</figcaption></figure>
+      <figure><button type="button" class="tea-board-open image-open" data-board="space" aria-label="放大阅读空间体验与展陈设计展板" aria-haspopup="dialog"><img src="../assets/works/tea/board-space.webp" alt="茶弦记完整展板：玩法逻辑、交互演示、展厅空间、展具与周边" loading="lazy" decoding="async" width="1600" height="1804"></button><figcaption>空间体验与展陈设计</figcaption></figure>
+    </div>
+    <footer class="tea-footer"><div><span>主创成员</span><p>周小雅、蔡正阳、欧阳影睿、罗晨基</p></div><p>本页呈现项目设计方案、界面与空间效果图。</p><a href="#cover">回到开篇 ↑</a></footer>
+  </section>
+</main>
+<dialog id="tea-board-viewer" class="tea-board-viewer media-viewer" aria-labelledby="tea-board-title">
+  <div class="tea-board-bar"><h2 id="tea-board-title">完整设计展板</h2><div class="tea-board-tools"><button type="button" data-board-fit>适合宽度</button><button type="button" data-board-minus aria-label="缩小展板">−</button><output aria-live="polite">100%</output><button type="button" data-board-plus aria-label="放大展板">+</button><button type="button" data-board-close>关闭</button></div></div>
+  <div class="tea-board-scroll" tabindex="0" aria-label="可滚动的展板详情"><img alt="" decoding="async"></div>
+</dialog>
+</body>
+</html>
