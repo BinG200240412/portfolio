@@ -132,6 +132,14 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
   "AI 叙事生成": "AI narrative",
   "组合收集到的碎片，输出“古良渚的一天”的个性化短片或影像。": "Combine the collected fragments into a personal film or visual account of a day in ancient Liangzhu.",
   "同一座公园，走出不同的故事。": "One park. A different story with every walk.",
+  "AR 眼镜": "AR glasses",
+  "合作": "Cooperation",
+  "剧情": "Story",
+  "文化角色": "Cultural character",
+  "考古": "Archaeology",
+  "数据收集": "Data collection",
+  "记录": "Record",
+  "虚实交互场景": "Physical and virtual interaction scene",
   "体验模式": "Experience modes",
   "重交互": "Interaction",
   "考古模式": "Archaeology",
@@ -208,6 +216,7 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
     dialog.addEventListener('close', () => { fullImage.removeAttribute('src'); });
     const films = new Map([...document.querySelectorAll('.gogo-film video')].map(film => {
       film.muted = true;
+      film.loop = true;
       film.dataset.videoPreviewManaged = 'true';
       return [film, { onScreen: false, eligible: false, pending: false, retry: false, revision: 0 }];
     }));

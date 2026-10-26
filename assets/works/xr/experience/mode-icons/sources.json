@@ -1,0 +1,206 @@
+{
+  "icons": [
+    {
+      "file": "ar-glasses.png",
+      "source": "vision.pro 1.png",
+      "label": "AR 眼镜",
+      "dimensions": [
+        67,
+        38
+      ],
+      "visible_bounds": [
+        0,
+        0,
+        67,
+        37
+      ],
+      "sha256": "900e0b0de9dff5c8396a17aed329ad2e3f8e8ee7ba25b0d7cee00f784245dcfb"
+    },
+    {
+      "file": "rokid.png",
+      "source": "rokid 1.png",
+      "label": "Rokid",
+      "dimensions": [
+        95,
+        95
+      ],
+      "visible_bounds": [
+        27,
+        23,
+        68,
+        63
+      ],
+      "sha256": "ba0b9f14177301b7d8839710c8dee35fd4aaa3cf5d7b3ca4ca9271c7154bfd9f"
+    },
+    {
+      "file": "robot-dog.png",
+      "source": "Vector.png",
+      "label": "机器狗",
+      "dimensions": [
+        44,
+        33
+      ],
+      "visible_bounds": [
+        0,
+        0,
+        44,
+        33
+      ],
+      "sha256": "96e7ebfa907963cdbd93df18d9ea94db8406856974fe51d65cfe18e0ac1b963f"
+    },
+    {
+      "file": "archaeology.png",
+      "source": "田野考古1 1.png",
+      "label": "考古",
+      "dimensions": [
+        50,
+        50
+      ],
+      "visible_bounds": [
+        7,
+        6,
+        43,
+        50
+      ],
+      "sha256": "ac70293df0ec854113191c1b44c3c9a445e5295d911701ed764c5216e9f3f91d"
+    },
+    {
+      "file": "cooperate-culture.png",
+      "source": "Vector-1.png",
+      "label": "合作",
+      "dimensions": [
+        33,
+        33
+      ],
+      "visible_bounds": [
+        0,
+        0,
+        33,
+        33
+      ],
+      "sha256": "31d8fec152cf07adaab819006e4ba37b0913ba048592140cc7c44d409abe7d6c"
+    },
+    {
+      "file": "story.png",
+      "source": "剧情.png",
+      "label": "剧情",
+      "dimensions": [
+        44,
+        44
+      ],
+      "visible_bounds": [
+        4,
+        4,
+        40,
+        40
+      ],
+      "sha256": "2d1f622522050f68a1d915c9307c17b8e4a237e07f4fa5373e58be7231778455"
+    },
+    {
+      "file": "cultural-character.png",
+      "source": "058-warrior-3.png",
+      "label": "文化角色",
+      "dimensions": [
+        44,
+        44
+      ],
+      "visible_bounds": [
+        2,
+        2,
+        42,
+        42
+      ],
+      "sha256": "8747cc0dd1c3b5c41384a836a2fd6fc225bcb4a1136d4d4973f6186ad211af75"
+    },
+    {
+      "file": "cooperate-record.png",
+      "source": "Vector-2.png",
+      "label": "合作",
+      "dimensions": [
+        31,
+        31
+      ],
+      "visible_bounds": [
+        0,
+        0,
+        31,
+        31
+      ],
+      "sha256": "cc0092cc5aa2c032c282d855855162b18f19ef995fc07af72ee271afedaf1549"
+    },
+    {
+      "file": "collection.png",
+      "source": "数据收集.png",
+      "label": "数据收集",
+      "dimensions": [
+        43,
+        43
+      ],
+      "visible_bounds": [
+        0,
+        0,
+        43,
+        43
+      ],
+      "sha256": "4274d844cbf6c87169abc0d6d9ce86c679e9a6250d53b752a7dd9abedff88e4b"
+    },
+    {
+      "file": "record.png",
+      "source": "记录.png",
+      "label": "记录",
+      "dimensions": [
+        37,
+        37
+      ],
+      "visible_bounds": [
+        0,
+        0,
+        37,
+        37
+      ],
+      "sha256": "d67ee9e19df29cc451903c82607fd1c8f17e1e3873dcad0b626eb8a36b1103af"
+    }
+  ],
+  "arrows": [
+    {
+      "file": "arrow-1.png",
+      "source": "Group.png",
+      "sha256": "7ac77619ae678268762f43285f0811d190bb2adfe119c8342dcbc73ebe246a07"
+    },
+    {
+      "file": "arrow-2.png",
+      "source": "Group-1.png",
+      "sha256": "477409a6c6ccd41e60202acd7838323e7218e9cb3fb3e21c91914afe5da0ba5e"
+    },
+    {
+      "file": "arrow-3.png",
+      "source": "Group-2.png",
+      "sha256": "73483b69301e015f8a3dabeafa0ece9fe1eaac7f2baddae87b9510e409a6e7bb"
+    },
+    {
+      "file": "arrow-4.png",
+      "source": "Group-3.png",
+      "sha256": "150893497a1e6c613ba6d1830e65759fe4f0df054d289a80cac75bf87aacd21e"
+    },
+    {
+      "file": "arrow-5.png",
+      "source": "Group-4.png",
+      "sha256": "150893497a1e6c613ba6d1830e65759fe4f0df054d289a80cac75bf87aacd21e"
+    },
+    {
+      "file": "arrow-6.png",
+      "source": "Group-5.png",
+      "sha256": "73483b69301e015f8a3dabeafa0ece9fe1eaac7f2baddae87b9510e409a6e7bb"
+    },
+    {
+      "file": "arrow-7.png",
+      "source": "Group-6.png",
+      "sha256": "7ac77619ae678268762f43285f0811d190bb2adfe119c8342dcbc73ebe246a07"
+    }
+  ],
+  "unused_empty_exports": [
+    "36合作、关系.png",
+    "机器狗 1.png"
+  ],
+  "presentation": "All non-empty supplied PNG exports are preserved byte-for-byte. SVG viewBoxes remove transparent padding only at display time. Seven supplied dotted arrows link the ten icon placements in the original PDF order."
+}

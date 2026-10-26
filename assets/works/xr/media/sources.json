@@ -4,14 +4,15 @@
     "source": "06_良渚_狗GO_XR/05_源文件/8a75b1bc900e461f50b7738367dc77c8_raw.mp4",
     "source_sha256": "5d1fc3a44b777c710e76b915d19159cb88b3ee80ad93871e9ca74eecb2abb54d",
     "source_bytes": 169032829,
-    "output_sha256": "b365d2dbea29830db5a3264521e6328d5f406afb19fb761bcd24c064295a033f",
-    "output_bytes": 52766732,
+    "output_sha256": "373fbc621d896d86ce18958d383640ad598f110f2b9baf2014ac896c2a08016f",
+    "output_bytes": 52718013,
     "dimensions": [
       1920,
       1080
     ],
-    "duration_seconds": 108.669002,
-    "transform": "Full-length H.264/AAC web export, CRF 25, maximum video bitrate 4 Mbps, 128 kbps audio, faststart; source file unchanged."
+    "duration_seconds": 106.866667,
+    "transform": "H.264/AAC web export, CRF 25, maximum video bitrate 4 Mbps, 128 kbps audio, faststart; trailing black removed by stream copy at 106.8 seconds for native looping, no video/audio re-encoding; source file unchanged.",
+    "loop_end_seconds": 106.8
   },
   "poster": {
     "file": "gogo-promo-poster.webp",
@@ -27,14 +28,15 @@
     "source": "06_良渚_狗GO_XR/05_源文件/ee0bf648169d67db349d09022575c618_raw.mp4",
     "source_sha256": "423345d0c39f446dffaf9a8d32ad503eac2667efc988afb1eedc4fc453770046",
     "source_bytes": 38855539,
-    "output_sha256": "506d2cb16a20965e53a4709f2e237a91b362884b5e31cc3adebce9f983bbd41f",
-    "output_bytes": 15220628,
+    "output_sha256": "167177323b451820e2e2cdcba02863686784585c1c35c51a09d00afc3f72042e",
+    "output_bytes": 15167746,
     "dimensions": [
       1920,
       1080
     ],
-    "duration_seconds": 25.635011,
-    "transform": "Full-length H.264/AAC web export, CRF 24, maximum video bitrate 5 Mbps, 128 kbps audio, faststart; source file unchanged."
+    "duration_seconds": 23.866667,
+    "transform": "H.264/AAC web export, CRF 24, maximum video bitrate 5 Mbps, 128 kbps audio, faststart; trailing black removed by stream copy at 23.8 seconds for native looping, no video/audio re-encoding; source file unchanged.",
+    "loop_end_seconds": 23.8
   },
   "experience_poster": {
     "file": "gogo-experience-poster.webp",
