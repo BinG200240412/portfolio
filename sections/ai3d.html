@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="../assets/i18n-main.js?v=focused-works-20261024"></script>
-<script src="../assets/i18n-cases.js?v=focused-copy-20261024"></script>
+<script src="../assets/i18n-cases.js?v=three-workflows-20261026"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=active-chrome-20261026"></script>
 <title>良渚复原 — AI 三维场景工作流</title>
@@ -161,8 +161,8 @@
 <script defer src="../assets/pixel-loader.js?v=dot-fan-20261025"></script>
 <link rel="stylesheet" href="../assets/works/ai3d/particle-cover.css?v=dot-fan-20261025">
 <script defer src="../assets/works/ai3d/particle-cover.js?v=dot-fan-20261025"></script>
-<link rel="stylesheet" href="../assets/works/ai3d/workflow/graph.css?v=20261026-paper-dots-2">
-<script defer src="../assets/works/ai3d/workflow/graph.js?v=20261026-paper-dots-2"></script>
+<link rel="stylesheet" href="../assets/works/ai3d/workflow/graph.css?v=20261026-three-workflows-2">
+<script defer src="../assets/works/ai3d/workflow/graph.js?v=20261026-three-workflows-2"></script>
 <link rel="stylesheet" href="../assets/ambient-field.css?v=tidal-led-20261024">
 <script defer src="../assets/ambient-field.js?v=tidal-led-20261024"></script>
 <link rel="stylesheet" href="../assets/page-snap.css?v=site-layout-20261025">
@@ -233,19 +233,19 @@
   <section class="feat">
     <div class="fhead rv"><div class="htitle">工作流一</div></div>
     <p class="fintro rv">可输入在良渚一致公园采集的真实场景与相应艺术风格。<strong>LoRA</strong> 重点训练了"水乡泽国"的核心意象——精确捕捉莫角山夯土台基、干栏式木构与芦苇湿地的形态纹理，并固化清新治愈的色调。</p>
-    <figure class="rv" id="liangzhu-workflow" data-media-corners-ignore>
-      <div class="workflow-native" data-workflow-native data-i18n-ignore data-media-corners-ignore>
+    <figure class="rv workflow-figure" id="liangzhu-workflow" data-media-corners-ignore>
+      <div class="workflow-native" data-workflow-native="1" data-workflow-src="graph.json" data-i18n-ignore data-media-corners-ignore>
         <div class="workflow-frame">
           <div class="workflow-stage">
-            <svg role="group" tabindex="0" aria-label="可编辑的 ComfyUI 工作流复刻"></svg>
+            <svg role="group" tabindex="0" aria-label="可编辑的工作流"></svg>
             <p class="workflow-message" role="status">正在展开工作流</p>
           </div>
           <div class="workflow-bar">
-            <p data-workflow-text="hint">拖动节点 / 分组 · 双击看细节 · 捏合缩放</p>
+            <p data-workflow-text="hint">拖空白 / 双指横滑浏览 · 捏合缩放 · 拖标题移动节点</p>
             <div class="workflow-buttons">
-              <button type="button" data-workflow-fit data-workflow-text="fit">适屏</button>
+              <button type="button" data-workflow-fit data-workflow-text="fit">全览</button>
+              <button type="button" data-workflow-reader data-workflow-text="reader">原尺寸</button>
               <button type="button" data-workflow-reset data-workflow-text="reset">复位</button>
-              <button type="button" data-workflow-expand data-workflow-text="expand">展开</button>
             </div>
           </div>
         </div>
@@ -277,9 +277,8 @@
   </section>
 
   <section class="feat">
-    <div class="fhead rv"><div class="htitle">实现过程</div></div>
-    <div class="twocol">
-      <div class="rv">
+    <div class="fhead rv"><div class="htitle">工作流二</div></div>
+    <div class="rv" style="max-width:75ch;margin-bottom:30px">
         <p class="fintro" style="margin-bottom:18px">这一步采用 <strong>Flux-Kontext</strong> 技术路径，而非传统 IP-Adapter 拼接，逻辑更简练高效。流程通过 Flux 架构实现单图向 360° 全景的智能延展——输入单图经 VAEEncode 与 ReferenceLatent 转化为"视觉种子"，由 Kontext dev 模型配合专用全景 LoRA，在 "create a 360 hdr" 提示下自动补全视野盲区，最后由 UltimateSDUpscale 高清重绘，输出无缝 HDRI 贴图。</p>
         <ul class="speclist">
           <li><b>模型加载</b>FLUX.1 转换器（UNet/Transformer）+ 专用 VAE + 双文本编码器（CLIP-L / T5XXL）</li>
@@ -290,11 +289,24 @@
           <li><b>色彩与保存</b>sRGB → Linear，Save HDR Image 输出 32 位 .hdr / .exr</li>
         </ul>
       </div>
-      <figure class="rv">
-        <img src="../assets/works/ai3d/graph2.jpg" alt="图生全景图工作流 · 节点图（模型三件套 / 放大组件 / ControlNet 串联）">
-        <figcaption><span>模型三件套 · 放大组件 · ControlNet 串联</span></figcaption>
-      </figure>
-    </div>
+    <figure class="rv workflow-figure" id="liangzhu-workflow-2" data-media-corners-ignore>
+      <div class="workflow-native" data-workflow-native="2" data-workflow-src="graph2.json" data-i18n-ignore data-media-corners-ignore>
+        <div class="workflow-frame">
+          <div class="workflow-stage">
+            <svg role="group" tabindex="0" aria-label="可编辑的工作流"></svg>
+            <p class="workflow-message" role="status">正在展开工作流</p>
+          </div>
+          <div class="workflow-bar">
+            <p data-workflow-text="hint">拖空白 / 双指横滑浏览 · 捏合缩放 · 拖标题移动节点</p>
+            <div class="workflow-buttons">
+              <button type="button" data-workflow-fit data-workflow-text="fit">全览</button>
+              <button type="button" data-workflow-reader data-workflow-text="reader">原尺寸</button>
+              <button type="button" data-workflow-reset data-workflow-text="reset">复位</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </figure>
     <div class="callout rv">
       <div class="ct">核心几何约束</div>
       <p>全景图映射到球体时必须是 2:1——设成 1:1，VR 里的天顶与地底会被压扁，世界就变形了。</p>
@@ -323,16 +335,28 @@
   <section class="feat">
     <div class="fhead rv"><div class="htitle">工作流三 · 输入到 Marble</div></div>
     <p class="fintro rv">用 <strong>Janus-Pro-7B</strong> 对全景图反推出详尽的英文场景描述（PANO → CLIP → TEXT），再将"全景图 + 语义引导"一并喂入 Marble 的 Create New World——2D 全景作为图像输入，文本作为语义引导。</p>
-    <div class="twocol">
-      <figure class="rv">
-        <img src="../assets/works/ai3d/janus.jpg" alt="工作流三 · Janus-Pro 语义反推节点图">
-        <figcaption><span>Janus-Pro 反推语义</span></figcaption>
-      </figure>
+    <figure class="rv workflow-figure" id="liangzhu-workflow-3" data-media-corners-ignore>
+      <div class="workflow-native" data-workflow-native="3" data-workflow-src="graph3.json" data-i18n-ignore data-media-corners-ignore>
+        <div class="workflow-frame">
+          <div class="workflow-stage">
+            <svg role="group" tabindex="0" aria-label="可编辑的工作流"></svg>
+            <p class="workflow-message" role="status">正在展开工作流</p>
+          </div>
+          <div class="workflow-bar">
+            <p data-workflow-text="hint">拖空白 / 双指横滑浏览 · 捏合缩放 · 拖标题移动节点</p>
+            <div class="workflow-buttons">
+              <button type="button" data-workflow-fit data-workflow-text="fit">全览</button>
+              <button type="button" data-workflow-reader data-workflow-text="reader">原尺寸</button>
+              <button type="button" data-workflow-reset data-workflow-text="reset">复位</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </figure>
       <figure class="rv">
         <img src="../assets/works/ai3d/marble_ui.jpg" alt="输入到 Marble · Create New World 界面">
         <figcaption><span>全景输入 + 语义引导</span></figcaption>
       </figure>
-    </div>
     <figure class="inline-fig rv">
       <img src="../assets/works/ai3d/img_input.jpg" alt="图片输入 · 360° 全景">
       <figcaption><span>图片输入 · 360° 全景</span></figcaption>

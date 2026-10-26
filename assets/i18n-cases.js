@@ -59,6 +59,7 @@ window.PORTFOLIO_CASE_TRANSLATIONS = {
   "重绘流程：输入预处理 → 提示词构建 → 双重 ControlNet → 三阶采样 → 模型选择": "Repainting pipeline: input preprocessing → prompt building → dual ControlNet → three-stage sampling → model selection",
   "ImageScale → WD14 → CR Text → 双 ControlNet → 三阶采样 → Flat-2D + LoRA": "ImageScale → WD14 → CR Text → Dual ControlNet → Three-Stage Sampling → Flat-2D + LoRA",
   "工作流一": "Workflow 1",
+  "工作流二": "Workflow 2",
   "可输入在良渚一致公园采集的真实场景与相应艺术风格。": "The inputs are site photographs from Liangzhu and a corresponding artistic style.",
   "重点训练了\"水乡泽国\"的核心意象——精确捕捉莫角山夯土台基、干栏式木构与芦苇湿地的形态纹理，并固化清新治愈的色调。": "was trained on the key imagery of a waterside world: the forms and textures of Mojiaoshan’s rammed-earth platforms, timber stilt structures and reed wetlands, with a consistent soft, fresh palette.",
   "工作流一 · ComfyUI 节点图，含 05 输出图片": "Workflow 1 · ComfyUI node graph, including image output 05",

@@ -1,0 +1,793 @@
+{
+  "schema": "liangzhu-workflow-trace/1",
+  "width": 3974.4,
+  "height": 1817.6,
+  "source": "工作流2.png",
+  "note": "Native visual reconstruction of visible nodes and text in the supplied PNG. Not a runnable ComfyUI workflow. Hidden nodes and covered IDs are not invented; internal IDs 201 and 202 identify source nodes whose badges are covered. Preview photographs are cropped from the supplied image.",
+  "groups": [
+    {
+      "id": "upload",
+      "title": "上传图片",
+      "x": 52.8,
+      "y": 48.0,
+      "w": 614.4,
+      "h": 918.4,
+      "nodes": [
+        20
+      ]
+    },
+    {
+      "id": "switch",
+      "title": "放大开关",
+      "x": 687.2,
+      "y": 63.2,
+      "w": 595.2,
+      "h": 894.4,
+      "nodes": [
+        34
+      ]
+    },
+    {
+      "id": "preview",
+      "title": "预览",
+      "x": 1296.8,
+      "y": 52.8,
+      "w": 625.6,
+      "h": 905.6,
+      "nodes": [
+        31
+      ]
+    },
+    {
+      "id": "compare",
+      "title": "对比",
+      "x": 1940.0,
+      "y": 57.6,
+      "w": 620.0,
+      "h": 902.4,
+      "nodes": [
+        18
+      ]
+    },
+    {
+      "id": "upscale",
+      "title": "高清放大",
+      "x": 2576.8,
+      "y": 57.6,
+      "w": 1361.6,
+      "h": 1725.6,
+      "nodes": [
+        30
+      ]
+    },
+    {
+      "id": "models",
+      "title": "模型三件套",
+      "x": 56.0,
+      "y": 976.0,
+      "w": 595.2,
+      "h": 807.2,
+      "nodes": [
+        14,
+        201,
+        12
+      ]
+    },
+    {
+      "id": "work",
+      "title": "工作区",
+      "x": 665.6,
+      "y": 976.0,
+      "w": 1894.4,
+      "h": 807.2,
+      "nodes": [
+        19,
+        22,
+        202,
+        37,
+        11,
+        13,
+        10,
+        17
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": 20,
+      "title": "加载图像",
+      "x": 71.2,
+      "y": 126.4,
+      "w": 576.8,
+      "h": 819.2,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "图像",
+          "type": "IMAGE",
+          "y": 75.2
+        },
+        {
+          "label": "遮罩",
+          "type": "MASK",
+          "y": 110.4
+        }
+      ],
+      "widgets": [
+        {
+          "label": "图像",
+          "value": "scene_1.5.png",
+          "y": 147.2,
+          "kind": "text"
+        }
+      ],
+      "tag": "#20",
+      "file": {
+        "y": 168.0,
+        "previewY": 214.4
+      },
+      "preview": {
+        "src": "previews/input.webp",
+        "label": "1024 × 1024",
+        "x": 0.0,
+        "y": 214.4,
+        "w": 575.2,
+        "h": 575.2
+      },
+      "group": "upload"
+    },
+    {
+      "id": 34,
+      "title": "忽略多框",
+      "x": 707.2,
+      "y": 140.8,
+      "w": 556.0,
+      "h": 796.0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "可选连接",
+          "type": "OPTION",
+          "y": 79.2
+        }
+      ],
+      "widgets": [
+        {
+          "label": "Enable 高清放大",
+          "value": "yes",
+          "y": 114.4,
+          "kind": "text",
+          "options": [
+            "yes",
+            "no"
+          ]
+        }
+      ],
+      "tag": "#34",
+      "group": "switch"
+    },
+    {
+      "id": 31,
+      "title": "预览图像",
+      "x": 1315.2,
+      "y": 132.0,
+      "w": 587.2,
+      "h": 808.8,
+      "inputs": [
+        {
+          "label": "图像",
+          "type": "IMAGE",
+          "y": 76.0
+        }
+      ],
+      "outputs": [],
+      "widgets": [],
+      "tag": "#31",
+      "preview": {
+        "src": "previews/panorama.webp",
+        "label": "1536 × 768",
+        "x": 0.0,
+        "y": 292.8,
+        "w": 587.2,
+        "h": 293.6
+      },
+      "group": "preview"
+    },
+    {
+      "id": 18,
+      "title": "图像对比",
+      "x": 1959.2,
+      "y": 136.0,
+      "w": 579.2,
+      "h": 808.0,
+      "inputs": [
+        {
+          "label": "图像_A",
+          "type": "IMAGE",
+          "y": 76.0
+        },
+        {
+          "label": "图像_B",
+          "type": "IMAGE",
+          "y": 111.2
+        }
+      ],
+      "outputs": [],
+      "widgets": [],
+      "tag": "#18 rgthree-comfy",
+      "preview": {
+        "src": "previews/compare.webp",
+        "label": "",
+        "x": 0.0,
+        "y": 179.2,
+        "w": 579.2,
+        "h": 579.2
+      },
+      "group": "compare"
+    },
+    {
+      "id": 30,
+      "title": "预览图像",
+      "x": 2606.4,
+      "y": 132.8,
+      "w": 1320.0,
+      "h": 1616.0,
+      "inputs": [
+        {
+          "label": "图像",
+          "type": "IMAGE",
+          "y": 76.0
+        }
+      ],
+      "outputs": [],
+      "widgets": [],
+      "tag": "#30",
+      "preview": {
+        "src": "previews/upscaled.webp",
+        "label": "6144 × 3072",
+        "x": 0.0,
+        "y": 513.6,
+        "w": 1319.2,
+        "h": 660.0
+      },
+      "group": "upscale"
+    },
+    {
+      "id": 14,
+      "title": "UNET加载器",
+      "x": 88.0,
+      "y": 1053.6,
+      "w": 552.0,
+      "h": 194.4,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "模型",
+          "type": "MODEL",
+          "y": 76.0
+        }
+      ],
+      "widgets": [
+        {
+          "label": "UNET名称",
+          "value": "F.1 Kontext dev_fp8",
+          "y": 111.2,
+          "kind": "text"
+        },
+        {
+          "label": "剪枝类型",
+          "value": "default",
+          "y": 152.0,
+          "kind": "text"
+        }
+      ],
+      "tag": "#14",
+      "group": "models"
+    },
+    {
+      "id": 201,
+      "title": "双CLIP加载器",
+      "x": 75.2,
+      "y": 1263.2,
+      "w": 552.8,
+      "h": 282.4,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "CLIP",
+          "type": "CLIP",
+          "y": 76.0
+        }
+      ],
+      "widgets": [
+        {
+          "label": "CLIP1",
+          "value": "t5xxl_fp16",
+          "y": 111.2,
+          "kind": "text"
+        },
+        {
+          "label": "CLIP2",
+          "value": "clip_l",
+          "y": 152.8,
+          "kind": "text"
+        },
+        {
+          "label": "类型",
+          "value": "flux",
+          "y": 194.4,
+          "kind": "text"
+        },
+        {
+          "label": "设备",
+          "value": "default",
+          "y": 236.0,
+          "kind": "text"
+        }
+      ],
+      "tag": "",
+      "group": "models"
+    },
+    {
+      "id": 12,
+      "title": "VAE加载器",
+      "x": 78.4,
+      "y": 1567.2,
+      "w": 552.0,
+      "h": 196.8,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "VAE",
+          "type": "VAE",
+          "y": 76.0
+        }
+      ],
+      "widgets": [
+        {
+          "label": "vae名称",
+          "value": "ae.sft",
+          "y": 111.2,
+          "kind": "text"
+        }
+      ],
+      "tag": "#12",
+      "group": "models"
+    },
+    {
+      "id": 19,
+      "title": "FluxKontextImageScale",
+      "x": 680.8,
+      "y": 1055.2,
+      "w": 547.2,
+      "h": 96.0,
+      "inputs": [
+        {
+          "label": "image",
+          "type": "IMAGE",
+          "y": 76.0
+        }
+      ],
+      "outputs": [
+        {
+          "label": "image",
+          "type": "IMAGE",
+          "y": 76.0
+        }
+      ],
+      "widgets": [],
+      "tag": "#19",
+      "group": "work"
+    },
+    {
+      "id": 22,
+      "title": "CLIP文本编码器",
+      "x": 683.2,
+      "y": 1164.0,
+      "w": 536.0,
+      "h": 205.6,
+      "inputs": [
+        {
+          "label": "CLIP",
+          "type": "CLIP",
+          "y": 76.0
+        }
+      ],
+      "outputs": [
+        {
+          "label": "条件",
+          "type": "CONDITIONING",
+          "y": 76.0
+        }
+      ],
+      "widgets": [],
+      "tag": "#22",
+      "text": {
+        "value": "create a 360 hdr",
+        "x": 22.4,
+        "y": 116.0,
+        "w": 497.6,
+        "h": 72.8
+      },
+      "group": "work"
+    },
+    {
+      "id": 202,
+      "title": "ReferenceLatent",
+      "x": 677.6,
+      "y": 1356.8,
+      "w": 536.8,
+      "h": 155.2,
+      "inputs": [
+        {
+          "label": "conditioning",
+          "type": "CONDITIONING",
+          "y": 76.0
+        },
+        {
+          "label": "latent",
+          "type": "LATENT",
+          "y": 111.2
+        }
+      ],
+      "outputs": [
+        {
+          "label": "CONDITIONING",
+          "type": "CONDITIONING",
+          "y": 76.0
+        }
+      ],
+      "widgets": [],
+      "tag": "",
+      "group": "work"
+    },
+    {
+      "id": 37,
+      "title": "空Latent",
+      "x": 683.2,
+      "y": 1522.4,
+      "w": 552.0,
+      "h": 237.6,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "Latent",
+          "type": "LATENT",
+          "y": 76.0
+        }
+      ],
+      "widgets": [
+        {
+          "label": "宽度",
+          "value": "1536",
+          "y": 111.2,
+          "kind": "number",
+          "step": 64,
+          "min": 64
+        },
+        {
+          "label": "高度",
+          "value": "768",
+          "y": 152.8,
+          "kind": "number",
+          "step": 64,
+          "min": 64
+        },
+        {
+          "label": "批次大小",
+          "value": "1",
+          "y": 194.4,
+          "kind": "number",
+          "step": 1,
+          "min": 1
+        }
+      ],
+      "tag": "#37",
+      "group": "work"
+    },
+    {
+      "id": 11,
+      "title": "Flux引导",
+      "x": 1253.6,
+      "y": 1067.2,
+      "w": 551.2,
+      "h": 132.0,
+      "inputs": [
+        {
+          "label": "条件",
+          "type": "CONDITIONING",
+          "y": 76.0
+        }
+      ],
+      "outputs": [
+        {
+          "label": "条件",
+          "type": "CONDITIONING",
+          "y": 76.0
+        }
+      ],
+      "widgets": [
+        {
+          "label": "引导",
+          "value": "2.5",
+          "y": 111.2,
+          "kind": "number",
+          "step": 0.5,
+          "min": 0,
+          "precision": 1
+        }
+      ],
+      "tag": "#11",
+      "group": "work"
+    },
+    {
+      "id": 13,
+      "title": "条件零化",
+      "x": 1253.6,
+      "y": 1240.8,
+      "w": 552.0,
+      "h": 151.2,
+      "inputs": [
+        {
+          "label": "条件",
+          "type": "CONDITIONING",
+          "y": 76.0
+        }
+      ],
+      "outputs": [
+        {
+          "label": "条件",
+          "type": "CONDITIONING",
+          "y": 76.0
+        }
+      ],
+      "widgets": [],
+      "tag": "#13",
+      "group": "work"
+    },
+    {
+      "id": 10,
+      "title": "VAE解码",
+      "x": 1253.6,
+      "y": 1392.8,
+      "w": 556.0,
+      "h": 358.4,
+      "inputs": [
+        {
+          "label": "Latent",
+          "type": "LATENT",
+          "y": 76.0
+        },
+        {
+          "label": "VAE",
+          "type": "VAE",
+          "y": 111.2
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图像",
+          "type": "IMAGE",
+          "y": 76.0
+        }
+      ],
+      "widgets": [],
+      "tag": "#10",
+      "group": "work"
+    },
+    {
+      "id": 17,
+      "title": "K采样器",
+      "x": 1849.6,
+      "y": 1068.8,
+      "w": 667.2,
+      "h": 698.4,
+      "inputs": [
+        {
+          "label": "模型",
+          "type": "MODEL",
+          "y": 76.0
+        },
+        {
+          "label": "正面条件",
+          "type": "CONDITIONING",
+          "y": 111.2
+        },
+        {
+          "label": "负面条件",
+          "type": "CONDITIONING",
+          "y": 146.4
+        },
+        {
+          "label": "Latent",
+          "type": "LATENT",
+          "y": 181.6
+        }
+      ],
+      "outputs": [
+        {
+          "label": "Latent",
+          "type": "LATENT",
+          "y": 76.0
+        }
+      ],
+      "widgets": [
+        {
+          "label": "随机种",
+          "value": "492732240662752",
+          "y": 216.8,
+          "kind": "text"
+        },
+        {
+          "label": "运行后操作",
+          "value": "randomize",
+          "y": 258.4,
+          "kind": "text"
+        },
+        {
+          "label": "步数",
+          "value": "25",
+          "y": 300.0,
+          "kind": "number",
+          "step": 1,
+          "min": 1
+        },
+        {
+          "label": "CFG",
+          "value": "1.0",
+          "y": 341.6,
+          "kind": "number",
+          "step": 0.5,
+          "min": 0,
+          "precision": 1
+        },
+        {
+          "label": "采样器",
+          "value": "euler",
+          "y": 383.2,
+          "kind": "text"
+        },
+        {
+          "label": "调度器",
+          "value": "normal",
+          "y": 424.8,
+          "kind": "text"
+        },
+        {
+          "label": "降噪",
+          "value": "1.00",
+          "y": 466.4,
+          "kind": "number",
+          "step": 0.05,
+          "min": 0,
+          "max": 1,
+          "precision": 2
+        }
+      ],
+      "tag": "#17",
+      "group": "work"
+    }
+  ],
+  "links": [
+    {
+      "id": 1,
+      "source": 20,
+      "output": 0,
+      "target": 19,
+      "input": 0,
+      "type": "IMAGE"
+    },
+    {
+      "id": 2,
+      "source": 201,
+      "output": 0,
+      "target": 22,
+      "input": 0,
+      "type": "CLIP"
+    },
+    {
+      "id": 3,
+      "source": 22,
+      "output": 0,
+      "target": 202,
+      "input": 0,
+      "type": "CONDITIONING"
+    },
+    {
+      "id": 4,
+      "source": 202,
+      "output": 0,
+      "target": 11,
+      "input": 0,
+      "type": "CONDITIONING"
+    },
+    {
+      "id": 5,
+      "source": 11,
+      "output": 0,
+      "target": 13,
+      "input": 0,
+      "type": "CONDITIONING"
+    },
+    {
+      "id": 6,
+      "source": 14,
+      "output": 0,
+      "target": 17,
+      "input": 0,
+      "type": "MODEL"
+    },
+    {
+      "id": 7,
+      "source": 11,
+      "output": 0,
+      "target": 17,
+      "input": 1,
+      "type": "CONDITIONING"
+    },
+    {
+      "id": 8,
+      "source": 13,
+      "output": 0,
+      "target": 17,
+      "input": 2,
+      "type": "CONDITIONING"
+    },
+    {
+      "id": 9,
+      "source": 37,
+      "output": 0,
+      "target": 17,
+      "input": 3,
+      "type": "LATENT"
+    },
+    {
+      "id": 10,
+      "source": 17,
+      "output": 0,
+      "target": 10,
+      "input": 0,
+      "type": "LATENT"
+    },
+    {
+      "id": 11,
+      "source": 12,
+      "output": 0,
+      "target": 10,
+      "input": 1,
+      "type": "VAE"
+    },
+    {
+      "id": 12,
+      "source": 10,
+      "output": 0,
+      "target": 31,
+      "input": 0,
+      "type": "IMAGE"
+    },
+    {
+      "id": 13,
+      "source": 19,
+      "output": 0,
+      "target": 18,
+      "input": 0,
+      "type": "IMAGE"
+    },
+    {
+      "id": 14,
+      "source": 10,
+      "output": 0,
+      "target": 18,
+      "input": 1,
+      "type": "IMAGE"
+    },
+    {
+      "id": 15,
+      "source": 10,
+      "output": 0,
+      "target": 30,
+      "input": 0,
+      "type": "IMAGE"
+    }
+  ]
+}
