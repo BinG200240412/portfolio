@@ -120,7 +120,9 @@
       2000,
       1545
     ],
-    "transform": "Extracted standalone embedded image, not a screenshot or board crop."
+    "transform": "Extracted standalone embedded image, not a screenshot or board crop.",
+    "superseded_by": "research/scene-triggers.webp",
+    "status": "Replaced in the page with the newly supplied full scene-trigger original; old PDF extraction had incomplete text and alpha."
   },
   {
     "file": "originals/semantic-terrain.webp",
@@ -255,5 +257,47 @@
     ],
     "source_sha256": "66060df8ef42a190547badc3e5a68b487e531dd61208827aac8f3d2623420292",
     "transform": "Web export from the replacement original; square edges, opaque image, no added crop, rounding or fade. Source file unchanged."
+  },
+  {
+    "file": "research/scene-triggers-source.png",
+    "source": "06_良渚_狗GO_XR/01_原图/场景触发层.png",
+    "source_dimensions": [
+      6456,
+      5530
+    ],
+    "output_dimensions": [
+      6456,
+      5530
+    ],
+    "source_sha256": "e9d4337dcfb64ee8957ff519e5fb487d17112c4bd1f0a94c6cc3a7900821da5b",
+    "transform": "Byte-identical supplied PNG for in-page detail. No cropping, recoloring or redrawing."
+  },
+  {
+    "file": "research/scene-triggers.webp",
+    "source": "06_良渚_狗GO_XR/01_原图/场景触发层.png",
+    "source_dimensions": [
+      6456,
+      5530
+    ],
+    "output_dimensions": [
+      3200,
+      2741
+    ],
+    "source_sha256": "e9d4337dcfb64ee8957ff519e5fb487d17112c4bd1f0a94c6cc3a7900821da5b",
+    "transform": "Proportional 3200px web export, WebP quality 94. Complete original composition and transparency retained; dark backing is presentation only."
+  },
+  {
+    "file": "experience/interaction-analysis-traced.svg",
+    "source": "06_良渚_狗GO_XR/01_原图/交互分析.png",
+    "source_dimensions": [
+      1660,
+      990
+    ],
+    "output_dimensions": [
+      1660,
+      990
+    ],
+    "source_sha256": "cf7ca1e0ed0f76e151d42299f432b442652fbec39771504e2c10975e4c38c09a",
+    "transform": "Source-faithful vector tracing. Room planes, curved screen, sofa, headset user, interface panels, leader lines and lettering rebuilt as native SVG geometry. Original wireframe dog traced as vector paths (VTracer 0.6.15, color precision 7, layer difference 3, filter speckle 1). No embedded raster. Original PNG retained separately for comparison."
   }
 ]
