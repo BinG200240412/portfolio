@@ -37,7 +37,7 @@
 }
 
 /* These figures used a solid mat beneath their image. Let the cut reveal the page. */
-:is(.q-panorama,.q-result-main,.q-film):has([data-media-corners]) { background: transparent; }
+:is(.q-panorama,.q-result-main,.q-film,.gogo-film):has([data-media-corners]) { background: transparent; }
 .archive-tile[data-media-zoomable] .tile-label small { display: none; }
 video[data-media-corners]:fullscreen { -webkit-mask-image: none; mask-image: none; clip-path: none; }
 video[data-media-corners]:-webkit-full-screen { -webkit-mask-image: none; mask-image: none; clip-path: none; }

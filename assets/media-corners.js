@@ -33,8 +33,9 @@
     const video = surface.matches('video') || surface.querySelector('video');
     const style = getComputedStyle(surface);
     const padding = Math.min(12, Math.max(parseFloat(style.paddingTop) || 0, parseFloat(style.paddingLeft) || 0));
-    const radius = video ? Math.min(10, Math.max(5, short * .035)) : Math.min(short * .15, Math.max(8, Math.min(26, short * .055)) + padding);
-    const active = video ? radius : Math.min(96, short * .34, radius * 3.4);
+    const preview = surface.hasAttribute('data-video-preview');
+    const radius = video && !preview ? Math.min(10, Math.max(5, short * .035)) : Math.min(short * .15, Math.max(8, Math.min(26, short * .055)) + padding);
+    const active = video && !preview ? radius : Math.min(96, short * .34, radius * 3.4);
     surface.style.setProperty('--media-cut', `${radius.toFixed(2)}px`);
     surface.style.setProperty('--media-cut-active', `${active.toFixed(2)}px`);
     surface.style.setProperty('--media-corner-rest', cornerPath([radius, radius, radius, radius]));
@@ -117,8 +118,8 @@
   function mount(media) {
     if (media.closest(ignored)) return;
     if (media.matches('video')) {
-      const surface = media.closest('.fg-recording-stage') || media;
-      decorate(surface, null);
+      const surface = media.closest('[data-video-preview],.fg-recording-stage') || media;
+      decorate(surface, surface.hasAttribute('data-video-preview') ? surface : null);
       return;
     }
     // Hardware, transparent characters and inline SVG keep their own silhouettes.

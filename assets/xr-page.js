@@ -208,25 +208,31 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
     dialog.addEventListener('close', () => { fullImage.removeAttribute('src'); });
     const films = new Map([...document.querySelectorAll('.gogo-film video')].map(film => {
       film.muted = true;
-      return [film, { onScreen: false, eligible: false, pending: false, retry: false }];
+      film.dataset.videoPreviewManaged = 'true';
+      return [film, { onScreen: false, eligible: false, pending: false, retry: false, revision: 0 }];
     }));
-    let shown = true, host = null;
+    let shown = true, detailOpen = false, host = null;
     try { host = window.frameElement?.closest('#section') || null; } catch (_) {}
     function playFilm(film, state) {
       if (!state.eligible || !state.retry || state.pending) return;
       state.pending = true;
+      const revision = state.revision;
       film.play().then(() => {
-        state.retry = false;
+        if (state.revision === revision) state.retry = false;
         if (!state.eligible) film.pause();
       }).catch(() => {
         // A later media-ready event or a new visit can retry a blocked request.
-      }).finally(() => { state.pending = false; });
+      }).finally(() => {
+        state.pending = false;
+        if (state.eligible && state.revision !== revision) playFilm(film, state);
+      });
     }
     function syncFilms() {
-      const active = shown && !document.hidden && !dialog.open && (!host || host.classList.contains('on'));
+      const active = shown && !document.hidden && !dialog.open && !detailOpen && (!host || host.classList.contains('on'));
       films.forEach((state, film) => {
         const eligible = active && (state.onScreen || film.matches(':fullscreen') || film.webkitDisplayingFullscreen);
         if (eligible !== state.eligible) {
+          state.revision += 1;
           state.eligible = eligible;
           state.retry = eligible;
         }
@@ -250,6 +256,10 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
     new MutationObserver(syncFilms).observe(dialog, { attributes: true, attributeFilter: ['open'] });
     if (host) new MutationObserver(syncFilms).observe(host, { attributes: true, attributeFilter: ['class'] });
     document.addEventListener('visibilitychange', syncFilms);
+    document.addEventListener('portfolio:video-detail', event => {
+      if (typeof event.detail?.open !== 'boolean') return;
+      detailOpen = event.detail.open; syncFilms();
+    });
     document.addEventListener('fullscreenchange', syncFilms);
     addEventListener('pagehide', () => { shown = false; syncFilms(); });
     addEventListener('pageshow', () => { shown = true; syncFilms(); });
