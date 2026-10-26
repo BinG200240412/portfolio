@@ -2,12 +2,23 @@
   const canvas = document.getElementById('matrix-field');
   const stage = document.getElementById('stage');
   const gorillaButton = document.getElementById('gorilla-hit');
-  const speech = document.getElementById('matrix-speech');
   const ctx = canvas?.getContext('2d', { alpha: true });
   if (!ctx || !stage) return;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const forcedColors = matchMedia('(forced-colors: active)');
   const TAU = Math.PI * 2;
+  // The speech contour uses the same physical LED cells as every motif.
+  const speechPath = [[6,0],[12,0],[14,1],[16,1],[18,3],[18,7],[16,9],
+    [10,9],[8,11],[7,9],[3,9],[1,8],[0,6],[0,4],[2,2],[4,2],[6,0]];
+  const speechCells = [...new Set(speechPath.flatMap((point,index) => {
+    if (!index) return [];
+    const from=speechPath[index-1], steps=Math.max(Math.abs(point[0]-from[0]),Math.abs(point[1]-from[1]));
+    return Array.from({length:steps+1},(_,step) => {
+      const x=Math.round(from[0]+(point[0]-from[0])*step/steps);
+      const y=Math.round(from[1]+(point[1]-from[1])*step/steps);
+      return `${x},${y}`;
+    });
+  }))].map(cell=>cell.split(',').map(Number));
   const colours = [[174,173,160],[178,136,132],[143,164,184],[186,170,120],
     [137,165,150],[165,145,179],[203,199,185],
     [82,90,93],[117,125,124],[224,219,204],[162,94,85],
@@ -56,7 +67,7 @@
     ['star',.29,.305,.045,-.1], ['jade-cong',.65,.36,.115,.05],
     ['quest-3',.875,.49,.43,.07], ['heart',.79,.28,.055,.15],
     ['kiss-woman',.13,.835,.205,-.11], ['sudoku',.50,.855,.235,.11],
-    ['liangzhu-mask',.765,.805,.17,-.05], ['bolt',.62,.735,.045,.16],
+    ['liangzhu-mask',.765,.805,.17,-.05], ['bolt',.68,.745,.045,.16],
     ['clock',.965,.91,.106,.15], ['heart',.33,.965,.045,.16],
     ['arright',.335,.715,.085,.14], ['spiral',.80,.98,.074,-.15],
   ];
@@ -78,17 +89,19 @@
   const hotspots = new Map();
   const sampleWeights = new Float32Array(9), sampleShades = new Float32Array(9);
   const sampled = {role:0,coverage:0,shade:4};
-  let width = 0, height = 0, ledPitch = 3, items = [], quiet = [], sprites = [], paperFacets = [];
+  let width = 0, height = 0, ledPitch = 3, items = [], quiet = [], sprites = [], paperFacets = [], speechSprite = null;
   let dark = true, frame = 0, lastFrame = 0, elapsed = 0, pageShown = true;
   let morph = 0, morphTarget = 0, pointerX = 0, pointerY = 0, aimX = 0, aimY = 0;
   let gorillaReady = false, gorillaPlacement = null;
   let pending = null, maskSettling = 0;
   let pointerHover = null, focusHover = null, menuPreview = null;
+  let protectedBoxes = null;
 
   function updateQuietZones() {
     // Paint the actual DOM glyphs, including individual typewriter spans and
     // their letter spacing. The transparent space between letters stays clear.
     quiet = [];
+    protectedBoxes = null;
     const origin = stage.getBoundingClientRect();
     const roots = [stage.querySelector('.line')];
     if (stage.classList.contains('works')) roots.push(document.getElementById('menu'));
@@ -166,6 +179,7 @@
       return sprite;
     };
     sprites = (dark ? colours : lightColours).map(spriteFor);
+    speechSprite = spriteFor(dark ? [205,204,197] : [35,42,39]);
     // Faces progress from shadow to light in discrete opaque steps. Highlights
     // get their own brighter pigment instead of lowering the whole object's alpha.
     paperFacets = dark ? [] : Object.fromEntries(Object.entries(palettes).map(([id,roles]) => {
@@ -204,10 +218,10 @@
     button.type = 'button'; button.className = 'matrix-object-hit'; button.hidden = true;
     button.setAttribute('data-project', projects[item.id]); button.setAttribute('data-motif', item.id);
     button.setAttribute('data-i18n-ignore', '');
-    const entry = {button,id:item.id,project:projects[item.id],hover:0,hoverTarget:0,staticActive:0,placement:null};
+    const entry = {button,key:item.key,id:item.id,project:projects[item.id],hover:0,hoverTarget:0,staticActive:0,placement:null};
     const hover = () => {
       entry.hoverTarget = pointerHover === entry || focusHover === entry ? 1 : 0;
-      updateSpeech();
+      if (reduced.matches) draw(6);
     };
     button.addEventListener('pointerenter', event => {
       if (event.pointerType === 'touch') return;
@@ -253,45 +267,6 @@
       : works?`查看${names[entry.id][0]}`:`与${names[entry.id][0]}互动`;
     entry.button.setAttribute('aria-label',label); entry.button.title = label;
   }
-  function updateSpeech() {
-    if (!speech) return;
-    if (!visible() || !projectGate() || pending) {
-      speech.classList.remove('is-visible');
-      return;
-    }
-    let entry = pointerHover?.placement ? pointerHover : focusHover?.placement ? focusHover : null;
-    if (!entry && menuPreview) {
-      const candidates = [...hotspots.values()].filter(candidate =>
-        candidate.id === menuPreview && candidate.placement && !candidate.button.hidden);
-      candidates.sort((a,b) => {
-        const area = candidate => {
-          const p=candidate.placement, box=p.hitBox;
-          return box ? (box.x1-box.x0+1)*(box.y1-box.y0+1)*p.pitch*p.pitch : 0;
-        };
-        return area(b)-area(a);
-      });
-      entry = candidates[0] || null;
-    }
-    if (!entry || entry.button.hidden) {
-      speech.classList.remove('is-visible');
-      return;
-    }
-    const stageBox = stage.getBoundingClientRect();
-    const box = entry.button.getBoundingClientRect();
-    if (box.right <= stageBox.left || box.left >= stageBox.right ||
-        box.bottom <= stageBox.top || box.top >= stageBox.bottom) {
-      speech.classList.remove('is-visible');
-      return;
-    }
-    const maxX=Math.max(8,stage.clientWidth-78), maxY=Math.max(8,stage.clientHeight-60);
-    let x=box.right-stageBox.left-15;
-    const flipped=x+70>stage.clientWidth-8;
-    if(flipped)x=box.left-stageBox.left-55;
-    const y=Math.min(maxY,Math.max(8,box.top-stageBox.top+6));
-    speech.style.transform=`translate3d(${Math.min(maxX,Math.max(8,x))}px,${y}px,0)`;
-    speech.classList.toggle('is-flipped',flipped);
-    speech.classList.add('is-visible');
-  }
   function buttonVisibility() {
     const live = visible();
     if (gorillaButton) {
@@ -304,7 +279,6 @@
       entry.button.disabled = !shown || (!!pending && pending.entry !== entry);
       entry.button.setAttribute('aria-busy', String(pending?.entry === entry));
     }
-    updateSpeech();
   }
   function positionButton(button, p) {
     if (!button || !p) return false;
@@ -329,6 +303,85 @@
       x0=Math.min(x0,x); y0=Math.min(y0,y); x1=Math.max(x1,x); y1=Math.max(y1,y);
     }
     return x1 < x0 ? null : {x0,y0,x1,y1};
+  }
+  function objectBox(p) {
+    const box=p.hitBox;
+    if (!box) return null;
+    const corners=[[box.x0-.5,box.y0-.5],[box.x1+.5,box.y0-.5],
+      [box.x1+.5,box.y1+.5],[box.x0-.5,box.y1+.5]];
+    const points=corners.map(([column,row]) => {
+      const u=(column-(p.width-1)/2)*p.pitch, v=(row-(p.height-1)/2)*p.pitch;
+      return [p.x+u*p.cos-v*p.sin,p.y+u*p.sin+v*p.cos];
+    });
+    return {left:Math.min(...points.map(point=>point[0])),
+      right:Math.max(...points.map(point=>point[0])),
+      top:Math.min(...points.map(point=>point[1])),
+      bottom:Math.max(...points.map(point=>point[1]))};
+  }
+  function intersection(a,b,padding=0) {
+    return Math.max(0,Math.min(a.right,b.right+padding)-Math.max(a.left,b.left-padding)) *
+      Math.max(0,Math.min(a.bottom,b.bottom+padding)-Math.max(a.top,b.top-padding));
+  }
+  function drawSpeech(time,objectBoxes) {
+    if (!speechSprite || !visible() || !projectGate() || pending) return;
+    let entry=pointerHover?.placement ? pointerHover : focusHover?.placement ? focusHover : null;
+    if (!entry && menuPreview) {
+      const area=candidate => {
+        const p=candidate.placement, box=p.hitBox;
+        return box ? (box.x1-box.x0+1)*(box.y1-box.y0+1)*p.pitch*p.pitch : 0;
+      };
+      entry=[...hotspots.values()]
+        .filter(candidate=>candidate.id===menuPreview && candidate.placement && !candidate.button.hidden)
+        .sort((a,b)=>area(b)-area(a))[0] || null;
+    }
+    if (!entry || entry.button.hidden) return;
+    const own=objectBoxes.find(item=>item.key===entry.key)?.box;
+    if (!own || own.right<0 || own.left>width || own.bottom<0 || own.top>height) return;
+    const pitch=ledPitch, bubbleWidth=19*pitch, bubbleHeight=12*pitch;
+    const candidates=[
+      {x:own.right+pitch,y:own.top+pitch,mirror:false},
+      {x:own.right+pitch,y:own.top+5*pitch,mirror:false},
+      {x:own.right-bubbleWidth*.25,y:own.top-bubbleHeight-pitch,mirror:false},
+      {x:own.left-bubbleWidth-pitch,y:own.top+pitch,mirror:true},
+      {x:own.left-bubbleWidth-pitch,y:own.top-bubbleHeight-pitch,mirror:true},
+    ];
+    if (!protectedBoxes) {
+      const stageBox=stage.getBoundingClientRect();
+      protectedBoxes=[stage.querySelector('.line'),...stage.querySelectorAll('.menu .mi'),
+        document.getElementById('toHub'),document.getElementById('themeControls')]
+        .filter(element=>element && element.getClientRects().length)
+        .map(element=>{const r=element.getBoundingClientRect();return {
+          left:r.left-stageBox.left,right:r.right-stageBox.left,
+          top:r.top-stageBox.top,bottom:r.bottom-stageBox.top};});
+    }
+    const options=candidates.map((candidate,index)=>{
+      const x=Math.max(pitch,Math.min(width-bubbleWidth-pitch,candidate.x));
+      const y=Math.max(3*pitch,Math.min(height-bubbleHeight-pitch,candidate.y));
+      const box={left:x,right:x+bubbleWidth,top:y,bottom:y+bubbleHeight};
+      const obstruction=objectBoxes.reduce((sum,item)=>sum+(item.key===entry.key?0:intersection(box,item.box,pitch)*6),0);
+      const lettering=protectedBoxes.reduce((sum,textBox)=>sum+intersection(box,textBox,pitch)*24,0);
+      const displacement=(Math.abs(x-candidate.x)+Math.abs(y-candidate.y))*8;
+      return {...candidate,x,y,score:obstruction+lettering+intersection(box,own)*4+displacement+index*40};
+    });
+    options.sort((a,b)=>a.score-b.score);
+    const {x,y,mirror}=options[0], size=pitch*1.4;
+    ctx.globalAlpha=dark?.88:.94;
+    for (const [column,row] of speechCells) {
+      const px=x+(mirror?18-column:column)*pitch, py=y+row*pitch;
+      ctx.drawImage(speechSprite,px-size/2,py-size/2,size,size);
+    }
+    for(let index=0;index<3;index++){
+      const phase=((time-index*.22)%1.5+1.5)%1.5;
+      const speaking=reduced.matches ? index===1 : phase<.34;
+      const column=4+index*5;
+      ctx.globalAlpha=speaking?1:.72;
+      for(let row=4;row<=5;row++) for(let offset=0;offset<=1;offset++){
+        const px=x+(mirror?18-column-offset:column+offset)*pitch;
+        const py=y+row*pitch-(speaking && !reduced.matches ? .25*pitch : 0);
+        ctx.drawImage(speechSprite,px-size/2,py-size/2,size,size);
+      }
+    }
+    ctx.globalAlpha=1;
   }
   // Area sampling keeps thin ink strokes when a high-resolution source is
   // reduced to the same LED grid as every other object.
@@ -387,6 +440,7 @@
   function draw(time) {
     if (!sprites.length || !width || !height) return;
     ctx.clearRect(0, 0, width, height);
+    const objectBoxes=[];
     const facets = [0,.48,.66,.84,1];
     const opacity = dark ? .76 : 1;
     const libraries = [window.PortfolioGorillaMotif,window.PortfolioLiangzhuMotifs,
@@ -407,6 +461,8 @@
       const {pitch,x,y,cos,sin} = p, size = ledPitch * 1.4, palette = palettes[item.id];
       if (!palette) continue;
       p.hitBox = inkBounds(image);
+      const bounds=objectBox(p);
+      if (bounds) objectBoxes.push({key:item.key,box:bounds});
       if (entry && image.ready !== false && positionButton(entry.button,p)) entry.placement=p;
       if (item.id === 'gorilla' && source === window.PortfolioGorillaMotif && (image.ready === true || source.ready === true)) {
         gorillaPlacement = p;
@@ -436,6 +492,7 @@
     }
     ctx.globalAlpha = 1;
     buttonVisibility();
+    drawSpeech(time,objectBoxes);
   }
   function visible() {
     return pageShown && !document.hidden && !stage.classList.contains('gone') &&
@@ -497,17 +554,17 @@
     ? target.closest('#menu .mi')?.dataset.matrixMotif || null : null;
   menu?.addEventListener('pointerover',event => {
     if (event.pointerType === 'touch') return;
-    menuPreview=motifFromMenu(event.target); updateSpeech();
+    menuPreview=motifFromMenu(event.target); if (reduced.matches) draw(6);
   });
   menu?.addEventListener('pointerout',event => {
     if (event.pointerType === 'touch') return;
-    menuPreview=motifFromMenu(event.relatedTarget); updateSpeech();
+    menuPreview=motifFromMenu(event.relatedTarget); if (reduced.matches) draw(6);
   });
   menu?.addEventListener('focusin',event => {
-    menuPreview=motifFromMenu(event.target); updateSpeech();
+    menuPreview=motifFromMenu(event.target); if (reduced.matches) draw(6);
   });
   menu?.addEventListener('focusout',event => {
-    menuPreview=motifFromMenu(event.relatedTarget); updateSpeech();
+    menuPreview=motifFromMenu(event.relatedTarget); if (reduced.matches) draw(6);
   });
   addEventListener('portfolio:language', () => {
     buttonLabel(); for (const entry of hotspots.values()) objectLabel(entry);
@@ -516,7 +573,7 @@
   addEventListener('portfolio:navigation', () => {
     pointerHover=focusHover=menuPreview=null;
     for (const entry of hotspots.values()) {entry.hoverTarget=0;objectLabel(entry);}
-    updateSpeech();
+    if (reduced.matches && visible()) draw(6);
   });
   addEventListener('portfolio:gorilla-ready', () => { draw(reduced.matches ? 6 : elapsed); });
   makeSprites(); resize();

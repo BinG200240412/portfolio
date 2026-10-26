@@ -7,16 +7,4 @@
 #gorilla-hit[hidden],.matrix-object-hit[hidden]{display:none}
 #gorilla-hit:focus-visible,.matrix-object-hit:focus-visible{outline:1px dashed var(--soft,#a4a39c);outline-offset:5px}
 #gorilla-hit:focus:not(:focus-visible),.matrix-object-hit:focus:not(:focus-visible){outline:none}
-.matrix-speech{position:absolute;left:0;top:0;z-index:3;width:70px;height:52px;pointer-events:none;opacity:0;visibility:hidden;transform:translate3d(-100px,-100px,0);transition:opacity .16s ease,visibility .16s ease}
-.matrix-speech.is-visible{opacity:1;visibility:visible}
-.matrix-speech-inner{position:relative;width:100%;height:100%;transform:translateY(5px) scale(.94);transform-origin:22px 42px;transition:transform .18s steps(3,end)}
-.matrix-speech.is-visible .matrix-speech-inner{transform:none}
-.matrix-speech svg{display:block;width:100%;height:100%;overflow:visible;fill:var(--bg2,#181817);stroke:var(--ink,#efeee9);stroke-width:1.5;stroke-linejoin:miter;shape-rendering:crispEdges}
-.matrix-speech.is-flipped svg{transform:scaleX(-1)}
-.matrix-speech-dots{position:absolute;left:23px;top:22px;display:flex;gap:6px}
-.matrix-speech-dots i{display:block;width:4px;height:4px;background:var(--ink,#efeee9);animation:matrix-speech-dot 1.05s steps(2,end) infinite}
-.matrix-speech-dots i:nth-child(2){animation-delay:.16s}
-.matrix-speech-dots i:nth-child(3){animation-delay:.32s}
-@keyframes matrix-speech-dot{0%,100%{opacity:.3;transform:translateY(0)}30%,55%{opacity:1;transform:translateY(-3px)}}
-@media(prefers-reduced-motion:reduce){.matrix-speech-dots i{animation:none;opacity:1}}
 @media(forced-colors:active){#matrix-field{display:none}}
