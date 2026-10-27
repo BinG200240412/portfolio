@@ -2,7 +2,7 @@
    Without JS (or with reduced motion), every original stays in a readable grid. */
 .sudoku-ui-wall {
   --ui-wall-gap: clamp(18px, 2.2vw, 34px);
-  --ui-wall-tilt: -2.5deg;
+  --ui-wall-tilt: -8deg;
   --ui-wall-bleed: clamp(26px, 5.5vw, 88px);
   width: calc(100% + 2 * var(--ui-wall-bleed));
   margin-inline: calc(-1 * var(--ui-wall-bleed));
@@ -82,13 +82,15 @@
 
 /* Only the enhanced wall clips the moving bands; it never owns page scrolling. */
 .sudoku-ui-wall.is-wall-animated .ui-wall-stage {
-  height: clamp(740px, 108svh, 1140px);
+  height: clamp(620px, 88svh, 940px);
   padding-block: 0;
 }
 .sudoku-ui-wall.is-wall-animated .ui-wall-columns {
-  width: 108%;
+  /* Narrow the actual grid, rather than scaling its parent: the animation's
+     measured group height remains the exact distance between loop copies. */
+  width: 84%;
   height: 100%;
-  margin-left: -4%;
+  margin-left: 8%;
   grid-template-rows: minmax(0, 1fr);
   align-items: stretch;
   transform: rotate(var(--ui-wall-tilt));
@@ -109,18 +111,18 @@
 @media (max-width: 720px) {
   .sudoku-ui-wall {
     --ui-wall-gap: clamp(18px, 4vw, 28px);
-    --ui-wall-tilt: -2deg;
+    --ui-wall-tilt: -6deg;
     --ui-wall-bleed: 26px;
   }
   .sudoku-ui-wall .ui-wall-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .sudoku-ui-wall .ui-wall-stage { padding-block: 24px; }
   .sudoku-ui-wall .ui-wall-lane:nth-child(even) { padding-top: 46px; }
-  .sudoku-ui-wall.is-wall-animated .ui-wall-stage { height: clamp(650px, 105svh, 900px); }
-  .sudoku-ui-wall.is-wall-animated .ui-wall-columns { width: 106%; margin-left: -3%; }
+  .sudoku-ui-wall.is-wall-animated .ui-wall-stage { height: clamp(560px, 88svh, 740px); }
+  .sudoku-ui-wall.is-wall-animated .ui-wall-columns { width: 88%; margin-left: 6%; }
   .sudoku-ui-wall.is-wall-animated .ui-wall-lane { padding-top: 0; }
 }
 @media (max-height: 560px) and (min-width: 721px) {
-  .sudoku-ui-wall.is-wall-animated .ui-wall-stage { height: 760px; }
+  .sudoku-ui-wall.is-wall-animated .ui-wall-stage { height: 620px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .sudoku-ui-wall .ui-wall-group[data-wall-clone] { display: none; }

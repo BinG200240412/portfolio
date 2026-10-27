@@ -217,17 +217,24 @@
     function focusOut() { schedule(); }
     function proxyClick(event) {
       if (event.button !== 0 || event.detail === 0 || !root.classList.contains('is-wall-animated')) return;
-      if (event.target.closest?.('.image-open')) return;
+      if (event.target.closest?.('.image-open.ui-wall-open')) return;
       // Inert descendants are omitted from pointer targeting. Their visual
       // rectangles still exist; testing them here makes every visible copy
       // open the same native lightbox as its original.
       const viewport = stage.getBoundingClientRect();
       if (event.clientX < viewport.left || event.clientX > viewport.right ||
           event.clientY < viewport.top || event.clientY > viewport.bottom) return;
+      const transform = getComputedStyle(columns).transform;
+      const inverse = (transform === 'none' ? new DOMMatrixReadOnly() : new DOMMatrixReadOnly(transform)).inverse();
       const hit = clones.find(({ button }) => {
         const rect = button.getBoundingClientRect();
-        return event.clientX >= rect.left && event.clientX <= rect.right &&
-          event.clientY >= rect.top && event.clientY <= rect.bottom;
+        const dx = event.clientX - (rect.left + rect.width / 2);
+        const dy = event.clientY - (rect.top + rect.height / 2);
+        // The bands rotate but do not scale. Undo that rotation around this
+        // button's visual centre; neighbouring AABBs can overlap at the tilt.
+        const x = inverse.a * dx + inverse.c * dy;
+        const y = inverse.b * dx + inverse.d * dy;
+        return Math.abs(x) <= button.offsetWidth / 2 && Math.abs(y) <= button.offsetHeight / 2;
       });
       if (!hit) return;
       event.preventDefault(); event.stopPropagation();
