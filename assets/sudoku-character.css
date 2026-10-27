@@ -38,6 +38,11 @@ html[lang^="en"] .case-product-slogan{--portfolio-font:SudokuGaramond,serif;--po
 .case-history-figure{width:min(100%,310px);justify-self:center;margin:0}
 .case-history-figure .image-open{display:block;width:100%;cursor:zoom-in}
 .case-history-figure figcaption{color:var(--mid);margin-top:16px}
+.case-history-device>.video-preview{position:absolute;left:5.1020408163%;top:2.2%;width:89.7959183673%;height:95.6%;border-radius:14.393939% / 6.624826%;overflow:hidden;opacity:0}
+.case-history-figure[data-history-ready="true"] .video-preview{opacity:1}
+.case-history-video{display:block;width:100%;height:100%;object-fit:contain}
+.case-history-feedback{margin-top:16px;color:var(--mid)}
+.case-history-feedback[hidden]{display:none}
 .case-design-intro{margin-top:clamp(80px,10vw,144px)}
 .case-design-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(36px,7vw,112px);margin-top:44px}
 .case-design-columns h3{margin:0 0 22px}.case-design-columns p+p{margin-top:20px}

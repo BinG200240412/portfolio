@@ -1,0 +1,133 @@
+/* The hardware and screenshots remain the existing, unaltered .sudoku-device.
+   Without JS (or with reduced motion), every original stays in a readable grid. */
+.sudoku-ui-wall {
+  --ui-wall-gap: clamp(18px, 2.2vw, 34px);
+  --ui-wall-tilt: -2.5deg;
+  --ui-wall-bleed: clamp(26px, 5.5vw, 88px);
+  width: calc(100% + 2 * var(--ui-wall-bleed));
+  margin-inline: calc(-1 * var(--ui-wall-bleed));
+  min-width: 0;
+  scroll-margin-top: clamp(96px,12svh,144px);
+}
+.sudoku-ui-wall .ui-wall-stage {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  padding-block: 36px;
+  overflow: hidden;
+  overflow: clip;
+  isolation: isolate;
+}
+.sudoku-ui-wall .ui-wall-columns {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--ui-wall-gap);
+  width: 100%;
+  min-width: 0;
+}
+.sudoku-ui-wall .ui-wall-lane,
+.sudoku-ui-wall .ui-wall-track,
+.sudoku-ui-wall .ui-wall-group {
+  min-width: 0;
+}
+.sudoku-ui-wall .ui-wall-track,
+.sudoku-ui-wall .ui-wall-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-wall-gap);
+}
+.sudoku-ui-wall .ui-wall-track { position: relative; }
+.sudoku-ui-wall .ui-wall-group { flex: 0 0 auto; }
+.sudoku-ui-wall .ui-wall-lane:nth-child(even) { padding-top: 70px; }
+.sudoku-ui-wall .ui-wall-card {
+  display: block;
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+.sudoku-ui-wall .ui-wall-open {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  line-height: 0;
+  cursor: zoom-in;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.sudoku-ui-wall .ui-wall-open:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 5px;
+  border-radius: 15% / 7.4%;
+}
+.sudoku-ui-wall .ui-wall-open .sudoku-device { width: 100%; }
+.sudoku-ui-wall .ui-wall-open .sudoku-device-screen {
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+.sudoku-ui-wall .ui-wall-group[data-wall-clone] { cursor: zoom-in; }
+.sudoku-ui-wall .ui-wall-lane.is-wall-unused { display: none; }
+.sudoku-ui-wall .ui-wall-heading { display:flex;align-items:baseline;justify-content:space-between;gap:24px;padding-inline:var(--ui-wall-bleed);margin-bottom:48px; }
+.sudoku-ui-wall .ui-wall-heading [data-wall-toggle] { color:var(--mid);font-size:14px;text-decoration:underline;text-underline-offset:5px;min-width:44px;min-height:44px;text-align:right; }
+
+/* Only the enhanced wall clips the moving bands; it never owns page scrolling. */
+.sudoku-ui-wall.is-wall-animated .ui-wall-stage {
+  height: clamp(740px, 108svh, 1140px);
+  padding-block: 0;
+}
+.sudoku-ui-wall.is-wall-animated .ui-wall-columns {
+  width: 108%;
+  height: 100%;
+  margin-left: -4%;
+  grid-template-rows: minmax(0, 1fr);
+  align-items: stretch;
+  transform: rotate(var(--ui-wall-tilt));
+  transform-origin: 50% 50%;
+}
+.sudoku-ui-wall.is-wall-animated .ui-wall-lane {
+  min-height: 0;
+  padding-top: 0;
+}
+.sudoku-ui-wall.is-wall-animated .ui-wall-track { will-change: transform; }
+.sudoku-ui-wall [data-wall-toggle] {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.sudoku-ui-wall [data-wall-toggle]:disabled { cursor: default; }
+
+@media (max-width: 720px) {
+  .sudoku-ui-wall {
+    --ui-wall-gap: clamp(18px, 4vw, 28px);
+    --ui-wall-tilt: -2deg;
+    --ui-wall-bleed: 26px;
+  }
+  .sudoku-ui-wall .ui-wall-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sudoku-ui-wall .ui-wall-stage { padding-block: 24px; }
+  .sudoku-ui-wall .ui-wall-lane:nth-child(even) { padding-top: 46px; }
+  .sudoku-ui-wall.is-wall-animated .ui-wall-stage { height: clamp(650px, 105svh, 900px); }
+  .sudoku-ui-wall.is-wall-animated .ui-wall-columns { width: 106%; margin-left: -3%; }
+  .sudoku-ui-wall.is-wall-animated .ui-wall-lane { padding-top: 0; }
+}
+@media (max-height: 560px) and (min-width: 721px) {
+  .sudoku-ui-wall.is-wall-animated .ui-wall-stage { height: 760px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sudoku-ui-wall .ui-wall-group[data-wall-clone] { display: none; }
+  .sudoku-ui-wall.is-wall-animated .ui-wall-stage { height: auto; padding-block: 36px; }
+  .sudoku-ui-wall.is-wall-animated .ui-wall-columns {
+    width: 100%; height: auto; margin-left: 0; transform: none;
+    align-items: start; grid-template-rows: auto;
+  }
+  .sudoku-ui-wall.is-wall-animated .ui-wall-track { transform: none !important; will-change: auto; }
+}

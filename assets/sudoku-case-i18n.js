@@ -316,3 +316,8 @@ Object.assign(window.PORTFOLIO_TRANSLATIONS, {
 Object.assign(window.PORTFOLIO_TRANSLATIONS, {
   "主题色提示状态；长按格子，用六色标记思路。": "Theme colours indicate states; hold a cell to mark your reasoning with six annotation colours."
 });
+
+Object.assign(window.PORTFOLIO_TRANSLATIONS, {
+  "界面一览": "Interface gallery",
+  "数独界面展示墙": "Sudoku interface gallery"
+});
