@@ -105,10 +105,13 @@
     // All neck, sensor and head vertices rotate together about the neck joint.
     const wave = Math.sin(gaitPhase);
     const heldTurn = Math.tanh(wave * 2.4) / Math.tanh(2.4);
+    const valley = 1 - heldTurn * heldTurn;
     const bodyYaw = hover * heldTurn * .31;
-    const bodyShift = hover * wave * .018;
-    const crouch = hover * (.014 + .028 * (1 - Math.abs(heldTurn)));
-    const raise = reaction * .38 + hover * (.075 + .025 * Math.cos(gaitPhase * 2));
+    const bodyShift = hover * heldTurn * .145;
+    // From the front, the head traces a wide U: high at either side, low
+    // through the middle. The four fixed paws force the legs to fold beneath it.
+    const crouch = hover * (.018 + .19 * valley);
+    const raise = reaction * .38 + hover * (.065 - .045 * valley);
     const c = Math.cos(raise), sn = Math.sin(raise);
     if (raise) for (let i=headStart;i<m.vertices.length;i++) {
       const v=m.vertices[i],x=v[0]-.63,y=v[1]-.35;

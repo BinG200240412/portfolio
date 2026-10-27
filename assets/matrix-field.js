@@ -232,7 +232,7 @@
     button.setAttribute('data-project', projects[item.id]); button.setAttribute('data-motif', item.id);
     button.setAttribute('data-i18n-ignore', '');
     const entry = {button,key:item.key,id:item.id,project:projects[item.id],hover:0,hoverTarget:0,hoverElapsed:0,
-      gaitPhase:0,staticActive:0,placement:null};
+      gaitPhase:-Math.PI/2,staticActive:0,placement:null};
     const hover = () => {
       syncHoverTargets();
       if (reduced.matches) draw(6);
@@ -463,7 +463,7 @@
     for (const entry of hotspots.values()) {
       entry.hover += (entry.hoverTarget-entry.hover)*follow;
       entry.hoverElapsed = entry.hoverTarget || pending?.entry === entry ? entry.hoverElapsed + dt : 0;
-      if (entry.id === 'robot-dog') entry.gaitPhase += dt * entry.hover * 1.85;
+      if (entry.id === 'robot-dog') entry.gaitPhase += dt * entry.hover * 1.65;
     }
     if (pending) {
       pending.progress = Math.min(1,pending.progress+dt/(pending.entry.id === 'sudoku' ? 1.15 : .65));
