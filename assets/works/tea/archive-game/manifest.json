@@ -1,0 +1,1989 @@
+{
+  "source_file": "展板_01(2).png",
+  "source_size": [
+    18519,
+    20456
+  ],
+  "source_sha256": "64553e83b81d3191c02a97f8e887b3717c0d228b90cb81b9cf884fdf3f21b392",
+  "assets": [
+    {
+      "file": "design-01.webp",
+      "crop_pixels": [
+        9668,
+        4413,
+        12170,
+        5704
+      ],
+      "content": "玩法逻辑草图",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2502,
+        1291
+      ],
+      "output_size": [
+        2400,
+        1238
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "1646d07ae326b11a8ca2764a4114075c7f434c45087332c8dfdee10fe3173dfa",
+      "size_bytes": 176598
+    },
+    {
+      "file": "design-02.webp",
+      "crop_pixels": [
+        12189,
+        4413,
+        14380,
+        5697
+      ],
+      "content": "圆环界面草图",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2191,
+        1284
+      ],
+      "output_size": [
+        2191,
+        1284
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "2b429734df654e19a0d21aeca23428ccefb7293386f8424d128fae51f787cf70",
+      "size_bytes": 96004
+    },
+    {
+      "file": "design-03.webp",
+      "crop_pixels": [
+        14399,
+        4413,
+        16459,
+        5697
+      ],
+      "content": "界面风格探索",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2060,
+        1284
+      ],
+      "output_size": [
+        2060,
+        1284
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "844fe2f639bc7079d854e53ce899fc9d8b72981cbe2dec2a7242fc717b3c806c",
+      "size_bytes": 88478
+    },
+    {
+      "file": "design-04.webp",
+      "crop_pixels": [
+        16499,
+        4413,
+        18050,
+        5708
+      ],
+      "content": "粒子语言与机制分析",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        1551,
+        1295
+      ],
+      "output_size": [
+        1551,
+        1295
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "547018220176c36b48499501c92ece5da48aa1a33734124a08f44de8519a5bb0",
+      "size_bytes": 27978
+    },
+    {
+      "file": "sketch-01.webp",
+      "crop_pixels": [
+        9872,
+        7854,
+        11880,
+        9193
+      ],
+      "content": "第1关原始界面草图",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2008,
+        1339
+      ],
+      "output_size": [
+        2008,
+        1339
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "7b63ba8b12170de473d538c4ef455e27f45224d0794d4e3e1aa6ab973ebbf238",
+      "size_bytes": 1648900
+    },
+    {
+      "file": "sketch-02.webp",
+      "crop_pixels": [
+        11909,
+        7856,
+        13912,
+        9191
+      ],
+      "content": "第2关原始界面草图",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2003,
+        1335
+      ],
+      "output_size": [
+        2003,
+        1335
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "745e4f51b987c0eab9e47df52d823c665d07d6b8b89625e72511bcc3fe799a5e",
+      "size_bytes": 2477950
+    },
+    {
+      "file": "sketch-03.webp",
+      "crop_pixels": [
+        13941,
+        7853,
+        15949,
+        9193
+      ],
+      "content": "第3关原始界面草图",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2008,
+        1340
+      ],
+      "output_size": [
+        2008,
+        1340
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "ff8149b315e79b89658a24c01df79a43d2b7f38b547cb6cc6db4edbfa34fbee4",
+      "size_bytes": 1620448
+    },
+    {
+      "file": "sketch-04.webp",
+      "crop_pixels": [
+        16015,
+        7844,
+        18052,
+        9202
+      ],
+      "content": "第4关原始界面草图",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2037,
+        1358
+      ],
+      "output_size": [
+        2037,
+        1358
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "d010562e88c9bbe965f3d0b2d590ce37d667182b2a8e1407eed443e521e4b37b",
+      "size_bytes": 2395368
+    },
+    {
+      "file": "concept-01.webp",
+      "crop_pixels": [
+        9872,
+        9259,
+        11857,
+        10375
+      ],
+      "content": "第1关视觉概念成稿",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        1985,
+        1116
+      ],
+      "output_size": [
+        1985,
+        1116
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "87288d107c49bdcbc1a86890e729d423e017ad2ec9270ab15f922c71b482ed5c",
+      "size_bytes": 140276
+    },
+    {
+      "file": "concept-02.webp",
+      "crop_pixels": [
+        11909,
+        9220,
+        13964,
+        10414
+      ],
+      "content": "第2关视觉概念成稿",
+      "source_limit": "Original embedded image already ends at this boundary; no invented extension. Bottom shapes on chapters 2 and 4 are source-truncated.",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2055,
+        1194
+      ],
+      "output_size": [
+        2055,
+        1194
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "1f27e330fa530931e6825d5206518c0ba70f92910994d3b6dcfde28bd6678f23",
+      "size_bytes": 2096920
+    },
+    {
+      "file": "concept-03.webp",
+      "crop_pixels": [
+        13965,
+        9269,
+        15947,
+        10365
+      ],
+      "content": "第3关视觉概念成稿",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        1982,
+        1096
+      ],
+      "output_size": [
+        1982,
+        1096
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "40d8e648dd8ce9fbeb563d5def891e7651e23286c324a70736eaa34712959ab0",
+      "size_bytes": 1894940
+    },
+    {
+      "file": "concept-04.webp",
+      "crop_pixels": [
+        16030,
+        9201,
+        18080,
+        10421
+      ],
+      "content": "第4关视觉概念成稿",
+      "source_limit": "Original embedded image already ends at this boundary; no invented extension. Bottom shapes on chapters 2 and 4 are source-truncated.",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2050,
+        1220
+      ],
+      "output_size": [
+        2050,
+        1220
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "cc6e7f17322de041ba3f135cc9adc1b597623bb5df0c3bdcc16c477c2bdb1212",
+      "size_bytes": 2269310
+    },
+    {
+      "file": "character-art-01.webp",
+      "crop_pixels": [
+        9854,
+        10435,
+        11409,
+        11405
+      ],
+      "content": "完整气氛海报组；此分组不对应游戏关卡，保留海报实际边界",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        1555,
+        970
+      ],
+      "output_size": [
+        1555,
+        970
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Complete poster borders and titles inspected individually at native size; lower sliver from the next board row excluded.",
+      "file_sha256": "cde0bb06ea612503edbb2c05b05903e65b71971503d52ae0db7293aa540fcfba",
+      "size_bytes": 1162466
+    },
+    {
+      "file": "character-art-02.webp",
+      "crop_pixels": [
+        11508,
+        10435,
+        13860,
+        11405
+      ],
+      "content": "完整气氛海报组；此分组不对应游戏关卡，保留海报实际边界",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2352,
+        970
+      ],
+      "output_size": [
+        2352,
+        970
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Complete poster borders and titles inspected individually at native size; lower sliver from the next board row excluded.",
+      "file_sha256": "822d4a2ee452adbaca2afe121aaa7421088238f7a4a0f5fef9f9aaf6fd87a842",
+      "size_bytes": 2004936
+    },
+    {
+      "file": "character-art-03.webp",
+      "crop_pixels": [
+        14020,
+        10435,
+        15543,
+        11405
+      ],
+      "content": "完整气氛海报组；此分组不对应游戏关卡，保留海报实际边界",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        1523,
+        970
+      ],
+      "output_size": [
+        1523,
+        970
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Complete poster borders and titles inspected individually at native size; lower sliver from the next board row excluded.",
+      "file_sha256": "034efebb27137a473fd1e420fe1f027e5ba08495fc2737ce1a57583fea2afe4c",
+      "size_bytes": 1239734
+    },
+    {
+      "file": "character-art-04.webp",
+      "crop_pixels": [
+        15670,
+        10435,
+        18080,
+        11405
+      ],
+      "content": "完整气氛海报组；此分组不对应游戏关卡，保留海报实际边界",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2410,
+        970
+      ],
+      "output_size": [
+        2400,
+        966
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Complete poster borders and titles inspected individually at native size; lower sliver from the next board row excluded.",
+      "file_sha256": "5e27a7c6fceca9c91e2425d86424351cede669501536226b372dcc17b025b81c",
+      "size_bytes": 1912860
+    },
+    {
+      "file": "rules-01.webp",
+      "crop_pixels": [
+        9830,
+        11462,
+        11858,
+        12550
+      ],
+      "content": "第1关玩法介绍原稿",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2028,
+        1088
+      ],
+      "output_size": [
+        2028,
+        1088
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "9e31cee88ad4da6c71282854075bec674ae9039fe7da25c1e40c66e33a316bb4",
+      "size_bytes": 1284420
+    },
+    {
+      "file": "rules-02.webp",
+      "crop_pixels": [
+        11874,
+        11462,
+        14176,
+        12550
+      ],
+      "content": "第2关玩法介绍原稿",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2302,
+        1088
+      ],
+      "output_size": [
+        2302,
+        1088
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "221861eff852b9b74fca6ee8559c52fe6a3d1d7f69a344ed2e016c5cd6c1805e",
+      "size_bytes": 1771720
+    },
+    {
+      "file": "rules-03.webp",
+      "crop_pixels": [
+        14190,
+        11462,
+        15948,
+        12550
+      ],
+      "content": "第3关玩法介绍原稿",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        1758,
+        1088
+      ],
+      "output_size": [
+        1758,
+        1088
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "6a1130d11b778242e6f817aa4ce9890bf581dfddca69c6134886c0e52fe92ad3",
+      "size_bytes": 1506914
+    },
+    {
+      "file": "rules-04.webp",
+      "crop_pixels": [
+        16002,
+        11462,
+        18078,
+        12550
+      ],
+      "content": "第4关玩法介绍原稿",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2076,
+        1088
+      ],
+      "output_size": [
+        2076,
+        1088
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "8cbf0ee63577bb79d6407b82c5f305e467e4aa4cdaf9f59aaa3da13f508158e7",
+      "size_bytes": 1752720
+    },
+    {
+      "file": "screen-01.webp",
+      "crop_pixels": [
+        9815,
+        13330,
+        11733,
+        14743
+      ],
+      "content": "第1关展板所示复合原型画面",
+      "source_limit": "Board version adds a Tea Master figure. It is a distinct variant from the separately preserved Figma full prototype. No neighboring image or incoming above-image guide line retained.",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        1918,
+        1413
+      ],
+      "output_size": [
+        1918,
+        1413
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "eae7111696bb5b40047f14ae4f30b520e88c75f0234823a8b49f00060e393577",
+      "size_bytes": 1411900
+    },
+    {
+      "file": "screen-02.webp",
+      "crop_pixels": [
+        11905,
+        13330,
+        13904,
+        14743
+      ],
+      "content": "第2关展板所示复合原型画面",
+      "source_limit": "Board version adds a Tea Master figure. It is a distinct variant from the separately preserved Figma full prototype. No neighboring image or incoming above-image guide line retained.",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        1999,
+        1413
+      ],
+      "output_size": [
+        1999,
+        1413
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "28e7a5c276e7516ee6a54c11b797b69549129eb1eb0f65c3df795ca0bcb9d95c",
+      "size_bytes": 1066172
+    },
+    {
+      "file": "screen-03.webp",
+      "crop_pixels": [
+        13934,
+        13330,
+        15946,
+        14743
+      ],
+      "content": "第3关展板所示复合原型画面",
+      "source_limit": "Board version adds a Tea Master figure. It is a distinct variant from the separately preserved Figma full prototype. No neighboring image or incoming above-image guide line retained.",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2012,
+        1413
+      ],
+      "output_size": [
+        2012,
+        1413
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "fdeb639743685e7f7df67ac6bee0f1bf41c876a8e8eee788e574ee2a20a40ee6",
+      "size_bytes": 1399138
+    },
+    {
+      "file": "screen-04.webp",
+      "crop_pixels": [
+        16028,
+        13330,
+        18031,
+        14743
+      ],
+      "content": "第4关展板所示复合原型画面",
+      "source_limit": "Board version adds a Tea Master figure. It is a distinct variant from the separately preserved Figma full prototype. No neighboring image or incoming above-image guide line retained.",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2003,
+        1413
+      ],
+      "output_size": [
+        2003,
+        1413
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "8213dd654a99b99c30c68e2560dcc6d2287aec411be762f8fc48e79a9b317313",
+      "size_bytes": 1346606
+    },
+    {
+      "file": "rewards-flow.webp",
+      "crop_pixels": [
+        9725,
+        15020,
+        18070,
+        16120
+      ],
+      "content": "第一至第四关与关卡奖励的原始连线图",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        8345,
+        1100
+      ],
+      "output_size": [
+        2400,
+        316
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "2c1db21c03dbf590fcf36f1f01781a0e2d7bbaed0829bebb099a9dd192bc098d",
+      "size_bytes": 29238
+    },
+    {
+      "file": "collection-menu.webp",
+      "crop_pixels": [
+        9440,
+        16455,
+        11182,
+        17835
+      ],
+      "content": "四款宝匣边框与拨锁启匣设计",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        1742,
+        1380
+      ],
+      "output_size": [
+        1742,
+        1380
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "d696e35d8f63cc0eecbee9692947d685cf6215f5e9b68a910178bceeab20d291",
+      "size_bytes": 764614
+    },
+    {
+      "file": "collection-dials.webp",
+      "crop_pixels": [
+        9437,
+        17955,
+        11197,
+        19870
+      ],
+      "content": "茶具音律标记及圆形控件变体",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        1760,
+        1915
+      ],
+      "output_size": [
+        1760,
+        1915
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "019ae999f8526817fc8e4e590817c50076d454244b165abf149ab6e95fee1ca7",
+      "size_bytes": 1035150
+    },
+    {
+      "file": "collection-masters.webp",
+      "crop_pixels": [
+        11275,
+        16440,
+        16075,
+        19730
+      ],
+      "content": "徽章与十二茶先生解锁收藏界面",
+      "source_limit": "The board embeds a screenshot whose lower cards are cut by the source image boundary. Retained as the original board version; a separate full Figma collection draft exists.",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        4800,
+        3290
+      ],
+      "output_size": [
+        2400,
+        1645
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "3dbfda5bffd81c54f75d6e47e8dd1ad05263b82cf92b0696b1eb5e12666b01c6",
+      "size_bytes": 621100
+    },
+    {
+      "file": "collection-medals.webp",
+      "crop_pixels": [
+        16225,
+        16410,
+        17955,
+        18135
+      ],
+      "content": "九枚器物与自然意象粒子徽章",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        1730,
+        1725
+      ],
+      "output_size": [
+        1730,
+        1725
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "c3ef06a5cb73d919730461c08fda5d88052e74a0fb02521349dfed5fcea29d0b",
+      "size_bytes": 413418
+    },
+    {
+      "file": "collection-tools.webp",
+      "crop_pixels": [
+        16155,
+        18335,
+        18044,
+        19948
+      ],
+      "content": "十二茶先生粒子徽章与名称图鉴",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        1889,
+        1613
+      ],
+      "output_size": [
+        1889,
+        1613
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "9d0850e5082d1236548bc6700b5ed1fa539fcedbc0e88a6292dfc4b30b269f0e",
+      "size_bytes": 2496174
+    },
+    {
+      "file": "research-cultural-origins.webp",
+      "crop_pixels": [
+        985,
+        6480,
+        2535,
+        10030
+      ],
+      "content": "文化溯源、年度行事牌与说明",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        1550,
+        3550
+      ],
+      "output_size": [
+        1048,
+        2400
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "7ab53d371b76255953298af90f24c772b6be1f357e8e2aed2b26ef314c410f25",
+      "size_bytes": 1005286
+    },
+    {
+      "file": "research-map.webp",
+      "crop_pixels": [
+        2650,
+        6540,
+        6420,
+        10240
+      ],
+      "content": "径山寺场域地图、路径、地点与照片索引",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        3770,
+        3700
+      ],
+      "output_size": [
+        2400,
+        2355
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "de66ae87f65795c0c772368b4a9eaeb8842d27c3e38f1c2c0bc6fbed1fa724b7",
+      "size_bytes": 3114548
+    },
+    {
+      "file": "research-field-observation.webp",
+      "crop_pixels": [
+        985,
+        10380,
+        6280,
+        11370
+      ],
+      "content": "场景观察：日常行走、僧众礼仪、法会筹备、茶事待客与山间云雾",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        5295,
+        990
+      ],
+      "output_size": [
+        2400,
+        449
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "83b7435d6c6c8a7a768707805ce8f73dba33d1d272f2fcfee3915599e984ab97",
+      "size_bytes": 691110
+    },
+    {
+      "file": "research-object-papers.webp",
+      "crop_pixels": [
+        6520,
+        6660,
+        8410,
+        7760
+      ],
+      "content": "香花券与度牒研究",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        1890,
+        1100
+      ],
+      "output_size": [
+        1890,
+        1100
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "93bd36e49c47f74d4f49e1ff6ce0e966c1cc8e0034b32b9e514a9fa3705523b9",
+      "size_bytes": 364732
+    },
+    {
+      "file": "research-object-farmer.webp",
+      "crop_pixels": [
+        6520,
+        7820,
+        8410,
+        8660
+      ],
+      "content": "净手与布施行为研究",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        1890,
+        840
+      ],
+      "output_size": [
+        1890,
+        840
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "12ad917704cd6087c97a02ee9e235a76e6100aa159bad1f394db93b70300aeee",
+      "size_bytes": 101256
+    },
+    {
+      "file": "research-object-ewer.webp",
+      "crop_pixels": [
+        6520,
+        8690,
+        8410,
+        9505
+      ],
+      "content": "净水壶器物研究",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        1890,
+        815
+      ],
+      "output_size": [
+        1890,
+        815
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "b965185e40d9320ef60c134c60b99d0815ce9091a468387be360a8fe7d2dcad0",
+      "size_bytes": 79814
+    },
+    {
+      "file": "research-object-utensils.webp",
+      "crop_pixels": [
+        6520,
+        9540,
+        7510,
+        10525
+      ],
+      "content": "茶具与清具研究",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        990,
+        985
+      ],
+      "output_size": [
+        990,
+        985
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "98cd6e8bdd7dc5b2f8cbfd8e2e3275024bb7b7fddb6935977b951b018eb8be2b",
+      "size_bytes": 62284
+    },
+    {
+      "file": "research-object-tea-tools.webp",
+      "crop_pixels": [
+        7540,
+        9540,
+        8410,
+        10525
+      ],
+      "content": "木臼与杵研究",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        870,
+        985
+      ],
+      "output_size": [
+        870,
+        985
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "6b107b8aa2dab6ead715e0e84a79ce3588c419a58b1af4067b3826bec48eeaa0",
+      "size_bytes": 49336
+    },
+    {
+      "file": "research-ritual-calendar.webp",
+      "crop_pixels": [
+        6450,
+        10720,
+        8550,
+        11870
+      ],
+      "content": "法会线索：农历日期、法会主题、仪式环节、参与方式与文化意义",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2100,
+        1150
+      ],
+      "output_size": [
+        2100,
+        1150
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "8bd33e8e72c77dc0c6fc4857b186ce839d60a5cfbde3dd5a3ca0fed775dcff11",
+      "size_bytes": 130626
+    },
+    {
+      "file": "research-additional-tools.webp",
+      "crop_pixels": [
+        1000,
+        11410,
+        6280,
+        12110
+      ],
+      "content": "补充器物：竹席茶碗、供茶叠盘、石纹杯托与石质支架",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        5280,
+        700
+      ],
+      "output_size": [
+        2400,
+        318
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "1bcbd89e24784b44ec97fb98cfdeb70bbb983cf534af6371f0c2ed263fa1d015",
+      "size_bytes": 412824
+    },
+    {
+      "file": "banquet-icons.webp",
+      "crop_pixels": [
+        970,
+        12885,
+        3000,
+        14285
+      ],
+      "content": "径山寺茶宴六环节的原始圆形图标",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2030,
+        1400
+      ],
+      "output_size": [
+        2030,
+        1400
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "4f0777b0d1d1ebf54fd11138ba0646b6671d1e05b9d2486ccdc7318f7e8498c6",
+      "size_bytes": 436588
+    },
+    {
+      "file": "ritual-hands.webp",
+      "crop_pixels": [
+        3290,
+        13920,
+        8850,
+        14580
+      ],
+      "content": "茶礼动作原始手势剪影条",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        5560,
+        660
+      ],
+      "output_size": [
+        2400,
+        285
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "22b4a0d0d1a499986ff7435443b2a49a13323c5b3f2610086910041954b9ca43",
+      "size_bytes": 115176
+    },
+    {
+      "file": "tools-relations.webp",
+      "crop_pixels": [
+        4099,
+        16395,
+        8951,
+        20050
+      ],
+      "content": "十二茶先生工具总览与器物、叙事、茶宴、谱系关系",
+      "source_limit": "Original incoming white association lines remain at the left, because they are part of the supplied board artwork.",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        4852,
+        3655
+      ],
+      "output_size": [
+        2400,
+        1808
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "cf2e45cf7e9b5f65e3485d464d4e8a251bc9acd280f6f6757be08d338c9c256d",
+      "size_bytes": 1526982
+    },
+    {
+      "file": "tools-correspondence.webp",
+      "crop_pixels": [
+        4099,
+        16395,
+        6780,
+        20050
+      ],
+      "content": "十二茶先生与茶事工具对应关系",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2681,
+        3655
+      ],
+      "output_size": [
+        1760,
+        2400
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "76334b1bd9e074ccbe23a69a051702e835a3c7e593b052d8c0706ec3b074c53a",
+      "size_bytes": 911836
+    },
+    {
+      "file": "tools-relationships.webp",
+      "crop_pixels": [
+        6830,
+        16400,
+        8951,
+        17750
+      ],
+      "content": "器物关系：火、水、器、用、藏",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2121,
+        1350
+      ],
+      "output_size": [
+        2121,
+        1350
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "1b237e3cc6a373c396d60e22e37ae333802685270984681bcedc80ff91c4ccbe",
+      "size_bytes": 143950
+    },
+    {
+      "file": "tools-narrative.webp",
+      "crop_pixels": [
+        6830,
+        17755,
+        8951,
+        18470
+      ],
+      "content": "叙事逻辑：择器、备茶、呈汤、品茗、静心",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2121,
+        715
+      ],
+      "output_size": [
+        2121,
+        715
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "4b022c8f344d950f1397250b557fbfa4cc64937c79d185f85cf95748e90700fc",
+      "size_bytes": 84824
+    },
+    {
+      "file": "tools-banquet.webp",
+      "crop_pixels": [
+        6830,
+        18430,
+        8951,
+        19200
+      ],
+      "content": "茶宴流程图示",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2121,
+        770
+      ],
+      "output_size": [
+        2121,
+        770
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "083bc36d538e8b808ede0ef38a91dbeb82a141a4e41747b870451301ea0cf76e",
+      "size_bytes": 82810
+    },
+    {
+      "file": "tools-lineage.webp",
+      "crop_pixels": [
+        6830,
+        19140,
+        8951,
+        20050
+      ],
+      "content": "角色谱系图示",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        2121,
+        910
+      ],
+      "output_size": [
+        2121,
+        910
+      ],
+      "operation": "Exact rectangular source extraction; no paint, recreation, fill or invented pixels; downsample only if larger than 2400px.",
+      "file_sha256": "e8b540c6e135570dc0a864efe0e8ba58a4c73480c81787b06b8427dd629271c2",
+      "size_bytes": 87300
+    },
+    {
+      "file": "character-poster01.webp",
+      "crop_pixels": [
+        9854,
+        10435,
+        10537,
+        11405
+      ],
+      "content": "茶磨先生气氛海报",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        683,
+        970
+      ],
+      "output_size": [
+        683,
+        970
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Complete poster borders and titles inspected individually at native size; lower sliver from the next board row excluded.",
+      "poster_title": "茶磨先生",
+      "file_sha256": "c0a27ff30886f3bf19127caeea8b4f7ed0ba7dcf2437759a69c6eee5cac6e160",
+      "size_bytes": 540244
+    },
+    {
+      "file": "character-poster02.webp",
+      "crop_pixels": [
+        10687,
+        10435,
+        11409,
+        11405
+      ],
+      "content": "茶匙先生气氛海报",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        722,
+        970
+      ],
+      "output_size": [
+        722,
+        970
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Complete poster borders and titles inspected individually at native size; lower sliver from the next board row excluded.",
+      "poster_title": "茶匙先生",
+      "file_sha256": "490dafa889002375aed6ca753a9d13872cb2ce7b2f7896b30dfc254b73dcda98",
+      "size_bytes": 619320
+    },
+    {
+      "file": "character-poster03.webp",
+      "crop_pixels": [
+        11508,
+        10435,
+        12211,
+        11405
+      ],
+      "content": "盏托先生气氛海报",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        703,
+        970
+      ],
+      "output_size": [
+        703,
+        970
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Complete poster borders and titles inspected individually at native size; lower sliver from the next board row excluded.",
+      "poster_title": "盏托先生",
+      "file_sha256": "3f9add269e8c10b8e0d122d69f6e89d14db250a7c6ab990ad6b55c45094a3baf",
+      "size_bytes": 673156
+    },
+    {
+      "file": "character-poster04.webp",
+      "crop_pixels": [
+        12336,
+        10435,
+        13037,
+        11405
+      ],
+      "content": "汤瓶先生气氛海报",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        701,
+        970
+      ],
+      "output_size": [
+        701,
+        970
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Complete poster borders and titles inspected individually at native size; lower sliver from the next board row excluded.",
+      "poster_title": "汤瓶先生",
+      "file_sha256": "f600a23e4f15eaa1cf258b5989a50885e0a09e6d4c68a91b6dc72a1465777d9a",
+      "size_bytes": 651106
+    },
+    {
+      "file": "character-poster05.webp",
+      "crop_pixels": [
+        13161,
+        10435,
+        13860,
+        11405
+      ],
+      "content": "茶焙先生气氛海报",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        699,
+        970
+      ],
+      "output_size": [
+        699,
+        970
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Complete poster borders and titles inspected individually at native size; lower sliver from the next board row excluded.",
+      "poster_title": "茶焙先生",
+      "file_sha256": "504eff3c26208f42232502d799233a89b8724a3e37b4b322bb9e2b49d11307a6",
+      "size_bytes": 672782
+    },
+    {
+      "file": "character-poster06.webp",
+      "crop_pixels": [
+        14020,
+        10435,
+        14721,
+        11405
+      ],
+      "content": "茶巾先生气氛海报",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        701,
+        970
+      ],
+      "output_size": [
+        701,
+        970
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Complete poster borders and titles inspected individually at native size; lower sliver from the next board row excluded.",
+      "poster_title": "茶巾先生",
+      "file_sha256": "ad45bfa2557b051301c113cd4155bee2ce3241f9d3b884a2326a95279191795b",
+      "size_bytes": 619226
+    },
+    {
+      "file": "character-poster07.webp",
+      "crop_pixels": [
+        14846,
+        10435,
+        15543,
+        11405
+      ],
+      "content": "建盏先生气氛海报",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        697,
+        970
+      ],
+      "output_size": [
+        697,
+        970
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Complete poster borders and titles inspected individually at native size; lower sliver from the next board row excluded.",
+      "poster_title": "建盏先生",
+      "file_sha256": "4d840d5a06c32183bcee82e3c07042b601129c31210ab06ad938bcaf565e9091",
+      "size_bytes": 617934
+    },
+    {
+      "file": "character-poster08.webp",
+      "crop_pixels": [
+        15670,
+        10435,
+        16367,
+        11405
+      ],
+      "content": "茶罗先生气氛海报",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        697,
+        970
+      ],
+      "output_size": [
+        697,
+        970
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Complete poster borders and titles inspected individually at native size; lower sliver from the next board row excluded.",
+      "poster_title": "茶罗先生",
+      "file_sha256": "71dcacf3d3cadbe4246a813c10b2c44dec9468751407fec019ff88f8393dd8ff",
+      "size_bytes": 668472
+    },
+    {
+      "file": "character-poster09.webp",
+      "crop_pixels": [
+        16529,
+        10435,
+        17218,
+        11405
+      ],
+      "content": "水脉先生气氛海报",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        689,
+        970
+      ],
+      "output_size": [
+        689,
+        970
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Complete poster borders and titles inspected individually at native size; lower sliver from the next board row excluded.",
+      "poster_title": "水脉先生",
+      "file_sha256": "63cc05566b6dfdc804ec21ad5568d211398a495c9f26f549770d264a90838759",
+      "size_bytes": 593478
+    },
+    {
+      "file": "character-poster10.webp",
+      "crop_pixels": [
+        17407,
+        10435,
+        18080,
+        11405
+      ],
+      "content": "茶筅先生气氛海报",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        673,
+        970
+      ],
+      "output_size": [
+        673,
+        970
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Complete poster borders and titles inspected individually at native size; lower sliver from the next board row excluded.",
+      "poster_title": "茶筅先生",
+      "file_sha256": "e71371421c1621c61032c715fdf7a8fc158ca777b06307cc196a6a3283414c33",
+      "size_bytes": 660772
+    },
+    {
+      "file": "loading-whisks.webp",
+      "source": "figma-raw-image",
+      "node_id": "1148:5",
+      "source_file": "raw-1148-5-0.png",
+      "source_sha256": "c0de3851ae5dd2ca96726f9416db68d55ba4c4f0a1f82b8e1f6e7d7a1770adf2",
+      "output_size": [
+        1537,
+        1023
+      ],
+      "content": "六种持筅加载符，Figma完整原始上传图",
+      "operation": "Lossless exact conversion of the original Figma raw image; no crop.",
+      "qa": "Complete source replaces the occluded version in the flattened board.",
+      "file_sha256": "422571f0cd0706514b7aea2d9e63a02998745dac77526ad8339ae685436b953c",
+      "size_bytes": 874926
+    },
+    {
+      "file": "loading-bowls.webp",
+      "source": "figma-raw-image",
+      "node_id": "1148:4",
+      "source_file": "raw-1148-4-0.png",
+      "source_sha256": "775dbbf3cd86b77f003660ba62c0d444aa5bef71ee90a568d1fcdca7d8cf0e97",
+      "output_size": [
+        1536,
+        1024
+      ],
+      "content": "八种茶盏俯视加载符，Figma完整原始上传图",
+      "operation": "Lossless exact conversion of the original Figma raw image; no crop.",
+      "qa": "Complete source replaces the occluded version in the flattened board.",
+      "file_sha256": "069cd871371c2e91463b969490eec7ba0cf80e08b61eb0ebe0f1285471f72ace",
+      "size_bytes": 799000
+    },
+    {
+      "file": "research-site-01.webp",
+      "crop_pixels": [
+        2774,
+        9387,
+        3404,
+        10051
+      ],
+      "content": "场域照片：山门",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        630,
+        664
+      ],
+      "output_size": [
+        630,
+        664
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "ba8a3e8112cf32b6c4692702b319549759ca6897da07b9a1dc1f63c88bdfa207",
+      "size_bytes": 29838
+    },
+    {
+      "file": "research-site-02.webp",
+      "crop_pixels": [
+        3491,
+        9393,
+        4094,
+        10051
+      ],
+      "content": "场域照片：古道",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        603,
+        658
+      ],
+      "output_size": [
+        603,
+        658
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "81f6f4882f6dec11fff7ef90aff5ed717683eed817822d8591ccd8a76609dcd7",
+      "size_bytes": 28410
+    },
+    {
+      "file": "research-site-03.webp",
+      "crop_pixels": [
+        4204,
+        9393,
+        4801,
+        10046
+      ],
+      "content": "场域照片：方丈院",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        597,
+        653
+      ],
+      "output_size": [
+        597,
+        653
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "059d50cea64d991a5d38ce5607d286667ba272a3984734d167d57178101a9965",
+      "size_bytes": 27422
+    },
+    {
+      "file": "research-site-04.webp",
+      "crop_pixels": [
+        4882,
+        9404,
+        5468,
+        10051
+      ],
+      "content": "场域照片：洗心桥",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        586,
+        647
+      ],
+      "output_size": [
+        586,
+        647
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "ab4cea0a728ecf93fcf080677249e47b372ce0a25ee6b090d999f53ccd2759dd",
+      "size_bytes": 27260
+    },
+    {
+      "file": "research-site-05.webp",
+      "crop_pixels": [
+        5567,
+        9404,
+        6158,
+        10051
+      ],
+      "content": "场域照片：茶园",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        591,
+        647
+      ],
+      "output_size": [
+        591,
+        647
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "a39627816f32d09057a679d42d231b7916a9176f2b2c9322d1fe894ce07b1a6a",
+      "size_bytes": 27698
+    },
+    {
+      "file": "research-field-01.webp",
+      "crop_pixels": [
+        2740,
+        10515,
+        3385,
+        11210
+      ],
+      "content": "场景观察：僧人日常行走",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        645,
+        695
+      ],
+      "output_size": [
+        645,
+        695
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "72a400c953c358f9ea4799a85519476477d0a46390d508c74802f51b0380a6ca",
+      "size_bytes": 33440
+    },
+    {
+      "file": "research-field-02.webp",
+      "crop_pixels": [
+        3405,
+        10515,
+        3958,
+        11210
+      ],
+      "content": "场景观察：僧众礼佛",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        553,
+        695
+      ],
+      "output_size": [
+        553,
+        695
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "d327ed42f8eb03030bad8965b1f418f8cd109c53892a209a696387015ddfa2e9",
+      "size_bytes": 29024
+    },
+    {
+      "file": "research-field-03.webp",
+      "crop_pixels": [
+        3970,
+        10515,
+        4705,
+        11210
+      ],
+      "content": "场景观察：法会准备",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        735,
+        695
+      ],
+      "output_size": [
+        735,
+        695
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "08a1f74827ba872f541836a2d156aa13075a547d4c0413daab305e89221871e4",
+      "size_bytes": 36108
+    },
+    {
+      "file": "research-field-04.webp",
+      "crop_pixels": [
+        4715,
+        10515,
+        5425,
+        11210
+      ],
+      "content": "场景观察：茶寮待客",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        710,
+        695
+      ],
+      "output_size": [
+        710,
+        695
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "44b023729e19cc4c918af60a14dc24d148b4de2bf9f382315d15d9acd71dca5b",
+      "size_bytes": 34562
+    },
+    {
+      "file": "research-field-05.webp",
+      "crop_pixels": [
+        5430,
+        10515,
+        6080,
+        11210
+      ],
+      "content": "场景观察：山间云雾",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        650,
+        695
+      ],
+      "output_size": [
+        650,
+        695
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "7fbab8e2a8092b10c9fda1806b0a8866fedaf33059fc2d2e849d320bdf78d0c3",
+      "size_bytes": 31990
+    },
+    {
+      "file": "research-extra-01.webp",
+      "crop_pixels": [
+        2205,
+        11402,
+        3166,
+        12116
+      ],
+      "content": "补充器物：竹篾茶碗",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        961,
+        714
+      ],
+      "output_size": [
+        961,
+        714
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "a9b475efa54f4304744ab8ac71b73f8d09094880b1420efc2b04525c4485a542",
+      "size_bytes": 41594
+    },
+    {
+      "file": "research-extra-02.webp",
+      "crop_pixels": [
+        3157,
+        11402,
+        4101,
+        12116
+      ],
+      "content": "补充器物：供茶茶盘",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        944,
+        714
+      ],
+      "output_size": [
+        944,
+        714
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "9148af370b520f5f33ff73e6c9bc921dcb6bd8968a6ed41a08a5dec6120160f5",
+      "size_bytes": 44682
+    },
+    {
+      "file": "research-extra-03.webp",
+      "crop_pixels": [
+        4091,
+        11402,
+        5046,
+        12116
+      ],
+      "content": "补充器物：石纹茶托",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        955,
+        714
+      ],
+      "output_size": [
+        955,
+        714
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "b5a902517cbb5a21b262d47efa7d7acf5ed8b2758102a3cbf6e4240400c57342",
+      "size_bytes": 40762
+    },
+    {
+      "file": "research-extra-04.webp",
+      "crop_pixels": [
+        5037,
+        11402,
+        5998,
+        12116
+      ],
+      "content": "补充器物：石质支架",
+      "source": "culture-board",
+      "source_size": [
+        18519,
+        20456
+      ],
+      "native_crop_size": [
+        961,
+        714
+      ],
+      "output_size": [
+        961,
+        714
+      ],
+      "operation": "Exact rectangular source extraction, no painted or invented pixels. Max2400px downsample only.",
+      "qa": "Full-source rectangular boundaries reviewed; no adjacent section title or neighboring artwork.",
+      "file_sha256": "a0bd987aa95b4b078e7749f74e1046edbd4f0391bc8a852d982ba8bf7adb224f",
+      "size_bytes": 39388
+    }
+  ],
+  "note": "These are sections of the user supplied Tea String Chronicles board, not reference projects. Human-readable labels are recorded in content for native webpage captions. Precise crop QA is recorded after contact-sheet review.",
+  "board_detail": {
+    "file": "../board-culture-detail.webp",
+    "source_file": "展板_01(2).png",
+    "source_sha256": "64553e83b81d3191c02a97f8e887b3717c0d228b90cb81b9cf884fdf3f21b392",
+    "source_size": [
+      18519,
+      20456
+    ],
+    "output_size": [
+      6000,
+      6628
+    ],
+    "quality": 95,
+    "size_bytes": 3861188,
+    "output_sha256": "db8aa73b6caaabe9361a4ac1a801f362c55ac3917df216b64861f8fd473cf496",
+    "operation": "Full-board proportionate derivative for on-demand reading, no crop; lightweight preview unchanged."
+  },
+  "qa_note": "All board subsections retained. Original board limits and variant differences are explicit. Complete Figma source is preferred over occluded board content when available."
+}

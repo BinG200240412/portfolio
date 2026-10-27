@@ -1,0 +1,1413 @@
+{
+  "source": "Frame 322.png",
+  "sourceDimensions": [
+    7680,
+    8660
+  ],
+  "sourceSha256": "6160e30606e67844b16d8dfec344ce8d0f71d8231d1d724f07fded94980d0b6d",
+  "method": "Pixel crops from the original 7680 x 8660 supplied project board; no generated or repainted content.",
+  "assets": [
+    {
+      "file": "logic-whole.webp",
+      "sourcePixelBounds": [
+        192,
+        392,
+        3752,
+        1830
+      ],
+      "sourceCropDimensions": [
+        3560,
+        1438
+      ],
+      "dimensions": [
+        2600,
+        1050
+      ],
+      "content": "完整玩法逻辑面板：四重体验轴测与右侧叙事/情感/美学/场景链",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 452410,
+      "status": "qa-passed"
+    },
+    {
+      "file": "logic-axon.webp",
+      "sourcePixelBounds": [
+        192,
+        392,
+        2984,
+        1830
+      ],
+      "sourceCropDimensions": [
+        2792,
+        1438
+      ],
+      "dimensions": [
+        2600,
+        1339
+      ],
+      "content": "四重体验空间轴测与完整图示释义",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 472572,
+      "status": "qa-passed"
+    },
+    {
+      "file": "logic-story-chain.webp",
+      "sourcePixelBounds": [
+        3035,
+        400,
+        3752,
+        1830
+      ],
+      "sourceCropDimensions": [
+        717,
+        1430
+      ],
+      "dimensions": [
+        717,
+        1430
+      ],
+      "content": "四重体验说明及叙事—情感—美学—场景链",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 103420,
+      "status": "qa-passed"
+    },
+    {
+      "file": "process-wake.webp",
+      "sourcePixelBounds": [
+        2692,
+        2196,
+        3748,
+        2784
+      ],
+      "sourceCropDimensions": [
+        1056,
+        588
+      ],
+      "dimensions": [
+        1056,
+        588
+      ],
+      "content": "醒茶如禅三步交互流程及完整标题、步骤标签",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 57642,
+      "status": "qa-passed"
+    },
+    {
+      "file": "process-grind.webp",
+      "sourcePixelBounds": [
+        2692,
+        3264,
+        3748,
+        3980
+      ],
+      "sourceCropDimensions": [
+        1056,
+        716
+      ],
+      "dimensions": [
+        1056,
+        716
+      ],
+      "content": "碎罗成律三步交互流程及完整标题、步骤标签",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 55340,
+      "status": "qa-passed"
+    },
+    {
+      "file": "process-ritual.webp",
+      "sourcePixelBounds": [
+        2692,
+        4532,
+        3748,
+        5200
+      ],
+      "sourceCropDimensions": [
+        1056,
+        668
+      ],
+      "dimensions": [
+        1056,
+        668
+      ],
+      "content": "行盏入礼三步交互流程及完整标题",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 43078,
+      "status": "qa-passed"
+    },
+    {
+      "file": "feedback-wake-triptych.webp",
+      "sourcePixelBounds": [
+        2692,
+        2808,
+        3748,
+        3200
+      ],
+      "sourceCropDimensions": [
+        1056,
+        392
+      ],
+      "dimensions": [
+        1056,
+        392
+      ],
+      "content": "茶芽入笼/昏睡云缠身/金芽圆满三张反馈图与完整图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 100500,
+      "status": "qa-passed"
+    },
+    {
+      "file": "feedback-grind-triptych.webp",
+      "sourcePixelBounds": [
+        2692,
+        4020,
+        3748,
+        4420
+      ],
+      "sourceCropDimensions": [
+        1056,
+        400
+      ],
+      "dimensions": [
+        1056,
+        400
+      ],
+      "content": "茶粉收集进度/乐曲特效/满分特效三张反馈图与完整图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 92612,
+      "status": "qa-passed"
+    },
+    {
+      "file": "feedback-ritual-triptych.webp",
+      "sourcePixelBounds": [
+        2692,
+        5232,
+        3748,
+        5624
+      ],
+      "sourceCropDimensions": [
+        1056,
+        392
+      ],
+      "dimensions": [
+        1056,
+        392
+      ],
+      "content": "叉手礼交互/分茶汤/正面奉茶三张反馈图与完整图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 106736,
+      "status": "qa-passed"
+    },
+    {
+      "file": "behavior-walk.webp",
+      "sourcePixelBounds": [
+        3940,
+        660,
+        4390,
+        1204
+      ],
+      "sourceCropDimensions": [
+        450,
+        544
+      ],
+      "dimensions": [
+        450,
+        544
+      ],
+      "content": "漫步体验圆图及原图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 40616,
+      "status": "qa-passed"
+    },
+    {
+      "file": "behavior-observe.webp",
+      "sourcePixelBounds": [
+        4680,
+        660,
+        5138,
+        1204
+      ],
+      "sourceCropDimensions": [
+        458,
+        544
+      ],
+      "dimensions": [
+        458,
+        544
+      ],
+      "content": "观景借景圆图及原图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 37598,
+      "status": "qa-passed"
+    },
+    {
+      "file": "behavior-exhibit.webp",
+      "sourcePixelBounds": [
+        5425,
+        660,
+        5890,
+        1204
+      ],
+      "sourceCropDimensions": [
+        465,
+        544
+      ],
+      "dimensions": [
+        465,
+        544
+      ],
+      "content": "观赏展品圆图及原图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 39102,
+      "status": "qa-passed"
+    },
+    {
+      "file": "behavior-entrance.webp",
+      "sourcePixelBounds": [
+        3940,
+        1228,
+        4390,
+        1760
+      ],
+      "sourceCropDimensions": [
+        450,
+        532
+      ],
+      "dimensions": [
+        450,
+        532
+      ],
+      "content": "入口引导圆图及原图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 37666,
+      "status": "qa-passed"
+    },
+    {
+      "file": "behavior-immerse.webp",
+      "sourcePixelBounds": [
+        4680,
+        1228,
+        5138,
+        1760
+      ],
+      "sourceCropDimensions": [
+        458,
+        532
+      ],
+      "dimensions": [
+        458,
+        532
+      ],
+      "content": "沉浸感受圆图及原图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 39368,
+      "status": "qa-passed"
+    },
+    {
+      "file": "behavior-interact.webp",
+      "sourcePixelBounds": [
+        5425,
+        1228,
+        5890,
+        1760
+      ],
+      "sourceCropDimensions": [
+        465,
+        532
+      ],
+      "dimensions": [
+        465,
+        532
+      ],
+      "content": "互动体验圆图及原图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 38120,
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-language.webp",
+      "sourcePixelBounds": [
+        3936,
+        5010,
+        5644,
+        5454
+      ],
+      "sourceCropDimensions": [
+        1708,
+        444
+      ],
+      "dimensions": [
+        1708,
+        444
+      ],
+      "content": "圆/方/格栅/层架/围合/对景六种展具语言完整分析",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 194518,
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-materials.webp",
+      "sourcePixelBounds": [
+        3936,
+        5454,
+        5644,
+        5624
+      ],
+      "sourceCropDimensions": [
+        1708,
+        170
+      ],
+      "dimensions": [
+        1708,
+        170
+      ],
+      "content": "色彩语言与陶瓷/竹木/金属/玻璃/石材材质语言原始色板",
+      "qa": "Complete color and material strip. The supplied board itself overlays the highest display tower over part of the metal label at the lower edge; preserve source evidence, prefer a separate source palette or native transcription for display.",
+      "bytes": 56098,
+      "sourceLimit": "Highest tower overlaps lower middle of original material strip.",
+      "status": "qa-passed"
+    },
+    {
+      "file": "feedback-wake-01.webp",
+      "sourcePixelBounds": [
+        2692,
+        2808,
+        3026,
+        3200
+      ],
+      "sourceCropDimensions": [
+        334,
+        392
+      ],
+      "dimensions": [
+        334,
+        392
+      ],
+      "content": "wake反馈细图1，保留原图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 29748,
+      "status": "qa-passed"
+    },
+    {
+      "file": "feedback-wake-02.webp",
+      "sourcePixelBounds": [
+        3052,
+        2808,
+        3388,
+        3200
+      ],
+      "sourceCropDimensions": [
+        336,
+        392
+      ],
+      "dimensions": [
+        336,
+        392
+      ],
+      "content": "wake反馈细图2，保留原图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 29736,
+      "status": "qa-passed"
+    },
+    {
+      "file": "feedback-wake-03.webp",
+      "sourcePixelBounds": [
+        3412,
+        2808,
+        3748,
+        3200
+      ],
+      "sourceCropDimensions": [
+        336,
+        392
+      ],
+      "dimensions": [
+        336,
+        392
+      ],
+      "content": "wake反馈细图3，保留原图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 41918,
+      "status": "qa-passed"
+    },
+    {
+      "file": "feedback-grind-01.webp",
+      "sourcePixelBounds": [
+        2692,
+        4020,
+        3026,
+        4420
+      ],
+      "sourceCropDimensions": [
+        334,
+        400
+      ],
+      "dimensions": [
+        334,
+        400
+      ],
+      "content": "grind反馈细图1，保留原图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 24010,
+      "status": "qa-passed"
+    },
+    {
+      "file": "feedback-grind-02.webp",
+      "sourcePixelBounds": [
+        3052,
+        4020,
+        3388,
+        4420
+      ],
+      "sourceCropDimensions": [
+        336,
+        400
+      ],
+      "dimensions": [
+        336,
+        400
+      ],
+      "content": "grind反馈细图2，保留原图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 34068,
+      "status": "qa-passed"
+    },
+    {
+      "file": "feedback-grind-03.webp",
+      "sourcePixelBounds": [
+        3412,
+        4020,
+        3748,
+        4420
+      ],
+      "sourceCropDimensions": [
+        336,
+        400
+      ],
+      "dimensions": [
+        336,
+        400
+      ],
+      "content": "grind反馈细图3，保留原图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 33616,
+      "status": "qa-passed"
+    },
+    {
+      "file": "feedback-ritual-01.webp",
+      "sourcePixelBounds": [
+        2692,
+        5232,
+        3026,
+        5624
+      ],
+      "sourceCropDimensions": [
+        334,
+        392
+      ],
+      "dimensions": [
+        334,
+        392
+      ],
+      "content": "ritual反馈细图1，保留原图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 31674,
+      "status": "qa-passed"
+    },
+    {
+      "file": "feedback-ritual-02.webp",
+      "sourcePixelBounds": [
+        3052,
+        5232,
+        3388,
+        5624
+      ],
+      "sourceCropDimensions": [
+        336,
+        392
+      ],
+      "dimensions": [
+        336,
+        392
+      ],
+      "content": "ritual反馈细图2，保留原图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 39258,
+      "status": "qa-passed"
+    },
+    {
+      "file": "feedback-ritual-03.webp",
+      "sourcePixelBounds": [
+        3412,
+        5232,
+        3748,
+        5624
+      ],
+      "sourceCropDimensions": [
+        336,
+        392
+      ],
+      "dimensions": [
+        336,
+        392
+      ],
+      "content": "ritual反馈细图3，保留原图注",
+      "qa": "Full panel boundary including its own labels; no upscaling.",
+      "bytes": 36152,
+      "status": "qa-passed"
+    },
+    {
+      "file": "behavior-whole.webp",
+      "sourcePixelBounds": [
+        3908,
+        392,
+        7532,
+        1856
+      ],
+      "sourceCropDimensions": [
+        3624,
+        1464
+      ],
+      "dimensions": [
+        2600,
+        1050
+      ],
+      "content": "完整空间行为分析：六圆、右轴测、虚线联结与行为图例",
+      "qa": "Own full dotted panel boundary retained.",
+      "bytes": 451208,
+      "status": "qa-passed"
+    },
+    {
+      "file": "central-room-top.webp",
+      "sourcePixelBounds": [
+        3912,
+        2200,
+        5308,
+        3012
+      ],
+      "sourceCropDimensions": [
+        1396,
+        812
+      ],
+      "dimensions": [
+        1396,
+        812
+      ],
+      "content": "中央环形茶室俯视图",
+      "qa": "Exact 4x bounds of Figma node 1244:444 as displayed on the original board, including its original dotted callout boxes.",
+      "bytes": 240724,
+      "status": "qa-passed"
+    },
+    {
+      "file": "central-room-notes.webp",
+      "sourcePixelBounds": [
+        3908,
+        3108,
+        5312,
+        3980
+      ],
+      "sourceCropDimensions": [
+        1404,
+        872
+      ],
+      "dimensions": [
+        1404,
+        872
+      ],
+      "content": "中央茶室交互机制完整说明段",
+      "qa": "Own dotted panel, arrow endpoint at the right boundary belongs to original board annotation.",
+      "bytes": 159856,
+      "status": "qa-passed"
+    },
+    {
+      "file": "central-room-experience-notes.webp",
+      "sourcePixelBounds": [
+        3908,
+        4032,
+        7532,
+        4392
+      ],
+      "sourceCropDimensions": [
+        3624,
+        360
+      ],
+      "dimensions": [
+        2600,
+        258
+      ],
+      "content": "中央沉浸式茶室体验完整说明段",
+      "qa": "Own full text paragraph and dotted panel retained.",
+      "bytes": 211364,
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-values.webp",
+      "sourcePixelBounds": [
+        7304,
+        5732,
+        7532,
+        6480
+      ],
+      "sourceCropDimensions": [
+        228,
+        748
+      ],
+      "dimensions": [
+        228,
+        748
+      ],
+      "content": "文化传播/体验创新/互动细节三个圆形价值徽章",
+      "qa": "Three complete badges with original captions.",
+      "bytes": 42434,
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-array.webp",
+      "sourcePixelBounds": [
+        3932,
+        5008,
+        7532,
+        6736
+      ],
+      "sourceCropDimensions": [
+        3600,
+        1728
+      ],
+      "dimensions": [
+        2600,
+        1248
+      ],
+      "content": "完整展具分析与展陈阵列上下文",
+      "qa": "The highest tower crosses above the lower array frame into the materials strip; full upper analysis and system cards are intentionally included so no tower or adjacent panel is cut.",
+      "bytes": 761828,
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-array-lower-panel.webp",
+      "sourcePixelBounds": [
+        3932,
+        5710,
+        7532,
+        6736
+      ],
+      "sourceCropDimensions": [
+        3600,
+        1026
+      ],
+      "dimensions": [
+        2600,
+        741
+      ],
+      "content": "展具阵列下方面板及场景化陈列说明",
+      "qa": "Original highest tower protrudes beyond this lower frame; use display-array.webp or the independent original display-family source for a complete tower.",
+      "bytes": 373454,
+      "status": "reference-only",
+      "sourceLimit": "The highest tower extends above this frame; use display-array.webp or independent raw display-family-original.webp for complete object geometry."
+    },
+    {
+      "file": "merchandise-reward-pipeline.webp",
+      "sourcePixelBounds": [
+        176,
+        7052,
+        3756,
+        7488
+      ],
+      "sourceCropDimensions": [
+        3580,
+        436
+      ],
+      "dimensions": [
+        2600,
+        317
+      ],
+      "content": "奖励吸管笔→奖励茶杯→攻关徽章→临摹茶百戏→畅饮礼品完整奖励链",
+      "qa": "Own complete dotted frame and all five original labels.",
+      "bytes": 155162,
+      "status": "qa-passed"
+    },
+    {
+      "file": "exhibition-scene-01.webp",
+      "sourcePixelBounds": [
+        196,
+        7592,
+        1972,
+        8480
+      ],
+      "sourceCropDimensions": [
+        1776,
+        888
+      ],
+      "dimensions": [
+        1776,
+        888
+      ],
+      "content": "底部左侧茶仙与周边展厅渲染",
+      "qa": "Visible first scene rectangle; right edge is overlapped by the second scene in the supplied board.",
+      "bytes": 219716,
+      "status": "qa-passed"
+    },
+    {
+      "file": "exhibition-scene-02.webp",
+      "sourcePixelBounds": [
+        1972,
+        7568,
+        3756,
+        8468
+      ],
+      "sourceCropDimensions": [
+        1784,
+        900
+      ],
+      "dimensions": [
+        1784,
+        900
+      ],
+      "content": "底部右侧斗笠茶仙与周边展厅渲染",
+      "qa": "Complete visible second scene rectangle with own dotted boundary.",
+      "bytes": 376094,
+      "status": "qa-passed"
+    },
+    {
+      "file": "exhibition-scene-pair.webp",
+      "sourcePixelBounds": [
+        192,
+        7568,
+        3756,
+        8480
+      ],
+      "sourceCropDimensions": [
+        3564,
+        912
+      ],
+      "dimensions": [
+        2600,
+        665
+      ],
+      "content": "底部两幅展厅渲染完整组合",
+      "qa": "Both source-overlapping scene renders retained in their original arrangement.",
+      "bytes": 408628,
+      "status": "qa-passed"
+    },
+    {
+      "file": "sketch-space-collage.webp",
+      "sourcePixelBounds": [
+        3968,
+        7604,
+        6088,
+        8556
+      ],
+      "sourceCropDimensions": [
+        2120,
+        952
+      ],
+      "dimensions": [
+        2120,
+        952
+      ],
+      "content": "草图推演六幅空间构图拼图",
+      "qa": "Six source images overlap in the supplied board; original composite preserved without reconstruction.",
+      "bytes": 421396,
+      "status": "qa-passed"
+    },
+    {
+      "file": "sketch-shape-variants.webp",
+      "sourcePixelBounds": [
+        6144,
+        7636,
+        7632,
+        8488
+      ],
+      "sourceCropDimensions": [
+        1488,
+        852
+      ],
+      "dimensions": [
+        1488,
+        852
+      ],
+      "content": "圆/方/格栅/层架/围合/对景六形态方案",
+      "qa": "Full original numbered 6-up scheme panel.",
+      "bytes": 174910,
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-system-01.webp",
+      "sourcePixelBounds": [
+        5712,
+        5008,
+        5966,
+        5624
+      ],
+      "sourceCropDimensions": [
+        254,
+        616
+      ],
+      "dimensions": [
+        254,
+        616
+      ],
+      "content": "独立层架完整展示系统小卡",
+      "qa": "Exact dotted-frame card boundary, including original title, subtitle, rendering and explanatory caption.",
+      "bytes": 38164,
+      "originalSubtitle": "香器 / 茶壶",
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-system-02.webp",
+      "sourcePixelBounds": [
+        5973,
+        5008,
+        6227,
+        5624
+      ],
+      "sourceCropDimensions": [
+        254,
+        616
+      ],
+      "dimensions": [
+        254,
+        616
+      ],
+      "content": "双层立架完整展示系统小卡",
+      "qa": "Exact dotted-frame card boundary, including original title, subtitle, rendering and explanatory caption.",
+      "bytes": 37324,
+      "originalSubtitle": "茶花 / 插花",
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-system-03.webp",
+      "sourcePixelBounds": [
+        6237,
+        5008,
+        6491,
+        5624
+      ],
+      "sourceCropDimensions": [
+        254,
+        616
+      ],
+      "dimensions": [
+        254,
+        616
+      ],
+      "content": "光影架完整展示系统小卡",
+      "qa": "Exact dotted-frame card boundary, including original title, subtitle, rendering and explanatory caption.",
+      "bytes": 42516,
+      "originalSubtitle": "圆扇 / 书画",
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-system-04.webp",
+      "sourcePixelBounds": [
+        6498,
+        5008,
+        6752,
+        5624
+      ],
+      "sourceCropDimensions": [
+        254,
+        616
+      ],
+      "dimensions": [
+        254,
+        616
+      ],
+      "content": "多层书架完整展示系统小卡",
+      "qa": "Exact dotted-frame card boundary, including original title, subtitle, rendering and explanatory caption.",
+      "bytes": 43968,
+      "originalSubtitle": "茶书 / 器物",
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-system-05.webp",
+      "sourcePixelBounds": [
+        6759,
+        5008,
+        7013,
+        5624
+      ],
+      "sourceCropDimensions": [
+        254,
+        616
+      ],
+      "dimensions": [
+        254,
+        616
+      ],
+      "content": "大圆台座完整展示系统小卡",
+      "qa": "Exact dotted-frame card boundary, including original title, subtitle, rendering and explanatory caption.",
+      "bytes": 40372,
+      "originalSubtitle": "茶壶 / 茶礼",
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-system-06.webp",
+      "sourcePixelBounds": [
+        7021,
+        5008,
+        7531,
+        5624
+      ],
+      "sourceCropDimensions": [
+        510,
+        616
+      ],
+      "dimensions": [
+        510,
+        616
+      ],
+      "content": "园林造景立架完整展示系统小卡",
+      "qa": "Exact dotted-frame card boundary, including original title, subtitle, rendering and explanatory caption.",
+      "bytes": 61104,
+      "originalSubtitle": "茶杯 / 建盏",
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-language-01.webp",
+      "sourcePixelBounds": [
+        3940,
+        5018,
+        4210,
+        5450
+      ],
+      "sourceCropDimensions": [
+        270,
+        432
+      ],
+      "dimensions": [
+        270,
+        432
+      ],
+      "content": "圆展具语言单元",
+      "qa": "Original title, circular illustration and original two-line label retained.",
+      "bytes": 33346,
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-language-02.webp",
+      "sourcePixelBounds": [
+        4210,
+        5018,
+        4488,
+        5450
+      ],
+      "sourceCropDimensions": [
+        278,
+        432
+      ],
+      "dimensions": [
+        278,
+        432
+      ],
+      "content": "方展具语言单元",
+      "qa": "Original title, circular illustration and original two-line label retained.",
+      "bytes": 28022,
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-language-03.webp",
+      "sourcePixelBounds": [
+        4488,
+        5018,
+        4765,
+        5450
+      ],
+      "sourceCropDimensions": [
+        277,
+        432
+      ],
+      "dimensions": [
+        277,
+        432
+      ],
+      "content": "格栅展具语言单元",
+      "qa": "Original title, circular illustration and original two-line label retained.",
+      "bytes": 24202,
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-language-04.webp",
+      "sourcePixelBounds": [
+        4765,
+        5018,
+        5038,
+        5450
+      ],
+      "sourceCropDimensions": [
+        273,
+        432
+      ],
+      "dimensions": [
+        273,
+        432
+      ],
+      "content": "层架展具语言单元",
+      "qa": "Original title, circular illustration and original two-line label retained.",
+      "bytes": 32774,
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-language-05.webp",
+      "sourcePixelBounds": [
+        5038,
+        5018,
+        5314,
+        5450
+      ],
+      "sourceCropDimensions": [
+        276,
+        432
+      ],
+      "dimensions": [
+        276,
+        432
+      ],
+      "content": "围合展具语言单元",
+      "qa": "Original title, circular illustration and original two-line label retained.",
+      "bytes": 33124,
+      "status": "qa-passed"
+    },
+    {
+      "file": "display-language-06.webp",
+      "sourcePixelBounds": [
+        5314,
+        5018,
+        5640,
+        5450
+      ],
+      "sourceCropDimensions": [
+        326,
+        432
+      ],
+      "dimensions": [
+        326,
+        432
+      ],
+      "content": "对景展具语言单元",
+      "qa": "Original title, circular illustration and original two-line label retained.",
+      "bytes": 37834,
+      "status": "qa-passed"
+    },
+    {
+      "file": "sketch-view-01.webp",
+      "sourcePixelBounds": [
+        3972,
+        7608,
+        4620,
+        8056
+      ],
+      "sourceCropDimensions": [
+        648,
+        448
+      ],
+      "dimensions": [
+        648,
+        448
+      ],
+      "content": "空间推演独立可见图1",
+      "qa": "Rectangular visible image portion only; overlapped hidden source pixels are not reconstructed. Prefer independent Figma raw image for full unoccluded source.",
+      "bytes": 58662,
+      "status": "visible-source-crop"
+    },
+    {
+      "file": "sketch-view-02.webp",
+      "sourcePixelBounds": [
+        4620,
+        7672,
+        5216,
+        8084
+      ],
+      "sourceCropDimensions": [
+        596,
+        412
+      ],
+      "dimensions": [
+        596,
+        412
+      ],
+      "content": "空间推演独立可见图2",
+      "qa": "Rectangular visible image portion only; overlapped hidden source pixels are not reconstructed. Prefer independent Figma raw image for full unoccluded source.",
+      "bytes": 70712,
+      "status": "visible-source-crop"
+    },
+    {
+      "file": "sketch-view-03.webp",
+      "sourcePixelBounds": [
+        5216,
+        7692,
+        6084,
+        8060
+      ],
+      "sourceCropDimensions": [
+        868,
+        368
+      ],
+      "dimensions": [
+        868,
+        368
+      ],
+      "content": "空间推演独立可见图3",
+      "qa": "Rectangular visible image portion only; overlapped hidden source pixels are not reconstructed. Prefer independent Figma raw image for full unoccluded source.",
+      "bytes": 68400,
+      "status": "visible-source-crop"
+    },
+    {
+      "file": "sketch-view-04.webp",
+      "sourcePixelBounds": [
+        3992,
+        8110,
+        4596,
+        8524
+      ],
+      "sourceCropDimensions": [
+        604,
+        414
+      ],
+      "dimensions": [
+        604,
+        414
+      ],
+      "content": "空间推演独立可见图4",
+      "qa": "Crop tightened to the actual unobstructed visible image boundary after visual QA, excluding the overlapping upper neighbor. Original hidden image pixels are absent from the supplied board; prefer independent Figma raw source for the full scene.",
+      "bytes": 72514,
+      "status": "visible-source-crop"
+    },
+    {
+      "file": "sketch-view-05.webp",
+      "sourcePixelBounds": [
+        4616,
+        8122,
+        5184,
+        8524
+      ],
+      "sourceCropDimensions": [
+        568,
+        402
+      ],
+      "dimensions": [
+        568,
+        402
+      ],
+      "content": "空间推演独立可见图5",
+      "qa": "Crop tightened to the actual unobstructed visible image boundary after visual QA, excluding the overlapping upper neighbor. Original hidden image pixels are absent from the supplied board; prefer independent Figma raw source for the full scene.",
+      "bytes": 44042,
+      "status": "visible-source-crop"
+    },
+    {
+      "file": "sketch-view-06.webp",
+      "sourcePixelBounds": [
+        5216,
+        8086,
+        6084,
+        8552
+      ],
+      "sourceCropDimensions": [
+        868,
+        466
+      ],
+      "dimensions": [
+        868,
+        466
+      ],
+      "content": "空间推演独立可见图6",
+      "qa": "Crop tightened to the actual unobstructed visible image boundary after visual QA, excluding the overlapping upper neighbor. Original hidden image pixels are absent from the supplied board; prefer independent Figma raw source for the full scene.",
+      "bytes": 60924,
+      "status": "visible-source-crop"
+    },
+    {
+      "file": "sketch-shape-01.webp",
+      "sourcePixelBounds": [
+        6300,
+        7690,
+        6660,
+        8055
+      ],
+      "sourceCropDimensions": [
+        360,
+        365
+      ],
+      "dimensions": [
+        360,
+        365
+      ],
+      "content": "圆形态方案",
+      "qa": "Original full numbered circular scheme and title.",
+      "bytes": 27576,
+      "status": "qa-passed"
+    },
+    {
+      "file": "sketch-shape-02.webp",
+      "sourcePixelBounds": [
+        6700,
+        7690,
+        7070,
+        8055
+      ],
+      "sourceCropDimensions": [
+        370,
+        365
+      ],
+      "dimensions": [
+        370,
+        365
+      ],
+      "content": "方形态方案",
+      "qa": "Original full numbered circular scheme and title.",
+      "bytes": 32248,
+      "status": "qa-passed"
+    },
+    {
+      "file": "sketch-shape-03.webp",
+      "sourcePixelBounds": [
+        7100,
+        7690,
+        7470,
+        8055
+      ],
+      "sourceCropDimensions": [
+        370,
+        365
+      ],
+      "dimensions": [
+        370,
+        365
+      ],
+      "content": "格栅形态方案",
+      "qa": "Original full numbered circular scheme and title.",
+      "bytes": 24474,
+      "status": "qa-passed"
+    },
+    {
+      "file": "sketch-shape-04.webp",
+      "sourcePixelBounds": [
+        6300,
+        8060,
+        6660,
+        8430
+      ],
+      "sourceCropDimensions": [
+        360,
+        370
+      ],
+      "dimensions": [
+        360,
+        370
+      ],
+      "content": "层架形态方案",
+      "qa": "Original full numbered circular scheme and title.",
+      "bytes": 28352,
+      "status": "qa-passed"
+    },
+    {
+      "file": "sketch-shape-05.webp",
+      "sourcePixelBounds": [
+        6700,
+        8060,
+        7070,
+        8430
+      ],
+      "sourceCropDimensions": [
+        370,
+        370
+      ],
+      "dimensions": [
+        370,
+        370
+      ],
+      "content": "围合形态方案",
+      "qa": "Original full numbered circular scheme and title.",
+      "bytes": 28292,
+      "status": "qa-passed"
+    },
+    {
+      "file": "sketch-shape-06.webp",
+      "sourcePixelBounds": [
+        7100,
+        8060,
+        7470,
+        8430
+      ],
+      "sourceCropDimensions": [
+        370,
+        370
+      ],
+      "dimensions": [
+        370,
+        370
+      ],
+      "content": "对景形态方案",
+      "qa": "Original full numbered circular scheme and title.",
+      "bytes": 26958,
+      "status": "qa-passed"
+    }
+  ],
+  "additionalFiles": [
+    {
+      "file": "../../board-space-detail.webp",
+      "source": "Frame 322.png",
+      "sourcePixelBounds": [
+        0,
+        0,
+        7680,
+        8660
+      ],
+      "dimensions": [
+        6000,
+        6766
+      ],
+      "quality": 94,
+      "bytes": 6375072,
+      "sha256": "50984ec226dc09fc0cb5a55a536185259efc48fd76892ebb868e6a05fdaf183e",
+      "qa": "Full source board, 6000 px wide; original 1600 px preview unchanged."
+    }
+  ],
+  "qaSummary": "Inspected process diagrams and triptychs individually, behavior circles, display cards, numbered shape schemes and all six sketch-view crops at source-equivalent resolution. Corrected lower sketch crops to exclude source overlap fragments. No generated pixels, no upscaling.",
+  "additionalBadgeDetails": [
+    {
+      "file": "display-value-01.webp",
+      "source": "display-values.webp",
+      "crop_pixels": [
+        0,
+        0,
+        207,
+        236
+      ],
+      "output_size": [
+        207,
+        236
+      ],
+      "sha256": "39de6d879dea0561ce96a21e08ef2f2f3884c236af289f494b722595f6a77c74",
+      "operation": "Exact individual badge extraction, preserving circle and source caption; no enlargement."
+    },
+    {
+      "file": "display-value-02.webp",
+      "source": "display-values.webp",
+      "crop_pixels": [
+        0,
+        250,
+        207,
+        486
+      ],
+      "output_size": [
+        207,
+        236
+      ],
+      "sha256": "0ca5e20c42bd8c8c251a953bfb59f446b7a8e9a338f5802df4c86290edf256c9",
+      "operation": "Exact individual badge extraction, preserving circle and source caption; no enlargement."
+    },
+    {
+      "file": "display-value-03.webp",
+      "source": "display-values.webp",
+      "crop_pixels": [
+        0,
+        500,
+        207,
+        748
+      ],
+      "output_size": [
+        207,
+        248
+      ],
+      "sha256": "b27504e37aea04962e015584a685ea23109646715df431e332e3453cd8a01c9a",
+      "operation": "Exact individual badge extraction, preserving circle and source caption; no enlargement."
+    }
+  ]
+}

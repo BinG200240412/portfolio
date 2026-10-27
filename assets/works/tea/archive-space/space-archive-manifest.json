@@ -1,0 +1,55 @@
+{
+  "project": "茶弦记 / Tea String Chronicles",
+  "sourceBoard": "Frame 322.png",
+  "sourceBoardDimensions": [
+    7680,
+    8660
+  ],
+  "sourceBoardSha256": "6160e30606e67844b16d8dfec344ce8d0f71d8231d1d724f07fded94980d0b6d",
+  "figmaFileKey": "bSvsBCH8vfWBNuq5AItp6o",
+  "figmaProjectFrame": "1244:6",
+  "collections": [
+    {
+      "manifest": "board/manifest.json",
+      "count": 63,
+      "role": "Complete supplied-board context and independent panels, preserved as final-board authority."
+    },
+    {
+      "manifest": "figma/manifest.json",
+      "count": 24,
+      "role": "Official independent originals and precise source-sheet details; supplements source pixels that board overlaps obscure."
+    }
+  ],
+  "recommendedGeometry": {
+    "spatialSketches": "Use figma/sketch-view-01.webp through06 at each natural image ratio; keep board/sketch-space-collage.webp for original presentation context.",
+    "feedback": "Use board three-triptych figures for original captions and order; figma nine feedback images for readable full-panel detail.",
+    "displayArray": "Use board/display-array.webp to preserve original arrangement and complete tower top; source/display-family-original.webp is the clean independent transparent family source.",
+    "materials": "Keep board/display-materials.webp for original palette; figma/material-textures-original.webp restores full five-material label strip without tower overlap and must not be enlarged above its407px native width."
+  },
+  "sourceLimitations": [
+    "The original board has a display tower crossing the material row and lower array panel boundary; board/display-array.webp preserves the entire context.",
+    "The source board overlays the6 spatial draft renders; complete raw originals are independently exported under figma/.",
+    "Some ritual process steps reuse the same raster diagrams as the milling process in the supplied final board. The archive preserves that board state; no unrelated draft substituted.",
+    "Image-filled VECTOR nodes are source rasters, not newly reconstructed vector artwork."
+  ],
+  "boardDetail": {
+    "file": "../board-space-detail.webp",
+    "dimensions": [
+      6000,
+      6766
+    ],
+    "quality": 94,
+    "bytes": 6375072,
+    "sha256": "50984ec226dc09fc0cb5a55a536185259efc48fd76892ebb868e6a05fdaf183e",
+    "loaded": "detail only; overview remains1600px"
+  },
+  "scope": "No Figma mutations or webpage code changes; only asset extraction and provenance.",
+  "additionalBadgeDetails": {
+    "files": [
+      "board/display-value-01.webp",
+      "board/display-value-02.webp",
+      "board/display-value-03.webp"
+    ],
+    "method": "Three exact individual badge crops from board/display-values.webp; detailed rectangles are in board/manifest.json."
+  }
+}

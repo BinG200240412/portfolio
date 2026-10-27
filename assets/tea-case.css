@@ -116,3 +116,125 @@ html.tea-board-detail-open{overflow:hidden;scroll-snap-type:none}
  html[lang="en"] .tea-tabs button span{font-size:18px}html[lang="en"] .tea-tabs button small{font-size:12px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Every independent board study has a readable place in the case narrative. */
+.tea-detail-open{display:block;width:100%;border:0;padding:0;background:none;color:inherit;cursor:zoom-in;text-align:inherit}
+.tea-detail-open img{width:100%;height:auto}
+.tea-subsection{display:flex;flex-direction:column;gap:24px;min-width:0}
+.tea-subsection>h3{margin:0}
+.tea-banquet-flow small{display:block;font-size:14px;color:var(--dim);margin-top:6px}
+.tea-research-dimensions{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding:0;margin:0;color:var(--soft);font-size:18px}
+.tea-central-feedback{display:grid;grid-template-columns:1fr 1fr;gap:32px 48px}
+.tea-central-feedback dt{font-size:18px;color:var(--ink)}
+.tea-central-feedback dd{font-size:18px;color:var(--soft);margin-top:12px;padding-left:26px;position:relative}
+.tea-central-feedback dd:before{content:'→';position:absolute;left:0;color:var(--tea-jade)}
+.tea-room-reference{display:flex;align-items:center;justify-content:center;gap:32px;font-size:18px;color:var(--mid)}
+.tea-room-reference svg{width:120px;flex:0 0 120px;fill:none;stroke:var(--tea-jade);stroke-width:1.5}
+.tea-room-reference svg circle{fill:var(--tea-jade)}
+.tea-form-meanings{display:grid;grid-template-columns:repeat(6,1fr);gap:24px}
+.tea-form-meanings dt{font-size:18px;color:var(--ink)}
+.tea-form-meanings dd{font-size:18px;color:var(--soft);margin-top:10px}
+.tea-case .tea-merch-note{font-size:18px;margin-top:20px;line-height:1.85}
+.tea-display-units figcaption{font-size:18px;color:var(--mid)}
+.tea-research-map-layout{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,.8fr);gap:42px;align-items:start}
+.tea-research-map-layout>figure:last-child{max-width:310px;justify-self:center}
+.tea-object-research{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;gap:36px}
+.tea-site-photos{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:24px;align-items:start}
+.tea-additional-objects{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;align-items:start}
+.tea-reward-path{list-style:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:30px;margin:0;padding:0;font-size:18px;color:var(--mid)}
+.tea-reward-path li{position:relative}
+.tea-reward-path li:not(:last-child):after{content:'→';position:absolute;right:-19px;color:var(--tea-jade)}
+.tea-archive-pair,.tea-process-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;align-items:start}
+.tea-design-principles{display:grid;grid-template-columns:1fr 1fr;gap:54px 42px;align-items:start}
+.tea-design-principles h3{margin-bottom:24px}
+.tea-chapter-path{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px;margin:0;padding:0}
+.tea-chapter-path a{display:flex;height:100%;flex-direction:column;gap:24px;padding-block:20px}
+.tea-chapter-path a>span{font-size:25px;line-height:1.5;color:var(--tea-strong)}
+.tea-chapter-path p{font-size:18px}
+.tea-chapter-path small{display:block;margin-top:auto;font-size:14px;line-height:1.7;color:var(--dim)}
+.tea-chapter-path a:hover>span{color:var(--ink)}
+.tea-game-chapter{gap:54px}
+.tea-character-study{max-width:1100px;width:100%;margin-inline:auto!important}
+.tea-prototype-base{max-width:1040px;width:100%;margin-inline:auto!important}
+.tea-character-gallery figcaption{text-align:center;font-size:18px;color:var(--mid);margin-top:18px}
+.tea-layer-logic{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px}
+.tea-layer-logic dt{font-size:25px;color:var(--tea-strong);margin-bottom:20px}
+.tea-layer-logic dd{font-size:18px;color:var(--mid);line-height:1.8}
+.tea-layer-logic .tea-layer-note{font-size:16px;margin-top:14px;color:var(--dim)}
+.tea-native-gestures{max-width:840px;width:100%;margin-inline:auto!important}
+.tea-collection-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.5fr);gap:36px;align-items:start}
+.tea-collection-side{display:grid;gap:36px}
+.tea-material-original{width:100%;max-width:407px;margin-inline:auto!important}
+.tea-unlock-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:28px 22px;padding:36px;background:#101b1b}
+.tea-unlock-card{padding:12px 6px 16px;border:1px solid #34494a}
+.tea-unlock-card img{max-height:210px;object-fit:contain}
+.tea-unlock-card.is-unlocked{border-color:#6e9a8b;background:#172726}
+.tea-unlock-card.is-locked img{filter:grayscale(1);opacity:.27}
+.tea-unlock-card figcaption{font-size:14px;text-align:center;color:#a3b3a9}
+.tea-unlock-card.is-locked figcaption{color:#829087}
+.tea-tools-layout{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:42px;align-items:start}
+.tea-tool-details{display:grid;gap:36px}
+.tea-interaction-study{display:flex;flex-direction:column;gap:24px}
+.tea-interaction-study h3{margin:0}
+.tea-interaction-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:36px;align-items:start}
+.tea-interaction-layout>div{display:grid;gap:30px}
+.tea-feedback-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px;align-items:start}
+.tea-language-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px 30px;align-items:start}
+.tea-language-gallery figure{max-width:340px;width:100%;justify-self:center}
+.tea-sketch-gallery{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+.tea-poster-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px 30px;align-items:start}
+.tea-behavior-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;align-items:start}
+.tea-behavior-gallery figure{max-width:300px;width:100%;justify-self:center}
+.tea-center-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:36px;align-items:center}
+.tea-display-units{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:42px 30px;align-items:start}
+.tea-value-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;width:min(100%,900px);margin-inline:auto;align-items:start}
+.tea-value-gallery figure{width:100%;max-width:207px;justify-self:center}
+.tea-story-chain{width:100%;max-width:717px;margin-inline:auto!important}
+.tea-footer>div{max-width:58ch}
+.tea-case .tea-credit-advisors{font-size:14px;line-height:1.85;margin-top:14px;color:var(--dim)}
+.tea-footer{align-items:start;flex-wrap:nowrap}
+.tea-case .tea-board-bar h2{font-size:18px;line-height:1.4}
+.tea-board-bar h2{overflow-wrap:anywhere}
+
+@media(max-width:1000px){
+ .tea-layer-logic{grid-template-columns:1fr 1fr}
+ .tea-object-research{grid-template-columns:1fr 1fr}
+ .tea-unlock-grid{grid-template-columns:repeat(4,minmax(0,1fr));padding:24px;gap:22px}
+ .tea-site-photos{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .tea-research-map-layout{gap:30px;grid-template-columns:2fr 1fr}
+ .tea-chapter-path{grid-template-columns:1fr 1fr;gap:24px 40px}
+ .tea-interaction-layout{grid-template-columns:1fr;gap:28px}
+ .tea-interaction-layout>div{grid-template-columns:1fr 1fr}
+ .tea-display-units{grid-template-columns:1fr 1fr}
+ .tea-collection-layout{grid-template-columns:1fr}
+ .tea-collection-side{grid-template-columns:1fr 1fr;align-items:start}
+ .tea-footer{flex-wrap:wrap}
+}
+@media(max-width:600px){
+ .tea-layer-logic{grid-template-columns:1fr;gap:30px}
+ .tea-central-feedback{grid-template-columns:1fr;gap:28px}
+ .tea-room-reference{flex-direction:column;gap:20px;text-align:center}
+ .tea-room-reference svg{transform:rotate(90deg);flex-basis:24px;width:80px}
+ .tea-research-dimensions{grid-template-columns:1fr 1fr}
+ .tea-form-meanings{grid-template-columns:repeat(3,1fr);gap:25px}
+ .tea-tools-layout{grid-template-columns:1fr;gap:30px}
+ .tea-unlock-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 12px;padding:20px 14px}
+ .tea-unlock-card{padding:6px 4px 12px}
+ .tea-site-photos,.tea-additional-objects{grid-template-columns:1fr 1fr;gap:30px 24px}
+ .tea-reward-path{grid-template-columns:1fr;gap:26px}
+ .tea-reward-path li:not(:last-child):after{content:'↓';right:auto;left:0;top:1.5em}
+ .tea-feedback-gallery,.tea-sketch-gallery,.tea-poster-gallery{grid-template-columns:1fr;gap:30px}
+ .tea-language-gallery{grid-template-columns:1fr 1fr;gap:30px 24px}
+ .tea-research-map-layout,.tea-object-research,.tea-archive-pair,.tea-process-pair,.tea-design-principles,.tea-collection-side,.tea-center-layout{grid-template-columns:1fr;gap:30px}
+ .tea-research-map-layout>figure:last-child{max-width:260px;width:100%}
+ .tea-chapter-path{grid-template-columns:1fr;gap:10px}
+ .tea-chapter-path a{gap:16px;padding-block:16px}
+ .tea-chapter-path a>span{font-size:25px}
+ .tea-design-principles{gap:40px}
+ .tea-game-chapter{gap:36px}
+ .tea-interaction-layout>div{grid-template-columns:1fr}
+ .tea-behavior-gallery{grid-template-columns:1fr 1fr;gap:30px 24px}
+ .tea-display-units{grid-template-columns:1fr;gap:36px}
+ .tea-display-units figure{max-width:420px;width:100%;justify-self:center}
+ .tea-case .tea-board-bar h2{font-size:16px}
+}

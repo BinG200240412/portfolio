@@ -1,30 +1,6 @@
-/* Accessible chapter selection: these are supplied design images, not a game emulator. */
+/* Source studies use a zoomable reader; artwork remains a design presentation. */
 (() => {
   'use strict';
-  const tabs = [...document.querySelectorAll('.tea-tabs [role="tab"]')];
-  function select(tab, focus = false) {
-    tabs.forEach(item => {
-      const selected = item === tab;
-      item.setAttribute('aria-selected', String(selected));
-      item.tabIndex = selected ? 0 : -1;
-      document.getElementById(item.getAttribute('aria-controls')).hidden = !selected;
-    });
-    if (focus) tab.focus({ preventScroll: true });
-    // The common corner observer measures newly visible artwork on resize.
-    dispatchEvent(new Event('resize'));
-  }
-  tabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => select(tab));
-    tab.addEventListener('keydown', event => {
-      let next;
-      if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
-      if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
-      if (event.key === 'Home') next = 0;
-      if (event.key === 'End') next = tabs.length - 1;
-      if (next === undefined) return;
-      event.preventDefault(); select(tabs[next], true);
-    });
-  });
   const viewer = document.getElementById('tea-board-viewer');
   const boardImage = viewer.querySelector('img');
   const scroller = viewer.querySelector('.tea-board-scroll');
@@ -39,9 +15,11 @@
     zoomLabel.textContent = `${Math.round(zoom * 100)}%`;
     minus.disabled = zoom === 1; plus.disabled = zoom === 4;
   }
-  document.querySelectorAll('[data-board]').forEach(button => button.addEventListener('click', () => {
+  document.querySelectorAll('[data-board],[data-tea-detail]').forEach(button => button.addEventListener('click', () => {
     boardOpener = button;
-    boardImage.src = `../assets/works/tea/board-${button.dataset.board}-detail.webp`;
+    boardImage.src = button.dataset.board
+      ? `../assets/works/tea/board-${button.dataset.board}-detail.webp`
+      : button.querySelector('img').currentSrc || button.querySelector('img').src;
     boardImage.alt = button.querySelector('img').alt;
     viewer.querySelector('h2').textContent = button.closest('figure').querySelector('figcaption').textContent;
     document.documentElement.classList.add('tea-board-detail-open');

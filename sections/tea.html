@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="茶弦记：以宋代点茶为叙事线索，将茶百戏、音游与展厅空间连接的体验设计。">
-<script src="../assets/i18n-main.js?v=tea-source-20261027">
+<script src="../assets/i18n-main.js?v=tea-complete-20261027">
 </script>
 <script src="../assets/i18n-cases.js?v=focused-copy-20261024">
 </script>
-<script src="../assets/tea-i18n.js?v=tea-source-20261027">
+<script src="../assets/tea-i18n.js?v=tea-complete-20261027">
 </script>
 <script src="../assets/i18n.js?v=bilingual-20261023">
 </script>
-<script src="../assets/theme.js?v=tea-source-20261027">
+<script src="../assets/theme.js?v=tea-complete-20261027">
 </script>
 <title>茶弦记 — 茶文化展厅与游戏体验设计</title>
 <link rel="stylesheet" href="../assets/theme.css?v=language-optics-20261026">
@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="../assets/media-corners.css?v=video-preview-detail-20261026">
 <link rel="stylesheet" href="../assets/video-detail.css?v=video-preview-detail-20261026">
 <link rel="stylesheet" href="../assets/media-view-only.css?v=view-only-media-20261026">
-<link rel="stylesheet" href="../assets/tea-case.css?v=tea-source-20261027">
+<link rel="stylesheet" href="../assets/tea-case.css?v=tea-complete-20261027">
 <script defer src="../assets/page-snap.js?v=content-bead-rail-20261027">
 </script>
 <script defer src="../assets/video-detail.js?v=video-preview-detail-20261026">
@@ -30,51 +30,233 @@
 </script>
 <script defer src="../assets/media-view-only.js?v=view-only-media-20261026">
 </script>
-<script defer src="../assets/tea-case.js?v=tea-source-20261027">
+<script defer src="../assets/tea-case.js?v=tea-complete-20261027">
 </script>
 </head>
 <body class="tea-case">
 <main>
 <section id="cover" class="tea-cover tea-page" aria-labelledby="tea-title">
- <div class="tea-cover-copy">
-<p class="tea-type">茶文化展厅 · 游戏体验设计</p>
+<div class="tea-cover-copy">
+<p class="tea-type">宋代茶百戏手作体验及音游数字化设计</p>
 <h1 id="tea-title" data-i18n-ignore>茶弦记</h1>
 <p class="tea-english" lang="en" data-i18n-ignore>Tea String<br> Chronicles</p>
 <p class="tea-cover-intro">以茶为弦，以器为谱。<br>让一场宋代茶事，成为可以亲身参与的游戏。</p>
-<a class="tea-enter" href="#origin">从一场茶宴开始 <span aria-hidden="true">↓</span>
+<a class="tea-enter" href="#research">从一场茶宴开始 <span aria-hidden="true">↓</span>
 </a>
 </div>
- <figure class="tea-cover-figure">
+<figure class="tea-cover-figure">
 <img src="../assets/works/tea/source/hero-ritual-original.webp" alt="击拂茶室完整效果图，观众在环绕纱幕中手持茶筅点茶" fetchpriority="high" decoding="async" width="1448" height="1086">
 <figcaption>击拂体验 · 空间效果图</figcaption>
 </figure>
- <nav class="tea-index" aria-label="项目章节">
-<a href="#origin">茶事的起点</a>
-<a href="#journey">四段游戏</a>
-<a href="#rhythm">击拂机制</a>
-<a href="#masters">十二茶先生</a>
-<a href="#space">展厅空间</a>
-<a href="#objects">器物与日常</a>
+<nav class="tea-index" aria-label="项目章节">
+<a href="#research">场域调研</a>
+<a href="#origin">茶事与茶具</a>
+<a href="#journey">游戏设计</a>
+<a href="#masters">角色与收藏</a>
+<a href="#space-logic">空间逻辑</a>
+<a href="#objects">展具系统</a>
+<a href="#merchandise">茶饮周边</a>
+<a href="#sketches">草图推演</a>
 </nav>
 </section>
+<section id="research" class="tea-page " aria-labelledby="research-title">
+<div class="tea-heading">
+<h2 id="research-title">径山寺：从场域到茶宴</h2>
+<p>文化溯源、实地观察与器物考察，构成茶事体验的依据。</p>
+</div>
+<div class="tea-research-map-layout">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-map.webp" alt="径山寺调研地图" width="2400" height="2355" loading="lazy" decoding="async">
+</button>
+<figcaption>径山寺调研地图</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-cultural-origins.webp" alt="文化溯源" width="1048" height="2400" loading="lazy" decoding="async">
+</button>
+<figcaption>文化溯源</figcaption>
+</figure>
+</div>
+<div class="tea-site-photos">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-site-01.webp" alt="山门" width="630" height="664" loading="lazy" decoding="async">
+</button>
+<figcaption>山门</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-site-02.webp" alt="古道" width="603" height="658" loading="lazy" decoding="async">
+</button>
+<figcaption>古道</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-site-03.webp" alt="方丈院" width="597" height="653" loading="lazy" decoding="async">
+</button>
+<figcaption>方丈院</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-site-04.webp" alt="洗心桥" width="586" height="647" loading="lazy" decoding="async">
+</button>
+<figcaption>洗心桥</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-site-05.webp" alt="茶园" width="591" height="647" loading="lazy" decoding="async">
+</button>
+<figcaption>茶园</figcaption>
+</figure>
+</div>
+<div class="tea-subsection">
+<h3>场景观察</h3>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-field-observation.webp" alt="寺院场景与茶事观察" width="2400" height="449" loading="lazy" decoding="async">
+</button>
+<figcaption>寺院场景与茶事观察</figcaption>
+</figure>
+</div>
+<ul class="tea-research-dimensions">
+<li>空间格局</li>
+<li>自然环境</li>
+<li>日常行为</li>
+<li>人文活动</li>
+</ul>
+<div class="tea-site-photos">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-field-01.webp" alt="僧人日常行走" width="645" height="695" loading="lazy" decoding="async">
+</button>
+<figcaption>僧人日常行走</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-field-02.webp" alt="僧众礼佛" width="553" height="695" loading="lazy" decoding="async">
+</button>
+<figcaption>僧众礼佛</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-field-03.webp" alt="法会准备" width="735" height="695" loading="lazy" decoding="async">
+</button>
+<figcaption>法会准备</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-field-04.webp" alt="茶寮待客" width="710" height="695" loading="lazy" decoding="async">
+</button>
+<figcaption>茶寮待客</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-field-05.webp" alt="山间云雾" width="650" height="695" loading="lazy" decoding="async">
+</button>
+<figcaption>山间云雾</figcaption>
+</figure>
+</div>
+<div class="tea-subsection">
+<h3>器物考察</h3>
+<div class="tea-object-research">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-object-papers.webp" alt="香花券与度券" width="1890" height="1100" loading="lazy" decoding="async">
+</button>
+<figcaption>香花券与度券</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-object-farmer.webp" alt="净手与布施" width="1890" height="840" loading="lazy" decoding="async">
+</button>
+<figcaption>净手与布施</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-object-ewer.webp" alt="净水壶" width="1890" height="815" loading="lazy" decoding="async">
+</button>
+<figcaption>净水壶</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-object-utensils.webp" alt="茶具与清具" width="990" height="985" loading="lazy" decoding="async">
+</button>
+<figcaption>茶具与清具</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-object-tea-tools.webp" alt="木臼与杵" width="870" height="985" loading="lazy" decoding="async">
+</button>
+<figcaption>木臼与杵</figcaption>
+</figure>
+</div>
+</div>
+<div class="tea-archive-pair">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-ritual-calendar.webp" alt="法会情境与茶宴仪程" width="2100" height="1150" loading="lazy" decoding="async">
+</button>
+<figcaption>法会情境与茶宴仪程</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-additional-tools.webp" alt="补充器物研究" width="2400" height="318" loading="lazy" decoding="async">
+</button>
+<figcaption>补充器物研究</figcaption>
+</figure>
+</div>
+<div class="tea-additional-objects">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-extra-01.webp" alt="竹篾茶碗" width="961" height="714" loading="lazy" decoding="async">
+</button>
+<figcaption>竹篾茶碗</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-extra-02.webp" alt="供茶茶盘" width="944" height="714" loading="lazy" decoding="async">
+</button>
+<figcaption>供茶茶盘</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-extra-03.webp" alt="石纹茶托" width="955" height="714" loading="lazy" decoding="async">
+</button>
+<figcaption>石纹茶托</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/research-extra-04.webp" alt="石质支架" width="961" height="714" loading="lazy" decoding="async">
+</button>
+<figcaption>石质支架</figcaption>
+</figure>
+</div>
+</section>
 <section id="origin" class="tea-page tea-origin" aria-labelledby="origin-title">
- <div class="tea-heading tea-heading-wide">
+<div class="tea-heading tea-heading-wide">
 <h2 id="origin-title">点茶为何不能像咖啡拉花一样<br>有趣又日常？</h2>
 <p>从径山寺茶宴出发，把文化知识放回真实的动作、器物与声音之中。</p>
 </div>
- <div class="tea-origin-logic">
+<div class="tea-origin-logic">
 <div>
 <h3>茶宴的程序，成为入席的线索</h3>
 <ol class="tea-banquet-flow">
-<li>张茶榜</li>
-<li>击茶鼓</li>
+<li>
+<span>张茶榜</span>
+<small>输入ID</small>
+</li>
+<li>
+<span>击茶鼓</span>
+<small>游戏开始</small>
+</li>
 <li>恭请入堂</li>
 <li>煎汤点茶</li>
 <li>行盏分茶</li>
 <li>说偈吃茶</li>
 </ol>
 </div>
- <dl class="tea-translations">
+<dl class="tea-translations">
 <div>
 <dt>茶宴程序</dt>
 <dd>身体与礼仪</dd>
@@ -89,7 +271,19 @@
 </div>
 </dl>
 </div>
- <div class="tea-step-section">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/banquet-icons.webp" alt="茶宴仪程图示" width="2030" height="1400" loading="lazy" decoding="async">
+</button>
+<figcaption>茶宴仪程图示</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/ritual-hands.webp" alt="茶礼的手部动作" width="2400" height="285" loading="lazy" decoding="async">
+</button>
+<figcaption>茶礼的手部动作</figcaption>
+</figure>
+<div class="tea-step-section">
 <h3>一盏茶的八个动作</h3>
 <ol class="tea-step-grid">
 <li>
@@ -126,70 +320,211 @@
 </li>
 </ol>
 </div>
- <details class="tea-research-record">
-<summary>查看径山寺调研记录</summary>
-<figure class="">
-<img src="../assets/works/tea/source/research-sheet.webp" alt="径山寺完整调研记录：场域、文化、器物与茶宴流程" loading="lazy" decoding="async"  width="1448" height="1086">
-<figcaption>径山寺 · 场域与茶宴调研</figcaption>
-</figure>
-</details>
 </section>
-<section id="journey" class="tea-page tea-journey" aria-labelledby="journey-title">
+<section id="design" class="tea-page " aria-labelledby="design-title">
+<div class="tea-heading">
+<h2 id="design-title">以茶为弦，以器为谱</h2>
+</div>
+<div class="tea-design-principles">
+<article>
+<h3>以茶为弦</h3>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/design-01.webp" alt="茶事流程与交互关系" width="2400" height="1238" loading="lazy" decoding="async">
+</button>
+<figcaption>茶事流程与交互关系</figcaption>
+</figure>
+</article>
+<article>
+<h3>以器为谱</h3>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/design-02.webp" alt="圆环判定与界面结构" width="2191" height="1284" loading="lazy" decoding="async">
+</button>
+<figcaption>圆环判定与界面结构</figcaption>
+</figure>
+</article>
+<article>
+<h3>以身为律</h3>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/design-03.webp" alt="三种界面风格探索" width="2060" height="1284" loading="lazy" decoding="async">
+</button>
+<figcaption>三种界面风格探索</figcaption>
+</figure>
+</article>
+<article>
+<h3>以纹成记</h3>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/design-04.webp" alt="粒子语言与视觉系统" width="1551" height="1295" loading="lazy" decoding="async">
+</button>
+<figcaption>粒子语言与视觉系统</figcaption>
+</figure>
+</article>
+</div>
+</section>
+<section id="journey" class="tea-page " aria-labelledby="journey-title">
 <div class="tea-heading">
 <h2 id="journey-title">把茶事，谱成四段游戏</h2>
-<p>采集茶音、准备茶末、学习茶礼，最终用击拂奏出一盏茶。</p>
+<p>声音、手作、身体与击拂依次进入体验；每关保留从草图到界面的完整设计过程。</p>
 </div>
-<div class="tea-tabs" role="tablist" aria-label="四段茶事">
-<button id="tab-wake" type="button" role="tab" aria-selected="true" aria-controls="panel-wake" tabindex="0">
+<ol class="tea-chapter-path">
+<li>
+<a href="#wake">
 <span>醒茶如禅</span>
-<small>采集茶音</small>
-</button>
-<button id="tab-grind" type="button" role="tab" aria-selected="false" aria-controls="panel-grind" tabindex="-1">
+<p>听辨节拍，依次采集茶芽，收集茶音。</p>
+<small>音符 · 茶苗</small>
+</a>
+</li>
+<li>
+<a href="#grind">
 <span>碾罗成律</span>
-<small>碾茶 · 罗茶</small>
-</button>
-<button id="tab-ritual" type="button" role="tab" aria-selected="false" aria-controls="panel-ritual" tabindex="-1">
+<p>通过滑动、碾磨与过筛，把手作节奏转成音粒。</p>
+<small>谱子 · 茶粉</small>
+</a>
+</li>
+<li>
+<a href="#ritual">
 <span>行盏入礼</span>
-<small>身体与茶礼</small>
-</button>
-<button id="tab-whisk" type="button" role="tab" aria-selected="false" aria-controls="panel-whisk" tabindex="-1">
+<p>以身体动作完成叉手、持盏、转身与奉茶。</p>
+<small>律动 · 仪轨</small>
+</a>
+</li>
+<li>
+<a href="#whisk">
 <span>击拂斗弦</span>
-<small>击拂与合奏</small>
+<p>用茶筅接住水纹，与十二茶先生完成击拂合奏。</p>
+<small>叙事 · 文化</small>
+</a>
+</li>
+</ol>
+</section>
+<section id="wake" class="tea-page tea-game-chapter" aria-labelledby="wake-title">
+<div class="tea-heading">
+<h2 id="wake-title">醒茶如禅</h2>
+<p>听辨节拍，依次采集茶芽，收集茶音。</p>
+</div>
+<div class="tea-process-pair">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/sketch-01.webp" alt="醒茶如禅 · 草图设计" width="2008" height="1339" loading="lazy" decoding="async">
 </button>
-</div>
-<div class="tea-game-panels">
-<article id="panel-wake" class="tea-game-panel" role="tabpanel" aria-labelledby="tab-wake" tabindex="0">
-<figure class="tea-game-art">
-<img src="../assets/works/tea/source/prototype-wake.webp" alt="醒茶如禅完整游戏界面" loading="lazy" decoding="async"  width="2360" height="1640">
-<figcaption>游戏界面原图</figcaption>
+<figcaption>醒茶如禅 · 草图设计</figcaption>
 </figure>
-<div class="tea-game-copy">
-<h3>让茶山先被听见</h3>
-<p>听钟入拍，依次采集茶芽。声音与节奏是进入茶事的第一步。</p>
-<ol class="tea-signal-path">
-<li>听辨节拍</li>
-<li>点击茶芽</li>
-<li>收集茶音</li>
-</ol>
-</div>
-</article>
-<article id="panel-grind" class="tea-game-panel" role="tabpanel" aria-labelledby="tab-grind" tabindex="0" hidden>
-<figure class="tea-game-art">
-<img src="../assets/works/tea/source/prototype-grind.webp" alt="碾罗成律完整游戏界面" loading="lazy" decoding="async"  width="2360" height="1640">
-<figcaption>游戏界面原图</figcaption>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/concept-01.webp" alt="醒茶如禅 · 概念画面" width="1985" height="1116" loading="lazy" decoding="async">
+</button>
+<figcaption>醒茶如禅 · 概念画面</figcaption>
 </figure>
-<div class="tea-game-copy">
-<h3>把茶末，磨进节奏</h3>
-<p>滑动碾碎茶团，筛出细末；收集的音粒逐步组成循环声部。</p>
-<ol class="tea-signal-path">
-<li>滑动碾碎</li>
-<li>细筛茶粉</li>
-<li>音粒成曲</li>
-</ol>
 </div>
-</article>
-<article id="panel-ritual" class="tea-game-panel" role="tabpanel" aria-labelledby="tab-ritual" tabindex="0" hidden>
-<figure class="tea-gesture-art">
+<div class="tea-subsection">
+<h3>玩法与界面</h3>
+<div class="tea-process-pair">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/rules-01.webp" alt="醒茶如禅 · 玩法介绍" width="2028" height="1088" loading="lazy" decoding="async">
+</button>
+<figcaption>醒茶如禅 · 玩法介绍</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/screen-01.webp" alt="醒茶如禅 · 游戏画面" width="1918" height="1413" loading="lazy" decoding="async">
+</button>
+<figcaption>醒茶如禅 · 游戏画面</figcaption>
+</figure>
+</div>
+</div>
+<figure class="tea-prototype-base">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/prototype-wake.webp" alt="醒茶如禅 · 界面底稿" width="2360" height="1640" loading="lazy" decoding="async">
+</button>
+<figcaption>醒茶如禅 · 界面底稿</figcaption>
+</figure>
+</section>
+<section id="grind" class="tea-page tea-game-chapter" aria-labelledby="grind-title">
+<div class="tea-heading">
+<h2 id="grind-title">碾罗成律</h2>
+<p>通过滑动、碾磨与过筛，把手作节奏转成音粒。</p>
+</div>
+<div class="tea-process-pair">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/sketch-02.webp" alt="碾罗成律 · 草图设计" width="2003" height="1335" loading="lazy" decoding="async">
+</button>
+<figcaption>碾罗成律 · 草图设计</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/concept-02.webp" alt="碾罗成律 · 概念画面" width="2055" height="1194" loading="lazy" decoding="async">
+</button>
+<figcaption>碾罗成律 · 概念画面</figcaption>
+</figure>
+</div>
+<div class="tea-subsection">
+<h3>玩法与界面</h3>
+<div class="tea-process-pair">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/rules-02.webp" alt="碾罗成律 · 玩法介绍" width="2302" height="1088" loading="lazy" decoding="async">
+</button>
+<figcaption>碾罗成律 · 玩法介绍</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/screen-02.webp" alt="碾罗成律 · 游戏画面" width="1999" height="1413" loading="lazy" decoding="async">
+</button>
+<figcaption>碾罗成律 · 游戏画面</figcaption>
+</figure>
+</div>
+</div>
+<figure class="tea-prototype-base">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/prototype-grind.webp" alt="碾罗成律 · 界面底稿" width="2360" height="1640" loading="lazy" decoding="async">
+</button>
+<figcaption>碾罗成律 · 界面底稿</figcaption>
+</figure>
+</section>
+<section id="ritual" class="tea-page tea-game-chapter" aria-labelledby="ritual-title">
+<div class="tea-heading">
+<h2 id="ritual-title">行盏入礼</h2>
+<p>以身体动作完成叉手、持盏、转身与奉茶。</p>
+</div>
+<div class="tea-process-pair">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/sketch-04.webp" alt="行盏动作草图（原板第四列）" width="2037" height="1358" loading="lazy" decoding="async">
+</button>
+<figcaption>行盏动作草图（原板第四列）</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/concept-03.webp" alt="行盏入礼 · 概念画面" width="1982" height="1096" loading="lazy" decoding="async">
+</button>
+<figcaption>行盏入礼 · 概念画面</figcaption>
+</figure>
+</div>
+<div class="tea-subsection">
+<h3>玩法与界面</h3>
+<div class="tea-process-pair">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/rules-03.webp" alt="行盏入礼 · 玩法介绍" width="1758" height="1088" loading="lazy" decoding="async">
+</button>
+<figcaption>行盏入礼 · 玩法介绍</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/screen-03.webp" alt="行盏入礼 · 游戏画面" width="2012" height="1413" loading="lazy" decoding="async">
+</button>
+<figcaption>行盏入礼 · 游戏画面</figcaption>
+</figure>
+</div>
+</div>
+<div class="tea-subsection">
+<h3>身体动作图解</h3>
+<figure class="tea-native-gestures">
 <div class="tea-gesture-sequence">
 <div>
 <svg viewBox="0 0 160 180" role="img" aria-label="茶礼身体动作示意">
@@ -225,33 +560,50 @@
 </div>
 <figcaption>行盏入礼 · 动作图解</figcaption>
 </figure>
-<div class="tea-game-copy">
-<h3>用身体，读懂茶礼</h3>
-<p>丁字步、持盏与奉茶被转译为体感判定，让茶礼成为可学习的动作。</p>
-<ol class="tea-signal-path">
-<li>叉手入席</li>
-<li>持盏转身</li>
-<li>正面奉茶</li>
-</ol>
 </div>
-</article>
-<article id="panel-whisk" class="tea-game-panel" role="tabpanel" aria-labelledby="tab-whisk" tabindex="0" hidden>
-<figure class="tea-game-art">
-<img src="../assets/works/tea/source/prototype-whisk.webp" alt="击拂斗弦完整游戏界面" loading="lazy" decoding="async"  width="2360" height="1640">
-<figcaption>游戏界面原图</figcaption>
+</section>
+<section id="whisk" class="tea-page tea-game-chapter" aria-labelledby="whisk-title">
+<div class="tea-heading">
+<h2 id="whisk-title">击拂斗弦</h2>
+<p>用茶筅接住水纹，与十二茶先生完成击拂合奏。</p>
+</div>
+<div class="tea-process-pair">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/sketch-03.webp" alt="径向击拂草图（原板第三列）" width="2008" height="1340" loading="lazy" decoding="async">
+</button>
+<figcaption>径向击拂草图（原板第三列）</figcaption>
 </figure>
-<div class="tea-game-copy">
-<h3>让击拂，成为合奏</h3>
-<p>沿盏沿转圈接住涟漪，随波形切换手势；茶筅的动作与音乐、水纹和粒子相互呼应。</p>
-<ol class="tea-signal-path">
-<li>绕圈接波</li>
-<li>维持共振</li>
-<li>击拂成沫</li>
-</ol>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/concept-04.webp" alt="击拂斗弦 · 概念画面" width="2050" height="1220" loading="lazy" decoding="async">
+</button>
+<figcaption>击拂斗弦 · 概念画面</figcaption>
+</figure>
 </div>
-</article>
+<div class="tea-subsection">
+<h3>玩法与界面</h3>
+<div class="tea-process-pair">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/rules-04.webp" alt="击拂斗弦 · 玩法介绍" width="2076" height="1088" loading="lazy" decoding="async">
+</button>
+<figcaption>击拂斗弦 · 玩法介绍</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/screen-04.webp" alt="击拂斗弦 · 游戏画面" width="2003" height="1413" loading="lazy" decoding="async">
+</button>
+<figcaption>击拂斗弦 · 游戏画面</figcaption>
+</figure>
 </div>
-<p class="tea-note">点击关卡切换设计画面</p>
+</div>
+<figure class="tea-prototype-base">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/prototype-whisk.webp" alt="击拂斗弦 · 界面底稿" width="2360" height="1640" loading="lazy" decoding="async">
+</button>
+<figcaption>击拂斗弦 · 界面底稿</figcaption>
+</figure>
 </section>
 <section id="rhythm" class="tea-page tea-rhythm" aria-labelledby="rhythm-title">
 <div class="tea-heading">
@@ -743,39 +1095,51 @@
 <div class="tea-character-gallery">
 <figure class="archive-paper">
 <img src="../assets/works/tea/source/master-01.webp" alt="茶筅化身的茶先生" loading="lazy" decoding="async"  width="390" height="430">
+<figcaption>陶宝文</figcaption>
 </figure>
 <figure class="archive-paper">
 <img src="../assets/works/tea/source/master-02.webp" alt="汤瓶化身的茶先生" loading="lazy" decoding="async"  width="390" height="430">
+<figcaption>木待制</figcaption>
 </figure>
 <figure class="archive-paper">
 <img src="../assets/works/tea/source/master-03.webp" alt="茶盏化身的茶先生" loading="lazy" decoding="async"  width="390" height="430">
+<figcaption>汤提点</figcaption>
 </figure>
 <figure class="archive-paper">
 <img src="../assets/works/tea/source/master-04.webp" alt="茶磨化身的茶先生" loading="lazy" decoding="async"  width="390" height="430">
+<figcaption>石转运</figcaption>
 </figure>
 <figure class="archive-paper">
 <img src="../assets/works/tea/source/master-05.webp" alt="罗筛化身的茶先生" loading="lazy" decoding="async"  width="390" height="430">
+<figcaption>罗枢密</figcaption>
 </figure>
 <figure class="archive-paper">
 <img src="../assets/works/tea/source/master-06.webp" alt="焙火形态的茶先生" loading="lazy" decoding="async"  width="390" height="430">
+<figcaption>金法曹</figcaption>
 </figure>
 <figure class="archive-paper">
 <img src="../assets/works/tea/source/master-07.webp" alt="手持茶瓢的茶先生" loading="lazy" decoding="async"  width="390" height="430">
+<figcaption>竺副帅</figcaption>
 </figure>
 <figure class="archive-paper">
 <img src="../assets/works/tea/source/master-08.webp" alt="奉茶形态的茶先生" loading="lazy" decoding="async"  width="390" height="430">
+<figcaption>胡员外</figcaption>
 </figure>
 <figure class="archive-paper">
 <img src="../assets/works/tea/source/master-09.webp" alt="茶巾化身的茶先生" loading="lazy" decoding="async"  width="390" height="430">
+<figcaption>司职方</figcaption>
 </figure>
 <figure class="archive-paper">
 <img src="../assets/works/tea/source/master-10.webp" alt="茶笼化身的茶先生" loading="lazy" decoding="async"  width="390" height="430">
+<figcaption>韦鸿鲈</figcaption>
 </figure>
 <figure class="archive-paper">
 <img src="../assets/works/tea/source/master-11.webp" alt="炉火形态的茶先生" loading="lazy" decoding="async"  width="390" height="430">
+<figcaption>宗从事</figcaption>
 </figure>
 <figure class="archive-paper">
 <img src="../assets/works/tea/source/master-12.webp" alt="水纹形态的茶先生" loading="lazy" decoding="async"  width="390" height="430">
+<figcaption>漆雕秘阁</figcaption>
 </figure>
 </div>
 <div class="tea-character-links">
@@ -783,32 +1147,410 @@
 <p>汤瓶的曲线，展开为衣。</p>
 <p>茶盏的轮廓，成为捧茶的姿态。</p>
 </div>
+<div class="tea-subsection">
+<h3>器物、角色与茶宴的关系</h3>
+<div class="tea-tools-layout">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/tools-correspondence.webp" alt="茶具与角色对应图" width="1760" height="2400" loading="lazy" decoding="async">
+</button>
+<figcaption>茶具与角色对应图</figcaption>
+</figure>
+<div class="tea-tool-details">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/tools-relationships.webp" alt="器物关系" width="2121" height="1350" loading="lazy" decoding="async">
+</button>
+<figcaption>器物关系</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/tools-narrative.webp" alt="叙事逻辑" width="2121" height="715" loading="lazy" decoding="async">
+</button>
+<figcaption>叙事逻辑</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/tools-banquet.webp" alt="茶宴流程" width="2121" height="770" loading="lazy" decoding="async">
+</button>
+<figcaption>茶宴流程</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/tools-lineage.webp" alt="角色谱系" width="2121" height="910" loading="lazy" decoding="async">
+</button>
+<figcaption>角色谱系</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="tea-subsection">
+<h3>器物与人物剪影的视觉探索</h3>
+<div class="tea-poster-gallery">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/character-poster01.webp" alt="茶磨先生" width="683" height="970" loading="lazy" decoding="async">
+</button>
+<figcaption>茶磨先生</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/character-poster02.webp" alt="茶匙先生" width="722" height="970" loading="lazy" decoding="async">
+</button>
+<figcaption>茶匙先生</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/character-poster03.webp" alt="盏托先生" width="703" height="970" loading="lazy" decoding="async">
+</button>
+<figcaption>盏托先生</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/character-poster04.webp" alt="汤瓶先生" width="701" height="970" loading="lazy" decoding="async">
+</button>
+<figcaption>汤瓶先生</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/character-poster05.webp" alt="茶焙先生" width="699" height="970" loading="lazy" decoding="async">
+</button>
+<figcaption>茶焙先生</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/character-poster06.webp" alt="茶巾先生" width="701" height="970" loading="lazy" decoding="async">
+</button>
+<figcaption>茶巾先生</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/character-poster07.webp" alt="建盏先生" width="697" height="970" loading="lazy" decoding="async">
+</button>
+<figcaption>建盏先生</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/character-poster08.webp" alt="茶罗先生" width="697" height="970" loading="lazy" decoding="async">
+</button>
+<figcaption>茶罗先生</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/character-poster09.webp" alt="水脉先生" width="689" height="970" loading="lazy" decoding="async">
+</button>
+<figcaption>水脉先生</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/character-poster10.webp" alt="茶筅先生" width="673" height="970" loading="lazy" decoding="async">
+</button>
+<figcaption>茶筅先生</figcaption>
+</figure>
+</div>
+</div>
 </section>
-<section id="immersion" class="tea-page tea-immersion" aria-labelledby="immersion-title">
+<section id="rewards" class="tea-page " aria-labelledby="rewards-title">
+<div class="tea-heading">
+<h2 id="rewards-title">从通关，到角色与徽章收藏</h2>
+</div>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/rewards-flow.webp" alt="四关奖励与收藏流程" width="2400" height="316" loading="lazy" decoding="async">
+</button>
+<figcaption>四关奖励与收藏流程</figcaption>
+</figure>
+<div class="tea-collection-layout">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/collection-menu.webp" alt="奖励宝匣 · 四种样式" width="1742" height="1380" loading="lazy" decoding="async">
+</button>
+<figcaption>奖励宝匣 · 四种样式</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/collection-masters.webp" alt="徽章解锁 · 原稿画面" width="2400" height="1645" loading="lazy" decoding="async">
+</button>
+<figcaption>徽章解锁 · 原稿画面</figcaption>
+</figure>
+</div>
+<div class="tea-archive-pair">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/collection-medals.webp" alt="器物与茶事徽章" width="1730" height="1725" loading="lazy" decoding="async">
+</button>
+<figcaption>器物与茶事徽章</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/collection-tools.webp" alt="十二茶先生 · 角色徽章" width="1889" height="1613" loading="lazy" decoding="async">
+</button>
+<figcaption>十二茶先生 · 角色徽章</figcaption>
+</figure>
+</div>
+<div class="tea-subsection">
+<h3>十二茶先生 · 解锁状态图解</h3>
+<div class="tea-unlock-grid">
+<figure class="archive-paper tea-unlock-card is-unlocked">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/master-01.webp" alt="陶宝文" width="390" height="430" loading="lazy" decoding="async">
+</button>
+<figcaption>陶宝文</figcaption>
+</figure>
+<figure class="archive-paper tea-unlock-card is-unlocked">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/master-02.webp" alt="木待制" width="390" height="430" loading="lazy" decoding="async">
+</button>
+<figcaption>木待制</figcaption>
+</figure>
+<figure class="archive-paper tea-unlock-card is-unlocked">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/master-03.webp" alt="汤提点" width="390" height="430" loading="lazy" decoding="async">
+</button>
+<figcaption>汤提点</figcaption>
+</figure>
+<figure class="archive-paper tea-unlock-card is-locked">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/master-04.webp" alt="石转运" width="390" height="430" loading="lazy" decoding="async">
+</button>
+<figcaption>石转运</figcaption>
+</figure>
+<figure class="archive-paper tea-unlock-card is-locked">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/master-05.webp" alt="罗枢密" width="390" height="430" loading="lazy" decoding="async">
+</button>
+<figcaption>罗枢密</figcaption>
+</figure>
+<figure class="archive-paper tea-unlock-card is-locked">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/master-06.webp" alt="金法曹" width="390" height="430" loading="lazy" decoding="async">
+</button>
+<figcaption>金法曹</figcaption>
+</figure>
+<figure class="archive-paper tea-unlock-card is-locked">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/master-07.webp" alt="竺副帅" width="390" height="430" loading="lazy" decoding="async">
+</button>
+<figcaption>竺副帅</figcaption>
+</figure>
+<figure class="archive-paper tea-unlock-card is-locked">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/master-08.webp" alt="胡员外" width="390" height="430" loading="lazy" decoding="async">
+</button>
+<figcaption>胡员外</figcaption>
+</figure>
+<figure class="archive-paper tea-unlock-card is-locked">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/master-09.webp" alt="司职方" width="390" height="430" loading="lazy" decoding="async">
+</button>
+<figcaption>司职方</figcaption>
+</figure>
+<figure class="archive-paper tea-unlock-card is-locked">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/master-10.webp" alt="韦鸿鲈" width="390" height="430" loading="lazy" decoding="async">
+</button>
+<figcaption>韦鸿鲈</figcaption>
+</figure>
+<figure class="archive-paper tea-unlock-card is-locked">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/master-11.webp" alt="宗从事" width="390" height="430" loading="lazy" decoding="async">
+</button>
+<figcaption>宗从事</figcaption>
+</figure>
+<figure class="archive-paper tea-unlock-card is-locked">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/master-12.webp" alt="漆雕秘阁" width="390" height="430" loading="lazy" decoding="async">
+</button>
+<figcaption>漆雕秘阁</figcaption>
+</figure>
+</div>
+<p class="tea-note">按原稿的三位点亮、九位待解锁状态重排，补全原板下沿未完整展示的卡面。</p>
+</div>
+<div class="tea-subsection">
+<h3>加载图标探索</h3>
+<div class="tea-archive-pair">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/loading-whisks.webp" alt="六种持筅加载符方案" width="1537" height="1023" loading="lazy" decoding="async">
+</button>
+<figcaption>六种持筅加载符方案</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-game/loading-bowls.webp" alt="八种茶盏俯视加载方案" width="1536" height="1024" loading="lazy" decoding="async">
+</button>
+<figcaption>八种茶盏俯视加载方案</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="space-logic" class="tea-page " aria-labelledby="space-logic-title">
+<div class="tea-heading">
+<h2 id="space-logic-title">四重境界，组织一场茶文化体验</h2>
+</div>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/logic-axon.webp" alt="玩法逻辑与展厅布局" width="2600" height="1339" loading="lazy" decoding="async">
+</button>
+<figcaption>玩法逻辑与展厅布局</figcaption>
+</figure>
+<dl class="tea-layer-logic">
+<div>
+<dt>叙事</dt>
+<dd>采茶体验</dd>
+<dd class="tea-layer-note">采、识、器、像</dd>
+</div>
+<div>
+<dt>情感</dt>
+<dd>茶叶碾罗体验</dd>
+<dd class="tea-layer-note">劳作共情与手作温度</dd>
+</div>
+<div>
+<dt>美学</dt>
+<dd>茶宴 · 分茶</dd>
+<dd class="tea-layer-note">气、场、虚、实</dd>
+</div>
+<div>
+<dt>场景</dt>
+<dd>茶室空间</dd>
+<dd class="tea-layer-note">茶席雅集、茶道展演、静心品茗</dd>
+</div>
+</dl>
+<figure class="tea-story-chain">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/logic-story-chain.webp" alt="叙事、情感、美学与场景" width="717" height="1430" loading="lazy" decoding="async">
+</button>
+<figcaption>叙事、情感、美学与场景</figcaption>
+</figure>
+</section>
+<section id="immersion" class="tea-page " aria-labelledby="immersion-title">
 <div class="tea-heading">
 <h2 id="immersion-title">让整间茶厅，回应你的动作</h2>
-<p>以纱幕和投影延伸数字画面，让角色与粒子围绕真实器物展开。</p>
+<p>空间效果、身体交互与反馈画面并置，呈现三段体验如何被参与。</p>
 </div>
-<figure class="tea-panorama">
-<img src="../assets/works/tea/source/space-projection-original.webp" alt="醒茶空间完整效果图，投影中的茶先生与实体茶桌共同构成体验" loading="lazy" decoding="async"  width="1672" height="941">
-<figcaption>醒茶 · 茶山与茶音进入空间</figcaption>
-</figure>
-<div class="tea-immersion-pair">
+<article class="tea-interaction-study">
+<h3>醒茶如禅 · 交互演示</h3>
+<div class="tea-interaction-layout">
 <figure class="">
-<img src="../assets/works/tea/source/space-rhythm-original.webp" alt="碾罗空间完整效果图，实体操作台与粒子投影共同组织手作节奏" loading="lazy" decoding="async"  width="2400" height="1127">
-<figcaption>碾罗 · 手作节奏的可视化</figcaption>
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/space-projection-original.webp" alt="醒茶如禅 · 空间效果" width="1672" height="941" loading="lazy" decoding="async">
+</button>
+<figcaption>醒茶如禅 · 空间效果</figcaption>
 </figure>
 <figure class="">
-<img src="../assets/works/tea/source/space-etiquette-original.webp" alt="行盏空间完整效果图，保留人物全身、墙面和茶先生投影" loading="lazy" decoding="async"  width="1430" height="1100">
-<figcaption>行盏 · 身体与数字角色对话</figcaption>
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/process-wake.webp" alt="醒茶如禅 · 交互流程" width="1056" height="588" loading="lazy" decoding="async">
+</button>
+<figcaption>醒茶如禅 · 交互流程</figcaption>
 </figure>
 </div>
+<div class="tea-feedback-gallery">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/figma/feedback-wake-01.webp" alt="茶芽入篓" width="1198" height="896" loading="lazy" decoding="async">
+</button>
+<figcaption>茶芽入篓</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/figma/feedback-wake-02.webp" alt="昏睡云缠身" width="1198" height="892" loading="lazy" decoding="async">
+</button>
+<figcaption>昏睡云缠身</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/figma/feedback-wake-03.webp" alt="金芽圆满" width="1198" height="595" loading="lazy" decoding="async">
+</button>
+<figcaption>金芽圆满</figcaption>
+</figure>
+</div>
+</article>
+<article class="tea-interaction-study">
+<h3>碾罗成律 · 交互演示</h3>
+<div class="tea-interaction-layout">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/space-rhythm-original.webp" alt="碾罗成律 · 空间效果" width="2400" height="1127" loading="lazy" decoding="async">
+</button>
+<figcaption>碾罗成律 · 空间效果</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/process-grind.webp" alt="碾罗成律 · 交互流程" width="1056" height="716" loading="lazy" decoding="async">
+</button>
+<figcaption>碾罗成律 · 交互流程</figcaption>
+</figure>
+</div>
+<div class="tea-feedback-gallery">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/figma/feedback-grind-01.webp" alt="茶粉收集进度" width="1190" height="886" loading="lazy" decoding="async">
+</button>
+<figcaption>茶粉收集进度</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/figma/feedback-grind-02.webp" alt="乐曲特效" width="1190" height="886" loading="lazy" decoding="async">
+</button>
+<figcaption>乐曲特效</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/figma/feedback-grind-03.webp" alt="满分特效" width="1190" height="887" loading="lazy" decoding="async">
+</button>
+<figcaption>满分特效</figcaption>
+</figure>
+</div>
+</article>
+<article class="tea-interaction-study">
+<h3>行盏入礼 · 交互演示</h3>
+<div class="tea-interaction-layout">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/space-etiquette-original.webp" alt="行盏入礼 · 空间效果" width="1430" height="1100" loading="lazy" decoding="async">
+</button>
+<figcaption>行盏入礼 · 空间效果</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/process-ritual.webp" alt="行盏入礼 · 交互流程" width="1056" height="668" loading="lazy" decoding="async">
+</button>
+<figcaption>行盏入礼 · 交互流程</figcaption>
+</figure>
+</div>
+<div class="tea-feedback-gallery">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/figma/feedback-ritual-01.webp" alt="叉手礼交互" width="1195" height="892" loading="lazy" decoding="async">
+</button>
+<figcaption>叉手礼交互</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/figma/feedback-ritual-02.webp" alt="分茶汤" width="1198" height="445" loading="lazy" decoding="async">
+</button>
+<figcaption>分茶汤</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/figma/feedback-ritual-03.webp" alt="正面奉茶" width="1195" height="892" loading="lazy" decoding="async">
+</button>
+<figcaption>正面奉茶</figcaption>
+</figure>
+</div>
+</article>
 </section>
 <section id="space" class="tea-page tea-space" aria-labelledby="space-title">
 <div class="tea-heading">
 <h2 id="space-title">从游览，到驻留与入席</h2>
 <p>环形动线连接观看、停留与交互。中央的围合茶室，让击拂成为空间中的体验核心。</p>
 </div>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/behavior-whole.webp" alt="六种空间行为与场馆动线的对应" width="2600" height="1050" loading="lazy" decoding="async">
+</button>
+<figcaption>六种空间行为与场馆动线的对应</figcaption>
+</figure>
 <div class="tea-behavior-layout">
 <figure class="tea-axis">
 <img src="../assets/works/tea/source/space-axis.webp" alt="茶弦记展厅空间行为轴测图，保留原始环形路径、人物与中央纱幕" loading="lazy" decoding="async"  width="2603" height="1855">
@@ -844,6 +1586,44 @@
 </dl>
 </div>
 </div>
+<div class="tea-behavior-gallery">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/behavior-walk.webp" alt="漫步体验" width="450" height="544" loading="lazy" decoding="async">
+</button>
+<figcaption>漫步体验</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/behavior-observe.webp" alt="观景借景" width="458" height="544" loading="lazy" decoding="async">
+</button>
+<figcaption>观景借景</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/behavior-exhibit.webp" alt="观赏展品" width="465" height="544" loading="lazy" decoding="async">
+</button>
+<figcaption>观赏展品</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/behavior-entrance.webp" alt="入口引导" width="450" height="532" loading="lazy" decoding="async">
+</button>
+<figcaption>入口引导</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/behavior-immerse.webp" alt="沉浸感受" width="458" height="532" loading="lazy" decoding="async">
+</button>
+<figcaption>沉浸感受</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/behavior-interact.webp" alt="互动体验" width="465" height="532" loading="lazy" decoding="async">
+</button>
+<figcaption>互动体验</figcaption>
+</figure>
+</div>
 <ol class="tea-spatial-flow">
 <li>游览</li>
 <li>驻留</li>
@@ -851,60 +1631,365 @@
 <li>交互</li>
 </ol>
 </section>
-<section id="objects" class="tea-page tea-objects" aria-labelledby="objects-title">
+<section id="central-room" class="tea-page " aria-labelledby="central-room-title">
 <div class="tea-heading">
-<h2 id="objects-title">把展厅里的茶，带回日常</h2>
-<p>展具从传统器物与建筑形态中提取结构；茶杯与茶模，把游戏奖励延续成亲手完成的茶百戏。</p>
+<h2 id="central-room-title">击拂茶室：与茶先生对弈</h2>
+<p>中央围合茶室以宋代点茶工序为线索，茶盖、茶筅与纱幕共同构成交互界面。</p>
 </div>
-<ul class="tea-form-language">
-<li>
-<i class="tea-form-circle" aria-hidden="true">
-</i>
-<span>圆</span>
-</li>
-<li>
-<i class="tea-form-square" aria-hidden="true">
-</i>
-<span>方</span>
-</li>
-<li>
-<i class="tea-form-slats" aria-hidden="true">
-</i>
-<span>格栅</span>
-</li>
-<li>
-<i class="tea-form-tiers" aria-hidden="true">
-</i>
-<span>层架</span>
-</li>
-<li>
-<i class="tea-form-enclose" aria-hidden="true">
-</i>
-<span>围合</span>
-</li>
-<li>
-<i class="tea-form-frame" aria-hidden="true">
-</i>
-<span>对景</span>
-</li>
-</ul>
-<figure class="tea-display-family">
-<img src="../assets/works/tea/source/display-family-original.webp" alt="完整茶文化展具家族，包括高柱展架、圆形展台与器物组合" loading="lazy" decoding="async"  width="1448" height="1086">
-<figcaption>展具语言与陈列系统</figcaption>
+<div class="tea-center-layout">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/hero-ritual-original.webp" alt="中央击拂茶室" width="1448" height="1086" loading="lazy" decoding="async">
+</button>
+<figcaption>中央击拂茶室</figcaption>
 </figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/central-room-top.webp" alt="围合茶室俯视" width="1396" height="812" loading="lazy" decoding="async">
+</button>
+<figcaption>围合茶室俯视</figcaption>
+</figure>
+</div>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/central-room-notes.webp" alt="击拂茶室 · 交互说明" width="1404" height="872" loading="lazy" decoding="async">
+</button>
+<figcaption>击拂茶室 · 交互说明</figcaption>
+</figure>
+<div class="tea-subsection">
+<h3>动作与感官反馈</h3>
+<dl class="tea-central-feedback">
+<div>
+<dt>茶筅转动频率</dt>
+<dd>纱幕星纹光影</dd>
+</div>
+<div>
+<dt>杯盖与杯壁的触碰</dt>
+<dd>即时声音与光环反馈</dd>
+</div>
+<div>
+<dt>采茶、碾罗、行盏、击拂</dt>
+<dd>交织成完整的茶乐曲</dd>
+</div>
+<div>
+<dt>与十二茶先生对弈</dt>
+<dd>按游戏行为评分，判定胜负</dd>
+</div>
+</dl>
+</div>
+<div class="tea-room-reference">
+<span>围合茶室的中央席位</span>
+<svg viewBox="0 0 120 24" aria-hidden="true">
+<circle cx="6" cy="12" r="4"/>
+<path d="M10 12H110M103 5l7 7-7 7"/>
+</svg>
+<span>茶筅与茶盏的交互位置</span>
+</div>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/central-room-experience-notes.webp" alt="沉浸式茶室 · 体验说明" width="2600" height="258" loading="lazy" decoding="async">
+</button>
+<figcaption>沉浸式茶室 · 体验说明</figcaption>
+</figure>
+</section>
+<section id="objects" class="tea-page " aria-labelledby="objects-title">
+<div class="tea-heading">
+<h2 id="objects-title">展具语言与陈列系统</h2>
+</div>
+<div class="tea-language-gallery">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-language-01.webp" alt="圆 · 流动" width="270" height="432" loading="lazy" decoding="async">
+</button>
+<figcaption>圆 · 流动</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-language-02.webp" alt="方 · 秩序" width="278" height="432" loading="lazy" decoding="async">
+</button>
+<figcaption>方 · 秩序</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-language-03.webp" alt="格栅 · 层次" width="277" height="432" loading="lazy" decoding="async">
+</button>
+<figcaption>格栅 · 层次</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-language-04.webp" alt="层架 · 递进" width="273" height="432" loading="lazy" decoding="async">
+</button>
+<figcaption>层架 · 递进</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-language-05.webp" alt="围合 · 范围" width="276" height="432" loading="lazy" decoding="async">
+</button>
+<figcaption>围合 · 范围</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-language-06.webp" alt="对景 · 对话" width="326" height="432" loading="lazy" decoding="async">
+</button>
+<figcaption>对景 · 对话</figcaption>
+</figure>
+</div>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-materials.webp" alt="色彩与材质" width="1708" height="170" loading="lazy" decoding="async">
+</button>
+<figcaption>色彩与材质</figcaption>
+</figure>
+<figure class="tea-material-original">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/figma/material-textures-original.webp" alt="五种材质原样片：陶瓷、竹木、金属、玻璃、石材" width="407" height="68" loading="lazy" decoding="async">
+</button>
+<figcaption>五种材质原样片：陶瓷、竹木、金属、玻璃、石材</figcaption>
+</figure>
+<dl class="tea-form-meanings">
+<div>
+<dt>圆</dt>
+<dd>流动</dd>
+</div>
+<div>
+<dt>方</dt>
+<dd>秩序</dd>
+</div>
+<div>
+<dt>格栅</dt>
+<dd>层次</dd>
+</div>
+<div>
+<dt>层架</dt>
+<dd>递进</dd>
+</div>
+<div>
+<dt>围合</dt>
+<dd>范围</dd>
+</div>
+<div>
+<dt>对景</dt>
+<dd>对话</dd>
+</div>
+</dl>
+<div class="tea-subsection">
+<h3>展具系统分析</h3>
+<div class="tea-display-units">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-system-01.webp" alt="独立层架 · 香器／茶壶" width="254" height="616" loading="lazy" decoding="async">
+</button>
+<figcaption>独立层架 · 香器／茶壶</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-system-02.webp" alt="双层立架 · 茶花／插花" width="254" height="616" loading="lazy" decoding="async">
+</button>
+<figcaption>双层立架 · 茶花／插花</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-system-03.webp" alt="光影架 · 圆扇／书画" width="254" height="616" loading="lazy" decoding="async">
+</button>
+<figcaption>光影架 · 圆扇／书画</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-system-04.webp" alt="多层书架 · 茶书／器物" width="254" height="616" loading="lazy" decoding="async">
+</button>
+<figcaption>多层书架 · 茶书／器物</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-system-05.webp" alt="大圆台座 · 茶壶／茶礼" width="254" height="616" loading="lazy" decoding="async">
+</button>
+<figcaption>大圆台座 · 茶壶／茶礼</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-system-06.webp" alt="园林造景立架 · 茶杯／建盏" width="510" height="616" loading="lazy" decoding="async">
+</button>
+<figcaption>园林造景立架 · 茶杯／建盏</figcaption>
+</figure>
+</div>
+</div>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/display-family-original.webp" alt="展具家族与场景化陈列" width="1448" height="1086" loading="lazy" decoding="async">
+</button>
+<figcaption>展具家族与场景化陈列</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-array.webp" alt="茶展架展陈示意" width="2600" height="1248" loading="lazy" decoding="async">
+</button>
+<figcaption>茶展架展陈示意</figcaption>
+</figure>
+<div class="tea-value-gallery">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-value-01.webp" alt="文化传播" width="207" height="236" loading="lazy" decoding="async">
+</button>
+<figcaption>文化传播</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-value-02.webp" alt="体验创新" width="207" height="236" loading="lazy" decoding="async">
+</button>
+<figcaption>体验创新</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/display-value-03.webp" alt="互动细节" width="207" height="248" loading="lazy" decoding="async">
+</button>
+<figcaption>互动细节</figcaption>
+</figure>
+</div>
+</section>
+<section id="merchandise" class="tea-page " aria-labelledby="merchandise-title">
+<div class="tea-heading">
+<h2 id="merchandise-title">把展厅里的茶，带回日常</h2>
+</div>
 <div class="tea-merchandise-gallery">
+<article>
 <figure class="">
-<img src="../assets/works/tea/source/merchandise-cup-original.webp" alt="茶杯与浮雕茶模的完整周边设计效果图" loading="lazy" decoding="async"  width="1829" height="860">
-<figcaption>杯与茶模</figcaption>
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/merchandise-cup-original.webp" alt="茶杯与茶模" width="1829" height="860" loading="lazy" decoding="async">
+</button>
+<figcaption>茶杯与茶模</figcaption>
 </figure>
+<p class="tea-merch-note">从《茶具图赞》提取镂空图样，获胜后取得对应茶先生的徽章茶模。</p>
+</article>
+<article>
 <figure class="">
-<img src="../assets/works/tea/source/merchandise-painting-original.webp" alt="用茶百戏绘制工具在茶沫上绘画的完整效果图" loading="lazy" decoding="async"  width="1672" height="941">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/merchandise-painting-original.webp" alt="执笔绘茶" width="1672" height="941" loading="lazy" decoding="async">
+</button>
 <figcaption>执笔绘茶</figcaption>
 </figure>
+<p class="tea-merch-note">沿模卡绘制茶百戏，吸取杯盖中的清水作为笔液。</p>
+</article>
+<article>
 <figure class="">
-<img src="../assets/works/tea/source/merchandise-collection-original.webp" alt="五色茶杯的完整陈列效果图" loading="lazy" decoding="async"  width="1672" height="941">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/source/merchandise-collection-original.webp" alt="五色茶杯" width="1672" height="941" loading="lazy" decoding="async">
+</button>
 <figcaption>五色茶杯</figcaption>
 </figure>
+<p class="tea-merch-note">按游戏绘制个数获得不同绿色程度的茶杯，并与一次性茶包装组成奖励。</p>
+</article>
+</div>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/merchandise-reward-pipeline.webp" alt="奖励画笔、茶杯与茶百戏体验" width="2600" height="317" loading="lazy" decoding="async">
+</button>
+<figcaption>奖励画笔、茶杯与茶百戏体验</figcaption>
+</figure>
+<ol class="tea-reward-path">
+<li>奖励吸管笔</li>
+<li>奖励茶杯</li>
+<li>攻关徽章</li>
+<li>临摹茶百戏</li>
+<li>畅饮礼品</li>
+</ol>
+<div class="tea-subsection">
+<h3>从游戏奖励到茶饮体验</h3>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/exhibition-scene-01.webp" alt="茶饮周边 · 展厅陈列" width="1776" height="888" loading="lazy" decoding="async">
+</button>
+<figcaption>茶饮周边 · 展厅陈列</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/exhibition-scene-02.webp" alt="茶百戏 · 互动陈列" width="1784" height="900" loading="lazy" decoding="async">
+</button>
+<figcaption>茶百戏 · 互动陈列</figcaption>
+</figure>
+</div>
+</section>
+<section id="sketches" class="tea-page " aria-labelledby="sketches-title">
+<div class="tea-heading">
+<h2 id="sketches-title">草图推演：从空间到展具</h2>
+</div>
+<div class="tea-sketch-gallery">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/figma/sketch-view-01.webp" alt="山水墙面与展厅入口" width="2400" height="1851" loading="lazy" decoding="async">
+</button>
+<figcaption>山水墙面与展厅入口</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/figma/sketch-view-02.webp" alt="围合核心与环形动线" width="2400" height="1800" loading="lazy" decoding="async">
+</button>
+<figcaption>围合核心与环形动线</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/figma/sketch-view-03.webp" alt="纱幕体量与建筑层次" width="2048" height="1066" loading="lazy" decoding="async">
+</button>
+<figcaption>纱幕体量与建筑层次</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/figma/sketch-view-04.webp" alt="坐席操作与投影界面" width="2400" height="1800" loading="lazy" decoding="async">
+</button>
+<figcaption>坐席操作与投影界面</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/figma/sketch-view-05.webp" alt="过道与空间衔接" width="2400" height="1851" loading="lazy" decoding="async">
+</button>
+<figcaption>过道与空间衔接</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/figma/sketch-view-06.webp" alt="茶桌与纱幕立面" width="2400" height="1361" loading="lazy" decoding="async">
+</button>
+<figcaption>茶桌与纱幕立面</figcaption>
+</figure>
+</div>
+<div class="tea-subsection">
+<h3>六种展具方向</h3>
+<div class="tea-language-gallery">
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/sketch-shape-01.webp" alt="圆 · 形态推演" width="360" height="365" loading="lazy" decoding="async">
+</button>
+<figcaption>圆 · 形态推演</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/sketch-shape-02.webp" alt="方 · 形态推演" width="370" height="365" loading="lazy" decoding="async">
+</button>
+<figcaption>方 · 形态推演</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/sketch-shape-03.webp" alt="格栅 · 形态推演" width="370" height="365" loading="lazy" decoding="async">
+</button>
+<figcaption>格栅 · 形态推演</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/sketch-shape-04.webp" alt="层架 · 形态推演" width="360" height="370" loading="lazy" decoding="async">
+</button>
+<figcaption>层架 · 形态推演</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/sketch-shape-05.webp" alt="围合 · 形态推演" width="370" height="370" loading="lazy" decoding="async">
+</button>
+<figcaption>围合 · 形态推演</figcaption>
+</figure>
+<figure class="">
+<button type="button" class="tea-detail-open image-open" data-tea-detail aria-haspopup="dialog">
+<img src="../assets/works/tea/archive-space/board/sketch-shape-06.webp" alt="对景 · 形态推演" width="370" height="370" loading="lazy" decoding="async">
+</button>
+<figcaption>对景 · 形态推演</figcaption>
+</figure>
+</div>
 </div>
 </section>
 <section id="boards" class="tea-page tea-archive" aria-labelledby="boards-title">
@@ -931,23 +2016,26 @@
 <span>主创成员</span>
 <p>周小雅、蔡正阳、欧阳影睿、罗晨基</p>
 </div>
+<div>
 <p>本页呈现项目设计方案、界面与空间效果图。</p>
+<p class="tea-credit-advisors">指导教师：徐捷、朱发运、陈歆怡、何永兴、陈峰、包德福、曹川、钟毅、傅婕、蓝天宇</p>
+</div>
 <a href="#cover">回到开篇 ↑</a>
 </footer>
 </section>
 </main>
 <dialog id="tea-board-viewer" class="tea-board-viewer media-viewer" aria-labelledby="tea-board-title">
-  <div class="tea-board-bar">
+<div class="tea-board-bar">
 <h2 id="tea-board-title">完整设计展板</h2>
 <div class="tea-board-tools">
 <button type="button" data-board-fit>适合宽度</button>
-<button type="button" data-board-minus aria-label="缩小展板">−</button>
+<button type="button" data-board-minus aria-label="缩小图稿">−</button>
 <output aria-live="polite">100%</output>
-<button type="button" data-board-plus aria-label="放大展板">+</button>
+<button type="button" data-board-plus aria-label="放大图稿">+</button>
 <button type="button" data-board-close>关闭</button>
 </div>
 </div>
-  <div class="tea-board-scroll" tabindex="0" aria-label="可滚动的展板详情">
+<div class="tea-board-scroll" tabindex="0" aria-label="可滚动的图稿详情">
 <img alt="" decoding="async">
 </div>
 </dialog>

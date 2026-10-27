@@ -1,0 +1,880 @@
+{
+  "fileKey": "bSvsBCH8vfWBNuq5AItp6o",
+  "projectFrame": "1244:6",
+  "method": "Official Figma download_assets original rawImages[0], deduplicated by imageHash. No board screenshots, painting, invented vectors or artificial upscaling. Contact-sheet panels separated only at actual source image boundaries.",
+  "assets": [
+    {
+      "file": "sketch-view-01.webp",
+      "nodeId": "1244:757",
+      "nodeName": "场景 2 2",
+      "imageHash": "9d6b08ce388635d9a23f7690cbcacb603763f490",
+      "sourceDimensions": [
+        3000,
+        2314
+      ],
+      "sourceSha256": "0d868c270f2071306246d8cabe0c881c40228e161143346357a7f24a78b2a74a",
+      "cropPixels": [
+        0,
+        0,
+        3000,
+        2314
+      ],
+      "dimensions": [
+        2400,
+        1851
+      ],
+      "bytes": 1079444,
+      "outputSha256": "00246ed9b6abb0963cf451411e82050de86c9ae1545c6ccccd9e85aa2e108225",
+      "originalFillTransform": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "qa": "Full independently uploaded original render; no adjacent collage or board framing. Natural aspect ratio retained, inspected individually.",
+      "upscaled": false
+    },
+    {
+      "file": "sketch-view-02.webp",
+      "nodeId": "1244:756",
+      "nodeName": "主 2",
+      "imageHash": "62b753cb9a7de8aa14f15b54ce840ff231a0f627",
+      "sourceDimensions": [
+        3000,
+        2250
+      ],
+      "sourceSha256": "a35ba8ff832a95f69d49f3728d727d3b50800b7bbe8842cc2a206e241d732229",
+      "cropPixels": [
+        0,
+        0,
+        3000,
+        2250
+      ],
+      "dimensions": [
+        2400,
+        1800
+      ],
+      "bytes": 1554438,
+      "outputSha256": "8aa7b4f7393deb94412471467f7dac82119c31f14eaf9fe4763ac89638e092da",
+      "originalFillTransform": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "qa": "Full independently uploaded original render; no adjacent collage or board framing. Natural aspect ratio retained, inspected individually.",
+      "upscaled": false
+    },
+    {
+      "file": "sketch-view-03.webp",
+      "nodeId": "1244:760",
+      "nodeName": "image 291330",
+      "imageHash": "ae751a072a3af21e83dd465e3233e3d07c8328b0",
+      "sourceDimensions": [
+        2048,
+        1066
+      ],
+      "sourceSha256": "dd818d4a0f89fae8936eee0f1014358d774c27f4462ed8613f09517009677069",
+      "cropPixels": [
+        0,
+        0,
+        2048,
+        1066
+      ],
+      "dimensions": [
+        2048,
+        1066
+      ],
+      "bytes": 553792,
+      "outputSha256": "760f3917c2f06eaa6c8711dcc76f269878ec58df0b0e579e13b5741ff6d14bbd",
+      "originalFillTransform": [
+        [
+          0.896430253982544,
+          0,
+          0.0393918976187706
+        ],
+        [
+          0,
+          0.7777777910232544,
+          0.0714285746216774
+        ]
+      ],
+      "qa": "Full independently uploaded original render; no adjacent collage or board framing. Natural aspect ratio retained, inspected individually.",
+      "upscaled": false
+    },
+    {
+      "file": "sketch-view-04.webp",
+      "nodeId": "1244:746",
+      "nodeName": "交互场景1 2",
+      "imageHash": "54354bdf0f2b7fb0aff1dc9247250c75a510900e",
+      "sourceDimensions": [
+        4096,
+        3072
+      ],
+      "sourceSha256": "04a14fc06422447dccead1781ca37591a65cac89c934f4d243e76db8f3877dd2",
+      "cropPixels": [
+        0,
+        0,
+        4096,
+        3072
+      ],
+      "dimensions": [
+        2400,
+        1800
+      ],
+      "bytes": 1298630,
+      "outputSha256": "450c2415434f6af197a08b4c677bf552084ccdae8c23f0e1818d547986885eb9",
+      "originalFillTransform": [
+        [
+          0.9727191925048828,
+          0,
+          0.013640429824590683
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "qa": "Full independently uploaded original render; no adjacent collage or board framing. Natural aspect ratio retained, inspected individually.",
+      "upscaled": false
+    },
+    {
+      "file": "sketch-view-05.webp",
+      "nodeId": "1059:10",
+      "nodeName": "场景 1 1",
+      "imageHash": "fe2753504362a684bd866d48ed244e44958a4c0d",
+      "sourceDimensions": [
+        3000,
+        2314
+      ],
+      "sourceSha256": "b695398481157c6491a942af8cdfdd947ece3f1570995d818f4dfe29dc8a3d80",
+      "cropPixels": [
+        0,
+        0,
+        3000,
+        2314
+      ],
+      "dimensions": [
+        2400,
+        1851
+      ],
+      "bytes": 894768,
+      "outputSha256": "aebf76f10d30468f4d9a0600c93cb0523b2ec74cee225cecfdfc5dab032dd772",
+      "originalFillTransform": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "qa": "Full independently uploaded original render; no adjacent collage or board framing. Natural aspect ratio retained, inspected individually.",
+      "upscaled": false
+    },
+    {
+      "file": "sketch-view-06.webp",
+      "nodeId": "1180:136",
+      "nodeName": "框景- 1",
+      "imageHash": "cfa48c3119ba2e25dfc54d44218f9427f583d947",
+      "sourceDimensions": [
+        4096,
+        2323
+      ],
+      "sourceSha256": "816563e96a43830f36d69da3f3b85e0b20764d35e68a646a9442f39ef9170913",
+      "cropPixels": [
+        0,
+        0,
+        4096,
+        2323
+      ],
+      "dimensions": [
+        2400,
+        1361
+      ],
+      "bytes": 603264,
+      "outputSha256": "49d409e2c26caa45937d33ee3cdc76a5c97377820a09976751408bf6cc46d580",
+      "originalFillTransform": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "qa": "Full independently uploaded original render; no adjacent collage or board framing. Natural aspect ratio retained, inspected individually.",
+      "upscaled": false
+    },
+    {
+      "file": "sketch-shape-variants.webp",
+      "nodeId": "1233:1020",
+      "nodeName": "ChatGPT Image 2026年7月7日 02_58_21 1",
+      "imageHash": "6769e50c1a29ae03dbeef75dc212627136aed88e",
+      "sourceDimensions": [
+        1672,
+        941
+      ],
+      "sourceSha256": "d45064fa797dbd6aed39aa87e198a6a3a77298d917da3f4e29870d1e82e06399",
+      "cropPixels": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 230454,
+      "outputSha256": "42737d26e8dba3c69730c4e4a2e8e70ff1b506326f426a4629e49846f7940518",
+      "originalFillTransform": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "qa": "Full original six-shape proposal sheet: 圆/方/格栅/层架/围合/对景; all six numbered badges and title plaques intact.",
+      "upscaled": false
+    },
+    {
+      "file": "exhibition-scene-02.webp",
+      "nodeId": "1244:694",
+      "nodeName": "12 7",
+      "imageHash": "d1b10651b24dcf0eac47350896bd0e7e5e853102",
+      "sourceDimensions": [
+        1672,
+        941
+      ],
+      "sourceSha256": "fe72697e7305837270ae2cc13766fafa7ba851528eaa321d6c8646babafc94f6",
+      "cropPixels": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "dimensions": [
+        1672,
+        941
+      ],
+      "bytes": 397430,
+      "outputSha256": "403add30a29fc3f7c2091a4349ef92ee2fbcff3c1d83ad7af7596624a750c3a6",
+      "originalFillTransform": [
+        [
+          0.9764304757118225,
+          0,
+          0.02255035750567913
+        ],
+        [
+          0,
+          0.8614668250083923,
+          0.06926661729812622
+        ]
+      ],
+      "qa": "Complete independent original tea display scene; board CROP relaxed to restore top/bottom composition.",
+      "upscaled": false
+    },
+    {
+      "file": "feedback-wake-01.webp",
+      "nodeId": "1244:623",
+      "nodeName": "Interactive_space_tea_picking_game_202607070051 1",
+      "imageHash": "91d604d884fe48c12b15cf165f35596531aecc53",
+      "sourceDimensions": [
+        2400,
+        1792
+      ],
+      "sourceSha256": "cad98566d9ad5600a6a1a414218be9e9d171a149ec87053c51eb28ccbcea7a0e",
+      "cropPixels": [
+        0,
+        0,
+        1198,
+        896
+      ],
+      "dimensions": [
+        1198,
+        896
+      ],
+      "bytes": 223500,
+      "outputSha256": "d7291b83a160552152920c9db66cbd4b2b1ddec980eed523f08f124ab15a551e",
+      "originalFillTransform": [
+        [
+          0.3166181743144989,
+          0,
+          0.09373017400503159
+        ],
+        [
+          0,
+          0.4136996269226074,
+          0.04527559131383896
+        ]
+      ],
+      "qa": "Top-left Selecting Tea Leaves panel, including its original caption.",
+      "upscaled": false
+    },
+    {
+      "file": "feedback-wake-02.webp",
+      "nodeId": "1244:624",
+      "nodeName": "Interactive_space_tea_picking_game_202607070051 3",
+      "imageHash": "91d604d884fe48c12b15cf165f35596531aecc53",
+      "sourceDimensions": [
+        2400,
+        1792
+      ],
+      "sourceSha256": "cad98566d9ad5600a6a1a414218be9e9d171a149ec87053c51eb28ccbcea7a0e",
+      "cropPixels": [
+        0,
+        900,
+        1198,
+        1792
+      ],
+      "dimensions": [
+        1198,
+        892
+      ],
+      "bytes": 201538,
+      "outputSha256": "cca9d9e0005168950ca9af6aa6546f068aaf553389a207b1526ff538ac97293b",
+      "originalFillTransform": [
+        [
+          0.3166181743144989,
+          0,
+          0.11901336163282394
+        ],
+        [
+          0,
+          0.4136996269226074,
+          0.5231040716171265
+        ]
+      ],
+      "qa": "Bottom-left Avoiding the Fog panel, including its original caption.",
+      "upscaled": false
+    },
+    {
+      "file": "feedback-wake-03.webp",
+      "nodeId": "1244:625",
+      "nodeName": "Interactive_space_tea_picking_game_202607070052 1",
+      "imageHash": "9cb6abf4a5efa4a1ad5eb457bcb18c5ac09f7c44",
+      "sourceDimensions": [
+        2400,
+        1792
+      ],
+      "sourceSha256": "04b66eb491b4a60584cb45579ef0dc47ed720c0ed8540775da9577ef52b0362c",
+      "cropPixels": [
+        0,
+        598,
+        1198,
+        1193
+      ],
+      "dimensions": [
+        1198,
+        595
+      ],
+      "bytes": 189184,
+      "outputSha256": "c2a162532010511746a56c382d114a0b3a6d92346aa0e9d8ab30a53304bb7c71",
+      "originalFillTransform": [
+        [
+          0.2508583664894104,
+          0,
+          0.11062054336071014
+        ],
+        [
+          0,
+          0.32786884903907776,
+          0.33299773931503296
+        ]
+      ],
+      "qa": "Middle-left golden tea-leaf multiplier panel; full hand and x10 retained.",
+      "upscaled": false
+    },
+    {
+      "file": "feedback-grind-01.webp",
+      "nodeId": "1244:724",
+      "nodeName": "交互空间交互细节图_2K_202607070008 1",
+      "imageHash": "c6cd2d3a97c2417e29b5d3b3e83243aba006ef51",
+      "sourceDimensions": [
+        2400,
+        1792
+      ],
+      "sourceSha256": "106bf8193885b6711da64035cb3e0492a0ca1dc3f995df5303ae15fec4e8a8e9",
+      "cropPixels": [
+        5,
+        902,
+        1195,
+        1788
+      ],
+      "dimensions": [
+        1190,
+        886
+      ],
+      "bytes": 147452,
+      "outputSha256": "80f5d5e49776f75652623dae14f5ace848f1fc83fcd1a3a090ead5da3aca19ed",
+      "originalFillTransform": [
+        [
+          0.16757796704769135,
+          0,
+          0.16467633843421936
+        ],
+        [
+          0,
+          0.21896077692508698,
+          0.5126244425773621
+        ]
+      ],
+      "qa": "Bottom-left sieve/collection multiplier panel; all hands, powder and progress UI retained.",
+      "upscaled": false
+    },
+    {
+      "file": "feedback-grind-02.webp",
+      "nodeId": "1244:725",
+      "nodeName": "交互空间交互细节图_2K_202607070008 3",
+      "imageHash": "c6cd2d3a97c2417e29b5d3b3e83243aba006ef51",
+      "sourceDimensions": [
+        2400,
+        1792
+      ],
+      "sourceSha256": "106bf8193885b6711da64035cb3e0492a0ca1dc3f995df5303ae15fec4e8a8e9",
+      "cropPixels": [
+        1205,
+        902,
+        2395,
+        1788
+      ],
+      "dimensions": [
+        1190,
+        886
+      ],
+      "bytes": 221730,
+      "outputSha256": "513d6404a0f44a15d6cd3afc4a2a4f29f962912cd45814743f538f8888f4239e",
+      "originalFillTransform": [
+        [
+          0.2806203067302704,
+          0,
+          0.5813724994659424
+        ],
+        [
+          0,
+          0.36666420102119446,
+          0.6000211238861084
+        ]
+      ],
+      "qa": "Bottom-right completed composition panel; full score and composition UI retained.",
+      "upscaled": false
+    },
+    {
+      "file": "feedback-grind-03.webp",
+      "nodeId": "1244:729",
+      "nodeName": "交互空间交互细节图_2K_202607070008 2",
+      "imageHash": "c6cd2d3a97c2417e29b5d3b3e83243aba006ef51",
+      "sourceDimensions": [
+        2400,
+        1792
+      ],
+      "sourceSha256": "106bf8193885b6711da64035cb3e0492a0ca1dc3f995df5303ae15fec4e8a8e9",
+      "cropPixels": [
+        1205,
+        5,
+        2395,
+        892
+      ],
+      "dimensions": [
+        1190,
+        887
+      ],
+      "bytes": 268036,
+      "outputSha256": "bf507abad624ec8e6b1ca8ddfbdc67faf519f3ed292061c4724693a0e367ce79",
+      "originalFillTransform": [
+        [
+          0.2806203067302704,
+          0,
+          0.5753938555717468
+        ],
+        [
+          0,
+          0.36666420102119446,
+          0.10678339004516602
+        ]
+      ],
+      "qa": "Top-right Perfect panel; full portrait, bowl and score retained.",
+      "upscaled": false
+    },
+    {
+      "file": "feedback-ritual-01.webp",
+      "nodeId": "1244:620",
+      "nodeName": "茶宴分茶音游交互细节_2K_202607070259 1",
+      "imageHash": "a4ef73c596a574a73fdc263d73fba97c15df62bc",
+      "sourceDimensions": [
+        2400,
+        1792
+      ],
+      "sourceSha256": "fac69eac4746181104e0bd08fe48bd9a2efa6146831205cb6b14545a8f6e32cd",
+      "cropPixels": [
+        1205,
+        0,
+        2400,
+        892
+      ],
+      "dimensions": [
+        1195,
+        892
+      ],
+      "bytes": 153660,
+      "outputSha256": "275ae8057c0b0b406e8ba3954c67a982773fac29ad6a99bb64010aa798f5a1ff",
+      "originalFillTransform": [
+        [
+          0.24296298623085022,
+          0,
+          0.602222204208374
+        ],
+        [
+          0,
+          0.3174603283405304,
+          0.1230158805847168
+        ]
+      ],
+      "qa": "Top-right passing-cup track panel; cups, hands and holographic track retained.",
+      "upscaled": false
+    },
+    {
+      "file": "feedback-ritual-02.webp",
+      "nodeId": "1244:618",
+      "nodeName": "茶宴分茶音游交互细节_2K_202607070258 1",
+      "imageHash": "3474f88848276955eca5d89d103dcecf59d94936",
+      "sourceDimensions": [
+        2400,
+        1792
+      ],
+      "sourceSha256": "297bf6185a53dcdc129f49c900da21b89e3ea6c00a22332daaa8d34e3036bbf8",
+      "cropPixels": [
+        0,
+        900,
+        1198,
+        1345
+      ],
+      "dimensions": [
+        1198,
+        445
+      ],
+      "bytes": 139152,
+      "outputSha256": "965a6e38a511f5fe3b4a84d062da809846b4b3a08a4b73b20654c8679d77b13e",
+      "originalFillTransform": [
+        [
+          0.1563558578491211,
+          0,
+          0.243881493806839
+        ],
+        [
+          0,
+          0.20429767668247223,
+          0.5417320132255554
+        ]
+      ],
+      "qa": "Bottom-left upper Ritual Gestures panel; full bowing/crossed-hands state and heading retained.",
+      "upscaled": false
+    },
+    {
+      "file": "feedback-ritual-03.webp",
+      "nodeId": "1244:619",
+      "nodeName": "茶宴分茶音游交互细节_2K_202607070258 2",
+      "imageHash": "3474f88848276955eca5d89d103dcecf59d94936",
+      "sourceDimensions": [
+        2400,
+        1792
+      ],
+      "sourceSha256": "297bf6185a53dcdc129f49c900da21b89e3ea6c00a22332daaa8d34e3036bbf8",
+      "cropPixels": [
+        1205,
+        0,
+        2400,
+        892
+      ],
+      "dimensions": [
+        1195,
+        892
+      ],
+      "bytes": 233330,
+      "outputSha256": "b0358b4d21cfc27517cf143d5fe455f7a155eb09fc339c49c00ea9aed324b9c7",
+      "originalFillTransform": [
+        [
+          0.26234763860702515,
+          0,
+          0.5971513986587524
+        ],
+        [
+          0,
+          0.3427886664867401,
+          0.12917672097682953
+        ]
+      ],
+      "qa": "Top-right synchronized passage panel; full original heading and passing gesture retained.",
+      "upscaled": false
+    },
+    {
+      "file": "behavior-walk-illustration.webp",
+      "nodeId": "1244:148",
+      "nodeName": "sasd 4",
+      "imageHash": "0a3c9471733ee32115b9c3a6698db5e0cbd44aa6",
+      "sourceDimensions": [
+        2896,
+        4096
+      ],
+      "sourceSha256": "325fae03220d28ecd8b52d0def24111cc8286ac4c64cd465c47c4d5ad70b6ebd",
+      "cropPixels": [
+        858,
+        2570,
+        1177,
+        2889
+      ],
+      "dimensions": [
+        319,
+        319
+      ],
+      "bytes": 23360,
+      "outputSha256": "68cec009f2a5f6f4f0fd0ffbac146266211ea9a6a4b8db8c07a91fe6bcefb48f",
+      "originalFillTransform": [
+        [
+          0.11024276912212372,
+          0,
+          0.29624906182289124
+        ],
+        [
+          0,
+          0.07794508337974548,
+          0.6273254156112671
+        ]
+      ],
+      "qa": "Exact original image-fill UV crop; 319 px source circle, no upscaling. Board composite remains authoritative for original Chinese label and relation lines.",
+      "upscaled": false
+    },
+    {
+      "file": "behavior-observe-illustration.webp",
+      "nodeId": "1244:146",
+      "nodeName": "sasd 1",
+      "imageHash": "0a3c9471733ee32115b9c3a6698db5e0cbd44aa6",
+      "sourceDimensions": [
+        2896,
+        4096
+      ],
+      "sourceSha256": "325fae03220d28ecd8b52d0def24111cc8286ac4c64cd465c47c4d5ad70b6ebd",
+      "cropPixels": [
+        291,
+        2086,
+        610,
+        2405
+      ],
+      "dimensions": [
+        319,
+        319
+      ],
+      "bytes": 23254,
+      "outputSha256": "acc1fb5bebae38fe993894cc77fd062e67959d1b07698469713459001f89ffe4",
+      "originalFillTransform": [
+        [
+          0.11024276912212372,
+          0,
+          0.10036995261907578
+        ],
+        [
+          0,
+          0.07794508337974548,
+          0.5093002319335938
+        ]
+      ],
+      "qa": "Exact original image-fill UV crop; 319 px source circle, no upscaling. Board composite remains authoritative for original Chinese label and relation lines.",
+      "upscaled": false
+    },
+    {
+      "file": "behavior-exhibit-illustration.webp",
+      "nodeId": "1244:319",
+      "nodeName": "sasd 3",
+      "imageHash": "0a3c9471733ee32115b9c3a6698db5e0cbd44aa6",
+      "sourceDimensions": [
+        2896,
+        4096
+      ],
+      "sourceSha256": "325fae03220d28ecd8b52d0def24111cc8286ac4c64cd465c47c4d5ad70b6ebd",
+      "cropPixels": [
+        290,
+        2570,
+        609,
+        2889
+      ],
+      "dimensions": [
+        319,
+        319
+      ],
+      "bytes": 25408,
+      "outputSha256": "945503c87a577b838320e5ee54daabec9b373c90e11f606526e70b740a21af1f",
+      "originalFillTransform": [
+        [
+          0.11024276912212372,
+          0,
+          0.1001913994550705
+        ],
+        [
+          0,
+          0.07794508337974548,
+          0.6273254156112671
+        ]
+      ],
+      "qa": "Exact original image-fill UV crop; 319 px source circle, no upscaling. Board composite remains authoritative for original Chinese label and relation lines.",
+      "upscaled": false
+    },
+    {
+      "file": "behavior-entrance-illustration.webp",
+      "nodeId": "1244:147",
+      "nodeName": "sasd 2",
+      "imageHash": "0a3c9471733ee32115b9c3a6698db5e0cbd44aa6",
+      "sourceDimensions": [
+        2896,
+        4096
+      ],
+      "sourceSha256": "325fae03220d28ecd8b52d0def24111cc8286ac4c64cd465c47c4d5ad70b6ebd",
+      "cropPixels": [
+        859,
+        2086,
+        1178,
+        2405
+      ],
+      "dimensions": [
+        319,
+        319
+      ],
+      "bytes": 21194,
+      "outputSha256": "471d87b64c7db0135296f5a4a76b7a370d15687c982d9f2107f6495c2a28a05d",
+      "originalFillTransform": [
+        [
+          0.11024276912212372,
+          0,
+          0.29654258489608765
+        ],
+        [
+          0,
+          0.07794508337974548,
+          0.5093002319335938
+        ]
+      ],
+      "qa": "Exact original image-fill UV crop; 319 px source circle, no upscaling. Board composite remains authoritative for original Chinese label and relation lines.",
+      "upscaled": false
+    },
+    {
+      "file": "behavior-immerse-illustration.webp",
+      "nodeId": "1244:149",
+      "nodeName": "sasd 5",
+      "imageHash": "0a3c9471733ee32115b9c3a6698db5e0cbd44aa6",
+      "sourceDimensions": [
+        2896,
+        4096
+      ],
+      "sourceSha256": "325fae03220d28ecd8b52d0def24111cc8286ac4c64cd465c47c4d5ad70b6ebd",
+      "cropPixels": [
+        290,
+        3052,
+        609,
+        3372
+      ],
+      "dimensions": [
+        319,
+        320
+      ],
+      "bytes": 21644,
+      "outputSha256": "efa69a5b55d1e604c0916e643387bd76ff94bbaee4fcb0c9218a38a613e75ae7",
+      "originalFillTransform": [
+        [
+          0.11024276912212372,
+          0,
+          0.10015977174043655
+        ],
+        [
+          0,
+          0.07794508337974548,
+          0.7452272772789001
+        ]
+      ],
+      "qa": "Exact original image-fill UV crop; 319 px source circle, no upscaling. Board composite remains authoritative for original Chinese label and relation lines.",
+      "upscaled": false
+    },
+    {
+      "file": "behavior-interact-illustration.webp",
+      "nodeId": "1244:320",
+      "nodeName": "sasd 6",
+      "imageHash": "0a3c9471733ee32115b9c3a6698db5e0cbd44aa6",
+      "sourceDimensions": [
+        2896,
+        4096
+      ],
+      "sourceSha256": "325fae03220d28ecd8b52d0def24111cc8286ac4c64cd465c47c4d5ad70b6ebd",
+      "cropPixels": [
+        859,
+        3052,
+        1178,
+        3372
+      ],
+      "dimensions": [
+        319,
+        320
+      ],
+      "bytes": 23016,
+      "outputSha256": "1846fc894a4cfa3e984131f5eae69f74732d3ad4ee5cf3414f811acf1b2d2266",
+      "originalFillTransform": [
+        [
+          0.11024276912212372,
+          0,
+          0.29656562209129333
+        ],
+        [
+          0,
+          0.07794508337974548,
+          0.7452272772789001
+        ]
+      ],
+      "qa": "Exact original image-fill UV crop; 319 px source circle, no upscaling. Board composite remains authoritative for original Chinese label and relation lines.",
+      "upscaled": false
+    },
+    {
+      "file": "material-textures-original.webp",
+      "nodeId": "1244:640",
+      "imageHash": "0ac9b31713d7915ae3c7a1553f8aa6dc6d8fe3a2",
+      "sourceDimensions": [
+        407,
+        68
+      ],
+      "cropPixels": [
+        0,
+        0,
+        407,
+        68
+      ],
+      "dimensions": [
+        407,
+        68
+      ],
+      "sourceSha256": "d06171bb165e4faa5444ae5d7a51042fe55e3b4dae64151359bfb87cb089e06e",
+      "bytes": 18854,
+      "qa": "Complete original material row: 陶瓷/竹木/金属/玻璃/石材. The original source is only407x68, retained losslessly and not enlarged; no tower overlap."
+    }
+  ]
+}

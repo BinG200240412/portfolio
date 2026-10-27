@@ -1,0 +1,1113 @@
+{
+  "project": "茶弦记 / Tea String Chronicles",
+  "coverage": "docs/tea-board-coverage.md",
+  "chapters": [
+    {
+      "id": "cover",
+      "title": "茶弦记"
+    },
+    {
+      "id": "research",
+      "title": "径山寺：从场域到茶宴"
+    },
+    {
+      "id": "origin",
+      "title": "点茶为何不能像咖啡拉花一样 有趣又日常？"
+    },
+    {
+      "id": "design",
+      "title": "以茶为弦，以器为谱"
+    },
+    {
+      "id": "journey",
+      "title": "把茶事，谱成四段游戏"
+    },
+    {
+      "id": "wake",
+      "title": "醒茶如禅"
+    },
+    {
+      "id": "grind",
+      "title": "碾罗成律"
+    },
+    {
+      "id": "ritual",
+      "title": "行盏入礼"
+    },
+    {
+      "id": "whisk",
+      "title": "击拂斗弦"
+    },
+    {
+      "id": "rhythm",
+      "title": "把击拂的分寸，变成游戏规则"
+    },
+    {
+      "id": "masters",
+      "title": "器物有了自己的角色"
+    },
+    {
+      "id": "rewards",
+      "title": "从通关，到角色与徽章收藏"
+    },
+    {
+      "id": "space-logic",
+      "title": "四重境界，组织一场茶文化体验"
+    },
+    {
+      "id": "immersion",
+      "title": "让整间茶厅，回应你的动作"
+    },
+    {
+      "id": "space",
+      "title": "从游览，到驻留与入席"
+    },
+    {
+      "id": "central-room",
+      "title": "击拂茶室：与茶先生对弈"
+    },
+    {
+      "id": "objects",
+      "title": "展具语言与陈列系统"
+    },
+    {
+      "id": "merchandise",
+      "title": "把展厅里的茶，带回日常"
+    },
+    {
+      "id": "sketches",
+      "title": "草图推演：从空间到展具"
+    },
+    {
+      "id": "boards",
+      "title": "完整设计展板"
+    }
+  ],
+  "sourcePriority": [
+    "Independent original Figma image fills or native vectors",
+    "Precisely bounded units from supplied final high-resolution boards",
+    "Explicitly labelled native reconstructions where source design is clipped"
+  ],
+  "sourceManifests": [
+    "archive-game/manifest.json",
+    "archive-space/space-archive-manifest.json",
+    "archive-space/board/manifest.json",
+    "archive-space/figma/manifest.json",
+    "source/catalog.json"
+  ],
+  "sourceLimitations": [
+    "Some concept screens have source-level clipped borders; presented as original concept artwork, not complete implemented UI.",
+    "Original collection screen clips lower card edges; original preserved and separate twelve-card unlock-state diagram reconstructed from original character artwork."
+  ],
+  "nativeReconstructions": [
+    "Tea feast sequence and tea preparation labels",
+    "Three tea etiquette body gestures",
+    "Four qualitative whisking rule diagrams",
+    "Twelve-card unlock-state diagram: three lit and nine pending",
+    "Four spatial layers and sensory feedback relationships",
+    "Central-seat to whisk-and-bowl interaction reference"
+  ],
+  "assets": [
+    {
+      "file": "assets/works/tea/source/hero-ritual-original.webp",
+      "width": 1448,
+      "height": 1086,
+      "sha256": "7332cedda01184c986c84cdad1990f13c6ea8a571bc493a1fffbda0e88f8e93c"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-map.webp",
+      "width": 2400,
+      "height": 2355,
+      "sha256": "de66ae87f65795c0c772368b4a9eaeb8842d27c3e38f1c2c0bc6fbed1fa724b7"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-cultural-origins.webp",
+      "width": 1048,
+      "height": 2400,
+      "sha256": "7ab53d371b76255953298af90f24c772b6be1f357e8e2aed2b26ef314c410f25"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-site-01.webp",
+      "width": 630,
+      "height": 664,
+      "sha256": "ba8a3e8112cf32b6c4692702b319549759ca6897da07b9a1dc1f63c88bdfa207"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-site-02.webp",
+      "width": 603,
+      "height": 658,
+      "sha256": "81f6f4882f6dec11fff7ef90aff5ed717683eed817822d8591ccd8a76609dcd7"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-site-03.webp",
+      "width": 597,
+      "height": 653,
+      "sha256": "059d50cea64d991a5d38ce5607d286667ba272a3984734d167d57178101a9965"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-site-04.webp",
+      "width": 586,
+      "height": 647,
+      "sha256": "ab4cea0a728ecf93fcf080677249e47b372ce0a25ee6b090d999f53ccd2759dd"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-site-05.webp",
+      "width": 591,
+      "height": 647,
+      "sha256": "a39627816f32d09057a679d42d231b7916a9176f2b2c9322d1fe894ce07b1a6a"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-field-observation.webp",
+      "width": 2400,
+      "height": 449,
+      "sha256": "83b7435d6c6c8a7a768707805ce8f73dba33d1d272f2fcfee3915599e984ab97"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-field-01.webp",
+      "width": 645,
+      "height": 695,
+      "sha256": "72a400c953c358f9ea4799a85519476477d0a46390d508c74802f51b0380a6ca"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-field-02.webp",
+      "width": 553,
+      "height": 695,
+      "sha256": "d327ed42f8eb03030bad8965b1f418f8cd109c53892a209a696387015ddfa2e9"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-field-03.webp",
+      "width": 735,
+      "height": 695,
+      "sha256": "08a1f74827ba872f541836a2d156aa13075a547d4c0413daab305e89221871e4"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-field-04.webp",
+      "width": 710,
+      "height": 695,
+      "sha256": "44b023729e19cc4c918af60a14dc24d148b4de2bf9f382315d15d9acd71dca5b"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-field-05.webp",
+      "width": 650,
+      "height": 695,
+      "sha256": "7fbab8e2a8092b10c9fda1806b0a8866fedaf33059fc2d2e849d320bdf78d0c3"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-object-papers.webp",
+      "width": 1890,
+      "height": 1100,
+      "sha256": "93bd36e49c47f74d4f49e1ff6ce0e966c1cc8e0034b32b9e514a9fa3705523b9"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-object-farmer.webp",
+      "width": 1890,
+      "height": 840,
+      "sha256": "12ad917704cd6087c97a02ee9e235a76e6100aa159bad1f394db93b70300aeee"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-object-ewer.webp",
+      "width": 1890,
+      "height": 815,
+      "sha256": "b965185e40d9320ef60c134c60b99d0815ce9091a468387be360a8fe7d2dcad0"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-object-utensils.webp",
+      "width": 990,
+      "height": 985,
+      "sha256": "98cd6e8bdd7dc5b2f8cbfd8e2e3275024bb7b7fddb6935977b951b018eb8be2b"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-object-tea-tools.webp",
+      "width": 870,
+      "height": 985,
+      "sha256": "6b107b8aa2dab6ead715e0e84a79ce3588c419a58b1af4067b3826bec48eeaa0"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-ritual-calendar.webp",
+      "width": 2100,
+      "height": 1150,
+      "sha256": "8bd33e8e72c77dc0c6fc4857b186ce839d60a5cfbde3dd5a3ca0fed775dcff11"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-additional-tools.webp",
+      "width": 2400,
+      "height": 318,
+      "sha256": "1bcbd89e24784b44ec97fb98cfdeb70bbb983cf534af6371f0c2ed263fa1d015"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-extra-01.webp",
+      "width": 961,
+      "height": 714,
+      "sha256": "a9b475efa54f4304744ab8ac71b73f8d09094880b1420efc2b04525c4485a542"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-extra-02.webp",
+      "width": 944,
+      "height": 714,
+      "sha256": "9148af370b520f5f33ff73e6c9bc921dcb6bd8968a6ed41a08a5dec6120160f5"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-extra-03.webp",
+      "width": 955,
+      "height": 714,
+      "sha256": "b5a902517cbb5a21b262d47efa7d7acf5ed8b2758102a3cbf6e4240400c57342"
+    },
+    {
+      "file": "assets/works/tea/archive-game/research-extra-04.webp",
+      "width": 961,
+      "height": 714,
+      "sha256": "a0bd987aa95b4b078e7749f74e1046edbd4f0391bc8a852d982ba8bf7adb224f"
+    },
+    {
+      "file": "assets/works/tea/archive-game/banquet-icons.webp",
+      "width": 2030,
+      "height": 1400,
+      "sha256": "4f0777b0d1d1ebf54fd11138ba0646b6671d1e05b9d2486ccdc7318f7e8498c6"
+    },
+    {
+      "file": "assets/works/tea/archive-game/ritual-hands.webp",
+      "width": 2400,
+      "height": 285,
+      "sha256": "22b4a0d0d1a499986ff7435443b2a49a13323c5b3f2610086910041954b9ca43"
+    },
+    {
+      "file": "assets/works/tea/source/step-01.webp",
+      "width": 270,
+      "height": 270,
+      "sha256": "0785f072e7abcbd02ac4ab57a9c7413e85a238ddfe21f741319a61757d42f2b0"
+    },
+    {
+      "file": "assets/works/tea/source/step-02.webp",
+      "width": 270,
+      "height": 270,
+      "sha256": "442302b1e865706a22fb670c64fd03633dee8bee045f85e04ad065113d128433"
+    },
+    {
+      "file": "assets/works/tea/source/step-03.webp",
+      "width": 270,
+      "height": 270,
+      "sha256": "114e4c95fb10100782062717b2af83eaf4c99fcf754ff331812df2fb8a55b885"
+    },
+    {
+      "file": "assets/works/tea/source/step-04.webp",
+      "width": 270,
+      "height": 270,
+      "sha256": "c0e20b41018a7c8d194f8f7491cad521185f37bab22f81e36aa267707591a02f"
+    },
+    {
+      "file": "assets/works/tea/source/step-05.webp",
+      "width": 270,
+      "height": 270,
+      "sha256": "43aed041d39e8e1fd5f7a30cdc33322c4ceff0655f82241850fa32bf0e4762e4"
+    },
+    {
+      "file": "assets/works/tea/source/step-06.webp",
+      "width": 270,
+      "height": 270,
+      "sha256": "bc9aa135c04cd2d3a4d3f95ebeb6938157c76e1c915c271b0bef4f14f1f8ff47"
+    },
+    {
+      "file": "assets/works/tea/source/step-07.webp",
+      "width": 270,
+      "height": 270,
+      "sha256": "8e3517db0b5e45a6723547f36f23ac89ccd0da6e73c5475ac68000bd4bdc2fd6"
+    },
+    {
+      "file": "assets/works/tea/source/step-08.webp",
+      "width": 270,
+      "height": 270,
+      "sha256": "6a3826e6fbc0e90e11c4a17f4d1621a2eda7ee15ac2f3221b6617df46f9b900f"
+    },
+    {
+      "file": "assets/works/tea/archive-game/design-01.webp",
+      "width": 2400,
+      "height": 1238,
+      "sha256": "1646d07ae326b11a8ca2764a4114075c7f434c45087332c8dfdee10fe3173dfa"
+    },
+    {
+      "file": "assets/works/tea/archive-game/design-02.webp",
+      "width": 2191,
+      "height": 1284,
+      "sha256": "2b429734df654e19a0d21aeca23428ccefb7293386f8424d128fae51f787cf70"
+    },
+    {
+      "file": "assets/works/tea/archive-game/design-03.webp",
+      "width": 2060,
+      "height": 1284,
+      "sha256": "844fe2f639bc7079d854e53ce899fc9d8b72981cbe2dec2a7242fc717b3c806c"
+    },
+    {
+      "file": "assets/works/tea/archive-game/design-04.webp",
+      "width": 1551,
+      "height": 1295,
+      "sha256": "547018220176c36b48499501c92ece5da48aa1a33734124a08f44de8519a5bb0"
+    },
+    {
+      "file": "assets/works/tea/archive-game/sketch-01.webp",
+      "width": 2008,
+      "height": 1339,
+      "sha256": "7b63ba8b12170de473d538c4ef455e27f45224d0794d4e3e1aa6ab973ebbf238"
+    },
+    {
+      "file": "assets/works/tea/archive-game/concept-01.webp",
+      "width": 1985,
+      "height": 1116,
+      "sha256": "87288d107c49bdcbc1a86890e729d423e017ad2ec9270ab15f922c71b482ed5c"
+    },
+    {
+      "file": "assets/works/tea/archive-game/rules-01.webp",
+      "width": 2028,
+      "height": 1088,
+      "sha256": "9e31cee88ad4da6c71282854075bec674ae9039fe7da25c1e40c66e33a316bb4"
+    },
+    {
+      "file": "assets/works/tea/archive-game/screen-01.webp",
+      "width": 1918,
+      "height": 1413,
+      "sha256": "eae7111696bb5b40047f14ae4f30b520e88c75f0234823a8b49f00060e393577"
+    },
+    {
+      "file": "assets/works/tea/source/prototype-wake.webp",
+      "width": 2360,
+      "height": 1640,
+      "sha256": "5aa036973c9108e6cc65a8774b8d15eddabdb83a0ee52326c78350d610ee900d"
+    },
+    {
+      "file": "assets/works/tea/archive-game/sketch-02.webp",
+      "width": 2003,
+      "height": 1335,
+      "sha256": "745e4f51b987c0eab9e47df52d823c665d07d6b8b89625e72511bcc3fe799a5e"
+    },
+    {
+      "file": "assets/works/tea/archive-game/concept-02.webp",
+      "width": 2055,
+      "height": 1194,
+      "sha256": "1f27e330fa530931e6825d5206518c0ba70f92910994d3b6dcfde28bd6678f23"
+    },
+    {
+      "file": "assets/works/tea/archive-game/rules-02.webp",
+      "width": 2302,
+      "height": 1088,
+      "sha256": "221861eff852b9b74fca6ee8559c52fe6a3d1d7f69a344ed2e016c5cd6c1805e"
+    },
+    {
+      "file": "assets/works/tea/archive-game/screen-02.webp",
+      "width": 1999,
+      "height": 1413,
+      "sha256": "28e7a5c276e7516ee6a54c11b797b69549129eb1eb0f65c3df795ca0bcb9d95c"
+    },
+    {
+      "file": "assets/works/tea/source/prototype-grind.webp",
+      "width": 2360,
+      "height": 1640,
+      "sha256": "13b508209bf6e6e656c8dae3aacdcdb1bafa71901ad6a97db85b278b7659c8fe"
+    },
+    {
+      "file": "assets/works/tea/archive-game/sketch-04.webp",
+      "width": 2037,
+      "height": 1358,
+      "sha256": "d010562e88c9bbe965f3d0b2d590ce37d667182b2a8e1407eed443e521e4b37b"
+    },
+    {
+      "file": "assets/works/tea/archive-game/concept-03.webp",
+      "width": 1982,
+      "height": 1096,
+      "sha256": "40d8e648dd8ce9fbeb563d5def891e7651e23286c324a70736eaa34712959ab0"
+    },
+    {
+      "file": "assets/works/tea/archive-game/rules-03.webp",
+      "width": 1758,
+      "height": 1088,
+      "sha256": "6a1130d11b778242e6f817aa4ce9890bf581dfddca69c6134886c0e52fe92ad3"
+    },
+    {
+      "file": "assets/works/tea/archive-game/screen-03.webp",
+      "width": 2012,
+      "height": 1413,
+      "sha256": "fdeb639743685e7f7df67ac6bee0f1bf41c876a8e8eee788e574ee2a20a40ee6"
+    },
+    {
+      "file": "assets/works/tea/archive-game/sketch-03.webp",
+      "width": 2008,
+      "height": 1340,
+      "sha256": "ff8149b315e79b89658a24c01df79a43d2b7f38b547cb6cc6db4edbfa34fbee4"
+    },
+    {
+      "file": "assets/works/tea/archive-game/concept-04.webp",
+      "width": 2050,
+      "height": 1220,
+      "sha256": "cc6e7f17322de041ba3f135cc9adc1b597623bb5df0c3bdcc16c477c2bdb1212"
+    },
+    {
+      "file": "assets/works/tea/archive-game/rules-04.webp",
+      "width": 2076,
+      "height": 1088,
+      "sha256": "8cbf0ee63577bb79d6407b82c5f305e467e4aa4cdaf9f59aaa3da13f508158e7"
+    },
+    {
+      "file": "assets/works/tea/archive-game/screen-04.webp",
+      "width": 2003,
+      "height": 1413,
+      "sha256": "8213dd654a99b99c30c68e2560dcc6d2287aec411be762f8fc48e79a9b317313"
+    },
+    {
+      "file": "assets/works/tea/source/prototype-whisk.webp",
+      "width": 2360,
+      "height": 1640,
+      "sha256": "e42be9617f45bd563f89aef9e33439851fc1d3458c054d84780b14932795b34d"
+    },
+    {
+      "file": "assets/works/tea/source/mechanism-powder.svg",
+      "width": 183,
+      "height": 199,
+      "sha256": "31c2fd5325e93bf66230b83df64958de3095af2c30ca0b574ab05f028198ae49"
+    },
+    {
+      "file": "assets/works/tea/source/mechanism-catch.svg",
+      "width": 187,
+      "height": 202,
+      "sha256": "588ec0fb8274f0f74b4e222afd94e054b32cb6a3c440deb00800959fe0cede40"
+    },
+    {
+      "file": "assets/works/tea/source/mechanism-long.svg",
+      "width": 184,
+      "height": 199,
+      "sha256": "ac27be2284b388c5ae8a50e6d5bf623decad4b682aafb5c5939bac0d91789565"
+    },
+    {
+      "file": "assets/works/tea/source/mechanism-rest.svg",
+      "width": 177,
+      "height": 193,
+      "sha256": "1322fe35cd8500c15a8d236b6138018e130eee16d0f2aac08f9c40d1ccb54de9"
+    },
+    {
+      "file": "assets/works/tea/source/master-01.webp",
+      "width": 390,
+      "height": 430,
+      "sha256": "390451cdca872ecaefb82074286684303807c6050abd1e56b104b084fa3cc568"
+    },
+    {
+      "file": "assets/works/tea/source/master-02.webp",
+      "width": 390,
+      "height": 430,
+      "sha256": "b6a6c75d24496f90d4c550ffe565d2e870cf010d964d145b5c532fa6b97060e1"
+    },
+    {
+      "file": "assets/works/tea/source/master-03.webp",
+      "width": 390,
+      "height": 430,
+      "sha256": "ac6f30e19e9c3164c7ac10cbcdeb47eab1f3109e255e8e3265f00a7dd4b03e5b"
+    },
+    {
+      "file": "assets/works/tea/source/master-04.webp",
+      "width": 390,
+      "height": 430,
+      "sha256": "4e329c709a03fe5006d0711f9f175038b3efd908b49bb497a035866fe476a272"
+    },
+    {
+      "file": "assets/works/tea/source/master-05.webp",
+      "width": 390,
+      "height": 430,
+      "sha256": "e603940d8db612aeba3d79ababd18737414d4f800eb2882079a286d3ca61718e"
+    },
+    {
+      "file": "assets/works/tea/source/master-06.webp",
+      "width": 390,
+      "height": 430,
+      "sha256": "0aa70054631a6024a4cd5abc3bb50f8c9c402e08ede460323a128daebd85ea32"
+    },
+    {
+      "file": "assets/works/tea/source/master-07.webp",
+      "width": 390,
+      "height": 430,
+      "sha256": "2729f37f82219c1bd8f1655399ce7c5d5c02c87c2b4036009ee28a8365174898"
+    },
+    {
+      "file": "assets/works/tea/source/master-08.webp",
+      "width": 390,
+      "height": 430,
+      "sha256": "722c9659628fa8540915aaf7e719d4984bbd1e0c2151873fdccb3860c1241ae9"
+    },
+    {
+      "file": "assets/works/tea/source/master-09.webp",
+      "width": 390,
+      "height": 430,
+      "sha256": "0a3ad35c210ec38c752e2be1aab3e10044c66422bf31ead8251095e7339cd375"
+    },
+    {
+      "file": "assets/works/tea/source/master-10.webp",
+      "width": 390,
+      "height": 430,
+      "sha256": "4195798f4ecb6f03a8dcbc527d69ded129a59e38959fc8896641cc0aa10c291f"
+    },
+    {
+      "file": "assets/works/tea/source/master-11.webp",
+      "width": 390,
+      "height": 430,
+      "sha256": "310875e01e51d253cfe196dd63530872b4a909a49c0fd02b9621cebe052391d2"
+    },
+    {
+      "file": "assets/works/tea/source/master-12.webp",
+      "width": 390,
+      "height": 430,
+      "sha256": "9182dfac14b7694b531f83844ad30f6cb72a346d1d5d199becb20a77a42774ee"
+    },
+    {
+      "file": "assets/works/tea/archive-game/tools-correspondence.webp",
+      "width": 1760,
+      "height": 2400,
+      "sha256": "76334b1bd9e074ccbe23a69a051702e835a3c7e593b052d8c0706ec3b074c53a"
+    },
+    {
+      "file": "assets/works/tea/archive-game/tools-relationships.webp",
+      "width": 2121,
+      "height": 1350,
+      "sha256": "1b237e3cc6a373c396d60e22e37ae333802685270984681bcedc80ff91c4ccbe"
+    },
+    {
+      "file": "assets/works/tea/archive-game/tools-narrative.webp",
+      "width": 2121,
+      "height": 715,
+      "sha256": "4b022c8f344d950f1397250b557fbfa4cc64937c79d185f85cf95748e90700fc"
+    },
+    {
+      "file": "assets/works/tea/archive-game/tools-banquet.webp",
+      "width": 2121,
+      "height": 770,
+      "sha256": "083bc36d538e8b808ede0ef38a91dbeb82a141a4e41747b870451301ea0cf76e"
+    },
+    {
+      "file": "assets/works/tea/archive-game/tools-lineage.webp",
+      "width": 2121,
+      "height": 910,
+      "sha256": "e8b540c6e135570dc0a864efe0e8ba58a4c73480c81787b06b8427dd629271c2"
+    },
+    {
+      "file": "assets/works/tea/archive-game/character-poster01.webp",
+      "width": 683,
+      "height": 970,
+      "sha256": "c0a27ff30886f3bf19127caeea8b4f7ed0ba7dcf2437759a69c6eee5cac6e160"
+    },
+    {
+      "file": "assets/works/tea/archive-game/character-poster02.webp",
+      "width": 722,
+      "height": 970,
+      "sha256": "490dafa889002375aed6ca753a9d13872cb2ce7b2f7896b30dfc254b73dcda98"
+    },
+    {
+      "file": "assets/works/tea/archive-game/character-poster03.webp",
+      "width": 703,
+      "height": 970,
+      "sha256": "3f9add269e8c10b8e0d122d69f6e89d14db250a7c6ab990ad6b55c45094a3baf"
+    },
+    {
+      "file": "assets/works/tea/archive-game/character-poster04.webp",
+      "width": 701,
+      "height": 970,
+      "sha256": "f600a23e4f15eaa1cf258b5989a50885e0a09e6d4c68a91b6dc72a1465777d9a"
+    },
+    {
+      "file": "assets/works/tea/archive-game/character-poster05.webp",
+      "width": 699,
+      "height": 970,
+      "sha256": "504eff3c26208f42232502d799233a89b8724a3e37b4b322bb9e2b49d11307a6"
+    },
+    {
+      "file": "assets/works/tea/archive-game/character-poster06.webp",
+      "width": 701,
+      "height": 970,
+      "sha256": "ad45bfa2557b051301c113cd4155bee2ce3241f9d3b884a2326a95279191795b"
+    },
+    {
+      "file": "assets/works/tea/archive-game/character-poster07.webp",
+      "width": 697,
+      "height": 970,
+      "sha256": "4d840d5a06c32183bcee82e3c07042b601129c31210ab06ad938bcaf565e9091"
+    },
+    {
+      "file": "assets/works/tea/archive-game/character-poster08.webp",
+      "width": 697,
+      "height": 970,
+      "sha256": "71dcacf3d3cadbe4246a813c10b2c44dec9468751407fec019ff88f8393dd8ff"
+    },
+    {
+      "file": "assets/works/tea/archive-game/character-poster09.webp",
+      "width": 689,
+      "height": 970,
+      "sha256": "63cc05566b6dfdc804ec21ad5568d211398a495c9f26f549770d264a90838759"
+    },
+    {
+      "file": "assets/works/tea/archive-game/character-poster10.webp",
+      "width": 673,
+      "height": 970,
+      "sha256": "e71371421c1621c61032c715fdf7a8fc158ca777b06307cc196a6a3283414c33"
+    },
+    {
+      "file": "assets/works/tea/archive-game/rewards-flow.webp",
+      "width": 2400,
+      "height": 316,
+      "sha256": "2c1db21c03dbf590fcf36f1f01781a0e2d7bbaed0829bebb099a9dd192bc098d"
+    },
+    {
+      "file": "assets/works/tea/archive-game/collection-menu.webp",
+      "width": 1742,
+      "height": 1380,
+      "sha256": "d696e35d8f63cc0eecbee9692947d685cf6215f5e9b68a910178bceeab20d291"
+    },
+    {
+      "file": "assets/works/tea/archive-game/collection-masters.webp",
+      "width": 2400,
+      "height": 1645,
+      "sha256": "3dbfda5bffd81c54f75d6e47e8dd1ad05263b82cf92b0696b1eb5e12666b01c6"
+    },
+    {
+      "file": "assets/works/tea/archive-game/collection-medals.webp",
+      "width": 1730,
+      "height": 1725,
+      "sha256": "c3ef06a5cb73d919730461c08fda5d88052e74a0fb02521349dfed5fcea29d0b"
+    },
+    {
+      "file": "assets/works/tea/archive-game/collection-tools.webp",
+      "width": 1889,
+      "height": 1613,
+      "sha256": "9d0850e5082d1236548bc6700b5ed1fa539fcedbc0e88a6292dfc4b30b269f0e"
+    },
+    {
+      "file": "assets/works/tea/archive-game/loading-whisks.webp",
+      "width": 1537,
+      "height": 1023,
+      "sha256": "422571f0cd0706514b7aea2d9e63a02998745dac77526ad8339ae685436b953c"
+    },
+    {
+      "file": "assets/works/tea/archive-game/loading-bowls.webp",
+      "width": 1536,
+      "height": 1024,
+      "sha256": "069cd871371c2e91463b969490eec7ba0cf80e08b61eb0ebe0f1285471f72ace"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/logic-axon.webp",
+      "width": 2600,
+      "height": 1339,
+      "sha256": "f179eb08b791a1c90096d7698d4f5b35204de3e1f0b121476f619dab11660888"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/logic-story-chain.webp",
+      "width": 717,
+      "height": 1430,
+      "sha256": "cf37d156e562b09ac3ea6147086105c492aff888a88339103a9c6f6482165356"
+    },
+    {
+      "file": "assets/works/tea/source/space-projection-original.webp",
+      "width": 1672,
+      "height": 941,
+      "sha256": "507a5133ff129295d40a582b50ad00e0b2bb8a7d68eaa045b34f9c462bf89ede"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/process-wake.webp",
+      "width": 1056,
+      "height": 588,
+      "sha256": "73ced45669c9ce68d7305d017e1ada0c57d6d45d3899d0fd582fae23389c1296"
+    },
+    {
+      "file": "assets/works/tea/archive-space/figma/feedback-wake-01.webp",
+      "width": 1198,
+      "height": 896,
+      "sha256": "d7291b83a160552152920c9db66cbd4b2b1ddec980eed523f08f124ab15a551e"
+    },
+    {
+      "file": "assets/works/tea/archive-space/figma/feedback-wake-02.webp",
+      "width": 1198,
+      "height": 892,
+      "sha256": "cca9d9e0005168950ca9af6aa6546f068aaf553389a207b1526ff538ac97293b"
+    },
+    {
+      "file": "assets/works/tea/archive-space/figma/feedback-wake-03.webp",
+      "width": 1198,
+      "height": 595,
+      "sha256": "c2a162532010511746a56c382d114a0b3a6d92346aa0e9d8ab30a53304bb7c71"
+    },
+    {
+      "file": "assets/works/tea/source/space-rhythm-original.webp",
+      "width": 2400,
+      "height": 1127,
+      "sha256": "5a6cf9c40457e90b02eb43b2d96f5f38b23283d04337d702b47c477bdcb0d91c"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/process-grind.webp",
+      "width": 1056,
+      "height": 716,
+      "sha256": "1ac0925d78f6d1d542cf8401847e0e6632a6e88a35f48694f69d470226057adc"
+    },
+    {
+      "file": "assets/works/tea/archive-space/figma/feedback-grind-01.webp",
+      "width": 1190,
+      "height": 886,
+      "sha256": "80f5d5e49776f75652623dae14f5ace848f1fc83fcd1a3a090ead5da3aca19ed"
+    },
+    {
+      "file": "assets/works/tea/archive-space/figma/feedback-grind-02.webp",
+      "width": 1190,
+      "height": 886,
+      "sha256": "513d6404a0f44a15d6cd3afc4a2a4f29f962912cd45814743f538f8888f4239e"
+    },
+    {
+      "file": "assets/works/tea/archive-space/figma/feedback-grind-03.webp",
+      "width": 1190,
+      "height": 887,
+      "sha256": "bf507abad624ec8e6b1ca8ddfbdc67faf519f3ed292061c4724693a0e367ce79"
+    },
+    {
+      "file": "assets/works/tea/source/space-etiquette-original.webp",
+      "width": 1430,
+      "height": 1100,
+      "sha256": "587a70d9dc410a82b25802d176bd2c96ff4b2236eaa413ab61b900f8f1965493"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/process-ritual.webp",
+      "width": 1056,
+      "height": 668,
+      "sha256": "ff53ae1ca876321694d9c5de6e8b927ef289331960910b5b9f9e57c1b5bf4f7d"
+    },
+    {
+      "file": "assets/works/tea/archive-space/figma/feedback-ritual-01.webp",
+      "width": 1195,
+      "height": 892,
+      "sha256": "275ae8057c0b0b406e8ba3954c67a982773fac29ad6a99bb64010aa798f5a1ff"
+    },
+    {
+      "file": "assets/works/tea/archive-space/figma/feedback-ritual-02.webp",
+      "width": 1198,
+      "height": 445,
+      "sha256": "965a6e38a511f5fe3b4a84d062da809846b4b3a08a4b73b20654c8679d77b13e"
+    },
+    {
+      "file": "assets/works/tea/archive-space/figma/feedback-ritual-03.webp",
+      "width": 1195,
+      "height": 892,
+      "sha256": "b0358b4d21cfc27517cf143d5fe455f7a155eb09fc339c49c00ea9aed324b9c7"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/behavior-whole.webp",
+      "width": 2600,
+      "height": 1050,
+      "sha256": "98c67cdd96b18a8032140c2e6410aa196cf9ba5c037d3b592a6de165a36e0cb0"
+    },
+    {
+      "file": "assets/works/tea/source/space-axis.webp",
+      "width": 2603,
+      "height": 1855,
+      "sha256": "5f1ebbc6a12723b3c2ac7c207c5adf0a250280a381fa6a852538dc63db96f7c8"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/behavior-walk.webp",
+      "width": 450,
+      "height": 544,
+      "sha256": "2b38732a7dab3518ab1af0df579d3ed531aa557bbb5256d64a4b9cf0f3fd5bce"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/behavior-observe.webp",
+      "width": 458,
+      "height": 544,
+      "sha256": "7b752bfb53ad8afc3f363190fa02169bb999b458f1dce0a6fd702715f631a22c"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/behavior-exhibit.webp",
+      "width": 465,
+      "height": 544,
+      "sha256": "ab80b03eb0bc7378caf5107118c7306bb391c988f140eda7861dfb479dbb6b58"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/behavior-entrance.webp",
+      "width": 450,
+      "height": 532,
+      "sha256": "29645f537b5fbc58e7bc7257b0daa74ecfe72e54e9be5d30400ebf776ff1eb65"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/behavior-immerse.webp",
+      "width": 458,
+      "height": 532,
+      "sha256": "c209872224c7b5d6af93b528c4d967d28f08ff8aa228482ae6295eec71deecc5"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/behavior-interact.webp",
+      "width": 465,
+      "height": 532,
+      "sha256": "e44accd6cd54f030647b767f61992990800a2bdafde22733063b8eba20aae038"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/central-room-top.webp",
+      "width": 1396,
+      "height": 812,
+      "sha256": "bc1f4df89f1375add6bd71a76ceec1b6d744b6c23221850c818efc0c3e94b04e"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/central-room-notes.webp",
+      "width": 1404,
+      "height": 872,
+      "sha256": "d44965659c6a91bf73fa28675d05d32766842fc534ed205ec45932a3c0eef3c7"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/central-room-experience-notes.webp",
+      "width": 2600,
+      "height": 258,
+      "sha256": "d852ec3dca474a299ca9a77d068507b3c3e913deda078a82f3a77e1a652b486b"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-language-01.webp",
+      "width": 270,
+      "height": 432,
+      "sha256": "b207245d28101b3b4a57fad40b72402a692fdffe44e763f7d6bf1d220219b4b7"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-language-02.webp",
+      "width": 278,
+      "height": 432,
+      "sha256": "02817b058dbea367f4ff547785bd3f957672d47b7d7c60e1a9cd2939d53fb9c7"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-language-03.webp",
+      "width": 277,
+      "height": 432,
+      "sha256": "ef211a6fc40cb36df3e6487c9d21ca3943ecfd6a8a8167047792c8a2e200ae68"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-language-04.webp",
+      "width": 273,
+      "height": 432,
+      "sha256": "6ac4977f8b77f273656f02bc4ff0a9286bcda10366cd61ec137d14fbb5e8e25e"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-language-05.webp",
+      "width": 276,
+      "height": 432,
+      "sha256": "371803f7117d3376f4b217c30984f2c105fdf8abe11540cf2ffced15f5b7db42"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-language-06.webp",
+      "width": 326,
+      "height": 432,
+      "sha256": "9966bc6b9ca042674accba16f1f4044a74750a57bff99a5e785e78b8e51f2a20"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-materials.webp",
+      "width": 1708,
+      "height": 170,
+      "sha256": "73b0f1bcba018267f027e3239c954ad187da075d6b7d45094e4d95324ac59883"
+    },
+    {
+      "file": "assets/works/tea/archive-space/figma/material-textures-original.webp",
+      "width": 407,
+      "height": 68,
+      "sha256": "9d7081313194470a8d1e2643238d74a7febe68346ae1f42e2f5b7572ee20f13f"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-system-01.webp",
+      "width": 254,
+      "height": 616,
+      "sha256": "b905d02b240f605e7919714a6d0f9fba3ed13b8fb6c6352a378bc83de290b406"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-system-02.webp",
+      "width": 254,
+      "height": 616,
+      "sha256": "9cd0e68b4f9e60f7e29170ff180be10972568ed91fec9dd99c948ac059811406"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-system-03.webp",
+      "width": 254,
+      "height": 616,
+      "sha256": "21de7a0f6dc1bf05913f535bf5449a5b0727be3b5c51ed62861ed0d83fb29944"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-system-04.webp",
+      "width": 254,
+      "height": 616,
+      "sha256": "3f3c29128fc9f0c995eb0b786122ea8abbbe2bf701cd8f5b3c3521100fdb324e"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-system-05.webp",
+      "width": 254,
+      "height": 616,
+      "sha256": "665d9292ec664621d4f4a174bde4fb4d91bd0e898bf86279b2b12ce41a064d3a"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-system-06.webp",
+      "width": 510,
+      "height": 616,
+      "sha256": "04c3f445db4d2e510dad068ada1321ab1026dec02e0264e3ad402a7bff76342c"
+    },
+    {
+      "file": "assets/works/tea/source/display-family-original.webp",
+      "width": 1448,
+      "height": 1086,
+      "sha256": "010229748f1c93895b00a7e4a91fbfeafc469d90ffab62d89ca370724bcd3dcb"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-array.webp",
+      "width": 2600,
+      "height": 1248,
+      "sha256": "fe7a818246082b21d3ab10c34e58275e4045ab1620d74b7d2c8347cce14bcde5"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-value-01.webp",
+      "width": 207,
+      "height": 236,
+      "sha256": "39de6d879dea0561ce96a21e08ef2f2f3884c236af289f494b722595f6a77c74"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-value-02.webp",
+      "width": 207,
+      "height": 236,
+      "sha256": "0ca5e20c42bd8c8c251a953bfb59f446b7a8e9a338f5802df4c86290edf256c9"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/display-value-03.webp",
+      "width": 207,
+      "height": 248,
+      "sha256": "b27504e37aea04962e015584a685ea23109646715df431e332e3453cd8a01c9a"
+    },
+    {
+      "file": "assets/works/tea/source/merchandise-cup-original.webp",
+      "width": 1829,
+      "height": 860,
+      "sha256": "f80c2764a2016b464c880193994e80b3322705ba1653b8e28768db7a90876430"
+    },
+    {
+      "file": "assets/works/tea/source/merchandise-painting-original.webp",
+      "width": 1672,
+      "height": 941,
+      "sha256": "3a73aa71b716e5a99459854f4d3e2d47bc05103c94d06b7e540ee8390bac93f4"
+    },
+    {
+      "file": "assets/works/tea/source/merchandise-collection-original.webp",
+      "width": 1672,
+      "height": 941,
+      "sha256": "c9d9f6a7e44bd19f959f36eeee10f442d82bd5bd3914bab2b8a6a852f5155986"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/merchandise-reward-pipeline.webp",
+      "width": 2600,
+      "height": 317,
+      "sha256": "ee1ca509e2ba678bdc069e6f849655a90b26d34cb4e9c8d42fa502164902cb41"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/exhibition-scene-01.webp",
+      "width": 1776,
+      "height": 888,
+      "sha256": "72c07a2c7469f3b51c1137ceda488fe76efc22c11dee30db7a9746ee3a2d90c0"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/exhibition-scene-02.webp",
+      "width": 1784,
+      "height": 900,
+      "sha256": "393cdb3e498d63f15929df47bd5287c6c267b1669546976764360a9189a089ca"
+    },
+    {
+      "file": "assets/works/tea/archive-space/figma/sketch-view-01.webp",
+      "width": 2400,
+      "height": 1851,
+      "sha256": "00246ed9b6abb0963cf451411e82050de86c9ae1545c6ccccd9e85aa2e108225"
+    },
+    {
+      "file": "assets/works/tea/archive-space/figma/sketch-view-02.webp",
+      "width": 2400,
+      "height": 1800,
+      "sha256": "8aa7b4f7393deb94412471467f7dac82119c31f14eaf9fe4763ac89638e092da"
+    },
+    {
+      "file": "assets/works/tea/archive-space/figma/sketch-view-03.webp",
+      "width": 2048,
+      "height": 1066,
+      "sha256": "760f3917c2f06eaa6c8711dcc76f269878ec58df0b0e579e13b5741ff6d14bbd"
+    },
+    {
+      "file": "assets/works/tea/archive-space/figma/sketch-view-04.webp",
+      "width": 2400,
+      "height": 1800,
+      "sha256": "450c2415434f6af197a08b4c677bf552084ccdae8c23f0e1818d547986885eb9"
+    },
+    {
+      "file": "assets/works/tea/archive-space/figma/sketch-view-05.webp",
+      "width": 2400,
+      "height": 1851,
+      "sha256": "aebf76f10d30468f4d9a0600c93cb0523b2ec74cee225cecfdfc5dab032dd772"
+    },
+    {
+      "file": "assets/works/tea/archive-space/figma/sketch-view-06.webp",
+      "width": 2400,
+      "height": 1361,
+      "sha256": "49d409e2c26caa45937d33ee3cdc76a5c97377820a09976751408bf6cc46d580"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/sketch-shape-01.webp",
+      "width": 360,
+      "height": 365,
+      "sha256": "d089b5661d0aa1bae09d5625e416cd773d8cc20fef823c9ccd8e5ba8ddc7010c"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/sketch-shape-02.webp",
+      "width": 370,
+      "height": 365,
+      "sha256": "5aabc4c0133dd9f5a2d5affa726de0113228471c99713831265d154405bb7c25"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/sketch-shape-03.webp",
+      "width": 370,
+      "height": 365,
+      "sha256": "9229b1d1dfea17d87eae73a2e994d54cd0144064cf6fe288fe925ea334f5bc6d"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/sketch-shape-04.webp",
+      "width": 360,
+      "height": 370,
+      "sha256": "91275292a818c84e14882e82e5a7858981f50cea2c488dd4a1c35a0ffa587fb8"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/sketch-shape-05.webp",
+      "width": 370,
+      "height": 370,
+      "sha256": "eb07d447566b70ddb11fcebf33e86c17917ba7c4e2b0ea9ea8033f2a6cc491ae"
+    },
+    {
+      "file": "assets/works/tea/archive-space/board/sketch-shape-06.webp",
+      "width": 370,
+      "height": 370,
+      "sha256": "4d576f909b3c926359698f8973507bc56ecdd16bec1c6c01ececd04e63bdfbd8"
+    },
+    {
+      "file": "assets/works/tea/board-culture.webp",
+      "width": 1600,
+      "height": 1767,
+      "sha256": "6a665987317a4eb24d265012faf6684b6f3f1a343b06014355ea6322525ac9ce"
+    },
+    {
+      "file": "assets/works/tea/board-space.webp",
+      "width": 1600,
+      "height": 1804,
+      "sha256": "cc976d42a582632a15ca08b75fa594b0c90df66c5b56fb6239ee66a7b4ba3f48"
+    }
+  ],
+  "onDemandBoards": [
+    {
+      "file": "assets/works/tea/board-culture-detail.webp",
+      "size": [
+        6000,
+        6628
+      ],
+      "sha256": "db8aa73b6caaabe9361a4ac1a801f362c55ac3917df216b64861f8fd473cf496"
+    },
+    {
+      "file": "assets/works/tea/board-space-detail.webp",
+      "size": [
+        6000,
+        6766
+      ],
+      "sha256": "50984ec226dc09fc0cb5a55a536185259efc48fd76892ebb868e6a05fdaf183e"
+    }
+  ],
+  "contentInventory": {
+    "chapters": 20,
+    "mainImages": 176,
+    "uniqueImageAssets": 163
+  }
+}

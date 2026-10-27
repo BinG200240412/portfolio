@@ -1,14 +1,14 @@
 {
   "sources": {
     "space": {
-      "file": "/Users/bing/Desktop/Frame 322.png",
+      "file": "Frame 322.png",
       "size": [
         7680,
         8660
       ]
     },
     "culture": {
-      "file": "/Users/bing/Desktop/展板_01(2).png",
+      "file": "展板_01(2).png",
       "size": [
         18519,
         20456
@@ -41,10 +41,11 @@
         8660
       ],
       "size": [
-        3000,
-        3383
+        6000,
+        6766
       ],
-      "content": "完整原始展板预览"
+      "content": "完整原始展板预览",
+      "qa": "Upgraded from the original7680px source to6000px-wide detail; overview unchanged. Full supplied board retained."
     },
     {
       "file": "board-culture.webp",
@@ -71,10 +72,13 @@
         20456
       ],
       "size": [
-        3000,
-        3314
+        6000,
+        6628
       ],
-      "content": "完整原始展板预览"
+      "content": "完整原始展板预览",
+      "size_bytes": 3861188,
+      "output_sha256": "db8aa73b6caaabe9361a4ac1a801f362c55ac3917df216b64861f8fd473cf496",
+      "operation": "Complete original board proportionately resampled to 6000px wide, WebP quality95; no crop; lightweight preview preserved."
     },
     {
       "file": "hero-ritual.webp",

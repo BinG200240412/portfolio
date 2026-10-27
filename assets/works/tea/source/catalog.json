@@ -6,12 +6,10 @@
     "1446:748"
   ],
   "workingPage": "579:409",
-  "method": "Original image fills and native vectors. Artwork never taken from a page screenshot. Crop geometry is measured in original pixels or Figma imageTransform.",
+  "method": "Original Figma image fills and native vectors. Final-board source units and explicitly labelled reconstructions are indexed in ../archive-catalog.json.",
   "excluded": [
-    "Page10 mobile accessory references",
-    "White-background SPACE BEHAVIOR reference panel below the actual black tea exhibition diagram",
-    "Generic leaf-click diagram placeholders used in serving slots",
-    "Clipped concept game screenshots and the miscropped four-column gameplay montage from the supplied composite board"
+    "Unrelated reference projects, including Page10 mobile accessories",
+    "White-background SPACE BEHAVIOR reference panel outside the confirmed tea exhibition artwork"
   ],
   "nativeRedraws": [
     "Tea banquet sequence and eight-step labels",
@@ -1397,5 +1395,6 @@
       ],
       "crop": null
     }
-  ]
+  ],
+  "archiveCatalog": "../archive-catalog.json"
 }
