@@ -246,3 +246,39 @@ Object.assign(window.PORTFOLIO_TRANSLATIONS, {
   "记录册与回看": "History and replay",
   "选择一道题，进入对应盘面。": "Choose a puzzle to open its board."
 });
+
+/* Visual system: short copy alongside type and component studies. */
+Object.assign(window.PORTFOLIO_TRANSLATIONS, {
+  "视觉系统": "Visual system",
+  "保留纸笔的安静，也容纳辅导、记录与分享。": "The quiet of pen and paper, with room for coaching, history, and sharing.",
+  "功能与概念同样克制。不设竞速和排名，辅导从线索开始，把判断留给自己。": "Restraint shapes both features and concept. There are no races or rankings; coaching starts with clues and leaves the judgement to you.",
+  "五档难度": "Five difficulty levels",
+  "简单": "Easy",
+  "中等": "Medium",
+  "困难": "Hard",
+  "专家": "Expert",
+  "世界难题": "World’s Hardest",
+  "像纸面，也像执笔。": "Printed clues. A handwritten thought.",
+  "用字形区分阅读、题目与自己的笔迹。": "Distinct typefaces separate reading, given clues, and your own handwriting.",
+  "Fraunces · 品牌字标": "Fraunces · Wordmark",
+  "源云明体 · 中文": "GenWanMin · Chinese",
+  "EB Garamond · 英文与题目数字": "EB Garamond · English and given digits",
+  "候选笔记字形": "Typeface for pencil marks",
+  "沿用 iOS 的形状与材质。": "Familiar iOS shapes and materials.",
+  "纸白、墨色与低饱和信号色。": "Paper white, ink, and muted accents.",
+  "颜色提示关系与状态。": "Colour reveals relationships and states.",
+  "纸白与墨色": "Paper white and ink",
+  "纸白": "Paper white",
+  "墨色": "Ink",
+  "六种主题色，也支持自定义。": "Six theme colours, with a custom option.",
+  "玻璃按钮视觉样件，透明圆形按钮浮在绿色进度格上": "Glass-button study: translucent circular controls above a green progress strip",
+  "透明、轻盈的操作层。": "A light, translucent layer for controls.",
+  "连续圆角视觉样件，放大的数字键与三个数字键并列": "Continuous-corner study: an enlarged number key beside three smaller keys",
+  "柔和的轮廓，清楚的边界。": "Soft contours. Clear boundaries.",
+  "底部导航视觉样件，记录、残局、教程、设置依次排列": "Tab bar study with History, Saved puzzles, Guide, and Settings",
+  "底部导航": "Bottom navigation",
+  "熟悉的 TabView 结构。": "A familiar TabView structure.",
+  "Sheet 弹层视觉样件，带有抓手和圆角的设置窗口从下方展开": "Sheet study: a rounded settings panel with a grabber opening from below",
+  "Sheet 弹层": "Sheet presentation",
+  "从下方展开，保留当前对局。": "Opens from below, keeping the puzzle in place."
+});

@@ -1,5 +1,9 @@
 # 极简数独截图来源
 
+## 2026-10-27：视觉系统的组件样件
+
+「视觉系统」不再裁取屏幕中的按钮、数字键与导航。四组样件由页面 HTML、`assets/sudoku-visual-system.css` 与 `assets/sudoku-visual-components.css` 绘制，分别解释玻璃操作层、连续圆角、TabView 导航与 Sheet 层级。形态依据原生工程已采用的组件选择；这是静态网页视觉重建，不是 UIKit 原生渲染或实机截图，没有新增操作或仿制原生录像。真实 App 截图、双机贴屏、六组原生过程与分析动画继续使用原素材和实现。
+
 ## 2026-10-27：品牌启动页与新双机组合
 
 新增 `launch.png`，来自同一原生维护构建 `com.hanyuzhu.sudoku`、`1.2 (28)`，iPhone 17 Pro Max / iOS 26.5、1320 × 2868、09:41。使用独立 `Sudoku Portfolio Capture` 模拟器录制正常冷启动，从原始录屏第 2.750 秒直接导出 PNG，保留九宫格 Logo 的明暗脉动与已经显现的 sudoku 字标；没有裁切、调色、重绘屏幕或修改 App 动画。状态栏通过 simctl 固定为普通满电，未改变 App 内容。
