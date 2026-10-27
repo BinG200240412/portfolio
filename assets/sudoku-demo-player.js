@@ -14,7 +14,9 @@
 
     const rootURL = new URL('works/sudoku/demos/', scriptURL);
     const screens = new Set(['board', 'coach', 'settings', 'classics', 'walkthrough', 'share']);
-    const ANALYSIS_LEAD = .45;
+    // Authored against the actual recordings: the main UI has settled here,
+    // even when a timer, breathing dot or walkthrough entries keep changing.
+    const ANALYSIS_CUES = { board: 1, coach: 2.1, settings: 1, classics: 2.8, walkthrough: 1.3, share: 2 };
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const forced = matchMedia('(forced-colors: active)');
     const viewer = document.getElementById('media-viewer');
@@ -172,6 +174,8 @@
       video.pause(); playRequest = null;
       if (current.retryFrame) cancelAnimationFrame(current.retryFrame);
       current.retryFrame = 0;
+      if (current.analysisFrame) video.cancelVideoFrameCallback?.(current.analysisFrame);
+      current.analysisFrame = 0;
       // A stalled image cannot hold the analysis indefinitely. If its terminal
       // still is unavailable, only a verified video end frame may remain visible.
       const ready = await current.posterPromise;
@@ -232,27 +236,43 @@
       if (!available()) { video.pause(); return; }
       start();
     }
-    function cueAnalysis() {
+    function cueAnalysis(mediaTime) {
       const current = session;
       if (!current?.started || !current.wanted || current.analysisCued || video.paused ||
         reduced.matches || forced.matches || !available() || !Number.isFinite(video.duration)) return;
-      // The terminal still already occupies this exact layout underneath the
-      // recording. Cue the analysis during its tail; keep playback at full speed.
+      // The terminal still occupies the same geometry underneath the recording.
+      // Reveal its analysis as soon as that geometry settles, at original speed.
       if (!current.posterReady || image.src !== current.poster || !image.complete || !image.naturalWidth) return;
-      if (video.duration - video.currentTime > ANALYSIS_LEAD) return;
+      const time = typeof mediaTime === 'number' ? mediaTime : video.currentTime;
+      if (time < current.analysisAt) return;
       current.analysisCued = true;
-      announce('analysing', 'analysis-lead');
+      announce('analysing', 'interface-settled');
+    }
+    function watchAnalysisFrames() {
+      const current = session;
+      if (!current?.wanted || current.completed || current.analysisCued || current.analysisFrame ||
+        typeof video.requestVideoFrameCallback !== 'function') return;
+      current.analysisFrame = video.requestVideoFrameCallback((_, metadata) => {
+        current.analysisFrame = 0;
+        if (session !== current || current.completed) return;
+        cueAnalysis(metadata.mediaTime);
+        watchAnalysisFrames();
+      });
     }
     function prepare(screen, manual = false) {
       if (!screens.has(screen)) return;
       if (session?.retryFrame) cancelAnimationFrame(session.retryFrame);
+      if (session?.analysisFrame) video.cancelVideoFrameCallback?.(session.analysisFrame);
       device.classList.add('is-demo-loading');
       video.pause(); video.classList.remove('is-visible');
       video.removeAttribute('src'); video.load(); playRequest = null;
       const overrides = window.SudokuDemoClips?.[screen] || {};
+      const analysisAt = Number(overrides.analysisAt ?? ANALYSIS_CUES[screen]);
       session = {
         screen, serial: ++serial, manual, wanted: true, started: false,
-        completed: false, posterReady: false, analysisCued: false, abortRetried: false, retryFrame: 0,
+        completed: false, posterReady: false, analysisCued: false, analysisFrame: 0,
+        analysisAt: Number.isFinite(analysisAt) ? Math.max(0, analysisAt) : Infinity,
+        abortRetried: false, retryFrame: 0,
         fallbackImage: image.src || image.currentSrc,
         video: new URL(overrides.video || `${screen}.mp4`, rootURL).href,
         poster: new URL(overrides.poster || `${screen}.jpg`, rootURL).href,
@@ -275,6 +295,7 @@
       session.started = true; video.classList.add('is-visible');
       device.classList.remove('is-demo-loading');
       if (!session.analysisCued) announce('playing');
+      cueAnalysis(); watchAnalysisFrames();
     });
     video.addEventListener('timeupdate', cueAnalysis);
     video.addEventListener('ended', () => finish('complete', 'ended'));
