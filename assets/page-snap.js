@@ -22,9 +22,12 @@
         : file === 'index.html'
           ? '.about-hero, .about-details, .about-details > section'
           : '.portfolio-snap-page';
+    // A chapter may delegate native snapping to its inner reading stops while
+    // remaining a single entry in the chapter navigation.
     const isPanel = element => element.getClientRects().length > 0 &&
-      getComputedStyle(element).scrollSnapAlign !== 'none' &&
-      getComputedStyle(element).scrollSnapAlign !== 'auto';
+      (element.hasAttribute('data-snap-navigation') ||
+        (getComputedStyle(element).scrollSnapAlign !== 'none' &&
+         getComputedStyle(element).scrollSnapAlign !== 'auto'));
     const label = (element, index, total) => {
       const heading = element.querySelector('h1,h2,h3');
       const name = heading?.textContent?.replace(/\s+/g, ' ').trim().slice(0, 42);

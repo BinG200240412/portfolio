@@ -1,5 +1,5 @@
 /* The same physical device stays in view as each design argument passes it. */
-.case-visual-system{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);column-gap:clamp(48px,7vw,112px)}
+.case-visual-system{--visual-reading-ratio:.4;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);column-gap:clamp(48px,7vw,112px)}
 .visual-system-column{grid-column:1;grid-row:1;min-width:0}
 .visual-device-column{grid-column:2;grid-row:1;align-self:stretch;min-width:0;position:relative}
 .case-visual-system>.case-reveal{transform:none!important}
@@ -19,6 +19,8 @@
 .visual-type-specimen[data-visual-step],.visual-shape-rule[data-visual-step]{min-height:26svh;padding-bottom:20px}
 .visual-apple-reference[data-visual-step]{min-height:34svh;padding-bottom:28px}
 .visual-system-column [data-visual-step]{position:relative}
+.case-visual-system.visual-story-ready{scroll-snap-align:none;scroll-snap-stop:normal}
+.case-visual-system.visual-story-ready .visual-system-column [data-visual-step]{scroll-snap-align:start;scroll-snap-stop:always;scroll-margin-top:var(--visual-snap-inset,40svh)}
 .visual-system-column [data-visual-step].is-visual-active{--visual-step-active:1}
 .visual-system-block+.visual-system-block{margin-top:clamp(40px,4vw,48px)}
 .visual-system-block h3{margin:0 0 18px;max-width:19em}

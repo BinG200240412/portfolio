@@ -18,6 +18,8 @@
     const ScrollTrigger = window.ScrollTrigger;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const narrow = matchMedia('(max-width: 720px)');
+    const snapEvents = 'onscrollsnapchange' in window;
+    const scrollEnd = 'onscrollend' in window || 'onscrollend' in document;
     const viewer = document.getElementById('media-viewer');
     const opener = stage.querySelector('.visual-device-open') || stage.closest('.visual-device-open');
     const caption = root.querySelector('.visual-device-caption');
@@ -55,6 +57,7 @@
     let growth = null, swap = null, settleSwap = null, deferred = null;
     let growthChildren = [];
     let pageShown = true, suspended = false, disposed = false, trigger = null;
+    let landedStep = -1, snapDirty = true;
 
     screens.forEach((screen, index) => {
       screen.style.opacity = index ? '0' : '1';
@@ -63,7 +66,8 @@
     });
     root.dataset.visualState = 'ready';
     root.dataset.visualInView = 'false';
-    root.classList.add('visual-story-ready');
+    root.dataset.visualSnapMode = snapEvents ? 'native' : scrollEnd ? 'scrollend' : 'position';
+    root.dataset.visualSnapState = 'idle';
 
     function blocked() {
       return !pageShown || document.hidden || viewer?.open ||
@@ -336,25 +340,72 @@
     }
 
     function readingLine() {
-      if (!narrow.matches) return innerHeight * .45;
-      const phone = stage.getBoundingClientRect();
-      return Math.min(innerHeight * .85, Math.max(innerHeight * .55, phone.bottom + 100));
+      const ratio = parseFloat(getComputedStyle(root).getPropertyValue('--visual-reading-ratio')) || .4;
+      if (!narrow.matches) return innerHeight * ratio;
+      const phoneColumn = stage.closest('.visual-device-column');
+      const stickyTop = parseFloat(getComputedStyle(phoneColumn).top) || 64;
+      // The mobile phone and its paper mask must stay above the reading line.
+      return Math.min(innerHeight * .8, Math.max(innerHeight * ratio, stickyTop + stage.offsetHeight + 48));
+    }
+    function measureSnap() {
+      const chapterTop = root.getBoundingClientRect().top;
+      const line = readingLine();
+      root.dataset.visualSnapLine = String(Math.round(line));
+      steps.forEach((step, index) => {
+        // The first stop is also the chapter entry, keeping its heading visible.
+        const offset = Math.max(0, step.element.getBoundingClientRect().top - chapterTop);
+        step.snapInset = index === 0 ? offset : Math.min(line, offset);
+        const value = `${step.snapInset.toFixed(2)}px`;
+        if (step.element.style.getPropertyValue('--visual-snap-inset') !== value) {
+          step.element.style.setProperty('--visual-snap-inset', value);
+        }
+      });
+      snapDirty = false;
+    }
+    function inTallSnapArea(index) {
+      const step = steps[index];
+      if (!step) return false;
+      const rect = step.element.getBoundingClientRect();
+      return rect.height + step.snapInset > innerHeight &&
+        rect.top - step.snapInset <= 3 && rect.bottom >= innerHeight - 3;
     }
     function candidate() {
-      const line = readingLine();
-      const anchors = steps.map(step => {
-        const rect = step.element.getBoundingClientRect();
-        return rect.top + Math.min(40, rect.height * .12);
+      const current = landedStep >= 0 ? landedStep : wantedStep;
+      if (inTallSnapArea(current)) return current;
+      let next = 0, distance = Infinity;
+      steps.forEach((step, index) => {
+        const delta = inTallSnapArea(index) ? 0 : Math.abs(step.element.getBoundingClientRect().top - step.snapInset);
+        if (delta < distance) { distance = delta; next = index; }
       });
-      let next = 0;
-      anchors.forEach((top, index) => { if (top <= line) next = index; });
-      if (wantedStep >= 0 && next > wantedStep && anchors[next] > line - 12) return wantedStep;
-      if (wantedStep >= 0 && next < wantedStep && anchors[wantedStep] < line + 12) return wantedStep;
       return next;
+    }
+    function landed(index) {
+      landedStep = index;
+      root.dataset.visualSnappedStep = steps[index].id;
+      root.dataset.visualSnapState = 'settled';
+      schedule();
+    }
+    function snapChange(event) {
+      const index = steps.findIndex(step => step.element === event.snapTargetBlock);
+      if (index >= 0) landed(index);
+    }
+    function snapChanging(event) {
+      const step = steps.find(item => item.element === event.snapTargetBlock);
+      if (step) preload(step.image).catch(() => {});
+    }
+    function scrollSettled(event) {
+      if (event.target !== document && event.target !== document.documentElement && event.target !== window) return;
+      if (!inView() || blocked()) return;
+      if (snapDirty) measureSnap();
+      landed(candidate());
+    }
+    function scrolling() {
+      if (inView() && !blocked()) root.dataset.visualSnapState = 'moving';
     }
     function render() {
       frame = 0;
       if (disposed) return;
+      if (snapDirty) measureSnap();
       const disabled = blocked();
       const visible = inView();
       root.dataset.visualInView = String(visible && !disabled);
@@ -365,7 +416,9 @@
         else { growth?.play(); swap?.play(); }
       }
       if (!visible || disabled) return;
-      const next = candidate();
+      const next = snapEvents || scrollEnd
+        ? (landedStep >= 0 ? landedStep : wantedStep >= 0 ? wantedStep : candidate())
+        : candidate();
       if (deferred !== null) {
         deferred = null;
         activate(next);
@@ -376,6 +429,7 @@
       if (!frame && !disposed) frame = requestAnimationFrame(render);
     }
     function refresh() {
+      snapDirty = true;
       trigger?.refresh();
       schedule();
     }
@@ -402,7 +456,9 @@
         onLeave: schedule, onLeaveBack: schedule, onRefresh: schedule,
       });
     } else addEventListener('scroll', schedule, { passive: true });
-    const resize = typeof ResizeObserver === 'function' ? new ResizeObserver(schedule) : null;
+    const resize = typeof ResizeObserver === 'function' ? new ResizeObserver(() => {
+      snapDirty = true; schedule();
+    }) : null;
     resize?.observe(root); resize?.observe(stage); resize?.observe(column);
     const modalObserver = typeof MutationObserver === 'function' ? new MutationObserver(schedule) : null;
     if (viewer) modalObserver?.observe(viewer, { attributes: true, attributeFilter: ['open'] });
@@ -413,9 +469,15 @@
     addEventListener('portfolio:language', language);
     addEventListener('pagehide', hide); addEventListener('pageshow', show);
     document.addEventListener('visibilitychange', schedule);
+    document.addEventListener('scroll', scrolling, {passive: true});
+    document.addEventListener('scrollsnapchange', snapChange, {capture: true, passive: true});
+    document.addEventListener('scrollsnapchanging', snapChanging, {capture: true, passive: true});
+    document.addEventListener('scrollend', scrollSettled, {capture: true, passive: true});
     reduced.addEventListener('change', motion);
     narrow.addEventListener('change', refresh);
     document.fonts?.ready.then(refresh);
+    measureSnap();
+    root.classList.add('visual-story-ready');
     schedule();
   }
 
