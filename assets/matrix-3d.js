@@ -12,7 +12,9 @@
     const pixels = new Uint8Array(SIZE * SIZE), shades = new Uint8Array(SIZE * SIZE);
     if (!mesh) return { width:SIZE,height:SIZE,pixels,shades,model:true };
     const dog = id === 'robot-dog';
-    const yaw = dog ? -.62 + .38 * Math.sin(seconds * .26 + variant * .2) + reaction * .13 : .12 + .42 * Math.sin(seconds * .24 + variant * .16) + reaction * .40 + hover * .06;
+    const yaw = dog ? -.62 + .38 * Math.sin(seconds * .26 + variant * .2) + reaction * .13
+      + hover * .32 * Math.sin((Number.isFinite(input.gaitPhase) ? input.gaitPhase : seconds * .55) * .85)
+      : .12 + .42 * Math.sin(seconds * .24 + variant * .16) + reaction * .40 + hover * .06;
     const tilt = dog ? .25 + .04 * Math.sin(seconds * .3) : .19 + .08 * Math.sin(seconds * .29 + .4) + reaction * .22;
     const cy = Math.cos(yaw), sy = Math.sin(yaw), cx = Math.cos(tilt), sx = Math.sin(tilt);
     const rotated = mesh.vertices.map(([x,y,z]) => {

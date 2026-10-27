@@ -87,7 +87,7 @@
     return (value % 6283) / 1000;
   }
 
-  function robotDog(m, time, phase, reaction = 0, hover = 0, gaitPhase = time * 2.7) {
+  function robotDog(m, time, phase, reaction = 0, hover = 0, gaitPhase = time * .55) {
     m.box(-0.03, 0.32, 0, 1.37, 0.31, 0.55, 1, 6);
     m.box(-0.06, 0.496, 0, 1.12, 0.045, 0.43, 6, 1);
     m.box(-0.17, 0.524, 0, 0.56, 0.018, 0.28, 7);
@@ -110,20 +110,24 @@
     });
     m.box(0.999, 0.315, 0, 0.010, 0.019, 0.050, 4);
     // All neck, sensor and head vertices rotate together about the neck joint.
-    const raise = reaction * .38 + hover * .12, c = Math.cos(raise), sn = Math.sin(raise);
+    const sway = hover * Math.sin(gaitPhase);
+    const crouch = hover * (.025 + .045 * (.5 + .5 * Math.sin(gaitPhase * .8)));
+    const raise = reaction * .38 + hover * (.08 + .09 * Math.sin(gaitPhase * .85)), c = Math.cos(raise), sn = Math.sin(raise);
     if (raise) for (let i=headStart;i<m.vertices.length;i++) {
       const v=m.vertices[i],x=v[0]-.63,y=v[1]-.35;
       v[0]=.63+x*c-y*sn;v[1]=.35+x*sn+y*c;
     }
+    // The body rocks and the rear legs settle in place; no running stride.
+    for (const v of m.vertices) { v[0] += sway * .035; v[1] -= crouch; }
 
     for (let front = 0; front < 2; front++) for (let side = 0; side < 2; side++) {
       const isFront = front === 1, sign = side === 0 ? -1 : 1;
       const x = isFront ? 0.47 : -0.49, z = sign * 0.355;
       const step = gaitPhase + phase + ((front + side) % 2) * Math.PI;
-      const hip = [x,0.19,z];
+      const hip = [x + sway * .035,0.19 - crouch,z];
       const pawLift = isFront ? reaction * (side === 1 ? .25 : .06) : 0;
-      const foot = [x + Math.sin(step) * (0.17 + hover * .12) + (isFront ? .07 : -.025) * reaction,
-        -0.72 + Math.max(0,Math.cos(step)) * (0.14 + hover * .18) + pawLift, z];
+      const foot = [x + hover * Math.sin(step) * .022 + (isFront ? .07 : -.025) * reaction,
+        -0.72 + hover * Math.max(0,Math.cos(step)) * .018 + pawLift, z];
       const dx = foot[0] - hip[0], dy = foot[1] - hip[1], distance = Math.hypot(dx, dy);
       const upper = 0.46, lower = 0.49;
       const along = (upper * upper - lower * lower + distance * distance) / (2 * distance);
@@ -131,7 +135,7 @@
       const knee = [hip[0] + dx / distance * along - dy / distance * bend,
         hip[1] + dy / distance * along + dx / distance * bend, z];
 
-      m.prism([x,0.19,z-0.075],[x,0.19,z+0.075],0.106,1,7,12);
+      m.prism([hip[0],hip[1],z-0.075],[hip[0],hip[1],z+0.075],0.106,1,7,12);
       m.prism(hip,knee,0.071,6,1,4,7);
       m.prism([knee[0],knee[1],z-0.071],[knee[0],knee[1],z+0.071],0.077,6,3,12);
       m.prism(knee,foot,0.047,1,7,4,6);
@@ -229,7 +233,7 @@
     const seconds = input.reduced ? 0 : Number.isFinite(time) ? time : 0;
     const reaction = active > 0 ? input.reduced ? .72 : Math.sin(active * Math.PI * .85) : 0;
     if (id === 'robot-dog') robotDog(m,seconds,variantPhase(variant),reaction,hover,
-      Number.isFinite(input.gaitPhase) ? input.gaitPhase : seconds * 2.7);
+      Number.isFinite(input.gaitPhase) ? input.gaitPhase : seconds * .55);
     if (id === 'quest-3') quest3(m);
     return { vertices: m.vertices, faces: m.faces };
   }

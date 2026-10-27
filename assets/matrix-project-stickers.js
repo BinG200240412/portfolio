@@ -39,19 +39,23 @@
     }
   }
 
-  function skill(time, variant) {
+  function skill(time, variant, options = {}) {
     const pixels = blank();
-    // Open block lettering with a one-pixel two-ink registration offset.
-    // A few registration marks keep it typographic without a filled panel.
-    line(pixels, 2, 12, 5, 12, 3); line(pixels, 2, 12, 2, 15, 3);
-    line(pixels, 43, 35, 46, 35, 3); line(pixels, 46, 32, 46, 35, 3);
-    const active = (Math.floor(time / 2.4) + variant) % 5;
+    const hover = !options.reduced && options.hover > .15;
+    const elapsed = Math.max(0, Number(options.hoverElapsed) || 0);
+    const chase = Math.floor((hover ? elapsed * 6 : time * .65) + variant);
+    // A narrow marquee, drawn as bulbs rather than a signboard or label.
+    for (let i = 0; i < 11; i++) {
+      const lit = (i - chase + 110) % 11 < (hover ? 3 : 1);
+      dot(pixels, 4 + i * 4, 12, lit ? 4 : 3);
+      dot(pixels, 4 + i * 4, 36, (i + chase) % 11 < (hover ? 3 : 1) ? 2 : 3);
+    }
     ['S', 'K', 'I', 'L', 'L'].forEach((letter, index) => {
       const x = 5 + index * 8;
-      glyph(pixels, letter, x + 1, 17, 2, 2, 2);
-      glyph(pixels, letter, x, 16, 1, 2, 2);
-      // The glyph never moves or disappears; one short ink mark changes slowly.
-      rect(pixels, x, 32, 6, 1, index === active ? 4 : 2);
+      const lit = (chase - index + 10) % 5 < (hover ? 2 : 1);
+      glyph(pixels, letter, x + 1, 17, lit ? 2 : 3, 2, 2);
+      glyph(pixels, letter, x, 16, lit ? 4 : 1, 2, 2);
+      rect(pixels, x, 33, 6, 1, lit ? 4 : 2);
     });
     return pixels;
   }
@@ -62,9 +66,22 @@
     1: ['0001100','0011100','0111100','0001100','0001100','0001100','0001100','0011110','0011110'],
     2: ['0111100','1111110','1100110','0000110','0001100','0011000','0110000','1111110','1111110'],
     3: ['0111100','1111110','0000110','0011100','0011110','0000110','1100110','1111110','0111100'],
+    4: ['1100110','1100110','1100110','1111110','1111110','0000110','0000110','0000110','0000110'],
     5: ['1111110','1111110','1100000','1111100','1111110','0000110','1100110','1111110','0111100'],
+    6: ['0111100','1111110','1100000','1111100','1111110','1100110','1100110','1111110','0111100'],
+    7: ['1111110','1111110','0000110','0001100','0011000','0011000','0011000','0011000','0011000'],
     8: ['0111100','1111110','1100110','1111110','0111100','1111110','1100110','1111110','0111100'],
+    9: ['0111100','1111110','1100110','1100110','1111110','0111110','0000110','1111110','0111100'],
   };
+  const sudokuCells = [[6,5],[21,5],[35,5],[6,20],[21,20],[35,20],[6,34],[21,34],[35,34]];
+  const sudokuFinal = [1,4,7,6,5,9,2,3,8];
+  const sudokuInitial = new Set([0,2,4,6,8]);
+  const sudokuReveal = [1,3,7,5];
+  function stampSudokuDigit(pixels, number, x, y, role) {
+    sudokuDigits[number].forEach((row, dy) => {
+      for (let dx = 0; dx < row.length; dx++) if (row[dx] === '1') dot(pixels, x + dx, y + dy, role);
+    });
+  }
   const sudokuBase = (() => {
     const pixels = blank();
     // Four slightly wonky divider strokes, with rounded LED ends and no outer box.
@@ -85,36 +102,35 @@
       }
     }
     // Five hand-lettered, chubby nine-pixel-tall digits; the other cells breathe.
-    [[1,6,5,1],[3,35,5,2],[5,21,20,1],[2,6,34,2],[8,35,34,1]].forEach(([number,x,y,role]) => {
-      sudokuDigits[number].forEach((row, dy) => {
-        for (let dx = 0; dx < row.length; dx++) if (row[dx] === '1') dot(pixels, x + dx, y + dy, role);
-      });
-    });
+    [[1,6,5,1],[3,35,5,2],[5,21,20,1],[2,6,34,2],[8,35,34,1]].forEach(([number,x,y,role]) =>
+      stampSudokuDigit(pixels, number, x, y, role));
     return pixels;
   })();
   function sudoku(time, variant, options = {}) {
     const pixels = sudokuBase.slice();
     const active = Number.isFinite(options?.active) ? Math.max(0,Math.min(1,options.active)) : 0;
     const hover = !options.reduced && Number.isFinite(options?.hover) ? Math.max(0,Math.min(1,options.hover)) : 0;
-    if (active > 0 || hover > .18) {
-      // Hover previews the puzzle by changing actual glyphs; click keeps its
-      // short, directed permutation before the case study opens.
-      const step = active > 0 ? options.reduced ? 1 : Math.min(4,1 + Math.floor(active * 4))
-        : 1 + (Math.floor(time * 3.4 + variant) % 4);
-      const digits = [1,3,5,2,8];
-      [[6,5,1],[35,5,2],[21,20,1],[6,34,2],[35,34,1]].forEach(([x,y,role],index) => {
-        if (active === 0 && (index + Math.floor(time * 3.4 + variant)) % 3 !== 0) return;
-        rect(pixels,x,y,7,9,0);
-        sudokuDigits[digits[(index + step) % digits.length]].forEach((row,dy) => {
-          for (let dx=0;dx<row.length;dx++) if (row[dx] === '1') dot(pixels,x+dx,y+dy,role);
-        });
+    const entered = active > 0 || hover > .18;
+    if (entered) {
+      // Four empty cells appear in turn; the five existing cells shuffle too.
+      // All nine hold one stable digit before the project page opens.
+      const age = Math.max(Number(options.hoverElapsed) || 0, active * 2);
+      const reveal = Math.min(4, Math.floor(Math.max(0, age - .08) / .29));
+      const settled = options.reduced || age >= 1.55 || active >= .7;
+      const flicker = Math.floor(time * 7 + variant);
+      sudokuCells.forEach(([x,y], index) => {
+        if (!sudokuInitial.has(index) && sudokuReveal.indexOf(index) >= reveal) return;
+        rect(pixels, x, y, 7, 9, 0);
+        const changing = !settled && (index + flicker) % 3 === 0;
+        const number = changing ? 1 + (sudokuFinal[index] + flicker + index) % 9 : sudokuFinal[index];
+        stampSudokuDigit(pixels, number, x, y, changing ? 4 : index % 2 ? 2 : 1);
+      });
+    } else {
+      const lift = !options.reduced && Math.sin(time * .85 + variant * .3) > .75 ? -1 : 0;
+      ['01010','11111','11111','01110','00100'].forEach((row, dy) => {
+        for (let dx = 0; dx < row.length; dx++) if (row[dx] === '1') dot(pixels, 22 + dx, 7 + dy + lift, 2);
       });
     }
-    // A very small one-pixel heart bob; the digits and grid stay perfectly legible.
-    const lift = !options.reduced && Math.sin(time * .85 + variant * .3) > .75 ? -1 : 0;
-    ['01010','11111','11111','01110','00100'].forEach((row, dy) => {
-      for (let dx = 0; dx < row.length; dx++) if (row[dx] === '1') dot(pixels, 22 + dx, 7 + dy + lift, 2);
-    });
     return pixels;
   }
 

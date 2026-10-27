@@ -105,7 +105,7 @@
   let pending = null, maskSettling = 0;
   let pointerHover = null, focusHover = null, menuPreview = null;
   let protectedBoxes = null;
-  let speechKey = null, speechBorn = 0;
+  let speechKey = null, speechBorn = 0, speechAnchor = null;
 
   function updateQuietZones() {
     // Paint the actual DOM glyphs, including individual typewriter spans and
@@ -157,6 +157,7 @@
     }
   }
   function resize() {
+    speechAnchor = null;
     width = stage.clientWidth; height = stage.clientHeight;
     const ratio = Math.min(devicePixelRatio || 1, 2);
     canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
@@ -214,14 +215,13 @@
     const gorilla = item.id === 'gorilla';
     const entry = hotspots.get(item.key), active = pending && pending.entry === entry ? pending.progress : 0;
     const beat = reduced.matches ? 0 : Math.sin(active * Math.PI);
-    const run = item.id === 'robot-dog' && !reduced.matches ? entry?.hover || 0 : 0;
+    const dogHover = item.id === 'robot-dog' && !reduced.matches ? entry?.hover || 0 : 0;
     const stride=entry?.gaitPhase || 0;
     const angle = item.angle + .035 * Math.sin(time * .23 + item.phase) +
-      (gorilla ? pointerX * .025 : Math.sin(active * TAU) * .055) + run * .025 * Math.sin(stride);
+      (gorilla ? pointerX * .025 : Math.sin(active * TAU) * .055) + dogHover * .018 * Math.sin(stride);
     return {
-      x: item.x + Math.sin(time * .28 + item.phase) * 4 + (gorilla ? pointerX * 2 : 0) + run * Math.sin(stride*.5) * 3,
-      y: item.y + Math.sin(time * .31 + item.phase * 1.3) * 4 + (gorilla ? pointerY * 1.5 : -beat * 5)
-        - run * (2 + Math.abs(Math.sin(stride * 2)) * 3),
+      x: item.x + Math.sin(time * .28 + item.phase) * 4 * (1-dogHover) + (gorilla ? pointerX * 2 : 0),
+      y: item.y + Math.sin(time * .31 + item.phase * 1.3) * 4 * (1-dogHover) + (gorilla ? pointerY * 1.5 : -beat * 5),
       angle, cos:Math.cos(angle), sin:Math.sin(angle), pitch:item.size / image.width * (1 + beat * .045),
       width:image.width, height:image.height, hitBox:image.hitBox,
     };
@@ -232,7 +232,7 @@
     button.type = 'button'; button.className = 'matrix-object-hit'; button.hidden = true;
     button.setAttribute('data-project', projects[item.id]); button.setAttribute('data-motif', item.id);
     button.setAttribute('data-i18n-ignore', '');
-    const entry = {button,key:item.key,id:item.id,project:projects[item.id],hover:0,hoverTarget:0,
+    const entry = {button,key:item.key,id:item.id,project:projects[item.id],hover:0,hoverTarget:0,hoverElapsed:0,
       gaitPhase:0,staticActive:0,placement:null};
     const hover = () => {
       syncHoverTargets();
@@ -342,7 +342,7 @@
       Math.max(0,Math.min(a.bottom,b.bottom+padding)-Math.max(a.top,b.top-padding));
   }
   function drawSpeech(time,objectBoxes) {
-    if (!speechSprite || !visible() || !projectGate() || pending) {speechKey=null;return;}
+    if (!speechSprite || !visible() || !projectGate() || pending) {speechKey=null;speechAnchor=null;return;}
     let entry=pointerHover?.placement ? pointerHover : focusHover?.placement ? focusHover : null;
     if (!entry && menuPreview) {
       const area=candidate => {
@@ -353,9 +353,14 @@
         .filter(candidate=>candidate.id===menuPreview && candidate.placement && !candidate.button.hidden)
         .sort((a,b)=>area(b)-area(a))[0] || null;
     }
-    if (!entry || entry.button.hidden) {speechKey=null;return;}
-    const own=objectBoxes.find(item=>item.key===entry.key)?.box;
+    if (!entry || entry.button.hidden || entry.id === 'skill') {speechKey=null;speechAnchor=null;return;}
+    if(speechKey!==entry.key){speechKey=entry.key;speechBorn=time;speechAnchor=null;}
+    let own=objectBoxes.find(item=>item.key===entry.key)?.box;
     if (!own || own.right<0 || own.left>width || own.bottom<0 || own.top>height) return;
+    if (entry.id === 'robot-dog') {
+      if (!speechAnchor) speechAnchor = {...own};
+      own = speechAnchor;
+    }
     const pitch=ledPitch, inkScale=Math.sqrt((own.right-own.left)*(own.bottom-own.top));
     const preferredColumns=Math.max(9,Math.min(17,9+2*Math.round((inkScale-60)/32)));
     const tipX=own.right, tipY=Math.max(3*pitch,Math.min(height-3*pitch,own.top));
@@ -384,7 +389,6 @@
     }
     options.sort((a,b)=>a.score-b.score);
     const {shape,x,y,flipX,flipY}=options[0], size=pitch*1.4;
-    if(speechKey!==entry.key){speechKey=entry.key;speechBorn=time;}
     const growth=reduced.matches?1:smooth((time-speechBorn)/.72);
     for(let index=0;index<shape.cells.length;index++){
       const reveal=smooth((growth-index/shape.cells.length*.78)/.22);
@@ -407,7 +411,7 @@
         const px=x+(flipX?shape.columns-1-column-offset:column+offset)*pitch;
         const dotRow=Math.round(shape.rows*.47)+row;
         const py=y+(flipY?shape.tipRow-dotRow:dotRow)*pitch-
-          (speaking && !reduced.matches ? .25*pitch : 0);
+          (speaking && !reduced.matches && entry.id !== 'robot-dog' ? .25*pitch : 0);
         ctx.drawImage(speechSprite,px-size/2,py-size/2,size,size);
       }
     }
@@ -463,10 +467,11 @@
     pointerY += (aimY - pointerY) * follow;
     for (const entry of hotspots.values()) {
       entry.hover += (entry.hoverTarget-entry.hover)*follow;
-      if (entry.id === 'robot-dog') entry.gaitPhase += dt * (2.7 + entry.hover * 8);
+      entry.hoverElapsed = entry.hoverTarget || pending?.entry === entry ? entry.hoverElapsed + dt : 0;
+      if (entry.id === 'robot-dog') entry.gaitPhase += dt * (.55 + entry.hover * 1.1);
     }
     if (pending) {
-      pending.progress = Math.min(1,pending.progress+dt/.65);
+      pending.progress = Math.min(1,pending.progress+dt/(pending.entry.id === 'sudoku' ? 1.15 : .65));
       if (pending.progress >= 1) finishPending();
     }
   }
@@ -511,7 +516,8 @@
       if (!source?.ids.includes(item.id)) continue;
       const entry = hotspots.get(item.key);
       const options = {active:pending && pending.entry===entry ? pending.progress : reduced.matches ? entry?.staticActive || 0 : 0,
-        hover:reduced.matches ? 0 : entry?.hover || 0,gaitPhase:entry?.gaitPhase,reduced:reduced.matches};
+        hover:reduced.matches ? 0 : entry?.hover || 0,hoverElapsed:entry?.hoverElapsed || 0,
+        gaitPhase:entry?.gaitPhase,reduced:reduced.matches};
       if (item.id === 'gorilla') Object.assign(options,{morph:smooth(morph),pointerX,pointerY});
       const image = source.render(item.id, time * item.speed, item.variant, options);
       if (!image?.pixels || !image.width || !image.height) continue;
@@ -634,6 +640,7 @@
   addEventListener('portfolio:navigation', () => {
     pointerHover=focusHover=menuPreview=null;
     speechKey=null;
+    speechAnchor=null;
     for (const entry of hotspots.values()) {entry.hoverTarget=0;objectLabel(entry);}
     if (reduced.matches && visible()) draw(6);
   });
