@@ -69,3 +69,36 @@ html.media-detail-open { overflow: hidden; scroll-snap-type: none !important; }
 .media-detail-close:focus-visible { outline: 1px solid currentColor; outline-offset: -4px; }
 .media-detail-feedback { position: absolute; padding: 24px; font-size: 16px; }
 .media-detail-feedback[hidden] { display: none; }
+
+/* Image detail is one navigation level. The existing upper-left return mark
+   closes it first; its page action resumes after the dialog closes. */
+:is(#portfolio-media-viewer,#media-viewer,#qianli-viewer,#gogo-lightbox,#archive-viewer,#tea-board-viewer,.il-dialog)[open]
+  :is(.media-detail-close,.viewer-close,[data-q-close],#archive-close,[data-board-close],.il-dialog-close),
+#gogo-lightbox[open] .gogo-lightbox-bar form { display: none !important; }
+dialog[data-image-layer] :is(.standalone-back,#back,#toHub,#secBack,.media-layer-back) {
+  position:fixed !important;z-index:999 !important;top:16px !important;left:18px !important;
+  display:inline-flex !important;align-items:center;justify-content:center;
+  width:44px;height:44px;min-width:44px;min-height:44px;padding:0;margin:0;
+  border:0;background:none;color:var(--ink,#efeee9);cursor:pointer;
+}
+.media-layer-back svg {width:28px;height:28px;display:block}
+dialog[data-image-layer] :is(.standalone-back,#back,#toHub,#secBack,.media-layer-back):focus-visible {
+  outline:1.5px solid currentColor;outline-offset:2px;
+}
+dialog[data-image-layer]:focus {outline:none}
+/* A centred dialog would clip a fixed corner control outside its own box.
+   Give image readers a full-viewport layer so the mark keeps its page position. */
+#gogo-lightbox[data-image-layer],#icon-library .il-dialog[data-image-layer] {
+  inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;border:0;
+}
+#gogo-lightbox[data-image-layer] {
+  display:flex;flex-direction:column;justify-content:center;
+  padding:72px clamp(20px,4vw,56px) 24px;
+}
+#gogo-lightbox[data-image-layer] .gogo-lightbox-media img {max-height:calc(100dvh - 150px)}
+#archive-viewer[data-image-layer] .archive-viewer-bar {padding-left:84px}
+#icon-library .il-dialog[data-image-layer] {background:var(--paper);display:grid;place-items:center}
+#icon-library .il-dialog[data-image-layer] .il-dialog-content {width:min(740px,calc(100% - 36px))}
+@media(max-width:600px){
+  dialog[data-image-layer] :is(.standalone-back,#back,#toHub,#secBack,.media-layer-back){top:10px !important;left:10px !important}
+}

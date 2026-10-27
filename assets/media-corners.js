@@ -5,9 +5,82 @@
   const ignored = 'dialog,[data-media-corners-ignore],#icon-library,.il-artwork';
   const existingOpeners = '.gogo-zoom,.gogo-reel-visual,.q-image,.image-open,.archive-tile';
   const ordinarySurfaces = '.gogo-zoom,.gogo-reel-visual,.q-image,.practice-image,.screen,.mobile-screen,.hero-media,.fg-recording-stage';
+  const imageDialogs = '#portfolio-media-viewer,#media-viewer,#qianli-viewer,#gogo-lightbox,#archive-viewer,#tea-board-viewer,.il-dialog';
   let viewer, fullImage, feedback, closeButton, opener;
+  let imageLayer = null;
   const english = () => window.PortfolioI18n?.language === 'en' || document.documentElement.lang === 'en';
   const label = image => image.alt || image.closest('figure')?.querySelector('figcaption')?.textContent.trim() || '';
+
+  // The page's own return mark is the first step out of an enlarged image.
+  // In the hub the mark belongs to the parent document; on a standalone page
+  // it moves into the modal top layer and returns to its original place after.
+  function setBackLabel(back, detailOpen) {
+    const en = back.ownerDocument.documentElement.lang.startsWith('en');
+    const practice = ['arright.html','drift.html'].includes(location.pathname.split('/').pop());
+    const text = detailOpen ? (en ? 'Back to page' : '返回作品页面')
+      : back.id === 'back' || back.id === 'toHub' ? (en ? 'Back to navigation' : '返回导航')
+      : practice ? (en ? 'Back to Practice' : '返回练习')
+      : (en ? 'Back to works' : '返回作品集');
+    back.setAttribute('aria-label', text);
+    back.title = text;
+    const caption = back.querySelector('.return-label');
+    if (caption) caption.textContent = text;
+  }
+  function parentBack() {
+    if (window.parent === window) return null;
+    try {
+      const parent = window.parent.document;
+      const back = parent.getElementById('secBack');
+      return parent.querySelector('#section iframe')?.contentWindow === window && back && !back.hidden ? back : null;
+    } catch (_) { return null; }
+  }
+  function pageBack() {
+    return [...document.querySelectorAll('a.standalone-back,body.portfolio-shell #back,body.portfolio-shell #toHub,body.portfolio-shell #secBack')]
+      .find(back => !back.hidden && !back.disabled && getComputedStyle(back).display !== 'none') || null;
+  }
+  function restoreImageLayer() {
+    if (!imageLayer) return;
+    const {dialog, back, marker, generated, intercept, tabIndex} = imageLayer;
+    back.removeEventListener('click', intercept, true);
+    if (marker?.isConnected) marker.replaceWith(back);
+    else if (generated) back.remove();
+    if (tabIndex === null) dialog.removeAttribute('tabindex');
+    else dialog.setAttribute('tabindex', tabIndex);
+    dialog.removeAttribute('data-image-layer');
+    setBackLabel(back, false);
+    imageLayer = null;
+  }
+  function syncImageLayer() {
+    const open = [...document.querySelectorAll(imageDialogs)].filter(dialog => dialog.open).at(-1) || null;
+    if (imageLayer?.dialog === open) return;
+    restoreImageLayer();
+    if (!open) return;
+    let back = parentBack(), marker = null, generated = false;
+    if (!back) {
+      back = pageBack();
+      if (back) {
+        marker = document.createComment('image return position');
+        back.before(marker);
+        open.prepend(back);
+      } else {
+        back = document.createElement('button');
+        back.type = 'button'; back.className = 'media-layer-back';
+        back.innerHTML = '<svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M24 24 4 4M4 4h15M4 4v15"/></svg>';
+        open.prepend(back); generated = true;
+      }
+    }
+    const intercept = event => {
+      if (!open.open) return;
+      event.preventDefault(); event.stopImmediatePropagation(); open.close();
+    };
+    back.addEventListener('click', intercept, true);
+    open.setAttribute('data-image-layer', '');
+    const tabIndex = open.getAttribute('tabindex');
+    imageLayer = {dialog:open, back, marker, generated, intercept, tabIndex};
+    setBackLabel(back, true);
+    open.tabIndex = -1;
+    open.focus({preventScroll:true});
+  }
 
   // Matching arc vertices let the browser deepen a notch without changing its curve.
   // Percentage anchors keep right/bottom edges attached even during layout changes.
@@ -165,12 +238,16 @@
     new MutationObserver(records => records.forEach(record => {
       record.removedNodes.forEach(remove); record.addedNodes.forEach(scan);
     })).observe(document.body, { childList: true, subtree: true });
+    new MutationObserver(syncImageLayer).observe(document.body,
+      {childList:true,subtree:true,attributes:true,attributeFilter:['open']});
+    syncImageLayer();
     addEventListener('resize', () => surfaces.forEach(size), { passive: true });
     addEventListener('portfolio:language', () => {
       document.querySelectorAll('img[role="button"][aria-haspopup="dialog"]').forEach(image => {
         if (imageButtons.has(image)) imageButton(image);
       });
       viewerLanguage();
+      if (imageLayer) setBackLabel(imageLayer.back, true);
     });
     addEventListener('pagehide', () => { if (viewer?.open) viewer.close(); });
   }
