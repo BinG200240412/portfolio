@@ -31,7 +31,7 @@ html[lang^="en"] .case-product-slogan{--portfolio-font:SudokuGaramond,serif;--po
 .case-native-components p{font-size:14px;line-height:1.9;color:var(--mid);max-width:25em}
 @media(min-width:721px){.case-product-art{width:min(100%,calc(100svh - 160px));justify-self:center}}
 .case-product-caption{margin-top:24px;color:var(--mid);max-width:17em}
-.case-values{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.8fr);gap:clamp(48px,8vw,128px);align-items:center;margin-top:clamp(64px,10vw,144px)}
+.case-values{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr);gap:clamp(48px,8vw,128px);align-items:center;margin-top:clamp(64px,10vw,144px)}
 .case-values-copy{max-width:42em}.case-values-copy h3{margin:0 0 22px}.case-values-copy h3:not(:first-child){margin-top:48px}
 .case-values-copy p+p{margin-top:20px}
 .case-values-copy p,.case-design-columns p,.case-native-lead,.case-native-notes dd,.case-gesture-note p{color:var(--mid)}

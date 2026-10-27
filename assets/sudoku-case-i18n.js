@@ -299,6 +299,7 @@ Object.assign(window.PORTFOLIO_TRANSLATIONS, {
   "盘面中的配色与颜色标记": "Board colours and cell marks",
   "长按展开格子色盘": "Long-press to reveal the cell colour palette",
   "左侧是 App 中的采用方式，右侧为苹果官方参考。": "The app’s implementation is on the left; Apple’s official reference is on the right.",
+  "右侧是 App 中的采用方式，左侧为苹果官方参考。": "The app’s implementation is on the right; Apple’s official reference is on the left.",
   "苹果官方 Liquid Glass 配图，展示透明按钮、开关、滑块与圆角轮廓": "Apple’s official Liquid Glass illustration, showing translucent buttons, toggles, sliders, and rounded contours",
   "Liquid Glass · 材质": "Liquid Glass · Material",
   "Apple HIG 官方参考 ↗": "Apple HIG · Official reference ↗",

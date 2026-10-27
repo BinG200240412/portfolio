@@ -193,20 +193,34 @@
         const anchor = step.anchor.length === 2 && step.anchor.every(Number.isFinite) ? step.anchor : [0, 30];
         let anchorRect = null;
         if (step.anchorTarget) {
-          try { anchorRect = step.element.querySelector(step.anchorTarget)?.getBoundingClientRect() || null; }
+          try {
+            const anchorElement = step.element.querySelector(step.anchorTarget);
+            anchorRect = anchorElement?.getBoundingClientRect() || null;
+            if (anchorElement) {
+              // Block headings/captions may fill the column. Anchor to their
+              // actual text instead of leaving a gap after a short label.
+              const range = document.createRange();
+              range.selectNodeContents(anchorElement);
+              const textRect = range.getBoundingClientRect();
+              if (textRect.width > 0 && textRect.height > 0) anchorRect = textRect;
+            }
+          }
           catch (_) { /* Invalid optional selector falls back to percentage anchoring. */ }
           if (anchorRect && (!anchorRect.width || !anchorRect.height)) anchorRect = null;
         }
         const noteY = anchorRect ? anchorRect.top + anchorRect.height / 2
           : note.top + note.height * clamp(anchor[1], 0, 100) / 100;
+        const noteOnLeft = note.left + note.width / 2 < photo.left + photo.width / 2;
+        const anchorX = clamp(anchor[0], 0, 100);
         const start = {
-          x: anchorRect ? anchorRect.left - stageRect.left - 12
-            : note.left - stageRect.left + note.width * clamp(anchor[0], 0, 100) / 100 - 12,
+          x: anchorRect ? (noteOnLeft ? anchorRect.right + 12 : anchorRect.left - 12) - stageRect.left
+            : note.left - stageRect.left + note.width * (noteOnLeft ? 100 - anchorX : anchorX) / 100
+              + (noteOnLeft ? 12 : -12),
           y: noteY - stageRect.top,
         };
-        // The end is inside the highlighted UI, not on the hardware bezel.
-        const region = regions[0], end = {
-          x: region.x + region.width - Math.min(3, region.width / 2),
+        // Enter the target from the side nearest the note, inside the screen.
+        const region = regions[0], targetInset = Math.min(3, region.width / 2), end = {
+          x: noteOnLeft ? region.x + targetInset : region.x + region.width - targetInset,
           y: region.y + region.height / 2,
         };
         const direction = start.x >= end.x ? 1 : -1;

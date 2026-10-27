@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="../assets/i18n-main.js?v=green-sudoku-20261024"></script>
 <script src="../assets/i18n-cases.js?v=focused-copy-20261024"></script>
-<script src="../assets/sudoku-case-i18n.js?v=sticky-evidence-20261027"></script>
+<script src="../assets/sudoku-case-i18n.js?v=balanced-layout-20261027"></script>
 <script src="../assets/sudoku-anatomy-data.js?v=positioning-copy-20261027"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=active-chrome-20261026"></script>
@@ -19,7 +19,7 @@
 <script defer src="../assets/sudoku-anatomy.js?v=earlier-analysis-20261027"></script>
 <script defer src="../assets/sudoku-case.js?v=docked-board-20261024"></script>
 <script defer src="../assets/sudoku-product-scene.js?v=studio-dots-20261025"></script>
-<script defer src="../assets/sudoku-visual-story.js?v=sticky-evidence-20261027"></script>
+<script defer src="../assets/sudoku-visual-story.js?v=balanced-layout-20261027"></script>
 <meta name="description" content="Sudoku.2026：为数独爱好者设计的纯净数独，极简克制，支持分步辅导、记录与分享。">
 <title>Sudoku — 原生数独</title>
 <style>
@@ -33,8 +33,8 @@
 <link rel="stylesheet" href="../assets/theme.css?v=language-optics-20261026">
 <link rel="stylesheet" href="../assets/sudoku-hero.css?v=iphone-device-20261025">
 <link rel="stylesheet" href="../assets/sudoku-case.css?v=black-phones-20261025">
-<link rel="stylesheet" href="../assets/sudoku-character.css?v=positioning-copy-20261027">
-<link rel="stylesheet" href="../assets/sudoku-visual-system.css?v=sticky-evidence-20261027">
+<link rel="stylesheet" href="../assets/sudoku-character.css?v=balanced-layout-20261027">
+<link rel="stylesheet" href="../assets/sudoku-visual-system.css?v=balanced-layout-20261027">
 <link rel="stylesheet" href="../assets/sudoku-anatomy.css?v=native-process-20261027">
 <link rel="stylesheet" href="../assets/sudoku-demo-player.css?v=clean-handoff-20261027">
 <link rel="stylesheet" href="../assets/ambient-field.css?v=tidal-led-20261024">
@@ -92,6 +92,10 @@
         </div>
       </div>
       <section class="case-values" aria-labelledby="values-title">
+        <figure class="case-history-figure">
+          <button class="image-open" type="button" data-image="../assets/works/sudoku/history.png" data-caption="App 内的数独历史介绍" data-kind="screen" aria-label="放大查看数独历史介绍"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/history.png" width="1206" height="2622" alt="App 内的历史介绍，以人物插图和时间线讲述数独的来路" loading="lazy" decoding="async"></span></button>
+          <figcaption>App 内的数独历史介绍</figcaption>
+        </figure>
         <div class="case-values-copy">
           <h3 id="values-title">给人继续推下去的信心。</h3>
           <p>面对一道数独，观察、排除，再往前推一步，原本复杂的局面会慢慢清楚。我想留下的，是这种思考的耐心，以及找到下一步时重新生出的信心。</p>
@@ -99,10 +103,6 @@
           <h3>一道题，也有它的来路。</h3>
           <p>我把数独的介绍与历史放进产品，让人在开始解题之外，也能认识它如何成为今天的样子。理解它的来路，也是理解这款产品为什么重视规则、推理，以及安静思考的乐趣。</p>
         </div>
-        <figure class="case-history-figure">
-          <button class="image-open" type="button" data-image="../assets/works/sudoku/history.png" data-caption="App 内的数独历史介绍" data-kind="screen" aria-label="放大查看数独历史介绍"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/history.png" width="1206" height="2622" alt="App 内的历史介绍，以人物插图和时间线讲述数独的来路" loading="lazy" decoding="async"></span></button>
-          <figcaption>App 内的数独历史介绍</figcaption>
-        </figure>
       </section>
     </section>
     <section class="case-chapter case-visual-system" id="visual-system" aria-labelledby="design-title">
@@ -156,7 +156,7 @@
         </section>
         <section class="visual-system-block visual-native" aria-labelledby="native-title">
           <h3 id="native-title">熟悉的操作，自己的气质。</h3>
-          <p>左侧是 App 中的采用方式，右侧为苹果官方参考。</p>
+          <p>右侧是 App 中的采用方式，左侧为苹果官方参考。</p>
           <figure class="visual-apple-reference" data-visual-step="native-glass" data-visual-anchor-target="figcaption > span" data-visual-image="../assets/works/sudoku/board.png" data-visual-label="Liquid Glass 暂停与更多按钮" data-visual-targets='[[3.4,17.3,8.7,4],[86,7.3,10,4.5]]' data-visual-anchor='[0, 42]'>
             <img src="../assets/works/sudoku/apple/liquid-glass-controls.png" width="1724" height="972" alt="苹果官方 Liquid Glass 配图，展示透明按钮、开关、滑块与圆角轮廓" loading="lazy" decoding="async">
             <figcaption><span>Liquid Glass · 材质</span><a href="https://developer.apple.com/design/human-interface-guidelines/" target="_blank" rel="noopener noreferrer">Apple HIG 官方参考 ↗</a></figcaption>
