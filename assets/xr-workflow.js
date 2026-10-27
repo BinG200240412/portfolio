@@ -23,7 +23,7 @@
   }
   function draw(){
     const box=board.getBoundingClientRect();if(!box.width)return;
-    const narrow=innerWidth<1200,pad=12,busRight=box.width+(narrow?12:24),busLeft=narrow?-6:-18;
+    const narrow=innerWidth<1200,pad=12,busRight=box.width+(narrow?12:24),busLeft=-18;
     root.dataset.flowRows=narrow?'5':'2';root.dataset.flowAnimation='fixed-grid-growth';
     const groups=new Map(),points=new Map(),fragment=document.createDocumentFragment();
     const groupFor=stage=>{
@@ -55,8 +55,8 @@
         }else{
           const gutter=stageB.top-stageA.bottom,lane=stageA.bottom+gutter*.25-box.top;
           p=[[acx,ar.bottom-box.top+pad],[acx,lane],[busLeft,lane],[busLeft,bcy],[br.left-box.left-pad,bcy]];
-          const previous=b.previousElementSibling?.getBoundingClientRect();
-          head=[busLeft,previous?(br.top+previous.bottom)/2-box.top:stageA.bottom+gutter*.6-box.top,0,1];
+          // Keep heads on the individual horizontal branches, away from the shared trunk.
+          head=[Math.max(busLeft+pitch*2,(busLeft+br.left-box.left-pad)/2),bcy,1,0];
         }
       }else if(nextRow){
         const gutter=stageB.top-stageA.bottom,lane=stageA.bottom+gutter*.25-box.top;
@@ -82,9 +82,20 @@
         head=[start+sign*gutter*.55,bcy,sign,0];
       }
       p=p.map(([x,y])=>[snap(x),snap(y)]);
-      const group=groupFor(stage),lengths=p.slice(1).map(([x,y],i)=>Math.hypot(x-p[i][0],y-p[i][1]));
+      const group=groupFor(stage),[rawX,rawY,ux,uy]=head,hx=snap(rawX),hy=snap(rawY),nx=-uy,ny=ux;
+      // End the visible tail at the apex: no connector may continue in front of it.
+      let segment=1,best=Infinity;
+      for(let i=1;i<p.length;i++){
+        const [x,y]=p[i-1],[ex,ey]=p[i],squared=(ex-x)**2+(ey-y)**2;
+        const t=squared?Math.max(0,Math.min(1,((hx-x)*(ex-x)+(hy-y)*(ey-y))/squared)):0;
+        const d=Math.hypot(hx-x-(ex-x)*t,hy-y-(ey-y)*t);
+        if(d<best){best=d;segment=i;}
+      }
+      const tip=[hx+ux*pitch,hy+uy*pitch];
+      p=[...p.slice(0,segment),[hx,hy],tip];
+      const lengths=p.slice(1).map(([x,y],i)=>Math.hypot(x-p[i][0],y-p[i][1]));
       const total=lengths.reduce((sum,n)=>sum+n,0)||1;
-      group.append(element('path',{d:p.map(([x,y],i)=>(i?'L':'M')+x+' '+y).join(' '),class:'gw-edge','data-from':from,'data-to':to}));
+      group.append(element('path',{d:p.map(([x,y],i)=>(i?'L':'M')+x+' '+y).join(' '),class:'gw-edge','data-from':from,'data-to':to,'data-tip-x':tip[0],'data-tip-y':tip[1],'data-direction-x':ux,'data-direction-y':uy}));
       let travelled=0;
       for(let i=1;i<p.length;i++){
         const [x,y]=p[i-1],[ex,ey]=p[i],length=lengths[i-1],steps=Math.round(length/pitch);
@@ -93,16 +104,7 @@
         }
         travelled+=length;
       }
-      // A full dotted chevron and its stem sit in the open connector gutter.
-      const [hx,hy,ux,uy]=head,nx=-uy,ny=ux;
-      let nearest=0,best=Infinity,distance=0;
-      for(let i=1;i<p.length;i++){
-        const [x,y]=p[i-1],[ex,ey]=p[i],length=lengths[i-1];
-        const t=length?Math.max(0,Math.min(1,((hx-x)*(ex-x)+(hy-y)*(ey-y))/(length*length))):0;
-        const d=Math.hypot(hx-x-(ex-x)*t,hy-y-(ey-y)*t);
-        if(d<best){best=d;nearest=distance+length*t;}distance+=length;
-      }
-      const delay=nearest/total*.85;
+      const delay=Math.max(0,total-pitch)/total*.85;
       for(let offset=narrow?-12:-18;offset<=6;offset+=pitch)dot(stage,hx+ux*offset,hy+uy*offset,delay,true);
       for(let i=0;i<=2;i++)for(const side of [-1,1])dot(stage,hx+ux*(6-i*pitch)+nx*i*pitch*side,hy+uy*(6-i*pitch)+ny*i*pitch*side,delay,true);
     }
