@@ -5,8 +5,8 @@
 .gogo-experience-columns{display:grid;grid-template-columns:minmax(330px,.9fr) minmax(680px,1.1fr);gap:clamp(40px,4vw,64px);align-items:start}
 .gogo-experience-columns>section{min-width:0}
 .gogo-experience-columns>section>.gogo-subhead{font-size:28px;line-height:1.4;margin-bottom:24px!important}
-.gogo-experience-pair .gogo-modes{border:0}
-.gogo-experience-pair .gogo-mode{grid-template-columns:minmax(0,1fr) minmax(130px,.9fr);gap:22px;padding:16px 0;align-items:center}
+.gogo-experience-pair .gogo-modes{display:grid;gap:56px;border:0}
+.gogo-experience-pair .gogo-mode{grid-template-columns:minmax(0,1fr) minmax(130px,.9fr);gap:22px;padding:0;border:0;align-items:center}
 .gogo-experience-pair .gogo-mode:first-child{padding-top:0}
 .gogo-experience-pair .gogo-mode:last-child{padding-bottom:0;border-bottom:0}
 .gogo-experience-pair .gogo-mode-copy h4{font-size:23px;line-height:1.35;margin:6px 0!important}
@@ -28,7 +28,7 @@ html[data-theme="light"] .gogo-mode-arrow{filter:invert(1)}
  .gogo-experience-pair>.gogo-chapter-head{margin-bottom:24px}
  .gogo-case .gogo-experience-pair>.gogo-chapter-head h2{font-size:50px}
  .gogo-experience-columns>section>.gogo-subhead{font-size:26px;margin-bottom:20px!important}
- .gogo-experience-pair .gogo-mode{padding-block:12px}
+ .gogo-experience-pair .gogo-modes{gap:48px}
 }
 @media(min-width:1200px) and (max-width:1400px){
  .gogo-mode-sequence{--mode-icon:24px;--mode-gap:3px}
@@ -46,8 +46,9 @@ html[data-theme="light"] .gogo-mode-arrow{filter:invert(1)}
  .gogo-case .gogo-experience-pair>.gogo-chapter-head h2{font-size:42px}
  .gogo-experience-columns{gap:40px}
  .gogo-experience-columns>section>.gogo-subhead{font-size:26px;margin-bottom:20px!important}
- .gogo-experience-pair .gogo-mode{grid-template-columns:minmax(0,1fr) minmax(120px,.9fr);gap:18px;padding-block:14px}
+ .gogo-experience-pair .gogo-mode{grid-template-columns:minmax(0,1fr) minmax(120px,.9fr);gap:18px;padding-block:0}
  .gogo-experience-pair .gogo-mode-copy h4{font-size:22px}
+ .gogo-experience-pair .gogo-modes{gap:48px}
  .gogo-mode-sequence{--mode-icon:22px;--mode-gap:3px}
  .gogo-mode-sequence .gogo-mode-arrow{max-width:16px;height:12px}
 }
