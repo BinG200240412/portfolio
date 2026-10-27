@@ -64,7 +64,9 @@ html[lang="en"] .gw-landmarks li:nth-child(6){left:45%;top:98%}
 }
 @media(max-width:1199px){
  .gw-board{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"arrival entry" "scenes scenes" "places places" "plays collect" "share logs";gap:88px 48px;margin-inline:12px}
- .gw-column{min-height:0;grid-template-columns:minmax(0,1fr);justify-content:normal;gap:32px}
+ .gw-column{min-height:0;grid-template-columns:minmax(0,1fr);justify-content:normal;justify-items:center;gap:32px}
+ .gw-column>.gw-node:not(.gw-sites){max-width:min(100%,240px)}
+ .gw-column>.gw-node.gw-photo-node,.gw-column[data-stage="0"]>.gw-node{max-width:min(100%,160px)}
  .gw-photo-node{grid-template-columns:1fr;gap:10px;text-align:center;justify-items:center}
  .gw-column[data-stage="2"]{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:start}
  .gw-play-column{gap:40px}
