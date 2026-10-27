@@ -232,7 +232,7 @@
     button.setAttribute('data-project', projects[item.id]); button.setAttribute('data-motif', item.id);
     button.setAttribute('data-i18n-ignore', '');
     const entry = {button,key:item.key,id:item.id,project:projects[item.id],hover:0,hoverTarget:0,hoverElapsed:0,
-      gaitPhase:-Math.PI/2,staticActive:0,placement:null};
+      gaitPhase:-.35,staticActive:0,placement:null};
     const hover = () => {
       syncHoverTargets();
       if (reduced.matches) draw(6);
@@ -265,7 +265,8 @@
   }
   function syncHoverTargets() {
     for (const entry of hotspots.values()) entry.hoverTarget =
-      pointerHover === entry || focusHover === entry || menuPreview === entry.id ? 1 : 0;
+      pointerHover === entry || focusHover === entry || menuPreview === entry.id ||
+      (menuPreview === 'quest-3' && entry.id === 'robot-dog') ? 1 : 0;
   }
   function projectGate() {
     const gate=window.PortfolioNavigation?.projectGate?.();
@@ -463,7 +464,7 @@
     for (const entry of hotspots.values()) {
       entry.hover += (entry.hoverTarget-entry.hover)*follow;
       entry.hoverElapsed = entry.hoverTarget || pending?.entry === entry ? entry.hoverElapsed + dt : 0;
-      if (entry.id === 'robot-dog') entry.gaitPhase += dt * entry.hover * 2.15;
+      if (entry.id === 'robot-dog') entry.gaitPhase += dt * Math.max(entry.hover,entry.hoverTarget) * 2.75;
     }
     if (pending) {
       pending.progress = Math.min(1,pending.progress+dt/(pending.entry.id === 'sudoku' ? 1.15 : .65));
