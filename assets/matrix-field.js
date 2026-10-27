@@ -463,7 +463,7 @@
     for (const entry of hotspots.values()) {
       entry.hover += (entry.hoverTarget-entry.hover)*follow;
       entry.hoverElapsed = entry.hoverTarget || pending?.entry === entry ? entry.hoverElapsed + dt : 0;
-      if (entry.id === 'robot-dog') entry.gaitPhase += dt * entry.hover * 1.65;
+      if (entry.id === 'robot-dog') entry.gaitPhase += dt * entry.hover * 2.15;
     }
     if (pending) {
       pending.progress = Math.min(1,pending.progress+dt/(pending.entry.id === 'sudoku' ? 1.15 : .65));
