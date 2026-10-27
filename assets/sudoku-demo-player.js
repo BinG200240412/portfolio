@@ -191,7 +191,10 @@
       // Image load schedules the anatomy's measurement. Let that settle before
       // handing it the animation cue, so it grows from the new exact targets.
       await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-      if (session === current) announce(state, reason);
+      if (session === current) {
+        device.classList.remove('is-demo-loading');
+        announce(state, reason);
+      }
     }
     function start() {
       const current = session;
@@ -229,6 +232,7 @@
     function prepare(screen, manual = false) {
       if (!screens.has(screen)) return;
       if (session?.retryFrame) cancelAnimationFrame(session.retryFrame);
+      device.classList.add('is-demo-loading');
       video.pause(); video.classList.remove('is-visible');
       video.removeAttribute('src'); video.load(); playRequest = null;
       const overrides = window.SudokuDemoClips?.[screen] || {};
@@ -244,7 +248,6 @@
       // Begin on this recording's first frame, never flash the old screenshot
       // or the ending before the operation has been shown.
       video.poster = current.preview;
-      video.classList.add('is-visible');
       // Synchronous: analysis is held before loading or the next rendered frame.
       announce('playing', 'preparing');
       current.posterPromise = poster(current);
@@ -254,7 +257,9 @@
 
     video.addEventListener('playing', () => {
       if (!session?.wanted || !available()) { video.pause(); return; }
-      session.started = true; video.classList.add('is-visible'); announce('playing');
+      if (video.currentSrc !== session.video) return;
+      session.started = true; video.classList.add('is-visible');
+      device.classList.remove('is-demo-loading'); announce('playing');
     });
     video.addEventListener('ended', () => finish('complete', 'ended'));
     video.addEventListener('canplay', sync);

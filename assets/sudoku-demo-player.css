@@ -2,6 +2,8 @@
  * hardware remains a separate foreground layer. */
 .sudoku-device>.sudoku-demo-video{z-index:0;opacity:0;pointer-events:none;background:#f4f1ea}
 .sudoku-device>.sudoku-demo-video.is-visible{opacity:1}
+.sudoku-device.is-demo-loading>.sudoku-device-screen:not(.sudoku-demo-video){opacity:0}
+.sudoku-device.is-demo-loading::before{content:"";position:absolute;left:5.1020408163%;top:2.2%;width:89.7959183673%;height:95.6%;border-radius:14.393939% / 6.624826%;background:#f4f1ea}
 .sudoku-demo-actions{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px 20px;margin:8px auto 0;text-align:center}
 .sudoku-demo-replay{min-height:44px;font-size:14px;line-height:1.7;color:var(--mid);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px}
 .sudoku-demo-replay:hover,.sudoku-demo-replay:focus-visible{color:var(--ink)}
