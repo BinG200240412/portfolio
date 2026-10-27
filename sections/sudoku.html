@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="../assets/i18n-main.js?v=green-sudoku-20261024"></script>
 <script src="../assets/i18n-cases.js?v=focused-copy-20261024"></script>
-<script src="../assets/sudoku-case-i18n.js?v=visual-system-20261027"></script>
+<script src="../assets/sudoku-case-i18n.js?v=sticky-evidence-20261027"></script>
 <script src="../assets/sudoku-anatomy-data.js?v=positioning-copy-20261027"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=active-chrome-20261026"></script>
@@ -19,6 +19,7 @@
 <script defer src="../assets/sudoku-anatomy.js?v=earlier-analysis-20261027"></script>
 <script defer src="../assets/sudoku-case.js?v=docked-board-20261024"></script>
 <script defer src="../assets/sudoku-product-scene.js?v=studio-dots-20261025"></script>
+<script defer src="../assets/sudoku-visual-story.js?v=sticky-evidence-20261027"></script>
 <meta name="description" content="Sudoku.2026：为数独爱好者设计的纯净数独，极简克制，支持分步辅导、记录与分享。">
 <title>Sudoku — 原生数独</title>
 <style>
@@ -33,8 +34,7 @@
 <link rel="stylesheet" href="../assets/sudoku-hero.css?v=iphone-device-20261025">
 <link rel="stylesheet" href="../assets/sudoku-case.css?v=black-phones-20261025">
 <link rel="stylesheet" href="../assets/sudoku-character.css?v=positioning-copy-20261027">
-<link rel="stylesheet" href="../assets/sudoku-visual-system.css?v=visual-system-20261027">
-<link rel="stylesheet" href="../assets/sudoku-visual-components.css?v=visual-system-20261027">
+<link rel="stylesheet" href="../assets/sudoku-visual-system.css?v=sticky-evidence-20261027">
 <link rel="stylesheet" href="../assets/sudoku-anatomy.css?v=native-process-20261027">
 <link rel="stylesheet" href="../assets/sudoku-demo-player.css?v=clean-handoff-20261027">
 <link rel="stylesheet" href="../assets/ambient-field.css?v=tidal-led-20261024">
@@ -106,13 +106,26 @@
       </section>
     </section>
     <section class="case-chapter case-visual-system" id="visual-system" aria-labelledby="design-title">
+      <aside class="visual-device-column" aria-label="与设计说明对应的数独界面">
+        <div class="visual-device-stage">
+          <button class="image-open visual-device-open" type="button" data-image="../assets/works/sudoku/board.png" data-caption="主盘面" data-kind="screen" aria-label="放大查看主盘面截图" data-media-corners-ignore>
+            <span class="sudoku-device">
+              <img class="sudoku-device-screen" data-visual-screen="a" fetchpriority="high" src="../assets/works/sudoku/board.png" width="1320" height="2868" alt="主盘面" decoding="async">
+              <img class="sudoku-device-screen" data-visual-screen="b" src="../assets/works/sudoku/board.png" width="1320" height="2868" alt="主盘面" aria-hidden="true" decoding="async">
+            </span>
+          </button>
+          <svg class="visual-device-overlay" aria-hidden="true"><g class="visual-targets"></g><g class="visual-leader"></g></svg>
+          <p class="visual-device-caption case-sr-only" role="status" aria-live="polite" data-i18n-ignore>主盘面</p>
+          <p class="visual-device-feedback" role="status" hidden></p>
+        </div>
+      </aside>
       <div class="visual-system-column">
         <h2 id="design-title">视觉系统</h2>
-        <section class="visual-system-block visual-system-tone" aria-labelledby="visual-tone-title">
+        <section class="visual-system-block visual-system-tone" aria-labelledby="visual-tone-title" data-visual-step="tone" data-visual-anchor-target="h3" data-visual-image="../assets/works/sudoku/board.png" data-visual-label="主盘面" data-visual-targets='[[2.7,24.3,94.6,43.5]]' data-visual-anchor='[0, 28]'>
           <h3 id="visual-tone-title">极简、克制，也足够完整。</h3>
           <p>保留纸笔的安静，也容纳辅导、记录与分享。</p>
         </section>
-        <section class="visual-system-block" aria-labelledby="visual-interaction-title">
+        <section class="visual-system-block" aria-labelledby="visual-interaction-title" data-visual-step="interaction" data-visual-anchor-target="h3" data-visual-image="../assets/works/sudoku/visual/difficulty.png" data-visual-label="五档难度选择" data-visual-targets='[[40.5,17.9,57,30.7]]' data-visual-anchor='[0, 28]'>
           <h3 id="visual-interaction-title">把时间留给题目。</h3>
           <p>功能与概念同样克制。不设竞速和排名，辅导从线索开始，把判断留给自己。</p>
           <div class="visual-difficulties" role="group" aria-label="五档难度">
@@ -122,20 +135,20 @@
         <section class="visual-system-block visual-typography" aria-labelledby="visual-type-title">
           <h3 id="visual-type-title">像纸面，也像执笔。</h3>
           <p>用字形区分阅读、题目与自己的笔迹。</p>
-          <figure class="visual-type-specimen">
+          <figure class="visual-type-specimen" data-visual-step="type-brand" data-visual-anchor-target="figcaption" data-visual-image="../assets/works/sudoku/board.png" data-visual-label="Fraunces 品牌字标" data-visual-targets='[[2.5,7.6,27.5,4.2]]' data-visual-anchor='[0, 42]'>
             <div class="case-app-wordmark visual-wordmark" aria-label="sudoku" data-i18n-ignore>sudoku<span>.</span></div>
             <figcaption>Fraunces · 品牌字标</figcaption>
           </figure>
-          <figure class="visual-type-specimen">
+          <figure class="visual-type-specimen" data-visual-step="type-body" data-visual-anchor-target="figcaption" data-visual-image="../assets/works/sudoku/settings.png" data-visual-label="源云明体中文界面" data-visual-targets='[[17,22.5,55,3.8]]' data-visual-anchor='[0, 42]'>
             <div class="visual-chinese-specimen" lang="zh-CN" data-i18n-ignore>凡事有解。</div>
             <figcaption>源云明体 · 中文</figcaption>
           </figure>
-          <figure class="visual-type-specimen">
+          <figure class="visual-type-specimen" data-visual-step="type-given" data-visual-anchor-target="figcaption" data-visual-image="../assets/works/sudoku/visual/board-study.png" data-visual-label="题目数字与英文" data-visual-targets='[[2.73,24.27,10.51,4.84]]' data-visual-anchor='[0, 40]'>
             <div class="visual-english-specimen" lang="en" data-i18n-ignore>One step at a time.</div>
             <div class="visual-given-digits" aria-label="题目数字字形"><span data-i18n-ignore>123456789</span></div>
             <figcaption>EB Garamond · 英文与题目数字</figcaption>
           </figure>
-          <figure class="visual-type-specimen visual-handwriting">
+          <figure class="visual-type-specimen visual-handwriting" data-visual-step="type-writing" data-visual-anchor-target="figcaption" data-visual-image="../assets/works/sudoku/visual/board-study.png" data-visual-label="手写填写与候选笔记" data-visual-targets='[[13.23,24.27,10.51,4.84],[65.76,29.10,10.51,4.84]]' data-visual-anchor='[0, 40]'>
             <div class="visual-written-digits" aria-label="填写数字字形"><span data-i18n-ignore>123456789</span></div>
             <div class="visual-pencil-marks" aria-label="候选笔记字形"><span>1</span><span>2</span><span></span><span></span><span>5</span><span></span><span>7</span><span></span><span>9</span></div>
             <figcaption>Mynerve · 填写与候选笔记</figcaption>
@@ -143,57 +156,30 @@
         </section>
         <section class="visual-system-block visual-native" aria-labelledby="native-title">
           <h3 id="native-title">熟悉的操作，自己的气质。</h3>
-          <p>沿用 iOS 的形状与材质。</p>
-          <!-- Static web studies of the app's actual native component choices.
-               Include assets/sudoku-visual-components.css after the page's base CSS.
-               No screenshot crops, controls, scripts or generated bitmap assets. -->
-          <div class="sv-component-studies">
-            <figure class="sv-component">
-              <div class="sv-specimen sv-glass" role="img" aria-label="玻璃按钮视觉样件，透明圆形按钮浮在绿色进度格上">
-                <div class="sv-glass-track" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-                <div class="sv-glass-circle sv-glass-circle--pause" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5.5" y="4" width="4.5" height="16" rx="1.2"/><rect x="14" y="4" width="4.5" height="16" rx="1.2"/></svg></div>
-                <div class="sv-glass-circle sv-glass-circle--more" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></svg></div>
-              </div>
-              <figcaption><span class="sv-component-name">Liquid Glass</span><span class="sv-component-note">透明、轻盈的操作层。</span></figcaption>
-            </figure>
-            <figure class="sv-component">
-              <div class="sv-specimen sv-corners" role="img" aria-label="连续圆角视觉样件，放大的数字键与三个数字键并列">
-                <div class="sv-key sv-key--large" aria-hidden="true">5<span class="sv-key-notes">2 5 8</span></div>
-                <div class="sv-keyset" aria-hidden="true"><div class="sv-key">1<span class="sv-key-notes">1 4</span></div><div class="sv-key">2<span class="sv-key-notes">2 6</span></div><div class="sv-key">3<span class="sv-key-notes">3 9</span></div></div>
-              </div>
-              <figcaption><span class="sv-component-name">连续圆角</span><span class="sv-component-note">柔和的轮廓，清楚的边界。</span></figcaption>
-            </figure>
-            <figure class="sv-component">
-              <div class="sv-specimen sv-navigation-study" role="img" aria-label="底部导航视觉样件，记录、残局、教程、设置依次排列">
-                <div class="sv-navigation" aria-hidden="true" data-i18n-ignore>
-                  <div class="sv-navigation-item"><svg viewBox="0 0 24 24"><rect x="3.5" y="12" width="3.5" height="8" rx=".8"/><rect x="10.2" y="7.5" width="3.5" height="12.5" rx=".8"/><rect x="17" y="3.5" width="3.5" height="16.5" rx=".8"/></svg><span>记录</span></div>
-                  <div class="sv-navigation-item"><svg viewBox="0 0 24 24"><path d="M7 3.5h10a1 1 0 0 1 1 1V21l-6-4-6 4V4.5a1 1 0 0 1 1-1Z"/></svg><span>残局</span></div>
-                  <div class="sv-navigation-item"><svg viewBox="0 0 24 24"><path d="M12 5.5C9.5 3.8 6 3.2 3 4.2v15c3-1 6.5-.4 9 1.3 2.5-1.7 6-2.3 9-1.3v-15c-3-1-6.5-.4-9 1.3Z"/><path d="M12 5.5v15M6 7.5c1.2-.1 2.1.1 3 .5M15 8c.9-.4 1.8-.6 3-.5"/></svg><span>教程</span></div>
-                  <div class="sv-navigation-item is-current"><svg viewBox="0 0 24 24"><path d="m9.6 3 .7-1h3.4l.7 1 .6 2 2 .8 1.9-.8 1.2.3 1.7 2.9-.3 1.3-1.5 1.5v2.1l1.5 1.5.3 1.3-1.7 2.9-1.2.3-1.9-.8-2 .8-.6 2-.7 1h-3.4l-.7-1-.6-2-2-.8-1.9.8-1.2-.3-1.7-2.9.3-1.3L4 12.1V10L2.5 8.5 2.2 7.2l1.7-2.9 1.2-.3 1.9.8 2-.8Z" transform="translate(0 1) scale(1 .94)"/><circle cx="12" cy="11.7" r="3"/></svg><span>设置</span></div>
-                </div>
-              </div>
-              <figcaption><span class="sv-component-name">底部导航</span><span class="sv-component-note">熟悉的 TabView 结构。</span></figcaption>
-            </figure>
-            <figure class="sv-component">
-              <div class="sv-specimen sv-sheet-study" role="img" aria-label="Sheet 弹层视觉样件，带有抓手和圆角的设置窗口从下方展开">
-                <div class="sv-sheet-stack" aria-hidden="true" data-i18n-ignore>
-                  <div class="sv-sheet-behind"></div>
-                  <div class="sv-sheet">
-                    <span class="sv-sheet-handle"></span>
-                    <div class="sv-sheet-heading"><span class="sv-sheet-title">设置</span><span class="sv-sheet-close"><svg viewBox="0 0 16 16"><path d="m3 3 10 10M13 3 3 13"/></svg></span></div>
-                    <div class="sv-sheet-row"><span>盘面辅助</span><svg viewBox="0 0 16 16"><path d="m6 3 5 5-5 5"/></svg></div>
-                    <div class="sv-sheet-row"><span>声音与触感</span><span class="sv-sheet-toggle"></span></div>
-                    <span class="sv-sheet-base"></span>
-                  </div>
-                </div>
-              </div>
-              <figcaption><span class="sv-component-name">Sheet 弹层</span><span class="sv-component-note">从下方展开，保留当前对局。</span></figcaption>
-            </figure>
+          <p>左侧是 App 中的采用方式，右侧为苹果官方参考。</p>
+          <figure class="visual-apple-reference" data-visual-step="native-glass" data-visual-anchor-target="figcaption > span" data-visual-image="../assets/works/sudoku/board.png" data-visual-label="Liquid Glass 暂停与更多按钮" data-visual-targets='[[3.4,17.3,8.7,4],[86,7.3,10,4.5]]' data-visual-anchor='[0, 42]'>
+            <img src="../assets/works/sudoku/apple/liquid-glass-controls.png" width="1724" height="972" alt="苹果官方 Liquid Glass 配图，展示透明按钮、开关、滑块与圆角轮廓" loading="lazy" decoding="async">
+            <figcaption><span>Liquid Glass · 材质</span><a href="https://developer.apple.com/design/human-interface-guidelines/" target="_blank" rel="noopener noreferrer">Apple HIG 官方参考 ↗</a></figcaption>
+          </figure>
+          <div class="visual-shape-rule" data-visual-step="native-corners" data-visual-anchor-target="h4" data-visual-image="../assets/works/sudoku/board.png" data-visual-label="盘面与数字键的连续圆角" data-visual-targets='[[2.7,79.5,94.6,7.7]]' data-visual-anchor='[0, 28]'>
+            <h4>连续圆角 · 形状规则</h4>
+            <p>用于盘面与数字键。</p>
+            <a class="visual-source-link" href="https://developer.apple.com/design/human-interface-guidelines/buttons" target="_blank" rel="noopener noreferrer">Apple HIG · Buttons ↗</a>
           </div>
+          <figure class="visual-apple-reference visual-apple-tabbar" data-visual-step="native-tabs" data-visual-anchor-target="figcaption > span" data-visual-image="../assets/works/sudoku/settings.png" data-visual-label="Tab Bar 底部标签栏" data-visual-targets='[[5,91.3,90,6.4]]' data-visual-anchor='[0, 45]'>
+            <img class="visual-apple-light" src="../assets/works/sudoku/apple/tab-bar-anatomy-light.png" width="596" height="184" alt="苹果官方 Tab Bar 示意，标明图标与标签" loading="lazy" decoding="async">
+            <img class="visual-apple-dark" src="../assets/works/sudoku/apple/tab-bar-anatomy-dark.png" width="596" height="184" alt="苹果官方深色 Tab Bar 示意，标明图标与标签" loading="lazy" decoding="async">
+            <figcaption><span>Tab Bar · 标签栏</span><a href="https://developer.apple.com/design/human-interface-guidelines/tab-bars" target="_blank" rel="noopener noreferrer">Apple HIG 官方参考 ↗</a></figcaption>
+          </figure>
+          <figure class="visual-apple-reference visual-apple-sheet" data-visual-step="native-sheet" data-visual-anchor-target="figcaption > span" data-visual-image="../assets/works/sudoku/settings.png" data-visual-label="Sheet 分层弹出界面" data-visual-targets='[[1,6.5,98,8.5]]' data-visual-anchor='[0, 42]'>
+            <img class="visual-apple-light" src="../assets/works/sudoku/apple/sheet-medium-light.png" width="536" height="1162" alt="苹果官方 Sheet 半屏弹层示意，保留抓手、圆角和关闭按钮" loading="lazy" decoding="async">
+            <img class="visual-apple-dark" src="../assets/works/sudoku/apple/sheet-medium-dark.png" width="536" height="1162" alt="苹果官方深色 Sheet 半屏弹层示意" loading="lazy" decoding="async">
+            <figcaption><span>Sheet · 弹层</span><a href="https://developer.apple.com/design/human-interface-guidelines/sheets" target="_blank" rel="noopener noreferrer">Apple HIG 官方参考 ↗</a></figcaption>
+          </figure>
         </section>
-        <section class="visual-system-block visual-colour" aria-labelledby="visual-colour-title">
+        <section class="visual-system-block visual-colour" aria-labelledby="visual-colour-title" data-visual-step="colour" data-visual-anchor-target="h3" data-visual-image="../assets/works/sudoku/visual/colour.png" data-visual-label="长按展开格子色盘" data-visual-targets='[[28,29.7,44,22.9]]' data-visual-anchor='[0, 28]'>
           <h3 id="visual-colour-title">纸白、墨色与低饱和信号色。</h3>
-          <p>颜色提示关系与状态。</p>
+          <p>主题色提示状态；长按格子，用六色标记思路。</p>
           <div class="visual-base-palette" role="group" aria-label="纸白与墨色">
             <div class="visual-base-swatch visual-paper-swatch"><span>纸白</span><span data-i18n-ignore>#F4F1EA</span></div>
             <div class="visual-base-swatch visual-ink-swatch"><span>墨色</span><span data-i18n-ignore>#24261F</span></div>

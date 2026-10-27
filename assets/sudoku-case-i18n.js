@@ -282,3 +282,36 @@ Object.assign(window.PORTFOLIO_TRANSLATIONS, {
   "Sheet 弹层": "Sheet presentation",
   "从下方展开，保留当前对局。": "Opens from below, keeping the puzzle in place."
 });
+
+/* Paired native screens and Apple HIG references in the scroll story. */
+Object.assign(window.PORTFOLIO_TRANSLATIONS, {
+  "与设计说明对应的数独界面": "Sudoku screens paired with the design notes",
+  "主盘面": "Main board",
+  "放大查看主盘面截图": "Enlarge the main board",
+  "五档难度选择": "Five difficulty levels",
+  "源云明体中文界面": "The Chinese interface in GenWanMin",
+  "题目数字与英文": "Given digits and English text",
+  "手写填写与候选笔记": "Handwritten entries and pencil marks",
+  "Liquid Glass 暂停与更多按钮": "Liquid Glass pause and more controls",
+  "盘面与数字键的连续圆角": "Continuous corners on the board and number keys",
+  "Tab Bar 底部标签栏": "Tab Bar navigation",
+  "Sheet 分层弹出界面": "Layered sheet presentation",
+  "盘面中的配色与颜色标记": "Board colours and cell marks",
+  "长按展开格子色盘": "Long-press to reveal the cell colour palette",
+  "左侧是 App 中的采用方式，右侧为苹果官方参考。": "The app’s implementation is on the left; Apple’s official reference is on the right.",
+  "苹果官方 Liquid Glass 配图，展示透明按钮、开关、滑块与圆角轮廓": "Apple’s official Liquid Glass illustration, showing translucent buttons, toggles, sliders, and rounded contours",
+  "Liquid Glass · 材质": "Liquid Glass · Material",
+  "Apple HIG 官方参考 ↗": "Apple HIG · Official reference ↗",
+  "连续圆角 · 形状规则": "Continuous corners · Shape rule",
+  "用于盘面与数字键。": "Used on the board and number keys.",
+  "苹果官方 Tab Bar 示意，标明图标与标签": "Apple’s official Tab Bar diagram, identifying icons and labels",
+  "苹果官方深色 Tab Bar 示意，标明图标与标签": "Apple’s official dark Tab Bar diagram, identifying icons and labels",
+  "Tab Bar · 标签栏": "Tab Bar · Tab navigation",
+  "苹果官方 Sheet 半屏弹层示意，保留抓手、圆角和关闭按钮": "Apple’s official half-height sheet diagram, showing the grabber, rounded corners, and close button",
+  "苹果官方深色 Sheet 半屏弹层示意": "Apple’s official dark half-height sheet diagram",
+  "Sheet · 弹层": "Sheet · Presentation"
+});
+
+Object.assign(window.PORTFOLIO_TRANSLATIONS, {
+  "主题色提示状态；长按格子，用六色标记思路。": "Theme colours indicate states; hold a cell to mark your reasoning with six annotation colours."
+});

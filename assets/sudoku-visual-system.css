@@ -1,8 +1,25 @@
-/* A single editorial column on the right. The left remains available for future work. */
+/* The same physical device stays in view as each design argument passes it. */
 .case-visual-system{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);column-gap:clamp(48px,7vw,112px)}
-.visual-system-column{grid-column:2;min-width:0}
+.visual-system-column{grid-column:2;grid-row:1;min-width:0}
+.visual-device-column{grid-column:1;grid-row:1;align-self:stretch;min-width:0;position:relative}
+.case-visual-system>.case-reveal{transform:none!important}
+.visual-device-stage{position:sticky;top:clamp(96px,12svh,144px);width:min(100%,calc((100svh - 150px)*.49),390px);margin-inline:auto;isolation:isolate}
+.visual-device-open{display:block;width:100%;cursor:zoom-in;position:relative;z-index:2}
+.visual-device-stage [data-visual-screen]{transition:none}
+.visual-device-stage [data-visual-screen="b"]{opacity:0}
+.visual-device-overlay{position:absolute;inset:0;z-index:4;display:block;width:100%;height:100%;overflow:visible;pointer-events:none;color:var(--accent)}
+.visual-device-overlay rect{fill:none;stroke:currentColor;stroke-width:1.4;stroke-dasharray:.1 3.7;stroke-linecap:round;opacity:.9}
+.visual-device-overlay path{fill:none;stroke:currentColor;stroke-width:1;stroke-linejoin:miter;opacity:.8}
+.visual-device-overlay circle{fill:currentColor}
+.visual-device-feedback{position:absolute;inset:auto 0 0;z-index:5;background:var(--paper);color:var(--mid);padding:14px}
+.visual-device-feedback[hidden]{display:none}
 .visual-system-column>h2{margin:0 0 clamp(56px,7vw,96px)}
 .visual-system-block{min-width:0;scroll-margin-top:96px}
+.visual-system-block[data-visual-step]{min-height:58svh;padding-bottom:40px}
+.visual-type-specimen[data-visual-step],.visual-shape-rule[data-visual-step]{min-height:54svh;padding-bottom:40px}
+.visual-apple-reference[data-visual-step]{min-height:58svh;padding-bottom:48px}
+.visual-system-column [data-visual-step]{position:relative}
+.visual-system-column [data-visual-step].is-visual-active{--visual-step-active:1}
 .visual-system-block+.visual-system-block{margin-top:clamp(64px,8vw,112px)}
 .visual-system-block h3{margin:0 0 18px;max-width:19em}
 .visual-system-block>p{max-width:32em;color:var(--mid)}
@@ -29,11 +46,35 @@
 .visual-accent-palette{margin-top:36px;gap:12px}
 .visual-accent-palette i{width:clamp(24px,3vw,42px)}
 .visual-system-block .visual-colour-caption{margin-top:26px}
+.visual-apple-reference{margin:42px 0 0;min-width:0}
+.visual-apple-reference img{display:block;width:100%;height:auto}
+.visual-apple-reference figcaption{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:baseline;margin-top:20px;color:var(--mid)}
+.visual-apple-reference figcaption>span{color:var(--ink)}
+.visual-apple-reference figcaption>a,.visual-source-link{font-size:14px;line-height:1.6;color:var(--mid);text-decoration:underline;text-underline-offset:4px}
+.visual-apple-reference .visual-apple-dark{display:none}
+[data-theme="dark"] .visual-apple-reference .visual-apple-light{display:none}
+[data-theme="dark"] .visual-apple-reference .visual-apple-dark{display:block}
+.visual-apple-tabbar img{width:min(100%,440px);margin-block:48px}
+.visual-apple-sheet img{width:min(100%,245px)}
+.visual-shape-rule{margin-top:48px;padding-top:32px}
+.visual-shape-rule h4{font-weight:300;margin:0 0 16px}
+.visual-shape-rule p{color:var(--mid);margin:0 0 18px}
 @media(max-width:1000px){
- .case-visual-system{grid-template-columns:minmax(0,1fr)}
- .visual-system-column{grid-column:1;width:min(100%,620px);justify-self:end}
+ .case-visual-system{column-gap:36px;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}
+ .visual-device-stage{top:clamp(96px,12svh,144px);width:min(100%,calc((100svh - 180px)*.49))}
 }
 @media(max-width:720px){
+ .case-visual-system{display:block}
+ .sudoku-story>.case-visual-system{padding-top:64px}
+ .visual-device-column{position:sticky;top:64px;z-index:6;height:min(32svh,270px);margin-bottom:30px;background:var(--paper)}
+ .visual-device-column::before{content:"";position:absolute;inset:-64px -26px 0;z-index:-1;background:var(--paper)}
+ .visual-device-stage{position:relative;top:0;height:100%;width:calc(min(32svh,270px)*.49);margin-inline:auto}
+ .visual-device-stage .sudoku-device{height:100%}
+ .visual-system-column{width:100%;min-width:0}
+ .visual-device-overlay .visual-leader{display:none}
+ .visual-device-overlay rect{stroke-width:1}
+ .visual-system-block[data-visual-step],.visual-type-specimen[data-visual-step],.visual-shape-rule[data-visual-step]{min-height:48svh;padding-bottom:32px}
+ .visual-apple-reference[data-visual-step]{min-height:48svh;padding-bottom:32px}
  .visual-system-column>h2{margin-bottom:48px}
  .visual-system-block+.visual-system-block{margin-top:64px}
  .visual-type-specimen,.visual-type-specimen+.visual-type-specimen{margin-top:36px}
@@ -42,4 +83,5 @@
  .visual-accent-palette{gap:8px}
  .visual-accent-palette i{width:clamp(24px,7vw,34px)}
  .visual-pencil-marks{width:66px;font-size:18px}
+ .visual-apple-reference figcaption{gap:8px 18px}
 }
