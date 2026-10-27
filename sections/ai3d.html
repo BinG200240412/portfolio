@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="../assets/i18n-main.js?v=focused-works-20261024"></script>
 <script src="../assets/i18n-cases.js?v=three-workflows-20261026"></script>
+<script src="../assets/ai3d-story-i18n.js?v=framework-20261027-1"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=active-chrome-20261026"></script>
 <title>良渚复原 — AI 三维场景工作流</title>
@@ -165,8 +166,8 @@
 <script defer src="../assets/works/ai3d/workflow/graph.js?v=20261026-three-workflows-3"></script>
 <link rel="stylesheet" href="../assets/ambient-field.css?v=tidal-led-20261024">
 <script defer src="../assets/ambient-field.js?v=tidal-led-20261024"></script>
-<link rel="stylesheet" href="../assets/page-snap.css?v=content-bead-rail-20261027">
-<script defer src="../assets/page-snap.js?v=content-bead-rail-20261027"></script>
+<link rel="stylesheet" href="../assets/page-snap.css?v=three-stage-story-20261027">
+<script defer src="../assets/page-snap.js?v=three-stage-story-20261027"></script>
 <link rel="stylesheet" href="../assets/media-corners.css?v=video-preview-detail-20261026">
 <link rel="stylesheet" href="../assets/video-detail.css?v=video-preview-detail-20261026">
 <script defer src="../assets/video-detail.js?v=video-preview-detail-20261026"></script>
@@ -174,6 +175,7 @@
 <link rel="stylesheet" href="../assets/media-view-only.css?v=view-only-media-20261026">
 <script defer src="../assets/media-view-only.js?v=view-only-media-20261026"></script>
 <link rel="stylesheet" href="../assets/editorial-hierarchy.css?v=stepped-type-20261026">
+<link rel="stylesheet" href="../assets/ai3d-story.css?v=framework-20261027-1">
 </head>
 <body class="legacy-case liangzhu-case">
 <div class="hero particle-cover" id="liangzhu-particle-cover" data-particle-cover aria-labelledby="liangzhu-cover-title">
@@ -193,49 +195,30 @@
   </div>
 </div>
 
-<div class="wrap">
-  <div class="intro">
-    <p class="logline rv">把一张平面插画，<br>几分钟内变成可以<em>走进去</em>的良渚。</p>
-  </div>
-
-  <!-- ACT I -->
-  <div class="actbar rv">
-    <h2>风格重绘工作流</h2>
-    <p class="lead">用 ComfyUI 把良渚实景与参考画风重绘成统一的手绘风格场景——以图生图、双重 ControlNet 约束轮廓、三阶迭代采样，配合自训的"水乡泽国" LoRA 固化画风。</p>
-  </div>
-
-  <section class="s">
-    <div class="rail rv"><div class="htitle">良渚背景调研</div></div>
-    <div class="body">
-      <p class="lead rv">良渚古城是典型的"水乡泽国"神权国家。场景复原聚焦于三组核心特征：</p>
-      <ul class="featlist rv">
-        <li><span class="k">空间格局</span><span class="v">呈现"宫城–内城–外城"的三重向心结构，强调水网密布与庞大的水利系统。</span></li>
-        <li><span class="k">建筑形态</span><span class="v">核心为莫角山高台宫殿（夯土巨构），周边分布临水的干栏式民居与稻田。</span></li>
-        <li><span class="k">整体氛围</span><span class="v">营造湿地之上、神权至上，独木舟穿梭于芦苇与城墙间的史前都邑景观。</span></li>
-      </ul>
-      <figure class="inline-fig rv">
-        <img src="../assets/works/ai3d/scenes.jpg" alt="良渚相关现有场景航拍">
-        <figcaption><span>良渚相关现有场景</span></figcaption>
-      </figure>
-    </div>
+<main class="wrap liangzhu-story" id="liangzhu-process">
+  <section class="liangzhu-story-page liangzhu-overview" id="process-overview" data-ai3d-page aria-labelledby="overview-title">
+    <header class="liangzhu-chapter-head rv">
+      <h2 id="overview-title">从一张图到一个三维场景</h2>
+      <p>这套流程分为三步：先统一场景画风，再把图片扩展成全景，最后结合场景描述生成三维世界。前一步的输出，就是后一步的输入。</p>
+    </header>
+    <ol class="liangzhu-process-chain" aria-label="三个工作流的衔接关系">
+      <li><a href="#workflow-one"><h3>工作流一</h3><p class="liangzhu-step-name">风格重绘</p><p>实景或参考图 → 风格化场景图</p></a></li>
+      <li><a href="#workflow-two"><h3>工作流二</h3><p class="liangzhu-step-name">图生全景</p><p>承接场景图 → 2:1 全景图</p></a></li>
+      <li><a href="#workflow-three"><h3>工作流三</h3><p class="liangzhu-step-name">理解场景，生成三维</p><p>全景图 + 场景描述 → 三维场景</p></a></li>
+    </ol>
+    <p class="liangzhu-overview-note">输入是一张二维图片；最终得到可以从不同视角浏览的三维场景。</p>
   </section>
 
-  <section class="feat">
-    <div class="fhead rv"><div class="htitle">风格预演</div></div>
-    <p class="fintro rv">融合宫崎骏手绘美学，重构良渚水乡。盛夏积云下，柔光轻抚夯土宫殿与干栏木屋，清澈水道穿梭葱郁芦苇，营造清新治愈的史前梦境。</p>
-    <figure class="rv">
-      <img src="../assets/works/ai3d/preview.jpg" alt="风格预演 · 画风参考">
-      <figcaption><span>画风参考 · 手绘 / 治愈系</span></figcaption>
-    </figure>
-    <figure class="inline-fig rv">
-      <img src="../assets/works/ai3d/pipeline.jpg" alt="重绘流程：输入预处理 → 提示词构建 → 双重 ControlNet → 三阶采样 → 模型选择">
-      <figcaption><span>ImageScale → WD14 → CR Text → 双 ControlNet → 三阶采样 → Flat-2D + LoRA</span></figcaption>
-    </figure>
-  </section>
-
-  <section class="feat">
-    <div class="fhead rv"><div class="htitle">工作流一</div></div>
-    <p class="fintro rv">可输入在良渚一致公园采集的真实场景与相应艺术风格。<strong>LoRA</strong> 重点训练了"水乡泽国"的核心意象——精确捕捉莫角山夯土台基、干栏式木构与芦苇湿地的形态纹理，并固化清新治愈的色调。</p>
+  <section class="liangzhu-story-page liangzhu-workflow-chapter" id="workflow-one" data-ai3d-page aria-labelledby="workflow-one-title">
+    <header class="liangzhu-chapter-head rv">
+      <h2 id="workflow-one-title">工作流一 · 风格重绘</h2>
+      <p>从实景或参考图出发，在保留场景结构的同时统一建筑、植被和光影的表现，得到下一步使用的风格化场景图片。</p>
+    </header>
+    <dl class="liangzhu-io">
+      <div><dt>输入</dt><dd>实景或参考图片</dd></div>
+      <div><dt>处理</dt><dd>图像预处理、提示词、LoRA 与 ControlNet 约束、分段采样</dd></div>
+      <div><dt>输出</dt><dd>风格化场景图，交给工作流二</dd></div>
+    </dl>
     <figure class="rv workflow-figure" id="liangzhu-workflow" data-media-corners-ignore>
       <div class="workflow-native" data-workflow-native="1" data-workflow-src="graph.json" data-i18n-ignore data-media-corners-ignore>
         <div class="workflow-frame">
@@ -254,44 +237,26 @@
         </div>
       </div>
     </figure>
-  </section>
-
-  <!-- ACT II -->
-  <div class="actbar rv">
-    <h2>图生全景图工作流</h2>
-    <p class="lead">把单张概念图延展成 360° 无缝全景，铺成可走进的 VR 环境底座——针对空间电影前期场景搭建的快速演示。</p>
-  </div>
-
-  <section class="s">
-    <div class="rail rv"><div class="htitle">案例概念</div></div>
-    <div class="body">
-      <p class="lead rv">为空间电影（Spatial Cinema）与游戏开发的前期制作，提供一套"<strong>零成本场景搭建</strong>"方案：把传统的 2D 概念设计图，瞬间转化为可进入、可探索的 3D VR 空间。</p>
-      <p class="rv">在实景搭建或高精 3D 建模之前，导演与游戏制作人可以通过一张平面图，在几分钟内佩戴 VR 头显"走进"场景，评估空间感、光影氛围与构图，极大降低试错成本。</p>
-    </div>
-  </section>
-
-  <section class="feat">
-    <div class="fhead rv"><div class="htitle">关键要点</div></div>
-    <div class="acts rv">
-      <div class="act"><div class="an">IP-Adapter</div><div class="at">锁定画风</div><p>强制全景扩展区域严格继承首图的笔触与色调，拒绝画风割裂。</p></div>
-      <div class="act"><div class="an">Seamless Tiling</div><div class="at">消除接缝</div><p>处理左右边界闭合，确保 VR 头显在 360° 视野内完美连贯。</p></div>
-      <div class="act"><div class="an">Equirectangular</div><div class="at">升维空间</div><p>输出 2:1 标准全景格式，将"平面插画"转化为沉浸式 VR 环境底座。</p></div>
-    </div>
-  </section>
-
-  <section class="feat">
-    <div class="fhead rv"><div class="htitle">工作流二</div></div>
-    <div class="rv" style="max-width:75ch;margin-bottom:30px">
-        <p class="fintro" style="margin-bottom:18px">这一步采用 <strong>Flux-Kontext</strong> 技术路径，而非传统 IP-Adapter 拼接，逻辑更简练高效。流程通过 Flux 架构实现单图向 360° 全景的智能延展——输入单图经 VAEEncode 与 ReferenceLatent 转化为"视觉种子"，由 Kontext dev 模型配合专用全景 LoRA，在 "create a 360 hdr" 提示下自动补全视野盲区，最后由 UltimateSDUpscale 高清重绘，输出无缝 HDRI 贴图。</p>
-        <ul class="speclist">
-          <li><b>模型加载</b>FLUX.1 转换器（UNet/Transformer）+ 专用 VAE + 双文本编码器（CLIP-L / T5XXL）</li>
-          <li><b>双重条件化</b>ClipTextEncodeFlux 将风格提示与全景叙事分别编码，融合成统一 CONDITIONING</li>
-          <li><b>无缝模型修补</b>Seamless Tile 在潜在空间做环绕（wrap-around）处理，保证边缘无缝</li>
-          <li><b>潜在空间采样</b>KSampler 在预设 2:1 全景比例的空潜在图上去噪</li>
-          <li><b>专业解码管线</b>Circular VAE Decode + HDR Vae Decode 保留无缝与动态范围（&gt;1.0 不钳制）</li>
-          <li><b>色彩与保存</b>sRGB → Linear，Save HDR Image 输出 32 位 .hdr / .exr</li>
-        </ul>
+    <details class="liangzhu-reference">
+      <summary>场地与画风参考</summary>
+      <div class="liangzhu-reference-media">
+        <figure><img src="../assets/works/ai3d/scenes.jpg" alt="良渚相关现有场景航拍" loading="lazy"><figcaption>场地参考</figcaption></figure>
+        <figure><img src="../assets/works/ai3d/preview.jpg" alt="风格预演 · 画风参考" loading="lazy"><figcaption>画风参考</figcaption></figure>
+        <figure><img src="../assets/works/ai3d/pipeline.jpg" alt="重绘流程：输入预处理 → 提示词构建 → 双重 ControlNet → 三阶采样 → 模型选择" loading="lazy"></figure>
       </div>
+    </details>
+  </section>
+
+  <section class="liangzhu-story-page liangzhu-workflow-chapter" id="workflow-two" data-ai3d-page aria-labelledby="workflow-two-title">
+    <header class="liangzhu-chapter-head rv">
+      <h2 id="workflow-two-title">工作流二 · 图生全景</h2>
+      <p>接收工作流一的场景图，用 Flux-Kontext 延展视野，保持原有画风，生成供下一步理解和建模的 2:1 全景图片。</p>
+    </header>
+    <dl class="liangzhu-io">
+      <div><dt>输入</dt><dd>工作流一输出的场景图</dd></div>
+      <div><dt>处理</dt><dd>参考图引导、全景扩展与高清放大</dd></div>
+      <div><dt>输出</dt><dd>2:1 全景图，示例结果为 6144 × 3072</dd></div>
+    </dl>
     <figure class="rv workflow-figure" id="liangzhu-workflow-2" data-media-corners-ignore>
       <div class="workflow-native" data-workflow-native="2" data-workflow-src="graph2.json" data-i18n-ignore data-media-corners-ignore>
         <div class="workflow-frame">
@@ -310,34 +275,22 @@
         </div>
       </div>
     </figure>
-    <div class="callout rv">
-      <div class="ct">核心几何约束</div>
-      <p>全景图映射到球体时必须是 2:1——设成 1:1，VR 里的天顶与地底会被压扁，世界就变形了。</p>
-    </div>
-    <figure class="rv">
-      <img src="../assets/works/ai3d/panorama11.jpg" alt="最终生成作品 · 360° 全景">
-      <figcaption><span>最终生成作品</span></figcaption>
-    </figure>
+    <details class="liangzhu-reference">
+      <summary>原始全景生成记录</summary>
+      <div class="liangzhu-reference-media"><figure><img src="../assets/works/ai3d/panorama11.jpg" alt="最终生成作品 · 360° 全景" loading="lazy"></figure></div>
+    </details>
   </section>
 
-  <!-- ACT III -->
-  <div class="actbar rv">
-    <h2>Marble · 高斯泼溅</h2>
-    <p class="lead">把全景图喂进 World Labs 的 Marble，结合 Janus-Pro 反推的语义引导，一键生成可在浏览器与 VR 头显里自由漫游的高斯泼溅三维世界。</p>
-  </div>
-
-  <section class="feat">
-    <div class="fhead rv"><div class="htitle">工作流程总说明</div></div>
-    <p class="fintro rv">风格化重绘 → 全景图扩展 → 提示词反推 → MARBLE 模型生成 → Gaussian Splatting。三段工作流首尾相接，把"一张实景照片"逐步推进成"一个可漫游的世界"。</p>
-    <figure class="rv">
-      <img src="../assets/works/ai3d/flow12.jpg" alt="工作流程总说明 · 全流程图">
-      <figcaption><span>重绘 → 全景 → 反推 → Marble → Splatting</span></figcaption>
-    </figure>
-  </section>
-
-  <section class="feat">
-    <div class="fhead rv"><div class="htitle">工作流三 · 输入到 Marble</div></div>
-    <p class="fintro rv">用 <strong>Janus-Pro-7B</strong> 对全景图反推出详尽的英文场景描述（PANO → CLIP → TEXT），再将"全景图 + 语义引导"一并喂入 Marble 的 Create New World——2D 全景作为图像输入，文本作为语义引导。</p>
+  <section class="liangzhu-story-page liangzhu-workflow-chapter" id="workflow-three" data-ai3d-page aria-labelledby="workflow-three-title">
+    <header class="liangzhu-chapter-head rv">
+      <h2 id="workflow-three-title">工作流三 · 场景理解与三维生成</h2>
+      <p>用 Janus-Pro 读取全景图，生成场景描述；再把全景图和这段描述一起输入 Marble，生成可探索的高斯泼溅三维场景。</p>
+    </header>
+    <dl class="liangzhu-io">
+      <div><dt>输入</dt><dd>工作流二输出的全景图</dd></div>
+      <div><dt>处理</dt><dd>Janus-Pro 反推描述 → Marble 生成场景</dd></div>
+      <div><dt>输出</dt><dd>可从不同视角浏览的三维场景</dd></div>
+    </dl>
     <figure class="rv workflow-figure" id="liangzhu-workflow-3" data-media-corners-ignore>
       <div class="workflow-native" data-workflow-native="3" data-workflow-src="graph3.json" data-i18n-ignore data-media-corners-ignore>
         <div class="workflow-frame">
@@ -356,31 +309,43 @@
         </div>
       </div>
     </figure>
-      <figure class="rv">
-        <img src="../assets/works/ai3d/marble_ui.jpg" alt="输入到 Marble · Create New World 界面">
-        <figcaption><span>全景输入 + 语义引导</span></figcaption>
-      </figure>
-    <figure class="inline-fig rv">
-      <img src="../assets/works/ai3d/img_input.jpg" alt="图片输入 · 360° 全景">
-      <figcaption><span>图片输入 · 360° 全景</span></figcaption>
-    </figure>
+    <div class="liangzhu-handoff">
+      <h3>从描述到三维场景</h3>
+      <div class="liangzhu-handoff-flow"><div><span>2:1 全景图</span><span aria-hidden="true">＋</span><span>场景描述</span></div><span aria-hidden="true">→</span><b data-i18n-ignore>Marble</b><span aria-hidden="true">→</span><span>三维场景</span></div>
+    </div>
+    <details class="liangzhu-reference">
+      <summary>原始输入与场景记录</summary>
+      <div class="liangzhu-reference-media">
+        <figure><img src="../assets/works/ai3d/marble_ui.jpg" alt="输入到 Marble · Create New World 界面" loading="lazy"></figure>
+        <figure><img src="../assets/works/ai3d/img_input.jpg" alt="图片输入 · 360° 全景" loading="lazy"></figure>
+      </div>
+    </details>
   </section>
 
-  <section class="feat">
-    <div class="fhead rv"><div class="htitle">输入场景模型</div></div>
-    <p class="fintro rv">Marble 输出可探索的高斯泼溅（Gaussian Splatting）三维场景——从稀疏点云到完整渲染，每个世界都附带可在浏览器与 VR 头显中打开的链接，真正"走进"复原后的良渚。</p>
-    <figure class="rv">
-      <img src="../assets/works/ai3d/splat.jpg" alt="输入场景模型 · 高斯泼溅三维场景预览">
-      <figcaption><span>点云 → 高斯泼溅 → 可漫游世界</span></figcaption>
-    </figure>
+  <section class="liangzhu-story-page liangzhu-outcome" id="process-result" data-ai3d-page aria-labelledby="result-title">
+    <header class="liangzhu-chapter-head rv">
+      <h2 id="result-title">一张图片，最终成为可探索的场景</h2>
+      <p>风格重绘确定画面，全景扩展补充视野，场景理解为三维生成提供描述。三段流程串起来，将一张二维图片转化为可以从不同视角浏览的三维场景。</p>
+    </header>
+    <div class="liangzhu-result-images">
+      <figure><img src="../assets/works/ai3d/workflow/previews/upscaled.webp" width="1500" height="750" alt="工作流二输出的全景图预览" loading="lazy"><figcaption>中间结果 · 全景图片</figcaption></figure>
+      <figure><img src="../assets/works/ai3d/scene-result.webp" width="935" height="412" alt="Marble 生成的良渚三维场景视图" loading="lazy"><figcaption>最终结果 · 三维场景</figcaption></figure>
+    </div>
+    <dl class="liangzhu-delivery">
+      <div><dt>中间产物</dt><dd>风格化图片、2:1 全景图片、场景描述</dd></div>
+      <div><dt>最终产物</dt><dd>Marble 高斯泼溅三维场景</dd></div>
+      <div><dt>网页呈现</dt><dd>将场景数据转换为 PLY 点云，得到页首可旋转、缩放的粒子场景</dd></div>
+    </dl>
+    <a class="liangzhu-scene-link" href="#liangzhu-particle-cover">体验三维结果<span aria-hidden="true">↗</span></a>
+    <details class="liangzhu-reference">
+      <summary>完整流程与场景结果记录</summary>
+      <div class="liangzhu-reference-media">
+        <figure><img src="../assets/works/ai3d/flow12.jpg" alt="工作流程总说明 · 全流程图" loading="lazy"></figure>
+        <figure><img src="../assets/works/ai3d/splat.jpg" alt="输入场景模型 · 高斯泼溅三维场景预览" loading="lazy"></figure>
+      </div>
+    </details>
   </section>
-
-  <section class="closing">
-    <p class="big rv">在搭起一砖一瓦之前，<br><em>先走进去看一眼</em>。</p>
-    <p class="tail rv">从一张航拍照片，到手绘风格场景，再到 360° 全景与可漫游的高斯泼溅世界——AI 让良渚的复原，从厚重的考古资料，变成可以真正"走进去"的一片土地。</p>
-  </section>
-</div>
-
+</main>
 
 <script>
   const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});

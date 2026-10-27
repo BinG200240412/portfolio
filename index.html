@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>蔡正阳 — Who am I</title>
 <meta name="description" content="蔡正阳的作品集。独立开发、交互与艺术。">
-<script src="assets/i18n-main.js?v=tea-20261026"></script>
+<script src="assets/i18n-main.js?v=project-order-20261027"></script>
 <script src="assets/i18n-cases.js?v=focused-copy-20261024"></script>
 <script src="assets/i18n.js?v=bilingual-20261023"></script>
 <script src="assets/theme.js?v=active-chrome-20261026"></script>
@@ -272,7 +272,8 @@
 <script>
 const QUESTION="Who am I ?", NAME="CaizheNGyaNG", HOME="作品集";
 const tr = value => window.PortfolioI18n?.t(value) || value;
-const SECTIONS=["数独","茶弦记","良渚 · AI 3D","良渚 · XR","千里江山"];
+const SECTIONS=["数独","良渚 · XR","茶弦记","良渚 · AI 3D","千里江山"];
+const PROJECT_LABELS={"良渚 · XR":"狗GO"};
 const COLLECTIONS=[{name:"练习",label:"Practice"},{name:"设计工具 · Skills",label:"Skills"},{name:"作品归档",label:"Archive"}];
 const WORK_MOTIFS={"数独":"sudoku","良渚 · AI 3D":"jade-cong","良渚 · XR":"quest-3","设计工具 · Skills":"skill"};
 const HUB=[
@@ -348,8 +349,8 @@ function renderMenu(level){
       ()=>{if(phase==='hub')it.act();})));
   }else{
     const selected=document.createElement('div');selected.className='selected-works';
-    SECTIONS.forEach(name=>{const link=buildItem(tr(name),
-      ()=>{markActivity();if(phase==='works')morphTo(tr(name));},
+    SECTIONS.forEach(name=>{const label=tr(PROJECT_LABELS[name]||name);const link=buildItem(label,
+      ()=>{markActivity();if(phase==='works')morphTo(label);},
       ()=>{if(phase==='works')morphTo(tr(HOME));},
       ()=>{if(phase==='works')enterSection(name);});
       if(WORK_MOTIFS[name])link.dataset.matrixMotif=WORK_MOTIFS[name];
@@ -449,7 +450,7 @@ const SECTION_PAGE={
   "茶弦记":"sections/tea.html?v=tea-source-20261027",
   "arright":"sections/arright.html",
   "数独":"sections/sudoku.html?v=balanced-layout-20261027",
-  "良渚 · AI 3D":"sections/ai3d.html?v=workflow-screen-wide-20261026-r3",
+  "良渚 · AI 3D":"sections/ai3d.html?v=three-stage-story-20261027-1",
   "良渚 · XR":"sections/xr.html?v=tail-only-arrows-20261027",
   "漂移之屋":"sections/drift.html",
   "千里江山":"sections/qianli.html?v=qianli-case-complete-20261025",
@@ -493,7 +494,7 @@ function enterSection(name){
     const fontPreview = document.documentElement.dataset.cjkPreview;
     if (fontPreview) frameURL.searchParams.set("cjk", fontPreview);
     const frame=document.createElement('iframe');
-    frame.className='native-frame';frame.title=tr(name);frame.loading='eager';frame.allowFullscreen=true;
+    frame.className='native-frame';frame.title=tr(PROJECT_LABELS[name]||name);frame.loading='eager';frame.allowFullscreen=true;
     const gate=window.PortfolioLoading.create('');
     gate.classList.add('project-loading-gate');
     gate.dataset.loadingState='loading';

@@ -1,0 +1,12 @@
+{
+  "scene-result.webp": {
+    "source": "splat.jpg",
+    "crop_xyxy": [
+      1335,
+      500,
+      2270,
+      912
+    ],
+    "description": "Original project Marble result, lower-row centre image. Cropped for the result comparison; no generated imagery."
+  }
+}

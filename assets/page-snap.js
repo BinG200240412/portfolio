@@ -112,9 +112,13 @@
     nodes[0].before(wrapper);
     wrapper.append(...nodes);
   };
-  const legacy = ['ai3d.html', 'qianli.html', 'drift.html'];
+  const legacy = ['qianli.html', 'drift.html'];
   let enabled = true;
-  if (legacy.includes(file)) {
+  if (file === 'ai3d.html') {
+    root.dataset.snapLayout = 'ai3d';
+    cover(document.querySelector('body > .hero'));
+    document.querySelectorAll('[data-ai3d-page]').forEach(page);
+  } else if (legacy.includes(file)) {
     root.dataset.snapLayout = 'legacy';
     if (file === 'drift.html') root.classList.add('drift-paged');
     cover(document.querySelector('body > .hero'));
