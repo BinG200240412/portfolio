@@ -109,7 +109,8 @@
       settled();
       setError(false);
       // Clicking the displayed image also cancels a different pending choice.
-      if (item === current && !failedCurrent && url(image.getAttribute('src')) === url(item.src)) return;
+      if (item === current && !failedCurrent &&
+        (gallery.dataset.demoScreen === current.id || url(image.getAttribute('src')) === url(item.src))) return;
       requested = item;
       gallery.setAttribute('aria-busy', 'true');
       try {

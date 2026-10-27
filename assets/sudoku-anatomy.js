@@ -18,7 +18,7 @@
       '题目出处': ['teal', 'tab'], '九宫格盘面': ['sage', 'bevel'],
       '解题工具': ['rose', 'offset'], '数字键盘': ['blue', 'steps'],
       '观察范围': ['sage', 'bevel'], '技法名称': ['ochre', 'tab'],
-      '先自己想想': ['teal', 'offset'], '指导进度': ['blue', 'strip'],
+      '先自己想想': ['teal', 'offset'], '观察提示': ['teal', 'offset'], '指导进度': ['blue', 'strip'],
       '返回解题': ['brick', 'steps'], '对局规则': ['teal', 'tab'],
       '盘面辅助': ['sage', 'bevel'], '导师设置': ['ochre', 'offset'],
       '外观偏好': ['rose', 'steps'], '玩家署名': ['brick', 'tab'],
@@ -28,12 +28,81 @@
       '残局预览': ['sage', 'bevel'], '进度摘要': ['ochre', 'strip'],
       '为残局命名': ['rose', 'tab'], '发送给朋友': ['teal', 'steps'],
       '返回对局': ['brick', 'offset'],
+      '题目与评级': ['ochre', 'tab'], '解法盘面': ['sage', 'bevel'],
+      '当前步骤': ['blue', 'offset'], '播放与暂停': ['brick', 'steps'],
+      '步骤进度': ['teal', 'strip'], '解法说明': ['rose', 'tab'],
     };
     const appearance = item => appearances[item.title] || ['sage', 'bevel'];
     const t = source => window.PortfolioI18n?.t(source) ?? source;
     const hint = gallery.querySelector('.anatomy-instruction');
     const hintSource = hint?.textContent.trim();
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     let items = [], buttons = [], paths = [], boxes = [], frames = [], nodes = [], selected = -1, active = -1, frame = 0;
+    let demoState = gallery.dataset.demoState || '', growthPending = false, growthRun = 0, animations = [];
+
+    function cancelGrowth() {
+      growthRun++;
+      animations.forEach(animation => animation.cancel());
+      animations = [];
+    }
+    function analysisState(state) {
+      stage.dataset.analysisState = state;
+      gallery.dataset.analysisState = state;
+      const unavailable = state !== 'complete';
+      notes.inert = unavailable;
+      if (unavailable) notes.setAttribute('aria-hidden', 'true');
+      else notes.removeAttribute('aria-hidden');
+    }
+    function finishGrowth() {
+      cancelGrowth(); growthPending = false;
+      analysisState('complete');
+    }
+    function grow() {
+      growthPending = false;
+      cancelGrowth();
+      if (reduced.matches || typeof stage.animate !== 'function') {
+        analysisState('complete'); return;
+      }
+      analysisState('growing');
+      const run = growthRun;
+      const animate = (element, keyframes, delay, duration, easing = 'ease-out') => {
+        const animation = element.animate(keyframes, { delay, duration, easing, fill: 'both' });
+        animations.push(animation);
+      };
+      items.forEach((item, i) => {
+        // Each thought starts at the real control. The long leader grows back
+        // from its final point toward the note, then the dotted shell opens.
+        const delay = i * 230, length = paths[i].getTotalLength();
+        animate(boxes[i], [{ opacity: 0 }, { opacity: getComputedStyle(boxes[i]).opacity }], delay, 260);
+        animate(nodes[i], [{ opacity: 0 }, { opacity: getComputedStyle(nodes[i]).opacity }], delay + 60, 200);
+        animate(paths[i], [
+          { strokeDasharray: `${length} ${length}`, strokeDashoffset: -length },
+          { strokeDasharray: `${length} ${length}`, strokeDashoffset: 0 },
+        ], delay + 180, 680, 'cubic-bezier(.22,.7,.2,1)');
+        const from = item.side === 'left' ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)';
+        animate(frames[i], [{ clipPath: from, opacity: 0 },
+          { clipPath: 'inset(0 0 0 0)', opacity: getComputedStyle(frames[i]).opacity }], delay + 800, 400);
+        const x = item.side === 'left' ? 12 : -12;
+        animate(buttons[i], [{ opacity: 0, transform: `translateX(${x}px)` },
+          { opacity: 1, transform: 'translateX(0)' }], delay + 900, 360);
+      });
+      Promise.allSettled(animations.map(animation => animation.finished)).then(() => {
+        if (run === growthRun) finishGrowth();
+      });
+    }
+    function demoChanged(event) {
+      const next = event.detail?.state;
+      if (!next || (event.detail?.screen && event.detail.screen !== gallery.dataset.screen)) return;
+      if (next === demoState && !growthPending) return;
+      demoState = next;
+      if (next === 'playing') {
+        cancelGrowth(); growthPending = false; selected = -1; activate(-1);
+        analysisState('waiting');
+      } else if (['complete', 'ready', 'failed'].includes(next)) {
+        cancelGrowth(); growthPending = !reduced.matches;
+        analysisState(growthPending ? 'pending' : 'complete'); schedule();
+      }
+    }
 
     function el(name, attributes) {
       const node = document.createElementNS(NS, name);
@@ -103,6 +172,10 @@
           note.button.style.setProperty('--note-y', `${note.top}px`);
         }
       });
+      // Layout changes replace the SVG. Settle an in-flight reveal instead of
+      // restarting it on every resize/font event or retaining detached effects.
+      const wasGrowing = stage.dataset.analysisState === 'growing';
+      if (wasGrowing) cancelGrowth();
       svg.setAttribute('viewBox', `0 0 ${rect.width} ${rect.height}`);
       const leaders = el('g', {}), regions = el('g', {}), outlines = el('g', {}), tips = el('g', {});
       svg.replaceChildren(leaders, regions, outlines, tips); paths = []; boxes = []; frames = []; nodes = [];
@@ -167,9 +240,12 @@
         paths.push(path); boxes.push(region); frames.push(outline); nodes.push(node);
       });
       activate(active);
+      if (growthPending) grow();
+      else if (wasGrowing) analysisState('complete');
     }
     function schedule() { if (!frame) frame = requestAnimationFrame(draw); }
     function render() {
+      if (stage.dataset.analysisState === 'growing') finishGrowth();
       items = window.SudokuAnatomyScreens[gallery.dataset.screen || 'board'] || [];
       selected = -1; active = -1; notes.replaceChildren();
       buttons = items.map((item, i) => {
@@ -200,12 +276,24 @@
       activate(-1); schedule();
     }
     gallery.addEventListener('sudoku:screen', render);
+    gallery.addEventListener('sudoku:demo-state', demoChanged);
     screen.addEventListener('load', schedule);
     const resize = new ResizeObserver(schedule);
     resize.observe(stage); resize.observe(screen); resize.observe(notes);
     document.fonts?.ready.then(schedule);
-    addEventListener('pagehide', () => { resize.disconnect(); cancelAnimationFrame(frame); frame = 0; });
+    reduced.addEventListener('change', () => {
+      if (reduced.matches && stage.dataset.analysisState !== 'waiting') finishGrowth();
+    });
+    addEventListener('pagehide', () => {
+      resize.disconnect(); cancelAnimationFrame(frame); frame = 0;
+      if (stage.dataset.analysisState === 'growing') finishGrowth();
+    });
     addEventListener('pageshow', () => { resize.observe(stage); resize.observe(screen); resize.observe(notes); schedule(); });
+    if (demoState === 'playing') analysisState('waiting');
+    else {
+      growthPending = ['complete', 'ready', 'failed'].includes(demoState) && !reduced.matches;
+      analysisState(growthPending ? 'pending' : 'complete');
+    }
     render();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });

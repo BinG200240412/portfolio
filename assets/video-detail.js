@@ -108,7 +108,8 @@
     player.play().then(() => { if (active !== state) player.pause(); }).catch(() => {});
   }
   function mount(video) {
-    if (video.closest('dialog') || previews.has(video)) return;
+    // Narrative recordings can own their playback and freeze-frame analysis.
+    if (video.hasAttribute('data-video-detail-ignore') || video.closest('dialog') || previews.has(video)) return;
     let host = video.closest('.fg-recording-stage');
     if (!host) {
       host = document.createElement('div');

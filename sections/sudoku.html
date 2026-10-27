@@ -6,16 +6,17 @@
 <script src="../assets/i18n-main.js?v=green-sudoku-20261024"></script>
 <script src="../assets/i18n-cases.js?v=focused-copy-20261024"></script>
 <script src="../assets/sudoku-case-i18n.js?v=transparent-phones-20261025"></script>
-<script src="../assets/sudoku-anatomy-data.js?v=studio-dots-20261025"></script>
+<script src="../assets/sudoku-anatomy-data.js?v=native-process-20261027"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=active-chrome-20261026"></script>
 <script defer src="../assets/vendor/gsap/gsap.min.js"></script>
 <script defer src="../assets/vendor/gsap/ScrollTrigger.min.js"></script>
 <script defer src="../assets/sudoku-hero-matrix.js?v=six-inks-20261026"></script>
 <script defer src="../assets/sudoku-scroll.js?v=site-layout-20261025"></script>
-<script defer src="../assets/sudoku-gallery.js?v=studio-dots-20261025"></script>
-<script defer src="../assets/sudoku-anatomy-icons.js?v=coloured-components-20261026"></script>
-<script defer src="../assets/sudoku-anatomy.js?v=coloured-components-20261026"></script>
+<script defer src="../assets/sudoku-gallery.js?v=native-process-20261027"></script>
+<script defer src="../assets/sudoku-demo-player.js?v=native-process-20261027"></script>
+<script defer src="../assets/sudoku-anatomy-icons.js?v=native-process-20261027"></script>
+<script defer src="../assets/sudoku-anatomy.js?v=native-process-20261027"></script>
 <script defer src="../assets/sudoku-case.js?v=docked-board-20261024"></script>
 <script defer src="../assets/sudoku-product-scene.js?v=studio-dots-20261025"></script>
 <meta name="description" content="Sudoku.2026：创作理念、字体与外观、解题体验，以及原生产品的实现。">
@@ -32,14 +33,15 @@
 <link rel="stylesheet" href="../assets/sudoku-hero.css?v=iphone-device-20261025">
 <link rel="stylesheet" href="../assets/sudoku-case.css?v=black-phones-20261025">
 <link rel="stylesheet" href="../assets/sudoku-character.css?v=transparent-phones-20261025">
-<link rel="stylesheet" href="../assets/sudoku-anatomy.css?v=coloured-components-20261026">
+<link rel="stylesheet" href="../assets/sudoku-anatomy.css?v=native-process-20261027">
+<link rel="stylesheet" href="../assets/sudoku-demo-player.css?v=native-process-20261027">
 <link rel="stylesheet" href="../assets/ambient-field.css?v=tidal-led-20261024">
 <script defer src="../assets/ambient-field.js?v=tidal-led-20261024"></script>
 <link rel="stylesheet" href="../assets/page-snap.css?v=content-bead-rail-20261027">
 <script defer src="../assets/page-snap.js?v=content-bead-rail-20261027"></script>
 <link rel="stylesheet" href="../assets/media-corners.css?v=video-preview-detail-20261026">
 <link rel="stylesheet" href="../assets/video-detail.css?v=video-preview-detail-20261026">
-<script defer src="../assets/video-detail.js?v=video-preview-detail-20261026"></script>
+<script defer src="../assets/video-detail.js?v=narrative-video-20261027"></script>
 <script defer src="../assets/media-corners.js?v=video-preview-detail-20261026"></script>
 <link rel="stylesheet" href="../assets/media-view-only.css?v=view-only-media-20261026">
 <script defer src="../assets/media-view-only.js?v=view-only-media-20261026"></script>
@@ -150,18 +152,19 @@
   <section class="sudoku-gallery" id="sudoku-gallery" aria-labelledby="experience-title" data-i18n-ignore>
     <div class="sudoku-gallery-copy">
       <div class="sudoku-screen-tabs" role="group" aria-label="界面与交互">
-        <button class="sudoku-screen-tab" type="button" data-screen="board" data-summary="已知数字、填写和候选笔记各有层级，让正在观察的关系留在眼前。" data-image="../assets/works/sudoku/board.png?v=green-20261024" data-caption="主棋盘" data-alt="数独主棋盘，鼠尾草绿色进度条与输入工具" aria-pressed="true">主棋盘</button>
-        <button class="sudoku-screen-tab" type="button" data-screen="coach" data-summary="从当前盘面找到值得观察的线索，再把判断和落子留给解题的人。" data-image="../assets/works/sudoku/coach.png?v=green-20261024" data-caption="分步辅导" data-alt="离线分步辅导，用绿色框线标出隐性唯一的目标行和格子" aria-pressed="false">分步辅导</button>
-        <button class="sudoku-screen-tab" type="button" data-screen="settings" data-summary="规则、盘面辅助、声音与外观按类别组织，让每次调整都有明确的位置。" data-image="../assets/works/sudoku/settings.png?v=green-20261024" data-caption="设置" data-alt="数独设置页面" aria-pressed="false">设置</button>
-        <button class="sudoku-screen-tab" type="button" data-screen="classics" data-summary="从经典题目中选一局，带着不同的难度与线索继续练习。" data-image="../assets/works/sudoku/classics.png?v=green-20261024" data-caption="经典残局" data-alt="经典残局题库页面" aria-pressed="false">经典残局</button>
-        <button class="sudoku-screen-tab" type="button" data-screen="share" data-summary="保留当前盘面与填写进度，把这一局交给朋友，也把理解与完成的喜悦分享出去。" data-image="../assets/works/sudoku/share.png?v=green-20261024" data-caption="分享残局" data-alt="分享残局页面，显示当前盘面预览和发送给朋友按钮" aria-pressed="false">分享残局</button>
+        <button class="sudoku-screen-tab" type="button" data-screen="board" data-summary="已知数字、填写和候选笔记各有层级，让正在观察的关系留在眼前。" data-image="../assets/works/sudoku/demos/board.jpg" data-caption="主棋盘" data-alt="数独主棋盘，鼠尾草绿色进度条与输入工具" aria-pressed="true">主棋盘</button>
+        <button class="sudoku-screen-tab" type="button" data-screen="coach" data-summary="从当前盘面找到值得观察的线索，再把判断和落子留给解题的人。" data-image="../assets/works/sudoku/demos/coach.jpg" data-caption="分步辅导" data-alt="离线分步辅导，用绿色框线标出隐性唯一的目标行和格子" aria-pressed="false">分步辅导</button>
+        <button class="sudoku-screen-tab" type="button" data-screen="settings" data-summary="规则、盘面辅助、声音与外观按类别组织，让每次调整都有明确的位置。" data-image="../assets/works/sudoku/demos/settings.jpg" data-caption="设置" data-alt="数独设置页面" aria-pressed="false">设置</button>
+        <button class="sudoku-screen-tab" type="button" data-screen="classics" data-summary="从经典题目中选一局，带着不同的难度与线索继续练习。" data-image="../assets/works/sudoku/demos/classics.jpg" data-caption="经典残局" data-alt="经典残局题库页面" aria-pressed="false">经典残局</button>
+        <button class="sudoku-screen-tab" type="button" data-screen="walkthrough" data-image="../assets/works/sudoku/demos/walkthrough.jpg" data-caption="分步解法" data-alt="AI Escargot 的原生分步解法，暂停在第十步" aria-pressed="false">分步解法</button>
+        <button class="sudoku-screen-tab" type="button" data-screen="share" data-summary="保留当前盘面与填写进度，把这一局交给朋友，也把理解与完成的喜悦分享出去。" data-image="../assets/works/sudoku/demos/share.jpg" data-caption="分享残局" data-alt="分享残局页面，显示当前盘面预览和发送给朋友按钮" aria-pressed="false">分享残局</button>
       </div>
       <p id="sudoku-gallery-status" role="status" aria-live="polite" hidden></p>
     </div>
     <div class="sudoku-anatomy" id="sudoku-anatomy">
     <svg class="anatomy-connections" aria-hidden="true"></svg>
     <figure class="sudoku-gallery-figure">
-      <button class="image-open" id="sudoku-active-open" type="button" data-image="../assets/works/sudoku/board.png?v=green-20261024" data-caption="主棋盘" data-kind="screen" aria-label="放大查看主棋盘截图"><span class="sudoku-device"><img class="sudoku-device-screen" id="sudoku-active-image" src="../assets/works/sudoku/board.png?v=green-20261024" width="1320" height="2868" alt="数独主棋盘，鼠尾草绿色进度条与输入工具" decoding="async"></span></button>
+      <button class="image-open" id="sudoku-active-open" type="button" data-image="../assets/works/sudoku/demos/board.jpg" data-caption="主棋盘" data-kind="screen" aria-label="放大查看主棋盘截图"><span class="sudoku-device"><img class="sudoku-device-screen" id="sudoku-active-image" src="../assets/works/sudoku/demos/board.jpg" width="1320" height="2868" alt="数独主棋盘，鼠尾草绿色进度条与输入工具" decoding="async"></span></button>
       <figcaption id="sudoku-active-caption" class="case-sr-only">主棋盘</figcaption>
     </figure>
     <div class="anatomy-callouts" id="sudoku-anatomy-callouts"></div>

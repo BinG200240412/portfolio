@@ -17,3 +17,5 @@
 常规保存入口限制使用 `assets/media-view-only.css` 与 `assets/media-view-only.js`，每个独立页面和首页均需加载；正文复制、作品导航与 App Store 链接正常保留。
 
 视频双态使用 `assets/video-detail.css/js`，在切角脚本前加载。它保留原页内 video，详情使用独立播放器，避免样式和自动播放策略互相干扰。打开时设置 `html.video-detail-open` 并在 document 派发 `portfolio:video-detail`（`detail: {open, source}`）；由专页管理自动预览的视频标记 `data-video-preview-managed="true"`，在此事件中重算可见性并暂停/恢复。关闭时先归还有效进度，再解除状态、恢复原有预览策略与焦点；页面/宿主隐藏时停止详情播放。切角豁免和详情播放器都继续受素材保存限制约束。
+
+有明确“操作过程 → 定格 → 界面拆解”时序的手机演示由专页管理，视频标记 `data-video-detail-ignore`，保留原手机硬件与终帧放大入口。它不由共享脚本包装成第二个播放器；仍受保存限制，离屏、页面隐藏及媒体弹窗打开时暂停。数独的实现为 `assets/sudoku-demo-player.js`。

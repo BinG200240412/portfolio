@@ -1,5 +1,7 @@
 # 极简数独截图来源
 
+2026-10-27：第三部分新增六段原生操作录屏与对应终帧，采集自下述同一份 `1.2 (28)` 开发构建，原有 PNG 保留。完整路径、剪辑范围、规格与网页播放/定格流程见 [`docs/sudoku-native-process.md`](../../../docs/sudoku-native-process.md)。
+
 采集日期：2026-10-24。此目录用于第一版极简数独，Bundle ID `com.hanyuzhu.sudoku`、App Store ID `6775198044`；与美式报刊视觉探索的素材分开。
 
 ## iPhone 机身外框

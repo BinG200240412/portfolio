@@ -73,8 +73,8 @@
       {
         title: '观察范围',
         text: '高亮相关行与目标格。',
-        anchor: [81.6, 31.6],
-        bounds: [2.7, 28.9, 94.6, 5.3],
+        anchor: [50, 50.9],
+        bounds: [2.7, 48.4, 94.6, 5.0],
         side: 'left',
         position: 30
       },
@@ -87,8 +87,8 @@
         position: 58
       },
       {
-        title: '先自己想想',
-        text: '对照行、列、宫，排除已有数字。',
+        title: '观察提示',
+        text: '先指出值得观察的行，留下独立推理的空间。',
         anchor: [48, 83.6],
         bounds: [4.5, 77.6, 91.2, 9],
         side: 'left',
@@ -96,7 +96,7 @@
       },
       {
         title: '指导进度',
-        text: '四个圆点标示指导步骤。',
+        text: '三个圆点标示指导步骤。',
         anchor: [91.4, 77.4],
         bounds: [87.4, 77, 8.4, 0.8],
         side: 'right',
@@ -203,6 +203,56 @@
         position: 72
       }
     ],
+    walkthrough: [
+      {
+        title: '题目与评级',
+        text: '原题名称与 SE 评级。',
+        anchor: [30, 12.4],
+        bounds: [4.5, 10.2, 67, 4.3],
+        side: 'left',
+        position: 12
+      },
+      {
+        title: '解法盘面',
+        text: '区分题目数字与解法填写。',
+        anchor: [50, 34.3],
+        bounds: [9.2, 15.5, 81.6, 37.5],
+        side: 'right',
+        position: 30
+      },
+      {
+        title: '当前步骤',
+        text: '说明本步技法与落子。',
+        anchor: [50, 55.2],
+        bounds: [20, 54.3, 60, 1.8],
+        side: 'left',
+        position: 44
+      },
+      {
+        title: '播放与暂停',
+        text: '连续观看，或随时暂停。',
+        anchor: [9.8, 59.3],
+        bounds: [5.7, 57.4, 8, 3.8],
+        side: 'right',
+        position: 57
+      },
+      {
+        title: '步骤进度',
+        text: '拖动回看步骤与计数。',
+        anchor: [50, 59.3],
+        bounds: [17.5, 58.3, 77, 2.1],
+        side: 'left',
+        position: 72
+      },
+      {
+        title: '解法说明',
+        text: '超出现有技法时，明确标注揭晓。',
+        anchor: [50, 63.5],
+        bounds: [12, 62.5, 77, 2],
+        side: 'right',
+        position: 83
+      }
+    ],
     share: [
       {
         title: '残局预览',
@@ -248,6 +298,7 @@
   };
 
   Object.assign(window.PORTFOLIO_TRANSLATIONS ||= {}, {
+    'AI Escargot 的原生分步解法，暂停在第十步': 'The native AI Escargot walkthrough, paused at step ten',
     '把界面展开来看。': 'A closer look at the interface.',
     '选择一个组件，看看它在这一局里做什么。': 'Select a component to see what it does in a game.',
     '进度条': 'Progress strip',
@@ -271,8 +322,11 @@
     '当前技法：隐性唯一。': 'Current technique: hidden single.',
     '先自己想想': 'Think it through first',
     '对照行、列、宫，排除已有数字。': 'Check the row, column and box to rule out existing digits.',
+    '观察提示': 'Observation prompt',
+    '先指出值得观察的行，留下独立推理的空间。': 'Point to a row worth observing while leaving room for independent reasoning.',
     '指导进度': 'Guidance progress',
     '四个圆点标示指导步骤。': 'Four dots mark the guidance steps.',
+    '三个圆点标示指导步骤。': 'Three dots mark the guidance steps.',
     '返回解题': 'Back to solving',
     '收起指导，继续解题。': 'Close the guidance and continue solving.',
     '对局规则': 'Game rules',
@@ -297,6 +351,18 @@
     '了解创作者与题目背景。': 'Learn about the creator and puzzle background.',
     '分步解法': 'Step-by-step solution',
     '逐步查看完整推理。': 'Follow the complete reasoning step by step.',
+    '题目与评级': 'Puzzle and rating',
+    '原题名称与 SE 评级。': 'The puzzle name and SE rating.',
+    '解法盘面': 'Solution board',
+    '区分题目数字与解法填写。': 'Distinguish the clues from solution entries.',
+    '当前步骤': 'Current step',
+    '说明本步技法与落子。': 'Show the technique and placement for this step.',
+    '播放与暂停': 'Play and pause',
+    '连续观看，或随时暂停。': 'Watch continuously or pause at any time.',
+    '步骤进度': 'Step progress',
+    '拖动回看步骤与计数。': 'Drag to revisit steps and see the step count.',
+    '解法说明': 'Solution explanation',
+    '超出现有技法时，明确标注揭晓。': 'Clearly label a reveal when a step goes beyond the supported techniques.',
     '残局预览': 'Position preview',
     '预览原题与当前填写。': 'Preview the clues and current entries.',
     '进度摘要': 'Progress summary',

@@ -1,0 +1,10 @@
+/* Recorded screen and still occupy the same physical opening; the official
+ * hardware remains a separate foreground layer. */
+.sudoku-device>.sudoku-demo-video{z-index:0;opacity:0;pointer-events:none;background:#f4f1ea}
+.sudoku-device>.sudoku-demo-video.is-visible{opacity:1}
+.sudoku-demo-actions{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px 20px;margin:8px auto 0;text-align:center}
+.sudoku-demo-replay{min-height:44px;font-size:14px;line-height:1.7;color:var(--mid);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px}
+.sudoku-demo-replay:hover,.sudoku-demo-replay:focus-visible{color:var(--ink)}
+.sudoku-demo-feedback{max-width:34em;font-size:13px;line-height:1.7;color:var(--mid)}
+.sudoku-demo-feedback[hidden]{display:none}
+@media(max-width:720px){.sudoku-demo-actions{margin-top:16px;gap:4px 16px}}

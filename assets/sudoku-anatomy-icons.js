@@ -88,12 +88,14 @@
   const kinds = {
     '进度条': 'progress', '计时': 'clock', '暂停': 'pause', '难度': 'levels',
     '题目出处': 'document', '九宫格盘面': 'board', '解题工具': 'pencil', '数字键盘': 'keypad',
-    '观察范围': 'target', '技法名称': 'bulb', '先自己想想': 'bulb', '指导进度': 'progress',
+    '观察范围': 'target', '技法名称': 'bulb', '先自己想想': 'bulb', '观察提示': 'bulb', '指导进度': 'progress',
     '返回解题': 'return', '对局规则': 'document', '盘面辅助': 'target', '导师设置': 'sliders',
     '外观偏好': 'palette', '玩家署名': 'pencil', '底部导航': 'tabs', '经典名题': 'board',
     '题目列表': 'document', '难度与出处': 'levels', '历史渊源': 'clock', '分步解法': 'steps',
     '残局预览': 'board', '进度摘要': 'progress', '为残局命名': 'pencil',
-    '发送给朋友': 'share', '返回对局': 'return'
+    '发送给朋友': 'share', '返回对局': 'return',
+    '题目与评级': 'document', '解法盘面': 'board', '当前步骤': 'steps',
+    '播放与暂停': 'pause', '步骤进度': 'progress', '解法说明': 'bulb'
   };
   function create(title) {
     const kind = kinds[title] || 'document';
