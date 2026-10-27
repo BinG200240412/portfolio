@@ -10,11 +10,13 @@
   let boardOpener, zoom = 1;
   function scale(value) {
     zoom = Math.max(1, Math.min(4, value));
-    const width = scroller.clientWidth - (matchMedia('(max-width:600px)').matches ? 24 : 48);
+    const available = scroller.clientWidth - (matchMedia('(max-width:600px)').matches ? 24 : 48);
+    const width = Math.min(available, boardImage.naturalWidth || available);
     boardImage.style.setProperty('--board-width', `${width * zoom}px`);
     zoomLabel.textContent = `${Math.round(zoom * 100)}%`;
     minus.disabled = zoom === 1; plus.disabled = zoom === 4;
   }
+  boardImage.addEventListener('load', () => { if (viewer.open) scale(zoom); });
   document.querySelectorAll('[data-board],[data-tea-detail]').forEach(button => button.addEventListener('click', () => {
     boardOpener = button;
     boardImage.src = button.dataset.board
