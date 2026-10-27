@@ -94,11 +94,14 @@
       const next = event.detail?.state;
       if (!next || (event.detail?.screen && event.detail.screen !== gallery.dataset.screen)) return;
       if (next === demoState && !growthPending) return;
+      // The recording may finish after its analysis has already begun. Keep
+      // the same reveal running instead of restarting or settling it early.
+      if (next === 'complete' && demoState === 'analysing') { demoState = next; return; }
       demoState = next;
       if (next === 'playing') {
         cancelGrowth(); growthPending = false; selected = -1; activate(-1);
         analysisState('waiting');
-      } else if (['complete', 'ready', 'failed'].includes(next)) {
+      } else if (['analysing', 'complete', 'ready', 'failed'].includes(next)) {
         cancelGrowth(); growthPending = !reduced.matches;
         analysisState(growthPending ? 'pending' : 'complete'); schedule();
       }

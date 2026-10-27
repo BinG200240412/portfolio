@@ -14,6 +14,7 @@
 
     const rootURL = new URL('works/sudoku/demos/', scriptURL);
     const screens = new Set(['board', 'coach', 'settings', 'classics', 'walkthrough', 'share']);
+    const ANALYSIS_LEAD = .45;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const forced = matchMedia('(forced-colors: active)');
     const viewer = document.getElementById('media-viewer');
@@ -69,7 +70,9 @@
       if (!session) return;
       session.state = state; gallery.dataset.demoState = state;
       gallery.dataset.demoScreen = session.screen; copy();
-      status.textContent = state === 'playing'
+      status.textContent = state === 'analysing'
+        ? (english() ? `Opening the interface breakdown for ${label()}.` : `正在展开${label()}的界面拆解。`)
+        : state === 'playing'
         ? (english() ? `Showing how to use ${label()}.` : `正在演示${label()}的操作过程。`)
         : (english() ? `Paused on ${label()} for the interface breakdown.` : `已定格在${label()}，可以查看界面拆解。`);
       gallery.dispatchEvent(new CustomEvent('sudoku:demo-state', { detail: {
@@ -229,6 +232,17 @@
       if (!available()) { video.pause(); return; }
       start();
     }
+    function cueAnalysis() {
+      const current = session;
+      if (!current?.started || !current.wanted || current.analysisCued || video.paused ||
+        reduced.matches || forced.matches || !available() || !Number.isFinite(video.duration)) return;
+      // The terminal still already occupies this exact layout underneath the
+      // recording. Cue the analysis during its tail; keep playback at full speed.
+      if (!current.posterReady || image.src !== current.poster || !image.complete || !image.naturalWidth) return;
+      if (video.duration - video.currentTime > ANALYSIS_LEAD) return;
+      current.analysisCued = true;
+      announce('analysing', 'analysis-lead');
+    }
     function prepare(screen, manual = false) {
       if (!screens.has(screen)) return;
       if (session?.retryFrame) cancelAnimationFrame(session.retryFrame);
@@ -238,7 +252,7 @@
       const overrides = window.SudokuDemoClips?.[screen] || {};
       session = {
         screen, serial: ++serial, manual, wanted: true, started: false,
-        completed: false, posterReady: false, abortRetried: false, retryFrame: 0,
+        completed: false, posterReady: false, analysisCued: false, abortRetried: false, retryFrame: 0,
         fallbackImage: image.src || image.currentSrc,
         video: new URL(overrides.video || `${screen}.mp4`, rootURL).href,
         poster: new URL(overrides.poster || `${screen}.jpg`, rootURL).href,
@@ -259,8 +273,10 @@
       if (!session?.wanted || !available()) { video.pause(); return; }
       if (video.currentSrc !== session.video) return;
       session.started = true; video.classList.add('is-visible');
-      device.classList.remove('is-demo-loading'); announce('playing');
+      device.classList.remove('is-demo-loading');
+      if (!session.analysisCued) announce('playing');
     });
+    video.addEventListener('timeupdate', cueAnalysis);
     video.addEventListener('ended', () => finish('complete', 'ended'));
     video.addEventListener('canplay', sync);
     video.addEventListener('error', () => {
