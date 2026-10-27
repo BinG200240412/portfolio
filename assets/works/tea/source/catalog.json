@@ -1,0 +1,1401 @@
+{
+  "fileKey": "bSvsBCH8vfWBNuq5AItp6o",
+  "confirmedFinalPage": "1437:2",
+  "confirmedFinalBoards": [
+    "1437:3",
+    "1446:748"
+  ],
+  "workingPage": "579:409",
+  "method": "Original image fills and native vectors. Artwork never taken from a page screenshot. Crop geometry is measured in original pixels or Figma imageTransform.",
+  "excluded": [
+    "Page10 mobile accessory references",
+    "White-background SPACE BEHAVIOR reference panel below the actual black tea exhibition diagram",
+    "Generic leaf-click diagram placeholders used in serving slots",
+    "Clipped concept game screenshots and the miscropped four-column gameplay montage from the supplied composite board"
+  ],
+  "nativeRedraws": [
+    "Tea banquet sequence and eight-step labels",
+    "Tea ritual gesture diagram",
+    "Four qualitative whisking rule diagrams",
+    "Six spatial behaviors and exhibition shape language"
+  ],
+  "assets": [
+    {
+      "file": "hero-ritual-original.webp",
+      "displayWidth": 1448,
+      "displayHeight": 1086,
+      "sha256": "7332cedda01184c986c84cdad1990f13c6ea8a571bc493a1fffbda0e88f8e93c"
+    },
+    {
+      "file": "step-01.webp",
+      "displayWidth": 270,
+      "displayHeight": 270,
+      "sha256": "0785f072e7abcbd02ac4ab57a9c7413e85a238ddfe21f741319a61757d42f2b0"
+    },
+    {
+      "file": "step-02.webp",
+      "displayWidth": 270,
+      "displayHeight": 270,
+      "sha256": "442302b1e865706a22fb670c64fd03633dee8bee045f85e04ad065113d128433"
+    },
+    {
+      "file": "step-03.webp",
+      "displayWidth": 270,
+      "displayHeight": 270,
+      "sha256": "114e4c95fb10100782062717b2af83eaf4c99fcf754ff331812df2fb8a55b885"
+    },
+    {
+      "file": "step-04.webp",
+      "displayWidth": 270,
+      "displayHeight": 270,
+      "sha256": "c0e20b41018a7c8d194f8f7491cad521185f37bab22f81e36aa267707591a02f"
+    },
+    {
+      "file": "step-05.webp",
+      "displayWidth": 270,
+      "displayHeight": 270,
+      "sha256": "43aed041d39e8e1fd5f7a30cdc33322c4ceff0655f82241850fa32bf0e4762e4"
+    },
+    {
+      "file": "step-06.webp",
+      "displayWidth": 270,
+      "displayHeight": 270,
+      "sha256": "bc9aa135c04cd2d3a4d3f95ebeb6938157c76e1c915c271b0bef4f14f1f8ff47"
+    },
+    {
+      "file": "step-07.webp",
+      "displayWidth": 270,
+      "displayHeight": 270,
+      "sha256": "8e3517db0b5e45a6723547f36f23ac89ccd0da6e73c5475ac68000bd4bdc2fd6"
+    },
+    {
+      "file": "step-08.webp",
+      "displayWidth": 270,
+      "displayHeight": 270,
+      "sha256": "6a3826e6fbc0e90e11c4a17f4d1621a2eda7ee15ac2f3221b6617df46f9b900f"
+    },
+    {
+      "file": "research-sheet.webp",
+      "displayWidth": 1448,
+      "displayHeight": 1086,
+      "sha256": "87c9df768639a195b782a008c43561e78c777f89065b84a739ddaad0ad469463"
+    },
+    {
+      "file": "prototype-wake.webp",
+      "displayWidth": 2360,
+      "displayHeight": 1640,
+      "sha256": "5aa036973c9108e6cc65a8774b8d15eddabdb83a0ee52326c78350d610ee900d"
+    },
+    {
+      "file": "prototype-grind.webp",
+      "displayWidth": 2360,
+      "displayHeight": 1640,
+      "sha256": "13b508209bf6e6e656c8dae3aacdcdb1bafa71901ad6a97db85b278b7659c8fe"
+    },
+    {
+      "file": "prototype-whisk.webp",
+      "displayWidth": 2360,
+      "displayHeight": 1640,
+      "sha256": "e42be9617f45bd563f89aef9e33439851fc1d3458c054d84780b14932795b34d"
+    },
+    {
+      "file": "mechanism-powder.svg",
+      "displayWidth": 183,
+      "displayHeight": 199,
+      "sha256": "31c2fd5325e93bf66230b83df64958de3095af2c30ca0b574ab05f028198ae49"
+    },
+    {
+      "file": "mechanism-catch.svg",
+      "displayWidth": 187,
+      "displayHeight": 202,
+      "sha256": "588ec0fb8274f0f74b4e222afd94e054b32cb6a3c440deb00800959fe0cede40"
+    },
+    {
+      "file": "mechanism-long.svg",
+      "displayWidth": 184,
+      "displayHeight": 199,
+      "sha256": "ac27be2284b388c5ae8a50e6d5bf623decad4b682aafb5c5939bac0d91789565"
+    },
+    {
+      "file": "mechanism-rest.svg",
+      "displayWidth": 177,
+      "displayHeight": 193,
+      "sha256": "1322fe35cd8500c15a8d236b6138018e130eee16d0f2aac08f9c40d1ccb54de9"
+    },
+    {
+      "file": "master-01.webp",
+      "displayWidth": 390,
+      "displayHeight": 430,
+      "sha256": "390451cdca872ecaefb82074286684303807c6050abd1e56b104b084fa3cc568"
+    },
+    {
+      "file": "master-02.webp",
+      "displayWidth": 390,
+      "displayHeight": 430,
+      "sha256": "b6a6c75d24496f90d4c550ffe565d2e870cf010d964d145b5c532fa6b97060e1"
+    },
+    {
+      "file": "master-03.webp",
+      "displayWidth": 390,
+      "displayHeight": 430,
+      "sha256": "ac6f30e19e9c3164c7ac10cbcdeb47eab1f3109e255e8e3265f00a7dd4b03e5b"
+    },
+    {
+      "file": "master-04.webp",
+      "displayWidth": 390,
+      "displayHeight": 430,
+      "sha256": "4e329c709a03fe5006d0711f9f175038b3efd908b49bb497a035866fe476a272"
+    },
+    {
+      "file": "master-05.webp",
+      "displayWidth": 390,
+      "displayHeight": 430,
+      "sha256": "e603940d8db612aeba3d79ababd18737414d4f800eb2882079a286d3ca61718e"
+    },
+    {
+      "file": "master-06.webp",
+      "displayWidth": 390,
+      "displayHeight": 430,
+      "sha256": "0aa70054631a6024a4cd5abc3bb50f8c9c402e08ede460323a128daebd85ea32"
+    },
+    {
+      "file": "master-07.webp",
+      "displayWidth": 390,
+      "displayHeight": 430,
+      "sha256": "2729f37f82219c1bd8f1655399ce7c5d5c02c87c2b4036009ee28a8365174898"
+    },
+    {
+      "file": "master-08.webp",
+      "displayWidth": 390,
+      "displayHeight": 430,
+      "sha256": "722c9659628fa8540915aaf7e719d4984bbd1e0c2151873fdccb3860c1241ae9"
+    },
+    {
+      "file": "master-09.webp",
+      "displayWidth": 390,
+      "displayHeight": 430,
+      "sha256": "0a3ad35c210ec38c752e2be1aab3e10044c66422bf31ead8251095e7339cd375"
+    },
+    {
+      "file": "master-10.webp",
+      "displayWidth": 390,
+      "displayHeight": 430,
+      "sha256": "4195798f4ecb6f03a8dcbc527d69ded129a59e38959fc8896641cc0aa10c291f"
+    },
+    {
+      "file": "master-11.webp",
+      "displayWidth": 390,
+      "displayHeight": 430,
+      "sha256": "310875e01e51d253cfe196dd63530872b4a909a49c0fd02b9621cebe052391d2"
+    },
+    {
+      "file": "master-12.webp",
+      "displayWidth": 390,
+      "displayHeight": 430,
+      "sha256": "9182dfac14b7694b531f83844ad30f6cb72a346d1d5d199becb20a77a42774ee"
+    },
+    {
+      "file": "space-projection-original.webp",
+      "displayWidth": 1672,
+      "displayHeight": 941,
+      "sha256": "507a5133ff129295d40a582b50ad00e0b2bb8a7d68eaa045b34f9c462bf89ede"
+    },
+    {
+      "file": "space-rhythm-original.webp",
+      "displayWidth": 2400,
+      "displayHeight": 1127,
+      "sha256": "5a6cf9c40457e90b02eb43b2d96f5f38b23283d04337d702b47c477bdcb0d91c"
+    },
+    {
+      "file": "space-etiquette-original.webp",
+      "displayWidth": 1430,
+      "displayHeight": 1100,
+      "sha256": "587a70d9dc410a82b25802d176bd2c96ff4b2236eaa413ab61b900f8f1965493"
+    },
+    {
+      "file": "space-axis.webp",
+      "displayWidth": 2603,
+      "displayHeight": 1855,
+      "sha256": "5f1ebbc6a12723b3c2ac7c207c5adf0a250280a381fa6a852538dc63db96f7c8"
+    },
+    {
+      "file": "display-family-original.webp",
+      "displayWidth": 1448,
+      "displayHeight": 1086,
+      "sha256": "010229748f1c93895b00a7e4a91fbfeafc469d90ffab62d89ca370724bcd3dcb"
+    },
+    {
+      "file": "merchandise-cup-original.webp",
+      "displayWidth": 1829,
+      "displayHeight": 860,
+      "sha256": "f80c2764a2016b464c880193994e80b3322705ba1653b8e28768db7a90876430"
+    },
+    {
+      "file": "merchandise-painting-original.webp",
+      "displayWidth": 1672,
+      "displayHeight": 941,
+      "sha256": "3a73aa71b716e5a99459854f4d3e2d47bc05103c94d06b7e540ee8390bac93f4"
+    },
+    {
+      "file": "merchandise-collection-original.webp",
+      "displayWidth": 1672,
+      "displayHeight": 941,
+      "sha256": "c9d9f6a7e44bd19f959f36eeee10f442d82bd5bd3914bab2b8a6a852f5155986"
+    }
+  ],
+  "space": {
+    "fileKey": "bSvsBCH8vfWBNuq5AItp6o",
+    "projectFrame": "1244:6",
+    "selection": "Original uploaded rawImages[0] from official Figma download_assets; rawImages[1] is only a lower-resolution proxy, not used. No screenshot-board crops.",
+    "assets": [
+      {
+        "file": "hero-ritual-original.webp",
+        "nodeId": "1244:438",
+        "figmaNodeName": "5c4ffc76252195ad91f54d798a45063d 1",
+        "figmaImageHash": "9da4b0c71a2abe8c4315721a9e4c4405ec57b37e",
+        "originalFile": "space-assets/1244-438-raw-1.jpeg",
+        "originalDimensions": [
+          1448,
+          1086
+        ],
+        "originalMode": "RGB",
+        "sourceSha256": "99787fba7e27250e7d9fa8e24a84a696795ee5f06854e7bd5787075c5704d863",
+        "outputSha256": "7332cedda01184c986c84cdad1990f13c6ea8a571bc493a1fffbda0e88f8e93c",
+        "finalDimensions": [
+          1448,
+          1086
+        ],
+        "finalCropPixels": [
+          0,
+          0,
+          1448,
+          1086
+        ],
+        "figmaNodeDimensions": [
+          538,
+          444
+        ],
+        "figmaFillScaleMode": "CROP",
+        "figmaFillTransform": [
+          [
+            0.9108619093894958,
+            0,
+            0.06111978366971016
+          ],
+          [
+            0,
+            0.9991675615310669,
+            0
+          ]
+        ],
+        "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+        "upscaled": false,
+        "qa": "Complete whisking chamber; no board arrow or lower-left thumbnail. Full character, bowl, hanging screens, cushions and embedded UI headings retained.",
+        "bytes": 321892
+      },
+      {
+        "file": "space-projection-original.webp",
+        "nodeId": "1244:373",
+        "figmaNodeName": "af7601d2110f8106919e99bfe71b3264 1",
+        "figmaImageHash": "52aedfaedb4c26b87dbc2199383d603dcb043e4d",
+        "originalFile": "space-assets/1244-373-raw-1.png",
+        "originalDimensions": [
+          1672,
+          941
+        ],
+        "originalMode": "RGB",
+        "sourceSha256": "8f6934f839f23f93eb4fa1473802fa0f7fe35a565d7ac53e3a21e283cd89f7dc",
+        "outputSha256": "507a5133ff129295d40a582b50ad00e0b2bb8a7d68eaa045b34f9c462bf89ede",
+        "finalDimensions": [
+          1672,
+          941
+        ],
+        "finalCropPixels": [
+          0,
+          0,
+          1672,
+          941
+        ],
+        "figmaNodeDimensions": [
+          605,
+          248
+        ],
+        "figmaFillScaleMode": "CROP",
+        "figmaFillTransform": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            0.7285540103912354,
+            0.19206799566745758
+          ]
+        ],
+        "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+        "upscaled": false,
+        "qa": "Standalone complete projection scene; restored full ceiling, hanging fabric and table instead of board-wide CROP.",
+        "bytes": 301240
+      },
+      {
+        "file": "space-rhythm-original.webp",
+        "nodeId": "1244:720",
+        "figmaNodeName": "70f974dd4020c258f045ade827496c62 dsfcsd 1",
+        "figmaImageHash": "9782cfa5187366ca9a00f61472567a386fb0e827",
+        "originalFile": "space-assets/1244-720-raw-1.png",
+        "originalDimensions": [
+          2420,
+          1136
+        ],
+        "originalMode": "RGBA",
+        "sourceSha256": "943f884947b6c86339cbe244173514af2e85824642e304307f4cc90a785b5508",
+        "outputSha256": "5a6cf9c40457e90b02eb43b2d96f5f38b23283d04337d702b47c477bdcb0d91c",
+        "finalDimensions": [
+          2400,
+          1127
+        ],
+        "finalCropPixels": [
+          0,
+          0,
+          2420,
+          1136
+        ],
+        "figmaNodeDimensions": [
+          605,
+          284
+        ],
+        "figmaFillScaleMode": "FILL",
+        "figmaFillTransform": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+        "upscaled": false,
+        "qa": "Standalone complete milling projection room; no board captions or borders.",
+        "bytes": 692436
+      },
+      {
+        "file": "space-etiquette-original.webp",
+        "nodeId": "1244:374",
+        "figmaNodeName": "b9448119dc99d41366e3d4529ecd281b 1",
+        "figmaImageHash": "15269a20b3585e0188b68e4e612610b528b9d408",
+        "originalFile": "space-assets/1244-374-raw-1.png",
+        "originalDimensions": [
+          1430,
+          1100
+        ],
+        "originalMode": "RGB",
+        "sourceSha256": "425a3bcbee0837ca282b9718248874f9f50e73cfb93c1392eb5d33f8be2beca9",
+        "outputSha256": "587a70d9dc410a82b25802d176bd2c96ff4b2236eaa413ab61b900f8f1965493",
+        "finalDimensions": [
+          1430,
+          1100
+        ],
+        "finalCropPixels": [
+          0,
+          0,
+          1430,
+          1100
+        ],
+        "figmaNodeDimensions": [
+          605,
+          270
+        ],
+        "figmaFillScaleMode": "CROP",
+        "figmaFillTransform": [
+          [
+            0.9887751936912537,
+            0,
+            0.0006602838984690607
+          ],
+          [
+            0,
+            0.5751073360443115,
+            0.10729614645242691
+          ]
+        ],
+        "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+        "upscaled": false,
+        "qa": "Standalone complete ritual scene; top title, full standing participant, floor and foreground furniture retained.",
+        "bytes": 543998
+      },
+      {
+        "file": "space-center-original.webp",
+        "nodeId": "1244:444",
+        "figmaNodeName": "de614080b37840b04719875d6575fd88 1",
+        "figmaImageHash": "55a7edfc8a2658a7b1c7495a83873dd34aa31192",
+        "originalFile": "space-assets/1244-444-raw-1.png",
+        "originalDimensions": [
+          1448,
+          1086
+        ],
+        "originalMode": "RGB",
+        "sourceSha256": "edbc5edae144f977bb24da25e64450b7e0e7ce40372b606bae6c4dfb88f952c7",
+        "outputSha256": "f2d383509ffa0200825550eb1d94582ae79646797fdfff76f2719d78fb2a85f9",
+        "finalDimensions": [
+          1448,
+          1086
+        ],
+        "finalCropPixels": [
+          0,
+          0,
+          1448,
+          1086
+        ],
+        "figmaNodeDimensions": [
+          349,
+          203
+        ],
+        "figmaFillScaleMode": "CROP",
+        "figmaFillTransform": [
+          [
+            0.9999995827674866,
+            0,
+            -2.6645352591003757e-15
+          ],
+          [
+            0,
+            0.7728984355926514,
+            0.06815870851278305
+          ]
+        ],
+        "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+        "upscaled": false,
+        "qa": "Complete overhead central hall; no dotted annotation boxes.",
+        "bytes": 389830
+      },
+      {
+        "file": "merchandise-collection-original.webp",
+        "nodeId": "1244:642",
+        "figmaNodeName": "image 291316",
+        "figmaImageHash": "484d972c32f96eee32e1d1b0b20a0adfd45ec4f2",
+        "originalFile": "space-assets/1244-642-raw-1.png",
+        "originalDimensions": [
+          1672,
+          941
+        ],
+        "originalMode": "RGB",
+        "sourceSha256": "4419b8519bb4d00762749f38b6a946cc1491be5684ba607b9553215065000377",
+        "outputSha256": "c9d9f6a7e44bd19f959f36eeee10f442d82bd5bd3914bab2b8a6a852f5155986",
+        "finalDimensions": [
+          1672,
+          941
+        ],
+        "finalCropPixels": [
+          0,
+          0,
+          1672,
+          941
+        ],
+        "figmaNodeDimensions": [
+          282,
+          152
+        ],
+        "figmaFillScaleMode": "CROP",
+        "figmaFillTransform": [
+          [
+            0.9992554187774658,
+            0,
+            0.00037227809661999345
+          ],
+          [
+            0,
+            0.9571427702903748,
+            -0.00011168114724569023
+          ]
+        ],
+        "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+        "upscaled": false,
+        "qa": "Complete five-cup lineup; all five cups and handles retained.",
+        "bytes": 182806
+      },
+      {
+        "file": "merchandise-painting-original.webp",
+        "nodeId": "1244:643",
+        "figmaNodeName": "image 291317",
+        "figmaImageHash": "386d0be02b0aaa217ff9017058e3e6223efd9c26",
+        "originalFile": "space-assets/1244-643-raw-1.png",
+        "originalDimensions": [
+          1672,
+          941
+        ],
+        "originalMode": "RGB",
+        "sourceSha256": "3dfbe3a04c7c9f4d16103a26a8eb8914553f63b24ea177a9c73409fd34f6cf51",
+        "outputSha256": "3a73aa71b716e5a99459854f4d3e2d47bc05103c94d06b7e540ee8390bac93f4",
+        "finalDimensions": [
+          1672,
+          941
+        ],
+        "finalCropPixels": [
+          0,
+          0,
+          1672,
+          941
+        ],
+        "figmaNodeDimensions": [
+          255,
+          144
+        ],
+        "figmaFillScaleMode": "FILL",
+        "figmaFillTransform": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+        "upscaled": false,
+        "qa": "Complete cup-painting scene; pen tip, both hands, cup rim and stencil retained.",
+        "bytes": 174654
+      },
+      {
+        "file": "merchandise-cup-original.webp",
+        "nodeId": "1244:644",
+        "figmaNodeName": "image 291318",
+        "figmaImageHash": "02e55060c671533646d5f250f1d6fb5cacb78b4c",
+        "originalFile": "space-assets/1244-644-raw-1.png",
+        "originalDimensions": [
+          1829,
+          860
+        ],
+        "originalMode": "RGB",
+        "sourceSha256": "5a170ea266e0d35024d611240d684b3d64dc7b047ca071eb17bc2b671437af7f",
+        "outputSha256": "f80c2764a2016b464c880193994e80b3322705ba1653b8e28768db7a90876430",
+        "finalDimensions": [
+          1829,
+          860
+        ],
+        "finalCropPixels": [
+          0,
+          0,
+          1829,
+          860
+        ],
+        "figmaNodeDimensions": [
+          306,
+          144
+        ],
+        "figmaFillScaleMode": "FILL",
+        "figmaFillTransform": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+        "upscaled": false,
+        "qa": "Complete cup-and-lid scene; no display-board border or caption.",
+        "bytes": 140148
+      },
+      {
+        "file": "space-main-original.webp",
+        "nodeId": "1180:107",
+        "figmaNodeName": "主- 1",
+        "figmaImageHash": "1d56090fc4c6b1099911a99de57e2744ef1bdfc6",
+        "originalFile": "space-assets/1180-107-raw-1.png",
+        "originalDimensions": [
+          4096,
+          3072
+        ],
+        "originalMode": "RGBA",
+        "sourceSha256": "ec4aa648dbe7f0c15e405f4bd8e1228ff522edf9950e217c954435edad021404",
+        "outputSha256": "665410e79b696c2999df0f4b38bd0c0ed3d9f5f6bc72ba64341ae5a7c4746f57",
+        "finalDimensions": [
+          2400,
+          1800
+        ],
+        "finalCropPixels": [
+          0,
+          0,
+          4096,
+          3072
+        ],
+        "figmaNodeDimensions": [
+          875.75390625,
+          656.8154296875
+        ],
+        "figmaFillScaleMode": "FILL",
+        "figmaFillTransform": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+        "upscaled": false,
+        "qa": "Complete central chamber perspective; matches tea exhibition hanging panels and circular stone path.",
+        "bytes": 1287484
+      },
+      {
+        "file": "space-interaction-original.webp",
+        "nodeId": "1180:129",
+        "figmaNodeName": "交互场景1 1",
+        "figmaImageHash": "54354bdf0f2b7fb0aff1dc9247250c75a510900e",
+        "originalFile": "space-assets/1180-129-raw-1.png",
+        "originalDimensions": [
+          4096,
+          3072
+        ],
+        "originalMode": "RGBA",
+        "sourceSha256": "04a14fc06422447dccead1781ca37591a65cac89c934f4d243e76db8f3877dd2",
+        "outputSha256": "450c2415434f6af197a08b4c677bf552084ccdae8c23f0e1818d547986885eb9",
+        "finalDimensions": [
+          2400,
+          1800
+        ],
+        "finalCropPixels": [
+          0,
+          0,
+          4096,
+          3072
+        ],
+        "figmaNodeDimensions": [
+          557,
+          429
+        ],
+        "figmaFillScaleMode": "CROP",
+        "figmaFillTransform": [
+          [
+            0.9727191925048828,
+            0,
+            0.013640429824590683
+          ],
+          [
+            0,
+            1,
+            0
+          ]
+        ],
+        "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+        "upscaled": false,
+        "qa": "Complete interaction-space development rendering; silhouette and translucent UI planes are part of original artwork.",
+        "bytes": 1298630
+      },
+      {
+        "file": "display-family-original.webp",
+        "nodeId": "1244:421",
+        "figmaNodeName": "ChatGPT Image 2026年7月6日 21_11_47 (1) 1",
+        "figmaImageHash": "5fee681df5e589e9307a503111861dd5ec9533ec",
+        "originalFile": "space-assets/1244-421-raw-1.png",
+        "originalDimensions": [
+          1448,
+          1086
+        ],
+        "originalMode": "RGBA",
+        "sourceSha256": "0fe56dcd2ff69be82cd8b9f071e4c7b3e0227ca7f8c7e3331b7824a37e94bc7c",
+        "outputSha256": "010229748f1c93895b00a7e4a91fbfeafc469d90ffab62d89ca370724bcd3dcb",
+        "finalDimensions": [
+          1448,
+          1086
+        ],
+        "finalCropPixels": [
+          0,
+          0,
+          1448,
+          1086
+        ],
+        "figmaNodeDimensions": [
+          211.2207794189453,
+          133.12234497070312
+        ],
+        "figmaFillScaleMode": "CROP",
+        "figmaFillTransform": [
+          [
+            0.3765822947025299,
+            0,
+            0
+          ],
+          [
+            0,
+            0.3164556920528412,
+            0
+          ]
+        ],
+        "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+        "upscaled": false,
+        "qa": "Complete transparent original display-family sheet; all exhibit units, highest tower top and bowl retained. No board frames, captions or adjacent source material.",
+        "bytes": 249490
+      }
+    ]
+  },
+  "symbols": {
+    "purpose": "Exact source-asset extraction from verified Tea String Chronicles Figma source nodes.",
+    "file_key": "bSvsBCH8vfWBNuq5AItp6o",
+    "sources": [
+      {
+        "file": "raw-991-20080-0.png",
+        "sha256": "917f0b45d03aafc8cefca75406e484438046ce8d32aae7d038e8f7a05826f1f7",
+        "size": [
+          2172,
+          724
+        ]
+      },
+      {
+        "file": "raw-991-20078-0.png",
+        "sha256": "ac7dae90ffa458684012cc0c02a29694b93675ed7d78c3437edcee592e360977",
+        "size": [
+          1638,
+          2048
+        ]
+      }
+    ],
+    "assets": [
+      {
+        "file": "step-01.webp",
+        "source_node": "991:20080",
+        "source_file": "raw-991-20080-0.png",
+        "crop_pixels": [
+          14,
+          207,
+          284,
+          477
+        ],
+        "size": [
+          270,
+          270
+        ],
+        "mode": "RGB",
+        "qa": "Complete utensil and circular artwork; black source background preserved; no adjoining image or white source strip.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels."
+      },
+      {
+        "file": "step-02.webp",
+        "source_node": "991:20080",
+        "source_file": "raw-991-20080-0.png",
+        "crop_pixels": [
+          279,
+          207,
+          549,
+          477
+        ],
+        "size": [
+          270,
+          270
+        ],
+        "mode": "RGB",
+        "qa": "Complete utensil and circular artwork; black source background preserved; no adjoining image or white source strip.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels."
+      },
+      {
+        "file": "step-03.webp",
+        "source_node": "991:20080",
+        "source_file": "raw-991-20080-0.png",
+        "crop_pixels": [
+          544,
+          207,
+          814,
+          477
+        ],
+        "size": [
+          270,
+          270
+        ],
+        "mode": "RGB",
+        "qa": "Complete utensil and circular artwork; black source background preserved; no adjoining image or white source strip.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels."
+      },
+      {
+        "file": "step-04.webp",
+        "source_node": "991:20080",
+        "source_file": "raw-991-20080-0.png",
+        "crop_pixels": [
+          813,
+          207,
+          1083,
+          477
+        ],
+        "size": [
+          270,
+          270
+        ],
+        "mode": "RGB",
+        "qa": "Complete utensil and circular artwork; black source background preserved; no adjoining image or white source strip.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels."
+      },
+      {
+        "file": "step-05.webp",
+        "source_node": "991:20080",
+        "source_file": "raw-991-20080-0.png",
+        "crop_pixels": [
+          1079,
+          207,
+          1349,
+          477
+        ],
+        "size": [
+          270,
+          270
+        ],
+        "mode": "RGB",
+        "qa": "Complete utensil and circular artwork; black source background preserved; no adjoining image or white source strip.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels."
+      },
+      {
+        "file": "step-06.webp",
+        "source_node": "991:20080",
+        "source_file": "raw-991-20080-0.png",
+        "crop_pixels": [
+          1345,
+          207,
+          1615,
+          477
+        ],
+        "size": [
+          270,
+          270
+        ],
+        "mode": "RGB",
+        "qa": "Complete utensil and circular artwork; black source background preserved; no adjoining image or white source strip.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels."
+      },
+      {
+        "file": "step-07.webp",
+        "source_node": "991:20080",
+        "source_file": "raw-991-20080-0.png",
+        "crop_pixels": [
+          1610,
+          207,
+          1880,
+          477
+        ],
+        "size": [
+          270,
+          270
+        ],
+        "mode": "RGB",
+        "qa": "Complete utensil and circular artwork; black source background preserved; no adjoining image or white source strip.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels."
+      },
+      {
+        "file": "step-08.webp",
+        "source_node": "991:20080",
+        "source_file": "raw-991-20080-0.png",
+        "crop_pixels": [
+          1877,
+          207,
+          2147,
+          477
+        ],
+        "size": [
+          270,
+          270
+        ],
+        "mode": "RGB",
+        "qa": "Complete utensil and circular artwork; black source background preserved; no adjoining image or white source strip.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels."
+      },
+      {
+        "file": "master-01.webp",
+        "source_node": "991:20078",
+        "source_file": "raw-991-20078-0.png",
+        "crop_pixels": [
+          35,
+          220,
+          425,
+          650
+        ],
+        "size": [
+          390,
+          430
+        ],
+        "mode": "RGBA",
+        "alpha_bbox": [
+          60,
+          19,
+          331,
+          408
+        ],
+        "qa": "Complete character, utensil silhouette and original alpha preserved; no repaint, no clipping, no interpolation.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels.",
+        "alpha_edges_all_zero": true
+      },
+      {
+        "file": "master-02.webp",
+        "source_node": "991:20078",
+        "source_file": "raw-991-20078-0.png",
+        "crop_pixels": [
+          430,
+          220,
+          820,
+          650
+        ],
+        "size": [
+          390,
+          430
+        ],
+        "mode": "RGBA",
+        "alpha_bbox": [
+          47,
+          34,
+          331,
+          409
+        ],
+        "qa": "Complete character, utensil silhouette and original alpha preserved; no repaint, no clipping, no interpolation.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels.",
+        "alpha_edges_all_zero": true
+      },
+      {
+        "file": "master-03.webp",
+        "source_node": "991:20078",
+        "source_file": "raw-991-20078-0.png",
+        "crop_pixels": [
+          805,
+          220,
+          1195,
+          650
+        ],
+        "size": [
+          390,
+          430
+        ],
+        "mode": "RGBA",
+        "alpha_bbox": [
+          20,
+          36,
+          373,
+          408
+        ],
+        "qa": "Complete character, utensil silhouette and original alpha preserved; no repaint, no clipping, no interpolation.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels.",
+        "alpha_edges_all_zero": true
+      },
+      {
+        "file": "master-04.webp",
+        "source_node": "991:20078",
+        "source_file": "raw-991-20078-0.png",
+        "crop_pixels": [
+          1190,
+          220,
+          1580,
+          650
+        ],
+        "size": [
+          390,
+          430
+        ],
+        "mode": "RGBA",
+        "alpha_bbox": [
+          41,
+          36,
+          343,
+          408
+        ],
+        "qa": "Complete character, utensil silhouette and original alpha preserved; no repaint, no clipping, no interpolation.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels.",
+        "alpha_edges_all_zero": true
+      },
+      {
+        "file": "master-05.webp",
+        "source_node": "991:20078",
+        "source_file": "raw-991-20078-0.png",
+        "crop_pixels": [
+          35,
+          705,
+          425,
+          1135
+        ],
+        "size": [
+          390,
+          430
+        ],
+        "mode": "RGBA",
+        "alpha_bbox": [
+          45,
+          57,
+          364,
+          386
+        ],
+        "qa": "Complete character, utensil silhouette and original alpha preserved; no repaint, no clipping, no interpolation.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels.",
+        "alpha_edges_all_zero": true
+      },
+      {
+        "file": "master-06.webp",
+        "source_node": "991:20078",
+        "source_file": "raw-991-20078-0.png",
+        "crop_pixels": [
+          430,
+          705,
+          820,
+          1135
+        ],
+        "size": [
+          390,
+          430
+        ],
+        "mode": "RGBA",
+        "alpha_bbox": [
+          32,
+          31,
+          346,
+          386
+        ],
+        "qa": "Complete character, utensil silhouette and original alpha preserved; no repaint, no clipping, no interpolation.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels.",
+        "alpha_edges_all_zero": true
+      },
+      {
+        "file": "master-07.webp",
+        "source_node": "991:20078",
+        "source_file": "raw-991-20078-0.png",
+        "crop_pixels": [
+          805,
+          705,
+          1195,
+          1135
+        ],
+        "size": [
+          390,
+          430
+        ],
+        "mode": "RGBA",
+        "alpha_bbox": [
+          49,
+          33,
+          336,
+          386
+        ],
+        "qa": "Complete character, utensil silhouette and original alpha preserved; no repaint, no clipping, no interpolation.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels.",
+        "alpha_edges_all_zero": true
+      },
+      {
+        "file": "master-08.webp",
+        "source_node": "991:20078",
+        "source_file": "raw-991-20078-0.png",
+        "crop_pixels": [
+          1190,
+          705,
+          1580,
+          1135
+        ],
+        "size": [
+          390,
+          430
+        ],
+        "mode": "RGBA",
+        "alpha_bbox": [
+          18,
+          31,
+          371,
+          385
+        ],
+        "qa": "Complete character, utensil silhouette and original alpha preserved; no repaint, no clipping, no interpolation.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels.",
+        "alpha_edges_all_zero": true
+      },
+      {
+        "file": "master-09.webp",
+        "source_node": "991:20078",
+        "source_file": "raw-991-20078-0.png",
+        "crop_pixels": [
+          35,
+          1175,
+          425,
+          1605
+        ],
+        "size": [
+          390,
+          430
+        ],
+        "mode": "RGBA",
+        "alpha_bbox": [
+          32,
+          47,
+          355,
+          384
+        ],
+        "qa": "Complete character, utensil silhouette and original alpha preserved; no repaint, no clipping, no interpolation.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels.",
+        "alpha_edges_all_zero": true
+      },
+      {
+        "file": "master-10.webp",
+        "source_node": "991:20078",
+        "source_file": "raw-991-20078-0.png",
+        "crop_pixels": [
+          430,
+          1175,
+          820,
+          1605
+        ],
+        "size": [
+          390,
+          430
+        ],
+        "mode": "RGBA",
+        "alpha_bbox": [
+          30,
+          22,
+          342,
+          384
+        ],
+        "qa": "Complete character, utensil silhouette and original alpha preserved; no repaint, no clipping, no interpolation.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels.",
+        "alpha_edges_all_zero": true
+      },
+      {
+        "file": "master-11.webp",
+        "source_node": "991:20078",
+        "source_file": "raw-991-20078-0.png",
+        "crop_pixels": [
+          805,
+          1175,
+          1195,
+          1605
+        ],
+        "size": [
+          390,
+          430
+        ],
+        "mode": "RGBA",
+        "alpha_bbox": [
+          28,
+          23,
+          363,
+          384
+        ],
+        "qa": "Complete character, utensil silhouette and original alpha preserved; no repaint, no clipping, no interpolation.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels.",
+        "alpha_edges_all_zero": true
+      },
+      {
+        "file": "master-12.webp",
+        "source_node": "991:20078",
+        "source_file": "raw-991-20078-0.png",
+        "crop_pixels": [
+          1190,
+          1175,
+          1580,
+          1605
+        ],
+        "size": [
+          390,
+          430
+        ],
+        "mode": "RGBA",
+        "alpha_bbox": [
+          50,
+          22,
+          366,
+          382
+        ],
+        "qa": "Complete character, utensil silhouette and original alpha preserved; no repaint, no clipping, no interpolation.",
+        "visual_qa": "Viewed at full exported native size; complete intended silhouette, clean source boundaries, no white strips or adjoining art. Contact sheet checked using alpha-composited pixels.",
+        "alpha_edges_all_zero": true
+      }
+    ],
+    "notes": [
+      "Lossless WebP exact=True; every decoded asset compared pixel-for-pixel with its source crop.",
+      "Transparent RGB residue in the RGBA source is retained; pixels with alpha zero remain invisible in browser rendering.",
+      "No original design or source PNG was modified."
+    ]
+  },
+  "mechanisms": {
+    "fileKey": "bSvsBCH8vfWBNuq5AItp6o",
+    "pageId": "579:409",
+    "pageName": "Page 4",
+    "readOnlyFigma": true,
+    "assets": [
+      {
+        "file": "assets/works/tea/source/mechanism-powder.svg",
+        "nodeId": "991:17887",
+        "name": "机制·绿茶粉(可编辑)",
+        "width": 183,
+        "height": 198.6857147216797,
+        "svgViewBox": "0 0 183 199",
+        "bytes": 62355,
+        "sha256": "31c2fd5325e93bf66230b83df64958de3095af2c30ca0b574ab05f028198ae49",
+        "isEntireNativeSVG": true,
+        "hasRasterImage": false,
+        "elementCounts": {
+          "svg": 1,
+          "rect": 1,
+          "g": 1,
+          "circle": 437,
+          "path": 1
+        },
+        "sourceText": [
+          {
+            "characters": "① 开局 · 绿茶粉",
+            "fontSize": 5.751428604125977
+          }
+        ],
+        "sourceImageFillCount": 0,
+        "exportMethod": "Figma download_assets defaultFormat=svg, entire source frame; no canvas mutation; original geometry retained",
+        "textNote": "Figma export outlines the source label; use separate accessible HTML headings for bilingual text. Preserve this SVG unchanged as original vector source."
+      },
+      {
+        "file": "assets/works/tea/source/mechanism-catch.svg",
+        "nodeId": "991:18326",
+        "name": "机制·接住金波(可编辑)",
+        "width": 186.05262756347656,
+        "height": 202,
+        "svgViewBox": "0 0 187 202",
+        "bytes": 60207,
+        "sha256": "588ec0fb8274f0f74b4e222afd94e054b32cb6a3c440deb00800959fe0cede40",
+        "isEntireNativeSVG": true,
+        "hasRasterImage": false,
+        "elementCounts": {
+          "svg": 1,
+          "rect": 1,
+          "g": 1,
+          "circle": 437,
+          "path": 1
+        },
+        "sourceText": [
+          {
+            "characters": "② 金波 · 接住",
+            "fontSize": 5.847371578216553
+          }
+        ],
+        "sourceImageFillCount": 0,
+        "exportMethod": "Figma download_assets defaultFormat=svg, entire source frame; no canvas mutation; original geometry retained",
+        "textNote": "Figma export outlines the source label; use separate accessible HTML headings for bilingual text. Preserve this SVG unchanged as original vector source."
+      },
+      {
+        "file": "assets/works/tea/source/mechanism-long.svg",
+        "nodeId": "991:18765",
+        "name": "机制·金长波(可编辑)",
+        "width": 183.2894744873047,
+        "height": 199,
+        "svgViewBox": "0 0 184 199",
+        "bytes": 62807,
+        "sha256": "ac27be2284b388c5ae8a50e6d5bf623decad4b682aafb5c5939bac0d91789565",
+        "isEntireNativeSVG": true,
+        "hasRasterImage": false,
+        "elementCounts": {
+          "svg": 1,
+          "rect": 1,
+          "g": 1,
+          "circle": 437,
+          "path": 1
+        },
+        "sourceText": [
+          {
+            "characters": "③ 金长波 · 猛切",
+            "fontSize": 5.760526657104492
+          }
+        ],
+        "sourceImageFillCount": 0,
+        "exportMethod": "Figma download_assets defaultFormat=svg, entire source frame; no canvas mutation; original geometry retained",
+        "textNote": "Figma export outlines the source label; use separate accessible HTML headings for bilingual text. Preserve this SVG unchanged as original vector source."
+      },
+      {
+        "file": "assets/works/tea/source/mechanism-rest.svg",
+        "nodeId": "991:19204",
+        "name": "机制·红波候汤(可编辑)",
+        "width": 177,
+        "height": 192.1714324951172,
+        "svgViewBox": "0 0 177 193",
+        "bytes": 66190,
+        "sha256": "1322fe35cd8500c15a8d236b6138018e130eee16d0f2aac08f9c40d1ccb54de9",
+        "isEntireNativeSVG": true,
+        "hasRasterImage": false,
+        "elementCounts": {
+          "svg": 1,
+          "rect": 1,
+          "g": 1,
+          "circle": 425,
+          "path": 1
+        },
+        "sourceText": [
+          {
+            "characters": "④ 红波 · 候汤别碰",
+            "fontSize": 5.562857151031494
+          }
+        ],
+        "sourceImageFillCount": 0,
+        "exportMethod": "Figma download_assets defaultFormat=svg, entire source frame; no canvas mutation; original geometry retained",
+        "textNote": "Figma export outlines the source label; use separate accessible HTML headings for bilingual text. Preserve this SVG unchanged as original vector source."
+      }
+    ]
+  },
+  "primary": [
+    {
+      "file": "prototype-wake.webp",
+      "nodeId": "1150:3",
+      "kind": "original uploaded prototype screen",
+      "originalSize": [
+        2360,
+        1640
+      ],
+      "crop": null,
+      "sha256": "ebb3b8eef3812956b29cc641ceaf17cd8a190c0b061577d2cbcbd045d7795338"
+    },
+    {
+      "file": "prototype-grind.webp",
+      "nodeId": "1151:4",
+      "kind": "original uploaded prototype screen",
+      "originalSize": [
+        2360,
+        1640
+      ],
+      "crop": null,
+      "sha256": "91ea0b393ba067d2039920732547c3073507453e934638dcdf57ad493b28d735"
+    },
+    {
+      "file": "prototype-whisk.webp",
+      "nodeId": "1151:5",
+      "kind": "original uploaded prototype screen",
+      "originalSize": [
+        2360,
+        1640
+      ],
+      "crop": null,
+      "sha256": "4e85e19e12f412968ba50d7fe06b2398a972476603b94289f71715423ffbcdc1"
+    },
+    {
+      "file": "space-axis.webp",
+      "nodeId": "1244:331",
+      "kind": "Figma image crop of intended black-background tea exhibition diagram",
+      "sourceSize": [
+        2896,
+        4096
+      ],
+      "crop": [
+        134,
+        53,
+        2737,
+        1908
+      ],
+      "excluded": "white-background reference panel below the selected Figma crop"
+    },
+    {
+      "file": "research-sheet.webp",
+      "nodeId": "991:20026",
+      "sourceSize": [
+        1448,
+        1086
+      ],
+      "crop": null
+    }
+  ]
+}

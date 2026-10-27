@@ -1,0 +1,502 @@
+{
+  "fileKey": "bSvsBCH8vfWBNuq5AItp6o",
+  "projectFrame": "1244:6",
+  "selection": "Original uploaded rawImages[0] from official Figma download_assets; rawImages[1] is only a lower-resolution proxy, not used. No screenshot-board crops.",
+  "assets": [
+    {
+      "file": "hero-ritual-original.webp",
+      "nodeId": "1244:438",
+      "figmaNodeName": "5c4ffc76252195ad91f54d798a45063d 1",
+      "figmaImageHash": "9da4b0c71a2abe8c4315721a9e4c4405ec57b37e",
+      "originalFile": "space-assets/1244-438-raw-1.jpeg",
+      "originalDimensions": [
+        1448,
+        1086
+      ],
+      "originalMode": "RGB",
+      "sourceSha256": "99787fba7e27250e7d9fa8e24a84a696795ee5f06854e7bd5787075c5704d863",
+      "outputSha256": "7332cedda01184c986c84cdad1990f13c6ea8a571bc493a1fffbda0e88f8e93c",
+      "finalDimensions": [
+        1448,
+        1086
+      ],
+      "finalCropPixels": [
+        0,
+        0,
+        1448,
+        1086
+      ],
+      "figmaNodeDimensions": [
+        538,
+        444
+      ],
+      "figmaFillScaleMode": "CROP",
+      "figmaFillTransform": [
+        [
+          0.9108619093894958,
+          0,
+          0.06111978366971016
+        ],
+        [
+          0,
+          0.9991675615310669,
+          0
+        ]
+      ],
+      "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+      "upscaled": false,
+      "qa": "Complete whisking chamber; no board arrow or lower-left thumbnail. Full character, bowl, hanging screens, cushions and embedded UI headings retained.",
+      "bytes": 321892
+    },
+    {
+      "file": "space-projection-original.webp",
+      "nodeId": "1244:373",
+      "figmaNodeName": "af7601d2110f8106919e99bfe71b3264 1",
+      "figmaImageHash": "52aedfaedb4c26b87dbc2199383d603dcb043e4d",
+      "originalFile": "space-assets/1244-373-raw-1.png",
+      "originalDimensions": [
+        1672,
+        941
+      ],
+      "originalMode": "RGB",
+      "sourceSha256": "8f6934f839f23f93eb4fa1473802fa0f7fe35a565d7ac53e3a21e283cd89f7dc",
+      "outputSha256": "507a5133ff129295d40a582b50ad00e0b2bb8a7d68eaa045b34f9c462bf89ede",
+      "finalDimensions": [
+        1672,
+        941
+      ],
+      "finalCropPixels": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "figmaNodeDimensions": [
+        605,
+        248
+      ],
+      "figmaFillScaleMode": "CROP",
+      "figmaFillTransform": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0.7285540103912354,
+          0.19206799566745758
+        ]
+      ],
+      "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+      "upscaled": false,
+      "qa": "Standalone complete projection scene; restored full ceiling, hanging fabric and table instead of board-wide CROP.",
+      "bytes": 301240
+    },
+    {
+      "file": "space-rhythm-original.webp",
+      "nodeId": "1244:720",
+      "figmaNodeName": "70f974dd4020c258f045ade827496c62 dsfcsd 1",
+      "figmaImageHash": "9782cfa5187366ca9a00f61472567a386fb0e827",
+      "originalFile": "space-assets/1244-720-raw-1.png",
+      "originalDimensions": [
+        2420,
+        1136
+      ],
+      "originalMode": "RGBA",
+      "sourceSha256": "943f884947b6c86339cbe244173514af2e85824642e304307f4cc90a785b5508",
+      "outputSha256": "5a6cf9c40457e90b02eb43b2d96f5f38b23283d04337d702b47c477bdcb0d91c",
+      "finalDimensions": [
+        2400,
+        1127
+      ],
+      "finalCropPixels": [
+        0,
+        0,
+        2420,
+        1136
+      ],
+      "figmaNodeDimensions": [
+        605,
+        284
+      ],
+      "figmaFillScaleMode": "FILL",
+      "figmaFillTransform": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+      "upscaled": false,
+      "qa": "Standalone complete milling projection room; no board captions or borders.",
+      "bytes": 692436
+    },
+    {
+      "file": "space-etiquette-original.webp",
+      "nodeId": "1244:374",
+      "figmaNodeName": "b9448119dc99d41366e3d4529ecd281b 1",
+      "figmaImageHash": "15269a20b3585e0188b68e4e612610b528b9d408",
+      "originalFile": "space-assets/1244-374-raw-1.png",
+      "originalDimensions": [
+        1430,
+        1100
+      ],
+      "originalMode": "RGB",
+      "sourceSha256": "425a3bcbee0837ca282b9718248874f9f50e73cfb93c1392eb5d33f8be2beca9",
+      "outputSha256": "587a70d9dc410a82b25802d176bd2c96ff4b2236eaa413ab61b900f8f1965493",
+      "finalDimensions": [
+        1430,
+        1100
+      ],
+      "finalCropPixels": [
+        0,
+        0,
+        1430,
+        1100
+      ],
+      "figmaNodeDimensions": [
+        605,
+        270
+      ],
+      "figmaFillScaleMode": "CROP",
+      "figmaFillTransform": [
+        [
+          0.9887751936912537,
+          0,
+          0.0006602838984690607
+        ],
+        [
+          0,
+          0.5751073360443115,
+          0.10729614645242691
+        ]
+      ],
+      "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+      "upscaled": false,
+      "qa": "Standalone complete ritual scene; top title, full standing participant, floor and foreground furniture retained.",
+      "bytes": 543998
+    },
+    {
+      "file": "space-center-original.webp",
+      "nodeId": "1244:444",
+      "figmaNodeName": "de614080b37840b04719875d6575fd88 1",
+      "figmaImageHash": "55a7edfc8a2658a7b1c7495a83873dd34aa31192",
+      "originalFile": "space-assets/1244-444-raw-1.png",
+      "originalDimensions": [
+        1448,
+        1086
+      ],
+      "originalMode": "RGB",
+      "sourceSha256": "edbc5edae144f977bb24da25e64450b7e0e7ce40372b606bae6c4dfb88f952c7",
+      "outputSha256": "f2d383509ffa0200825550eb1d94582ae79646797fdfff76f2719d78fb2a85f9",
+      "finalDimensions": [
+        1448,
+        1086
+      ],
+      "finalCropPixels": [
+        0,
+        0,
+        1448,
+        1086
+      ],
+      "figmaNodeDimensions": [
+        349,
+        203
+      ],
+      "figmaFillScaleMode": "CROP",
+      "figmaFillTransform": [
+        [
+          0.9999995827674866,
+          0,
+          -2.6645352591003757e-15
+        ],
+        [
+          0,
+          0.7728984355926514,
+          0.06815870851278305
+        ]
+      ],
+      "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+      "upscaled": false,
+      "qa": "Complete overhead central hall; no dotted annotation boxes.",
+      "bytes": 389830
+    },
+    {
+      "file": "merchandise-collection-original.webp",
+      "nodeId": "1244:642",
+      "figmaNodeName": "image 291316",
+      "figmaImageHash": "484d972c32f96eee32e1d1b0b20a0adfd45ec4f2",
+      "originalFile": "space-assets/1244-642-raw-1.png",
+      "originalDimensions": [
+        1672,
+        941
+      ],
+      "originalMode": "RGB",
+      "sourceSha256": "4419b8519bb4d00762749f38b6a946cc1491be5684ba607b9553215065000377",
+      "outputSha256": "c9d9f6a7e44bd19f959f36eeee10f442d82bd5bd3914bab2b8a6a852f5155986",
+      "finalDimensions": [
+        1672,
+        941
+      ],
+      "finalCropPixels": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "figmaNodeDimensions": [
+        282,
+        152
+      ],
+      "figmaFillScaleMode": "CROP",
+      "figmaFillTransform": [
+        [
+          0.9992554187774658,
+          0,
+          0.00037227809661999345
+        ],
+        [
+          0,
+          0.9571427702903748,
+          -0.00011168114724569023
+        ]
+      ],
+      "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+      "upscaled": false,
+      "qa": "Complete five-cup lineup; all five cups and handles retained.",
+      "bytes": 182806
+    },
+    {
+      "file": "merchandise-painting-original.webp",
+      "nodeId": "1244:643",
+      "figmaNodeName": "image 291317",
+      "figmaImageHash": "386d0be02b0aaa217ff9017058e3e6223efd9c26",
+      "originalFile": "space-assets/1244-643-raw-1.png",
+      "originalDimensions": [
+        1672,
+        941
+      ],
+      "originalMode": "RGB",
+      "sourceSha256": "3dfbe3a04c7c9f4d16103a26a8eb8914553f63b24ea177a9c73409fd34f6cf51",
+      "outputSha256": "3a73aa71b716e5a99459854f4d3e2d47bc05103c94d06b7e540ee8390bac93f4",
+      "finalDimensions": [
+        1672,
+        941
+      ],
+      "finalCropPixels": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "figmaNodeDimensions": [
+        255,
+        144
+      ],
+      "figmaFillScaleMode": "FILL",
+      "figmaFillTransform": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+      "upscaled": false,
+      "qa": "Complete cup-painting scene; pen tip, both hands, cup rim and stencil retained.",
+      "bytes": 174654
+    },
+    {
+      "file": "merchandise-cup-original.webp",
+      "nodeId": "1244:644",
+      "figmaNodeName": "image 291318",
+      "figmaImageHash": "02e55060c671533646d5f250f1d6fb5cacb78b4c",
+      "originalFile": "space-assets/1244-644-raw-1.png",
+      "originalDimensions": [
+        1829,
+        860
+      ],
+      "originalMode": "RGB",
+      "sourceSha256": "5a170ea266e0d35024d611240d684b3d64dc7b047ca071eb17bc2b671437af7f",
+      "outputSha256": "f80c2764a2016b464c880193994e80b3322705ba1653b8e28768db7a90876430",
+      "finalDimensions": [
+        1829,
+        860
+      ],
+      "finalCropPixels": [
+        0,
+        0,
+        1829,
+        860
+      ],
+      "figmaNodeDimensions": [
+        306,
+        144
+      ],
+      "figmaFillScaleMode": "FILL",
+      "figmaFillTransform": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+      "upscaled": false,
+      "qa": "Complete cup-and-lid scene; no display-board border or caption.",
+      "bytes": 140148
+    },
+    {
+      "file": "space-main-original.webp",
+      "nodeId": "1180:107",
+      "figmaNodeName": "主- 1",
+      "figmaImageHash": "1d56090fc4c6b1099911a99de57e2744ef1bdfc6",
+      "originalFile": "space-assets/1180-107-raw-1.png",
+      "originalDimensions": [
+        4096,
+        3072
+      ],
+      "originalMode": "RGBA",
+      "sourceSha256": "ec4aa648dbe7f0c15e405f4bd8e1228ff522edf9950e217c954435edad021404",
+      "outputSha256": "665410e79b696c2999df0f4b38bd0c0ed3d9f5f6bc72ba64341ae5a7c4746f57",
+      "finalDimensions": [
+        2400,
+        1800
+      ],
+      "finalCropPixels": [
+        0,
+        0,
+        4096,
+        3072
+      ],
+      "figmaNodeDimensions": [
+        875.75390625,
+        656.8154296875
+      ],
+      "figmaFillScaleMode": "FILL",
+      "figmaFillTransform": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+      "upscaled": false,
+      "qa": "Complete central chamber perspective; matches tea exhibition hanging panels and circular stone path.",
+      "bytes": 1287484
+    },
+    {
+      "file": "space-interaction-original.webp",
+      "nodeId": "1180:129",
+      "figmaNodeName": "交互场景1 1",
+      "figmaImageHash": "54354bdf0f2b7fb0aff1dc9247250c75a510900e",
+      "originalFile": "space-assets/1180-129-raw-1.png",
+      "originalDimensions": [
+        4096,
+        3072
+      ],
+      "originalMode": "RGBA",
+      "sourceSha256": "04a14fc06422447dccead1781ca37591a65cac89c934f4d243e76db8f3877dd2",
+      "outputSha256": "450c2415434f6af197a08b4c677bf552084ccdae8c23f0e1818d547986885eb9",
+      "finalDimensions": [
+        2400,
+        1800
+      ],
+      "finalCropPixels": [
+        0,
+        0,
+        4096,
+        3072
+      ],
+      "figmaNodeDimensions": [
+        557,
+        429
+      ],
+      "figmaFillScaleMode": "CROP",
+      "figmaFillTransform": [
+        [
+          0.9727191925048828,
+          0,
+          0.013640429824590683
+        ],
+        [
+          0,
+          1,
+          0
+        ]
+      ],
+      "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+      "upscaled": false,
+      "qa": "Complete interaction-space development rendering; silhouette and translucent UI planes are part of original artwork.",
+      "bytes": 1298630
+    },
+    {
+      "file": "display-family-original.webp",
+      "nodeId": "1244:421",
+      "figmaNodeName": "ChatGPT Image 2026年7月6日 21_11_47 (1) 1",
+      "figmaImageHash": "5fee681df5e589e9307a503111861dd5ec9533ec",
+      "originalFile": "space-assets/1244-421-raw-1.png",
+      "originalDimensions": [
+        1448,
+        1086
+      ],
+      "originalMode": "RGBA",
+      "sourceSha256": "0fe56dcd2ff69be82cd8b9f071e4c7b3e0227ca7f8c7e3331b7824a37e94bc7c",
+      "outputSha256": "010229748f1c93895b00a7e4a91fbfeafc469d90ffab62d89ca370724bcd3dcb",
+      "finalDimensions": [
+        1448,
+        1086
+      ],
+      "finalCropPixels": [
+        0,
+        0,
+        1448,
+        1086
+      ],
+      "figmaNodeDimensions": [
+        211.2207794189453,
+        133.12234497070312
+      ],
+      "figmaFillScaleMode": "CROP",
+      "figmaFillTransform": [
+        [
+          0.3765822947025299,
+          0,
+          0
+        ],
+        [
+          0,
+          0.3164556920528412,
+          0
+        ]
+      ],
+      "geometryDecision": "Use the complete independently uploaded source image at its natural aspect ratio; record but do not reproduce exhibition-board cropping.",
+      "upscaled": false,
+      "qa": "Complete transparent original display-family sheet; all exhibit units, highest tower top and bowl retained. No board frames, captions or adjacent source material.",
+      "bytes": 249490
+    }
+  ]
+}
