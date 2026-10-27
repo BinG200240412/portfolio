@@ -1,0 +1,32 @@
+/* A short first-person close to each case, carried by the page's own palette. */
+.project-reflection {
+  width: min(100%, 1120px);
+  margin: clamp(48px, 7vw, 112px) auto clamp(28px, 4vw, 64px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(32px, 7vw, 112px);
+  color: var(--ink, currentColor);
+}
+.project-reflection > div { min-width: 0; }
+.project-reflection h3 {
+  margin: 0 0 18px;
+  font-size: clamp(23px, 2.35vw, 29px) !important;
+  line-height: 1.25 !important;
+  letter-spacing: -.025em !important;
+  font-weight: 400 !important;
+  color: inherit !important;
+}
+.project-reflection p {
+  max-width: 34ch;
+  margin: 0;
+  font-size: clamp(16px, 1.35vw, 18px) !important;
+  line-height: 1.75 !important;
+  letter-spacing: 0 !important;
+  font-weight: 300 !important;
+  color: var(--mid, var(--soft, currentColor)) !important;
+  text-wrap: pretty;
+}
+@media (max-width: 700px) {
+  .project-reflection { grid-template-columns: 1fr; gap: 36px; }
+  .project-reflection p { max-width: 42ch; }
+}
