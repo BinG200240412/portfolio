@@ -232,7 +232,7 @@
     button.setAttribute('data-project', projects[item.id]); button.setAttribute('data-motif', item.id);
     button.setAttribute('data-i18n-ignore', '');
     const entry = {button,key:item.key,id:item.id,project:projects[item.id],hover:0,hoverTarget:0,hoverElapsed:0,
-      gaitPhase:0,turnPhase:0,staticActive:0,placement:null};
+      gaitPhase:0,staticActive:0,placement:null};
     const hover = () => {
       syncHoverTargets();
       if (reduced.matches) draw(6);
@@ -463,12 +463,7 @@
     for (const entry of hotspots.values()) {
       entry.hover += (entry.hoverTarget-entry.hover)*follow;
       entry.hoverElapsed = entry.hoverTarget || pending?.entry === entry ? entry.hoverElapsed + dt : 0;
-      if (entry.id === 'robot-dog') {
-        entry.gaitPhase += dt * (.35 + entry.hover * 2.6);
-        // Heading advances during the planted foot stroke, then eases at each step.
-        const push = .22 + .95 * Math.abs(Math.sin(entry.gaitPhase));
-        entry.turnPhase = (entry.turnPhase + dt * entry.hover * push) % TAU;
-      }
+      if (entry.id === 'robot-dog') entry.gaitPhase += dt * entry.hover * 1.85;
     }
     if (pending) {
       pending.progress = Math.min(1,pending.progress+dt/(pending.entry.id === 'sudoku' ? 1.15 : .65));
@@ -517,7 +512,7 @@
       const entry = hotspots.get(item.key);
       const options = {active:pending && pending.entry===entry ? pending.progress : reduced.matches ? entry?.staticActive || 0 : 0,
         hover:reduced.matches ? 0 : entry?.hover || 0,hoverElapsed:entry?.hoverElapsed || 0,
-        gaitPhase:entry?.gaitPhase,turnPhase:entry?.turnPhase,reduced:reduced.matches};
+        gaitPhase:entry?.gaitPhase,reduced:reduced.matches};
       if (item.id === 'gorilla') Object.assign(options,{morph:smooth(morph),pointerX,pointerY});
       const image = source.render(item.id, time * item.speed, item.variant, options);
       if (!image?.pixels || !image.width || !image.height) continue;

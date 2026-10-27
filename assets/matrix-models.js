@@ -80,14 +80,7 @@
     return { vertices, faces, vertex, face, box, prism, roundedPoints, roundedPrism, bridge, band };
   }
 
-  function variantPhase(variant) {
-    if (typeof variant === 'number' && Number.isFinite(variant)) return variant * 1.61803398875;
-    let value = 0;
-    for (const c of String(variant || '')) value = (value * 31 + c.charCodeAt(0)) >>> 0;
-    return (value % 6283) / 1000;
-  }
-
-  function robotDog(m, time, phase, reaction = 0, hover = 0, gaitPhase = time * .55) {
+  function robotDog(m, reaction = 0, hover = 0, gaitPhase = 0) {
     m.box(-0.03, 0.32, 0, 1.37, 0.31, 0.55, 1, 6);
     m.box(-0.06, 0.496, 0, 1.12, 0.045, 0.43, 6, 1);
     m.box(-0.17, 0.524, 0, 0.56, 0.018, 0.28, 7);
@@ -110,37 +103,43 @@
     });
     m.box(0.999, 0.315, 0, 0.010, 0.019, 0.050, 4);
     // All neck, sensor and head vertices rotate together about the neck joint.
-    const sway = hover * Math.sin(gaitPhase) * .65;
-    const crouch = hover * (.018 + .028 * (.5 + .5 * Math.sin(gaitPhase * 2)));
-    const raise = reaction * .38 + hover * (.06 + .06 * Math.sin(gaitPhase)), c = Math.cos(raise), sn = Math.sin(raise);
+    const wave = Math.sin(gaitPhase);
+    const heldTurn = Math.tanh(wave * 2.4) / Math.tanh(2.4);
+    const bodyYaw = hover * heldTurn * .31;
+    const bodyShift = hover * wave * .018;
+    const crouch = hover * (.014 + .028 * (1 - Math.abs(heldTurn)));
+    const raise = reaction * .38 + hover * (.075 + .025 * Math.cos(gaitPhase * 2));
+    const c = Math.cos(raise), sn = Math.sin(raise);
     if (raise) for (let i=headStart;i<m.vertices.length;i++) {
       const v=m.vertices[i],x=v[0]-.63,y=v[1]-.35;
       v[0]=.63+x*c-y*sn;v[1]=.35+x*sn+y*c;
     }
-    // The body responds to the planted feet instead of spinning as a product model.
-    for (const v of m.vertices) { v[0] += sway * .035; v[1] -= crouch; }
+    // The chassis turns at the hip joints while all four paws remain planted.
+    // Held extremes and a small dip between them give the motion a mechanical beat.
+    const cy = Math.cos(bodyYaw), sy = Math.sin(bodyYaw);
+    const chassisPoint = (x, y, z) => [x * cy + z * sy + bodyShift, y - crouch, -x * sy + z * cy];
+    for (const v of m.vertices) {
+      const moved = chassisPoint(v[0], v[1], v[2]);
+      v[0] = moved[0]; v[1] = moved[1]; v[2] = moved[2];
+    }
 
     for (let front = 0; front < 2; front++) for (let side = 0; side < 2; side++) {
       const isFront = front === 1, sign = side === 0 ? -1 : 1;
       const x = isFront ? 0.47 : -0.49, z = sign * 0.355;
-      // Opposing sides push in opposite directions, with diagonal feet lifting
-      // in alternation: this is a slow turn on the spot, not a forward run.
-      const step = gaitPhase + phase + ((front + side) % 2) * Math.PI;
-      const push = gaitPhase + phase + front * Math.PI;
-      const hip = [x + sway * .035,0.19 - crouch,z];
+      const hip = chassisPoint(x, 0.19, z);
       const pawLift = isFront ? reaction * (side === 1 ? .25 : .06) : 0;
-      const foot = [x + hover * sign * Math.sin(push) * .115 + (isFront ? .07 : -.025) * reaction,
-        -0.72 + hover * Math.max(0,Math.cos(step)) * .095 + pawLift, z];
+      const foot = [x + (isFront ? .07 : -.025) * reaction, -0.72 + pawLift, z];
       const dx = foot[0] - hip[0], dy = foot[1] - hip[1], distance = Math.hypot(dx, dy);
       const upper = 0.46, lower = 0.49;
       const along = (upper * upper - lower * lower + distance * distance) / (2 * distance);
       const bend = Math.sqrt(Math.max(0, upper * upper - along * along)) * (isFront ? 1 : -1);
       const knee = [hip[0] + dx / distance * along - dy / distance * bend,
-        hip[1] + dy / distance * along + dx / distance * bend, z];
+        hip[1] + dy / distance * along + dx / distance * bend,
+        hip[2] + (foot[2] - hip[2]) * .5];
 
-      m.prism([hip[0],hip[1],z-0.075],[hip[0],hip[1],z+0.075],0.106,1,7,12);
+      m.prism([hip[0],hip[1],hip[2]-0.075],[hip[0],hip[1],hip[2]+0.075],0.106,1,7,12);
       m.prism(hip,knee,0.071,6,1,4,7);
-      m.prism([knee[0],knee[1],z-0.071],[knee[0],knee[1],z+0.071],0.077,6,3,12);
+      m.prism([knee[0],knee[1],knee[2]-0.071],[knee[0],knee[1],knee[2]+0.071],0.077,6,3,12);
       m.prism(knee,foot,0.047,1,7,4,6);
       const pistonA = add(add(hip,mul(sub(knee,hip),0.32)),[0,0,sign*0.062]);
       const pistonB = add(add(knee,mul(sub(foot,knee),0.44)),[0,0,sign*0.062]);
@@ -235,7 +234,7 @@
     const hover = !input.reduced && Number.isFinite(input.hover) ? Math.max(0,Math.min(1,input.hover)) : 0;
     const seconds = input.reduced ? 0 : Number.isFinite(time) ? time : 0;
     const reaction = active > 0 ? input.reduced ? .72 : Math.sin(active * Math.PI * .85) : 0;
-    if (id === 'robot-dog') robotDog(m,seconds,variantPhase(variant),reaction,hover,
+    if (id === 'robot-dog') robotDog(m,reaction,hover,
       Number.isFinite(input.gaitPhase) ? input.gaitPhase : seconds * .55);
     if (id === 'quest-3') quest3(m);
     return { vertices: m.vertices, faces: m.faces };
