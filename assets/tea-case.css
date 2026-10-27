@@ -214,7 +214,7 @@ html.tea-board-detail-open{overflow:hidden;scroll-snap-type:none}
  .tea-layer-logic{grid-template-columns:1fr;gap:30px}
  .tea-central-feedback{grid-template-columns:1fr;gap:28px}
  .tea-room-reference{flex-direction:column;gap:20px;text-align:center}
- .tea-room-reference svg{transform:rotate(90deg);flex-basis:24px;width:80px}
+ .tea-room-reference svg{transform:rotate(90deg);flex-basis:80px;width:80px;height:80px}
  .tea-research-dimensions{grid-template-columns:1fr 1fr}
  .tea-form-meanings{grid-template-columns:repeat(3,1fr);gap:25px}
  .tea-tools-layout{grid-template-columns:1fr;gap:30px}
