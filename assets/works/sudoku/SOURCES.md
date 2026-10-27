@@ -1,5 +1,15 @@
 # 极简数独截图来源
 
+## 2026-10-27：品牌启动页与新双机组合
+
+新增 `launch.png`，来自同一原生维护构建 `com.hanyuzhu.sudoku`、`1.2 (28)`，iPhone 17 Pro Max / iOS 26.5、1320 × 2868、09:41。使用独立 `Sudoku Portfolio Capture` 模拟器录制正常冷启动，从原始录屏第 2.750 秒直接导出 PNG，保留九宫格 Logo 的明暗脉动与已经显现的 sudoku 字标；没有裁切、调色、重绘屏幕或修改 App 动画。状态栏通过 simctl 固定为普通满电，未改变 App 内容。
+
+SHA-256：`49ab52fdbbd4e3f0cd7a57e0c119a07a44ea2ada30a32601162b398254afd173`。原始录屏与采集元数据位于本地 `artifacts/sudoku-copy-launch-20261027/`，不随网站提交；采集后专用设备已关闭，原有 `Sudoku Minimal Preview` 未操作。
+
+页面双机改为前机 `coach.png`、后机 `launch.png`：前者呈现解题与解释卡，后者呈现品牌与留白。保留黑色透明机身、四角单应映射、裁剪及遮挡。导出脚本与完整合成 `iphone-duo-sudoku-transparent.png` 同步采用这组截图；没有调整贴屏几何。
+
+价值观部分展示的 `history.png` 为已有的较早原生介绍截图，1206 × 2622；它不是本次维护构建的新截图。页面将其作为历史介绍内容使用，原图不重写语言或颜色。六组过程录屏、触发时机及分析生长速度保持原实现。
+
 2026-10-27：第三部分新增六段原生操作录屏与对应终帧，采集自下述同一份 `1.2 (28)` 开发构建，原有 PNG 保留。完整路径、剪辑范围、规格与网页播放/定格流程见 [`docs/sudoku-native-process.md`](../../../docs/sudoku-native-process.md)。
 
 采集日期：2026-10-24。此目录用于第一版极简数独，Bundle ID `com.hanyuzhu.sudoku`、App Store ID `6775198044`；与美式报刊视觉探索的素材分开。
@@ -51,7 +61,7 @@ Apple 官方 [App Store 页面](https://apps.apple.com/cn/app/sudoku-2026/id6775
 
 ## 第二部分的产品展示与组件细节
 
-2026-10-25：广告式双机展示复用原始 `board.png`、`coach.png` 和官方正视机身，用 CSS 透视变换统一改变整台手机的角度。未生成或重绘屏幕内容；两台均朝向观众，便于同时阅读盘面与辅导。
+2026-10-25 初始方案：当时广告式双机展示复用原始 `board.png`、`coach.png` 和官方正视机身，用 CSS 透视变换统一改变整台手机的角度。未生成或重绘屏幕内容；两台均朝向观众，便于同时阅读盘面与辅导。
 
 组件细节使用 SVG viewBox 直接查看原始截图的局部，原文件未修改。源码依据（同一维护工程 `ios/Sources/`）：
 
@@ -63,7 +73,7 @@ Apple 官方 [App Store 页面](https://apps.apple.com/cn/app/sudoku-2026/id6775
 
 2026-10-25：`iphone-duo-studio-base.png` 是按用户要求使用内置 imagegen 生成的白底双机产品场景，1254 × 1254。它是生成的机身与光影底图，不是官方 Apple 实拍照片；图中屏幕留白。提示词、四角映射及遮挡路径记录在 `docs/sudoku-mockup-production.md`。
 
-网页以独立图层将原始 `board.png` 与 `coach.png` 映射到两块屏幕；截图不交给图像模型重画，源文件未修改。`assets/sudoku-product-scene.js` 使用四点单应映射、屏幕轮廓裁剪与前机机壳遮挡，整组场景按比例缩放；放大时仍复用这套完整场景。第三部分分析图继续使用官方正视机身。
+初始贴屏方案以独立图层将原始 `board.png` 与 `coach.png` 映射到两块屏幕；截图不交给图像模型重画，源文件未修改。`assets/sudoku-product-scene.js` 使用四点单应映射、屏幕轮廓裁剪与前机机壳遮挡，整组场景按比例缩放；放大时仍复用这套完整场景。第三部分分析图继续使用官方正视机身。
 
 ### 黑色机身版本
 

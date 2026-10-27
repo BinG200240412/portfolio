@@ -2,7 +2,6 @@
 .case-product-hero{color:var(--ink);display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:clamp(24px,3vw,48px);align-items:center;min-height:calc(100svh - 210px)}
 .case-product-copy{position:relative;z-index:2;min-width:0;padding:28px 0 28px 32px}
 .case-character .case-app-wordmark{white-space:nowrap}
-.case-product-copy #character-title{font-size:17px;line-height:1.8;letter-spacing:0;color:var(--mid);margin-bottom:38px}
 .case-product-copy .case-product-wordmark{font-size:clamp(46px,4.6vw,68px);margin-bottom:26px}
 .case-product-slogan{--portfolio-font:SudokuGenWan,serif;--portfolio-font-weight:500;font-family:SudokuGenWan,serif;font-size:clamp(38px,4.5vw,66px);line-height:1.5;letter-spacing:.025em;max-width:5.4em;text-wrap:balance}
 html[lang^="en"] .case-product-slogan{--portfolio-font:SudokuGaramond,serif;--portfolio-font-weight:400;font-family:SudokuGaramond,serif;letter-spacing:0;line-height:1.15;max-width:7.8em}
@@ -30,15 +29,35 @@ html[lang^="en"] .case-product-slogan{--portfolio-font:SudokuGaramond,serif;--po
 .case-system-tabs svg{width:100%}
 .case-native-components h4{font-size:19px;line-height:1.5;font-weight:300;margin:12px 0}
 .case-native-components p{font-size:14px;line-height:1.9;color:var(--mid);max-width:25em}
+@media(min-width:721px){.case-product-art{width:min(100%,calc(100svh - 160px));justify-self:center}}
+.case-product-caption{margin-top:24px;color:var(--mid);max-width:17em}
+.case-values{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.8fr);gap:clamp(48px,8vw,128px);align-items:center;margin-top:clamp(64px,10vw,144px)}
+.case-values-copy{max-width:42em}.case-values-copy h3{margin:0 0 22px}.case-values-copy h3:not(:first-child){margin-top:48px}
+.case-values-copy p+p{margin-top:20px}
+.case-values-copy p,.case-design-columns p,.case-native-lead,.case-native-notes dd,.case-gesture-note p{color:var(--mid)}
+.case-history-figure{width:min(100%,310px);justify-self:center;margin:0}
+.case-history-figure .image-open{display:block;width:100%;cursor:zoom-in}
+.case-history-figure figcaption{color:var(--mid);margin-top:16px}
+.case-design-intro{margin-top:clamp(80px,10vw,144px)}
+.case-design-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(36px,7vw,112px);margin-top:44px}
+.case-design-columns h3{margin:0 0 22px}.case-design-columns p+p{margin-top:20px}
+.case-native-lead{max-width:48em;margin-top:24px}
+.case-native-notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,4vw,64px);margin:40px 0 0}
+.case-native-notes dt{margin-bottom:12px}.case-native-notes dd{margin:0}
+.case-palette-caption{margin-top:24px}
+.case-design-principles{margin-top:72px}
+.case-screen-summary{margin-top:22px;color:var(--mid);text-wrap:pretty}
+.case-gesture-note{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(36px,6vw,96px);align-items:start;margin-top:64px}
+.case-gesture-note h3{margin:0}
 @media(min-width:721px) and (max-width:1000px){
  .case-product-hero{grid-template-columns:minmax(0,.68fr) minmax(0,1.32fr);gap:12px;min-height:620px}
- .case-product-copy #character-title{font-size:15px;margin-bottom:30px}.case-product-copy .case-product-wordmark{font-size:48px}
+ .case-product-copy .case-product-wordmark{font-size:48px}
  .case-product-slogan{font-size:clamp(35px,4.6vw,46px)}
  .case-native-components{gap:26px}.case-component-visual{height:150px}.case-native-components h4{font-size:18px}
 }
 @media(max-width:720px){
  .case-product-hero{grid-template-columns:minmax(0,1fr);gap:30px;min-height:0}
- .case-product-copy{padding:30px 18px 0;text-align:center}.case-product-copy #character-title{font-size:15px;margin-bottom:25px}
+ .case-product-copy{padding:30px 18px 0;text-align:center}
  .case-product-copy .case-product-wordmark{font-size:48px;margin-bottom:12px}
  .case-product-slogan{font-size:clamp(27px,8.5vw,48px);max-width:none;margin-inline:auto;white-space:nowrap}
  html[lang^="en"] .case-product-slogan{font-size:clamp(37px,10vw,52px);max-width:8.2em;white-space:normal}
@@ -49,6 +68,14 @@ html[lang^="en"] .case-product-slogan{--portfolio-font:SudokuGaramond,serif;--po
  .case-component-visual{height:170px;justify-content:flex-start}
  .case-glass-controls svg{width:105px}.case-component-visual svg{max-width:300px}
  .case-native-components h4{margin-top:0}.case-native-components p{max-width:28em}
+ .case-product-caption{margin-inline:auto;max-width:22em}
+ .case-values{grid-template-columns:minmax(0,1fr);gap:36px;margin-top:64px}
+ .case-values-copy h3:not(:first-child){margin-top:36px}
+ .case-history-figure{width:min(70%,280px)}
+ .case-design-intro{margin-top:72px}
+ .case-design-columns,.case-native-notes,.case-gesture-note{grid-template-columns:minmax(0,1fr);gap:30px}
+ .case-design-columns{margin-top:32px}.case-design-principles{margin-top:48px}
+ .case-native-notes{margin-top:30px}.case-gesture-note{margin-top:44px;gap:20px}
 }
 
 @media(prefers-reduced-motion:reduce){.case-phone-scene{transition:none}}

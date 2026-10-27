@@ -144,7 +144,7 @@ const maskContext = screenMask.getContext('2d');
 const occlusion = new Path2D(`M0 0 H${size} V${size} H0 Z ${outlines.body}`);
 const errors = {};
 for (const side of ['back', 'front']) {
-  const screenshot = resolve(works, side === 'front' ? 'board.png' : 'coach.png');
+  const screenshot = resolve(works, side === 'front' ? 'coach.png' : 'launch.png');
   const projected = await projectedScreenshot(screenshot, quads[side]);
   errors[side] = projected.error;
   for (const drawing of [context, maskContext]) {
