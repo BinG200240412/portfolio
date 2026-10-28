@@ -12,6 +12,12 @@
     const pixels = new Uint8Array(SIZE * SIZE), shades = new Uint8Array(SIZE * SIZE);
     if (!mesh) return { width:SIZE,height:SIZE,pixels,shades,model:true };
     const dog = id === 'robot-dog';
+    // The scan belongs to the headset's front-shell material. Its plane moves
+    // in model space; it never adds a second screen-space drawing or new LEDs.
+    const scanning = !dog && hover > .08;
+    const scanSeconds = Number.isFinite(input.hoverElapsed) ? input.hoverElapsed : seconds;
+    const scanX = -1.08 + ((scanSeconds % 2.5 + 2.5) % 2.5) / 2.5 * 2.36;
+    const scanWidth = Math.min(1,hover/.6);
     const yaw = dog ? -.62
       : .12 + .42 * Math.sin(seconds * .24 + variant * .16) + reaction * .40 + hover * .06;
     const tilt = dog ? .25 : .19 + .08 * Math.sin(seconds * .29 + .4) + reaction * .22;
@@ -54,7 +60,20 @@
           const w2=1-w0-w1;
           if (w0<-.00001||w1<-.00001||w2<-.00001) continue;
           const z=w0*p[2]+w1*q[2]+w2*r[2], index=y*SIZE+x;
-          if (z>=depth[index]) {depth[index]=z;pixels[index]=face.role;shades[index]=shade;}
+          if (z>=depth[index]) {
+            let role=face.role, materialShade=shade;
+            if (scanning && visor) {
+              const localX=w0*mesh.vertices[indices[0]][0]+
+                w1*mesh.vertices[indices[k]][0]+w2*mesh.vertices[indices[k+1]][0];
+              const trail=scanX-localX;
+              // Adjacent whole beads carry three hard-edged light steps.
+              // Sensor apertures and straps keep their original material.
+              if (trail>=0 && trail<.09*scanWidth) {role=8;materialShade=4;}
+              else if (trail>=.09*scanWidth && trail<.19*scanWidth) {role=4;materialShade=3;}
+              else if (trail>=.19*scanWidth && trail<.30*scanWidth) materialShade=2;
+            }
+            depth[index]=z;pixels[index]=role;shades[index]=materialShade;
+          }
         }
       }
     }

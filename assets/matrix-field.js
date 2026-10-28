@@ -98,7 +98,7 @@
   const hotspots = new Map();
   const sampleWeights = new Float32Array(9), sampleShades = new Float32Array(9);
   const sampled = {role:0,coverage:0,shade:4};
-  let width = 0, height = 0, ledPitch = 3, items = [], quiet = [], sprites = [], paperFacets = [], speechSprite = null, scanSprite = null;
+  let width = 0, height = 0, ledPitch = 3, items = [], quiet = [], sprites = [], paperFacets = [], speechSprite = null;
   let dark = true, frame = 0, lastFrame = 0, elapsed = 0, pageShown = true;
   let morph = 0, morphTarget = 0, pointerX = 0, pointerY = 0, aimX = 0, aimY = 0;
   let gorillaReady = false, gorillaPlacement = null;
@@ -191,7 +191,6 @@
     };
     sprites = (dark ? colours : lightColours).map(spriteFor);
     speechSprite = spriteFor(dark ? [205,204,197] : [35,42,39]);
-    scanSprite = spriteFor(dark ? [139,186,209] : [19,91,147]);
     // Faces progress from shadow to light in discrete opaque steps. Highlights
     // get their own brighter pigment instead of lowering the whole object's alpha.
     paperFacets = dark ? [] : Object.fromEntries(Object.entries(palettes).map(([id,roles]) => {
@@ -463,7 +462,8 @@
     pointerY += (aimY - pointerY) * follow;
     for (const entry of hotspots.values()) {
       entry.hover += (entry.hoverTarget-entry.hover)*follow;
-      entry.hoverElapsed = entry.hoverTarget || pending?.entry === entry ? entry.hoverElapsed + dt : 0;
+      entry.hoverElapsed = entry.hoverTarget || pending?.entry === entry ||
+        (entry.id === 'quest-3' && entry.hover > .01) ? entry.hoverElapsed + dt : 0;
       if (entry.id === 'robot-dog') entry.gaitPhase += dt * Math.max(entry.hover,entry.hoverTarget) * 2.75;
     }
     if (pending) {
@@ -471,35 +471,10 @@
       if (pending.progress >= 1) finishPending();
     }
   }
-  function drawQuestScan(bounds,hover,time) {
-    if (!scanSprite || hover < .04 || reduced.matches) return;
-    const pitch=ledPitch, size=pitch*1.4;
-    const cx=bounds.left+pitch*2, cy=(bounds.top+bounds.bottom)/2;
-    const reach=Math.min(48,(bounds.right-bounds.left)*.27);
-    for(let ring=0;ring<3;ring++){
-      const travel=((time*.78-ring/3)%1+1)%1;
-      const radius=8+travel*reach;
-      ctx.globalAlpha=hover*(1-travel)*.85;
-      for(let step=0;step<=16;step++){
-        const angle=Math.PI*(.52+step*.06);
-        const px=cx+Math.cos(angle)*radius, py=cy+Math.sin(angle)*radius;
-        if(px<0||px>width||py<0||py>height||clearance(px,py)<.75)continue;
-        ctx.drawImage(scanSprite,px-size/2,py-size/2,size,size);
-      }
-    }
-    const sweep=((time*.68)%1+1)%1;
-    const x=bounds.left+(bounds.right-bounds.left)*(.18+.64*sweep);
-    ctx.globalAlpha=hover*.7;
-    for(let y=bounds.top+(bounds.bottom-bounds.top)*.24;y<bounds.bottom-(bounds.bottom-bounds.top)*.24;y+=pitch*1.4){
-      if(clearance(x,y)<.75)continue;
-      ctx.drawImage(scanSprite,x-size/2,y-size/2,size,size);
-    }
-    ctx.globalAlpha=1;
-  }
   function draw(time) {
     if (!sprites.length || !width || !height) return;
     ctx.clearRect(0, 0, width, height);
-    const objectBoxes=[], projectEffects=[];
+    const objectBoxes=[];
     const facets = [0,.48,.66,.84,1];
     const opacity = dark ? .76 : 1;
     const libraries = [window.PortfolioGorillaMotif,window.PortfolioLiangzhuMotifs,
@@ -523,8 +498,6 @@
       p.hitBox = inkBounds(image);
       const bounds=objectBox(p);
       if (bounds) objectBoxes.push({key:item.key,box:bounds});
-      if (bounds && item.id === 'quest-3' && entry?.hover > .04)
-        projectEffects.push({bounds,hover:entry.hover});
       if (entry && image.ready !== false && positionButton(entry.button,p)) entry.placement=p;
       if (item.id === 'gorilla' && source === window.PortfolioGorillaMotif && (image.ready === true || source.ready === true)) {
         gorillaPlacement = p;
@@ -553,7 +526,6 @@
       }
     }
     ctx.globalAlpha = 1;
-    for(const effect of projectEffects) drawQuestScan(effect.bounds,effect.hover,time);
     buttonVisibility();
     drawSpeech(time,objectBoxes);
   }
