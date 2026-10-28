@@ -715,3 +715,5 @@ window.PORTFOLIO_CASE_TRANSLATIONS = Object.assign(window.PORTFOLIO_CASE_TRANSLA
 });
 
 window.PORTFOLIO_CASE_TRANSLATIONS["当前浏览器暂不能进入全屏，可继续在窗口内试玩。"] = "Full screen is unavailable in this browser. You can keep playing in this window.";
+
+window.PORTFOLIO_CASE_TRANSLATIONS["网易雷火联合课程"] = "Joint course with NetEase ThunderFire";
