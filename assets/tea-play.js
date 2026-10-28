@@ -55,7 +55,15 @@
   dialog.querySelector('[data-tea-menu]').addEventListener('click', () => load('index'));
   dialog.querySelector('[data-tea-game-close]').addEventListener('click', () => dialog.close());
   dialog.querySelector('[data-tea-fullscreen]').addEventListener('click', async () => {
-    try { if (document.fullscreenElement) await document.exitFullscreen(); else await dialog.requestFullscreen(); } catch (_) {}
+    try {
+      if (document.fullscreenElement) await document.exitFullscreen(); else await dialog.requestFullscreen();
+      dialog.dataset.fullscreenStatus = 'available';
+    } catch (_) {
+      dialog.dataset.fullscreenStatus = 'unavailable';
+      dialog.querySelector('.tea-game-hint').textContent = document.documentElement.lang.startsWith('en')
+        ? 'Full screen is unavailable in this browser. You can keep playing in this window.'
+        : '当前浏览器暂不能进入全屏，可继续在窗口内试玩。';
+    }
   });
   dialog.addEventListener('close', () => {
     mount.replaceChildren(); document.documentElement.classList.remove('tea-game-open');

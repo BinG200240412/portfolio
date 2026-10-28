@@ -713,3 +713,5 @@ window.PORTFOLIO_CASE_TRANSLATIONS = Object.assign(window.PORTFOLIO_CASE_TRANSLA
   "结束试玩": "End demo",
   "横屏体验更完整 · 结束试玩后声音与游戏一同停止": "Landscape works best · Closing the demo stops the game and sound"
 });
+
+window.PORTFOLIO_CASE_TRANSLATIONS["当前浏览器暂不能进入全屏，可继续在窗口内试玩。"] = "Full screen is unavailable in this browser. You can keep playing in this window.";
