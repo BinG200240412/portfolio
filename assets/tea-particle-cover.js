@@ -28,8 +28,8 @@
   function palette(){
     light=document.documentElement.dataset.theme==='light';
     const base=light?[26,29,32]:[43,47,51];
-    const colours=light?[[42,93,117],[38,103,89],[124,91,42],[110,59,92],[67,67,122],[40,97,112]]:
-      [[100,157,181],[89,159,141],[183,155,96],[165,110,153],[118,121,185],[98,165,170]];
+    const colours=light?[[58,81,87],[56,83,72],[99,86,60]]:
+      [[129,148,153],[124,146,136],[159,147,120]];
     glaze=colours.map(c=>swatches(base,c));
     bamboo=swatches(light?[113,74,24]:[104,75,35],light?[188,143,67]:[236,210,145],16);
     canvas.dataset.theme=light?'light':'dark';sync();
@@ -39,9 +39,9 @@
     ctx.fillStyle=colour;ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();
   }
   function build(){
-    cx=w*.75;radius=w*.43;rim=h*.65;bodyHeight=h*.31;
-    wx=w*.66;wy=h*.575;top=-h*.53;neck=-h*.32;
-    handleR=Math.min(w*.037,h*.044);headR=Math.min(w*.16,h*.19);
+    cx=w*.75;radius=w*.39;rim=h*.65;bodyHeight=h*.31;
+    wx=w*.66;wy=h*.575;top=-h*.565;neck=-h*.345;
+    handleR=Math.min(w*.040,h*.0475);headR=Math.min(w*.172,h*.205);
     bowl=[];handle=[];tineRows=[];
     for(let y=pitch*.5;y<rim+bodyHeight+h*.01;y+=pitch){
       if(y<rim-pitch*.5)continue;
@@ -83,8 +83,8 @@
       const g=Math.exp(-(((p.phi-band)/.19)**2));
       const fringe=Math.exp(-(((p.phi-band-.29)/.26)**2));
       const flake=p.n>.83?(p.n-.83)/.17:0;
-      const hue=Math.floor(mod(p.phi*2.2+p.v*1.6+t*.035+p.n*.28,1)*glaze.length);
-      const shine=clamp(g*.78+fringe*.25+flake*.16,0,1);
+      const hue=Math.floor(mod(p.phi*.45+p.v*.35+t*.008+p.n*.025,1)*glaze.length);
+      const shine=clamp(g*.72+fringe*.18+flake*.08,0,1);
       const colour=glaze[hue][Math.round(shine*11)];
       let size=light?.43-g*.19:.24+g*.19+flake*.035;
       if(p.edge)size=light?.34:.34+g*.10;
@@ -93,7 +93,7 @@
     canvas.dataset.reflection=band.toFixed(3);
   }
   function drawWhisk(t){
-    const spin=t*.68, cells=new Map();
+    const spin=t*.34, cells=new Map();
     for(const p of handle){
       const normal=Math.max(0,Math.cos(p.phi+.45));
       const grain=.5+.5*Math.sin(p.phi*10-spin*5+p.ly*.008);
@@ -131,7 +131,7 @@
     for(let i=0;i<3;i++){
       const age=mod(t-i*.62,5.8);
       if(age>1.05)continue;
-      const birth=t-age,angle=birth*.68+i*1.9;
+      const birth=t-age,angle=birth*.34+i*1.9;
       const tip=project(headR*.77*Math.sin(angle),0);
       const fall=.70,colour=light?'#887747':'#eee4c7';
       const px=pitch*(Math.round(tip.x/pitch-.5)+.5);
