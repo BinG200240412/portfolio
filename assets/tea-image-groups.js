@@ -166,9 +166,27 @@
       return record && Math.abs(record.width - entry.target.clientWidth) > 2;
     })) refresh();
   });
+  // Reparenting a lazy image can postpone its native intersection check in WebKit.
+  // Warm only nearby groups, retaining lazy loading for the rest of the case study.
+  const warm = record => record.items.forEach(item => item.querySelectorAll('img').forEach(image => {
+    if (!image.complete || !image.naturalWidth) image.loading = 'eager';
+  }));
+  const visibility = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const record = records.find(value => value.group === entry.target);
+      if (record) warm(record);
+      visibility.unobserve(entry.target);
+    });
+  }, { rootMargin: '1000px 0px' });
   document.fonts.ready.then(() => {
     records.forEach(build);
-    records.forEach(record => resize.observe(record.group));
+    records.forEach(record => {
+      resize.observe(record.group);
+      visibility.observe(record.group);
+      const rect = record.group.getBoundingClientRect();
+      if (rect.top < innerHeight + 1000 && rect.bottom > -1000) warm(record);
+    });
   });
   eligible.addEventListener('change', refresh);
   addEventListener('resize', refresh, { passive: true });
