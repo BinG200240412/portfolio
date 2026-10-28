@@ -36,10 +36,10 @@
       [1461,4876,'PANO → CLIP','PANO → CLIP','#liangzhu-scene-understanding',3],
       [1461,4948,'CLIP → TEXT','CLIP → TEXT','#liangzhu-scene-understanding',3],
       [1461,5017,'TEXT → PROMPT','TEXT → PROMPT','#liangzhu-scene-understanding',3],
-      [1828,4943,'MARBLE 模型生成','MARBLE generation','#liangzhu-marble-handoff',3],
-      [2177,4826,'PANO → 图像输入 → MARBLE','PANO → Image input → MARBLE','#liangzhu-marble-handoff',3],
-      [2177,4952,'TEXT → 语义引导 → MARBLE','TEXT → Semantic guidance → MARBLE','#liangzhu-marble-handoff',3],
-      [2177,5077,'MARBLE → GAUSSIAN SPLATTING','MARBLE → GAUSSIAN SPLATTING','#process-result',3],
+      [1828,4943,'MARBLE 模型生成','MARBLE generation','#workflow-four',4],
+      [2177,4826,'PANO → 图像输入 → MARBLE','PANO → Image input → MARBLE','#liangzhu-marble-handoff',4],
+      [2177,4952,'TEXT → 语义引导 → MARBLE','TEXT → Semantic guidance → MARBLE','#liangzhu-marble-handoff',4],
+      [2177,5077,'MARBLE → GAUSSIAN SPLATTING','MARBLE → GAUSSIAN SPLATTING','#process-result',4],
     ],
     repaint: [
       [982,1664,'输入与预处理','Input preparation','#liangzhu-image-input',1],
@@ -66,6 +66,47 @@
     return node;
   };
   const english = () => window.PortfolioI18n?.language === 'en';
+  function dotArrow() {
+    const svg=element('svg',{viewBox:'0 0 64 32',class:'liangzhu-dot-arrow','aria-hidden':'true'});
+    svg.append(element('path',{d:'M2 16H59M44 3L59 16L44 29','vector-effect':'non-scaling-stroke'}));
+    return svg;
+  }
+  function installAnalysisInteractions() {
+    const sequence=document.querySelector('[data-io-sequence]');
+    if(sequence){
+      [...sequence.children].forEach((step,index)=>{
+        step.style.setProperty('--io-step',index);
+        if(index<2)step.append(dotArrow());
+      });
+      const observer=new IntersectionObserver(entries=>{
+        if(entries.some(entry=>entry.isIntersecting)){
+          sequence.classList.add('is-running');observer.disconnect();
+        }
+      },{threshold:.35});
+      observer.observe(sequence);
+    }
+    document.querySelector('.liangzhu-research-flow')?.append(dotArrow());
+    document.querySelector('.liangzhu-research-down')?.append(dotArrow());
+    for(const gallery of document.querySelectorAll('[data-crop-gallery]')){
+      const buttons=[...gallery.querySelectorAll('button')];
+      const select=index=>{
+        if(index<0)delete gallery.dataset.selected;
+        else gallery.dataset.selected=String(index);
+        buttons.forEach((button,i)=>button.setAttribute('aria-pressed',String(i===index)));
+      };
+      buttons.forEach((button,index)=>{
+        button.addEventListener('click',()=>select(gallery.dataset.selected===String(index)?-1:index));
+        button.addEventListener('keydown',event=>{
+          if(event.key==='Escape'){select(-1);return;}
+          const direction=['ArrowRight','ArrowDown'].includes(event.key)?1:['ArrowLeft','ArrowUp'].includes(event.key)?-1:0;
+          if(!direction)return;
+          event.preventDefault();
+          const next=(index+direction+buttons.length)%buttons.length;
+          select(next);buttons[next].focus({preventScroll:true});
+        });
+      });
+    }
+  }
   function installFoldedOverview(host) {
     const svg = element('svg',{role:'group',class:'liangzhu-sankey liangzhu-sankey-folded'});
     const canvas = document.createElement('canvas');
@@ -85,10 +126,10 @@
     const tones = ['green','green','ochre','violet','ochre','violet','green','ochre',
       'violet','ochre','ochre','green','violet','violet','ochre','ochre','green'];
     const compactLabels = [
-      ['风格重绘','Repaint'],['以图生图','Img →\nimg'],['良渚实景','Site image'],
+      ['风格重绘','Repaint'],['以图生图','Img2img'],['良渚实景','Site image'],
       ['锁定结构','Keep shape'],['风格图','Style image'],['全景扩展','360° pano'],
       ['画风一致','Same style'],['360° 全景','360° view'],['2:1 比例','2:1 ratio'],
-      ['反推描述','Scene text'],['全景图','Pano'],['场景文本','Text'],['提示词','Prompt'],
+      ['提示词反推','Scene text'],['PANO → CLIP','PANO → CLIP'],['CLIP → TEXT','CLIP → TEXT'],['TEXT → PROMPT','TEXT → PROMPT'],
       ['Marble 生成','Marble'],['图像输入','Image input'],['语义引导','Text guide'],
       ['三维场景','3D scene']
     ];
@@ -119,16 +160,17 @@
     }
     function paint() {
       frame=0;
-      const width=host.clientWidth;
+      const width=Math.min(host.clientWidth,840);
       if (!width) return;
       const next=`${width}:${english()}:${fontRevision}`;
       if (next===signature) return;
       signature=next;
-      const narrow=width<720, fontSize=narrow?16:18, lineHeight=fontSize*1.42;
-      const margin=narrow?12:28, gap=narrow?8:32, turn=narrow?26:46, railInset=24;
-      const slot=(width-margin*2-turn-railInset-gap*3)/4;
+      const narrow=width<600, fontSize=narrow?16:18, lineHeight=fontSize*1.4;
+      const margin=12, gap=narrow?10:20, stageGap=narrow?20:40, turn=narrow?16:24, railInset=0;
+      const slot=(width-margin*2-turn-gap*2-stageGap)/4;
+      const positions=[margin,margin+slot+gap,margin+slot*2+gap+stageGap,margin+slot*3+gap*2+stageGap];
       const inset=narrow?11:15, tail=4, textWidth=slot-inset-tail-4;
-      const padding=24, nodeGap=narrow?22:26, rowGap=narrow?76:96;
+      const padding=14, nodeGap=narrow?16:18, rowGap=narrow?36:44;
       svg.style.setProperty('--folded-font',`${fontSize}px`);
       const ruler=element('text',{class:'liangzhu-sankey-node',visibility:'hidden'});
       svg.replaceChildren(ruler);
@@ -136,27 +178,43 @@
       measure.font=`${style.fontWeight} ${fontSize}px ${style.fontFamily}`;
       const nodes=labels.overview.map(([,,zh,en,href,stage],id)=>{
         const fullCopy=english()?en:zh;
-        const copy=width<480?compactLabels[id][english()?1:0]:fullCopy;
+        const phoneEnglish={0:'Style',1:'Img →\nimg',5:'Pano',9:'Text',13:'3D'};
+        const copy=width<480&&english()&&phoneEnglish[id] ? phoneEnglish[id]
+          : width<480&&id>=10&&id<=12 ? (english()?['Pano','Text','Prompt'][id-10]:['全景图','场景文本','提示词'][id-10])
+          : compactLabels[id][english()?1:0];
         const lines=wrap(copy,textWidth);
         return {id,copy,fullCopy,href,stage,lines,height:Math.max(lineHeight,lines.length*lineHeight)};
       });
       const heights=columns.map(ids=>ids.reduce((sum,id)=>sum+nodes[id].height,0)+(ids.length-1)*nodeGap);
       const topHeight=Math.max(...heights.slice(0,4));
       const bottomHeight=Math.max(...heights.slice(4));
-      const height=padding*2+topHeight+rowGap+bottomHeight;
+      const groups=[
+        {stage:1,row:0,column:0,zh:'风格化重绘',en:'Style repainting',href:'#workflow-one'},
+        {stage:2,row:0,column:2,zh:'图生全景',en:'Image to panorama',href:'#workflow-two'},
+        {stage:3,row:1,column:2,zh:'提示词反推',en:'Prompt derivation',href:'#workflow-three'},
+        {stage:4,row:1,column:0,zh:'Marble 模型生成',en:'Marble generation',href:'#workflow-four'}
+      ];
+      const titleSize=narrow?20:25,titleLine=titleSize*1.2;
+      svg.style.setProperty('--overview-title',`${titleSize}px`);
+      measure.font=`${style.fontWeight} ${titleSize}px ${style.fontFamily}`;
+      groups.forEach(group=>{group.lines=wrap(english()?group.en:group.zh,slot*2+gap-10);});
+      const headerHeights=[0,1].map(row=>28+Math.max(...groups.filter(g=>g.row===row).map(g=>g.lines.length))*titleLine+14);
+      const rowTops=[padding,padding+headerHeights[0]+topHeight+padding*2+rowGap];
+      const height=rowTops[1]+headerHeights[1]+bottomHeight+padding*2;
+      measure.font=`${style.fontWeight} ${fontSize}px ${style.fontFamily}`;
       columns.forEach((ids,index)=>{
         const row=index<4?0:1, column=row?7-index:index;
         const available=row?bottomHeight:topHeight;
-        let y=padding+(row?topHeight+rowGap:0)+(available-heights[index])/2;
+        let y=rowTops[row]+headerHeights[row]+padding+(available-heights[index])/2;
         ids.forEach(id=>{
-          Object.assign(nodes[id],{row,column,x:margin+column*(slot+gap),y:y+nodes[id].height/2});
+          Object.assign(nodes[id],{row,column,x:positions[column],y:y+nodes[id].height/2});
           nodes[id].right=nodes[id].x+inset+Math.max(...nodes[id].lines.map(line=>measure.measureText(line).width))+5;
           y+=nodes[id].height+nodeGap;
         });
       });
       svg.setAttribute('viewBox',`0 0 ${width} ${height}`);
-      svg.setAttribute('width',width);svg.setAttribute('height',height);
-      svg.setAttribute('aria-label',english()?'The complete workflow, in two folded rows':'两排折返的工作流程总说明');
+      svg.setAttribute('width',width);svg.setAttribute('height',height);svg.style.width=`${width}px`;
+      svg.setAttribute('aria-label',english()?'Four connected workflows, in two folded rows':'两排折返的四个工作流');
       host.setAttribute('aria-label',svg.getAttribute('aria-label'));
       const paths=element('g',{'aria-hidden':'true',class:'liangzhu-sankey-paths'});
       const arrows=element('g',{'aria-hidden':'true'});
@@ -183,7 +241,33 @@
             class:'liangzhu-sankey-mark tone-ink',opacity:'.65'}));
         }
       }
-      svg.replaceChildren(paths,arrows);
+      const frames=element('g',{'class':'liangzhu-overview-groups'}),callouts=[];
+      for(const group of groups){
+        const x=positions[group.column]-7, y=rowTops[group.row], boxY=y+headerHeights[group.row];
+        const groupWidth=slot*2+gap+14,bodyHeight=(group.row?bottomHeight:topHeight)+padding*2;
+        frames.append(element('rect',{x,y:boxY,width:groupWidth,height:bodyHeight,
+          class:'liangzhu-overview-frame','data-workflow-group':group.stage,'data-path-stage':group.stage}));
+        const heading=element('a',{href:group.href,class:'liangzhu-overview-heading','data-path-stage':group.stage,
+          'aria-label':english()?`Workflow ${group.stage}: ${group.en}`:`工作流${['','一','二','三','四'][group.stage]}：${group.zh}`});
+        heading.append(element('rect',{x,y,width:groupWidth,height:headerHeights[group.row],fill:'transparent'}));
+        const number=element('text',{x:x+8,y:y+14,class:'liangzhu-overview-number'});
+        number.textContent=english()?`Workflow ${group.stage}`:`工作流${['','一','二','三','四'][group.stage]}`;
+        heading.append(number);
+        const title=element('text',{x:x+8,y:y+36,class:'liangzhu-overview-title'});
+        group.lines.forEach((line,index)=>{
+          const span=element('tspan',{x:x+8,y:y+36+index*titleLine});span.textContent=line;title.append(span);
+        });
+        heading.append(title);
+        callouts.push({number,title,y});
+        heading.append(element('path',{d:`M${x+94} ${y+10}H${x+groupWidth-10}V${boxY}`,
+          class:'liangzhu-overview-leader','aria-hidden':'true'}));
+        frames.append(heading);
+      }
+      svg.replaceChildren(frames,paths,arrows);
+      for(const {number,title,y} of callouts){
+        number.setAttribute('transform',`translate(0 ${y-number.getBBox().y})`);
+        title.setAttribute('transform',`translate(0 ${y+26-title.getBBox().y})`);
+      }
       for (const node of nodes) {
         const link=element('a',{href:node.href,class:'liangzhu-sankey-node',
           'aria-label':node.fullCopy.replaceAll('\n',' '),'data-node-id':node.id,
@@ -288,5 +372,6 @@
       console.error(error);
     }
   }
+  installAnalysisInteractions();
   render();
 })();

@@ -5,7 +5,7 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
   "左右拖动或双指横滑查看完整路径；点选节点查看对应内容。": "Drag or swipe horizontally to explore the full path; select a node to open its section.",
   "从一张图到一个三维场景": "From one image to a three-dimensional scene",
   "这套流程分为三步：先统一场景画风，再把图片扩展成全景，最后结合场景描述生成三维世界。前一步的输出，就是后一步的输入。": "Three workflows form one sequence: establish the visual style, expand the image into a panorama, then generate a 3D world with a scene description. Each output becomes the next input.",
-  "良渚背景调研": "Researching Liangzhu",
+  "良渚背景调研": "Liangzhu research",
   "空间格局": "Spatial structure",
   "以“宫城—内城—外城”的三重向心结构为线索，呈现密布水网与水利系统。": "Use the concentric palace, inner city and outer city as a spatial reference, together with waterways and hydraulic infrastructure.",
   "建筑形态": "Architecture",

@@ -1,4 +1,4 @@
-/* The overview, three workflows and final handoff share one bilingual narrative. */
+/* The overview, four workflows and final handoff share one bilingual narrative. */
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
   "工作流一": "Workflow 1",
   "工作流二": "Workflow 2",
@@ -18,7 +18,7 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
   "输入": "Input",
   "处理": "Process",
   "输出": "Output",
-  "实景或参考图片": "Site photograph or reference image",
+  "实景或参考图片": "Site or reference image",
   "图像预处理、提示词、LoRA 与 ControlNet 约束、分段采样": "Image preparation, prompts, LoRA and ControlNet constraints, and staged sampling",
   "风格化场景图，交给工作流二": "A stylised scene image for Workflow 2",
   "场地与画风参考": "Site and visual references",
@@ -54,4 +54,22 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
   "将场景数据转换为 PLY 点云，得到页首可旋转、缩放的粒子场景": "Convert the scene data to a PLY point cloud for the rotatable, zoomable particle scene at the top of this page",
   "体验三维结果": "Explore the 3D result",
   "完整流程与场景结果记录": "Complete workflow and scene-result records"
+});
+
+/* Four distinct stages; the overview itself supplies the connective explanation. */
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
+  "工作流四": "Workflow 4",
+  "四个工作流的衔接关系": "How the four workflows connect",
+  "工作流一 · 风格化重绘": "Workflow 1 · Style repainting",
+  "LoRA、ControlNet 与分段采样": "LoRA, ControlNet and staged sampling",
+  "风格化场景图": "Stylised scene image",
+  "工作流三 · 提示词反推": "Workflow 3 · Prompt derivation",
+  "用 Janus-Pro 读取全景图，将建筑、植被、光影与构图转成可供三维生成使用的场景描述。": "Janus-Pro reads the panorama and turns its architecture, vegetation, lighting and composition into a description for 3D generation.",
+  "Janus-Pro 图像理解与提示词反推": "Janus-Pro image understanding and prompt derivation",
+  "供 Marble 使用的场景描述": "A scene description for Marble",
+  "工作流四 · Marble 模型生成": "Workflow 4 · Marble generation",
+  "把全景图与反推的场景描述一起输入 Marble，生成可探索的高斯泼溅三维场景。": "Enter the panorama and its derived description into Marble to generate an explorable Gaussian-splat 3D scene.",
+  "2:1 全景图与场景描述": "2:1 panorama and scene description",
+  "Marble 三维场景生成": "Marble 3D scene generation",
+  "风格重绘确定画面，全景扩展补充视野，提示词反推提取场景语义，最后由 Marble 生成可以从不同视角浏览的三维场景。": "Repainting establishes the style, panorama expansion adds the surrounding view, and prompt derivation captures the scene’s meaning. Marble then generates a scene that can be explored from different angles."
 });
