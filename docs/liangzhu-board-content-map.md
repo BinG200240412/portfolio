@@ -18,7 +18,7 @@ removed, and the board's additional export plans remain available on demand.
 | 09 Implementation | `#liangzhu-panorama-implementation` | Editable graph with three attached reference, draft/production and panorama-geometry annotations |
 | 10 Workflow description | `#liangzhu-panorama-stages` | Actual models and conditions remain visible in the graph; unique seamless/HDR extension plans are optional |
 | 11 Final panorama works | `#liangzhu-panorama-outputs` | Both input/output comparisons and both original generation records |
-| 12 General workflow | `#liangzhu-complete-path` | Compact two-row U-shaped Sankey with four labelled group frames, preserving all 17 nodes, 23 connections and detail links |
+| 12 General workflow | `#liangzhu-complete-path` | Two-row U-shaped Sankey with all 17 nodes, 23 connections and four chapter links |
 | 13 Workflow 3 | `#liangzhu-scene-understanding`, `#liangzhu-prompt-output` | Editable Janus-Pro graph with two attached annotations; full generated text stays in its node, with a readable excerpt beside the panorama |
 | 14 Marble input | `#liangzhu-marble-inputs`, `#liangzhu-marble-handoff` | Three equal-window image inputs; the actual Marble interface is paired with image, semantic and output notes |
 | 15 Scene models | `#process-result` | Both three-image result rows: point-cloud preview and two scene views each, plus their original Web/VR links |
@@ -103,12 +103,29 @@ font loading or responsive layout changes.
 
 ## Component-side explanations and output windows
 
-The three graph JSON files add only bilingual `annotations` metadata. Original
-nodes, positions, parameters, groups and links are unchanged. The SVG renderer
+The three graph JSON files add bilingual `annotations` metadata. Original
+groups and links remain intact. At the author's request on 2026-10-28, the Janus
+instruction is replaced and its text field/node height increased to show the
+full requirements; parameter rows and the two notes move to accommodate it.
+Other original component parameters and positions remain unchanged. The SVG renderer
 wraps each explanation at its actual font width, includes it in the drawing
 bounds, and moves its dotted leader and text with the owning component. Four,
 three and two notes respectively replace the repeated explanation blocks below
 the graphs. Reset restores both components and notes.
+
+All nine native notes now have transparent round-dot frames with internal
+padding. Their leaders meet the frame edge, and the three Marble interface notes
+use matching dotted boxes. Component headings consistently use “工作流一/二/三/四与组件说明”.
+
+The revised Chinese instruction asks for evidence-based geometry and spatial
+guidance for Marble: depth layers, relative scale, occlusion, ground contact,
+terrain, materials, lighting and panorama continuity. It distinguishes unseen
+areas from visible facts and rejects invented absolute dimensions. Its proposed
+180–240-word English output is this project's authored format, not a vendor
+requirement. The original generated output remains identified as an original
+example; no new Janus/Marble inference is claimed. The target is consistent with
+World Labs' description of text/image/panorama world inputs in
+[Announcing the World API](https://www.worldlabs.ai/blog/announcing-the-world-api).
 
 Style outputs use two rows of three equal-size windows; Marble inputs and scene
 comparisons use the same interaction. Hover/focus expands the chosen window and

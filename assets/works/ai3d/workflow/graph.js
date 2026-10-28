@@ -172,15 +172,19 @@
     paintAnnotations();
   }
   // Board explanations share the drawing plane and follow their actual component.
-  // Source node positions, parameters and links are kept intact.
+  // Annotations follow their owning component inside the drawing plane.
   function paintAnnotations() {
     if(!annotationLayer)return;
     annotationLayer.replaceChildren();annotationRects=[];
     const language=window.PortfolioI18n?.language==='en'?'en':'zh';
     const measure=document.createElement('canvas').getContext('2d');
     const wrap=(copy,width)=>{
-      const lines=[];let line='';
-      for(const token of copy.match(/[A-Za-z0-9°._/-]+|\s+|[^\s]/gu)||[]){
+      const lines=[],tokens=[];let line='';
+      for(const part of copy.match(/[A-Za-z0-9°._/-]+|\s+|[^\s]/gu)||[]){
+        if(tokens.length&&(/^[，。；：！？、）】》」』]$/.test(part)||/^[（【《「『]$/.test(tokens.at(-1))))tokens[tokens.length-1]+=part;
+        else tokens.push(part);
+      }
+      for(const token of tokens){
         if(line&&measure.measureText(line+token).width>width){lines.push(line.trim());line='';}
         line+=token;
       }
@@ -189,32 +193,33 @@
     for(const note of data.annotations||[]){
       const owner=note.group?data.groups.find(g=>g.id===note.group):nodeById(note.node);
       if(!owner)continue;
-      const x=owner.x+note.dx,y=owner.y+note.dy,w=note.w;
+      const x=owner.x+note.dx,y=owner.y+note.dy,w=note.w,pad=28;
       const group=S('g',{class:'wf-annotation','data-annotation':note.id,
         'data-annotation-node':note.node??'', 'data-annotation-group':note.group??'',role:'note',
         'aria-label':`${note.title[language]}. ${note.copy[language]}`});
       const title=S('text',{x:0,y:0,class:'wf-annotation-title'});group.append(title);annotationLayer.append(group);
       const style=getComputedStyle(title);
       measure.font=`${style.fontSize} ${style.fontFamily}`;
-      const titleLines=wrap(note.title[language],w);
-      titleLines.forEach((line,i)=>title.append(S('tspan',{x:0,y:36+i*46},line)));
+      const titleLines=wrap(note.title[language],w-pad*2);
+      titleLines.forEach((line,i)=>title.append(S('tspan',{x:pad,y:pad+36+i*46},line)));
       const text=S('text',{class:'wf-annotation-copy'});group.append(text);
       const copyStyle=getComputedStyle(text);
       measure.font=`${copyStyle.fontSize} ${copyStyle.fontFamily}`;
-      const lines=wrap(note.copy[language],w),textTop=titleLines.length*46+20;
-      lines.forEach((line,i)=>text.append(S('tspan',{x:0,y:textTop+32+i*48},line)));
-      const h=textTop+lines.length*48+12;
+      const lines=wrap(note.copy[language],w-pad*2),textTop=pad+titleLines.length*46+20;
+      lines.forEach((line,i)=>text.append(S('tspan',{x:pad,y:textTop+32+i*48},line)));
+      const h=textTop+lines.length*48+pad;
+      group.prepend(S('rect',{x:0,y:0,width:w,height:h,rx:8,class:'wf-annotation-frame','aria-hidden':'true'}));
       group.setAttribute('transform',`translate(${x} ${y})`);
       annotationRects.push({x:x-12,y:y-12,w:w+24,h:h+24});
       const side=note.side||'bottom';let a,b,d;
       if(side==='left'||side==='right'){
         a=[side==='left'?owner.x:owner.x+owner.w,owner.y+Math.min(owner.h/2,160)];
-        b=[side==='left'?x+w+18:x-18,y+30];
+        b=[side==='left'?x+w:x,y+h/2];
         const bend=(a[0]+b[0])/2;
         d=`M${a[0]} ${a[1]}H${bend}V${b[1]}H${b[0]}`;
       }else{
         a=[owner.x+owner.w/2,side==='top'?owner.y-50:owner.y+owner.h];
-        b=[x+Math.min(w/2,owner.w/2),side==='top'?y+h+16:y-16];
+        b=[x+w/2,side==='top'?y+h:y];
         const bend=(a[1]+b[1])/2;
         d=`M${a[0]} ${a[1]}V${bend}H${b[0]}V${b[1]}`;
       }

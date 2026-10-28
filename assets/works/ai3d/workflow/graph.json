@@ -3405,9 +3405,8 @@
     },
     {
       "id": "control-sequence",
-      "node": 28,
-      "dx": -150,
-      "dy": 1550,
+      "dx": 137,
+      "dy": 1869,
       "w": 1700,
       "side": "bottom",
       "title": {
@@ -3417,7 +3416,8 @@
       "copy": {
         "zh": "Conditioning → Lineart → Tile → KSampler。先用 Lineart 锁定建筑轮廓，再由 Tile 保留局部信息进行重绘，让结构与细节共同约束采样。",
         "en": "Conditioning → Lineart → Tile → KSampler. Lineart first locks the architectural outlines; Tile then retains local information while repainting, constraining both structure and detail."
-      }
+      },
+      "group": "control1"
     },
     {
       "id": "sampling-passes",

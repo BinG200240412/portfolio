@@ -128,3 +128,11 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
   "三维输出": "3D output",
   "Marble 生成可探索的高斯泼溅场景；下方保留两个场景的点云与视角对照。": "Marble generates an explorable Gaussian-splat scene. The two scenes below retain their point-cloud and camera-view comparisons."
 });
+
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
+  "工作流二与组件说明": "Workflow 2 and its components",
+  "工作流三与组件说明": "Workflow 3 and its components",
+  "工作流四与组件说明": "Workflow 4 and its components",
+  "原始输出示例 · 节选": "Original output example · Excerpt",
+  "原始描述保留在上方“展示文本 · 原始示例”节点中。": "The original description is retained in the Show Text · Original example node above."
+});

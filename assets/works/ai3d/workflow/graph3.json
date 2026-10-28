@@ -77,7 +77,7 @@
       "x": 1021.44,
       "y": 361.2,
       "w": 797.44,
-      "h": 778.96,
+      "h": 1248.4,
       "inputs": [
         {
           "label": "model",
@@ -106,19 +106,19 @@
         {
           "label": "seed",
           "value": "990838685089323",
-          "y": 581.28,
+          "y": 1050.72,
           "kind": "text"
         },
         {
           "label": "control_after_generate",
           "value": "randomize",
-          "y": 624.96,
+          "y": 1094.4,
           "kind": "text"
         },
         {
           "label": "temperature",
           "value": "0.1",
-          "y": 668.64,
+          "y": 1138.08,
           "kind": "number",
           "step": 0.1,
           "min": 0,
@@ -128,7 +128,7 @@
         {
           "label": "top_p",
           "value": "0.9",
-          "y": 712.32,
+          "y": 1181.76,
           "kind": "number",
           "step": 0.1,
           "min": 0,
@@ -138,7 +138,7 @@
         {
           "label": "max_new_tokens",
           "value": "1024",
-          "y": 756.0,
+          "y": 1225.44,
           "kind": "number",
           "step": 64,
           "min": 64
@@ -146,17 +146,17 @@
       ],
       "tag": "#25 Janus-Pro",
       "text": {
-        "value": "帮我具体描述这幅图，加入光影信息，构图信息，不超过75词",
+        "value": "任务：将输入图像反推为供 Marble 世界模型生成可探索三维场景使用的空间描述，以图像证据为准。\n1. 场景布局：以初始观察点为参照，说明近景、中景、远景的分层，以及主体的左右、前后、相邻和遮挡关系；不要把二维画面位置直接当作三维坐标。\n2. 主体几何：提取主要建筑、地形、植被和道具的数量、体块、朝向、相对尺度、间距及连接方式。没有尺度参照时，不编造米数、坐标或精确尺寸。\n3. 地面与空间：说明地面起伏、水陆边界、路径和可见空隙，明确物体与地面、水面或支撑结构的接触关系，保持合理的深度与透视。\n4. 可见性：区分可见事实与推测。遮挡背面、图外区域和未提供的视角应保持不确定，不擅自添加建筑、房间、道路或人物；延展区域只保持已有结构的保守连续。\n5. 材质与光照：描述主要材质、颜色、粗糙或光滑特征，以及光源方向、软硬、阴影和天气；保留原画风，避免把绘画笔触、反射或天空纹理误判成实体几何。\n6. 全景一致性：若输入为 2:1 等距柱状全景，按同一连续空间理解左右接缝、地平线与天空—地面关系；接缝处同一主体只计一次，不将极区拉伸还原为异常体块。\n输出：仅给出一段可直接使用的英文场景提示词，约 180—240 词，依次组织环境与主体、空间与尺度、地形与材质、光照与连续性约束。使用客观空间语言，对不确定信息保持保守；不输出分析过程、代码或 JSON，不写文学评价，也不声称图像能够保证精确尺寸、完整背面或可通行性。",
         "x": 22.4,
         "y": 192.64,
         "w": 757.68,
-        "h": 350.56
+        "h": 820
       },
       "help": true
     },
     {
       "id": 21,
-      "title": "展示文本",
+      "title": "展示文本 · 原始示例",
       "x": 1914.08,
       "y": 379.68,
       "w": 1033.76,
@@ -226,23 +226,23 @@
       "id": "janus-instruction",
       "node": 25,
       "dx": 0,
-      "dy": 1000,
-      "w": 900,
+      "dy": 1380,
+      "w": 830,
       "side": "bottom",
       "title": {
-        "zh": "Janus-Pro · 读取场景",
-        "en": "Janus-Pro · Read the scene"
+        "zh": "反推要求 · 服务三维生成",
+        "en": "Prompt requirements · Guide 3D generation"
       },
       "copy": {
-        "zh": "原指令：“帮我具体描述这幅图，加入光影信息，构图信息，不超过75词”。重点提取建筑、植被、地形、光影和构图。",
-        "en": "Original instruction: describe this image, including lighting and composition, in no more than 75 words. Extract the architecture, vegetation, terrain, lighting and composition."
+        "zh": "将画面转成空间约束：近中远景、主体体块与相对尺度、遮挡与接地、地形和光照。全景需保持接缝与地平线连续；不可见区域不臆造，避免把绘画或投影畸变当作真实几何。",
+        "en": "Extract spatial constraints: depth layers, object volumes and relative scale, occlusion and ground contact, terrain and lighting. Preserve panorama continuity; avoid inventing hidden areas or turning painterly marks and projection distortion into geometry."
       }
     },
     {
       "id": "text-handoff",
       "node": 21,
       "dx": 0,
-      "dy": 1000,
+      "dy": 1380,
       "w": 1000,
       "side": "bottom",
       "title": {

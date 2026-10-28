@@ -235,7 +235,8 @@ html:not([data-theme="light"]) .liangzhu-io-sequence>div:nth-child(3){--io-fill:
 .liangzhu-interface-pair{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:48px;align-items:center}
 .liangzhu-interface-pair figure{margin:0;min-width:0}
 .liangzhu-interface-pair img{display:block;width:100%;height:auto}
-.liangzhu-interface-notes{display:grid;gap:28px;border-left:2px dotted var(--faint);padding-left:28px}
+.liangzhu-interface-notes{display:grid;gap:18px}
+.liangzhu-interface-notes article{border:2px dotted var(--dim);padding:18px 20px}
 .liangzhu-interface-notes h4{margin-bottom:6px}
 .liangzhu-interface-notes p{margin:0;color:var(--mid)}
 .liangzhu-extension-notes{margin-top:48px;color:var(--mid)}
@@ -244,6 +245,6 @@ html:not([data-theme="light"]) .liangzhu-io-sequence>div:nth-child(3){--io-fill:
 @media(max-width:700px){
  .liangzhu-prompt-pair,.liangzhu-panorama-pair,.liangzhu-interface-pair{grid-template-columns:1fr;gap:24px}
  .liangzhu-prompt-pair>.liangzhu-pair-arrow,.liangzhu-panorama-pair>.liangzhu-pair-arrow{justify-self:center;transform:rotate(90deg)}
- .liangzhu-interface-notes{grid-template-columns:1fr;gap:22px;padding-left:20px}
+ .liangzhu-interface-notes{grid-template-columns:1fr;gap:18px}
  .liangzhu-output-rows .liangzhu-crop-gallery{height:190px}
 }
