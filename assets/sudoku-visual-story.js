@@ -1,6 +1,6 @@
-/* One stationary device, paired with the visual-system argument being read.
- * Native scrolling and CSS own the layout; this module only changes screen
- * pixels, highlights, and the single analytical leader. */
+/* One stationary device, paired with one analytical reading stop at a time.
+ * Inside this chapter, one input gesture turns exactly one analysis page.
+ * Other chapters keep their native scrolling and snapping. */
 (() => {
   'use strict';
 
@@ -58,6 +58,8 @@
     let growthChildren = [];
     let pageShown = true, suspended = false, disposed = false, trigger = null;
     let landedStep = -1, snapDirty = true;
+    let pageMove = null, pageTween = null, reflowStep = null;
+    let wheelAt = -Infinity, wheelClaimed = false, touch = null;
 
     screens.forEach((screen, index) => {
       screen.style.opacity = index ? '0' : '1';
@@ -68,6 +70,8 @@
     root.dataset.visualInView = 'false';
     root.dataset.visualSnapMode = snapEvents ? 'native' : scrollEnd ? 'scrollend' : 'position';
     root.dataset.visualSnapState = 'idle';
+    root.dataset.visualPaging = 'gesture';
+    root.dataset.visualPageState = 'idle';
 
     function blocked() {
       return !pageShown || document.hidden || viewer?.open ||
@@ -256,11 +260,11 @@
       growth = gsap.timeline({ defaults: { ease: 'power2.out' }, onComplete: () => {
         growth = null; growthChildren = []; geometry(); state('complete');
       } });
-      growth.to(reveal, { targets: 1, duration: .2, onUpdate: paint }, 0)
-        .to(reveal, { line: 1, duration: .58, onUpdate: paint }, .06);
+      growth.to(reveal, { targets: 1, duration: .12, onUpdate: paint }, 0)
+        .to(reveal, { line: 1, duration: .3, onUpdate: paint }, 0);
       if (children.length) growth.fromTo(children, { opacity: .6, x: 7 }, {
-        opacity: 1, x: 0, duration: .36, stagger: .045, clearProps: 'opacity,transform',
-      }, .14);
+        opacity: 1, x: 0, duration: .22, stagger: .025, clearProps: 'opacity,transform',
+      }, 0);
       if (suspended) growth.pause();
     }
     function crossfade(incomingIndex, outgoingIndex) {
@@ -279,8 +283,8 @@
         };
         settleSwap = done;
         swap = gsap.timeline({ onComplete: () => { swap = null; done(true); } });
-        swap.fromTo(screens[incomingIndex], { opacity: 0 }, { opacity: 1, duration: .22, ease: 'power1.out' }, 0)
-          .to(screens[outgoingIndex], { opacity: 0, duration: .22, ease: 'power1.out' }, 0);
+        swap.fromTo(screens[incomingIndex], { opacity: 0 }, { opacity: 1, duration: .15, ease: 'power1.out' }, 0)
+          .to(screens[outgoingIndex], { opacity: 0, duration: .15, ease: 'power1.out' }, 0);
         if (suspended) swap.pause();
       });
     }
@@ -353,8 +357,14 @@
       root.dataset.visualSnapLine = String(Math.round(line));
       steps.forEach((step, index) => {
         // The first stop is also the chapter entry, keeping its heading visible.
-        const offset = Math.max(0, step.element.getBoundingClientRect().top - chapterTop);
-        step.snapInset = index === 0 ? offset : Math.min(line, offset);
+        const rect = step.element.getBoundingClientRect();
+        const offset = Math.max(0, rect.top - chapterTop);
+        const contentHeight = Math.max(0, ...[...step.element.children].filter(child => child.getClientRects().length).map(child =>
+          child.getBoundingClientRect().bottom - rect.top));
+        // Long references move up as one complete page, without cropping them.
+        const floor = narrow.matches ? line : innerHeight < 600 ? 64 : 96;
+        const fittedLine = Math.max(floor, Math.min(line, innerHeight - contentHeight - 28));
+        step.snapInset = index === 0 ? offset : Math.min(fittedLine, offset);
         const value = `${step.snapInset.toFixed(2)}px`;
         if (step.element.style.getPropertyValue('--visual-snap-inset') !== value) {
           step.element.style.setProperty('--visual-snap-inset', value);
@@ -386,6 +396,7 @@
       schedule();
     }
     function snapChange(event) {
+      if (pageMove) return;
       const index = steps.findIndex(step => step.element === event.snapTargetBlock);
       if (index >= 0) landed(index);
     }
@@ -395,12 +406,118 @@
     }
     function scrollSettled(event) {
       if (event.target !== document && event.target !== document.documentElement && event.target !== window) return;
-      if (!inView() || blocked()) return;
+      if (!inView() || blocked() || pageMove) return;
       if (snapDirty) measureSnap();
       landed(candidate());
     }
     function scrolling() {
       if (inView() && !blocked()) root.dataset.visualSnapState = 'moving';
+    }
+
+    const stopAt = index => scrollY + steps[index].element.getBoundingClientRect().top - steps[index].snapInset;
+    function pagePlan(direction) {
+      if (blocked()) return null;
+      if (snapDirty) measureSnap();
+      const first = stopAt(0), last = stopAt(steps.length - 1);
+      if (scrollY < first - 4) {
+        return direction > 0 && first - scrollY <= innerHeight + 4 ? { index: 0, top: first } : null;
+      }
+      if (scrollY > last + 4 && !inTallSnapArea(steps.length - 1)) {
+        return direction < 0 && root.getBoundingClientRect().bottom >= -4
+          ? { index: steps.length - 1, top: last } : null;
+      }
+      const index = candidate(), next = index + direction;
+      const step = steps[index], rect = step.element.getBoundingClientRect();
+      const contentBottom = Math.max(rect.top, ...[...step.element.children]
+        .filter(child => child.getClientRects().length).map(child => child.getBoundingClientRect().bottom));
+      const tail = scrollY + rect.bottom - innerHeight;
+      // At very short/zoomed viewports, finish a genuinely oversized page
+      // before leaving it. Keep the same analysis and never crop its content.
+      if (direction > 0 && contentBottom > innerHeight - 12 && tail > scrollY + 4) {
+        return { index, top: Math.min(tail, scrollY + innerHeight * .65) };
+      }
+      if (direction < 0 && inTallSnapArea(index) && scrollY > stopAt(index) + 4) {
+        return { index, top: Math.max(stopAt(index), scrollY - innerHeight * .65) };
+      }
+      if (steps[next]) return { index: next, top: stopAt(next) };
+      // One last turn leaves the chapter; its remaining inertia is still eaten.
+      const neighbour = document.getElementById(direction > 0 ? 'experience' : 'character');
+      if (!neighbour) return null;
+      const neighbourRect = neighbour.getBoundingClientRect();
+      return { index: null, top: scrollY + (direction > 0 ? neighbourRect.top : Math.max(neighbourRect.top, neighbourRect.bottom - innerHeight)) };
+    }
+    function cancelPage() {
+      pageTween?.kill(); pageTween = null; pageMove = null;
+      document.documentElement.classList.remove('visual-page-turning');
+      root.dataset.visualPageState = 'idle';
+    }
+    function turnPage(plan) {
+      pageMove = plan;
+      root.dataset.visualPageState = 'turning';
+      root.dataset.visualSnapState = 'moving';
+      if (plan.index !== null) {
+        preload(steps[plan.index].image).catch(() => {});
+        root.dataset.visualPageTarget = steps[plan.index].id;
+      } else delete root.dataset.visualPageTarget;
+      // Disable native snap only during this short, deterministic page turn.
+      document.documentElement.classList.add('visual-page-turning');
+      const cursor = { y: scrollY };
+      const finish = () => {
+        scrollTo({ top: plan.top, behavior: 'instant' });
+        pageTween = null; pageMove = null;
+        document.documentElement.classList.remove('visual-page-turning');
+        root.dataset.visualPageState = 'idle';
+        if (plan.index !== null) landed(plan.index);
+        schedule();
+      };
+      if (!gsap || reduced.matches || Math.abs(plan.top - cursor.y) < 1) { finish(); return; }
+      pageTween = gsap.to(cursor, { y: plan.top, duration: .28, ease: 'power2.out',
+        onUpdate: () => scrollTo({ top: cursor.y, behavior: 'instant' }), onComplete: finish });
+    }
+    function readyToTurn() {
+      return !pageMove && (root.dataset.visualState === 'complete' || root.dataset.visualState === 'failed');
+    }
+    function wheel(event) {
+      if (event.defaultPrevented || !event.cancelable || event.ctrlKey || event.metaKey ||
+          event.target?.closest?.('input,textarea,select,[contenteditable="true"]') ||
+          Math.abs(event.deltaY) <= Math.abs(event.deltaX) || !event.deltaY || blocked()) return;
+      const now = performance.now();
+      if (now - wheelAt > 180) wheelClaimed = false;
+      wheelAt = now;
+      const plan = pagePlan(Math.sign(event.deltaY));
+      if (!plan && !pageMove && !wheelClaimed) return;
+      event.preventDefault();
+      if (wheelClaimed) return;
+      wheelClaimed = true;
+      if (plan && readyToTurn()) turnPage(plan);
+    }
+    function touchStart(event) {
+      touch = event.touches.length === 1 && !blocked() &&
+        !event.target?.closest?.('input,textarea,select,[contenteditable="true"]')
+        ? { x: event.touches[0].clientX, y: event.touches[0].clientY, used: false } : null;
+    }
+    function touchMove(event) {
+      if (!touch || event.touches.length !== 1 || !event.cancelable || blocked()) return;
+      const dx = touch.x - event.touches[0].clientX, dy = touch.y - event.touches[0].clientY;
+      if (Math.abs(dy) < 6 || Math.abs(dy) <= Math.abs(dx)) return;
+      const plan = pagePlan(Math.sign(dy));
+      if (!plan && !pageMove && !touch.used) return;
+      event.preventDefault();
+      if (touch.used) return;
+      touch.used = true;
+      if (plan && readyToTurn()) turnPage(plan);
+    }
+    function keyPage(event) {
+      const editable = event.target.closest?.('input,textarea,select,[contenteditable="true"]');
+      if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || editable || blocked()) return;
+      if (event.key === ' ' && event.target.closest?.('button,a')) return;
+      const direction = ['ArrowDown', 'PageDown', ' '].includes(event.key) ? (event.shiftKey ? -1 : 1)
+        : ['ArrowUp', 'PageUp'].includes(event.key) ? -1 : 0;
+      if (!direction) return;
+      const plan = pagePlan(direction);
+      if (!plan && !pageMove) return;
+      event.preventDefault();
+      if (!event.repeat && plan && readyToTurn()) turnPage(plan);
     }
     function render() {
       frame = 0;
@@ -412,23 +529,36 @@
       svg.style.visibility = visible && !disabled ? 'visible' : 'hidden';
       if (disabled !== suspended) {
         suspended = disabled;
-        if (disabled) { growth?.pause(); swap?.pause(); }
+        if (disabled) {
+          cancelPage(); wheelClaimed = false; wheelAt = -Infinity; touch = null;
+          growth?.pause(); swap?.pause();
+        }
         else { growth?.play(); swap?.play(); }
       }
       if (!visible || disabled) return;
+      if (reflowStep !== null) {
+        const index = reflowStep; reflowStep = null;
+        scrollTo({ top: stopAt(index), behavior: 'instant' });
+        landed(index);
+      }
       const next = snapEvents || scrollEnd
         ? (landedStep >= 0 ? landedStep : wantedStep >= 0 ? wantedStep : candidate())
         : candidate();
       if (deferred !== null) {
         deferred = null;
         activate(next);
-      } else if (next !== wantedStep) activate(next);
+      } else if (!pageMove && next !== wantedStep) activate(next);
       geometry();
     }
     function schedule() {
       if (!frame && !disposed) frame = requestAnimationFrame(render);
     }
     function refresh() {
+      if (inView() && !blocked() && landedStep >= 0 && root.getBoundingClientRect().top <= 4 &&
+          scrollY <= stopAt(steps.length - 1) + 4) {
+        reflowStep = pageMove?.index ?? landedStep;
+        cancelPage();
+      }
       snapDirty = true;
       trigger?.refresh();
       schedule();
@@ -445,7 +575,11 @@
       }
       refresh();
     }
-    function hide() { pageShown = false; schedule(); }
+    function hide() {
+      pageShown = false; cancelPage();
+      wheelClaimed = false; wheelAt = -Infinity; touch = null;
+      schedule();
+    }
     function show() { pageShown = true; refresh(); }
 
     if (gsap && ScrollTrigger) {
@@ -468,16 +602,28 @@
     addEventListener('resize', refresh, { passive: true });
     addEventListener('portfolio:language', language);
     addEventListener('pagehide', hide); addEventListener('pageshow', show);
-    document.addEventListener('visibilitychange', schedule);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        cancelPage(); wheelClaimed = false; wheelAt = -Infinity; touch = null;
+      }
+      schedule();
+    });
     document.addEventListener('scroll', scrolling, {passive: true});
     document.addEventListener('scrollsnapchange', snapChange, {capture: true, passive: true});
     document.addEventListener('scrollsnapchanging', snapChanging, {capture: true, passive: true});
     document.addEventListener('scrollend', scrollSettled, {capture: true, passive: true});
+    document.addEventListener('wheel', wheel, {passive: false});
+    document.addEventListener('touchstart', touchStart, {passive: true});
+    document.addEventListener('touchmove', touchMove, {passive: false});
+    document.addEventListener('touchend', () => { touch = null; }, {passive: true});
+    document.addEventListener('touchcancel', () => { touch = null; }, {passive: true});
+    document.addEventListener('keydown', keyPage);
     reduced.addEventListener('change', motion);
     narrow.addEventListener('change', refresh);
     document.fonts?.ready.then(refresh);
     measureSnap();
     root.classList.add('visual-story-ready');
+    [...new Set(steps.map(step => step.image))].forEach(source => preload(source).catch(() => {}));
     schedule();
   }
 

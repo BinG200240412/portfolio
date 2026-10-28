@@ -1,4 +1,5 @@
 /* The same physical device stays in view as each design argument passes it. */
+html.visual-page-turning{scroll-snap-type:none!important;scroll-behavior:auto!important}
 .case-visual-system{--visual-reading-ratio:.4;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);column-gap:clamp(48px,7vw,112px)}
 .visual-system-column{grid-column:1;grid-row:1;min-width:0}
 .visual-device-column{grid-column:2;grid-row:1;align-self:stretch;min-width:0;position:relative}
@@ -86,4 +87,23 @@
  .visual-accent-palette i{width:clamp(24px,7vw,34px)}
  .visual-pencil-marks{width:66px;font-size:18px}
  .visual-apple-reference figcaption{gap:8px 18px}
+ .visual-apple-sheet img{width:auto;max-width:100%;max-height:31svh}
+ .visual-colour .visual-base-palette{margin-top:22px;gap:10px}
+ .visual-colour .visual-base-palette{flex-direction:row}
+ .visual-colour .visual-base-swatch{flex:1;min-width:0;flex-direction:column;align-items:flex-start;gap:4px;min-height:70px;padding:12px 16px}
+ .visual-colour .visual-accent-palette{margin-top:24px}
+ .visual-colour .visual-colour-caption{margin-top:20px}
+}
+@media(min-width:721px) and (max-height:640px){
+ .visual-apple-reference img{width:auto;max-width:100%;max-height:calc(100svh - 220px);object-fit:contain}
+ .visual-colour .visual-base-palette{flex-direction:row;margin-top:16px;gap:10px}
+ .visual-colour .visual-base-swatch{flex:1;min-width:0;min-height:54px;padding:12px 16px;gap:10px}
+ .visual-colour .visual-accent-palette{margin-top:16px}
+ .visual-colour .visual-accent-palette i{width:24px}
+ .visual-colour .visual-colour-caption{margin-top:12px}
+}
+@media(max-width:720px) and (max-height:700px){
+ .visual-device-column{height:24svh}
+ .visual-device-stage{width:calc(24svh*.49)}
+ .visual-apple-sheet img{max-height:27svh}
 }
