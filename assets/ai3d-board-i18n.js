@@ -113,3 +113,5 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {"网页场景": "Web scene", "VR 浏览": "Explore in VR"});
 
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {"沿上排向右，再沿下排向左阅读；点选节点查看对应内容。": "Follow the top row to the right, then return along the bottom row; select a node for its section."});
+
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {"点选节点查看组件说明。": "Select a node to read about its components."});

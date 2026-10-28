@@ -1,7 +1,6 @@
-/* Original board curves remain vector paths; labels and navigation are native. */
+/* Responsive diagrams preserve the original board's labels and navigation. */
 (() => {
   'use strict';
-  const scriptURL = document.currentScript.src;
   const ns = 'http://www.w3.org/2000/svg';
   const initialHash = location.hash;
   let readerMoved = false;
@@ -66,10 +65,80 @@
     return node;
   };
   const english = () => window.PortfolioI18n?.language === 'en';
+  // Sample a route with real circles. Arrowhead pairs share one axial offset,
+  // so line length, a corner or an animation cannot shift one arm against the other.
+  function dotRoute(parent,points,{arrow=false,pitch=4.5,radius=1.15,keys=new Set(),attrs={}}={}) {
+    const group=element('g',{class:'liangzhu-dot-route',...attrs});
+    const segments=points.slice(1).map((point,index)=>({a:points[index],b:point,
+      length:Math.hypot(point[0]-points[index][0],point[1]-points[index][1])}));
+    const length=segments.reduce((sum,segment)=>sum+segment.length,0);
+    const count=Math.max(1,Math.round(length/pitch));
+    const dot=(x,y,index,head='')=>{
+      const key=`${x.toFixed(3)},${y.toFixed(3)}`;
+      if(keys.has(key))return;
+      keys.add(key);
+      const circle=element('circle',{cx:x,cy:y,r:radius,'data-dot-index':index});
+      if(head)circle.dataset.arrowHead=head;
+      circle.style.setProperty('--dot-index',index);
+      group.append(circle);
+    };
+    for(let i=0;i<=count;i++){
+      let distance=length*i/count;
+      for(let j=0;j<segments.length;j++){
+        const segment=segments[j];
+        if(distance>segment.length&&j<segments.length-1){distance-=segment.length;continue;}
+        const t=segment.length?distance/segment.length:0;
+        dot(segment.a[0]+(segment.b[0]-segment.a[0])*t,segment.a[1]+(segment.b[1]-segment.a[1])*t,i);
+        break;
+      }
+    }
+    if(arrow){
+      const last=[...segments].reverse().find(segment=>segment.length>.01);
+      if(last){
+        const [x,y]=last.b,dx=(last.b[0]-last.a[0])/last.length,dy=(last.b[1]-last.a[1])/last.length;
+        group.dataset.arrowTip=`${x},${y}`;
+        group.dataset.arrowAxis=`${dx},${dy}`;
+        for(let row=1;row<=2;row++)for(const side of [-1,1])
+          dot(x-dx*pitch*row-dy*pitch*row*side,y-dy*pitch*row+dx*pitch*row*side,count+row,`${row}:${side}`);
+      }
+    }
+    parent.append(group);return group;
+  }
   function dotArrow() {
-    const svg=element('svg',{viewBox:'0 0 64 32',class:'liangzhu-dot-arrow','aria-hidden':'true'});
-    svg.append(element('path',{d:'M2 16H59M44 3L59 16L44 29','vector-effect':'non-scaling-stroke'}));
-    return svg;
+    const svg=element('svg',{class:'liangzhu-dot-arrow','aria-hidden':'true'});
+    const draw=()=>{
+      const width=svg.clientWidth,height=svg.clientHeight;
+      if(!width||!height)return;
+      svg.setAttribute('viewBox',`0 0 ${width} ${height}`);svg.replaceChildren();
+      dotRoute(svg,[[2,height/2],[width-2,height/2]],{arrow:true,pitch:4,radius:1.15});
+    };
+    new ResizeObserver(draw).observe(svg);
+    requestAnimationFrame(draw);return svg;
+  }
+  function wrapCopy(measure,copy,width) {
+    const lines=[];
+    for (const paragraph of copy.split('\n')) {
+      let line='';
+      const tokens=[];
+      for (const part of paragraph.match(/[A-Za-z0-9°._-]+|\s+|[^\s]/gu)||[]) {
+        if (tokens.length && (/^[，。；：！？、）】》」』]$/.test(part) || /^[（【《「『]$/.test(tokens.at(-1))))
+          tokens[tokens.length-1]+=part;
+        else tokens.push(part);
+      }
+      for (const token of tokens) {
+        if (measure.measureText(line+token).width<=width) { line+=token; continue; }
+        if (line.trim()) { lines.push(line.trim()); line=''; }
+        if (measure.measureText(token).width<=width) { line=token.trimStart(); continue; }
+        for (const letter of token) {
+          if (line && measure.measureText(line+letter).width>width) {
+            lines.push(line);line='';
+          }
+          line+=letter;
+        }
+      }
+      if (line.trim()) lines.push(line.trim());
+    }
+    return lines;
   }
   function installResearchBranches() {
     const host=document.getElementById('liangzhu-background');
@@ -88,8 +157,11 @@
       const ys=targets.map(e=>e.top+e.height/2-box.top);
       const spine=stacked?tx-17:(sx+tx)/2;
       svg.setAttribute('viewBox',`0 0 ${box.width} ${box.height}`);
-      svg.replaceChildren(element('path',{d:`M${sx} ${sy}H${spine}V${Math.min(sy,...ys)}M${spine} ${Math.min(sy,...ys)}V${Math.max(sy,...ys)}`}));
-      ys.forEach(y=>svg.append(element('path',{d:`M${spine} ${y}H${tx}M${tx-6} ${y-4}L${tx} ${y}L${tx-6} ${y+4}`,'data-research-arrow':''})));
+      svg.replaceChildren();
+      const keys=new Set(),junctions=[...new Set([sy,...ys])].sort((a,b)=>a-b);
+      dotRoute(svg,[[sx,sy],[spine,sy]],{keys});
+      junctions.slice(1).forEach((y,index)=>dotRoute(svg,[[spine,junctions[index]],[spine,y]],{keys}));
+      ys.forEach(y=>dotRoute(svg,[[spine,y],[tx,y]],{arrow:true,keys,attrs:{'data-research-arrow':''}}));
     };
     const schedule=()=>{if(!frame)frame=requestAnimationFrame(draw);};
     new ResizeObserver(schedule).observe(host);
@@ -183,46 +255,23 @@
       ['Marble 生成','Marble'],['图像输入','Image input'],['语义引导','Text guide'],
       ['三维场景','3D scene']
     ];
-    function wrap(copy,width) {
-      const lines=[];
-      for (const paragraph of copy.split('\n')) {
-        let line='';
-        const tokens=[];
-        for (const part of paragraph.match(/[A-Za-z0-9°._-]+|\s+|[^\s]/gu)||[]) {
-          if (tokens.length && (/^[，。；：！？、）】》」』]$/.test(part) || /^[（【《「『]$/.test(tokens.at(-1))))
-            tokens[tokens.length-1]+=part;
-          else tokens.push(part);
-        }
-        for (const token of tokens) {
-          if (measure.measureText(line+token).width<=width) { line+=token; continue; }
-          if (line.trim()) { lines.push(line.trim()); line=''; }
-          if (measure.measureText(token).width<=width) { line=token.trimStart(); continue; }
-          for (const letter of token) {
-            if (line && measure.measureText(line+letter).width>width) {
-              lines.push(line);line='';
-            }
-            line+=letter;
-          }
-        }
-        if (line.trim()) lines.push(line.trim());
-      }
-      return lines;
-    }
+    const wrap=(copy,width)=>wrapCopy(measure,copy,width);
     function paint() {
       frame=0;
       const zoom=host.clientWidth>=720?1.18:host.clientWidth>=480?1.1:1;
-      const width=Math.min(host.clientWidth/zoom,840);
+      const width=host.clientWidth/zoom;
       if (!width) return;
       const next=`${width}:${zoom}:${english()}:${fontRevision}`;
       if (next===signature) return;
       signature=next;
       const narrow=width<600, fontSize=narrow?16:18, lineHeight=fontSize*1.4;
-      const margin=12, gap=narrow?10:20, stageGap=narrow?20:40, turn=narrow?16:24, railInset=0;
+      const margin=narrow?10:16,gap=narrow?10:20,stageGap=narrow?20:40,turn=narrow?38:76;
       const slot=(width-margin*2-turn-gap*2-stageGap)/4;
       const positions=[margin,margin+slot+gap,margin+slot*2+gap+stageGap,margin+slot*3+gap*2+stageGap];
       const inset=narrow?11:15, tail=4, textWidth=slot-inset-tail-4;
       const padding=14, nodeGap=narrow?16:18, rowGap=narrow?36:44;
       svg.style.setProperty('--folded-font',`${fontSize}px`);
+      svg.style.setProperty('--turn-stroke',narrow?'5.5px':'7.5px');
       const ruler=element('text',{class:'liangzhu-sankey-node',visibility:'hidden'});
       svg.replaceChildren(ruler);
       const style=getComputedStyle(ruler);
@@ -274,15 +323,13 @@
         const a=nodes[from],b=nodes[to],fold=a.row!==b.row,reverse=a.row===1;
         const sx=reverse?a.x+4:a.right,tx=fold||reverse?b.right:b.x+4;
         const sy=a.y,ty=b.y,half=narrow?2:2.7;
-        const cx=fold?width-margin/2-railInset:(sx+tx)/2;
-        const turnJoin=width-margin-turn-railInset+8;
+        const cx=fold?width-margin-5-(8-from)*(narrow?7:11):(sx+tx)/2;
+        const turnJoin=positions[3]+slot+12;
         const d=fold
-          ? `M${sx} ${sy-half}L${turnJoin} ${sy-half}C${cx} ${sy-half} ${cx} ${ty-half} ${turnJoin} ${ty-half}`+
-            `L${tx} ${ty-half}L${tx} ${ty+half}L${turnJoin} ${ty+half}`+
-            `C${cx} ${ty+half} ${cx} ${sy+half} ${turnJoin} ${sy+half}L${sx} ${sy+half}Z`
+          ? `M${sx} ${sy}H${turnJoin}C${cx} ${sy} ${cx} ${ty} ${turnJoin} ${ty}H${tx}`
           : `M${sx} ${sy-half}C${cx} ${sy-half} ${cx} ${ty-half} ${tx} ${ty-half}`+
             `L${tx} ${ty+half}C${cx} ${ty+half} ${cx} ${sy+half} ${sx} ${sy+half}Z`;
-        paths.append(element('path',{d,class:`liangzhu-sankey-mark tone-${tone}`,opacity:'.34',
+        paths.append(element('path',{d,class:`liangzhu-sankey-mark tone-${tone}${fold?' liangzhu-sankey-turn':''}`,opacity:fold?'.46':'.34',
           'data-flow-from':from,'data-flow-to':to,'data-path-stage':a.stage}));
         if ((from===0&&to===2)||(from===5&&to===7)||(from===7&&to===9)||
             (from===9&&to===11)||(from===13&&to===15)) {
@@ -311,14 +358,18 @@
         });
         heading.append(title);
         callouts.push({number,title,y});
-        heading.append(element('path',{d:`M${x+94} ${y+10}H${x+groupWidth-10}V${boxY}`,
-          class:'liangzhu-overview-leader','aria-hidden':'true'}));
+        const leader=element('g',{class:'liangzhu-overview-leader','aria-hidden':'true','data-leader-stage':group.stage});
+        heading.append(leader);
+        callouts.at(-1).leader={element:leader,x,end:x+groupWidth-10,boxY};
         frames.append(heading);
       }
       svg.replaceChildren(frames,paths,arrows);
-      for(const {number,title,y} of callouts){
-        number.setAttribute('transform',`translate(0 ${y-number.getBBox().y})`);
+      for(const {number,title,y,leader} of callouts){
+        const box=number.getBBox();
+        number.setAttribute('transform',`translate(0 ${y-box.y})`);
         title.setAttribute('transform',`translate(0 ${y+26-title.getBBox().y})`);
+        const cy=y+box.height/2;
+        dotRoute(leader.element,[[leader.x+8+box.width+12,cy],[leader.end,cy],[leader.end,leader.boxY]],{pitch:5,radius:.9});
       }
       for (const node of nodes) {
         const link=element('a',{href:node.href,class:'liangzhu-sankey-node',
@@ -354,63 +405,103 @@
     document.fonts.ready.then(()=>{fontRevision++;schedule();});
     paint();
   }
+  function installRepaintPath(host) {
+    const svg=element('svg',{role:'group',class:'liangzhu-sankey liangzhu-repaint-responsive'});
+    const measure=document.createElement('canvas').getContext('2d');
+    const stages=[
+      {root:0,children:[1,2],serial:true,tone:'green'},
+      {root:3,children:[4],serial:true,tone:'violet'},
+      {root:5,children:[6,7],serial:true,tone:'ochre'},
+      {root:8,children:[9,10,11,12],serial:true,tone:'violet'},
+      {root:13,children:[14,15],serial:false,tone:'green'}
+    ];
+    const compact={0:['预处理','Input'],3:['提示词构建','Prompt'],5:['双重约束','ControlNet'],8:['三阶采样','Sampling'],13:['模型选择','Models']};
+    host.replaceChildren(svg);host.removeAttribute('tabindex');
+    let frame=0,signature='',fontRevision=0;
+    const paint=()=>{
+      frame=0;
+      const width=host.clientWidth;if(!width)return;
+      const next=`${width}:${english()}:${fontRevision}`;if(next===signature)return;signature=next;
+      const narrow=width<560,fontSize=narrow?16:18,lineHeight=fontSize*1.4;
+      const pad=narrow?8:20,parentWidth=Math.min(240,width*.29),gap=narrow?36:70;
+      let leafX=pad+parentWidth+gap;
+      const nodeGap=narrow?18:14,rowGap=narrow?24:20,rowPad=10;
+      svg.style.setProperty('--repaint-font',`${fontSize}px`);
+      const ruler=element('text',{class:'liangzhu-sankey-node',visibility:'hidden'});svg.replaceChildren(ruler);
+      const style=getComputedStyle(ruler);
+      measure.font=`${style.fontWeight} ${fontSize}px ${style.fontFamily}`;
+      const roots=new Set(stages.map(stage=>stage.root));
+      const nodes=labels.repaint.map(([,,zh,en,href,stage],id)=>{
+        const fullCopy=(english()?en:zh).replaceAll('\n',' · ');
+        const copy=narrow&&compact[id]?compact[id][english()?1:0]:fullCopy;
+        const root=roots.has(id),textWidth=root?parentWidth-28:width-pad-leafX-20;
+        const lines=wrapCopy(measure,copy,textWidth);
+        return{id,copy,fullCopy,href,stage,root,lines,height:lines.length*lineHeight,x:root?pad+6:leafX};
+      });
+      let y=12;
+      stages.forEach((stage,index)=>{
+        const children=stage.children.map(id=>nodes[id]);
+        const childHeight=children.reduce((sum,node)=>sum+node.height,0)+(children.length-1)*nodeGap;
+        const rowHeight=Math.max(childHeight,nodes[stage.root].height)+rowPad*2;
+        const root=nodes[stage.root];root.y=y+rowHeight/2;root.tone=stage.tone;
+        let childY=y+rowPad+(rowHeight-rowPad*2-childHeight)/2;
+        children.forEach(node=>{node.y=childY+node.height/2;node.tone=stage.tone;childY+=node.height+nodeGap;});
+        stage.y=y;stage.height=rowHeight;y+=rowHeight+(index<stages.length-1?rowGap:0);
+      });
+      const contentRight=Math.max(...nodes.map(node=>node.x+14+Math.max(...node.lines.map(line=>measure.measureText(line).width))))+pad;
+      const offset=Math.max(0,(width-contentRight)/2);
+      nodes.forEach(node=>{node.x+=offset;});leafX+=offset;
+      svg.setAttribute('viewBox',`0 0 ${width} ${y+12}`);
+      svg.setAttribute('width',width);svg.setAttribute('height',y+12);
+      svg.setAttribute('aria-label',english()?'Repainting path: stages on the left, components on the right':'初步实现路径：左侧阶段，右侧组件');
+      host.setAttribute('aria-label',svg.getAttribute('aria-label'));
+      const wires=element('g',{class:'liangzhu-repaint-wires','aria-hidden':'true'});svg.replaceChildren(wires);
+      const route=(from,to,points,stage,keys)=>dotRoute(wires,points,{arrow:true,keys,
+        attrs:{'data-repaint-from':from,'data-repaint-to':to,'data-path-stage':stage}});
+      for(const stage of stages){
+        const root=nodes[stage.root],children=stage.children.map(id=>nodes[id]);
+        const right=root.x+14+Math.max(...root.lines.map(line=>measure.measureText(line).width))+9;
+        const spine=leafX-23,keys=new Set();
+        const first=children[0];
+        route(root.id,first.id,[[right,root.y],[spine,root.y],[spine,first.y],[first.x-8,first.y]],root.stage,keys);
+        children.slice(1).forEach((child,index)=>{
+          if(stage.serial){const previous=children[index];
+            route(previous.id,child.id,[[child.x,previous.y+7],[child.x,child.y-7]],root.stage,keys);
+          }else route(root.id,child.id,[[right,root.y],[spine,root.y],[spine,child.y],[child.x-8,child.y]],root.stage,keys);
+        });
+      }
+      for(const [from,to] of [[0,3],[3,5],[5,8],[13,8]]){
+        const a=nodes[from],b=nodes[to],down=b.y>a.y;
+        route(from,to,[[a.x,a.y+(down?1:-1)*(a.height/2+9)],[b.x,b.y+(down?-1:1)*(b.height/2+9)]],a.stage);
+      }
+      for(const node of nodes){
+        const link=element('a',{href:node.href,class:'liangzhu-sankey-node','data-path-stage':node.stage,
+          'data-repaint-node':node.id,'aria-label':node.fullCopy});
+        const title=element('title');title.textContent=node.fullCopy;link.append(title);
+        const textX=node.x+14;
+        const boxWidth=Math.max(...node.lines.map(line=>measure.measureText(line).width))+22;
+        link.append(element('rect',{x:node.x-5,y:node.y-node.height/2-6,width:boxWidth,height:node.height+12,fill:'transparent'}));
+        link.append(element('circle',{cx:node.x,cy:node.y,r:node.root?4:3.2,class:`liangzhu-sankey-mark tone-${node.tone}`}));
+        const text=element('text',{'data-repaint-label':node.id});
+        node.lines.forEach((line,index)=>{const span=element('tspan',{x:textX,y:node.y+index*lineHeight});span.textContent=line;text.append(span);});
+        link.append(text);svg.append(link);
+        text.setAttribute('transform',`translate(0 ${node.y-text.getBBox().y-text.getBBox().height/2})`);
+        const focus=()=>{svg.dataset.activeStage=String(node.stage);},blur=()=>{delete svg.dataset.activeStage;};
+        link.addEventListener('pointerenter',focus);link.addEventListener('pointerleave',blur);
+        link.addEventListener('focus',focus);link.addEventListener('blur',blur);
+      }
+      host.dataset.ready='true';host.dataset.layout='left-right';
+    };
+    const schedule=()=>{if(!frame)frame=requestAnimationFrame(paint);};
+    new ResizeObserver(schedule).observe(host);addEventListener('portfolio:language',schedule);
+    document.fonts.ready.then(()=>{fontRevision++;schedule();});
+    document.fonts.addEventListener('loadingdone',()=>{fontRevision++;schedule();});paint();
+  }
   async function render() {
     try {
-      const dataURL = new URL('works/ai3d/board/sankey-paths.json', scriptURL);
-      dataURL.search = new URL(scriptURL).search;
-      const response = await fetch(dataURL);
-      if (!response.ok) throw Error('Diagram resource unavailable');
-      const data = await response.json();
-      for (const host of document.querySelectorAll('[data-sankey]')) {
-        const kind = host.dataset.sankey, entry = data[kind];
-        if (kind==='overview') { installFoldedOverview(host); continue; }
-        const svg = element('svg', {viewBox:entry.viewBox.join(' '),role:'group',class:'liangzhu-sankey'});
-        const title = element('title'); svg.append(title);
-        const paths = element('g',{'aria-hidden':'true',class:'liangzhu-sankey-paths'});
-        for (const original of entry.paths) {
-          const cx = (original.bounds[0] + original.bounds[2]) / 2;
-          const stage = kind === 'overview' ? (cx < 580 ? 1 : cx < 1190 ? 2 : 3)
-            : (cx < 1250 ? 1 : cx < 1530 ? 2 : cx < 2000 ? 3 : original.bounds[1] > 1830 ? 5 : 4);
-          paths.append(element('path',{d:original.d,class:`liangzhu-sankey-mark tone-${original.tone}`,
-            opacity:original.opacity,'data-path-stage':stage,'data-source-path':original.source_index}));
-        }
-        svg.append(paths);
-        const translated = [];
-        for (const [x,y,zh,en,href,stage] of labels[kind]) {
-          const link = element('a',{href,'data-path-stage':stage,class:'liangzhu-sankey-node'});
-          const text = element('text',{x,y,'dominant-baseline':'middle'});
-          link.append(text); svg.append(link); translated.push({link,text,x,y,zh,en});
-          const focus = () => { svg.dataset.activeStage = String(stage); };
-          const blur = () => { delete svg.dataset.activeStage; };
-          link.addEventListener('pointerenter',focus); link.addEventListener('pointerleave',blur);
-          link.addEventListener('focus',focus); link.addEventListener('blur',blur);
-        }
-        const translate = () => {
-          title.textContent = english() ? kind === 'overview' ? 'The complete workflow' : 'Repainting path'
-            : kind === 'overview' ? '工作流程总说明' : '初步实现路径';
-          host.setAttribute('aria-label',title.textContent);
-          for (const {link,text,x,y,zh,en} of translated) {
-            const copy = english() ? en : zh;
-            link.setAttribute('aria-label',copy.replaceAll('\n',' '));
-            text.replaceChildren(...copy.split('\n').map((line,index) => {
-              const span = element('tspan',{x,y:y+index*27}); span.textContent=line; return span;
-            }));
-          }
-        };
-        translate(); addEventListener('portfolio:language',translate);
-        host.replaceChildren(svg); host.dataset.ready='true';
-        let drag;
-        host.addEventListener('pointerdown',event => {
-          if (event.pointerType !== 'mouse' || event.button !== 0 || event.target.closest('a')) return;
-          drag={id:event.pointerId,x:event.clientX,left:host.scrollLeft};
-          host.setPointerCapture(event.pointerId); host.classList.add('is-dragging');
-        });
-        host.addEventListener('pointermove',event => {
-          if (drag?.id !== event.pointerId) return;
-          host.scrollLeft=drag.left+drag.x-event.clientX;
-        });
-        const finish=()=>{drag=null;host.classList.remove('is-dragging');};
-        host.addEventListener('pointerup',finish);host.addEventListener('pointercancel',finish);
+      for(const host of document.querySelectorAll('[data-sankey]')) {
+        if(host.dataset.sankey==='overview')installFoldedOverview(host);
+        else if(host.dataset.sankey==='repaint')installRepaintPath(host);
       }
       await Promise.all([graphLayoutReady,document.fonts.ready]);
       requestAnimationFrame(()=>requestAnimationFrame(()=>{

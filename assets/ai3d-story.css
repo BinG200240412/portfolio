@@ -113,7 +113,7 @@ html:not([data-theme="light"]) .liangzhu-sankey{--sankey-green:#75b58b;--sankey-
 /* One compact map carries the four stages, without a second written outline. */
 .liangzhu-overview{gap:18px;justify-content:center}
 .liangzhu-overview .liangzhu-chapter-head h2{max-width:none;margin-bottom:0}
-.liangzhu-overview-map{width:100%;scroll-margin-top:84px}
+.liangzhu-overview-map{position:relative;left:50%;transform:translateX(-50%);width:calc(100vw - clamp(40px,5vw,80px));max-width:1440px;scroll-margin-top:84px}
 .liangzhu-overview-map [data-sankey="overview"]{width:100%;margin:0;min-height:0}
 [data-sankey="overview"] .liangzhu-sankey-folded{max-width:100%;height:auto;margin-inline:auto;--overview-title:25px}
 .liangzhu-overview-frame{fill:none;stroke:var(--faint);stroke-width:.8;stroke-dasharray:1 5;stroke-linecap:round}
@@ -122,19 +122,20 @@ html:not([data-theme="light"]) .liangzhu-sankey{--sankey-green:#75b58b;--sankey-
 .liangzhu-overview-heading:focus-visible{outline:1px dotted var(--ink);outline-offset:4px}
 .liangzhu-overview-number{font-size:13px;fill:var(--dim)}
 .liangzhu-overview-title{font-size:var(--overview-title);font-weight:400}
-.liangzhu-overview-leader{fill:none;stroke:var(--dim);stroke-width:.8}
+.liangzhu-overview-leader{color:var(--dim)}
 
 /* The first detailed stage reads in one horizontal pass. */
 .liangzhu-io-sequence{position:relative;grid-template-columns:1fr 1.25fr 1fr;--io-gap:44px;gap:var(--io-gap);align-items:stretch;width:min(100%,960px);margin:24px auto 48px}
 .liangzhu-io-sequence>div{position:relative;display:flex;flex-direction:column;justify-content:flex-start;min-width:0;min-height:112px;padding:16px 20px;border:0;background:var(--io-fill)}
 .liangzhu-io-sequence dt{font-size:20px!important;line-height:1.3;margin-bottom:8px}
 .liangzhu-io-sequence dd{font-size:var(--editorial-body);line-height:1.6}
-.liangzhu-dot-arrow{overflow:visible;color:var(--mid);fill:none;stroke:currentColor;stroke-width:2.5;stroke-dasharray:.1 6;stroke-linecap:round}
+.liangzhu-dot-arrow{overflow:visible;color:var(--mid)}
+.liangzhu-dot-route{fill:currentColor;stroke:none}
 .liangzhu-io-sequence>div>.liangzhu-dot-arrow{position:absolute;left:calc(100% + 8px);top:calc(50% - 16px);width:calc(var(--io-gap) - 16px);height:32px}
 .liangzhu-io-sequence.is-running>div{animation:liangzhu-step-arrive 3.8s both;animation-delay:calc(var(--io-step)*1s)}
-.liangzhu-io-sequence.is-running .liangzhu-dot-arrow{animation:liangzhu-arrow-flow 1.2s linear 3;animation-delay:calc(var(--io-step)*1s + .5s)}
-@keyframes liangzhu-step-arrive{0%{opacity:.3;transform:translateY(6px)}25%,100%{opacity:1;transform:none}}
-@keyframes liangzhu-arrow-flow{from{stroke-dashoffset:12.2}to{stroke-dashoffset:0}}
+.liangzhu-io-sequence.is-running .liangzhu-dot-arrow circle{animation:liangzhu-arrow-flow 1.2s linear 3;animation-delay:calc(var(--io-step)*1s + var(--dot-index)*.045s + .3s)}
+@keyframes liangzhu-step-arrive{0%{opacity:.3}25%,100%{opacity:1}}
+@keyframes liangzhu-arrow-flow{0%,100%{opacity:.45}50%{opacity:1}}
 
 /* Research branches on the left lead to the four original site images. */
 .liangzhu-research-flow{display:grid;grid-template-columns:minmax(0,1.22fr) 64px minmax(0,1fr);gap:22px;align-items:center;margin-top:56px}
@@ -197,7 +198,7 @@ html:not([data-theme="light"]) .liangzhu-sankey{--sankey-green:#75b58b;--sankey-
  .liangzhu-crop-gallery[data-crop-gallery="strip"]{height:190px}
 }
 @media(prefers-reduced-motion:reduce){
- .liangzhu-io-sequence.is-running>div,.liangzhu-io-sequence.is-running .liangzhu-dot-arrow{animation:none}
+ .liangzhu-io-sequence.is-running>div,.liangzhu-io-sequence.is-running .liangzhu-dot-arrow circle{animation:none}
  .liangzhu-crop-gallery{transition:none!important}
 }
 
@@ -209,4 +210,15 @@ html:not([data-theme="light"]) .liangzhu-sankey{--sankey-green:#75b58b;--sankey-
 html:not([data-theme="light"]) .liangzhu-io-sequence>div:nth-child(1){--io-fill:#1e3025;--io-dot:#88b996}
 html:not([data-theme="light"]) .liangzhu-io-sequence>div:nth-child(2){--io-fill:#332b1d;--io-dot:#d5b875}
 html:not([data-theme="light"]) .liangzhu-io-sequence>div:nth-child(3){--io-fill:#2c2539;--io-dot:#b2a0ce}
-.liangzhu-research-branches{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;fill:none;stroke:var(--mid);stroke-width:2;stroke-dasharray:.1 5;stroke-linecap:round}
+.liangzhu-research-branches{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;color:var(--mid)}
+
+/* The turn is a stroked centreline, keeping its full thickness at a vertical tangent. */
+.liangzhu-sankey-turn{fill:none!important;stroke-width:var(--turn-stroke,7.5px);stroke-linecap:round;stroke-linejoin:round}
+.liangzhu-sankey-turn.tone-green{stroke:var(--sankey-green)}
+.liangzhu-sankey-turn.tone-ochre{stroke:var(--sankey-ochre)}
+.liangzhu-sankey-turn.tone-violet{stroke:var(--sankey-violet)}
+/* Stages stay on the left and their components on the right at every screen size. */
+[data-sankey="repaint"]{width:100%;margin-left:0;min-height:0;overflow:visible;cursor:default;user-select:auto}
+[data-sankey="repaint"] .liangzhu-repaint-responsive{width:100%;height:auto}
+.liangzhu-repaint-responsive .liangzhu-sankey-node{font-size:var(--repaint-font,18px)}
+.liangzhu-repaint-wires{color:var(--mid)}

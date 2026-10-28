@@ -12,7 +12,7 @@ board screenshots.
 | 03 Style preview | `#liangzhu-style-studies` | Original description and four author-requested horizontal redraws; original references remain in the source folder |
 | 04 Workflow 1 | `#liangzhu-workflow` | Existing editable graph, with image-input, LoRA, ControlNet and sampling explanations |
 | 05 Output pictures | `#liangzhu-style-outputs` | All six original style outputs |
-| 06 Implementation path | `#liangzhu-repaint-path` | Original PDF vector paths and native bilingual, linked labels |
+| 06 Implementation path | `#liangzhu-repaint-path` | Responsive native SVG: stages on the left, components on the right; all 16 original labels and 15 relationships |
 | 07 Case concept | `#liangzhu-spatial-cinema` | Spatial-cinema and game pre-production intent |
 | 08 Key points | Workflow 2, “关键要点和意义” | Style continuity, edge continuity, 2:1 geometry |
 | 09 Implementation | `#liangzhu-panorama-implementation` | Existing editable graph, latent reference, draft/production modes |
@@ -39,7 +39,12 @@ left to right above, then four columns from right to left below. Its SVG geometr
 is recomputed for the available width and language, with no horizontal scroller.
 Text wraps at its real font width; each text block's rendered bounds are vertically
 centred against its node dot. The original straight paths remain in the source
-JSON as provenance, and the repainting-path figure retains its original geometry.
+JSON as provenance. The repainting-path figure is now recomposed into a vertical
+sequence of left-hand stages and right-hand components, preserving all 16 labels,
+their links and the 15 relationships. Model choice feeds upward into sampling;
+it is an auxiliary input rather than a stage after sampling. Neither explanatory
+diagram requires horizontal scrolling; the editable ComfyUI graphs retain their
+independent canvas controls.
 Visible labels use concise equivalents; below 480 px these are shortened further so the two rows remain
 readable at 16 px; every node keeps its complete original label in its accessible
 name and tooltip, and still links to the full explanation.
@@ -57,10 +62,14 @@ of the original Marble scene, not a lossless Gaussian-splat file.
 
 ## Four-workflow reading order and image interactions
 
-The written three-item overview is removed. The U-shaped map retains its 840 px base geometry and scales proportionally
-to 118% on wide screens, within the content column. Dotted frames identify style repainting and
+The written three-item overview is removed. The U-shaped map uses nearly the
+full viewport width, up to 1440 px, while retaining its existing text scale.
+At a 1280 px viewport it is 1216 px wide. The right-hand return lane reserves
+more space for its three parallel coloured connections. Each is an open stroked
+centreline (7.5 px on wide layouts, 5.5 px on narrow layouts), preserving thickness
+at the vertical tangent. Dotted frames identify style repainting and
 image-to-panorama above, then prompt derivation and Marble generation below in
-right-to-left order. Each frame has a solid leader to its numbered title and links
+right-to-left order. Each frame has a round-dot leader to its numbered title and links
 to its own chapter. Janus-Pro is Workflow 3; the existing Marble image inputs and
 handoff are Workflow 4. The original three editable ComfyUI graphs remain intact.
 The page-snap registry discovers all four chapter anchors automatically.
@@ -81,7 +90,14 @@ keys move keyboard focus. Escape resets. Container heights remain
 fixed during the transition, avoiding page jumps. Source images, alt text, shared
 media corners and all other full-image viewers are preserved.
 
-The input/process/output sequence now uses compact coloured blocks with actual
-round-dot SVG borders. Research branches are measured from the current title
-and item bounds, then drawn as three round-dot arrows. They are recalculated
-when language, font loading or responsive layout changes.
+The input/process/output sequence uses compact coloured blocks with actual
+round-dot SVG borders. All 22 explanatory arrows are sampled with individual SVG
+circles rather than dashed strokes. Both arrowhead arms use exactly mirrored
+coordinates and matching animation phases. Card arrival animates opacity only,
+so a stagger cannot temporarily move one card away from its arrow. Research
+branches are measured from the current title and item bounds, then drawn as
+three round-dot arrows. Arrow and text positions are recalculated when language,
+font loading or responsive layout changes. Desktop (1280 px) and phone (390 px)
+checks in Chinese/English and light/dark modes found no label overlaps,
+out-of-bounds text or horizontal overflow; all 22 arrowheads had zero symmetry
+error and all three editable workflow graphs were ready.
