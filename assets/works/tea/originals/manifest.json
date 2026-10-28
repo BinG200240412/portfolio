@@ -1,0 +1,1453 @@
+{
+  "source": "User-supplied 78 PNG exports, 2026-10-28",
+  "reference": "Original supplied boards; DT组2.pdf used only to confirm earlier design relationships.",
+  "method": "PNG files copied byte-for-byte. No redraw, recropping, retouching or upscaling. Native text preserves board labels and relations.",
+  "images": [
+    {
+      "id": 1,
+      "name": "014a80dd142f997b2681c3d14ffbbca8 2.png",
+      "size": [
+        896,
+        470
+      ],
+      "bytes": 592276,
+      "sha256": "db11773c90db4da30b9e59a1e61171e180d259a16ca9aed4241004aeff171477",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "exhibition-scene-01.png",
+      "chapters": [
+        "experience"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 2,
+      "name": "1 4.png",
+      "size": [
+        261,
+        144
+      ],
+      "bytes": 8913,
+      "sha256": "7e0aa44492b357cef871dfce8c0a83040ffbc84ce7d0d9505c9353a974772c2d",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "reward-straw-pen.png",
+      "chapters": [
+        "merchandise"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 3,
+      "name": "10 1.png",
+      "size": [
+        436,
+        140
+      ],
+      "bytes": 67059,
+      "sha256": "d011533ff4e0835b28ae2f1521c894faaf1c6c1d292a6a1260310f9eaa1d7d08",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "reward-cups.png",
+      "chapters": [
+        "merchandise"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 4,
+      "name": "5c4ffc76252195ad91f54d798a45063d 1.png",
+      "size": [
+        1076,
+        888
+      ],
+      "bytes": 1103981,
+      "sha256": "7d77dd3cd68037990e8a3b37686fd877605d5fd30e415eeb73e275a969fcc269",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "central-room.png",
+      "chapters": [
+        "central-room"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 5,
+      "name": "6 76863582.png",
+      "size": [
+        280,
+        156
+      ],
+      "bytes": 48916,
+      "sha256": "80ddd5050dccafe6e0c33878789874a91a644ca3a9f614eec9788dbcca2ab0ac",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "reward-stencils.png",
+      "chapters": [
+        "merchandise"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 6,
+      "name": "7 4688.png",
+      "size": [
+        260,
+        146
+      ],
+      "bytes": 46817,
+      "sha256": "869aefb380d9b5a4298dad1ecdc17eb0332d39936dda2b336062b55da457d34a",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "reward-painting.png",
+      "chapters": [
+        "merchandise"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 7,
+      "name": "70f974dd4020c258f045ade827496c62 dsfcsd 1.png",
+      "size": [
+        1210,
+        568
+      ],
+      "bytes": 1390174,
+      "sha256": "d4b33ee50302d47d782bf1237021911de5580cfe339b005e5737b6b6127aeba0",
+      "alpha": [
+        245,
+        245
+      ],
+      "file": "space-grind.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 8,
+      "name": "8 859.png",
+      "size": [
+        244,
+        136
+      ],
+      "bytes": 52195,
+      "sha256": "90e1e346c0ee70bde2a49424580e07b24109c36391ff530f9276dccc7f58fce6",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "reward-drinking.png",
+      "chapters": [
+        "merchandise"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 9,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 1.png",
+      "size": [
+        439,
+        283
+      ],
+      "bytes": 123332,
+      "sha256": "b06e1b9aff2a761c888a32f30f88e56bfc89f095ef9775a6518a636f15237d52",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "display-garden.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 10,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 10.png",
+      "size": [
+        154,
+        175
+      ],
+      "bytes": 35816,
+      "sha256": "a2a04fdef34156689a12eae34eed244bc971fe204c2b6e43d042c24305b95cc1",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "display-round-screen.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 11,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 11.png",
+      "size": [
+        101,
+        167
+      ],
+      "bytes": 19135,
+      "sha256": "cb49966120f6def19f5205f2c41bfd4bac7ce8622223b25539f3712bf96c24f6",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "display-shelf-variant.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 12,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 12.png",
+      "size": [
+        123,
+        344
+      ],
+      "bytes": 55198,
+      "sha256": "b27fab5fcd740965932c1b5876f81ad73ca6f2be34ea00432ae55c46c6fac2ae",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "display-tower.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 13,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 13.png",
+      "size": [
+        112,
+        161
+      ],
+      "bytes": 19079,
+      "sha256": "a814ba2be8c3020cf08ff5ccb1cb6688f9509eeddd3165cfef6797d82a6e3ab8",
+      "alpha": [
+        0,
+        255
+      ],
+      "decision": "Duplicate composition at lower resolution; use original 24."
+    },
+    {
+      "id": 14,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 14.png",
+      "size": [
+        120,
+        173
+      ],
+      "bytes": 18141,
+      "sha256": "634820c59dcf973966456e088e6c7c69ead02fbe73860ac435684d0940ba66f8",
+      "alpha": [
+        0,
+        255
+      ],
+      "decision": "Duplicate composition at lower resolution; use original 25."
+    },
+    {
+      "id": 15,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 15.png",
+      "size": [
+        112,
+        126
+      ],
+      "bytes": 21259,
+      "sha256": "0e1df0ee30b87a5c55bc4b9a75336894f89a2e960f846eccbabf363149ae87bd",
+      "alpha": [
+        0,
+        255
+      ],
+      "decision": "Duplicate composition at lower resolution; use original 10."
+    },
+    {
+      "id": 16,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 16.png",
+      "size": [
+        66,
+        169
+      ],
+      "bytes": 18964,
+      "sha256": "244780a625a03deb96d0ac0754819ae28e9aef1a9b7af23e759469b429797732",
+      "alpha": [
+        0,
+        255
+      ],
+      "decision": "Duplicate composition at lower resolution; use original 12."
+    },
+    {
+      "id": 17,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 17.png",
+      "size": [
+        106,
+        122
+      ],
+      "bytes": 15518,
+      "sha256": "4635c0148d18a848ae06401bd6b7ecaf2cd987c47d7567f32db9dd95463c4f51",
+      "alpha": [
+        0,
+        255
+      ],
+      "decision": "Duplicate composition at lower resolution; use original 23."
+    },
+    {
+      "id": 18,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 18.png",
+      "size": [
+        239,
+        157
+      ],
+      "bytes": 46896,
+      "sha256": "bb9921578e5bc049b814227687013fb98364e48b5ab77b6861d8bf733137bb62",
+      "alpha": [
+        0,
+        255
+      ],
+      "decision": "Duplicate composition at lower resolution; use original 09."
+    },
+    {
+      "id": 19,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 2.png",
+      "size": [
+        175,
+        246
+      ],
+      "bytes": 39281,
+      "sha256": "f2bb2922fe1464fb18e438405f1dd0cc5ee61de1f98eddaf9f56885daef1f418",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "display-tiered.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 20,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 3.png",
+      "size": [
+        152,
+        212
+      ],
+      "bytes": 37551,
+      "sha256": "b7387b41be36d6bcba0d4686738f5f64152afbd01f77de28237be64a3a318064",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "display-cabinet.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 21,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 4.png",
+      "size": [
+        172,
+        240
+      ],
+      "bytes": 36152,
+      "sha256": "14e4d66b11a8ba38b16e2bf0e1e98e062f21998172e8355db80f40d1cb926099",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "display-whisk.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 22,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 5.png",
+      "size": [
+        362,
+        198
+      ],
+      "bytes": 72713,
+      "sha256": "f3f8ff60c5cab466e3e839128fa9088024408cf6ee1aa22c729920bbb578628a",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "display-stands.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 23,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 6.png",
+      "size": [
+        211,
+        246
+      ],
+      "bytes": 47536,
+      "sha256": "4d2f485da5c4e974bb70d50e6e060d0341e90d12a76936751e3098fcfc69046d",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "display-round-plinth.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 24,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 8.png",
+      "size": [
+        154,
+        225
+      ],
+      "bytes": 31071,
+      "sha256": "2fc6e1d7d8df6c357fffdfc4348b4818cc381c2ede25dba2afc9b882168515d4",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "display-shelf.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 25,
+      "name": "ChatGPT Image 2026年7月6日 21_11_47 (1) 9.png",
+      "size": [
+        154,
+        225
+      ],
+      "bytes": 27170,
+      "sha256": "858139ccbbbe20a88d2705ccd3540e7c49feb95bfd6277911a9c2b906ca8c4b7",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "display-flower.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 26,
+      "name": "ChatGPT Image 2026年7月7日 02_58_21 1.png",
+      "size": [
+        738,
+        414
+      ],
+      "bytes": 472402,
+      "sha256": "53fe3215f523d484e4688917ce261cedbe77447d75632aae01ef2469af133678",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "form-exploration.png",
+      "chapters": [
+        "sketches"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 27,
+      "name": "Group 1171275930.png",
+      "size": [
+        176,
+        150
+      ],
+      "bytes": 10026,
+      "sha256": "6aa5ddead2178c7ba9f21fdd729f6a527c235d3b834f67b366519f9dfc449542",
+      "alpha": [
+        0,
+        255
+      ],
+      "decision": "Background gradient or shadow layer; not standalone project content."
+    },
+    {
+      "id": 28,
+      "name": "Group 1171275931.png",
+      "size": [
+        178,
+        150
+      ],
+      "bytes": 11428,
+      "sha256": "98f29497e6bd482a49793ffd3ee82e404d3ea8a2e84bfbec82f52ec3e0ea554c",
+      "alpha": [
+        0,
+        255
+      ],
+      "decision": "Background gradient or shadow layer; not standalone project content."
+    },
+    {
+      "id": 29,
+      "name": "Group 1171275934.png",
+      "size": [
+        887,
+        440
+      ],
+      "bytes": 765199,
+      "sha256": "b92fd5c6e4cf2167cffebd42ab7f6d6444f89b288a1c73d9bc4dfc2608ab1be6",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "exhibition-scene-02.png",
+      "chapters": [
+        "experience"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 30,
+      "name": "Interactive_space_tea_picking_game_202607070051 1.png",
+      "size": [
+        164,
+        160
+      ],
+      "bytes": 57166,
+      "sha256": "7b12026b321aa232105dc8ca9b09137ea07805695c4ed88273a4580aea9d2ae5",
+      "alpha": [
+        204,
+        204
+      ],
+      "file": "feedback-wake-01.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 31,
+      "name": "Interactive_space_tea_picking_game_202607070051 3.png",
+      "size": [
+        164,
+        160
+      ],
+      "bytes": 57123,
+      "sha256": "043512296af9e947f31085d7c2228965ddb75b5cdf37c0c64f04de19f474436a",
+      "alpha": [
+        204,
+        204
+      ],
+      "file": "feedback-wake-02.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 32,
+      "name": "Interactive_space_tea_picking_game_202607070052 1.png",
+      "size": [
+        164,
+        160
+      ],
+      "bytes": 64547,
+      "sha256": "fefe06bfc07ad2ad33aa719dd7846488ce360205247757cd2e6a9169cd8512e3",
+      "alpha": [
+        204,
+        204
+      ],
+      "file": "feedback-wake-03.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 33,
+      "name": "Mask group-1.png",
+      "size": [
+        85,
+        85
+      ],
+      "bytes": 13221,
+      "sha256": "e707931859211e3ae60af9f6aacf7025f999dae493870ff9f5978df5caf8113d",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "value-experience.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 34,
+      "name": "Mask group-2.png",
+      "size": [
+        85,
+        85
+      ],
+      "bytes": 14288,
+      "sha256": "61637d0c12d1723c6aa93cb918d606421329dcd11861767c0e42df1d868662f2",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "value-interaction.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 35,
+      "name": "Mask group-3.png",
+      "size": [
+        104,
+        104
+      ],
+      "bytes": 19475,
+      "sha256": "6bd2631988c5d02d49e39fd8725fc16372f685a497518442bae19b3cac913666",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "form-circle.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 36,
+      "name": "Mask group-4.png",
+      "size": [
+        104,
+        104
+      ],
+      "bytes": 21291,
+      "sha256": "cfa1484d5f7abb11594da69a7b12f0c336ed9d4c350fb428384e51b9b84d34ee",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "form-square.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 37,
+      "name": "Mask group-5.png",
+      "size": [
+        104,
+        104
+      ],
+      "bytes": 16378,
+      "sha256": "1dafc28b1aac29764121a40c6730020623f219ba9ae66b82bcd145a72395a97d",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "form-lattice.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 38,
+      "name": "Mask group-6.png",
+      "size": [
+        104,
+        104
+      ],
+      "bytes": 19523,
+      "sha256": "edceca14f5ce738ed9f02923154ed3a038611c70260656b08e8da500f402427e",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "form-tiers.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 39,
+      "name": "Mask group-7.png",
+      "size": [
+        104,
+        104
+      ],
+      "bytes": 18616,
+      "sha256": "73e0e7d063d45c4235d2fa0175335ef38d991bc644f4b1372bffe8652365f315",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "form-enclosure.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 40,
+      "name": "Mask group-8.png",
+      "size": [
+        104,
+        104
+      ],
+      "bytes": 18243,
+      "sha256": "3b44139f0b00d263897589fa0083fee3a629d9058874b2cd2a1d2328cdb05606",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "form-framed-view.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 41,
+      "name": "Mask group.png",
+      "size": [
+        85,
+        85
+      ],
+      "bytes": 13891,
+      "sha256": "038023eb9c4148e07053f15eb6b357665831e113fa75d10c528014501de7232f",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "value-culture.png",
+      "chapters": [
+        "objects"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 42,
+      "name": "Rectangle 34629373.png",
+      "size": [
+        1222,
+        512
+      ],
+      "bytes": 708695,
+      "sha256": "153bf503371904d1caee64f6549c18809b96fe8ca0ee2d7b796e8a924be15b9e",
+      "alpha": [
+        0,
+        75
+      ],
+      "decision": "Background gradient or shadow layer; not standalone project content."
+    },
+    {
+      "id": 43,
+      "name": "af7601d2110f8106919e99bfe71b3264 1.png",
+      "size": [
+        1210,
+        496
+      ],
+      "bytes": 1018419,
+      "sha256": "59f89343d6e3c5c968813543059004fb21fc94a4d5ce74f406767e949f462f9c",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "space-wake.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 44,
+      "name": "awdSAZwq 1.png",
+      "size": [
+        154,
+        152
+      ],
+      "bytes": 9577,
+      "sha256": "06b09af7fe1a822bbf1dbf435c86110f999e6d0760c954b1ef9d0f3f6468796d",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "action-wake-01.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 45,
+      "name": "awdSAZwq 2.png",
+      "size": [
+        154,
+        152
+      ],
+      "bytes": 8451,
+      "sha256": "8663d8348d66d5b9e3990e5cc051ff3a845dedb3a6ff0d60ac475dae36aa8e1c",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "action-wake-02.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 46,
+      "name": "awdSAZwq 3.png",
+      "size": [
+        154,
+        140
+      ],
+      "bytes": 10523,
+      "sha256": "41e463981212c4e5ffb30054290107f72c98fefa3ca2487d0d97a03031bc434e",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "action-wake-03.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 47,
+      "name": "awdSAZwq 4.png",
+      "size": [
+        154,
+        152
+      ],
+      "bytes": 8850,
+      "sha256": "a78559a1fb3d2fbbcae735db95e193e6f1be236862f32977217217d122d7a7ec",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "action-grind-01.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 48,
+      "name": "awdSAZwq 5.png",
+      "size": [
+        154,
+        152
+      ],
+      "bytes": 9196,
+      "sha256": "50ce8aeb9cc3bb4342f4589209b4709245038111df8df59231cdd906c8dbcbb5",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "action-grind-02.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 49,
+      "name": "awdSAZwq 6.png",
+      "size": [
+        154,
+        152
+      ],
+      "bytes": 9059,
+      "sha256": "a3a4350d68584f354b6b89ab5c5674680ff9f52d701fde1b1a85254383ab046c",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "action-grind-03.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 50,
+      "name": "awdSAZwq 7.png",
+      "size": [
+        154,
+        152
+      ],
+      "bytes": 8850,
+      "sha256": "a78559a1fb3d2fbbcae735db95e193e6f1be236862f32977217217d122d7a7ec",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "action-ritual-01.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 51,
+      "name": "awdSAZwq 8.png",
+      "size": [
+        154,
+        152
+      ],
+      "bytes": 9196,
+      "sha256": "50ce8aeb9cc3bb4342f4589209b4709245038111df8df59231cdd906c8dbcbb5",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "action-ritual-02.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 52,
+      "name": "awdSAZwq 9.png",
+      "size": [
+        154,
+        152
+      ],
+      "bytes": 9059,
+      "sha256": "a3a4350d68584f354b6b89ab5c5674680ff9f52d701fde1b1a85254383ab046c",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "action-ritual-03.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 53,
+      "name": "b9448119dc99d41366e3d4529ecd281b 1.png",
+      "size": [
+        1210,
+        540
+      ],
+      "bytes": 1256008,
+      "sha256": "c78e3ea43c52497bf64dbb256bc59126079645fbfc41b8a26e55e998847f9cf5",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "space-ritual.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 54,
+      "name": "de614080b37840b04719875d6575fd88 1.png",
+      "size": [
+        698,
+        406
+      ],
+      "bytes": 503219,
+      "sha256": "4f676c1db4c0064dc0279173699b6f1ba02898291886af201c9cb5beb66c2c49",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "central-room-top.png",
+      "chapters": [
+        "central-room"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 55,
+      "name": "image 291316.png",
+      "size": [
+        564,
+        304
+      ],
+      "bytes": 272093,
+      "sha256": "b89f22b3a3fdfd5c8ac194fb414e2aa2cc5fe57fb2c81c0e3db3fb5610efa073",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "merchandise-collection.png",
+      "chapters": [
+        "merchandise"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 56,
+      "name": "image 291317.png",
+      "size": [
+        510,
+        288
+      ],
+      "bytes": 231508,
+      "sha256": "8fb808c36c9547cd91f5af3f3a981e645ed36eec46ead6ea8cb74706ab63312d",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "merchandise-painting.png",
+      "chapters": [
+        "merchandise"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 57,
+      "name": "image 291318.png",
+      "size": [
+        612,
+        288
+      ],
+      "bytes": 265581,
+      "sha256": "4591afea3ca66fa9ced5412b1d8bc062fa06c777a3741c7ad49638c76fafcf2c",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "merchandise-cup.png",
+      "chapters": [
+        "merchandise"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 58,
+      "name": "image 291330.png",
+      "size": [
+        434,
+        196
+      ],
+      "bytes": 146957,
+      "sha256": "6b476ec914e2d39900812ae3266b704037785f5a83a9b2bc38f3c10049369d03",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "sketch-facade.png",
+      "chapters": [
+        "sketches"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 59,
+      "name": "sasd 1.png",
+      "size": [
+        216,
+        216
+      ],
+      "bytes": 61519,
+      "sha256": "132c1a38d7d4667a03afa8aaa1642b3f5adb33d989f6d803447c9881ab5b1f5a",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "behavior-observe.png",
+      "chapters": [
+        "space"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 60,
+      "name": "sasd 2.png",
+      "size": [
+        216,
+        216
+      ],
+      "bytes": 42756,
+      "sha256": "92cc901dce17f4609ba42cc1bb13b707228c5d869944e031be6fac52313b83f5",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "behavior-entrance.png",
+      "chapters": [
+        "space"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 61,
+      "name": "sasd 3.png",
+      "size": [
+        215,
+        215
+      ],
+      "bytes": 48827,
+      "sha256": "e4315a831f4fa9130a5a580e9a8c782e12177836f65be855202f07b6f6a1fd5f",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "behavior-exhibit.png",
+      "chapters": [
+        "space"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 62,
+      "name": "sasd 4.png",
+      "size": [
+        216,
+        216
+      ],
+      "bytes": 41662,
+      "sha256": "f8704edb6b87c8ccbdb5cfb0356ccf68892e1a9e45b3cf7af3b285531a245ab9",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "behavior-walk.png",
+      "chapters": [
+        "space"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 63,
+      "name": "sasd 5.png",
+      "size": [
+        216,
+        216
+      ],
+      "bytes": 43983,
+      "sha256": "d8f101a88368f379d1215eb523f79aaf0007d778af5de46e9c0e6e48ac2b3418",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "behavior-immerse.png",
+      "chapters": [
+        "space"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 64,
+      "name": "sasd 6.png",
+      "size": [
+        215,
+        215
+      ],
+      "bytes": 60063,
+      "sha256": "ce88089c058162781bd6d66ebbe4a19f09dd0d0f2210c78efe4ba50326f11efb",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "behavior-interact.png",
+      "chapters": [
+        "space"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 65,
+      "name": "saxa 1.png",
+      "size": [
+        838,
+        598
+      ],
+      "bytes": 263645,
+      "sha256": "4e692b8e0e45b2a151337b6810acb1b2aeaa178b876b2c6ab6f2d20879d8d84e",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "space-axon.png",
+      "chapters": [
+        "space"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 66,
+      "name": "scdsa 1.png",
+      "size": [
+        1389,
+        724
+      ],
+      "bytes": 1127908,
+      "sha256": "4ab1a4769fee6ab587ad80527bdadbfe045a36823ab8ef69f51de87a1c3035f7",
+      "alpha": [
+        0,
+        255
+      ],
+      "file": "space-game-logic.png",
+      "chapters": [
+        "space-logic"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 67,
+      "name": "主 2.png",
+      "size": [
+        298,
+        224
+      ],
+      "bytes": 126493,
+      "sha256": "79d3ce8f274bebd7548b3c5e43137f7022f1beea2bc6b9ea99164c689c759341",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "sketch-central-room.png",
+      "chapters": [
+        "sketches"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 68,
+      "name": "交互场景1 2.png",
+      "size": [
+        302,
+        234
+      ],
+      "bytes": 137872,
+      "sha256": "48283945ed1a1d588d3f3cce43d984e5e444bb243172c329d636b846bac04520",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "sketch-interaction.png",
+      "chapters": [
+        "sketches"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 69,
+      "name": "交互空间交互细节图_2K_202607070008 1.png",
+      "size": [
+        164,
+        160
+      ],
+      "bytes": 47688,
+      "sha256": "614f9b1b5941adad5f021f8da85992def024079686f075d441bcc364d8836a7f",
+      "alpha": [
+        204,
+        204
+      ],
+      "file": "feedback-grind-01.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 70,
+      "name": "交互空间交互细节图_2K_202607070008 2.png",
+      "size": [
+        164,
+        160
+      ],
+      "bytes": 61987,
+      "sha256": "a871d91f04aae89c5f4a9a5c780860a0ed511dd1871e454c99092679aa3b0109",
+      "alpha": [
+        204,
+        204
+      ],
+      "file": "feedback-grind-03.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 71,
+      "name": "交互空间交互细节图_2K_202607070008 3.png",
+      "size": [
+        164,
+        160
+      ],
+      "bytes": 60023,
+      "sha256": "dc6e3f0b2cb7480686e9a90c337399f041e91ad0b04eee141871dbea387399d9",
+      "alpha": [
+        204,
+        204
+      ],
+      "file": "feedback-grind-02.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 72,
+      "name": "场景 1 1.png",
+      "size": [
+        284,
+        220
+      ],
+      "bytes": 103624,
+      "sha256": "01c86bb28184ea50f160b5f97f88efd623ab6ab43ea7b752b60a51dfb1d5be19",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "sketch-passage.png",
+      "chapters": [
+        "sketches"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 73,
+      "name": "场景 2 2.png",
+      "size": [
+        324,
+        250
+      ],
+      "bytes": 151175,
+      "sha256": "632676e18800dfea10fc97722351a3ec35fa67d042b6c32289c6fef2f232f2a7",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "sketch-entrance.png",
+      "chapters": [
+        "sketches"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 74,
+      "name": "批注 1.png",
+      "size": [
+        52,
+        284
+      ],
+      "bytes": 5433,
+      "sha256": "b11eaa6abe44fa1cf075c908f8e7ecb9ba5da65fba79a7f8260caff7a4cc5dca",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "behavior-legend.png",
+      "chapters": [
+        "space"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 75,
+      "name": "框景- 1.png",
+      "size": [
+        434,
+        246
+      ],
+      "bytes": 164510,
+      "sha256": "86e700894087731121c2169e77b97a24bc78edf46bc2923d83cad30b95214940",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "sketch-tea-table.png",
+      "chapters": [
+        "sketches"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 76,
+      "name": "茶宴分茶音游交互细节_2K_202607070258 1.png",
+      "size": [
+        164,
+        160
+      ],
+      "bytes": 62369,
+      "sha256": "b9dd3d39463cd42bff95039c7c6dda05704179752e27b1daac23427ac1fdac11",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "feedback-ritual-01.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 77,
+      "name": "茶宴分茶音游交互细节_2K_202607070258 2.png",
+      "size": [
+        164,
+        160
+      ],
+      "bytes": 59229,
+      "sha256": "4b597cf3bde1b445d8221afe37e68725070882d33c40c005ada5ffde6a297d2e",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "feedback-ritual-03.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    },
+    {
+      "id": 78,
+      "name": "茶宴分茶音游交互细节_2K_202607070259 1.png",
+      "size": [
+        164,
+        160
+      ],
+      "bytes": 56259,
+      "sha256": "4a03e53f4d169f109d0885ee4b935ea63d953d590994e1c478248a030f4026cc",
+      "alpha": [
+        255,
+        255
+      ],
+      "file": "feedback-ritual-02.png",
+      "chapters": [
+        "immersion"
+      ],
+      "decision": "Used byte-for-byte; original dimensions and alpha retained."
+    }
+  ]
+}
