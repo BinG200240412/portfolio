@@ -1,6 +1,5 @@
-/* One stationary device, paired with one analytical reading stop at a time.
- * Inside this chapter, one input gesture turns exactly one analysis page.
- * Other chapters keep their native scrolling and snapping. */
+/* A stationary device follows the analysis passing through a soft reading lens.
+ * Native scrolling owns the movement; only the notes are magnified and displaced. */
 (() => {
   'use strict';
 
@@ -15,11 +14,8 @@
 
     const NS = 'http://www.w3.org/2000/svg';
     const gsap = window.gsap;
-    const ScrollTrigger = window.ScrollTrigger;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const narrow = matchMedia('(max-width: 720px)');
-    const snapEvents = 'onscrollsnapchange' in window;
-    const scrollEnd = 'onscrollend' in window || 'onscrollend' in document;
     const viewer = document.getElementById('media-viewer');
     const opener = stage.querySelector('.visual-device-open') || stage.closest('.visual-device-open');
     const caption = root.querySelector('.visual-device-caption');
@@ -55,11 +51,11 @@
     let shownScreen = 0, shownStep = -1, wantedStep = -1, request = 0, frame = 0;
     let path = null, point = null, boxes = [], pathLength = 0, leaderVisible = false, marksVisible = false;
     let growth = null, swap = null, settleSwap = null, deferred = null;
-    let growthChildren = [];
-    let pageShown = true, suspended = false, disposed = false, trigger = null;
-    let landedStep = -1, snapDirty = true;
-    let pageMove = null, pageTween = null, reflowStep = null;
-    let wheelAt = -Infinity, wheelClaimed = false, touch = null;
+    let pageShown = true, suspended = false, disposed = false;
+    let layoutDirty = true, focalLine = 0;
+    // These headings sit between steps, so they share the same displacement field.
+    const headings = [...column.querySelectorAll(':scope > h2, .visual-system-block:not([data-visual-step]) > h3, .visual-system-block:not([data-visual-step]) > p')];
+    const ornaments = headings.map(element => ({ element }));
 
     screens.forEach((screen, index) => {
       screen.style.opacity = index ? '0' : '1';
@@ -68,10 +64,7 @@
     });
     root.dataset.visualState = 'ready';
     root.dataset.visualInView = 'false';
-    root.dataset.visualSnapMode = snapEvents ? 'native' : scrollEnd ? 'scrollend' : 'position';
-    root.dataset.visualSnapState = 'idle';
-    root.dataset.visualPaging = 'gesture';
-    root.dataset.visualPageState = 'idle';
+    root.dataset.visualNavigation = 'continuous-lens';
 
     function blocked() {
       return !pageShown || document.hidden || viewer?.open ||
@@ -147,8 +140,6 @@
     }
     function stopGrowth() {
       growth?.kill(); growth = null;
-      if (gsap && growthChildren.length) gsap.set(growthChildren, { clearProps: 'opacity,transform' });
-      growthChildren = [];
     }
     function paint() {
       targets.style.opacity = marksVisible ? String(reveal.targets * .9) : '0';
@@ -185,7 +176,6 @@
       const step = steps[shownStep], stageRect = stage.getBoundingClientRect();
       const photo = screens[shownScreen].getBoundingClientRect(), note = step.element.getBoundingClientRect();
       if (!stageRect.width || !stageRect.height || !photo.width || !photo.height) return;
-      svg.setAttribute('viewBox', `0 0 ${stageRect.width} ${stageRect.height}`);
       const regions = step.bounds.map(([x, y, width, height], index) => {
         const region = {
           x: photo.left - stageRect.left + photo.width * clamp(x, 0, 100) / 100,
@@ -193,7 +183,6 @@
           width: photo.width * Math.min(width, 100 - clamp(x, 0, 100)) / 100,
           height: photo.height * Math.min(height, 100 - clamp(y, 0, 100)) / 100,
         };
-        Object.entries(region).forEach(([key, value]) => boxes[index]?.setAttribute(key, value));
         return region;
       });
       leaderVisible = !narrow.matches && regions.length > 0;
@@ -240,9 +229,14 @@
         const bendY = start.y + Math.sign(end.y - start.y) * Math.min(20, Math.abs(end.y - start.y));
         path.setAttribute('d', `M ${start.x} ${start.y} H ${firstX} L ${bendX} ${bendY} V ${end.y} H ${end.x}`);
         point.setAttribute('cx', end.x); point.setAttribute('cy', end.y);
-        pathLength = path.getTotalLength();
+        pathLength = Math.abs(firstX - start.x) + Math.hypot(bendX - firstX, bendY - start.y) +
+          Math.abs(end.y - bendY) + Math.abs(end.x - bendX);
         leaderVisible = leaderVisible && noteY > 64 && noteY < innerHeight - 20;
       }
+      svg.setAttribute('viewBox', `0 0 ${stageRect.width} ${stageRect.height}`);
+      regions.forEach((region, index) => {
+        Object.entries(region).forEach(([key, value]) => boxes[index]?.setAttribute(key, value));
+      });
       paint();
     }
 
@@ -255,16 +249,11 @@
       geometry();
       if (!animate || !gsap) { state('complete'); return; }
       state('growing');
-      const children = [...step.element.children].filter(element => !element.matches('script,style'));
-      growthChildren = children;
       growth = gsap.timeline({ defaults: { ease: 'power2.out' }, onComplete: () => {
-        growth = null; growthChildren = []; geometry(); state('complete');
+        growth = null; geometry(); state('complete');
       } });
       growth.to(reveal, { targets: 1, duration: .12, onUpdate: paint }, 0)
         .to(reveal, { line: 1, duration: .3, onUpdate: paint }, 0);
-      if (children.length) growth.fromTo(children, { opacity: .6, x: 7 }, {
-        opacity: 1, x: 0, duration: .22, stagger: .025, clearProps: 'opacity,transform',
-      }, 0);
       if (suspended) growth.pause();
     }
     function crossfade(incomingIndex, outgoingIndex) {
@@ -343,224 +332,99 @@
       }
     }
 
-    function readingLine() {
-      const ratio = parseFloat(getComputedStyle(root).getPropertyValue('--visual-reading-ratio')) || .4;
-      if (!narrow.matches) return innerHeight * ratio;
-      const phoneColumn = stage.closest('.visual-device-column');
-      const stickyTop = parseFloat(getComputedStyle(phoneColumn).top) || 64;
-      // The mobile phone and its paper mask must stay above the reading line.
-      return Math.min(innerHeight * .8, Math.max(innerHeight * ratio, stickyTop + stage.offsetHeight + 48));
+    // Offset geometry is unaffected by the lens transforms. Measuring transformed
+    // bounds for selection would feed the enlargement back into its own trigger.
+    function layoutTop(element) {
+      let top = 0;
+      for (let node = element; node; node = node.offsetParent) top += node.offsetTop;
+      return top;
     }
-    function measureSnap() {
-      const chapterTop = root.getBoundingClientRect().top;
-      const line = readingLine();
-      root.dataset.visualSnapLine = String(Math.round(line));
-      steps.forEach((step, index) => {
-        // The first stop is also the chapter entry, keeping its heading visible.
-        const rect = step.element.getBoundingClientRect();
-        const offset = Math.max(0, rect.top - chapterTop);
-        const contentHeight = Math.max(0, ...[...step.element.children].filter(child => child.getClientRects().length).map(child =>
-          child.getBoundingClientRect().bottom - rect.top));
-        // Long references move up as one complete page, without cropping them.
-        const floor = narrow.matches ? line : innerHeight < 600 ? 64 : 96;
-        const fittedLine = Math.max(floor, Math.min(line, innerHeight - contentHeight - 28));
-        step.snapInset = index === 0 ? offset : Math.min(fittedLine, offset);
-        const value = `${step.snapInset.toFixed(2)}px`;
-        if (step.element.style.getPropertyValue('--visual-snap-inset') !== value) {
-          step.element.style.setProperty('--visual-snap-inset', value);
-        }
+    function measure() {
+      const phoneBottom = 64 + stage.offsetHeight + 24;
+      focalLine = narrow.matches ? (phoneBottom + innerHeight) / 2 : innerHeight * .48;
+      root.dataset.visualFocusLine = String(Math.round(focalLine));
+      steps.forEach(step => {
+        const top = layoutTop(step.element);
+        const children = [...step.element.children].filter(child => child.getClientRects().length);
+        const first = Math.min(top, ...children.map(layoutTop));
+        const bottom = Math.max(first, ...children.map(child => layoutTop(child) + child.offsetHeight));
+        step.top = top;
+        step.height = Math.max(1, bottom - first);
+        step.center = first + step.height / 2;
+        step.origin = step.center - top;
+        step.width = step.element.offsetWidth;
       });
-      snapDirty = false;
+      ornaments.forEach(item => { item.center = layoutTop(item.element) + item.element.offsetHeight / 2; });
+      // Fixed origins are updated only after a genuine layout change.
+      steps.forEach(step => { step.element.style.transformOrigin = `left ${step.origin}px`; });
+      // Give the final note enough tail room that the phone stays docked while
+      // its centre passes through the lens; no extra gaps between the notes.
+      const last = steps[steps.length - 1];
+      const stickyTop = parseFloat(getComputedStyle(stage).top) || 0;
+      const tail = narrow.matches ? 0 : Math.max(0, stickyTop + stage.offsetHeight + 32 - focalLine - (last.element.offsetHeight - last.origin));
+      const padding = `${Math.ceil(tail)}px`;
+      if (column.style.paddingBottom !== padding) column.style.paddingBottom = padding;
+      layoutDirty = false;
     }
-    function inTallSnapArea(index) {
-      const step = steps[index];
-      if (!step) return false;
-      const rect = step.element.getBoundingClientRect();
-      return rect.height + step.snapInset > innerHeight &&
-        rect.top - step.snapInset <= 3 && rect.bottom >= innerHeight - 3;
-    }
-    function candidate() {
-      const current = landedStep >= 0 ? landedStep : wantedStep;
-      if (inTallSnapArea(current)) return current;
-      let next = 0, distance = Infinity;
-      steps.forEach((step, index) => {
-        const delta = inTallSnapArea(index) ? 0 : Math.abs(step.element.getBoundingClientRect().top - step.snapInset);
-        if (delta < distance) { distance = delta; next = index; }
+    function focus() {
+      const focusY = scrollY + focalLine;
+      const radius = narrow.matches ? innerHeight * .34 : innerHeight * .52;
+      const magnification = reduced.matches ? 0 : narrow.matches ? .035 : .12;
+      let next = 0, nearest = Infinity;
+      const field = steps.map((step, index) => {
+        const delta = Math.abs(step.center - focusY);
+        if (delta < nearest) { nearest = delta; next = index; }
+        // A cosine bell reaches zero with zero velocity: no hard focus edges.
+        const weight = delta < radius ? (1 + Math.cos(Math.PI * delta / radius)) / 2 : 0;
+        const scale = 1 + magnification * weight;
+        return { weight, scale, extra: reduced.matches ? 0 : weight * (step.height * magnification + (narrow.matches ? 16 : 42)) };
       });
+      // Each enlarged step opens equal space above and below itself. Adjacent
+      // notes (and subsection headings) are pushed out, without layout reflow.
+      const displacement = center => field.reduce((sum, item, index) =>
+        sum + (steps[index].center === center ? 0 : Math.sign(center - steps[index].center) * item.extra / 2), 0);
+      steps.forEach((step, index) => {
+        const item = field[index], y = displacement(step.center);
+        step.element.style.transform = `translateY(${y.toFixed(2)}px) scale(${item.scale.toFixed(4)})`;
+        step.element.style.willChange = Math.abs(step.center - focusY) < innerHeight ? 'transform' : '';
+        step.element.dataset.visualFocus = item.weight.toFixed(3);
+      });
+      ornaments.forEach(item => { item.element.style.transform = `translateY(${displacement(item.center).toFixed(2)}px)`; });
+      // Small hysteresis prevents a vibrating selection at the halfway point,
+      // without making input wait for the previous screen or line animation.
+      if (wantedStep >= 0 && Math.abs(steps[wantedStep].center - focusY) < nearest + 18) next = wantedStep;
+      root.dataset.visualFocusedStep = steps[next].id;
       return next;
-    }
-    function landed(index) {
-      landedStep = index;
-      root.dataset.visualSnappedStep = steps[index].id;
-      root.dataset.visualSnapState = 'settled';
-      schedule();
-    }
-    function snapChange(event) {
-      if (pageMove) return;
-      const index = steps.findIndex(step => step.element === event.snapTargetBlock);
-      if (index >= 0) landed(index);
-    }
-    function snapChanging(event) {
-      const step = steps.find(item => item.element === event.snapTargetBlock);
-      if (step) preload(step.image).catch(() => {});
-    }
-    function scrollSettled(event) {
-      if (event.target !== document && event.target !== document.documentElement && event.target !== window) return;
-      if (!inView() || blocked() || pageMove) return;
-      if (snapDirty) measureSnap();
-      landed(candidate());
-    }
-    function scrolling() {
-      if (inView() && !blocked()) root.dataset.visualSnapState = 'moving';
-    }
-
-    const stopAt = index => scrollY + steps[index].element.getBoundingClientRect().top - steps[index].snapInset;
-    function pagePlan(direction) {
-      if (blocked()) return null;
-      if (snapDirty) measureSnap();
-      const first = stopAt(0), last = stopAt(steps.length - 1);
-      if (scrollY < first - 4) {
-        return direction > 0 && first - scrollY <= innerHeight + 4 ? { index: 0, top: first } : null;
-      }
-      if (scrollY > last + 4 && !inTallSnapArea(steps.length - 1)) {
-        return direction < 0 && root.getBoundingClientRect().bottom >= -4
-          ? { index: steps.length - 1, top: last } : null;
-      }
-      const index = candidate(), next = index + direction;
-      const step = steps[index], rect = step.element.getBoundingClientRect();
-      const contentBottom = Math.max(rect.top, ...[...step.element.children]
-        .filter(child => child.getClientRects().length).map(child => child.getBoundingClientRect().bottom));
-      const tail = scrollY + rect.bottom - innerHeight;
-      // At very short/zoomed viewports, finish a genuinely oversized page
-      // before leaving it. Keep the same analysis and never crop its content.
-      if (direction > 0 && contentBottom > innerHeight - 12 && tail > scrollY + 4) {
-        return { index, top: Math.min(tail, scrollY + innerHeight * .65) };
-      }
-      if (direction < 0 && inTallSnapArea(index) && scrollY > stopAt(index) + 4) {
-        return { index, top: Math.max(stopAt(index), scrollY - innerHeight * .65) };
-      }
-      if (steps[next]) return { index: next, top: stopAt(next) };
-      // One last turn leaves the chapter; its remaining inertia is still eaten.
-      const neighbour = document.getElementById(direction > 0 ? 'experience' : 'character');
-      if (!neighbour) return null;
-      const neighbourRect = neighbour.getBoundingClientRect();
-      return { index: null, top: scrollY + (direction > 0 ? neighbourRect.top : Math.max(neighbourRect.top, neighbourRect.bottom - innerHeight)) };
-    }
-    function cancelPage() {
-      pageTween?.kill(); pageTween = null; pageMove = null;
-      document.documentElement.classList.remove('visual-page-turning');
-      root.dataset.visualPageState = 'idle';
-    }
-    function turnPage(plan) {
-      pageMove = plan;
-      root.dataset.visualPageState = 'turning';
-      root.dataset.visualSnapState = 'moving';
-      if (plan.index !== null) {
-        preload(steps[plan.index].image).catch(() => {});
-        root.dataset.visualPageTarget = steps[plan.index].id;
-      } else delete root.dataset.visualPageTarget;
-      // Disable native snap only during this short, deterministic page turn.
-      document.documentElement.classList.add('visual-page-turning');
-      const cursor = { y: scrollY };
-      const finish = () => {
-        scrollTo({ top: plan.top, behavior: 'instant' });
-        pageTween = null; pageMove = null;
-        document.documentElement.classList.remove('visual-page-turning');
-        root.dataset.visualPageState = 'idle';
-        if (plan.index !== null) landed(plan.index);
-        schedule();
-      };
-      if (!gsap || reduced.matches || Math.abs(plan.top - cursor.y) < 1) { finish(); return; }
-      pageTween = gsap.to(cursor, { y: plan.top, duration: .28, ease: 'power2.out',
-        onUpdate: () => scrollTo({ top: cursor.y, behavior: 'instant' }), onComplete: finish });
-    }
-    function readyToTurn() {
-      return !pageMove && (root.dataset.visualState === 'complete' || root.dataset.visualState === 'failed');
-    }
-    function wheel(event) {
-      if (event.defaultPrevented || !event.cancelable || event.ctrlKey || event.metaKey ||
-          event.target?.closest?.('input,textarea,select,[contenteditable="true"]') ||
-          Math.abs(event.deltaY) <= Math.abs(event.deltaX) || !event.deltaY || blocked()) return;
-      const now = performance.now();
-      if (now - wheelAt > 180) wheelClaimed = false;
-      wheelAt = now;
-      const plan = pagePlan(Math.sign(event.deltaY));
-      if (!plan && !pageMove && !wheelClaimed) return;
-      event.preventDefault();
-      if (wheelClaimed) return;
-      wheelClaimed = true;
-      if (plan && readyToTurn()) turnPage(plan);
-    }
-    function touchStart(event) {
-      touch = event.touches.length === 1 && !blocked() &&
-        !event.target?.closest?.('input,textarea,select,[contenteditable="true"]')
-        ? { x: event.touches[0].clientX, y: event.touches[0].clientY, used: false } : null;
-    }
-    function touchMove(event) {
-      if (!touch || event.touches.length !== 1 || !event.cancelable || blocked()) return;
-      const dx = touch.x - event.touches[0].clientX, dy = touch.y - event.touches[0].clientY;
-      if (Math.abs(dy) < 6 || Math.abs(dy) <= Math.abs(dx)) return;
-      const plan = pagePlan(Math.sign(dy));
-      if (!plan && !pageMove && !touch.used) return;
-      event.preventDefault();
-      if (touch.used) return;
-      touch.used = true;
-      if (plan && readyToTurn()) turnPage(plan);
-    }
-    function keyPage(event) {
-      const editable = event.target.closest?.('input,textarea,select,[contenteditable="true"]');
-      if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || editable || blocked()) return;
-      if (event.key === ' ' && event.target.closest?.('button,a')) return;
-      const direction = ['ArrowDown', 'PageDown', ' '].includes(event.key) ? (event.shiftKey ? -1 : 1)
-        : ['ArrowUp', 'PageUp'].includes(event.key) ? -1 : 0;
-      if (!direction) return;
-      const plan = pagePlan(direction);
-      if (!plan && !pageMove) return;
-      event.preventDefault();
-      if (!event.repeat && plan && readyToTurn()) turnPage(plan);
     }
     function render() {
       frame = 0;
       if (disposed) return;
-      if (snapDirty) measureSnap();
-      const disabled = blocked();
-      const visible = inView();
+      const disabled = blocked(), visible = inView();
       root.dataset.visualInView = String(visible && !disabled);
       svg.style.visibility = visible && !disabled ? 'visible' : 'hidden';
-      if (disabled !== suspended) {
-        suspended = disabled;
-        if (disabled) {
-          cancelPage(); wheelClaimed = false; wheelAt = -Infinity; touch = null;
-          growth?.pause(); swap?.pause();
-        }
+      const pause = disabled || !visible;
+      if (pause !== suspended) {
+        suspended = pause;
+        if (pause) { growth?.pause(); swap?.pause(); }
         else { growth?.play(); swap?.play(); }
       }
-      if (!visible || disabled) return;
-      if (reflowStep !== null) {
-        const index = reflowStep; reflowStep = null;
-        scrollTo({ top: stopAt(index), behavior: 'instant' });
-        landed(index);
+      if (!visible || disabled) {
+        steps.forEach(step => { step.element.style.willChange = ''; });
+        return;
       }
-      const next = snapEvents || scrollEnd
-        ? (landedStep >= 0 ? landedStep : wantedStep >= 0 ? wantedStep : candidate())
-        : candidate();
+      if (layoutDirty) measure();
+      const next = focus();
       if (deferred !== null) {
         deferred = null;
         activate(next);
-      } else if (!pageMove && next !== wantedStep) activate(next);
+      } else if (next !== wantedStep) activate(next);
       geometry();
     }
     function schedule() {
       if (!frame && !disposed) frame = requestAnimationFrame(render);
     }
     function refresh() {
-      if (inView() && !blocked() && landedStep >= 0 && root.getBoundingClientRect().top <= 4 &&
-          scrollY <= stopAt(steps.length - 1) + 4) {
-        reflowStep = pageMove?.index ?? landedStep;
-        cancelPage();
-      }
-      snapDirty = true;
-      trigger?.refresh();
+      layoutDirty = true;
       schedule();
     }
     function language() {
@@ -575,23 +439,11 @@
       }
       refresh();
     }
-    function hide() {
-      pageShown = false; cancelPage();
-      wheelClaimed = false; wheelAt = -Infinity; touch = null;
-      schedule();
-    }
+    function hide() { pageShown = false; schedule(); }
     function show() { pageShown = true; refresh(); }
 
-    if (gsap && ScrollTrigger) {
-      gsap.registerPlugin(ScrollTrigger);
-      trigger = ScrollTrigger.create({
-        trigger: root, start: 'top bottom', end: 'bottom top',
-        onUpdate: schedule, onEnter: schedule, onEnterBack: schedule,
-        onLeave: schedule, onLeaveBack: schedule, onRefresh: schedule,
-      });
-    } else addEventListener('scroll', schedule, { passive: true });
     const resize = typeof ResizeObserver === 'function' ? new ResizeObserver(() => {
-      snapDirty = true; schedule();
+      layoutDirty = true; schedule();
     }) : null;
     resize?.observe(root); resize?.observe(stage); resize?.observe(column);
     const modalObserver = typeof MutationObserver === 'function' ? new MutationObserver(schedule) : null;
@@ -602,26 +454,16 @@
     addEventListener('resize', refresh, { passive: true });
     addEventListener('portfolio:language', language);
     addEventListener('pagehide', hide); addEventListener('pageshow', show);
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        cancelPage(); wheelClaimed = false; wheelAt = -Infinity; touch = null;
-      }
-      schedule();
-    });
-    document.addEventListener('scroll', scrolling, {passive: true});
-    document.addEventListener('scrollsnapchange', snapChange, {capture: true, passive: true});
-    document.addEventListener('scrollsnapchanging', snapChanging, {capture: true, passive: true});
-    document.addEventListener('scrollend', scrollSettled, {capture: true, passive: true});
-    document.addEventListener('wheel', wheel, {passive: false});
-    document.addEventListener('touchstart', touchStart, {passive: true});
-    document.addEventListener('touchmove', touchMove, {passive: false});
-    document.addEventListener('touchend', () => { touch = null; }, {passive: true});
-    document.addEventListener('touchcancel', () => { touch = null; }, {passive: true});
-    document.addEventListener('keydown', keyPage);
+    document.addEventListener('visibilitychange', schedule);
+    // No wheel/touch/key interception and no script-driven scrolling.
+    document.addEventListener('scroll', schedule, { passive: true });
+    column.addEventListener('load', refresh, true);
+    const themeObserver = typeof MutationObserver === 'function' ? new MutationObserver(refresh) : null;
+    themeObserver?.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     reduced.addEventListener('change', motion);
     narrow.addEventListener('change', refresh);
     document.fonts?.ready.then(refresh);
-    measureSnap();
+    measure();
     root.classList.add('visual-story-ready');
     [...new Set(steps.map(step => step.image))].forEach(source => preload(source).catch(() => {}));
     schedule();
