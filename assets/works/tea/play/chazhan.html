@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>击拂</title>
+<style>
+  @font-face{font-family:'GenWanMin';src:url('fonts/GenWanMin2TW-M.ttf');font-display:swap;}
+  @font-face{font-family:'EBG';src:url('fonts/EBGaramond-VF.ttf');font-display:swap;}
+  /* 字级三档：12 / 22 / 30（遮罩层 58/16/12） */
+  html,body{margin:0;height:100%;background:#0d1114;overflow:hidden;
+    font-family:'GenWanMin',"Noto Serif SC",serif;color:#e9e2d2;
+    -webkit-user-select:none;user-select:none;cursor:none;-webkit-touch-callout:none;}
+  #c{display:block;width:100vw;height:100vh;touch-action:none;}
+  .mono{font-family:'EBG',serif;}
+  #back{position:fixed;top:24px;left:30px;width:42px;height:42px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;color:#c8b78a;font-size:20px;z-index:5;
+    background:#161d21;cursor:pointer;}
+  #title{position:fixed;top:26px;left:90px;font-size:22px;letter-spacing:8px;color:#d9cdae;opacity:.92;pointer-events:none;
+    display:flex;align-items:center;gap:12px;}
+  #sub{position:fixed;top:62px;left:92px;font-size:12px;letter-spacing:3px;color:#8a7e68;pointer-events:none;}
+  #phase{position:fixed;top:30px;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none;}
+  #phaseName{font-size:22px;letter-spacing:10px;color:#c8b78a;}
+  #phaseEn{font-size:12px;letter-spacing:4px;color:#7a6f58;margin-top:4px;}
+  #panel{position:fixed;top:28px;right:34px;width:260px;text-align:right;pointer-events:none;}
+  #resTxt{font-size:12px;letter-spacing:2px;color:#8a7e68;}
+  #resBarBg{position:relative;margin:8px 0 0 auto;width:260px;height:5px;background:#1c1710;border-radius:3px;}
+  #resBar{height:100%;width:0%;background:linear-gradient(90deg,#4a6741,#b89a56);transition:width .1s;border-radius:3px;}
+  /* 七汤节点：每 1/7 一粒，过汤即亮 */
+  .tick{position:absolute;top:-1px;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;
+    background:#2a3439;transition:background .3s;}
+  .tick.on{background:#c7b788;}
+  #combo{margin-top:14px;font-size:30px;letter-spacing:2px;color:#e9e2d2;}
+  #comboL{font-size:12px;letter-spacing:3px;color:#8a7e68;}
+  #foot{position:fixed;bottom:22px;left:36px;font-size:12px;letter-spacing:1px;color:#6a6152;pointer-events:none;}
+  #foot b{color:#c8b78a;font-weight:400;}
+  #foot .r{color:#c86b63;}
+  #start{position:fixed;top:0;right:0;bottom:0;left:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:rgba(9,13,16,.92);z-index:10;cursor:pointer;text-align:center;}
+  #start h1{font-size:58px;letter-spacing:16px;margin:0 0 6px;color:#e9e2d2;font-weight:500;}
+  #start .en{font-size:12px;letter-spacing:6px;color:#7c9a86;margin-bottom:40px;}
+  #start .how{font-size:16px;line-height:2.0;color:#b6ac97;}
+  #start .go{margin-top:40px;font-size:12px;letter-spacing:4px;color:#1c130a;
+    background:#b89a56;padding:14px 34px;border-radius:30px;}
+  .k{color:#e5dcc4;background:#243036;border-radius:6px;padding:2px 10px;margin:0 3px;font-size:16px;}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin:0 5px -1px 12px;}
+  /* 通关遮罩让开中心：汤花纹样（茶百戏收束）全程可见；结算词顶替顶部阶名，遮罩只剩按钮 */
+  #win{position:fixed;top:0;right:0;bottom:0;left:0;display:none;flex-direction:column;align-items:center;justify-content:flex-start;
+    background:rgba(9,13,16,.26);z-index:11;cursor:pointer;text-align:center;}
+  #win .wg{margin-top:auto;font-size:12px;letter-spacing:4px;color:#1c130a;background:#b89a56;padding:13px 32px;border-radius:30px;}
+  #win .wg2{margin-top:16px;font-size:12px;letter-spacing:4px;color:#c8b78a;background:#161d21;padding:13px 32px;border-radius:30px;}
+  #win .again{margin-bottom:7vh;}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="back" onclick="location.href='index.html'">‹</div>
+<div id="title"><svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+    <circle cx="16" cy="16" r="11" stroke="#a0beb4" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="0.1 4.8"/>
+    <path d="M22 16 a6 6 0 1 1 -2.5 -4.9" stroke="#a0beb4" stroke-width="2.4" stroke-linecap="round"/>
+  </svg>击 拂</div>
+<div id="sub" class="mono">WHISK</div>
+<div id="phase"><div id="phaseName">一汤　调膏</div><div id="phaseEn" class="mono">POUR I</div></div>
+<div id="panel">
+  <div id="resTxt" class="mono">共振 RESONANCE　<span id="resNum">0</span>%</div>
+  <div id="resBarBg"><div id="resBar"></div><div id="ticks"></div></div>
+  <div id="combo" class="mono">0</div>
+  <div id="comboL" class="mono">连击 COMBO</div>
+</div>
+<div id="foot"><b>短波</b> 绕圈接住　　<b>长波</b> 驻留猛切　　<span class="r">红波</span> 停手　　<b>双指</b>＝满环</div>
+<div id="start">
+  <h1>击 拂</h1>
+  <div class="en mono">WHISK   SEVEN POURS</div>
+  <div class="how">
+    手指沿盏沿<span class="k">绕圈</span>击拂，接住涟漪<br>
+    七汤由缓入急，共振圆满，汤花现纹<br>
+    双指轻点＝满环应急
+  </div>
+  <div class="go">开 始</div>
+</div>
+<div id="win">
+  <div class="wg" onclick="event.stopPropagation();location.href='badges.html'">观 徽 章</div>
+  <div class="wg2" onclick="event.stopPropagation();location.href='index.html'">回 到 关 卡</div>
+  <div class="wg2 again">再 来 一 局</div></div>
+
+<script src="./patterns.js"></script>
+<script>
+"use strict";
+// ============================================================ 画布
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+let W=0,H=0,cx=0,cy=0,R=0,DPR=1;
+let bgCanvas=null, bgCtx=null, bgImg=null, bw=1, bh=1;   // 背景缓冲（顶部声明，避免 resize→initBg 的 TDZ）
+function resize(){
+  DPR=Math.min(2,window.devicePixelRatio||1);
+  W=window.innerWidth; H=window.innerHeight;
+  cv.width=W*DPR; cv.height=H*DPR; cv.style.width=W+'px'; cv.style.height=H+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  cx=W/2; cy=H/2+10; R=Math.min(W,H)*0.335;
+  buildLattice(); initBg();
+}
+// 静态点阵场（图2：同心环 × 放射轴，中心密外围疏）——涟漪＝激活波扫过它，把点依次点亮
+let lattice=[];
+const NRINGS=34, SPOKES=76;
+function buildLattice(){ lattice=[];
+  for(let i=1;i<=NRINGS;i++){ const rr=R*Math.pow(i/NRINGS,1.28);
+    for(let k=0;k<SPOKES;k++){ const ang=k/SPOKES*Math.PI*2;
+      lattice.push({r:rr, x:cx+Math.cos(ang)*rr, y:cy+Math.sin(ang)*rr, seed:(i*7+k)%13}); } } }
+window.addEventListener('resize',resize); resize();
+
+// ============================================================ 发光粒子 sprite（厚度与辉光的关键）
+// 亮小核 + 紧光晕：能看清单颗粒子，不糊成一团光
+function makeSprite(rgb){
+  const s=32,c=document.createElement('canvas'); c.width=c.height=s;
+  const g=c.getContext('2d'), grd=g.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);
+  grd.addColorStop(0,'rgba('+rgb+',1)'); grd.addColorStop(0.30,'rgba('+rgb+',0.42)');
+  grd.addColorStop(0.66,'rgba('+rgb+',0.08)'); grd.addColorStop(1,'rgba('+rgb+',0)');
+  g.fillStyle=grd; g.fillRect(0,0,s,s); return c;
+}
+const SP={gold:makeSprite('228,192,112'), amber:makeSprite('236,152,66'),
+  short:makeSprite('160,190,180'), long:makeSprite('135,164,132'),   // 短波 #A0BEB4 / 长波 #87A484
+  red:makeSprite('214,80,72'), jade:makeSprite('132,182,150'),
+  matcha:makeSprite('32,67,59'), leaf:makeSprite('86,140,104'),
+  tea:makeSprite('74,168,66'), teaBright:makeSprite('150,216,104'),   // 茶百戏收束：叶身饱和茶绿 / 叶脉亮黄绿
+  white:makeSprite('246,243,232'), ash:makeSprite('199,183,136')}; // 茶粉 #20433B(+leaf 亮芯) / 外圈粒子源 #C7B788
+function blob(sp,x,y,r,a){ ctx.globalAlpha=a; ctx.drawImage(sp,x-r,y-r,r*2,r*2); }
+
+// ============================================================ 动态抽象棕色背景（黑陶基底 + 棕色流动）
+// 小缓冲逐像素算「域扭曲噪声」→ 放大成丝滑色场；每帧以半透明叠加，兼作粒子拖尾底
+function initBg(){ if(!bgCanvas){ bgCanvas=document.createElement('canvas'); bgCtx=bgCanvas.getContext('2d'); }
+  bw=150; bh=Math.max(1,Math.round(bw*H/W)); bgCanvas.width=bw; bgCanvas.height=bh; bgImg=bgCtx.createImageData(bw,bh); }
+const BROWN=[[0,[8,6,3]],[0.55,[30,19,10]],[0.82,[64,40,18]],[1,[104,72,38]]]; // 黑陶深褐→暖棕（整体再压深一档）
+function lerpRamp(ramp,v){ for(let k=0;k<ramp.length-1;k++){ const a=ramp[k],b=ramp[k+1];
+    if(v<=b[0]){ const f=(v-a[0])/((b[0]-a[0])||1); return [a[1][0]+(b[1][0]-a[1][0])*f,a[1][1]+(b[1][1]-a[1][1])*f,a[1][2]+(b[1][2]-a[1][2])*f]; } }
+  return ramp[ramp.length-1][1]; }
+function brownRamp(v){ return lerpRamp(BROWN,v); }
+// 冷调基底（盏心中空的深色，与蓝绿虹彩同族，消除暖/冷割裂）：近黑板岩→深青灰
+const COOL=[[0,[8,13,16]],[0.5,[15,24,28]],[1,[24,38,44]]];
+function coolRamp(v){ return lerpRamp(COOL,v); }
+// 曜变建盏虹彩色板（压深　克制）：靛蓝→电蓝→青→绿→暗金，最高不过 ~95，避免抢戏
+const IRID=[[0,[14,26,46]],[0.26,[22,56,92]],[0.48,[24,70,74]],[0.70,[40,72,42]],[1,[80,62,26]]];
+function iridRamp(v){ return lerpRamp(IRID,v); }
+function renderBg(now){ if(!bgImg) initBg(); const d=bgImg.data, t=now*0.05;
+  for(let j=0;j<bh;j++){ for(let i=0;i<bw;i++){
+    const x=i/bw, y=j/bh;
+    const wx=x+0.38*Math.sin(y*5+t), wy=y+0.38*Math.cos(x*5-t*0.8);      // 域扭曲
+    let v=0.5+0.5*Math.sin(wx*4+wy*3+t*1.1)*Math.cos(wy*4-wx*2-t*0.7);
+    if(v<0)v=0; else if(v>1)v=1;
+    // —— 径向：以粒子球半径 R 为界，把颜色赶到球外 ——
+    const sx=(i+0.5)/bw*W, sy=(j+0.5)/bh*H, rr=Math.hypot(sx-cx,sy-cy)/(R||1);
+    // 盏心中空：越靠中心越暗，冷调深色衬底（同族冷色，非暖棕，避免割裂）
+    let vv=v; if(rr<1.10) vv*=0.34+0.42*Math.min(1,rr/1.10);
+    const base=coolRamp(vv);
+    // 虹彩遮罩：球外升起（~1.25R 最亮）、远处淡出；向盏心柔和渐隐地轻微侵入
+    let m=0;
+    if(rr>0.70){ const up=Math.min(1,(rr-0.70)/0.55), down=Math.max(0,Math.min(1,1-(rr-1.25)/0.95)); m=up*down; }
+    if(rr<1.0) m*=Math.max(0,(rr-0.5)/0.5)*0.7;                           // 冷色向盏心平滑渐隐，只轻微侵入，中心保持中空
+    m*=0.55+0.45*v;                                                       // 随噪声成雾状斑驳（油滴感）
+    // 虹彩色：径向趋势(内蓝外金) + 噪声 + 角向扰动 → 斑斓不对称
+    const ang=Math.atan2(sy-cy,sx-cx);
+    let cv=Math.min(1,Math.max(0,(rr-0.82)/1.5))*0.55
+          +0.28*(0.5+0.5*Math.sin(wx*6+wy*5+t*0.9))
+          +0.17*(0.5+0.5*Math.sin(ang*2+t*0.3));
+    if(cv<0)cv=0; else if(cv>1)cv=1;
+    const ir=iridRamp(cv);
+    let r0=base[0]+(ir[0]-base[0])*m, g0=base[1]+(ir[1]-base[1])*m, b0=base[2]+(ir[2]-base[2])*m;
+    // 远端边角回暖：虹彩晕外侧向四角渐强的暗琥珀雾，平衡整体冷调（克制　随噪声成雾）
+    let wf=Math.min(1,Math.max(0,(rr-1.5)/1.15))*(0.4+0.45*v)*0.55;
+    const idx=(j*bw+i)*4;
+    d[idx]  =r0+(96 -r0)*wf;
+    d[idx+1]=g0+(64 -g0)*wf;
+    d[idx+2]=b0+(28 -b0)*wf;
+    d[idx+3]=255;
+  }}
+  bgCtx.putImageData(bgImg,0,0); }
+
+// 最外层动态粒子球体（图1：点阵球面 + 径向尖刺 + 噪声起伏呼吸 + 缓慢自转）
+// 球边缘 = 抵消线（斩杀线）；所有涟漪都在球内
+const SPH_N=1600, sphere=[];
+for(let i=0;i<SPH_N;i++){ const y=1-(i/(SPH_N-1))*2, rr=Math.sqrt(Math.max(0,1-y*y)), th=i*2.399963;
+  sphere.push({x:Math.cos(th)*rr, y:y, z:Math.sin(th)*rr}); }
+function drawSphere(now){
+  if(outFade<=0) return;                                    // 收束时球壳向心塌缩并淡出（点性归面性）
+  const shr=0.45+0.55*outFade;
+  const rot=now*0.12, cR=Math.cos(rot), sR=Math.sin(rot), tl=0.4, cT=Math.cos(tl), sT=Math.sin(tl);
+  for(const p of sphere){
+    const disp=0.04*(Math.sin(p.x*3.2+now*0.9)+Math.cos(p.y*3.2-now*0.7)+Math.sin(p.z*3.2+now*0.6)); // 呼吸尖刺
+    const R1=1+disp;
+    let x=p.x*R1*cR - p.z*R1*sR, z=p.x*R1*sR + p.z*R1*cR, y=p.y*R1;
+    const y2=y*cT - z*sT, z2=y*sT + z*cT;
+    const depth=(z2+1)/2;                                   // 正交投影：轮廓正好=R（=抵消线）
+    const sx=cx+x*R*shr, sy=cy+y2*R*shr, projR=Math.hypot(sx-cx,sy-cy), edge=Math.min(1,projR/(R*shr));
+    const al=(0.07+0.75*edge*edge*edge)*(0.5+0.5*depth)*outFade;   // 边缘（球壳/斩杀线）明显亮
+    blob(SP.ash, sx, sy, 0.7+edge*1.7, al);
+    if(edge>0.5){ const rad=projR||1, dr=4+edge*14+disp*46; // 边缘径向尖刺，poke 出球外
+      blob(SP.ash, sx+(sx-cx)/rad*dr, sy+(sy-cy)/rad*dr, 0.5+edge*1.3, al*0.6); }
+  }
+}
+
+// ============================================================ 状态
+const SECTORS=72, WARD_LIFE=0.44;
+const ward=new Float64Array(SECTORS);
+let resonance=0, combo=0, best=0, running=false, silent=false, won=false;
+const SHOT=location.search.indexOf('shot')>=0;   // 静帧截图模式（不启动音频/rAF）
+let redFlash=0, ringFlash=0, breakFlash=0, prevCombo=0;
+let virtualHz=0, virtualAngle=0;
+// 主时钟＝performance.now()（视觉/波/环）；音频调度换算到 ac 时钟（+acOffset）
+let perfStart=performance.now()/1000, acOffset=0;
+function clock(){ return performance.now()/1000 - perfStart; }
+window.ChazhanSensor={
+  whiskAtAngle(a){ markSector(a); },
+  pulseRing(){ fullWard(); },
+  setWhiskFrequency(hz){ virtualHz=Math.max(0,+hz||0); },
+  state(){ return {resonance,combo,best}; }
+};
+
+// ============================================================ 音频（多层国风编曲）
+let ac=null,master=null,padGain=null;
+const BPM=80,SPB=60/BPM,HALF=SPB/2,TRAVEL=2*SPB,AHEAD=TRAVEL+0.4;
+const baseF=261.63,RAT=[1,9/8,5/4,3/2,5/3],SCALE=[];
+for(let o=0;o<3;o++)for(const r of RAT)SCALE.push(baseF*r*Math.pow(2,o)); // 三八度五声（宫商角徵羽）
+const MELODY=[5,4,5,7, 6,5,4,3, 5,7,9,7, 6,5,4,2];                        // 五声旋律短句
+// 七汤（《大观茶论》）：进度驱动的难度阶梯——共振每涨 1/7 进一汤（只进不退），
+// 越往后涟漪越密（dens）、加拍越多（half=半拍额外生波概率）、红波长波越勤 → 越搅越累
+const SOUPS=[
+  {name:'一汤',note:'调膏',    en:'POUR I',  dens:0.42,long:0.04,mine:0.00,half:0.00,kick:false,arp:false},
+  {name:'二汤',note:'击拂既力',en:'POUR II', dens:0.56,long:0.08,mine:0.02,half:0.00,kick:true, arp:false},
+  {name:'三汤',note:'粟文蟹眼',en:'POUR III',dens:0.66,long:0.11,mine:0.04,half:0.14,kick:true, arp:true},
+  {name:'四汤',note:'稍宽勿速',en:'POUR IV', dens:0.76,long:0.13,mine:0.06,half:0.28,kick:true, arp:true},
+  {name:'五汤',note:'轻匀透达',en:'POUR V',  dens:0.85,long:0.14,mine:0.08,half:0.42,kick:true, arp:true,fast:true},
+  {name:'六汤',note:'乳点勃然',en:'POUR VI', dens:0.92,long:0.15,mine:0.10,half:0.58,kick:true, arp:true,fast:true},
+  {name:'七汤',note:'稀稠得中',en:'POUR VII',dens:0.98,long:0.16,mine:0.11,half:0.72,kick:true, arp:true,fast:true},
+];
+let gameStart=0, soupIdx=0, curSoup=SOUPS[0];
+// 进度条七汤节点（每 1/7 一粒）
+const tickEls=[];
+{ const tk=document.getElementById('ticks');
+  for(let i=1;i<=7;i++){ const d=document.createElement('div'); d.className='tick';
+    d.style.left=(i/7*100)+'%'; tk.appendChild(d); tickEls.push(d); } }
+const waves=[], hints=[];
+let beat=0, beatTime=0, laneBusyUntil=0, melIdx=0;
+const seen={};
+
+function initAudio(){ ac=new (window.AudioContext||window.webkitAudioContext)();
+  master=ac.createGain(); master.gain.value=0.3; master.connect(ac.destination);
+  padGain=ac.createGain(); padGain.gain.value=0; padGain.connect(master);         // 持续 pad 沉浸底（宫+徵）
+  [baseF/2, baseF*1.5/2].forEach(fr=>{ const o=ac.createOscillator(),g=ac.createGain(),lf=ac.createOscillator(),lg=ac.createGain();
+    o.type='triangle'; o.frequency.value=fr; lf.type='sine'; lf.frequency.value=0.13; lg.gain.value=1.4; lf.connect(lg).connect(o.frequency);
+    g.gain.value=0.5; o.connect(g).connect(padGain); o.start(); lf.start(); }); }
+function tone(time,freq,gain,dur,type,detune){
+  const o=ac.createOscillator(),g=ac.createGain(); o.type=type||'sine'; o.frequency.value=freq;
+  if(detune)o.detune.value=detune;
+  g.gain.setValueAtTime(0.0001,time); g.gain.exponentialRampToValueAtTime(gain,time+0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001,time+dur);
+  o.connect(g).connect(master); o.start(time); o.stop(time+dur+0.05); return {o,g};
+}
+function bell(time,freq,gain,bright){ tone(time,freq,gain,bright?1.1:0.85,bright?'triangle':'sine');
+  if(bright) tone(time,freq*2,gain*0.4,0.5,'sine'); }
+function pluck(time,freq,gain){ const o=ac.createOscillator(),g=ac.createGain(); o.type='triangle'; o.frequency.value=freq;
+  g.gain.setValueAtTime(0.0001,time); g.gain.exponentialRampToValueAtTime(gain,time+0.004); g.gain.exponentialRampToValueAtTime(0.0001,time+0.45);
+  o.connect(g).connect(master); o.start(time); o.stop(time+0.5); }
+function guzheng(time){ const idx=[7,9,10,12]; for(let i=0;i<4;i++) pluck(time+i*0.07, SCALE[idx[i]], 0.08); } // 古筝小跑
+function bass(time,freq){ tone(time,freq/2,0.24,0.6,'sine'); }
+function kick(time){ const o=ac.createOscillator(),g=ac.createGain(); o.type='sine';
+  o.frequency.setValueAtTime(140,time); o.frequency.exponentialRampToValueAtTime(46,time+0.12);
+  g.gain.setValueAtTime(0.5,time); g.gain.exponentialRampToValueAtTime(0.0001,time+0.22);
+  o.connect(g).connect(master); o.start(time); o.stop(time+0.24); }
+let nb=null;
+function hat(time){ if(!nb){ nb=ac.createBuffer(1,ac.sampleRate*0.2,ac.sampleRate);
+    const d=nb.getChannelData(0); for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1; }
+  const s=ac.createBufferSource(); s.buffer=nb; const hp=ac.createBiquadFilter();
+  hp.type='highpass'; hp.frequency.value=7000; const g=ac.createGain();
+  g.gain.setValueAtTime(0.1,time); g.gain.exponentialRampToValueAtTime(0.0001,time+0.06);
+  s.connect(hp).connect(g).connect(master); s.start(time); s.stop(time+0.08); }
+function longTone(time,freq,dur){ // 长波驻留的颤音底
+  const o=ac.createOscillator(),g=ac.createGain(),lfo=ac.createOscillator(),lg=ac.createGain();
+  o.type='triangle'; o.frequency.value=freq; lfo.frequency.value=7; lg.gain.value=6;
+  lfo.connect(lg).connect(o.frequency);
+  g.gain.setValueAtTime(0.0001,time); g.gain.exponentialRampToValueAtTime(0.14,time+0.05);
+  g.gain.setValueAtTime(0.14,time+dur-0.1); g.gain.exponentialRampToValueAtTime(0.0001,time+dur);
+  o.connect(g).connect(master); o.start(time); lfo.start(time); o.stop(time+dur+0.05); lfo.stop(time+dur+0.05); }
+function mineTone(time,freq){ tone(time,freq,0.2,1.0,'sawtooth',-8); tone(time,freq*1.03,0.14,1.0,'sawtooth',10); }
+function thud(time){ const o=ac.createOscillator(),g=ac.createGain(); o.type='square';
+  o.frequency.setValueAtTime(90,time); o.frequency.exponentialRampToValueAtTime(38,time+0.25);
+  g.gain.setValueAtTime(0.34,time); g.gain.exponentialRampToValueAtTime(0.0001,time+0.4);
+  o.connect(g).connect(master); o.start(time); o.stop(time+0.42); }
+
+function spawnShort(bt,n,egg){ waves.push({type:'short',t0:bt-TRAVEL,tHit:bt,freq:SCALE[n],judged:false,hit:null,egg:!!egg});
+  if(egg&&!seen.e){seen.e=1;hints.push({txt:'金波来　接住有彩蛋',life:1});}
+  if(!seen.s){seen.s=1;hints.push({txt:'沿盏沿转圈　接住涟漪',life:1});} }
+function spawnMine(bt){ waves.push({type:'mine',t0:bt-TRAVEL,tHit:bt,freq:SCALE[2],judged:false,hit:null});
+  if(!seen.m){seen.m=1;hints.push({txt:'红波　候汤 — 停手别碰',life:1});} }
+function spawnLong(bt,n,dwB){ const dwell=dwB*SPB;
+  for(let i=waves.length-1;i>=0;i--){ const w=waves[i]; if(w.type!=='long'&&w.tHit>bt-TRAVEL&&w.tHit<bt+dwell+0.4) waves.splice(i,1); } // 清掉重叠的短/红波
+  waves.push({type:'long',t0:bt-TRAVEL,tHit:bt,freq:SCALE[n],judged:false,hit:null,dwell,cuts:0,lastCut:0,done:false,pulse:0});
+  laneBusyUntil=bt+dwell+SPB;                                          // 长波独占窗口：期间不再生成其他波
+  if(!seen.l){seen.l=1;hints.push({txt:'金长波 — 驻留时连续猛切',life:1});} }
+function scheduler(){ if(!running) return;
+  if(finale){ return; }                                                // 收束后不再生波/配乐（pad 底继续哼）
+  while(beatTime<clock()+AHEAD){
+    const bt=beatTime, at=bt+acOffset, ph=curSoup;                     // 难度跟当前汤走（进度驱动）
+    if(!silent){                                                       // 多层编曲：鼓/贝斯/古筝按汤递增
+      if(ph.kick){ kick(at); hat(at+HALF); if(ph.fast) hat(at+HALF*1.5); }
+      if(beat%2===0) bass(at, SCALE[(beat/2)%2?3:0]);
+      if(ph.arp && beat%2===1 && Math.random()<0.5) guzheng(at);
+    }
+    if(bt>=laneBusyUntil){ const roll=Math.random();                  // 按汤生成波（长波独占）
+      if(roll<ph.long){ const n=MELODY[melIdx++%MELODY.length]; if(!silent)longTone(at,SCALE[n],3*SPB); spawnLong(bt,n,3); }
+      else if(roll<ph.long+ph.mine){ if(!silent)mineTone(at,SCALE[2]); spawnMine(bt); }
+      else if(roll<ph.long+ph.mine+ph.dens){ const n=MELODY[melIdx++%MELODY.length];
+        const eg = soupIdx>=2 && !eggSpawned; if(eg) eggSpawned=true;    // 三汤起放出金波（彩蛋）
+        if(!silent)bell(at,SCALE[n],eg?0.2:0.15,eg); spawnShort(bt,n,eg); }
+    }
+    // 半拍加波：汤越深加拍越勤 → 频率肉眼可感地变快（长波独占窗口内不加）
+    if(ph.half>0 && bt+HALF>=laneBusyUntil && Math.random()<ph.half){
+      const n=MELODY[melIdx++%MELODY.length];
+      if(!silent)bell(at+HALF,SCALE[n],0.13,false); spawnShort(bt+HALF,n);
+    }
+    beat++; beatTime+=SPB;
+  }
+  setTimeout(scheduler,35);
+}
+
+// ============================================================ 抵消环
+function markSector(angle){
+  if(finale) return;                              // 收束/成纹后停手
+  const now=clock();
+  lastWhiskAng=angle; lastWhiskT=now;             // 供沫团整体追随击拂方位（慢半拍）
+  let i=Math.floor((((angle%(Math.PI*2))+Math.PI*2)%(Math.PI*2))/(Math.PI*2)*SECTORS);
+  ward[i]=now; ward[(i+1)%SECTORS]=now; ward[(i-1+SECTORS)%SECTORS]=now;
+  // 长波驻留时：转圈=切
+  if(activeLong && now-activeLong.lastCut>0.075){
+    activeLong.cuts++; activeLong.lastCut=now; activeLong.pulse=1;
+    combo++; best=Math.max(best,combo);              // 1a：切长波时连击实时累加
+    resonance=Math.min(1,resonance+0.0006);          // 切长波＝共振肉眼可见地持续上涨（白沫随之增多）
+    if(!silent&&ac) bell(ac.currentTime, activeLong.freq*2, 0.09, true);
+    for(let k=0;k<8;k++){ const a=Math.random()*Math.PI*2,sp=1+Math.random()*3;
+      bursts.push({x:cx+Math.cos(a)*R,y:cy+Math.sin(a)*R,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1,sp:SP.long,r:4.5}); }
+  }
+}
+function fullWard(){ if(finale) return; const now=clock(); for(let i=0;i<SECTORS;i++)ward[i]=now; ringFlash=1; if(activeLong)markSector(virtualAngle); }
+function coverage(){ const now=clock(); let c=0;
+  for(let i=0;i<SECTORS;i++) if(now-ward[i]<WARD_LIFE)c++; return c/SECTORS; }
+
+// ============================================================ 粒子池
+const bursts=[], comet=[];
+// 长波功成　满环烟花（用户定稿＝猛　清晰版）：420 颗大粒子、慢衰减；
+// 专用 48px「短光晕」sprite——亮核实、晕薄、外圈近零，量感靠数量和粒径，不靠糊光
+function makeBloomSprite(rgb){ const s=48,c=document.createElement('canvas'); c.width=c.height=s;
+  const g=c.getContext('2d'), grd=g.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);
+  grd.addColorStop(0,'rgba('+rgb+',1)'); grd.addColorStop(0.24,'rgba('+rgb+',0.30)');
+  grd.addColorStop(0.50,'rgba('+rgb+',0.05)'); grd.addColorStop(1,'rgba('+rgb+',0)');
+  g.fillStyle=grd; g.fillRect(0,0,s,s); return c; }
+const BSP={gold:makeBloomSprite('228,192,112'), long:makeBloomSprite('135,164,132'), white:makeBloomSprite('246,243,232')};
+function spawnBloom(){
+  for(let k=0;k<420;k++){ const a=Math.random()*Math.PI*2, sp=2.5+Math.random()*5;
+    const spr = k%5===0?BSP.white:(k%2?BSP.long:BSP.gold);
+    bursts.push({x:cx+Math.cos(a)*R, y:cy+Math.sin(a)*R,
+      vx:Math.cos(a)*sp, vy:Math.sin(a)*sp, life:1+Math.random()*0.3, sp:spr,
+      r:8+Math.random()*7, dk:0.014, al:0.72}); }
+  ringFlash=1;
+}
+function spawnBurst(cov,sp){ const n=Math.floor(30+cov*70);
+  for(let k=0;k<n;k++){ const a=Math.random()*Math.PI*2,s=1.2+Math.random()*3.6;
+    bursts.push({x:cx+Math.cos(a)*R,y:cy+Math.sin(a)*R,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,sp:sp||SP.gold,r:4}); } }
+
+// ============================================================ 指针 / 击拂
+let px=cx,py=cy,lastAng=null;
+const SEC_W=Math.PI*2/SECTORS;
+function onMove(x,y){ px=x; py=y; const a=Math.atan2(y-cy,x-cx);
+  if(lastAng!=null){ let d=a-lastAng; while(d>Math.PI)d-=Math.PI*2; while(d<-Math.PI)d+=Math.PI*2;
+    if(Math.abs(d)>0.01){
+      // 跟手关键：快速绕圈时把「扫过的整段弧」逐扇区插值补齐，环随手指即时点亮、无断档
+      const n=Math.min(12, Math.max(1, Math.ceil(Math.abs(d)/SEC_W)));
+      for(let s=1;s<=n;s++) markSector(lastAng+d*s/n);
+      for(let k=0;k<2;k++) comet.push({x:x+(Math.random()*8-4),y:y+(Math.random()*8-4),life:1,r:3.2+Math.random()*2.6}); } }
+  lastAng=a; }
+// —— iPad 触屏击拂：手指按住、贴着盏沿环带真正绕圈才算（点一下/扫过中心无效）——
+let whiskId=null;
+function touchWhisk(x,y){ px=x; py=y;
+  const rr=Math.hypot(x-cx,y-cy);
+  if(rr<R*0.5||rr>R*1.55){ lastAng=null; return; }   // 出了盏沿环带＝断开，回来重新接弧
+  onMove(x,y); }
+window.addEventListener('pointerdown',e=>{
+  if(e.pointerType==='mouse') return;
+  if(whiskId===null){ whiskId=e.pointerId; lastAng=null; touchWhisk(e.clientX,e.clientY); } });
+window.addEventListener('pointermove',e=>{
+  // 跟手关键：取 coalesced events（iPad 120Hz 全部中间触点），不丢采样
+  const evs=(e.getCoalescedEvents&&e.getCoalescedEvents().length)?e.getCoalescedEvents():[e];
+  if(e.pointerType==='mouse'){ for(const ev of evs) onMove(ev.clientX,ev.clientY); return; }   // 桌面调试仍可用鼠标
+  if(e.pointerId===whiskId) for(const ev of evs) touchWhisk(ev.clientX,ev.clientY); });
+function endWhisk(e){ if(e.pointerId===whiskId){ whiskId=null; lastAng=null; } }
+window.addEventListener('pointerup',endWhisk); window.addEventListener('pointercancel',endWhisk);
+// 双指轻点＝满环应急（原空格）
+window.addEventListener('touchstart',e=>{ if(e.touches.length>=2){ if(won&&winShown){restart();} else if(running){fullWard();} } },{passive:true});
+document.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});   // 禁掉页面滚动/回弹
+window.addEventListener('keydown',e=>{ if(e.code==='Space'){ e.preventDefault(); if(won&&winShown){restart();} else if(running){fullWard();} } });
+function onWin(){ winShown=true; const el=document.getElementById('win'); if(el) el.style.display='flex'; }
+function restart(){ won=false; winShown=false; finale=null; outFade=1; resonance=0; combo=0; prevCombo=0;
+  soupIdx=0; curSoup=SOUPS[0]; eggSpawned=false; waves.length=0; foam.length=0; hints.length=0;
+  gameStart=clock(); beat=0; beatTime=clock()+0.4; laneBusyUntil=0; melIdx=0;
+  if(padGain&&ac&&!silent) padGain.gain.linearRampToValueAtTime(0.55, ac.currentTime+1.5);
+  const el=document.getElementById('win'); if(el) el.style.display='none'; scheduler(); }
+
+// ============================================================ 判定
+// 命中只管「连击」；共振由每帧按连击缓慢累积。断连击＝连击掉一截（不清零，避免长局崩盘）；只有坏汤真扣共振
+// 参数经逐帧模拟标定：高手~3 / 普通~4 / 手残~8 分通关，技术拉得开
+function breakCombo(){ if(combo>3) breakFlash=1; combo=Math.floor(combo*0.55); }   // 连击掉到 55%（有惩罚，不崩盘）
+function judgeShort(w){ const cov=coverage();
+  if(cov>0.18){ const q=Math.min(1,cov/0.6); combo++; best=Math.max(best,combo);
+    spawnBurst(cov,SP.gold); if(!silent)bell(ac.currentTime,w.freq*2,0.14+0.12*q,true); w.hit=true;
+    if(w.egg){ eggAward(); spawnBurst(1.4,SP.gold); } }
+  else { breakCombo(); w.hit=false;
+    if(w.egg) eggSpawned=false; }                // 金波漏了＝之后还会再来一道
+  w.judged=true;
+}
+function judgeMine(w){ const cov=coverage();
+  if(cov>0.24){ breakCombo(); resonance=Math.max(0,resonance-0.04); redFlash=1; if(!silent)thud(ac.currentTime);
+    spawnBurst(0.8,SP.red); w.hit=false; }      // 坏汤：断连击 + 茶沫回退（唯一实质扣共振处 → 红波才是真威胁）
+  else { w.hit=true; }                          // 忍住＝安全
+  w.judged=true;
+}
+function judgeLong(w){ // dwell 结束结算（连击已在切的过程中实时累加，这里只判成败）
+  if(w.cuts>=6){ spawnBloom(); if(!silent)bell(ac.currentTime,w.freq,0.2,true); w.hit=true; }   // 长波功成＝满环烟花绽放
+  else { breakCombo(); w.hit=false; }           // 切太少＝没接住
+  w.judged=true; w.done=true;
+}
+
+// ============================================================ 徽记（十二先生）：通关固定徽 + 金波彩蛋徽
+const GENT_NAMES={0:'击拂　生韵',2:'点茶　聚光',5:'搅拌　起沫'}, EGG_POOL=[2,5];
+function gainGent(i){ try{ const a=JSON.parse(localStorage.getItem('chaxian_gents')||'[]');
+  if(a.includes(i)) return false; a.push(i); localStorage.setItem('chaxian_gents',JSON.stringify(a)); return true; }catch(e){ return false; } }
+function eggAward(){ for(const i of EGG_POOL){ if(gainGent(i)){
+    hints.push({txt:'彩蛋　「'+GENT_NAMES[i]+'」入匣',life:1}); return; } }
+  hints.push({txt:'金波已应　徽已集全',life:1}); }
+let eggSpawned=false;   // 金波：三汤起出现一道，接住＝彩蛋徽；漏了后面还会再来
+
+// ============================================================ 七汤既成　茶百戏收束
+// 共振圆满 → 全场粒子收束成「粒子点阵盘」：暗底不铺白面，盘由密点构成（粒与粒不粘连），
+// 盏沿一圈亮环、环外留散粒；中央以绿粒子铺满一株双叶茶芽，叶脉发亮（汤花上作画＝茶百戏）
+let finale=null, winShown=false, outFade=1;
+// 茶百戏纹样（从用户定稿效果图逐点提取：枝　花　燕　云　水纹）：[x,y,亮] 单位=盘半径
+// 纹样库移至 patterns.js（BAIXI，10 枚徽章，圆满随机抽取）
+function startFinale(now){
+  finale={t0:now}; waves.length=0; hints.length=0; activeLong=null; whiskId=null; lastAng=null;
+  const discR=R*0.72, GA=Math.PI*(3-Math.sqrt(5));
+  const targets=[];
+  const NW=1500;                                                         // 点阵盘：葵花螺线密点（点性，面感靠密度）
+  for(let i=0;i<NW;i++){ const fr=Math.sqrt((i+0.5)/NW), th=i*GA;
+    targets.push({x:cx+Math.cos(th)*discR*fr, y:cy+Math.sin(th)*discR*fr, g:0,
+      al:0.16+0.62*Math.pow(fr,2.1)+Math.random()*0.08,                  // 心暗沿亮（参考图的radial明暗）
+      sz:1.2+1.5*fr*fr+Math.random()*0.5}); }
+  for(let i=0;i<90;i++){ const a=i/90*Math.PI*2+Math.random()*0.04;      // 盏沿亮环
+    targets.push({x:cx+Math.cos(a)*discR*1.015, y:cy+Math.sin(a)*discR*1.015, g:0,
+      al:0.85, sz:2.4+Math.random()}); }
+  for(let i=0;i<130;i++){ const a=Math.random()*Math.PI*2, rr=discR*(1.07+Math.random()*0.5);  // 环外散粒（余沫）
+    targets.push({x:cx+Math.cos(a)*rr, y:cy+Math.sin(a)*rr, g:0,
+      al:0.16+Math.random()*0.30, sz:0.9+Math.random()*1.5}); }
+  // 汤花随机现一幅茶百戏纹样；两档奖励：
+  // ①通关固定徽「击拂　生韵」②打得好（最高连击≥70）或运气好（25%）→ 这幅纹样作为隐藏款入匣
+  const pick=(Math.random()*BAIXI.length)|0; finale.badge=pick;
+  finale.drop = best>=70 || Math.random()<0.25;
+  for(const q of BAIXI[pick].p) targets.push({x:cx+q[0]*discR, y:cy+q[1]*discR, g:1, vein:q[2]===1});
+  gainGent(0);                                                           // 通关固定徽
+  try{
+    if(finale.drop){ const arr=JSON.parse(localStorage.getItem('chaxian_badges')||'[]');
+      if(!arr.includes(pick)){ arr.push(pick); localStorage.setItem('chaxian_badges',JSON.stringify(arr)); } }
+  }catch(e){}
+  while(foam.length<targets.length){ const a=Math.random()*Math.PI*2;    // 沫不够就从盏沿补生（外场粒子归心）
+    foam.push({x:cx+Math.cos(a)*R, y:cy+Math.sin(a)*R, sz:1.8+Math.random()*2.2, seed:Math.random()*100, w0:0, b:0}); }
+  foam.length=targets.length;
+  for(let i=0;i<targets.length;i++){ const p=foam[i], tg=targets[i];
+    p.sx=p.x; p.sy=p.y; p.tx=tg.x; p.ty=tg.y; p.g=tg.g; p.vein=tg.vein; p.tal=tg.al; p.tsz=tg.sz; p.mom=null; }
+  ringFlash=1;
+  if(!silent&&ac){ const t=ac.currentTime;                               // 收束礼乐：古筝上行 + 终鸣钟
+    [7,9,10,12,14].forEach((n,i)=>pluck(t+i*0.14, SCALE[n], 0.10));
+    bell(t+0.8, SCALE[10], 0.22, true); bass(t+0.8, SCALE[0]);
+    if(padGain) padGain.gain.linearRampToValueAtTime(0.14, t+2.5); }
+}
+function drawFinale(now){
+  const fin=Math.min(1,(now-finale.t0)/2.4);
+  const e=fin<0.5 ? 4*fin*fin*fin : 1-Math.pow(-2*fin+2,3)/2;            // easeInOutCubic
+  ctx.globalCompositeOperation='lighter';                                // 纯发光粒子，暗底上成盘
+  for(const pass of [0,1]) for(const p of foam){ if((p.g?1:0)!==pass) continue;
+    let x=p.sx+(p.tx-p.sx)*e, y=p.sy+(p.ty-p.sy)*e;
+    if(fin<1){ const sw=Math.sin(e*Math.PI)*(0.5+0.5*(p.seed%1))*0.7;    // 收束途中整场带一点回旋
+      const dx=x-cx, dy=y-cy, ca=Math.cos(sw), sa=Math.sin(sw);
+      x=cx+dx*ca-dy*sa; y=cy+dx*sa+dy*ca; }
+    else { x=p.tx+Math.sin(now*0.9+p.seed)*1.1; y=p.ty+Math.cos(now*0.7+p.seed)*1.1; }  // 定纹后轻呼吸
+    const br=0.92+0.10*Math.sin(now*1.3+p.seed), rise=0.25+0.75*e;
+    if(p.g){
+      if(p.vein) blob(SP.teaBright,x,y,2.0*br,0.92*rise);                                        // 亮笔（花蕊/高光）
+      else blob(SP.tea,x,y,1.6*br,(0.52+0.30*Math.abs(Math.sin(p.seed*7)))*rise);                // 常笔茶绿（明暗有别）
+    } else blob(SP.white, x,y,(p.tsz||2)*br, (p.tal||0.5)*rise);         // 白点阵：粒粒分明，不糊成面
+  }
+}
+
+// ============================================================ 涟漪＝激活波扫过静态点阵（图2 GIF 动效）
+// 每个音符是一道从盏心向外推进的高斯波前；途经的点阵被依次点亮＝像波浪连锁推出去
+let activeLong=null;
+function drawField(now){
+  if(outFade<=0) return;                          // 收束时点阵场随之淡出
+  const act=[];
+  for(const w of waves){ if(now<w.t0) continue;
+    let wr=(now-w.t0)/TRAVEL*R;
+    if(w.type==='long' && now>=w.tHit && now<w.tHit+w.dwell) wr=R+Math.sin(now*3)*5;   // 长波驻留在边缘
+    act.push({wr, mine:w.type==='mine', long:w.type==='long', egg:!!w.egg, pulse:w.pulse||0}); }
+  // 点阵底泛白封顶（≤0.30）：始终偏暗，避免把彩色涟漪波前冲成白色；完整泛白留给中心茶沫
+  const sig2=2*15*15, wh=Math.min(0.30,resonance*0.4);
+  for(const d of lattice){
+    let a=0, red=0, lng=0, egw=0;
+    for(const w of act){ const dr=d.r-w.wr; if(dr<-42||dr>42) continue;
+      const g=Math.exp(-(dr*dr)/sig2)*(w.long?1.15:1)*(1+w.pulse*0.6); a+=g; if(w.mine)red+=g; if(w.long)lng+=g; if(w.egg)egw+=g; }
+    // 静态底：暗茶粉，微微泛白（随共振，封顶），一直可见的点阵
+    const baseA=(0.12+0.05*Math.sin(now*1.4+d.seed))*outFade;
+    blob(SP.matcha, d.x,d.y, 0.85, baseA*(1-wh));
+    if(wh>0) blob(SP.white,  d.x,d.y, 0.85, baseA*wh);
+    // 激活波前：红候汤 / 长波 / 短波 分色点亮（连锁涟漪）——在暗底上颜色读得清
+    if(a>0.03){ a=Math.min(1.6,a); const wsp = egw>a*0.5?SP.gold : red>a*0.5?SP.red : (lng>a*0.5?SP.long:SP.short);
+      blob(wsp, d.x,d.y, (egw>a*0.5?1.4:1.1)+a*2.7, Math.min(1,a*0.95)*outFade); }
+  }
+  // 发射亮核（涟漪诞生处）
+  const pu=0.5+0.5*Math.sin(now*2.4);
+  blob(SP.gold, cx,cy, 2.4+pu*1.3, 0.9*outFade);
+}
+
+// 中心汤沫（升级版）：面积 0.42R、密度随共振涨；近邻粒子连「膜线」（绿→白），
+// 共振越高越频繁「细胞分裂」——母粒弹出子粒、亮链拉开再融入 → 分子分裂成新白沫的质感
+const foam=[];
+let lastSplit=0;
+let fx=0,fy=0, lastWhiskT=-9, lastWhiskAng=0;   // 沫团团心 + 最近一次击拂的方位
+function drawFoam(now){
+  // 沫团尺寸曲线（映射真点茶）：干茶粉铺开 0.30R → 初搅聚拢收紧 0.20R(res≈0.15,开始泛白) → 打发一路涨到 0.70R
+  const RF=R*( resonance<0.15 ? 0.30-0.10*(resonance/0.15) : 0.20+0.50*(resonance-0.15)/0.85 );
+  if(!fx&&!fy){ fx=cx; fy=cy; }
+  // 整团随击拂「方位」漂移：手在哪个方位，团往那个方位靠（慢于手，但追势要读得出来）；停手缓缓归心
+  const active=now-lastWhiskT<0.8, LEAN=R*(0.26-0.12*resonance);
+  const tx=cx+(active?Math.cos(lastWhiskAng)*LEAN:0), ty=cy+(active?Math.sin(lastWhiskAng)*LEAN:0);
+  fx+=(tx-fx)*0.03; fy+=(ty-fy)*0.03;
+  // 「头」＝团心指向目标的方向；drive＝还没追上的劲头
+  const hdx=tx-fx, hdy=ty-fy, hdd=Math.hypot(hdx,hdy);
+  const hx=hdd>1?hdx/hdd:0, hy=hdd>1?hdy/hdd:0;
+  const drive=active?Math.min(1,hdd/(R*0.15))*0.65:0;
+  const target=Math.min(1150, 50+Math.floor(2200*(RF/R)*(RF/R)));   // 密度加厚：0.3R≈250 / 0.2R≈138 / 0.7R≈1130（真沫的奶密）
+  while(foam.length<target){ const a=Math.random()*Math.PI*2, rr=Math.sqrt(Math.random())*RF;
+    foam.push({x:fx+Math.cos(a)*rr,y:fy+Math.sin(a)*rr,sz:1.6+Math.random()*2.6,seed:Math.random()*100,w0:Math.random()*0.8,b:0}); }   // w0≤0.8：满共振时全员纯白
+  if(foam.length>target+30) foam.splice(0,2);         // 收紧/回落 → 缓慢瘦身不突变
+  // 细胞分裂：挑一颗母粒弹出子粒（共振越高越频繁），子粒天生偏白=新生白沫
+  if(running&&resonance>0.04&&foam.length<target+30&&now-lastSplit>(1.25-resonance)){ lastSplit=now;
+    const m=foam[(Math.random()*foam.length)|0];
+    if(m){ const a=Math.random()*Math.PI*2;
+      foam.push({x:m.x,y:m.y,sz:m.sz*0.95,seed:Math.random()*100,w0:Math.random()*Math.max(0.15,resonance*0.9),
+        b:1,vx:Math.cos(a)*1.1,vy:Math.sin(a)*1.1,mom:m}); } }
+  for(const p of foam){
+    if(p.b>0){ p.x+=p.vx*p.b; p.y+=p.vy*p.b; p.b-=0.045; if(p.b<=0) p.mom=null; }   // 分裂漂离期（~0.4s，白丝随之散）
+    // 水滴头重：尾侧粒子被狠拽向「头」、头侧稳住 → 前密后疏的滴形，随转向不断换头
+    if(drive>0){ const along=((p.x-fx)*hx+(p.y-fy)*hy)/RF;
+      const f=drive*(1-along)*0.4; p.x+=hx*f; p.y+=hy*f; }   // 头重但不挤扁：追势靠整体位移，不靠压缩
+    // 一切围绕「团心」：旋转+约束都相对 fx,fy → 团整体漂移时仍是完整的一滴，永不塌成线
+    let dx=p.x-fx, dy=p.y-fy, ang=Math.atan2(dy,dx), rad=Math.hypot(dx,dy);
+    ang += 0.006*(1 - 0.35*rad/RF);                                    // 差速缓旋（内略快）＝整体趋势
+    rad += Math.sin(now*0.5 + p.seed)*0.15 + (Math.random()-0.5)*0.22; // 轻摆 + 细抖，保持铺开的面
+    if(rad>RF) rad=RF; else if(rad<0) rad=-rad;
+    p.x=fx+Math.cos(ang)*rad; p.y=fy+Math.sin(ang)*rad;
+    p.wh=Math.max(0,Math.min(1,(resonance-p.w0)/0.2));
+    const sz=p.sz*(1.2+0.7*resonance)*(0.9+0.12*Math.sin(now*1.2+p.seed));   // 越搅越厚（终局粒径再加一档）
+    if(p.wh<1){ blob(SP.matcha,p.x,p.y,sz,0.85*(1-p.wh)); blob(SP.leaf,p.x,p.y,sz*0.6,0.5*(1-p.wh)); }
+    if(p.wh>0) blob(SP.white, p.x,p.y,sz,0.75*p.wh); }
+  // 常态下粒子之间【无】连线——只有分裂那一瞬，母子之间一根极细的白丝，零点几秒即散
+  for(const p of foam){ if(!p.mom||p.b<=0) continue;
+    ctx.strokeStyle='rgba(246,243,232,'+(p.b*0.55).toFixed(3)+')'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p.mom.x,p.mom.y); ctx.stroke(); }
+}
+
+// ============================================================ 主循环
+function draw(){
+  const now=clock();
+  // 拖尾残影（厚重/灵动的关键）：不清空，叠半透明底
+  renderBg(now);
+  ctx.globalCompositeOperation='source-over'; ctx.globalAlpha=0.34;   // 流动棕背景 + 兼作粒子拖尾底
+  ctx.imageSmoothingEnabled=true; ctx.drawImage(bgCanvas,0,0,W,H);
+  ctx.globalAlpha=1;
+  if(redFlash>0){ ctx.globalAlpha=redFlash*0.25; ctx.fillStyle='#3a0e0b'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1; redFlash-=0.04; }
+  if(breakFlash>0){ ctx.globalAlpha=breakFlash*0.12; ctx.fillStyle='#0c1c26'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1; breakFlash-=0.05; }
+
+  ctx.globalCompositeOperation='lighter';   // 叠加发光
+
+  // 收束进行时：外场（球壳/点阵/亮核）1.1s 内塌缩淡出，让位给汤花纹样
+  outFade = finale ? Math.max(0, 1-(now-finale.t0)/1.1) : 1;
+
+  // 外围动态粒子球体
+  drawSphere(now);
+
+  // 找当前驻留的长波（供击拂切）
+  activeLong=null;
+  for(const w of waves) if(w.type==='long' && now>=w.tHit && now<w.tHit+w.dwell){ activeLong=w; }
+
+  // 涟漪：激活波扫过点阵场（统一渲染）
+  drawField(now);
+
+  // 中心汤沫（绿→白）；收束后＝茶百戏纹样
+  if(finale) drawFinale(now); else drawFoam(now);
+  ctx.globalCompositeOperation='lighter';
+
+  // 判定 + 回收（视觉全在 drawField）
+  for(let wi=waves.length-1;wi>=0;wi--){ const w=waves[wi];
+    if(now<w.t0) continue;
+    if(w.type==='short'||w.type==='mine'){
+      if(!w.judged && now>=w.tHit){ w.type==='mine'?judgeMine(w):judgeShort(w); }
+      if(w.judged && (w.hit || now>w.tHit+0.45)) waves.splice(wi,1);   // 接住即消 / 漏了扫出球外后回收
+    } else if(w.type==='long'){
+      if(now>=w.tHit && now<w.tHit+w.dwell){ w.pulse=Math.max(0,(w.pulse||0)-0.06);
+        const left=1-(now-w.tHit)/w.dwell;                            // 剩余时间弧（球外）
+        ctx.globalCompositeOperation='source-over';
+        ctx.beginPath(); ctx.arc(cx,cy,R+18,-Math.PI/2,-Math.PI/2+left*Math.PI*2);
+        ctx.strokeStyle='rgba(135,164,132,0.6)'; ctx.lineWidth=3; ctx.stroke();
+        ctx.globalCompositeOperation='lighter';
+      } else if(now>=w.tHit+w.dwell && !w.done){ judgeLong(w); }   // 成败特效都在 judgeLong 里（成功=满环烟花）
+      else if(w.done) waves.splice(wi,1);
+    }
+  }
+
+  // 抵消环（青粒子，厚 + 辉光）
+  for(let i=0;i<SECTORS;i++){ const age=now-ward[i]; if(age>WARD_LIFE)continue;
+    const al=1-age/WARD_LIFE, a=(i+0.5)/SECTORS*Math.PI*2;
+    const x=cx+Math.cos(a)*R, y=cy+Math.sin(a)*R;
+    blob(SP.jade,x,y,3.5+4*al,0.62*al);
+    blob(SP.jade,x+Math.cos(a)*3,y+Math.sin(a)*3,2+2*al,0.4*al); }
+  if(ringFlash>0){ for(let i=0;i<SECTORS;i++){ const a=i/SECTORS*Math.PI*2;
+      blob(SP.jade,cx+Math.cos(a)*R,cy+Math.sin(a)*R,4*ringFlash,ringFlash*0.55);} ringFlash-=0.05; }
+
+  // 命中迸发
+  for(let i=bursts.length-1;i>=0;i--){ const b=bursts[i]; b.x+=b.vx; b.y+=b.vy; b.vx*=0.95; b.vy*=0.95; b.life-=(b.dk||0.022);
+    if(b.life<=0){ bursts.splice(i,1); continue; }
+    const lf=Math.min(1,b.life); blob(b.sp,b.x,b.y,b.r*lf,lf*(b.al||0.8)); }
+
+  // 击拂彗尾
+  for(let i=comet.length-1;i>=0;i--){ const c=comet[i]; c.life-=0.05;
+    if(c.life<=0){ comet.splice(i,1); continue; } blob(SP.jade,c.x,c.y,c.r*c.life,c.life*0.7); }
+
+  // 虚拟击拂（传感器频率）
+  if(virtualHz>0 && running){ virtualAngle+=Math.PI*2*virtualHz*(1/60); markSector(virtualAngle);
+    comet.push({x:cx+Math.cos(virtualAngle)*R,y:cy+Math.sin(virtualAngle)*R,life:1,r:4.5}); }
+
+  // 筅头
+  ctx.globalCompositeOperation='source-over';
+  if(running) blob(SP.white,px,py,4.5,0.85);
+
+  // 情境提示（首次出现的波型　淡出，取代一进来堆文字）
+  for(let i=hints.length-1;i>=0;i--){ const h=hints[i]; h.life-=0.0055; if(h.life<=0){ hints.splice(i,1); continue; }
+    ctx.globalAlpha=Math.min(0.9,h.life*1.4); ctx.fillStyle='#e9e2d2'; ctx.font='20px "GenWanMin",serif'; ctx.textAlign='center';
+    ctx.fillText(h.txt, cx, cy-R-42-i*32); ctx.globalAlpha=1; ctx.textAlign='left'; }
+
+  // 共振（星露谷钓鱼式　拉长到 4~5 分钟）：连击缓慢累积、越高涨越快（封顶防跑飞）；断连击回落；满即胜
+  if(running && !won){
+    if(combo>0) resonance=Math.min(1, resonance + 0.00001 + Math.min(combo,80)*0.0000012);
+    else         resonance=Math.max(0, resonance - 0.0018);        // 升速经模拟标定；连击≥3 断时 breakCombo 已给冷闪
+    // 七汤进阶：共振每涨 1/7 进一汤（只进不退），换汤时报名 + 环闪 + 一记亮钟
+    const si=Math.min(6,Math.floor(resonance*7));
+    if(si>soupIdx){ soupIdx=si; curSoup=SOUPS[si]; ringFlash=Math.max(ringFlash,0.5);
+      hints.push({txt:curSoup.name+'　'+curSoup.note,life:1});
+      if(!silent&&ac) bell(ac.currentTime, SCALE[7+si%5], 0.16, true); }
+    if(resonance>=1){ won=true; startFinale(now); setTimeout(onWin,3600); }   // 圆满 → 收束成纹，礼成稍后再落
+  }
+
+  // HUD
+  for(let i=1;i<=7;i++) tickEls[i-1].classList.toggle('on', i<7 ? soupIdx>=i : (won||resonance>=1));
+  document.getElementById('resBar').style.width=(resonance*100).toFixed(0)+'%';
+  document.getElementById('resNum').textContent=(resonance*100).toFixed(0);
+  const ce=document.getElementById('combo'); ce.textContent=combo;
+  ce.style.color= combo>=30?'#e8b84e':combo>=10?'#e5d8b0':'#e9e2d2';
+  // 圆满后：顶部阶名直接换成结算词（隐藏款掉落时报纹样名）
+  document.getElementById('phaseName').textContent= won ? '七汤既成' : curSoup.name+'　'+curSoup.note;
+  document.getElementById('phaseEn').textContent=  won ?
+    ('得徽「击拂　生韵」'+(finale&&finale.drop?'　隐藏款「'+BAIXI[finale.badge].n+'」':'')) : curSoup.en;
+  if(!SHOT) requestAnimationFrame(draw);
+}
+
+// ============================================================ 启动
+function begin(){ if(running)return; if(!ac)initAudio(); ac.resume(); running=true;
+  acOffset=ac.currentTime-clock(); gameStart=clock(); beat=0; beatTime=clock()+0.4; laneBusyUntil=0; melIdx=0;
+  if(padGain) padGain.gain.linearRampToValueAtTime(silent?0:0.55, ac.currentTime+2.5);
+  document.getElementById('start').style.display='none'; scheduler(); }
+document.getElementById('start').addEventListener('click',begin);
+document.getElementById('win').addEventListener('click',()=>{ if(won&&winShown) restart(); });
+window.addEventListener('keydown',e=>{ if(!running&&(e.code==='Space'||e.code==='Enter')){ e.preventDefault(); begin(); } });
+// 自动演示 / 待机吸引模式：game.html?auto — 静音自动跑，虚拟击拂（视觉验证/展厅待机）
+if(location.search.indexOf('auto')>=0){ silent=true; setTimeout(()=>{ begin(); virtualHz=2.4; }, 300); }
+// 调试：?res=0.5 锁定共振，直接预览茶沫任意阶段（尺寸/泛白/密度）
+const resM=location.search.match(/res=([\d.]+)/); const resLock=resM?Math.min(1,parseFloat(resM[1])):null;
+if(resLock!=null) setInterval(()=>{ if(!finale) resonance=resLock; }, 50);
+// 调试：?fin（配合 ?auto）——3.5s 后直接拉满共振，预览收束成纹
+if(location.search.indexOf('fin')>=0) setTimeout(()=>{
+  const iv=setInterval(()=>{ if(won){clearInterval(iv);return;} resonance=1; combo=Math.max(combo,5); },80); }, 3500);
+// 静帧截图模式：game.html?shot — 同步强制尺寸后连画多帧预热拖尾，停住供无头 Chrome 截图
+if(SHOT){ document.getElementById('start').style.display='none';
+  // 用 setInterval 驱动 draw：定时器事件推进虚拟时间 + 产出真实合成帧，无音频、跑完停住（无头 Chrome 稳定截图）
+  let sf=0; const iv=setInterval(()=>{ if(sf<3) resize(); draw(); if(++sf>=90) clearInterval(iv); }, 16); }
+else requestAnimationFrame(draw);
+</script>
+
+<script src="./portfolio-adapter.js"></script>
+</body>
+</html>

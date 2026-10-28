@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>醒茶如禅</title>
+<style>
+  @font-face{font-family:'GenWanMin';src:url('fonts/GenWanMin2TW-M.ttf');font-display:swap;}
+  @font-face{font-family:'EBG';src:url('fonts/EBGaramond-VF.ttf');font-display:swap;}
+  /* 字级三档：12 / 22 / 44（遮罩层 58/16/12） */
+  html,body{margin:0;height:100%;background:#0d1114;overflow:hidden;
+    font-family:'GenWanMin',"Noto Serif SC",serif;color:#e9e2d2;
+    -webkit-user-select:none;user-select:none;cursor:default;-webkit-touch-callout:none;}
+  #c{display:block;width:100vw;height:100vh;touch-action:none;}
+  .mono{font-family:'EBG',serif;}
+  #back{position:fixed;top:24px;left:30px;width:42px;height:42px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;color:#c8b78a;font-size:20px;z-index:5;
+    background:#161d21;cursor:pointer;}
+  #title{position:fixed;top:26px;left:92px;font-size:22px;letter-spacing:8px;color:#d9cdae;pointer-events:none;
+    display:flex;align-items:center;gap:12px;}
+  #sub{position:fixed;top:64px;left:94px;font-size:12px;letter-spacing:3px;color:#8a7e68;pointer-events:none;}
+  #panel{position:fixed;top:28px;right:38px;width:270px;text-align:right;pointer-events:none;}
+  #clarTxt{font-size:12px;letter-spacing:2px;color:#8a7e68;}
+  #clarBg{margin:8px 0 0 auto;width:270px;height:5px;background:#1a2429;border-radius:3px;overflow:hidden;}
+  #clarBar{height:100%;width:18%;background:linear-gradient(90deg,#4a6741,#87a484);transition:width .15s;}
+  #combo{margin-top:14px;font-size:44px;letter-spacing:1px;color:#e9e2d2;}
+  #comboL{font-size:12px;letter-spacing:3px;color:#8a7e68;}
+  #judge{position:fixed;left:50%;top:70%;transform:translateX(-50%);font-size:22px;letter-spacing:6px;
+    color:#e9e2d2;opacity:0;transition:opacity .3s;pointer-events:none;}
+  #foot{position:fixed;bottom:24px;left:38px;font-size:12px;letter-spacing:1px;color:#6a6152;pointer-events:none;}
+  #foot b{color:#87a484;font-weight:400;}
+  #foot .r{color:#c86b63;}
+  .ov{position:fixed;top:0;right:0;bottom:0;left:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:rgba(9,13,16,.92);z-index:10;cursor:pointer;text-align:center;}
+  #start h1{font-size:58px;letter-spacing:16px;margin:0 0 6px;color:#e9e2d2;font-weight:500;}
+  #start .en{font-size:12px;letter-spacing:6px;color:#87a484;margin-bottom:38px;}
+  #start .how{font-size:16px;line-height:2.0;color:#b6ac97;}
+  #start .k{color:#e5dcc4;background:#243036;border-radius:6px;padding:2px 10px;margin:0 3px;font-size:16px;}
+  #start .go{margin-top:42px;font-size:12px;letter-spacing:4px;color:#1c130a;background:#b89a56;
+    padding:14px 34px;border-radius:30px;}
+  #win{display:none;}
+  #win .wt{font-size:58px;letter-spacing:14px;color:#f0e6c8;font-weight:500;}
+  #win .ws{margin-top:12px;font-size:16px;letter-spacing:4px;color:#87a484;}
+  #win .wg{margin-top:40px;font-size:12px;letter-spacing:4px;color:#1c130a;background:#b89a56;
+    padding:14px 34px;border-radius:30px;}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="back" onclick="location.href='index.html'">‹</div>
+<div id="title"><svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+    <circle cx="16" cy="18" r="10" stroke="#87a484" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="0.1 4.6"/>
+    <circle cx="16" cy="3.5" r="2.4" fill="#87a484"/>
+  </svg>醒茶如禅</div>
+<div id="sub" class="mono">AWAKEN</div>
+<div id="panel">
+  <div id="clarTxt" class="mono">茶韵 CLARITY　<span id="clarNum">18</span>%</div>
+  <div id="clarBg"><div id="clarBar"></div></div>
+  <div id="combo" class="mono">0</div>
+  <div id="comboL" class="mono">连击 COMBO</div>
+</div>
+<div id="judge"></div>
+<div id="foot"><b>茶苗</b> 点　　<b>钟声</b> 双击　　<b>清泉</b> 长按到条尾　　<span class="r">迷雾</span> 别碰（碰了起雾障目）</div>
+
+<div id="start" class="ov">
+  <h1>醒茶如禅</h1>
+  <div class="en mono">AWAKEN</div>
+  <div class="how">
+    音符随钟声流来，落线即应：茶苗<span class="k">点</span>钟声<span class="k">双击</span>清泉长条<span class="k">按住到尾</span><br>
+    迷雾别碰，碰了起雾障目　　茶韵满七成，茶醒禅生
+  </div>
+  <div class="go">开 始</div>
+</div>
+<div id="win" class="ov"><div class="wt" id="wt">醒 禅 芽</div><div class="ws" id="ws">茶韵圆满　满田成声</div>
+  <div class="wg" onclick="event.stopPropagation();location.href='nianluo.html'">下一关　碾罗</div>
+  <div class="wg" style="margin-top:16px;color:#c8b78a;background:#161d21">再 来 一 局</div></div>
+
+<script src="./patterns.js"></script>
+<script>
+"use strict";
+// ============================================================ 画布 + 布局
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+let W=0,H=0,DPR=1,trackY=0;
+function resize(){ DPR=Math.min(2,devicePixelRatio||1); W=innerWidth;H=innerHeight;
+  cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+'px';cv.style.height=H+'px';ctx.setTransform(DPR,0,0,DPR,0,0);
+  trackY=H*0.52; initBg(); }
+addEventListener('resize',resize);
+
+// ============================================================ 发光粒子 sprite（特效层专用）
+function mkS(rgb){const s=32,c=document.createElement('canvas');c.width=c.height=s;const g=c.getContext('2d');
+  const gr=g.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);gr.addColorStop(0,'rgba('+rgb+',1)');gr.addColorStop(0.3,'rgba('+rgb+',0.42)');
+  gr.addColorStop(0.66,'rgba('+rgb+',0.08)');gr.addColorStop(1,'rgba('+rgb+',0)');g.fillStyle=gr;g.fillRect(0,0,s,s);return c;}
+function mkB(rgb){const s=48,c=document.createElement('canvas');c.width=c.height=s;const g=c.getContext('2d');
+  const gr=g.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);gr.addColorStop(0,'rgba('+rgb+',1)');gr.addColorStop(0.24,'rgba('+rgb+',0.30)');
+  gr.addColorStop(0.50,'rgba('+rgb+',0.05)');gr.addColorStop(1,'rgba('+rgb+',0)');g.fillStyle=gr;g.fillRect(0,0,s,s);return c;}
+const SP={leaf:mkS('134,164,132'), leafB:mkS('160,196,150'), gold:mkS('228,192,112'), white:mkS('246,243,232'),
+  ash:mkS('150,150,140'), red:mkS('214,80,72'), dim:mkS('96,110,100'), mist:mkS('168,176,170')};
+const BSP={gold:mkB('228,192,112'), leaf:mkB('135,164,132'), white:mkB('246,243,232')};
+function blob(sp,x,y,r,a){ctx.globalAlpha=a;ctx.drawImage(sp,x-r,y-r,r*2,r*2);}
+
+// ============================================================ 曜变冷色场背景（横向结构：虹彩自四边升起）
+let bgCanvas=null,bgCtx=null,bgImg=null,bw=1,bh=1;
+function initBg(){ if(!bgCanvas){bgCanvas=document.createElement('canvas');bgCtx=bgCanvas.getContext('2d');}
+  bw=150;bh=Math.max(1,Math.round(bw*H/W));bgCanvas.width=bw;bgCanvas.height=bh;bgImg=bgCtx.createImageData(bw,bh);}
+function lerpRamp(ramp,v){for(let k=0;k<ramp.length-1;k++){const a=ramp[k],b=ramp[k+1];if(v<=b[0]){const f=(v-a[0])/((b[0]-a[0])||1);
+  return [a[1][0]+(b[1][0]-a[1][0])*f,a[1][1]+(b[1][1]-a[1][1])*f,a[1][2]+(b[1][2]-a[1][2])*f];}}return ramp[ramp.length-1][1];}
+const COOL=[[0,[8,13,16]],[0.5,[15,24,28]],[1,[24,38,44]]];
+const IRID=[[0,[14,26,46]],[0.26,[22,56,92]],[0.48,[24,70,74]],[0.70,[40,72,42]],[1,[80,62,26]]];
+function renderBg(t){if(!bgImg)initBg();const d=bgImg.data;
+ for(let j=0;j<bh;j++)for(let i=0;i<bw;i++){
+  const x=i/bw,y=j/bh,wx=x+0.36*Math.sin(y*5+t),wy=y+0.36*Math.cos(x*5-t*0.8);
+  let v=0.5+0.5*Math.sin(wx*4+wy*3+t*1.1)*Math.cos(wy*4-wx*2-t*0.7);if(v<0)v=0;else if(v>1)v=1;
+  const nx=Math.abs(x-0.5)*2, ny=Math.abs(y-0.5)*2, e=Math.max(nx,ny);
+  const base=lerpRamp(COOL, v*(0.40+0.26*e));
+  let m=Math.max(0,(e-0.42)/0.58); m=m*m*(3-2*m); m*=(0.50+0.50*v)*0.8;
+  let cvv=e*0.5+0.30*(0.5+0.5*Math.sin(wx*6+wy*5+t*0.9))+0.17*(0.5+0.5*Math.sin((x-y)*4+t*0.3));
+  if(cvv<0)cvv=0;else if(cvv>1)cvv=1;
+  const ir=lerpRamp(IRID,cvv);
+  let r0=base[0]+(ir[0]-base[0])*m,g0=base[1]+(ir[1]-base[1])*m,b0=base[2]+(ir[2]-base[2])*m;
+  const wf=Math.max(0,nx*ny-0.30)/0.70*(0.4+0.45*v)*0.7;
+  const idx=(j*bw+i)*4;d[idx]=r0+(96-r0)*wf;d[idx+1]=g0+(64-g0)*wf;d[idx+2]=b0+(28-b0)*wf;d[idx+3]=255;}
+ bgCtx.putImageData(bgImg,0,0);}
+
+// ============================================================ 叠釉 GLAZE STRATA：音符本体＝同色三阶平涂叠层（source-over，无光晕）
+const GLZ={
+  leaf:{b:'#87A484',L:'#A9C2A2',D:'#4F6B54'},
+  gold:{b:'#C7B788',L:'#E3D6AC',D:'#8A7A50'},
+  aqua:{b:'#A0BEB4',L:'#CFE0D8',D:'#5F7E74'},
+  ash:{b:'#8A9490',L:'#AEB6B1',D:'#59635F'},
+  cream:'#F0EEE2', red:'#C85048'};
+const P_LEAF=new Path2D('M0 0 C-12 -14 -12 -30 0 -44 C12 -30 12 -14 0 0 Z');
+function domeP(r){ return new Path2D('M'+(50-r)+' 62 A'+r+' '+r+' 0 0 1 '+(50+r)+' 62 Z'); }
+const P_DOME=[domeP(30),domeP(21),domeP(12)];
+function rrFill(x,y,w,h,r,col){ if(w<=0)return; ctx.fillStyle=col; ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); ctx.fill(); }
+// 单体音符（viewBox 100 坐标系，中心≈(50,53)）
+function glyph(type,x,y,size,t){
+  const k=size/100;
+  ctx.save(); ctx.translate(x,y+Math.sin(t*2+x*0.01)*2.5); ctx.scale(k,k); ctx.translate(-50,-53);
+  if(type==='bud'){
+    ctx.strokeStyle=GLZ.leaf.D; ctx.lineWidth=2; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(50,74); ctx.lineTo(50,85); ctx.stroke();
+    const L=(ang,sc,col)=>{ ctx.save(); ctx.translate(50,74); ctx.rotate(ang*Math.PI/180);
+      ctx.scale(sc,sc); ctx.fillStyle=col; ctx.fill(P_LEAF); ctx.restore(); };
+    L(-32,1,GLZ.leaf.D); L(2,0.92,GLZ.leaf.b); L(32,0.72,GLZ.leaf.L);
+    ctx.fillStyle=GLZ.cream; ctx.beginPath(); ctx.arc(65.9,46.5,2.5,0,7); ctx.fill();
+  } else if(type==='bell'){
+    ctx.strokeStyle=GLZ.gold.D; ctx.globalAlpha=.6; ctx.lineWidth=1.5; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(14,66); ctx.lineTo(86,66); ctx.stroke(); ctx.globalAlpha=1;
+    ctx.fillStyle=GLZ.gold.D; ctx.fill(P_DOME[0]);
+    ctx.fillStyle=GLZ.gold.b; ctx.fill(P_DOME[1]);
+    ctx.fillStyle=GLZ.gold.L; ctx.fill(P_DOME[2]);
+    ctx.fillStyle=GLZ.cream; ctx.beginPath(); ctx.arc(50,71,3,0,7); ctx.fill();
+  } else if(type==='mist'){
+    const el=(ex,ey,rx,ry,col)=>{ ctx.fillStyle=col; ctx.beginPath(); ctx.ellipse(ex,ey,rx,ry,0,0,7); ctx.fill(); };
+    el(46,57,26,13,GLZ.ash.D); el(57,48,21,11,GLZ.ash.b); el(43,41,13,7,GLZ.ash.L);
+    ctx.fillStyle=GLZ.red; ctx.beginPath(); ctx.arc(55,48,3,0,7); ctx.fill();
+  }
+  ctx.restore(); }
+// 命中反馈：扁平扩散细环（钟声=双环）
+const rings=[];
+function ringFx(x,y,col,dbl){ rings.push({x,y,r:16,life:1,col});
+  if(dbl) setTimeout(()=>rings.push({x,y,r:16,life:1,col}),130); }
+
+// ============================================================ 玩法数据（四种机制：苗=点 / 钟=双击 / 泉=长按到尾 / 雾=别碰）
+const HIT_X=50.0, START_X=88.6, END_X=12.3, SPEED=19.8;
+// 双环判定：内环=精拍(高分) / 外环=缓拍(低分)——环径即判定窗，所见即判定
+const PERFECT_WINDOW=2.4, GOOD_WINDOW=4.8, GRAB_WINDOW=5.8, MIST_WINDOW=3.15, DOUBLE_MS=290;
+// 迷雾紧咬在茶/钟/水后面（间隔 0.4-0.5 拍）：手一贪、双击一慢、松手一晚都会撞雾
+const chart=[
+  {beat:0.9, type:"bud"},
+  {beat:1.7, type:"bud"},
+  {beat:2.5, type:"bell"},
+  {beat:2.95,type:"mist",  dur:0.5},
+  {beat:4.3, type:"water", dur:1.2},
+  {beat:5.9, type:"mist",  dur:0.5},
+  {beat:6.8, type:"bud"},
+  {beat:7.5, type:"bud"},
+  {beat:8.2, type:"bell"},
+  {beat:8.65,type:"mist",  dur:0.4},
+  {beat:9.9, type:"water", dur:1.5},
+  {beat:11.9,type:"bud"},
+  {beat:12.5,type:"mist",  dur:1.3},
+  {beat:14.4,type:"bud"},
+  {beat:15.1,type:"bell"},
+  {beat:15.55,type:"mist", dur:0.45},
+  {beat:16.7,type:"water", dur:1.3},
+  {beat:18.5,type:"bud"},
+  {beat:19.1,type:"bud"},
+  {beat:19.8,type:"bell"},
+  {beat:20.25,type:"mist", dur:0.5},
+  {beat:21.3,type:"bud"}
+];
+const CHART_END=23.4;
+const state={running:false,startTime:0,notes:[],combo:0,bestCombo:0,clarity:18,
+  hits:0,perfects:0,pointerDown:null,lastTapTime:0,audio:null,collected:[]};
+let judgeTimer=0, redFlash=0, fog=0, waterHold=null;
+const AUTO=location.search.indexOf('auto')>=0;
+function pxOf(pct){ return pct/100*W; }
+
+// ============================================================ 茶田谱（田即谱）
+// 三道田垄弧线＝三根谱线（下=宫C　中=角E　上=徵G）；每收一音，嫩芽长在对应音高的谱线上、
+// 按时间次序从左到右排；循环声部读到哪株，哪株应声一颤——茶田就是你攒出来的谱子
+const MAXSLOT=17; let plants=[]; let loopI=0, nextLoopT=0;
+const PITCH_ROW={523.25:0, 659.25:1, 783.99:2};                 // 宫/角/徵 → 谱线行
+const TIP_COL={bud:'#A9C2A2', water:'#CFE0D8', bell:'#E3D6AC'}; // 芽尖=音色标记
+// 徽记：通关固定徽「闻香　静心」；田间彩蛋＝攒到 8 株后田垄尽头冒一粒金芽，点它得彩蛋徽
+const GENT_NAMES={10:'闻香　静心',8:'养器　惜物',11:'悟道　归一'}, EGG_POOL=[8,11];
+function gainGent(i){ try{ const a=JSON.parse(localStorage.getItem('chaxian_gents')||'[]');
+  if(a.includes(i)) return false; a.push(i); localStorage.setItem('chaxian_gents',JSON.stringify(a)); return true; }catch(e){ return false; } }
+function eggAward(){ for(const i of EGG_POOL){ if(gainGent(i)){
+    showJudge('彩蛋　「'+GENT_NAMES[i]+'」入匣'); return; } }
+  showJudge('金芽已应　徽已集全'); }
+const egg={active:false,done:false,x:0,y:0};
+function collect(freq,type){ state.collected.push(freq);
+  plants.push({slot:plants.length, freq, type, row:PITCH_ROW[freq]||0, grow:0, pulse:0, ph:Math.random()*7});
+  if(plants.length>=8 && !egg.done && !egg.active) egg.active=true;
+  if(!nextLoopT) nextLoopT=performance.now()+714; }
+function playColl(freq){ if(!state.audio)return; const a=state.audio,n2=a.currentTime;
+  const o=a.createOscillator(),g=a.createGain(); o.type='triangle'; o.frequency.value=freq;
+  g.gain.setValueAtTime(0.0001,n2); g.gain.exponentialRampToValueAtTime(0.035,n2+0.01);
+  g.gain.exponentialRampToValueAtTime(0.0001,n2+0.30); o.connect(g).connect(a.destination);
+  o.start(n2); o.stop(n2+0.32); }
+function staffY(row,u){ const base=H*0.90;                       // u∈[0,1] 沿谱线位置（弧形田垄）
+  return base - row*26 - Math.sin(Math.PI*u)*10; }
+function drawField(t){
+  const x0=W*0.08, x1=W*0.92;
+  // 三根谱线＝三道田垄弧
+  for(let r=0;r<3;r++){ ctx.strokeStyle='rgba(95,126,116,'+(r===1?0.34:0.26)+')'; ctx.lineWidth=1.5; ctx.lineCap='round';
+    ctx.beginPath();
+    for(let k=0;k<=40;k++){ const u=k/40, x=x0+(x1-x0)*u, y=staffY(r,u);
+      k?ctx.lineTo(x,y):ctx.moveTo(x,y); }
+    ctx.stroke(); }
+  // 芽＝音符：长在自己音高的谱线上
+  for(const p of plants){
+    p.grow+=(1-p.grow)*0.06; p.pulse=Math.max(0,p.pulse-0.03);
+    const u=(p.slot+0.5)/MAXSLOT, px=x0+(x1-x0)*u, py=staffY(p.row,u);
+    const sway=Math.sin(t*1.4+p.ph)*0.06*p.grow;
+    const k=0.5*p.grow*(1+0.20*p.pulse);
+    ctx.save(); ctx.translate(px,py); ctx.rotate(sway); ctx.scale(k,k);
+    ctx.strokeStyle=GLZ.leaf.b; ctx.lineWidth=3; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(0,-14); ctx.stroke();
+    const L=(ang,sc,col)=>{ ctx.save(); ctx.translate(0,-14); ctx.rotate(ang*Math.PI/180);
+      ctx.scale(sc,sc); ctx.fillStyle=col; ctx.fill(P_LEAF); ctx.restore(); };
+    L(-32,0.82,GLZ.leaf.D); L(2,0.76,GLZ.leaf.b); L(32,0.58,GLZ.leaf.L);
+    ctx.fillStyle=TIP_COL[p.type]||GLZ.cream;                    // 芽尖一粒=音色
+    ctx.beginPath(); ctx.arc(0,-46,4,0,7); ctx.fill();
+    if(p.pulse>0.02){ ctx.strokeStyle=TIP_COL[p.type]; ctx.globalAlpha=p.pulse*0.8; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.arc(0,-46,10+18*(1-p.pulse),0,7); ctx.stroke(); ctx.globalAlpha=1; }
+    ctx.restore(); }
+  // 田间金芽（彩蛋）：田垄尽头一粒呼吸的金芽，点它有礼
+  if(egg.active){ const ex=x0+(x1-x0)*1.035, ey=staffY(0,1)-4;
+    egg.x=ex; egg.y=ey; const pu=0.5+0.5*Math.sin(t*3);
+    ctx.strokeStyle='#8A7A50'; ctx.lineWidth=2; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(ex,ey+9); ctx.lineTo(ex,ey-3); ctx.stroke();
+    ctx.fillStyle='rgba(199,183,136,'+(0.65+0.35*pu).toFixed(2)+')';
+    ctx.beginPath(); ctx.arc(ex,ey-8,4.5+1.6*pu,0,7); ctx.fill();
+    ctx.strokeStyle='rgba(199,183,136,'+(0.25*pu).toFixed(2)+')'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.arc(ex,ey-8,11+4*pu,0,7); ctx.stroke(); }
+}
+
+// ============================================================ 流程
+function resetGame(){ state.running=false; state.notes=[]; state.combo=0; state.bestCombo=0; state.hits=0; state.perfects=0;
+  state.clarity=18; state.pointerDown=null; state.lastTapTime=0; fog=0; waterHold=null;
+  state.collected=[]; loopI=0; nextLoopT=0; plants=[]; egg.active=false; egg.done=false;
+  bursts.length=0; rings.length=0; document.getElementById('win').style.display='none'; updateReadouts(); }
+function startGame(){ resetGame(); ensureAudio();
+  if(state.audio&&state.audio.state==='suspended') state.audio.resume();
+  state.startTime=performance.now()+620; state.running=true;
+  state.notes=chart.map((item,i)=>({ ...item, index:i, x:START_X, done:false, held:false, penal:false,
+    targetTime:state.startTime+item.beat*1000,
+    tailTime:state.startTime+(item.beat+(item.dur||0))*1000 }));
+  showJudge('听钟入拍'); }
+
+// ============================================================ 判定
+function lenPct(n){ return (n.dur||0)*SPEED; }
+function spansLine(n){ return n.x<=HIT_X+MIST_WINDOW && n.x+lenPct(n)>=HIT_X-MIST_WINDOW; }
+function getClosestNote(types,windowSize=GOOD_WINDOW){ let chosen=null,best=Infinity;
+  state.notes.forEach(n=>{ if(n.done||!types.includes(n.type))return;
+    const d=Math.abs(n.x-HIT_X); if(d<best){best=d;chosen=n;} });
+  return chosen&&best<=windowSize?chosen:null; }
+function getQuality(n){ const d=Math.abs(n.x-HIT_X);
+  if(d<=PERFECT_WINDOW)return"perfect"; if(d<=GOOD_WINDOW)return"good"; return"miss"; }
+function gainNote(perfect,amt,amtP){ state.combo+=1; state.bestCombo=Math.max(state.bestCombo,state.combo);
+  state.hits+=1; if(perfect) state.perfects+=1;            // 精拍统计 → 结算喂给隐藏款评算
+  state.clarity=Math.min(100,state.clarity+(perfect?amtP:amt)); updateReadouts(); }
+
+function scoreBud(n){ const perfect=getQuality(n)==="perfect"; n.done=true;
+  gainNote(perfect,7,11); showJudge(perfect?'采得春芽':'茶芽入篓');
+  ringFx(pxOf(n.x),trackY,GLZ.leaf.b); collect(523.25,'bud');
+  burst(pxOf(n.x),trackY,14,SP.leafB,1); playTone('bud',true); }
+function scoreBell(n){ const perfect=getQuality(n)==="perfect"; n.done=true;
+  gainNote(perfect,7,11); showJudge(perfect?'钟声醒禅':'钟音已应');
+  ringFx(pxOf(n.x),trackY,GLZ.gold.b,true); collect(783.99,'bell');
+  burst(pxOf(n.x),trackY,16,SP.gold,1.2); playTone('bell',true); }
+function grabWater(n){ n.held=true; waterHold=n; playTone('water',true); }
+function releaseWater(now){ const n=waterHold; waterHold=null; if(!n||n.done)return;
+  n.done=true;
+  const late=now-n.tailTime;
+  if(late>=-220){ gainNote(true,16,16); showJudge('谷雨润茶');
+    ringFx(pxOf(HIT_X),trackY,GLZ.aqua.L); collect(659.25,'water');
+    burst(pxOf(HIT_X),trackY,26,BSP.white,1.5); playTone('gold',true); }
+  else{ const ratio=(now-n.targetTime)/(n.tailTime-n.targetTime);
+    if(ratio>=0.6){ gainNote(false,9,9); showJudge('清泉入土'); collect(659.25,'water');
+      burst(pxOf(HIT_X),trackY,14,SP.white,1); playTone('water',true); }
+    else{ state.combo=0; state.clarity=Math.max(0,state.clarity-6);
+      showJudge('水未浇透'); redFlash=1; playTone('mist',false); updateReadouts(); } } }
+function hitMist(n){ if(n.penal)return; n.penal=true; n.done=true;
+  state.combo=0; state.clarity=Math.max(0,state.clarity-7);
+  fog=1;
+  showJudge('迷雾障目'); redFlash=1; ringFx(pxOf(HIT_X),trackY,GLZ.red);
+  burst(pxOf(HIT_X),trackY,20,SP.mist,1.4); playTone('mist',false); updateReadouts(); }
+function passMist(n){ n.done=true; state.clarity=Math.min(100,state.clarity+5);
+  showJudge('避开迷雾'); playTone('bud',true); updateReadouts(); }
+function missNote(n){ if(n.done)return; n.done=true;
+  state.combo=0; state.clarity=Math.max(0,state.clarity-8);
+  showJudge(n.type==='water'?'清泉流失':'漏了一芽'); redFlash=1;
+  playTone('mist',false); updateReadouts(); }
+
+function handleTap(){
+  const bud=getClosestNote(["bud"]); if(bud){ scoreBud(bud); return true; }
+  const mist=state.notes.find(n=>!n.done&&n.type==='mist'&&spansLine(n));
+  if(mist){ hitMist(mist); return true; }
+  return false; }
+function handleDoubleTap(){ const bell=getClosestNote(["bell"]); if(!bell)return false; scoreBell(bell); return true; }
+
+// ============================================================ 输入（点 / 双击 / 长按到尾；迷雾期间任何按压=中招）
+function onPointerDown(e){ if(!state.running)return;
+  // 田间金芽（彩蛋）：点中即领，不影响判定
+  if(egg.active && Math.hypot(e.clientX-egg.x, e.clientY-egg.y)<36){
+    egg.active=false; egg.done=true; eggAward();
+    ringFx(egg.x,egg.y-8,'#C7B788'); playTone('gold',true); return; }
+  const w=state.notes.find(n=>!n.done&&!n.held&&n.type==='water'&&Math.abs(n.x-HIT_X)<=GRAB_WINDOW);
+  if(w){ grabWater(w); return; }
+  state.pointerDown={time:performance.now(),x:e.clientX,y:e.clientY}; }
+function onPointerUp(e){ const now=performance.now();
+  if(waterHold){ releaseWater(now); return; }
+  if(!state.running||!state.pointerDown)return;
+  if(now-state.lastTapTime<=DOUBLE_MS){ handleDoubleTap(); state.lastTapTime=0; }
+  else{ handleTap(); state.lastTapTime=now; }
+  state.pointerDown=null; }
+addEventListener('pointerdown',onPointerDown);
+addEventListener('pointerup',onPointerUp);
+document.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
+addEventListener('keydown',e=>{
+  if(!state.running){ if(e.code==='Space'||e.code==='Enter'){ maybeStart(); } return; }
+  if(e.repeat)return;
+  if(e.code==='Space'||e.code==='KeyJ'){ e.preventDefault(); onPointerDown({clientX:0,clientY:0}); }
+  if(e.code==='KeyK'){ e.preventDefault(); handleDoubleTap(); } });
+addEventListener('keyup',e=>{
+  if(e.code==='Space'||e.code==='KeyJ'){ onPointerUp({clientX:0,clientY:0}); } });
+
+// ============================================================ 音频
+function ensureAudio(){ if(state.audio)return; const AC=window.AudioContext||window.webkitAudioContext;
+  if(AC) state.audio=new AC(); }
+function playTone(type,success){ ensureAudio(); if(!state.audio)return;
+  const audio=state.audio, now=audio.currentTime;
+  const osc=audio.createOscillator(), gain=audio.createGain(), filter=audio.createBiquadFilter();
+  const tones={bud:523.25,bell:783.99,water:659.25,gold:987.77,mist:196};
+  osc.type=(type==="bell"||type==="gold")?"sine":"triangle";
+  osc.frequency.setValueAtTime(success?tones[type]||440:150,now);
+  filter.type="lowpass"; filter.frequency.setValueAtTime(success?1680:520,now);
+  gain.gain.setValueAtTime(0.0001,now);
+  gain.gain.exponentialRampToValueAtTime(success?0.07:0.05,now+0.015);
+  gain.gain.exponentialRampToValueAtTime(0.0001,now+(type==="bell"?0.46:0.22));
+  osc.connect(filter); filter.connect(gain); gain.connect(audio.destination);
+  osc.start(now); osc.stop(now+0.55); }
+
+// ============================================================ 粒子特效 + 雾
+const bursts=[];
+function burst(x,y,n,sp,scale=1){ for(let k=0;k<n;k++){ const a=Math.random()*Math.PI*2,s=1+Math.random()*3;
+  bursts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,sp,r:(3+Math.random()*3)*scale,dk:0.03,al:0.8});} }
+function bloom(x,y){ for(let k=0;k<300;k++){ const a=Math.random()*Math.PI*2, sp=2.5+Math.random()*5;
+  const spr=k%5===0?BSP.white:(k%2?BSP.leaf:BSP.gold);
+  bursts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:1+Math.random()*0.3,sp:spr,
+    r:8+Math.random()*7,dk:0.014,al:0.72}); } }
+const fogs=[]; for(let i=0;i<16;i++) fogs.push({sx:Math.random(),sy:0.3+Math.random()*0.5,sd:Math.random()*10,rr:0.10+Math.random()*0.12});
+
+// ============================================================ 结算
+function finishGame(success){ state.running=false; waterHold=null;
+  const win=document.getElementById('win');
+  if(success){ document.getElementById('wt').textContent='醒 禅 芽';
+    // 精拍率 ≥60%（多数音落在内环）或 15% 运气 → 隐藏款茶百戏入匣（与击拂同一套隐藏池）
+    let extra='';
+    const prec = state.hits? state.perfects/state.hits : 0;
+    if(prec>=0.6 || Math.random()<0.15){
+      const i=(Math.random()*BAIXI.length)|0; extra='　隐藏款「'+BAIXI[i].n+'」';
+      try{ const a=JSON.parse(localStorage.getItem('chaxian_badges')||'[]');
+        if(!a.includes(i)){ a.push(i); localStorage.setItem('chaxian_badges',JSON.stringify(a)); } }catch(e){} }
+    document.getElementById('ws').textContent=
+      (gainGent(10) ? '茶韵圆满　得徽「闻香　静心」' : '茶韵圆满　满田成声') + extra;
+    bloom(W/2,trackY); playTone("gold",true); }
+  else{ document.getElementById('wt').textContent='茶 梦 未 醒';
+    document.getElementById('ws').textContent='再听一遍钟声';
+    playTone("mist",false); }
+  setTimeout(()=>{ win.style.display='flex'; }, success?900:400); }
+
+// ============================================================ HUD
+function updateReadouts(){ document.getElementById('clarNum').textContent=Math.round(state.clarity);
+  document.getElementById('clarBar').style.width=state.clarity+'%';
+  document.getElementById('combo').textContent=state.combo; }
+function showJudge(t){ const j=document.getElementById('judge'); j.textContent=t; j.style.opacity=0.92;
+  clearTimeout(judgeTimer); judgeTimer=setTimeout(()=>{ j.style.opacity=0; }, 900); }
+
+// ============================================================ 音符外形（叠釉　平涂无光晕）
+function drawNote(n,now){
+  const x=pxOf(n.x), y=trackY;
+  if(n.type==='bud'||n.type==='bell'){ glyph(n.type,x,y,60,now); return; }
+  if(n.type==='water'){                                    // 清泉长条：滴头融进条身＝一体三阶水条；按住时已浇部分消失
+    const len=pxOf(lenPct(n));
+    const hx=n.held?Math.max(x,pxOf(HIT_X)):x, x1=x+len;
+    const pu=n.held?1+0.10*Math.sin(now*9):1;
+    const h0=20*pu, h1=12*pu, h2=5*pu;
+    rrFill(hx,y-h0/2,x1-hx,h0,h0/2,GLZ.aqua.D);
+    rrFill(hx+5,y-h1/2,x1-hx-10,h1,h1/2,GLZ.aqua.b);
+    rrFill(hx+10,y-h2/2,x1-hx-20,h2,h2/2,GLZ.aqua.L);
+    ctx.fillStyle=GLZ.cream; ctx.beginPath(); ctx.arc(x1-6,y,3.2,0,7); ctx.fill();
+    return; }
+  if(n.type==='mist'){                                     // 迷雾：短=云朵单体 / 长=三阶灰条+红点+虚线
+    const len=pxOf(lenPct(n));
+    if(len<110){ glyph('mist',x+len/2,y,62,now); return; }
+    const x1=x+len;
+    rrFill(x,y-10,len,20,10,GLZ.ash.D);
+    rrFill(x+6,y-6,len-12,12,6,GLZ.ash.b);
+    rrFill(x+12,y-2.5,len-24,5,2.5,GLZ.ash.L);
+    ctx.strokeStyle=GLZ.ash.b; ctx.globalAlpha=.5; ctx.lineWidth=1.5;
+    ctx.setLineDash([1.5,6]); ctx.beginPath(); ctx.moveTo(x+8,y+16); ctx.lineTo(x1-8,y+16);
+    ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1;
+    ctx.fillStyle=GLZ.red; ctx.beginPath(); ctx.arc(x+len/2,y,3.6,0,7); ctx.fill();
+    return; }
+}
+
+// ============================================================ 主循环
+function draw(now){
+  const t=now/1000;
+  renderBg(t*0.05);
+  ctx.globalCompositeOperation='source-over';
+  ctx.globalAlpha=0.42; ctx.imageSmoothingEnabled=true; ctx.drawImage(bgCanvas,0,0,W,H); ctx.globalAlpha=1;
+  if(redFlash>0){ ctx.globalAlpha=redFlash*0.18; ctx.fillStyle='#3a140a'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1; redFlash-=0.05; }
+
+  // —— 平涂层（茶田谱/音轨/判定环/音符/命中环，全部 source-over 无光晕）——
+  drawField(t);   // 茶田谱：随收集生长，随声部回放起伏
+  ctx.fillStyle='rgba(150,158,152,0.30)';
+  for(let x=W*0.10;x<W*0.92;x+=W*0.016){ ctx.beginPath(); ctx.arc(x,trackY,2,0,7); ctx.fill(); }
+  // 双环判定：内环=精拍（亮）/ 外环=缓拍（淡，反向缓转）——半径直接取判定窗，所见即判定
+  ctx.strokeStyle=waterHold?'rgba(240,238,226,0.45)':'rgba(150,158,152,0.28)';
+  ctx.lineWidth=1.5; ctx.setLineDash([2,10]); ctx.lineDashOffset=t*12;
+  ctx.beginPath(); ctx.arc(pxOf(HIT_X),trackY,pxOf(GOOD_WINDOW),0,Math.PI*2); ctx.stroke();
+  ctx.strokeStyle=waterHold?'rgba(240,238,226,0.9)':'rgba(150,158,152,0.6)';
+  ctx.lineWidth=2; ctx.setLineDash([2,8]); ctx.lineDashOffset=-t*18;
+  ctx.beginPath(); ctx.arc(pxOf(HIT_X),trackY,pxOf(PERFECT_WINDOW),0,Math.PI*2); ctx.stroke(); ctx.setLineDash([]);
+  for(let i=rings.length-1;i>=0;i--){ const g=rings[i]; g.r+=2.8; g.life-=0.035;
+    if(g.life<=0){ rings.splice(i,1); continue; }
+    ctx.strokeStyle=g.col; ctx.globalAlpha=g.life*0.8; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.arc(g.x,g.y,g.r,0,Math.PI*2); ctx.stroke(); ctx.globalAlpha=1; }
+
+  // 游戏推进
+  if(state.running){
+    let active=0; const elapsed=(now-state.startTime)/1000;
+    state.notes.forEach(n=>{ if(n.done)return;
+      const dt=(n.targetTime-now)/1000; n.x=HIT_X+dt*SPEED;
+      if(AUTO){
+        if(n.type==='water'&&!n.held&&Math.abs(n.x-HIT_X)<0.8) grabWater(n);
+        else if(n.type!=='water'&&n.type!=='mist'&&Math.abs(n.x-HIT_X)<0.8){
+          n.type==='bell'?scoreBell(n):scoreBud(n); } }
+      if(n.done)return;
+      if(n.held&&now>=n.tailTime-30){ releaseWater(now); return; }
+      const tailX=n.x+lenPct(n);
+      if(tailX<END_X){ if(n.type==='mist'){ passMist(n); } else if(!n.held){ missNote(n); } }
+      else if(n.x<96){ active+=1; drawNote(n,t); } });
+    if(elapsed>CHART_END||(active===0&&elapsed>CHART_END-0.7)){ finishGame(state.clarity>=70); }
+    // 收集声部：把收进的音按拍循环轻声回放（BPM84），读到哪株哪株应声一颤
+    if(state.collected.length&&now>=nextLoopT&&nextLoopT>0){
+      const li=loopI%state.collected.length;
+      playColl(state.collected[li]); if(plants[li]) plants[li].pulse=1;
+      loopI++; nextLoopT=now+714; }
+  }
+
+  // —— 特效层（粒子迸发，lighter 发光）——
+  ctx.globalCompositeOperation='lighter';
+  for(let i=bursts.length-1;i>=0;i--){ const b=bursts[i]; b.x+=b.vx; b.y+=b.vy; b.vx*=0.95; b.vy*=0.95; b.life-=b.dk;
+    if(b.life<=0){bursts.splice(i,1);continue;}
+    const lf=Math.min(1,b.life); blob(b.sp,b.x,b.y,b.r*lf,lf*b.al); }
+  ctx.globalCompositeOperation='source-over';
+
+  // 迷雾障目
+  if(fog>0){ for(const f of fogs){ const fx=(f.sx+Math.sin(t*0.25+f.sd)*0.04)*W, fy=(f.sy+Math.cos(t*0.2+f.sd)*0.03)*H;
+      blob(SP.mist,fx,fy,f.rr*W,fog*0.5); }
+    fog-=0.0022; }
+
+  requestAnimationFrame(draw);
+}
+
+// ============================================================ 启动
+function maybeStart(){ document.getElementById('start').style.display='none'; startGame(); }
+document.getElementById('start').addEventListener('click',maybeStart);
+document.getElementById('win').addEventListener('click',()=>{ document.getElementById('win').style.display='none'; startGame(); });
+if(AUTO){ setTimeout(maybeStart,400); }
+resize(); requestAnimationFrame(draw);
+</script>
+
+<script src="./portfolio-adapter.js"></script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>茶弦记</title>
+<style>
+  @font-face{font-family:'GenWanMin';src:url('fonts/GenWanMin2TW-M.ttf');font-display:swap;}
+  @font-face{font-family:'EBG';src:url('fonts/EBGaramond-VF.ttf');font-display:swap;}
+  html,body{margin:0;height:100%;background:#0d1114;overflow:hidden;
+    font-family:'GenWanMin',"Noto Serif SC",serif;color:#e9e2d2;
+    -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:none;
+    -webkit-tap-highlight-color:transparent;}
+  .en{font-family:'EBG',serif;}
+  /* 茶先生模糊背景（近看只是光晕，远看隐约有画）——参数经预览页定稿 */
+  #bgphoto{position:fixed;top:0;right:0;bottom:0;left:0;z-index:0;overflow:hidden;pointer-events:none;}
+  #bgphoto .bgimg{position:absolute;top:0;right:0;bottom:0;left:0;background:url('bg/menu.png') center/cover no-repeat;
+    filter:blur(31px);opacity:.44;transform:scale(1.22);}
+  #bgphoto .bgveil{position:absolute;top:0;right:0;bottom:0;left:0;
+    background:radial-gradient(120% 90% at 50% 45%,transparent 35%,rgba(7,10,12,.17) 100%);}
+  /* 与「击拂」同一色场：冷板岩基底 + 蓝绿曜变晕 + 边角一点暗琥珀 */
+  #bg{position:fixed;top:0;right:0;bottom:0;left:0;z-index:0;
+    background:
+      radial-gradient(60% 80% at 14% 80%, rgba(22,56,92,0.34), transparent 60%),
+      radial-gradient(52% 72% at 88% 16%, rgba(24,70,74,0.30), transparent 60%),
+      radial-gradient(46% 60% at 90% 92%, rgba(96,64,28,0.22), transparent 62%),
+      radial-gradient(40% 55% at 6% 6%, rgba(40,72,42,0.16), transparent 62%),
+      #0a0e11;}
+  /* 茶席摆盘：题名在上，四盏搁在大片留白中，全部随屏幕自适应 */
+  #wrap{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:clamp(56px,11vh,120px);
+    padding:env(safe-area-inset-top) env(safe-area-inset-right)
+            env(safe-area-inset-bottom) env(safe-area-inset-left);}
+  /* 层级一：题名 */
+  h1{font-size:clamp(38px,5.6vh,54px);letter-spacing:.62em;padding-left:.62em;
+    margin:0;color:#ece5d2;font-weight:500;}
+  #sub{margin-top:clamp(14px,2.2vh,22px);font-size:12px;letter-spacing:8px;
+    padding-left:8px;color:#6f6452;text-align:center;}
+  #row{display:flex;gap:clamp(44px,6.5vw,92px);align-items:flex-start;}
+  .lv{text-align:center;cursor:pointer;}
+  .lv.dim{opacity:.38;cursor:default;}
+  /* 盏＝按钮：扁平实色圆盘，无边框 */
+  .disc{--d:clamp(96px,14.5vh,136px);width:var(--d);height:var(--d);border-radius:50%;
+    background:#161d21;display:grid;place-items:center;margin:0 auto;
+    transition:transform .15s ease, background .15s ease;}
+  .lv:active .disc{transform:scale(.94);background:#1d262b;}
+  .lv.dim:active .disc{transform:none;background:#161d21;}
+  /* 悬停反馈（真悬停设备才生效，触屏不粘滞）：盏浮起变亮，关名提色 */
+  .nm{transition:color .18s ease;}
+  @media (hover:hover){
+    .lv:not(.dim):hover .disc{background:#232e35;transform:translateY(-5px);}
+    .lv:not(.dim):hover .nm{color:#f0e6c8;}
+    #badges:hover{background:#243036;color:#e5d8b0;}
+  }
+  .disc svg{width:clamp(30px,4.4vh,40px);height:clamp(30px,4.4vh,40px);}
+  /* 层级二：关名 */
+  .nm{font-size:clamp(20px,2.9vh,26px);letter-spacing:12px;padding-left:12px;
+    margin-top:clamp(20px,3.4vh,32px);color:#e9e2d2;}
+  /* 层级三：细注 */
+  .tag{font-size:12px;letter-spacing:6px;padding-left:6px;margin-top:12px;}
+  .c1 .tag{color:#87a484;} .c2 .tag{color:#c7b788;} .c3 .tag{color:#9ab290;} .c4 .tag{color:#a0beb4;}
+  .enw{display:block;font-size:12px;letter-spacing:4px;color:#6f6452;margin-top:10px;}
+  /* ================= 启动加载（盏心搅茶 logo） ================= */
+  #splash{position:fixed;top:0;right:0;bottom:0;left:0;z-index:30;background:#0a0e11;
+    display:flex;align-items:center;justify-content:center;}
+  #splash::before{content:"";position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 60% 50% at 30% 25%, rgba(22,56,92,.22), transparent 65%),
+      radial-gradient(ellipse 55% 45% at 75% 80%, rgba(24,70,74,.20), transparent 65%);}
+  #spl{overflow:visible;}
+  #splTip{position:absolute;left:50%;bottom:14vh;transform:translateX(-50%);
+    font-size:12px;letter-spacing:8px;padding-left:8px;color:#5f6b60;opacity:0;}
+
+  /* 集徽入口：底部小章 */
+  #badges{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:2;
+    font-size:12px;letter-spacing:5px;padding:12px 26px;border-radius:26px;
+    color:#c8b78a;background:#161d21;cursor:pointer;
+    transition:transform .15s ease, background .15s ease;}
+  #badges:active{transform:translateX(-50%) scale(0.95);background:#1d262b;}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="bgphoto"><div class="bgimg"></div><div class="bgveil"></div></div>
+<div id="wrap">
+  <div id="head">
+    <h1>茶 弦 记</h1>
+    <div id="sub" class="en">FOUR MOVEMENTS OF TEA</div>
+  </div>
+  <div id="row">
+    <div class="lv c1" onclick="location.href='xingcha.html'">
+      <div class="disc"><svg viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="18" r="10" stroke="#87a484" stroke-width="2"
+          stroke-linecap="round" stroke-dasharray="0.1 4.6"/>
+        <circle cx="16" cy="3.5" r="2.2" fill="#87a484"/>
+      </svg></div>
+      <div class="nm">摘 茶</div>
+      <div class="tag">一　羽</div>
+      <span class="enw en">AWAKEN</span>
+    </div>
+    <div class="lv c2" onclick="location.href='nianluo.html'">
+      <div class="disc"><svg viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="10.5" r="5" stroke="#c7b788" stroke-width="2"/>
+        <line x1="7" y1="18.5" x2="25" y2="18.5" stroke="#c7b788" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="16" cy="25.5" r="1.8" fill="#c7b788"/>
+      </svg></div>
+      <div class="nm">碾 罗</div>
+      <div class="tag">二　商</div>
+      <span class="enw en">CRUSH &amp; SIFT</span>
+    </div>
+    <div class="lv c3" onclick="location.href='fencha.html'">
+      <div class="disc"><svg viewBox="0 0 32 32" fill="none">
+        <path d="M8 12 a8 8 0 0 0 16 0" stroke="#9ab290" stroke-width="2" stroke-linecap="round"/>
+        <path d="M16 20 v6 m0 0 l-4 3 m4 -3 l4 3" stroke="#9ab290" stroke-width="2" stroke-linecap="round"/>
+      </svg></div>
+      <div class="nm">分 茶</div>
+      <div class="tag">三　角</div>
+      <span class="enw en">TEA PAINTING</span>
+    </div>
+    <div class="lv c4" onclick="location.href='chazhan.html'">
+      <div class="disc"><svg viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="11" stroke="#a0beb4" stroke-width="2"
+          stroke-linecap="round" stroke-dasharray="0.1 4.8"/>
+        <path d="M22 16 a6 6 0 1 1 -2.5 -4.9" stroke="#a0beb4" stroke-width="2" stroke-linecap="round"/>
+      </svg></div>
+      <div class="nm">击 拂</div>
+      <div class="tag">四　徵</div>
+      <span class="enw en">WHISK</span>
+    </div>
+  </div>
+</div>
+<div id="badges" onclick="location.href='badges.html'">徽 章</div>
+
+<!-- 启动加载：盏心搅茶（外环游珠　涟漪自盏心荡开　金匙回环）-->
+<div id="splash">
+  <svg id="spl" width="272" height="272" viewBox="-170 -170 340 340">
+    <g id="sOrbit" opacity="0">
+      <circle r="150" fill="none" stroke="rgba(160,190,180,.30)" stroke-width="1.5"
+        stroke-dasharray="880 62" stroke-linecap="round"/>
+      <circle cx="0" cy="-150" r="5.5" fill="#C7B788"/>
+    </g>
+    <g id="sBowl" opacity="0">
+      <circle r="96" fill="rgba(160,190,180,.13)" stroke="rgba(160,190,180,.45)" stroke-width="1.5"/>
+      <circle r="86" fill="rgba(118,148,138,.10)"/>
+      <circle class="rip" r="26" fill="none" stroke="rgba(205,225,214,.55)" stroke-width="1.5"/>
+      <circle class="rip" r="26" fill="none" stroke="rgba(205,225,214,.55)" stroke-width="1.5"/>
+      <circle class="rip" r="26" fill="none" stroke="rgba(205,225,214,.55)" stroke-width="1.5"/>
+      <circle id="sCore" r="26" fill="rgba(111,143,133,.92)"/>
+    </g>
+    <g id="sSpoon" opacity="0">
+      <path d="M22 3 L104 10 Q118 9 118 0 Q118 -9 104 -10 L22 -3 Q15 0 22 3 Z" fill="#C7B788"/>
+    </g>
+  </svg>
+  <div id="splTip" class="en">TEA CHORD</div>
+</div>
+
+<script src="./gsap.min.js"></script>
+<script>
+document.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
+// ============================================================ 启动加载（GSAP 编排）
+// 手感关键：金匙的 rotation 全程只归一个匀速 tween 所有（入场只淡入不抢转角），
+// 收束时先 kill 再接减速——同一属性绝不两个 tween 叠加，才不会忽快忽慢
+(function(){
+  const sp=document.getElementById('splash');
+  gsap.set(['#head','.lv','#badges'],{opacity:0});           // 菜单先藏，收束后揭
+  // 常转（从头就在转）：金匙匀速搅盏　游珠沿外环巡行　涟漪荡开　盏心呼吸
+  gsap.set('#sSpoon',{rotation:-45,svgOrigin:'0 0'});
+  const spin=gsap.to('#sSpoon',{rotation:'+=360',duration:2.6,ease:'none',repeat:-1,svgOrigin:'0 0'});
+  gsap.to('#sOrbit',{rotation:360,duration:9,ease:'none',repeat:-1,svgOrigin:'0 0'});
+  const rips=gsap.utils.toArray('.rip').map((r,i)=>
+    gsap.fromTo(r,{scale:1,opacity:.5,svgOrigin:'0 0'},
+      {scale:3.2,opacity:0,duration:1.9,ease:'power1.out',repeat:-1,delay:.8+i*.63}));
+  gsap.to('#sCore',{scale:1.10,svgOrigin:'0 0',duration:1.2,ease:'sine.inOut',yoyo:true,repeat:-1});
+  // 入场：只动透明度与盏的浮现，不碰金匙转角
+  gsap.fromTo('#sBowl',{opacity:0,scale:.78,svgOrigin:'0 0'},
+              {opacity:1,scale:1,duration:1.0,ease:'power3.out'});
+  gsap.fromTo('#sSpoon',{opacity:0},{opacity:1,duration:.8,ease:'power1.inOut',delay:.35});
+  gsap.fromTo('#sOrbit',{opacity:0},{opacity:1,duration:.9,delay:.55});
+  gsap.to('#splTip',{opacity:.7,duration:.8,delay:.7});
+  // 收束 → 揭出菜单：kill 常转 → 顺着当前角速度减速定格 → 盏心一记亮涟 → 缩隐、菜单浮起
+  let left=false;
+  function leave(){
+    if(left) return; left=true;
+    spin.kill(); rips.forEach(t=>t.kill());
+    const out=gsap.timeline();
+    out.to('#sSpoon',{rotation:'+=260',duration:1.1,ease:'power2.out'},0)      // 末一搅，缓缓收住
+       .to('#sCore',{scale:1.45,duration:.5,ease:'power2.out'},.2)
+       .to('#sCore',{scale:1,duration:.5,ease:'power2.inOut'},.7)
+       .to('#spl',{scale:1.05,opacity:0,transformOrigin:'50% 50%',duration:.7,ease:'power2.in'},.85)
+       .to('#splTip',{opacity:0,duration:.4},.85)
+       .to(sp,{opacity:0,duration:.45,ease:'power1.in',onComplete:()=>sp.remove()},1.15)
+       .fromTo(['#head','.lv','#badges'],{opacity:0,y:26},
+               {opacity:1,y:0,duration:.9,ease:'power3.out',stagger:.08},1.1);
+  }
+  setTimeout(leave, 2800);                                    // 展厅节奏：约 2.8s 后入席
+  sp.addEventListener('pointerdown',leave);                   // 轻触即入
+})();
+</script>
+
+<script src="./portfolio-adapter.js"></script>
+</body>
+</html>

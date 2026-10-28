@@ -47,7 +47,7 @@
   });
   // Preserve direct chapter links after local fonts have settled.
   const hash = location.hash;
-  const target = hash ? document.getElementById(hash.slice(1)) : null;
+  const target = hash ? document.getElementById(hash.slice(1))?.closest('.tea-page') : null;
   if (target?.matches('.tea-page')) {
     let interacted = false;
     const cancel = () => { interacted = true; };

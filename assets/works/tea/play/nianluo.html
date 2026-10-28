@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>碾罗　捕音粒</title>
+<style>
+  @font-face{font-family:'GenWanMin';src:url('fonts/GenWanMin2TW-M.ttf');font-display:swap;}
+  @font-face{font-family:'EBG';src:url('fonts/EBGaramond-VF.ttf');font-display:swap;}
+  /* 字级三档：12 / 24 / 44（遮罩层 58/16/12） */
+  html,body{margin:0;height:100%;background:#0d1114;overflow:hidden;
+    font-family:'GenWanMin',"Noto Serif SC",serif;color:#e9e2d2;
+    -webkit-user-select:none;user-select:none;cursor:default;-webkit-touch-callout:none;}
+  #c{display:block;width:100vw;height:100vh;touch-action:none;}
+  .mono{font-family:'EBG',serif;}
+  #back{position:fixed;top:24px;left:30px;width:42px;height:42px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;color:#c8b78a;font-size:20px;z-index:5;
+    background:#161d21;cursor:pointer;}
+  #title{position:fixed;top:26px;left:92px;font-size:24px;letter-spacing:8px;color:#e5dcc4;pointer-events:none;
+    display:flex;align-items:center;gap:12px;}
+  #sub{position:fixed;top:64px;left:94px;font-size:12px;letter-spacing:3px;color:#8a7e68;pointer-events:none;}
+  #panel{position:fixed;top:28px;right:38px;width:280px;text-align:right;pointer-events:none;}
+  #stemTxt{font-size:12px;letter-spacing:2px;color:#8a7e68;}
+  #stemBg{margin:8px 0 0 auto;width:280px;height:6px;background:#1a2429;border-radius:3px;overflow:hidden;}
+  #stemBar{height:100%;width:0%;background:linear-gradient(90deg,#7a5a2a,#d6a860);transition:width .15s;}
+  #combo{margin-top:16px;font-size:44px;letter-spacing:1px;color:#e9e2d2;}
+  #comboL{font-size:12px;letter-spacing:3px;color:#8a7e68;}
+  #foot{position:fixed;bottom:24px;left:38px;font-size:12px;letter-spacing:1px;color:#6a6152;pointer-events:none;}
+  #foot b{color:#d6a860;font-weight:400;}
+  .ov{position:fixed;top:0;right:0;bottom:0;left:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:rgba(9,13,16,.93);z-index:10;cursor:pointer;text-align:center;}
+  #start h1{font-size:58px;letter-spacing:16px;margin:0 0 6px;color:#e9e2d2;font-weight:500;}
+  #start .en{font-size:12px;letter-spacing:6px;color:#b08a4a;margin-bottom:38px;}
+  #start .how{font-size:16px;line-height:2.0;color:#b6ac97;}
+  #start .k{color:#e5dcc4;background:#243036;border-radius:6px;padding:2px 10px;margin:0 3px;font-size:16px;}
+  #start .go{margin-top:42px;font-size:12px;letter-spacing:4px;color:#1c130a;background:#d6a860;padding:14px 34px;border-radius:30px;}
+  #win{display:none;}
+  #win .wt{font-size:58px;letter-spacing:14px;color:#f0e0b8;font-weight:500;}
+  #win .ws{margin-top:12px;font-size:16px;letter-spacing:4px;color:#a08a5a;}
+  #win .wg{margin-top:40px;font-size:12px;letter-spacing:4px;color:#1c130a;background:#d6a860;padding:14px 34px;border-radius:30px;}
+  #win .wg2{margin-top:16px;font-size:12px;letter-spacing:4px;color:#c8a860;background:#161d21;padding:13px 32px;border-radius:30px;}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="back" onclick="location.href='index.html'">‹</div>
+<div id="title"><svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+    <circle cx="16" cy="10.5" r="5" stroke="#c7b788" stroke-width="2.4"/>
+    <line x1="7" y1="18.5" x2="25" y2="18.5" stroke="#c7b788" stroke-width="2.4" stroke-linecap="round"/>
+    <circle cx="16" cy="25.5" r="2" fill="#c7b788"/>
+  </svg>碾 罗</div>
+<div id="sub" class="mono">CRUSH &amp; SIFT</div>
+<div id="panel">
+  <div id="stemTxt" class="mono">声部 STEM　<span id="stemNum">0</span>/16</div>
+  <div id="stemBg"><div id="stemBar"></div></div>
+  <div id="combo" class="mono">0</div>
+  <div id="comboL" class="mono">连击 COMBO</div>
+</div>
+<div id="foot"><b>滑到位停住</b> 碾磨半秒　　扫过无效　　细末过罗＝音粒</div>
+
+<div id="start" class="ov">
+  <h1>碾 罗</h1>
+  <div class="en mono">CRUSH &amp; SIFT</div>
+  <div class="how">
+    茶团随机冒出，<span class="k">滑到位停住</span>碾磨半秒<br>
+    唯最细一粒过罗，攒成声部
+  </div>
+  <div class="go">开 始</div>
+</div>
+<div id="win" class="ov"><div class="wt">声 部 录 成</div><div class="ws">商调金石律动　已收录</div>
+  <div class="wg" onclick="event.stopPropagation();location.href='fencha.html'">下一关　分茶</div>
+  <div class="wg2">再 碾 一 段</div></div>
+
+<script>
+"use strict";
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+let W=0,H=0,DPR=1;
+let laneX0,laneX1,laneW,laneY,sieveY,trackY,trackH;
+function resize(){ DPR=Math.min(2,window.devicePixelRatio||1); W=innerWidth;H=innerHeight;
+  cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+'px';cv.style.height=H+'px';ctx.setTransform(DPR,0,0,DPR,0,0);
+  laneX0=W*0.16; laneX1=W*0.84; laneW=laneX1-laneX0; laneY=H*0.30; sieveY=H*0.52; trackY=H*0.71; trackH=76;
+  initBg(); }
+addEventListener('resize',resize);
+
+// ---- 发光 sprite ----
+function mkS(rgb){const s=32,c=document.createElement('canvas');c.width=c.height=s;const g=c.getContext('2d');
+  const gr=g.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);gr.addColorStop(0,'rgba('+rgb+',1)');gr.addColorStop(0.3,'rgba('+rgb+',0.42)');
+  gr.addColorStop(0.7,'rgba('+rgb+',0.08)');gr.addColorStop(1,'rgba('+rgb+',0)');g.fillStyle=gr;g.fillRect(0,0,s,s);return c;}
+const SP={gold:mkS('228,180,96'),copper:mkS('238,190,110'),green:mkS('140,190,86'),cream:mkS('245,240,224'),
+  ash:mkS('160,150,132'),jade:mkS('132,182,150'),dim:mkS('120,96,60')};
+function blob(sp,x,y,r,a){ctx.globalAlpha=a;ctx.drawImage(sp,x-r,y-r,r*2,r*2);}
+
+// ---- 棕色流动背景 ----
+let bgCanvas=null,bgCtx=null,bgImg=null,bw=1,bh=1;
+function initBg(){ if(!bgCanvas){bgCanvas=document.createElement('canvas');bgCtx=bgCanvas.getContext('2d');}
+  bw=150;bh=Math.max(1,Math.round(bw*H/W));bgCanvas.width=bw;bgCanvas.height=bh;bgImg=bgCtx.createImageData(bw,bh);}
+// —— 与「击拂」同一色场：冷板岩基底 + 蓝绿曜变晕（边缘）+ 远角暗琥珀回暖 ——
+function lerpRamp(ramp,v){for(let k=0;k<ramp.length-1;k++){const a=ramp[k],b=ramp[k+1];if(v<=b[0]){const f=(v-a[0])/((b[0]-a[0])||1);
+  return [a[1][0]+(b[1][0]-a[1][0])*f,a[1][1]+(b[1][1]-a[1][1])*f,a[1][2]+(b[1][2]-a[1][2])*f];}}return ramp[ramp.length-1][1];}
+const COOL=[[0,[8,13,16]],[0.5,[15,24,28]],[1,[24,38,44]]];
+const IRID=[[0,[14,26,46]],[0.26,[22,56,92]],[0.48,[24,70,74]],[0.70,[40,72,42]],[1,[80,62,26]]];
+// 碾罗没有「盏」，不做圆形中空——虹彩改从屏幕四边升起（跟屏幕形状走），中央均匀暗衬流水线
+function renderBg(t){if(!bgImg)initBg();const d=bgImg.data;
+ for(let j=0;j<bh;j++)for(let i=0;i<bw;i++){
+  const x=i/bw,y=j/bh,wx=x+0.36*Math.sin(y*5+t),wy=y+0.36*Math.cos(x*5-t*0.8);
+  let v=0.5+0.5*Math.sin(wx*4+wy*3+t*1.1)*Math.cos(wy*4-wx*2-t*0.7);if(v<0)v=0;else if(v>1)v=1;
+  const nx=Math.abs(x-0.5)*2, ny=Math.abs(y-0.5)*2;      // 0=屏幕中心 → 1=边
+  const e=Math.max(nx,ny);
+  const base=lerpRamp(COOL, v*(0.40+0.26*e));            // 整体暗、边缘微亮，无圆洞
+  let m=Math.max(0,(e-0.42)/0.58); m=m*m*(3-2*m);        // 虹彩自四边平滑升起
+  m*=(0.50+0.50*v)*0.8;
+  let cvv=e*0.5+0.30*(0.5+0.5*Math.sin(wx*6+wy*5+t*0.9))+0.17*(0.5+0.5*Math.sin((x-y)*4+t*0.3));
+  if(cvv<0)cvv=0;else if(cvv>1)cvv=1;
+  const ir=lerpRamp(IRID,cvv);
+  let r0=base[0]+(ir[0]-base[0])*m,g0=base[1]+(ir[1]-base[1])*m,b0=base[2]+(ir[2]-base[2])*m;
+  const wf=Math.max(0,nx*ny-0.30)/0.70*(0.4+0.45*v)*0.7; // 只在四角回暖（角=nx　ny 同大）
+  const idx=(j*bw+i)*4;d[idx]=r0+(96-r0)*wf;d[idx+1]=g0+(64-g0)*wf;d[idx+2]=b0+(28-b0)*wf;d[idx+3]=255;}
+ bgCtx.putImageData(bgImg,0,0);}
+
+// ---- 状态 ----
+const STEPS=16, BPM=84, beatDur=60/BPM;
+const PITCH=[293.66,329.63,392.00,440.00,523.25,440.00,392.00,329.63,   // 商调五声 两小节：拱形 + 更高的拱
+             392.00,440.00,523.25,587.33,523.25,440.00,392.00,329.63];
+const slots=new Array(STEPS).fill(null);
+let filled=0, combo=0, best=0, running=false, silent=false, won=false;
+let flash=new Array(STEPS).fill(0);       // 播放头经过时槽位闪
+let wheelX=0, wheelPulse=0, missFlash=0;
+
+// 主时钟 + 音频偏移
+let perfStart=performance.now()/1000, acOffset=0;
+function clock(){return performance.now()/1000-perfStart;}
+
+// ---- 音频 ----
+let ac=null,master=null;
+function initAudio(){ac=new (AudioContext||webkitAudioContext)();master=ac.createGain();master.gain.value=0.3;master.connect(ac.destination);
+  // 商调低音 drone
+  [146.83,220].forEach(fr=>{const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=fr;
+    g.gain.value=0.05;o.connect(g).connect(master);o.start();});}
+function goldNote(time,freq){[[1,'triangle',0.16],[2.01,'sine',0.08],[3.0,'sine',0.045]].forEach(([m,ty,amp],i)=>{
+  const o=ac.createOscillator(),g=ac.createGain();o.type=ty;o.frequency.value=freq*m;
+  g.gain.setValueAtTime(0.0001,time);g.gain.exponentialRampToValueAtTime(amp,time+0.006);
+  g.gain.exponentialRampToValueAtTime(0.0001,time+0.55-i*0.12);o.connect(g).connect(master);o.start(time);o.stop(time+0.6);});}
+function metro(time){const o=ac.createOscillator(),g=ac.createGain();o.type='square';o.frequency.value=2100;
+  g.gain.setValueAtTime(0.035,time);g.gain.exponentialRampToValueAtTime(0.0001,time+0.03);o.connect(g).connect(master);o.start(time);o.stop(time+0.04);}
+function thud(time){const o=ac.createOscillator(),g=ac.createGain();o.type='square';o.frequency.setValueAtTime(110,time);
+  o.frequency.exponentialRampToValueAtTime(44,time+0.2);g.gain.setValueAtTime(0.22,time);g.gain.exponentialRampToValueAtTime(0.0001,time+0.3);
+  o.connect(g).connect(master);o.start(time);o.stop(time+0.32);}
+function crack(time){ // 碾碎茶团：石碾脆响 + 低沉闷震
+  const o=ac.createOscillator(),g=ac.createGain();o.type='triangle';o.frequency.setValueAtTime(520,time);o.frequency.exponentialRampToValueAtTime(140,time+0.09);
+  g.gain.setValueAtTime(0.18,time);g.gain.exponentialRampToValueAtTime(0.0001,time+0.12);o.connect(g).connect(master);o.start(time);o.stop(time+0.14);
+  const o2=ac.createOscillator(),g2=ac.createGain();o2.type='square';o2.frequency.setValueAtTime(96,time);o2.frequency.exponentialRampToValueAtTime(50,time+0.15);
+  g2.gain.setValueAtTime(0.13,time);g2.gain.exponentialRampToValueAtTime(0.0001,time+0.18);o2.connect(g2).connect(master);o2.start(time);o2.stop(time+0.2);}
+function sieveTick(time){const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=1500;
+  g.gain.setValueAtTime(0.07,time);g.gain.exponentialRampToValueAtTime(0.0001,time+0.07);o.connect(g).connect(master);o.start(time);o.stop(time+0.09);}
+function scrape(time){const o=ac.createOscillator(),g=ac.createGain();o.type='triangle';o.frequency.setValueAtTime(230+Math.random()*60,time);
+  o.frequency.exponentialRampToValueAtTime(150,time+0.06);g.gain.setValueAtTime(0.05,time);g.gain.exponentialRampToValueAtTime(0.0001,time+0.08);
+  o.connect(g).connect(master);o.start(time);o.stop(time+0.1);}
+
+// ---- 调度：节拍器 + ostinato 回放 + 茶团按拍冒出 ----
+let nextBeat=0, nextBeatTime=0, nextSpawnBeat=1;
+function scheduler(){ if(!running)return;
+  while(nextBeatTime<clock()+0.25){ const step=((nextBeat%STEPS)+STEPS)%STEPS, at=nextBeatTime+acOffset;
+    if(!silent){ metro(at); if(slots[step]!=null) goldNote(at,PITCH[slots[step]]); }
+    if(!won && nextBeat>=nextSpawnBeat && !lumps.some(L=>L.state==='up')){ spawnLump(); nextSpawnBeat=nextBeat+4; }   // 每4拍一团，留空闲呼吸
+    nextBeat++; nextBeatTime+=beatDur;
+  }
+  setTimeout(scheduler,25);
+}
+
+// ---- 茶团（打地鼠）----
+// 随机冒出在未收集的位点上，带倒计时环；碾轮滑到=压住碾碎
+const lumps=[]; let lastSlot=-1;
+const HOLD=0.5, CATCH_R=30;   // 必须停在 ±30px 内、压住碾磨 0.5s 才碾碎（不是滑过就中）
+// 徽记：通关固定徽「筛茶　去滓」；彩蛋＝碾够 8 槽后冒出一颗金茶团，照常压住碾碎即得
+const GENT_NAMES={3:'筛茶　去滓',9:'续火　守温',7:'拭盏　净器'}, EGG_POOL=[9,7];
+function gainGent(i){ try{ const a=JSON.parse(localStorage.getItem('chaxian_gents')||'[]');
+  if(a.includes(i)) return false; a.push(i); localStorage.setItem('chaxian_gents',JSON.stringify(a)); return true; }catch(e){ return false; } }
+let eggMsg=null, eggPend=false, eggDone=false;
+function eggAward(){ let txt='金团已应　徽已集全';
+  for(const i of EGG_POOL){ if(gainGent(i)){ txt='彩蛋　「'+GENT_NAMES[i]+'」入匣'; break; } }
+  eggMsg={txt,life:1}; }
+function lumpWindow(){ return Math.max(1.25, 2.0 - filled*0.05); }   // 窗口 2.0s → 1.25s（要含赶路+碾磨0.5s）
+function spawnLump(){ const free=[]; for(let i=0;i<STEPS;i++) if(slots[i]==null&&i!==lastSlot) free.push(i);
+  if(!free.length){ for(let i=0;i<STEPS;i++) if(slots[i]==null) free.push(i); }
+  if(!free.length) return;
+  const slot=free[Math.floor(Math.random()*free.length)]; lastSlot=slot;
+  const gold = filled>=8 && !eggDone && !eggPend; if(gold) eggPend=true;   // 金茶团：碾够8槽后来一颗
+  lumps.push({slot, x:slotX(slot), born:clock(), window:lumpWindow(), state:'up', jig:Math.random()*10, hold:0, lastScr:0, gold}); }
+
+// ---- 粒子 ----
+// grains：碾碎后四散的茶粒。粗粒(coarse)落筛面弹跳→留下淡去；细粒(fine)过罗→落入音轨=音粒
+const grains=[], sparks=[];
+function burst(x,y,n,sp){ for(let k=0;k<n;k++){const a=Math.random()*Math.PI*2,s=1+Math.random()*3;
+  sparks.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s+1,life:1,sp});} }
+function slotX(i){return laneX0+(i+0.5)*(laneW/STEPS);}
+function crushLump(L){ L.state='done';
+  combo++; best=Math.max(best,combo); wheelPulse=1;
+  if(!silent) crack(ac.currentTime);
+  if(L.gold){ eggDone=true; eggPend=false; eggAward(); burst(L.x,laneY+8,26,SP.gold); }
+  burst(L.x,laneY+8,10,SP.gold);
+  // 茶粒四散：多数是粗粒，只有一粒最细
+  const N=13, fi=Math.floor(Math.random()*N);
+  for(let k=0;k<N;k++){ const fine=(k===fi);
+    grains.push({x:L.x+(Math.random()-0.5)*30, y:laneY+6, vx:(Math.random()-0.5)*2.4, vy:0.6+Math.random()*1.8,
+      sz: fine?1.3:2.2+Math.random()*1.8, fine, slot:L.slot, phase:'fall', bounces:0, life:1, pauseT:0, px:0, py:0, pp:0}); }
+}
+function missLump(L){ L.state='done';
+  if(L.gold) eggPend=false;                       // 金团错过＝之后还会再冒
+  combo=0; missFlash=1; if(!silent) thud(ac.currentTime);
+  burst(L.x,laneY+8,9,SP.dim); }
+function collectFine(g){ // 细粒落位=音粒入轨
+  const i=g.slot; flash[i]=1; burst(slotX(i),trackY+trackH/2,14,SP.gold);
+  if(!silent) goldNote(ac.currentTime,PITCH[i]);
+  if(slots[i]==null){ slots[i]=i; filled++;
+    if(filled>=STEPS && !won){ won=true; onWin(); } }
+}
+
+// ---- 输入：碾轮跟随手指/鼠标 ----
+function setWheel(x){ wheelX=Math.max(laneX0,Math.min(laneX1,x)); }
+cv.addEventListener('pointerdown',e=>{ if(running) setWheel(e.clientX); });
+addEventListener('pointermove',e=>{ if(running) setWheel(e.clientX); });
+
+// ---- 渲染 ----
+let prevT=0;
+function draw(){ const t=clock(); const dt=Math.min(0.05,t-prevT||0.016); prevT=t;
+  renderBg(t*0.05);
+  ctx.globalCompositeOperation='source-over'; ctx.globalAlpha=0.42; ctx.imageSmoothingEnabled=true; ctx.drawImage(bgCanvas,0,0,W,H); ctx.globalAlpha=1;
+  if(missFlash>0){ ctx.globalAlpha=missFlash*0.18; ctx.fillStyle='#3a140a'; ctx.fillRect(0,0,W,H); ctx.globalAlpha=1; missFlash-=0.05; }
+  ctx.globalCompositeOperation='lighter';
+
+  const beatF=running?t/beatDur:0, curStep=((Math.floor(beatF)%STEPS)+STEPS)%STEPS, frac=beatF-Math.floor(beatF);
+  const phX=slotX(curStep)+ (slotX((curStep+1)%STEPS)-slotX(curStep))*Math.min(1,frac) * ((curStep<STEPS-1)?1:0);
+
+  // 自动演示：碾轮追当前茶团
+  if(silent&&running&&!won){ const L=lumps.find(L=>L.state==='up'); if(L) wheelX+=(L.x-wheelX)*0.16; }
+
+  // === ① 碾槽 ===
+  ctx.globalCompositeOperation='source-over';
+  rrect(laneX0,laneY-44,laneW,88,44,'rgba(16,24,28,0.85)');
+  ctx.globalCompositeOperation='lighter';
+  labelL(laneX0,laneY-70,'① 碾槽　茶团随机冒出 → 滑到位　停住碾磨半秒');
+  for(let i=0;i<STEPS;i++){ const x=slotX(i); blob(SP.ash,x,laneY,slots[i]!=null?2.0:2.8,slots[i]!=null?0.25:0.45); }
+
+  // 茶团（打地鼠）：升起 → 滑到位「压住碾磨 0.5s」→ 碾碎；离开范围进度倒退；超时错过
+  for(const L of lumps){ if(L.state!=='up') continue;
+    const age=t-L.born, gs=Math.min(1,age/0.12), left=1-age/L.window;
+    if(age>L.window){ missLump(L); continue; }
+    const inRange = running&&!won&&gs>=1&&Math.abs(wheelX-L.x)<CATCH_R;
+    if(inRange){ L.hold+=dt;
+      // 碾磨中：细碎火花 + 轻刮擦声
+      if(t-L.lastScr>0.11){ L.lastScr=t; burst(L.x+(Math.random()-0.5)*14,laneY+8,2,SP.gold);
+        if(!silent&&ac) scrape(ac.currentTime); }
+      if(L.hold>=HOLD){ crushLump(L); continue; }
+    } else L.hold=Math.max(0,L.hold-dt*1.4);   // 离开＝进度快速倒退（必须停住，不能扫过）
+    const gp=L.hold/HOLD;                       // 碾磨进度 0→1
+    const sc=1-0.38*gp, fl=3*gp;                // 被磨得渐小渐扁
+    const jig=Math.sin(t*13+L.jig)*(1.2+gp*2.4); // 磨的时候颤得更凶
+    const bodySP = L.gold?SP.gold:SP.green;      // 金茶团（彩蛋）通体鎏金
+    blob(bodySP,L.x+jig,laneY-5+fl,10*gs*sc,0.9); blob(L.gold?SP.copper:SP.dim,L.x-6+jig,laneY+2+fl*0.5,6.5*gs*sc,0.65);
+    blob(bodySP,L.x+6+jig,laneY+1+fl*0.5,7*gs*sc,0.75); blob(SP.cream,L.x+jig,laneY-9+fl,3*gs*sc,L.gold?0.9:0.55);
+    if(L.gold){ const pu=0.5+0.5*Math.sin(t*4); blob(SP.gold,L.x+jig,laneY-4,16+5*pu,0.30); }
+    ctx.globalCompositeOperation='source-over';
+    // 外环＝剩余时间
+    ctx.beginPath(); ctx.arc(L.x,laneY-2,21,-Math.PI/2,-Math.PI/2+left*Math.PI*2);
+    ctx.strokeStyle=left<0.35?'rgba(200,90,60,0.85)':'rgba(214,168,96,0.7)'; ctx.lineWidth=2.5; ctx.stroke();
+    // 内环＝碾磨进度（压住才涨）
+    if(gp>0){ ctx.beginPath(); ctx.arc(L.x,laneY-2,14,-Math.PI/2,-Math.PI/2+gp*Math.PI*2);
+      ctx.strokeStyle='rgba(245,240,224,0.9)'; ctx.lineWidth=3; ctx.stroke(); }
+    ctx.globalCompositeOperation='lighter';
+  }
+  for(let i=lumps.length-1;i>=0;i--) if(lumps[i].state==='done') lumps.splice(i,1);
+
+  // 碾轮
+  blob(SP.copper,wheelX,laneY,16+wheelPulse*7,0.92); blob(SP.cream,wheelX,laneY,5,0.9);
+  if(wheelPulse>0)wheelPulse-=0.06;
+
+  // === ② 罗筛 ===
+  labelL(laneX0,sieveY-26,'② 罗筛　粗者留筛面　唯最细一粒过罗');
+  for(let x=laneX0;x<laneX1;x+=20) blob(SP.ash,x+5,sieveY,3,0.35);
+
+  // 茶粒：四散下落 → 粗粒弹跳留筛面淡去 / 细粒过罗飞入音轨
+  for(let i=grains.length-1;i>=0;i--){ const g=grains[i];
+    if(g.phase==='fall'){
+      g.x+=g.vx; g.y+=g.vy; g.vy+=0.16; g.vx*=0.995;
+      if(g.y>=sieveY-2){
+        if(g.fine){ g.phase='pause'; g.pauseT=t; g.y=sieveY-2;
+          if(!silent&&ac) sieveTick(ac.currentTime); }
+        else { if(g.bounces<2){ g.vy=-g.vy*(0.3+Math.random()*0.15); g.vx*=0.6; g.bounces++; g.y=sieveY-2; }
+               else { g.phase='rest'; g.y=sieveY-3; g.vx=0; g.vy=0; } }
+      }
+    } else if(g.phase==='pause'){                    // 细粒在筛孔上挤一下 → 钻过去
+      if(t-g.pauseT>0.16){ g.phase='through'; g.px=g.x; g.py=g.y; g.pp=0; }
+    } else if(g.phase==='through'){                  // 过罗后直落音轨位点
+      g.pp+=0.035; const e=g.pp*g.pp*(3-2*g.pp);
+      g.x=g.px+(slotX(g.slot)-g.px)*e; g.y=g.py+(trackY+trackH/2-g.py)*e;
+      if(g.pp>=1){ collectFine(g); grains.splice(i,1); continue; }
+    } else if(g.phase==='rest'){                     // 粗粒留在筛面淡去
+      g.life-=0.012; if(g.life<=0){ grains.splice(i,1); continue; }
+    }
+    if(g.fine){ blob(SP.cream,g.x,g.y,g.sz+1.2,0.95); blob(SP.gold,g.x,g.y,g.sz+3,0.5); }
+    else blob(SP.dim,g.x,g.y,g.sz,(g.phase==='rest'?g.life:1)*0.75);
+  }
+
+  // === ③ 商调声部音轨 ===
+  ctx.globalCompositeOperation='source-over';
+  rrect(laneX0,trackY,laneW,trackH,10,'rgba(13,20,24,0.85)');
+  if(filled>0){ ctx.fillStyle='rgba(214,168,96,'+(0.05+0.03*Math.sin(t*3))+')'; rrpath(laneX0,trackY,laneW*(filled/STEPS),trackH,10); ctx.fill(); }
+  ctx.globalCompositeOperation='lighter';
+  labelL(laneX0,trackY-26,'③ 商调声部　音粒落位（满十六拍　两小节 → 循环）');
+  for(let i=1;i<STEPS;i++){ const x=laneX0+i*(laneW/STEPS); ctx.globalCompositeOperation='source-over'; ctx.fillStyle='rgba(160,150,132,0.2)'; ctx.fillRect(x,trackY+8,1,trackH-16); ctx.globalCompositeOperation='lighter'; }
+  for(let i=0;i<STEPS;i++){ if(slots[i]==null)continue; const x=slotX(i),y=trackY+trackH/2, fl=flash[i];
+    blob(SP.gold,x,y,7+fl*6,0.95); blob(SP.cream,x,y,3+fl*3,0.9); if(flash[i]>0)flash[i]-=0.06; }
+  // 播放头
+  ctx.globalCompositeOperation='source-over'; ctx.fillStyle='rgba(245,240,224,0.7)'; ctx.fillRect(phX-1,trackY-4,2,trackH+8); ctx.globalCompositeOperation='lighter';
+  if(running){ const ph=Math.floor(beatF)%STEPS; if(slots[ph]!=null && frac<0.12) flash[ph]=1; }
+
+  // 火花
+  for(let i=sparks.length-1;i>=0;i--){ const s=sparks[i]; s.x+=s.vx;s.y+=s.vy;s.vy+=0.15;s.vx*=0.96;s.life-=0.03;
+    if(s.life<=0){sparks.splice(i,1);continue;} blob(s.sp,s.x,s.y,3*s.life,s.life*0.9); }
+
+  // 彩蛋入匣提示（淡入淡出）
+  if(eggMsg){ eggMsg.life-=0.006;
+    if(eggMsg.life<=0) eggMsg=null;
+    else { ctx.globalCompositeOperation='source-over'; ctx.globalAlpha=Math.min(0.95,eggMsg.life*1.6);
+      ctx.fillStyle='#e9e2d2'; ctx.font='20px "GenWanMin",serif'; ctx.textAlign='center';
+      ctx.fillText(eggMsg.txt, W/2, H*0.30); ctx.textAlign='left'; ctx.globalAlpha=1;
+      ctx.globalCompositeOperation='lighter'; } }
+
+  // HUD 更新
+  document.getElementById('stemBar').style.width=(filled/STEPS*100)+'%';
+  document.getElementById('stemNum').textContent=filled;
+  document.getElementById('combo').textContent=combo;
+  requestAnimationFrame(draw);
+}
+function rrpath(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+function rrect(x,y,w,h,r,fill){ctx.fillStyle=fill;rrpath(x,y,w,h,r);ctx.fill();}
+function labelL(x,y,txt){ctx.globalCompositeOperation='source-over';ctx.fillStyle='rgba(138,126,104,0.9)';ctx.font='12px "GenWanMin",serif';ctx.fillText(txt,x,y);ctx.globalCompositeOperation='lighter';}
+
+// ---- 启动 / 胜利 ----
+function begin(){ if(running)return; if(!ac)initAudio(); ac.resume(); running=true;
+  acOffset=ac.currentTime-clock(); nextBeat=0; nextBeatTime=clock()+0.3; nextSpawnBeat=1;
+  document.getElementById('start').style.display='none'; scheduler(); }
+function onWin(){ burst(W/2,H/2,60,SP.gold);
+  const ws=document.querySelector('#win .ws');
+  if(ws) ws.textContent = gainGent(3) ? '商调金石律动　得徽「筛茶　去滓」' : '商调金石律动　已收录';
+  const el=document.getElementById('win'); if(el)el.style.display='flex'; }
+function restart(){ won=false; filled=0; combo=0; for(let i=0;i<STEPS;i++){slots[i]=null;flash[i]=0;}
+  eggPend=false; eggDone=false; eggMsg=null;
+  lumps.length=0; grains.length=0; nextSpawnBeat=nextBeat+1; lastSlot=-1;
+  const el=document.getElementById('win'); if(el)el.style.display='none'; }
+document.getElementById('start').addEventListener('click',begin);
+document.getElementById('win').addEventListener('click',()=>{ if(won)restart(); });
+addEventListener('keydown',e=>{ if(e.code==='Space'||e.code==='Enter'){ e.preventDefault(); if(won)restart(); else if(!running)begin(); }});
+if(location.search.indexOf('auto')>=0){ silent=true; setTimeout(begin,300); }
+document.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});   // iPad：禁掉页面滚动/回弹
+
+resize(); requestAnimationFrame(draw);
+</script>
+
+<script src="./portfolio-adapter.js"></script>
+</body>
+</html>

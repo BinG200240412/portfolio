@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<title>徽章</title>
+<style>
+  @font-face{font-family:'GenWanMin';src:url('fonts/GenWanMin2TW-M.ttf');font-display:swap;}
+  @font-face{font-family:'EBG';src:url('fonts/EBGaramond-VF.ttf');font-display:swap;}
+  /* 字级三档：12 / 22 / 42 */
+  html,body{margin:0;min-height:100%;background:#0d1114;
+    font-family:'GenWanMin',"Noto Serif SC",serif;color:#e9e2d2;
+    -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+    -webkit-tap-highlight-color:transparent;}
+  body{overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  .en{font-family:'EBG',serif;}
+  #bg{position:fixed;top:0;right:0;bottom:0;left:0;z-index:0;
+    background:
+      radial-gradient(60% 80% at 14% 80%, rgba(22,56,92,0.30), transparent 60%),
+      radial-gradient(52% 72% at 88% 16%, rgba(24,70,74,0.28), transparent 60%),
+      radial-gradient(46% 60% at 90% 92%, rgba(96,64,28,0.20), transparent 62%),
+      #0a0e11;}
+  #back{position:fixed;top:24px;left:30px;width:42px;height:42px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;color:#c8b78a;font-size:20px;z-index:5;
+    background:#161d21;cursor:pointer;}
+  #head{position:relative;z-index:1;text-align:center;padding-top:clamp(26px,4.4vh,44px);}
+  /* 层级一：题名 */
+  h1{font-size:clamp(28px,4.2vh,42px);letter-spacing:.55em;padding-left:.55em;margin:0;
+    color:#ece5d2;font-weight:500;}
+  #cnt{margin-top:12px;font-size:12px;letter-spacing:5px;padding-left:5px;color:#8a7e68;}
+  .sec{position:relative;z-index:1;text-align:center;
+    margin-top:clamp(24px,4.2vh,44px);font-size:22px;letter-spacing:10px;color:#c8b78a;}
+  .sec .se{display:block;margin-top:6px;font-size:12px;letter-spacing:4px;color:#6f6452;}
+  .grid{position:relative;z-index:1;display:grid;justify-content:center;
+    column-gap:clamp(18px,2.8vw,40px);row-gap:clamp(22px,3.6vh,40px);
+    margin-top:clamp(18px,3.2vh,32px);}
+  #ggrid{grid-template-columns:repeat(6,auto);}
+  #hgrid{grid-template-columns:repeat(5,auto);padding-bottom:70px;}
+
+  /* ================= 金属章牌 ================= */
+  .medal-scene{perspective:900px;display:flex;flex-direction:column;align-items:center;gap:12px;position:relative;}
+  /* touch-action:pan-y——竖划让给页面滚动（否则牌铺满屏幕页面划不动），横拖=转牌 */
+  .medal{--w:clamp(116px,13.5vw,164px);position:relative;width:var(--w);
+    transform-style:preserve-3d;will-change:transform;cursor:grab;touch-action:pan-y;
+    filter:drop-shadow(0 18px 30px rgba(0,0,0,.5)) drop-shadow(0 3px 8px rgba(0,0,0,.4));}
+  .medal:active{cursor:grabbing;}
+  /* 金属框：拉丝 + 铜鎏金锥形渐变（--fa 实时驱动） */
+  .frame{--fa:115;position:relative;padding:6px 6px 0 6px;border-radius:12px;overflow:hidden;
+    background:
+      repeating-linear-gradient(115deg,
+        rgba(255,255,255,.045) 0px, rgba(255,255,255,.045) 1px,
+        transparent 1px, transparent 3px),
+      conic-gradient(from calc(var(--fa)*1deg) at 50% 42%,
+        #5c4f33 0%, #c7b788 12%, #f2e8c9 18%, #c7b788 26%, #6b5c3c 42%,
+        #8a7a50 55%, #4a3f28 68%, #a8975f 84%, #5c4f33 100%);}
+  .frame::after{content:"";position:absolute;top:0;right:0;bottom:0;left:0;border-radius:12px;pointer-events:none;
+    box-shadow:inset 0 1px 0 rgba(255,250,230,.35), inset 0 -1px 0 rgba(0,0,0,.5);}
+  /* 牌面垫深底 + 插画外扩 1px：堵住面板与金属框之间的亚像素缝（否则鎏金亮段会透成一条白线） */
+  .face{position:relative;border-radius:7px;overflow:hidden;background:#10171a;
+    box-shadow:inset 0 2px 6px rgba(0,0,0,.6), inset 0 -1px 2px rgba(0,0,0,.4);}
+  .face img{display:block;width:calc(100% + 2px);margin-left:-1px;
+    aspect-ratio:272/480;object-fit:cover;pointer-events:none;}
+  .grain{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none;mix-blend-mode:overlay;opacity:.16;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size:140px;}
+  /* 镜面高光带 + 锐亮芯 */
+  .sheen{position:absolute;top:-60%;right:-60%;bottom:-60%;left:-60%;mix-blend-mode:screen;opacity:0;pointer-events:none;
+    will-change:transform,opacity;
+    background:linear-gradient(118deg, transparent 40%, rgba(255,248,225,.07) 46%,
+      rgba(255,250,235,.22) 50%, rgba(255,248,225,.07) 54%, transparent 60%);}
+  /* 高光芯：宽渐变软带（太细太实会显得刻意），峰值压低、两侧缓落 */
+  .sheen::after{content:"";position:absolute;top:0;right:0;bottom:0;left:0;
+    background:linear-gradient(118deg, transparent 42%,
+      rgba(255,255,250,.10) 46%, rgba(255,255,250,.22) 50%,
+      rgba(255,255,250,.10) 54%, transparent 58%);}
+  /* 静置微光：数秒一次缓慢扫过 */
+  .idle-sheen{position:absolute;top:-60%;right:-60%;bottom:-60%;left:-60%;mix-blend-mode:screen;pointer-events:none;will-change:transform;
+    background:linear-gradient(118deg, transparent 42%, rgba(255,248,228,.10) 50%, transparent 58%);
+    transform:translate3d(-70%,-30%,0);animation:idleSweep 9s ease-in-out infinite;}
+  @keyframes idleSweep{0%{transform:translate3d(-70%,-30%,0);}22%{transform:translate3d(70%,30%,0);}
+    100%{transform:translate3d(70%,30%,0);}}
+  .medal.holding .idle-sheen{animation-play-state:paused;opacity:0;transition:opacity .3s;}
+  /* 铭牌：刻字压痕 */
+  .nameplate{position:relative;margin:6px 0;padding:7px 0 6px;text-align:center;border-radius:4px;
+    background:linear-gradient(175deg,#a8975f 0%,#6b5c3c 30%,#55482e 55%,#7d6d47 100%);
+    box-shadow:inset 0 1px 0 rgba(255,250,230,.3), inset 0 -1px 1px rgba(0,0,0,.5);
+    font-size:12px;letter-spacing:3px;padding-left:3px;color:rgba(20,16,8,.85);
+    text-shadow:0 1px 0 rgba(255,245,215,.25);white-space:nowrap;}
+  .status{font-size:12px;letter-spacing:3px;color:rgba(199,183,136,.55);}
+
+  /* 圆形章牌（隐藏款　茶百戏） */
+  .medal.round{--w:clamp(104px,11.5vw,144px);}
+  .medal.round .frame{border-radius:50%;padding:6px;}
+  .medal.round .frame::after{border-radius:50%;}
+  .medal.round .face{border-radius:50%;background:#0e1518;}
+  .medal.round .face canvas{display:block;width:100%;aspect-ratio:1/1;pointer-events:none;}
+  /* iOS 14 无 aspect-ratio：用 padding 撑出 1:1，canvas 绝对铺满 */
+  @supports not (aspect-ratio: 1 / 1){
+    .medal.round .face::before{content:"";display:block;padding-bottom:100%;}
+    .medal.round .face canvas{position:absolute;top:0;left:0;height:100%;}
+  }
+
+  /* ============ 未获得态 ============ */
+  .locked .medal{cursor:default;
+    filter:drop-shadow(0 12px 22px rgba(0,0,0,.4)) drop-shadow(0 2px 6px rgba(0,0,0,.3));}
+  .locked .frame{background:
+      repeating-linear-gradient(115deg, rgba(255,255,255,.02) 0px, rgba(255,255,255,.02) 1px,
+        transparent 1px, transparent 3px),
+      linear-gradient(160deg,#3a3f42 0%,#24282b 45%,#1a1e21 70%,#2e3235 100%);}
+  .locked .frame::after{box-shadow:inset 0 1px 0 rgba(255,255,255,.06), inset 0 -1px 0 rgba(0,0,0,.5);}
+  .locked .face img{filter:grayscale(1) brightness(.3) contrast(.9);}
+  .locked .grain{opacity:.08;}
+  .locked .sheen,.locked .idle-sheen{display:none;}
+  .locked .nameplate{background:linear-gradient(175deg,#34383b 0%,#24282a 55%,#2b2f32 100%);
+    color:rgba(140,150,148,.5);text-shadow:none;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.05), inset 0 -1px 1px rgba(0,0,0,.5);}
+  .locked .status{color:rgba(160,190,180,.3);}
+
+  /* ================= 文化注（放大茶卡 + 侧栏注文） ================= */
+  #lore{position:fixed;top:0;right:0;bottom:0;left:0;z-index:15;display:none;flex-direction:row;gap:clamp(48px,6vw,90px);
+    align-items:center;justify-content:center;background:rgba(9,13,16,.94);cursor:pointer;
+    padding:0 60px;}
+  #loreMedal{cursor:default;}
+  #loreMedal .medal{--w:clamp(210px,24vw,320px);}
+  #loreMedal .medal.round{--w:clamp(200px,22vw,290px);}
+  #loreMedal .status{display:none;}
+  #loreSide{max-width:460px;text-align:left;}
+  #loreName{font-size:22px;letter-spacing:10px;color:#e9e2d2;}
+  #loreEn{margin-top:10px;font-size:12px;letter-spacing:6px;color:#8a7a50;}
+  #loreTxt{margin-top:30px;font-size:16px;line-height:2.15;letter-spacing:1px;color:#b6ac97;}
+  #loreTip{margin-top:40px;font-size:12px;letter-spacing:4px;color:#5a5244;}
+
+  /* ================= 启匣（入场仪式） ================= */
+  #ckov{position:fixed;top:0;right:0;bottom:0;left:0;z-index:20;background:#0d1114;
+    display:flex;align-items:center;justify-content:center;perspective:1200px;}
+  #ckov::before{content:"";position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 70% 55% at 30% 20%, rgba(22,56,92,.30), transparent 65%),
+      radial-gradient(ellipse 60% 50% at 75% 80%, rgba(24,70,74,.28), transparent 65%);}
+  .casket{position:relative;width:min(640px,72vw);height:min(370px,44vh);transform-style:preserve-3d;}
+  .ck-glow{position:absolute;left:50%;top:56%;width:120%;height:140%;
+    transform:translate(-50%,-50%) scale(.4);opacity:0;pointer-events:none;will-change:transform,opacity;
+    background:radial-gradient(ellipse 50% 42% at 50% 50%,
+      rgba(199,183,136,.50), rgba(199,183,136,.14) 45%, transparent 70%);}
+  /* 匣＝双线描边 + 纹样（线稿在 SVG 里）；盖 42% / 身 58%，盖以缝为轴翻开 */
+  .ck-lid{position:absolute;left:0;top:0;width:100%;height:42%;
+    transform-origin:50% 100%;will-change:transform,opacity;}
+  .ck-base{position:absolute;left:0;bottom:0;width:100%;height:58%;will-change:opacity;}
+  .ck-lid svg,.ck-base svg{display:block;width:100%;height:100%;overflow:hidden;}
+  .ck-seaml{position:absolute;left:6%;top:42%;width:88%;height:2px;margin-top:-1px;
+    background:linear-gradient(90deg,transparent,#f0eee2 18%,#fff 50%,#f0eee2 82%,transparent);
+    transform:scaleX(0);opacity:0;will-change:transform,opacity;pointer-events:none;}
+  .ck-seamg{position:absolute;left:2%;top:42%;width:96%;height:26px;margin-top:-13px;
+    background:radial-gradient(ellipse 50% 50% at 50% 50%, rgba(199,183,136,.7), transparent 70%);
+    transform:scaleX(.2);opacity:0;will-change:transform,opacity;pointer-events:none;}
+  .ck-lock{position:absolute;left:50%;top:42%;width:72px;height:72px;margin:-36px 0 0 -36px;
+    display:flex;align-items:center;justify-content:center;touch-action:none;cursor:grab;
+    will-change:transform,opacity;z-index:5;}
+  .ck-lock:active{cursor:grabbing;}
+  .ck-lockg{position:absolute;top:-24px;right:-24px;bottom:-24px;left:-24px;pointer-events:none;opacity:.4;will-change:transform,opacity;
+    background:radial-gradient(circle, rgba(199,183,136,.35), transparent 65%);}
+  /* 方印锁：圆角方扣 + 满金圆心 */
+  .ck-clasp{position:absolute;width:46px;height:46px;border:1.5px solid #d8c79a;
+    border-radius:10px;background:#0d1114;box-shadow:0 0 0 3px #0d1114;}
+  .ck-pin{position:absolute;width:17px;height:17px;border-radius:50%;background:#e9d9a8;}
+  .ck-hint{position:absolute;left:50%;bottom:-58px;transform:translateX(-50%);
+    display:flex;align-items:center;gap:14px;font-size:12px;letter-spacing:5px;padding-left:5px;
+    color:rgba(240,238,226,.55);white-space:nowrap;will-change:transform,opacity;}
+  .ck-hint .arr{display:block;width:16px;height:1px;background:#8a7a50;position:relative;
+    animation:ckbr 2.2s ease-in-out infinite;}
+  .ck-hint .arr::after{content:"";position:absolute;top:-2.5px;width:6px;height:6px;
+    border-top:1px solid #8a7a50;}
+  .ck-hint .arr.l::after{left:-1px;border-left:1px solid #8a7a50;transform:rotate(-45deg);}
+  .ck-hint .arr.r::after{right:-1px;border-right:1px solid #8a7a50;transform:rotate(45deg);}
+  @keyframes ckbr{0%,100%{opacity:.35}50%{opacity:.9}}
+
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="back" onclick="location.href='index.html'">‹</div>
+<div id="head">
+  <h1>徽 章</h1>
+  <div id="cnt" class="en"></div>
+</div>
+<div class="sec">十二茶先生<span class="se en">TWELVE TEA MASTERS</span></div>
+<div id="ggrid" class="grid"></div>
+<div class="sec">隐藏款　茶百戏<span class="se en">HIDDEN   TEA PLAY</span></div>
+<div id="hgrid" class="grid"></div>
+
+<!-- 文化注：轻触章牌 → 放大茶卡（可转看反光）+ 侧栏注文 -->
+<div id="lore" onclick="this.style.display='none'">
+  <div id="loreMedal" onclick="event.stopPropagation()"></div>
+  <div id="loreSide">
+    <div id="loreName"></div>
+    <div id="loreEn" class="en"></div>
+    <div id="loreTxt"></div>
+    <div id="loreTip">轻 触 空 白 处　收 起</div>
+  </div>
+</div>
+
+<!-- 启匣：抽象线匣 + 拨锁开盖，开毕揭出章牌墙 -->
+<div id="ckov">
+  <div class="casket">
+    <div class="ck-glow" id="ckGlow"></div>
+    <div class="ck-base" id="ckBase">
+      <svg viewBox="0 0 640 214" preserveAspectRatio="none" fill="none">
+        <!-- 双线匣身 -->
+        <path d="M24 6 H616 V174 Q616 206 584 206 H56 Q24 206 24 174 Z"
+          stroke="rgba(216,199,154,.85)" stroke-width="1.5"/>
+        <path d="M33 15 H607 V171 Q607 197 581 197 H59 Q33 197 33 171 Z"
+          stroke="rgba(199,183,136,.38)" stroke-width="1"/>
+        <!-- 海浪角纹（左右各两叠） -->
+        <g stroke="rgba(199,183,136,.5)" stroke-width="1.2">
+          <path d="M40 197 A46 46 0 0 1 132 197 M52 197 A34 34 0 0 1 120 197 M64 197 A22 22 0 0 1 108 197 M76 197 A10 10 0 0 1 96 197"/>
+          <path d="M120 197 A34 34 0 0 1 188 197 M132 197 A22 22 0 0 1 176 197 M144 197 A10 10 0 0 1 164 197"/>
+          <path d="M508 197 A46 46 0 0 1 600 197 M520 197 A34 34 0 0 1 588 197 M532 197 A22 22 0 0 1 576 197 M544 197 A10 10 0 0 1 564 197"/>
+          <path d="M452 197 A34 34 0 0 1 520 197 M464 197 A22 22 0 0 1 508 197 M476 197 A10 10 0 0 1 496 197"/>
+        </g>
+        <!-- 中央十字菱点 -->
+        <g fill="rgba(199,183,136,.7)">
+          <rect x="317" y="141" width="5" height="5" transform="rotate(45 319.5 143.5)"/>
+          <rect x="317" y="129" width="5" height="5" transform="rotate(45 319.5 131.5)"/>
+          <rect x="317" y="153" width="5" height="5" transform="rotate(45 319.5 155.5)"/>
+          <rect x="305" y="141" width="5" height="5" transform="rotate(45 307.5 143.5)"/>
+          <rect x="329" y="141" width="5" height="5" transform="rotate(45 331.5 143.5)"/>
+        </g>
+      </svg>
+    </div>
+    <div class="ck-lid" id="ckLid">
+      <svg viewBox="0 0 640 156" preserveAspectRatio="none" fill="none">
+        <!-- 双线匣盖 -->
+        <path d="M24 156 V36 Q24 8 52 8 H588 Q616 8 616 36 V156"
+          stroke="rgba(216,199,154,.85)" stroke-width="1.5"/>
+        <path d="M33 156 V41 Q33 17 57 17 H583 Q607 17 607 41 V156"
+          stroke="rgba(199,183,136,.38)" stroke-width="1"/>
+        <!-- 祥云（左上　右中） -->
+        <g stroke="rgba(199,183,136,.5)" stroke-width="1.2" stroke-linecap="round">
+          <path d="M96 66 H208 Q220 66 220 56 T208 46 H160"/>
+          <path d="M118 82 H196"/>
+          <path d="M132 52 H180"/>
+          <path d="M556 96 H444 Q432 96 432 106 T444 116 H492"/>
+          <path d="M470 130 H540"/>
+        </g>
+        <!-- 缘侧缀点 -->
+        <g fill="rgba(199,183,136,.6)">
+          <circle cx="44" cy="48" r="2.2"/><circle cx="44" cy="62" r="1.4"/>
+          <circle cx="596" cy="48" r="2.2"/><circle cx="596" cy="62" r="1.4"/>
+        </g>
+      </svg>
+    </div>
+    <div class="ck-seamg" id="ckSeamG"></div>
+    <div class="ck-seaml" id="ckSeamL"></div>
+    <div class="ck-lock" id="ckLock">
+      <div class="ck-lockg" id="ckLockG"></div>
+      <div class="ck-clasp"></div>
+      <div class="ck-pin"></div>
+    </div>
+    <div class="ck-hint" id="ckHint"><span class="arr l"></span>拨 锁　启 匣<span class="arr r"></span></div>
+  </div>
+</div>
+
+<script src="./gsap.min.js"></script>
+<script src="./patterns.js"></script>
+<script>
+"use strict";
+// 集徽页：金属章牌（触之可鉴——按住轻转，反光随倾斜移动）
+let gents=[], hidden=[];
+try{ gents=JSON.parse(localStorage.getItem('chaxian_gents')||'[]'); }catch(e){}
+try{ hidden=JSON.parse(localStorage.getItem('chaxian_badges')||'[]'); }catch(e){}
+if(location.search.indexOf('all')>=0){ gents=GENTS.map((_,i)=>i); hidden=BAIXI.map((_,i)=>i); }
+
+const DPR=Math.min(2,window.devicePixelRatio||1), CS=190;
+const GA=Math.PI*(3-Math.sqrt(5));
+function sprite(rgb){ const s=32,c=document.createElement('canvas'); c.width=c.height=s;
+  const g=c.getContext('2d'), grd=g.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);
+  grd.addColorStop(0,'rgba('+rgb+',1)'); grd.addColorStop(0.30,'rgba('+rgb+',0.42)');
+  grd.addColorStop(0.66,'rgba('+rgb+',0.08)'); grd.addColorStop(1,'rgba('+rgb+',0)');
+  g.fillStyle=grd; g.fillRect(0,0,s,s); return c; }
+const WHT=sprite('246,243,232'), TEA=sprite('74,168,66'), TEAB=sprite('150,216,104');
+function drawHidden(cnv, idx, has, size){
+  const S=size||CS;
+  cnv.width=S*DPR; cnv.height=S*DPR;
+  const g=cnv.getContext('2d'); g.setTransform(DPR*S/CS,0,0,DPR*S/CS,0,0);
+  const c=CS/2, dR=CS*0.44, dim=has?1:0.30;
+  const bl=(sp,x,y,r,a)=>{ g.globalAlpha=a; g.drawImage(sp,x-r,y-r,r*2,r*2); };
+  g.globalCompositeOperation='lighter';
+  for(let i=0;i<300;i++){ const fr=Math.sqrt((i+0.5)/300), th=i*GA;
+    bl(WHT, c+Math.cos(th)*dR*fr, c+Math.sin(th)*dR*fr,
+       0.7+0.9*fr*fr, (0.10+0.42*Math.pow(fr,2.1))*dim); }
+  if(has) for(const q of BAIXI[idx].p){
+    const x=c+q[0]*dR, y=c+q[1]*dR;
+    if(q[2]===1) bl(TEAB,x,y,1.3,0.92); else bl(TEA,x,y,1.05,0.62); }
+}
+
+// —— 章牌工厂 ——（结构：scene>medal>frame>(face+nameplate)，圆牌无铭牌）
+function buildMedal(opts){ // {round, has, img, canvasIdx, plate, statusTxt}
+  const scene=document.createElement('div');
+  scene.className='medal-scene'+(opts.has?'':' locked');
+  scene.dataset.tilt = opts.has? 13 : 2;
+  const medal=document.createElement('div'); medal.className='medal'+(opts.round?' round':'');
+  const frame=document.createElement('div'); frame.className='frame';
+  const face=document.createElement('div'); face.className='face';
+  if(opts.img){ const im=document.createElement('img'); im.src=opts.img; im.draggable=false; face.appendChild(im); }
+  if(opts.canvasIdx!=null){ const cv=document.createElement('canvas'); face.appendChild(cv);
+    drawHidden(cv, opts.canvasIdx, opts.has, opts.bigCS); }
+  const grain=document.createElement('div'); grain.className='grain'; face.appendChild(grain);
+  const sheen=document.createElement('div'); sheen.className='sheen'; face.appendChild(sheen);
+  const idle=document.createElement('div'); idle.className='idle-sheen';
+  idle.style.animationDelay=(-Math.random()*9).toFixed(1)+'s'; face.appendChild(idle);
+  frame.appendChild(face);
+  if(!opts.round){ const np=document.createElement('div'); np.className='nameplate';
+    np.textContent=opts.plate; frame.appendChild(np); }
+  medal.appendChild(frame); scene.appendChild(medal);
+  const st=document.createElement('div'); st.className='status'+(opts.enFont?' en':'');
+  st.textContent=opts.statusTxt; scene.appendChild(st);
+  attachTilt(scene, medal, frame, sheen, opts.has);
+  // 轻触（位移<14px）＝看文化注；拖动＝转牌看反光，二者共存
+  if(opts.has && opts.onLore){
+    let downXY=null;
+    medal.addEventListener('pointerdown',e=>{ downXY=[e.clientX,e.clientY]; });
+    medal.addEventListener('pointerup',e=>{
+      if(downXY && Math.hypot(e.clientX-downXY[0],e.clientY-downXY[1])<14) opts.onLore(); });
+  }
+  return scene;
+}
+// 文化注：左＝放大茶卡（真章牌，可转看反光），右＝注文
+function showLore(o){ // {round, img|canvasIdx, plate, name, en, txt}
+  const holder=document.getElementById('loreMedal'); holder.innerHTML='';
+  holder.appendChild(buildMedal({ round:o.round, has:true, img:o.img, canvasIdx:o.canvasIdx,
+    plate:o.plate, statusTxt:'', bigCS:o.round?400:0 }));
+  document.getElementById('loreName').textContent=o.name;
+  document.getElementById('loreEn').textContent=o.en;
+  document.getElementById('loreTxt').textContent=o.txt;
+  document.getElementById('lore').style.display='flex';
+}
+
+// —— 倾斜 + 移动反光（GSAP quickTo，move 里零布局查询零新建 tween）——
+const clamp1=gsap.utils.clamp(-1,1);
+function attachTilt(scene, medal, frame, sheen, has){
+  const MAX=parseFloat(scene.dataset.tilt);
+  const dur={duration:0.45, ease:"power3.out"};
+  const toRX=gsap.quickTo(medal,"rotationX",dur), toRY=gsap.quickTo(medal,"rotationY",dur);
+  const toFA=gsap.quickTo(frame,"--fa",dur);
+  let toSX=null,toSY=null,toSO=null;
+  if(has){ toSX=gsap.quickTo(sheen,"xPercent",dur); toSY=gsap.quickTo(sheen,"yPercent",dur);
+    toSO=gsap.quickTo(sheen,"opacity",{duration:0.3,ease:"power2.out"}); }
+  let rect=null;
+  function drive(e){
+    const nx=clamp1((e.clientX-(rect.left+rect.width/2))/(rect.width/2));
+    const ny=clamp1((e.clientY-(rect.top+rect.height/2))/(rect.height/2));
+    toRY(nx*MAX); toRX(-ny*MAX);
+    toFA(115+nx*50-ny*22);
+    if(has){ toSX(nx*26); toSY(ny*26);
+      toSO(0.35+Math.min(1,Math.hypot(nx,ny))*0.45); }
+  }
+  medal.addEventListener("pointerdown",e=>{
+    rect=medal.getBoundingClientRect(); medal.setPointerCapture(e.pointerId);
+    medal.classList.add("holding");
+    gsap.to(medal,{scale:0.975,duration:0.35,ease:"power2.out"});
+    drive(e); });
+  medal.addEventListener("pointermove",e=>{ if(medal.classList.contains("holding")) drive(e); });
+  function release(){
+    if(!medal.classList.contains("holding")) return;
+    medal.classList.remove("holding");
+    const back={duration:1.1, ease:"elastic.out(1,0.55)"};
+    gsap.to(medal,{rotationX:0,rotationY:0,scale:1,...back});
+    gsap.to(frame,{"--fa":115,...back});
+    if(has){ gsap.to(sheen,{xPercent:0,yPercent:0,...back});
+      gsap.to(sheen,{opacity:0,duration:0.8,ease:"power2.out"}); }
+  }
+  medal.addEventListener("pointerup",release);
+  medal.addEventListener("pointercancel",release);
+}
+
+const gg=document.getElementById('ggrid'), hg=document.getElementById('hgrid');
+function render(){
+  gg.innerHTML=''; hg.innerHTML='';
+  GENTS.forEach((b,i)=>{
+    const has=gents.includes(i);
+    gg.appendChild(buildMedal({ round:false, has, img:'gents/g'+i+'.png',
+      plate: has? b.n : '未 启', statusTxt: has? b.en : '—', enFont:true,
+      onLore:()=>showLore({round:false, img:'gents/g'+i+'.png', plate:b.n,
+        name:b.n, en:b.en, txt:GENT_LORE[i]}) }));
+  });
+  BAIXI.forEach((b,i)=>{
+    const has=hidden.includes(i);
+    hg.appendChild(buildMedal({ round:true, has, canvasIdx:i,
+      statusTxt: has? b.n : '未 得', enFont:false,
+      onLore:()=>showLore({round:true, canvasIdx:i,
+        name:'茶百戏　'+b.n, en:b.en, txt:BAIXI_LORE[i]}) }));
+  });
+  document.getElementById('cnt').textContent='先生 '+gents.length+' / '+GENTS.length+'　　隐藏 '+hidden.length+' / '+BAIXI.length;
+}
+render();
+if(location.hash==='#hidden') setTimeout(()=>window.scrollTo(0,document.body.scrollHeight),300);
+// 调试：?lore=N 直接看第 N 枚先生的文化注（N>=12 看隐藏款 N-12）
+const loreM=location.search.match(/lore=(\d+)/);
+if(loreM){ const i=+loreM[1];
+  if(i<12) showLore({round:false, img:'gents/g'+i+'.png', plate:GENTS[i].n,
+    name:GENTS[i].n, en:GENTS[i].en, txt:GENT_LORE[i]});
+  else showLore({round:true, canvasIdx:i-12,
+    name:'茶百戏　'+BAIXI[i-12].n, en:BAIXI[i-12].en, txt:BAIXI_LORE[i-12]}); }
+
+// ================= 启匣（frontend-design 原型移植：拨锁→缝透光→翻盖→金光→章牌墙升起）=================
+(function(){
+  const ov=document.getElementById('ckov');
+  if(location.search.indexOf('nobox')>=0 || location.hash==='#hidden'){ ov.remove(); return; }
+  const lock=document.getElementById('ckLock'), lockG=document.getElementById('ckLockG'),
+        lid=document.getElementById('ckLid'), base=document.getElementById('ckBase'),
+        seamL=document.getElementById('ckSeamL'), seamG=document.getElementById('ckSeamG'),
+        glow=document.getElementById('ckGlow'), hint=document.getElementById('ckHint');
+  // 匣开前锁住滚动
+  document.body.style.overflow='hidden';
+
+  // 两声：锁脱落「咔」+ 开盖温钟
+  let actx=null;
+  function initAudio(){ if(!actx) actx=new (window.AudioContext||window.webkitAudioContext)();
+    if(actx.state==='suspended') actx.resume(); }
+  function sndClick(){ if(!actx) return; const t=actx.currentTime;
+    const o=actx.createOscillator(),g=actx.createGain(); o.type='sine';
+    o.frequency.setValueAtTime(880,t); o.frequency.exponentialRampToValueAtTime(320,t+.07);
+    g.gain.setValueAtTime(.4,t); g.gain.exponentialRampToValueAtTime(.001,t+.12);
+    o.connect(g).connect(actx.destination); o.start(t); o.stop(t+.15); }
+  function sndBell(){ if(!actx) return; const t=actx.currentTime;
+    [[392,.16,2.2],[587.33,.10,1.8],[784,.045,1.3]].forEach(([f,v,d])=>{
+      const o=actx.createOscillator(),g=actx.createGain(); o.type='sine'; o.frequency.value=f;
+      g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(v,t+.025);
+      g.gain.exponentialRampToValueAtTime(.0001,t+d);
+      o.connect(g).connect(actx.destination); o.start(t); o.stop(t+d+.1); }); }
+
+  const breathe=gsap.to(lockG,{opacity:.85,scale:1.12,duration:1.6,ease:'sine.inOut',yoyo:true,repeat:-1});
+
+  // 开匣时间线：盖开 → 金光 → 匣线淡去 → 整层淡出 + 真实章牌墙 stagger 升起
+  const openTl=gsap.timeline({paused:true});
+  openTl
+    .set(seamL,{opacity:1},0)
+    .fromTo(seamL,{scaleX:0},{scaleX:1,duration:.5,ease:'power2.out'},.10)
+    .fromTo(seamG,{opacity:0,scaleX:.2},{opacity:.9,scaleX:1,duration:.5,ease:'power2.out'},.10)
+    .call(sndBell,null,.48)
+    .to(lid,{rotateX:-104,duration:.8,ease:'power3.inOut'},.50)
+    .fromTo(glow,{opacity:0,scale:.4},{opacity:1,scale:1.5,duration:.85,ease:'power2.out'},.55)
+    .to(seamG,{opacity:0,duration:.35},.80)
+    .to(seamL,{opacity:0,duration:.3},.85)
+    .to(lid,{opacity:0,duration:.35,ease:'power1.out'},.95)
+    .to(base,{opacity:0,duration:.6,ease:'power1.inOut'},1.0)
+    .to(ov,{opacity:0,duration:.8,ease:'power1.inOut'},1.15)
+    .call(()=>{ ov.remove(); document.body.style.overflow=''; },null,1.95);
+  // 章牌墙升起（与遮罩淡出交叠）
+  openTl.fromTo(['#head','.sec'],
+    {y:26,opacity:0},{y:0,opacity:1,duration:.8,ease:'power3.out',stagger:.08},1.1);
+  openTl.fromTo('.medal-scene',
+    {y:60,opacity:0},{y:0,opacity:1,duration:.9,ease:'power3.out',stagger:.035},1.2);
+
+  // 拨锁：跟手 + 过阈值即脱落
+  const THRESHOLD=70, CLAMP=96;
+  const setX=gsap.quickTo(lock,'x',{duration:.18,ease:'power3.out'});
+  const clampX=gsap.utils.clamp(-CLAMP,CLAMP);
+  let dragging=false,startX=0,unlocked=false;
+  lock.addEventListener('pointerdown',e=>{
+    if(unlocked) return;
+    initAudio(); dragging=true;
+    startX=e.clientX-(gsap.getProperty(lock,'x')||0);
+    lock.setPointerCapture(e.pointerId);
+    breathe.pause(); gsap.to(lockG,{opacity:1,scale:1.15,duration:.2}); });
+  lock.addEventListener('pointermove',e=>{
+    if(!dragging||unlocked) return;
+    const dx=e.clientX-startX; setX(clampX(dx));
+    if(Math.abs(dx)>=THRESHOLD){ dragging=false; unlock(Math.sign(dx)); } });
+  function springBack(){ if(!dragging||unlocked) return; dragging=false;
+    gsap.killTweensOf(lock,'x');
+    gsap.to(lock,{x:0,duration:.5,ease:'elastic.out(1,.45)'});
+    gsap.to(lockG,{opacity:.4,scale:1,duration:.3,onComplete:()=>breathe.resume()}); }
+  lock.addEventListener('pointerup',springBack);
+  lock.addEventListener('pointercancel',springBack);
+  if(location.search.indexOf('open')>=0) setTimeout(()=>{ if(!unlocked) unlock(1); },900);  // 调试：自动拨锁
+  function unlock(dir){
+    unlocked=true; sndClick();
+    gsap.killTweensOf(lock,'x');
+    gsap.to(lock,{x:dir*170,rotation:dir*22,opacity:0,duration:.3,ease:'power2.in'});
+    gsap.to(lockG,{opacity:0,duration:.2});
+    gsap.to(hint,{opacity:0,y:8,duration:.4,ease:'power1.out'});
+    openTl.play(); }
+})();
+</script>
+
+<script src="./portfolio-adapter.js"></script>
+</body>
+</html>

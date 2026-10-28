@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>分茶　水丹青</title>
+<style>
+  @font-face{font-family:'GenWanMin';src:url('fonts/GenWanMin2TW-M.ttf');font-display:swap;}
+  @font-face{font-family:'EBG';src:url('fonts/EBGaramond-VF.ttf');font-display:swap;}
+  html,body{margin:0;height:100%;background:#0d1114;overflow:hidden;
+    font-family:'GenWanMin',"Noto Serif SC",serif;color:#e9e2d2;
+    -webkit-user-select:none;user-select:none;cursor:default;-webkit-touch-callout:none;}
+  #c{display:block;width:100vw;height:100vh;touch-action:none;}
+  .mono{font-family:'EBG',serif;}
+  #back{position:fixed;top:24px;left:30px;width:42px;height:42px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;color:#c8b78a;font-size:20px;z-index:5;
+    background:#161d21;cursor:pointer;}
+  #title{position:fixed;top:26px;left:92px;font-size:24px;letter-spacing:8px;color:#dbe3d2;pointer-events:none;
+    display:flex;align-items:center;gap:12px;}
+  #sub{position:fixed;top:64px;left:94px;font-size:12px;letter-spacing:3px;color:#7e8a76;pointer-events:none;}
+  #panel{position:fixed;top:28px;right:38px;width:280px;text-align:right;pointer-events:none;}
+  #chTxt{font-size:12px;letter-spacing:2px;color:#7e8a76;}
+  #chBg{margin:8px 0 0 auto;width:280px;height:6px;background:#1a2429;border-radius:3px;overflow:hidden;}
+  #chBar{height:100%;width:45%;background:linear-gradient(90deg,#4a6741,#9ab290);transition:width .15s;}
+  #combo{margin-top:16px;font-size:44px;letter-spacing:1px;color:#e9e2d2;}
+  #comboL{font-size:12px;letter-spacing:3px;color:#7e8a76;}
+  #foot{position:fixed;bottom:24px;left:38px;font-size:12px;letter-spacing:1px;color:#6a6152;pointer-events:none;}
+  #foot b{color:#9ab290;font-weight:400;}
+  .ov{position:fixed;top:0;right:0;bottom:0;left:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:rgba(9,13,16,.93);z-index:10;cursor:pointer;text-align:center;}
+  #start h1{font-size:58px;letter-spacing:16px;margin:0 0 6px;color:#e9e2d2;font-weight:500;}
+  #start .en{font-size:12px;letter-spacing:6px;color:#8aa07e;margin-bottom:38px;}
+  #start .how{font-size:16px;line-height:2.0;color:#b3bba7;}
+  #start .k{color:#e5ecd8;background:#26302a;border-radius:6px;padding:2px 10px;margin:0 3px;font-size:16px;}
+  #start .go{margin-top:42px;font-size:12px;letter-spacing:4px;color:#12180f;background:#9ab290;padding:14px 34px;border-radius:30px;}
+  #win,#lose{display:none;}
+  #win .wt,#lose .wt{font-size:58px;letter-spacing:14px;color:#e6efd8;font-weight:500;}
+  #win .ws,#lose .ws{margin-top:12px;font-size:16px;letter-spacing:4px;color:#8aa07e;}
+  #win .wg,#lose .wg{margin-top:40px;font-size:12px;letter-spacing:4px;color:#12180f;background:#9ab290;padding:14px 34px;border-radius:30px;}
+  #win .wg2,#lose .wg2{margin-top:16px;font-size:12px;letter-spacing:4px;color:#c8d8b8;background:#161d21;padding:13px 32px;border-radius:30px;}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="back" onclick="location.href='index.html'">‹</div>
+<div id="title"><svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+    <path d="M8 12 a8 8 0 0 0 16 0" stroke="#9ab290" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M16 20 v6 m0 0 l-4 3 m4 -3 l4 3" stroke="#9ab290" stroke-width="2.4" stroke-linecap="round"/>
+  </svg>分 茶</div>
+<div id="sub" class="mono">TEA PAINTING</div>
+<div id="panel">
+  <div id="chTxt" class="mono">成画 CHARM　<span id="chNum">45</span>%</div>
+  <div id="chBg"><div id="chBar"></div></div>
+  <div id="combo" class="mono">0</div>
+  <div id="comboL" class="mono">连击 COMBO</div>
+</div>
+<div id="foot"><b>按住汤痕</b> 循迹点画　　跟得准＝笔画成 · 音清亮　　飘了＝线发灰 · 断连击</div>
+
+<div id="start" class="ov">
+  <h1>分 茶</h1>
+  <div class="en mono">TEA PAINTING — 水丹青</div>
+  <div class="how">
+    分茶即水丹青，汤面作画。发光<span class="k">汤痕</span>沿笔迹按角调旋律行走<br>
+    <span class="k">按住它、跟着走</span>——循迹点画，画成一幅溪山远影
+  </div>
+  <div class="go">开 始</div>
+</div>
+<div id="win" class="ov"><div class="wt" id="wt">水 丹 青 现</div><div class="ws" id="ws">角调旋律成画</div>
+  <div class="wg" onclick="event.stopPropagation();location.href='chazhan.html'">下一关　击拂</div>
+  <div class="wg2">再 画 一 盏</div></div>
+<div id="lose" class="ov"><div class="wt">汤 散 未 成</div><div class="ws">成画度归零，水丹青散了　—　再试一盏</div>
+  <div class="wg">再 画 一 盏</div>
+  <div class="wg2" onclick="event.stopPropagation();location.href='index.html'">回 到 关 卡</div></div>
+
+<script src="./patterns.js"></script>
+<script>
+"use strict";
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+let W=0,H=0,DPR=1,cx=0,cy=0,R=0;
+
+// ---- 发光 sprite ----
+function mkS(rgb){const s=32,c=document.createElement('canvas');c.width=c.height=s;const g=c.getContext('2d');
+  const gr=g.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);gr.addColorStop(0,'rgba('+rgb+',1)');gr.addColorStop(0.3,'rgba('+rgb+',0.42)');
+  gr.addColorStop(0.7,'rgba('+rgb+',0.08)');gr.addColorStop(1,'rgba('+rgb+',0)');g.fillStyle=gr;g.fillRect(0,0,s,s);return c;}
+const SP={cream:mkS('245,240,224'),green:mkS('154,178,144'),greenB:mkS('186,214,168'),gold:mkS('228,180,96'),
+  jade:mkS('132,182,150'),ash:mkS('150,158,148'),ink:mkS('96,110,100'),red:mkS('214,100,90')};
+function blob(sp,x,y,r,a){ctx.globalAlpha=a;ctx.drawImage(sp,x-r,y-r,r*2,r*2);}
+
+// ---- 曜变冷色场背景（同「击拂」色场：盏在中心，四周虹彩，盏心留深）----
+let bgCanvas=null,bgCtx=null,bgImg=null,bw=1,bh=1;
+function initBg(){ if(!bgCanvas){bgCanvas=document.createElement('canvas');bgCtx=bgCanvas.getContext('2d');}
+  bw=150;bh=Math.max(1,Math.round(bw*H/W));bgCanvas.width=bw;bgCanvas.height=bh;bgImg=bgCtx.createImageData(bw,bh);}
+function lerpRamp(ramp,v){for(let k=0;k<ramp.length-1;k++){const a=ramp[k],b=ramp[k+1];if(v<=b[0]){const f=(v-a[0])/((b[0]-a[0])||1);
+  return [a[1][0]+(b[1][0]-a[1][0])*f,a[1][1]+(b[1][1]-a[1][1])*f,a[1][2]+(b[1][2]-a[1][2])*f];}}return ramp[ramp.length-1][1];}
+const COOL=[[0,[8,13,16]],[0.5,[15,24,28]],[1,[24,38,44]]];
+const IRID=[[0,[14,26,46]],[0.26,[22,56,92]],[0.48,[24,70,74]],[0.70,[40,72,42]],[1,[80,62,26]]];
+function renderBg(t){if(!bgImg)initBg();const d=bgImg.data;
+ for(let j=0;j<bh;j++)for(let i=0;i<bw;i++){
+  const x=i/bw,y=j/bh,wx=x+0.36*Math.sin(y*5+t),wy=y+0.36*Math.cos(x*5-t*0.8);
+  let v=0.5+0.5*Math.sin(wx*4+wy*3+t*1.1)*Math.cos(wy*4-wx*2-t*0.7);if(v<0)v=0;else if(v>1)v=1;
+  const sx=(i+0.5)/bw*W, sy=(j+0.5)/bh*H, rr=Math.hypot(sx-cx,sy-cy)/(R||1);
+  let vv=v; if(rr<1.10) vv*=0.34+0.42*Math.min(1,rr/1.10);
+  const base=lerpRamp(COOL,vv);
+  let m=0; if(rr>0.70){ const up=Math.min(1,(rr-0.70)/0.55), down=Math.max(0,Math.min(1,1-(rr-1.25)/0.95)); m=up*down; }
+  if(rr<1.0) m*=Math.max(0,(rr-0.5)/0.5)*0.7; m*=0.55+0.45*v;
+  let cvv=Math.min(1,Math.max(0,(rr-0.82)/1.5))*0.55+0.28*(0.5+0.5*Math.sin(wx*6+wy*5+t*0.9))+0.17*(0.5+0.5*Math.sin(Math.atan2(sy-cy,sx-cx)*2+t*0.3));
+  if(cvv<0)cvv=0;else if(cvv>1)cvv=1;
+  const ir=lerpRamp(IRID,cvv);
+  let r0=base[0]+(ir[0]-base[0])*m,g0=base[1]+(ir[1]-base[1])*m,b0=base[2]+(ir[2]-base[2])*m;
+  let wf=Math.min(1,Math.max(0,(rr-1.5)/1.15))*(0.4+0.45*v)*0.55;
+  const idx=(j*bw+i)*4;d[idx]=r0+(96-r0)*wf;d[idx+1]=g0+(64-g0)*wf;d[idx+2]=b0+(28-b0)*wf;d[idx+3]=255;}
+ bgCtx.putImageData(bgImg,0,0);}
+
+// ---- 主时钟 + 音频 ----
+let perfStart=performance.now()/1000, running=false, silent=false, won=false, lost=false;
+function clock(){return performance.now()/1000-perfStart;}
+let ac=null,master=null;
+function initAudio(){ac=new (AudioContext||webkitAudioContext)();master=ac.createGain();master.gain.value=0.3;master.connect(ac.destination);
+  [130.81,196.00].forEach(fr=>{const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=fr;   // 宫·徵 低音 drone
+    g.gain.value=0.045;o.connect(g).connect(master);o.start();});}
+// 角调五声（角徵羽宫商＝ mi sol la do re），一具筝/琵琶感拨弦
+const JIAO=[329.63,392.00,440.00,523.25,587.33,659.25,783.99];
+function pluck(time,freq,amp){amp=amp||0.16;[[1,'triangle',1],[2.0,'sine',0.5],[3.0,'sine',0.28]].forEach(([mu,ty,ma],i)=>{
+  const o=ac.createOscillator(),g=ac.createGain();o.type=ty;o.frequency.value=freq*mu;
+  g.gain.setValueAtTime(0.0001,time);g.gain.exponentialRampToValueAtTime(amp*ma,time+0.005);
+  g.gain.exponentialRampToValueAtTime(0.0001,time+0.6-i*0.13);o.connect(g).connect(master);o.start(time);o.stop(time+0.65);});}
+function dull(time,freq){const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=freq*0.5;
+  g.gain.setValueAtTime(0.06,time);g.gain.exponentialRampToValueAtTime(0.0001,time+0.18);o.connect(g).connect(master);o.start(time);o.stop(time+0.2);}
+function chime(time,freq){const o=ac.createOscillator(),g=ac.createGain();o.type='triangle';o.frequency.value=freq;
+  g.gain.setValueAtTime(0.14,time);g.gain.exponentialRampToValueAtTime(0.0001,time+0.5);o.connect(g).connect(master);o.start(time);o.stop(time+0.55);}
+
+// ---- 笔画（水丹青底样：溪山远影）----
+// 每笔＝局部坐标 (u,v)∈[-1,1] 折线；resize 时换算成像素并按弧长重采样成节点
+const STROKES_UV=[
+  {name:'远山', pts:[[-0.72,-0.30],[-0.46,-0.44],[-0.20,-0.32],[0.08,-0.48],[0.36,-0.34],[0.66,-0.44]]},
+  {name:'飞鸟', pts:[[0.30,-0.66],[0.42,-0.74],[0.52,-0.66],[0.63,-0.74],[0.74,-0.66]]},
+  {name:'近山', pts:[[-0.80,0.12],[-0.42,-0.14],[-0.04,0.14],[0.30,-0.20],[0.60,0.08],[0.82,0.16]]},
+  {name:'溪纹', pts:[[-0.72,0.52],[-0.42,0.44],[-0.12,0.54],[0.20,0.44],[0.50,0.54],[0.74,0.46]]},
+];
+let strokes=[];         // {nodes:[{x,y,pitch}], painted:[0/1], len}
+function pitchForV(v){ const t=Math.min(1,Math.max(0,( -v+0.9)/1.55)); return JIAO[Math.round(t*(JIAO.length-1))]; }
+function buildStrokes(){ strokes=[]; const NODE=R*0.115;
+  for(const S of STROKES_UV){ const px=S.pts.map(p=>[cx+p[0]*R, cy+p[1]*R]);
+    // 采样：沿折线每 NODE 距离放一个节点
+    const nodes=[]; let acc=0; nodes.push({x:px[0][0],y:px[0][1]});
+    for(let i=1;i<px.length;i++){ let ax=px[i-1][0],ay=px[i-1][1],bxp=px[i][0],byp=px[i][1];
+      let seg=Math.hypot(bxp-ax,byp-ay), d=0;
+      while(acc+ (seg-d) >= NODE){ const need=NODE-acc; d+=need; const f=d/seg;
+        nodes.push({x:ax+(bxp-ax)*f, y:ay+(byp-ay)*f}); acc=0; }
+      acc+= seg-d;
+    }
+    nodes.push({x:px[px.length-1][0],y:px[px.length-1][1]});
+    for(const n of nodes){ n.pitch=pitchForV((n.y-cy)/R); }
+    strokes.push({nodes, painted:new Array(nodes.length).fill(0), name:S.name}); }
+}
+function resize(){ DPR=Math.min(2,window.devicePixelRatio||1); W=innerWidth;H=innerHeight;
+  cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+'px';cv.style.height=H+'px';ctx.setTransform(DPR,0,0,DPR,0,0);
+  cx=W/2; cy=H*0.54; R=Math.min(W,H)*0.34; initBg(); buildStrokes(); }
+addEventListener('resize',resize);
+
+// ---- 进程状态 ----
+let si=0;               // 当前笔序
+let headNode=0;         // 已行进到的节点
+let headPix=0;          // 当前笔内像素进度
+let pauseT=0;           // 笔间停顿计时
+let charm=45, combo=0, best=0;
+const HEAD_SPD_K=0.46, TOL_K=0.145;
+let sparks=[], ripples=[], msg=null;
+
+// 徽记：通关固定徽「品鉴　观色」；彩蛋池＝注汤·润茶 / 灸茶·候汤（点睛金点触发）
+const GENT_NAMES={6:'品鉴　观色',1:'注汤　润茶',4:'灸茶　候汤'}, EGG_POOL=[1,4];
+function gainGent(i){ try{ const a=JSON.parse(localStorage.getItem('chaxian_gents')||'[]');
+  if(a.includes(i)) return false; a.push(i); localStorage.setItem('chaxian_gents',JSON.stringify(a)); return true; }catch(e){ return false; } }
+let egg={active:false,done:false,x:0,y:0,born:0};
+function eggAward(){ let txt='点睛已应　徽已集全';
+  for(const i of EGG_POOL){ if(gainGent(i)){ txt='彩蛋　「'+GENT_NAMES[i]+'」入匣'; break; } }
+  egg.done=true; egg.active=false; msg={txt,life:1}; burst(egg.x,egg.y,22,SP.gold); }
+
+// ---- 输入：按住并跟随 ----
+let px=0,py=0,pressed=false;
+cv.addEventListener('pointerdown',e=>{ if(!running)return; pressed=true; px=e.clientX; py=e.clientY;
+  if(egg.active && Math.hypot(px-egg.x,py-egg.y)<R*0.10) eggAward(); });
+addEventListener('pointermove',e=>{ px=e.clientX; py=e.clientY; });
+addEventListener('pointerup',()=>{ pressed=false; });
+addEventListener('pointercancel',()=>{ pressed=false; });
+
+function burst(x,y,n,sp){ for(let k=0;k<n;k++){const a=Math.random()*Math.PI*2,s=1+Math.random()*3;
+  sparks.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,sp});} }
+
+// ---- 循迹推进 ----
+function advance(dt){ if(!running||won||lost) return;
+  if(si>=strokes.length){ won=true; onWin(); return; }
+  if(pauseT>0){ pauseT-=dt; return; }
+  const S=strokes[si], nodes=S.nodes;
+  const head=headNode<nodes.length-1 ? lerpNode(nodes,headNode,headPix) : nodes[nodes.length-1];
+  // 自动演示：虚拟指针贴着汤痕
+  if(silent){ pressed=true; px=head.x; py=head.y; }
+  const on = pressed && Math.hypot(px-head.x,py-head.y) < R*TOL_K;
+  // 推进像素
+  headPix += HEAD_SPD_K*R*dt;
+  // 跨过下一个节点？
+  while(headNode<nodes.length-1){
+    const a=nodes[headNode], b=nodes[headNode+1], seg=Math.hypot(b.x-a.x,b.y-a.y);
+    if(headPix>=seg){ headPix-=seg; headNode++;
+      const idx=headNode;
+      if(on){ S.painted[idx]=1; combo++; best=Math.max(best,combo); charm=Math.min(100,charm+1.8);
+        ripples.push({x:b.x,y:b.y,r:R*0.03,life:1,g:true});
+        if(!silent&&ac) pluck(ac.currentTime, b.pitch, 0.15);
+      } else { S.painted[idx]=-1; combo=0; charm=Math.max(0,charm-2.6);
+        if(!silent&&ac) dull(ac.currentTime, b.pitch); }
+      if(charm<=0){ lost=true; onLose(); return; }
+    } else break;
+  }
+  // 走完这一笔
+  if(headNode>=nodes.length-1){
+    // 彩蛋：画完两笔且成画度不低 → 冒一点「点睛」金点
+    if(si>=1 && !egg.active && !egg.done && charm>=52){
+      egg.active=true; egg.x=cx+R*0.18; egg.y=cy-R*0.12; egg.born=clock();
+      msg={txt:'点睛一笔　轻点金点',life:1};
+    }
+    si++; headNode=0; headPix=0; pauseT=0.55;
+    if(si>=strokes.length){ won=true; onWin(); }
+  }
+}
+function lerpNode(nodes,i,pix){ const a=nodes[i], b=nodes[Math.min(i+1,nodes.length-1)];
+  const seg=Math.hypot(b.x-a.x,b.y-a.y)||1, f=Math.min(1,pix/seg); return {x:a.x+(b.x-a.x)*f, y:a.y+(b.y-a.y)*f, pitch:b.pitch}; }
+
+// ---- 渲染 ----
+let prevT=0;
+function draw(){ const t=clock(); const dt=Math.min(0.05,t-prevT||0.016); prevT=t;
+  advance(dt);
+  renderBg(t*0.05);
+  ctx.globalCompositeOperation='source-over'; ctx.globalAlpha=0.42; ctx.imageSmoothingEnabled=true; ctx.drawImage(bgCanvas,0,0,W,H); ctx.globalAlpha=1;
+
+  // 盏：鎏金细口 + 盏心压深
+  ctx.globalCompositeOperation='source-over';
+  const rg=ctx.createRadialGradient(cx,cy,R*0.2,cx,cy,R*1.02);
+  rg.addColorStop(0,'rgba(8,12,15,0.55)');rg.addColorStop(0.8,'rgba(8,12,15,0.15)');rg.addColorStop(1,'rgba(8,12,15,0)');
+  ctx.fillStyle=rg;ctx.beginPath();ctx.arc(cx,cy,R*1.02,0,7);ctx.fill();
+  ctx.beginPath();ctx.arc(cx,cy,R,0,7);ctx.strokeStyle='rgba(154,178,144,0.5)';ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();ctx.arc(cx,cy,R*0.965,0,7);ctx.strokeStyle='rgba(200,183,138,0.28)';ctx.lineWidth=1;ctx.stroke();
+
+  // 底样：全笔淡墨虚线（未画的部分）
+  ctx.globalCompositeOperation='source-over';
+  for(let s=0;s<strokes.length;s++){ const nd=strokes[s].nodes;
+    ctx.beginPath(); for(let i=0;i<nd.length;i++){ i?ctx.lineTo(nd[i].x,nd[i].y):ctx.moveTo(nd[i].x,nd[i].y); }
+    ctx.setLineDash([2,7]); ctx.strokeStyle= s===si?'rgba(180,196,168,0.34)':'rgba(150,158,148,0.16)';
+    ctx.lineWidth= s===si?2:1.4; ctx.lineCap='round'; ctx.stroke(); ctx.setLineDash([]); }
+
+  // 已成的笔画（点亮）：连亮段发光
+  ctx.globalCompositeOperation='lighter';
+  for(let s=0;s<strokes.length;s++){ const S=strokes[s], nd=S.nodes;
+    for(let i=1;i<nd.length;i++){ const p=S.painted[i]; if(!p) continue;
+      const a=nd[i-1], b=nd[i];
+      if(p>0){ ctx.strokeStyle='rgba(230,240,214,0.9)'; ctx.lineWidth=3.2; ctx.lineCap='round';
+        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+        blob(SP.greenB,b.x,b.y,5,0.5); }
+      else { ctx.strokeStyle='rgba(150,158,148,0.30)'; ctx.lineWidth=2; ctx.lineCap='round';
+        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke(); }
+    }
+  }
+
+  // 汤痕头（发光引导）
+  if(running&&!won&&!lost&&si<strokes.length){ const nd=strokes[si].nodes;
+    const head=headNode<nd.length-1?lerpNode(nd,headNode,headPix):nd[nd.length-1];
+    const on = pressed && Math.hypot(px-head.x,py-head.y)<R*TOL_K;
+    const pu=0.5+0.5*Math.sin(t*7);
+    blob(on?SP.greenB:SP.cream, head.x,head.y, 13+pu*4, 0.5);
+    blob(SP.cream, head.x,head.y, 5, 0.95);
+    // 容差圈
+    ctx.globalCompositeOperation='source-over';
+    ctx.beginPath();ctx.arc(head.x,head.y,R*TOL_K,0,7);
+    ctx.strokeStyle= on?'rgba(186,214,168,0.5)':'rgba(200,110,90,0.4)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.globalCompositeOperation='lighter';
+    // 指尖筅痕
+    if(pressed && !silent){ blob(SP.jade,px,py,7,0.5); blob(SP.cream,px,py,2.5,0.8); }
+  }
+
+  // 点睛金点（彩蛋）
+  if(egg.active){ const pu=0.5+0.5*Math.sin(t*4);
+    blob(SP.gold,egg.x,egg.y,14+pu*6,0.5); blob(SP.cream,egg.x,egg.y,4,0.95);
+    ctx.globalCompositeOperation='source-over';
+    ctx.beginPath();ctx.arc(egg.x,egg.y,R*0.10,0,7);ctx.strokeStyle='rgba(228,180,96,'+(0.3+0.3*pu)+')';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.globalCompositeOperation='lighter'; }
+
+  // 涟漪
+  for(let i=ripples.length-1;i>=0;i--){ const rp=ripples[i]; rp.r+=R*0.012; rp.life-=0.03;
+    if(rp.life<=0){ripples.splice(i,1);continue;}
+    ctx.globalCompositeOperation='source-over';
+    ctx.beginPath();ctx.arc(rp.x,rp.y,rp.r,0,7);ctx.strokeStyle='rgba(186,214,168,'+(rp.life*0.5)+')';ctx.lineWidth=1.4;ctx.stroke();
+    ctx.globalCompositeOperation='lighter'; }
+
+  // 火花
+  for(let i=sparks.length-1;i>=0;i--){ const s=sparks[i]; s.x+=s.vx;s.y+=s.vy;s.vy+=0.05;s.vx*=0.96;s.life-=0.028;
+    if(s.life<=0){sparks.splice(i,1);continue;} blob(s.sp,s.x,s.y,3*s.life,s.life*0.9); }
+
+  // 提示（彩蛋/点睛）淡入淡出
+  if(msg){ msg.life-=0.006; if(msg.life<=0) msg=null;
+    else { ctx.globalCompositeOperation='source-over'; ctx.globalAlpha=Math.min(0.95,msg.life*1.6);
+      ctx.fillStyle='#e9e2d2'; ctx.font='20px "GenWanMin",serif'; ctx.textAlign='center';
+      ctx.fillText(msg.txt, cx, cy-R-30); ctx.textAlign='left'; ctx.globalAlpha=1; ctx.globalCompositeOperation='lighter'; } }
+
+  // HUD
+  document.getElementById('chBar').style.width=charm+'%';
+  document.getElementById('chNum').textContent=Math.round(charm);
+  document.getElementById('combo').textContent=combo;
+  requestAnimationFrame(draw);
+}
+
+// ---- 启动 / 胜负 ----
+function begin(){ if(running)return; if(!ac)initAudio(); ac.resume(); running=true;
+  document.getElementById('start').style.display='none'; }
+function grade(){ return charm>=85?'神':charm>=65?'逸':'妙'; }
+function onWin(){ won=true;
+  // 收束：全画一记辉光 + 涟漪
+  burst(cx,cy,50,SP.greenB); for(let k=0;k<3;k++) ripples.push({x:cx,y:cy,r:R*0.2+k*R*0.1,life:1});
+  if(!silent&&ac){ [523.25,659.25,783.99].forEach((f,i)=>chime(ac.currentTime+i*0.12,f)); }
+  const g=grade();
+  // 隐藏款：成画度高（神/逸）或 15% 运气 → 茶百戏隐藏款入匣
+  let extra='';
+  if(g!=='妙' || Math.random()<0.15){ const i=(Math.random()*BAIXI.length)|0; extra='　隐藏款「'+BAIXI[i].n+'」';
+    try{ const a=JSON.parse(localStorage.getItem('chaxian_badges')||'[]');
+      if(!a.includes(i)){ a.push(i); localStorage.setItem('chaxian_badges',JSON.stringify(a)); } }catch(e){} }
+  const ws=document.getElementById('ws');
+  if(ws) ws.textContent = (gainGent(6)?'成画「'+g+'」　得徽「品鉴　观色」':'成画「'+g+'」　水丹青现') + extra;
+  const el=document.getElementById('win'); if(el)el.style.display='flex';
+}
+function onLose(){ lost=true; if(!silent&&ac) dull(ac.currentTime,196);
+  const el=document.getElementById('lose'); if(el)el.style.display='flex'; }
+function restart(){ won=false; lost=false; si=0; headNode=0; headPix=0; pauseT=0; charm=45; combo=0;
+  egg={active:false,done:false,x:0,y:0,born:0}; msg=null; sparks.length=0; ripples.length=0; pressed=false;
+  buildStrokes();
+  document.getElementById('win').style.display='none'; document.getElementById('lose').style.display='none'; }
+
+document.getElementById('start').addEventListener('click',begin);
+document.getElementById('win').addEventListener('click',()=>{ if(won)restart(); });
+document.getElementById('lose').addEventListener('click',()=>{ if(lost)restart(); });
+addEventListener('keydown',e=>{ if(e.code==='Space'||e.code==='Enter'){ e.preventDefault(); if(won||lost)restart(); else if(!running)begin(); }});
+if(location.search.indexOf('auto')>=0){ silent=true; setTimeout(begin,300); }
+document.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
+
+resize(); requestAnimationFrame(draw);
+</script>
+
+<script src="./portfolio-adapter.js"></script>
+</body>
+</html>
