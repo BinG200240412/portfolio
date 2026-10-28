@@ -1,0 +1,43 @@
+{
+  "created": "2026-10-28",
+  "originals_preserved": true,
+  "purpose": "Style-study display derivatives requested by the author; these are not original workflow outputs or Marble generation results.",
+  "assets": [
+    {
+      "name": "wetland",
+      "source": "../style-wetland.webp",
+      "display": "style-wetland.webp",
+      "width": 1672,
+      "height": 941,
+      "method": "built-in imagegen reference-guided horizontal redraw and outpainting",
+      "sha256": "41b5da0ee959618948c416a6f358c76e122927cee884cc29cc6bd90f8a3e37a5"
+    },
+    {
+      "name": "clouds",
+      "source": "../style-clouds.webp",
+      "display": "style-clouds.webp",
+      "width": 1672,
+      "height": 941,
+      "method": "built-in imagegen reference-guided horizontal redraw and outpainting",
+      "sha256": "e26b6da34eaa59266ea9eb995574d78ae76930016e95e0eed12feb92ae49f72e"
+    },
+    {
+      "name": "field",
+      "source": "../style-field.webp",
+      "display": "style-field.webp",
+      "width": 1672,
+      "height": 941,
+      "method": "built-in imagegen reference-guided horizontal redraw and outpainting",
+      "sha256": "51f3f7ca27bface538fc1caad17358e8c85e9cf4cef70e7287f9c4e1b1c98f7f"
+    },
+    {
+      "name": "forest",
+      "source": "../style-forest.webp",
+      "display": "style-forest.webp",
+      "width": 1672,
+      "height": 940,
+      "method": "built-in imagegen reference-guided horizontal redraw and outpainting",
+      "sha256": "00b32d6bfb9cab7bf7d42603df0bd6cca19f97ef35321454d34912f120e63490"
+    }
+  ]
+}

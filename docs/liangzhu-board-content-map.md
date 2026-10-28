@@ -8,8 +8,8 @@ board screenshots.
 | Original module | Website location | Representation |
 | --- | --- | --- |
 | 01 Background research | `#liangzhu-background` | Three vertical research branches, beside the site-reference grid |
-| 02 Existing scenarios | `#liangzhu-site-references` | All four original photographs in a selectable 2 × 2 crop grid |
-| 03 Style preview | `#liangzhu-style-studies` | Original description and all four style references in an expanding crop strip |
+| 02 Existing scenarios | `#liangzhu-site-references` | All four original photographs in a hover-expanding 2 × 2 crop grid |
+| 03 Style preview | `#liangzhu-style-studies` | Original description and four author-requested horizontal redraws; original references remain in the source folder |
 | 04 Workflow 1 | `#liangzhu-workflow` | Existing editable graph, with image-input, LoRA, ControlNet and sampling explanations |
 | 05 Output pictures | `#liangzhu-style-outputs` | All six original style outputs |
 | 06 Implementation path | `#liangzhu-repaint-path` | Original PDF vector paths and native bilingual, linked labels |
@@ -29,8 +29,10 @@ board screenshots.
 outputs and UI screenshots. It also converts the exact coloured marks and Bézier
 ribbons in the PDF into native SVG path data. `board/sources.json` records source
 hash, image xrefs, original dimensions and page rectangles. `sankey-paths.json`
-records each original drawing index. Image content is preserved; no images are
-generated, repainted or reconstructed from approximate scenery.
+records each original drawing index. Source images remain preserved. The four style-study display images were redrawn
+and expanded horizontally on 2026-10-28 at the author’s request; their provenance
+is in `board/style-wide/sources.json`. Site photographs, workflow outputs and
+Marble results continue to use the original images.
 
 The overview now follows the requested folded reading order: four columns from
 left to right above, then four columns from right to left below. Its SVG geometry
@@ -55,8 +57,8 @@ of the original Marble scene, not a lossless Gaussian-splat file.
 
 ## Four-workflow reading order and image interactions
 
-The written three-item overview is removed. The U-shaped map is capped at 840 px
-and inset within the content column. Dotted frames identify style repainting and
+The written three-item overview is removed. The U-shaped map retains its 840 px base geometry and scales proportionally
+to 118% on wide screens, within the content column. Dotted frames identify style repainting and
 image-to-panorama above, then prompt derivation and Marble generation below in
 right-to-left order. Each frame has a solid leader to its numbered title and links
 to its own chapter. Janus-Pro is Workflow 3; the existing Marble image inputs and
@@ -67,12 +69,19 @@ Workflow 1 starts with a horizontal, dotted-frame input/process/output sequence.
 Its two dotted arrows animate in order when the sequence enters view, with static
 rendering for reduced-motion preferences. Three research branches and the 2 × 2
 site-reference grid share a desktop row, followed by a downward arrow into the
-original horizontal style-study composition. On phones the research row reflows
+equal-width horizontal style-study composition. On phones the research row reflows
 vertically, while the input/process/output sequence remains horizontal.
 
-Both reference galleries use native toggle buttons. Selecting a grid image grows
-its row and column; selecting a style image grows its track. Neighbouring windows
+Both reference galleries use native buttons with hover, keyboard and touch
+support. Hovering a grid image grows its row and column; hovering a style image
+grows its track. The style strip rests at four equal widths. Neighbouring windows
 shrink and crop with object-fit: cover; image proportions are never stretched.
-Click again or Escape resets; arrow keys move selection. Container heights remain
+Pointer exit restores the equal layout; touch can toggle an image, and arrow
+keys move keyboard focus. Escape resets. Container heights remain
 fixed during the transition, avoiding page jumps. Source images, alt text, shared
 media corners and all other full-image viewers are preserved.
+
+The input/process/output sequence now uses compact coloured blocks with actual
+round-dot SVG borders. Research branches are measured from the current title
+and item bounds, then drawn as three round-dot arrows. They are recalculated
+when language, font loading or responsive layout changes.
