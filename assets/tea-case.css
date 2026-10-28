@@ -238,3 +238,61 @@ html.tea-board-detail-open{overflow:hidden;scroll-snap-type:none}
  .tea-display-units figure{max-width:420px;width:100%;justify-self:center}
  .tea-case .tea-board-bar h2{font-size:16px}
 }
+
+/* Research, translation, exploration, then four connected design directions. */
+.tea-heading-title{min-width:0}
+.tea-stage{display:block;margin-bottom:20px;color:var(--tea-jade);font-size:13px;line-height:1.5;letter-spacing:.08em}
+.tea-origin-logic.tea-research-process{grid-template-columns:1fr}
+.tea-source-links{display:flex;flex-wrap:wrap;gap:12px 30px;margin-top:-14px;color:var(--tea-jade);font-size:14px}
+.tea-source-links a{display:inline-flex;gap:12px;align-items:center;padding-block:6px}
+.tea-source-links a:hover,.tea-narrative-next:hover{color:var(--tea-strong)}
+.tea-map-labels,.tea-translation-map>li{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:clamp(24px,3vw,48px);align-items:center}
+.tea-map-labels{font-size:12px;letter-spacing:.09em;color:var(--dim);margin-bottom:-30px}
+.tea-translation-map{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.tea-translation-map>li{padding-block:30px;border-bottom:1px solid var(--line)}
+.tea-map-source{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:18px;color:var(--soft)!important}
+.tea-map-source>span{color:var(--tea-jade);font-size:14px}
+.tea-map-result{position:relative;display:flex;flex-direction:column;gap:8px;padding-right:30px}
+.tea-map-result strong{font-size:25px;font-weight:500;color:var(--tea-strong);line-height:1.35}
+.tea-map-result>span{font-size:14px;color:var(--dim);line-height:1.6}
+.tea-map-result .tea-map-arrow{position:absolute;right:0;top:0;font-size:24px;color:var(--tea-jade);transition:transform .2s}
+.tea-map-result:hover .tea-map-arrow{transform:translateX(4px)}
+.tea-narrative-next{display:flex;gap:24px;align-items:center;align-self:flex-start;font-size:16px;color:var(--tea-jade)!important}
+.tea-entry-mapping{display:flex;gap:24px 64px;flex-wrap:wrap}
+.tea-entry-mapping p{display:flex;gap:20px;align-items:center;font-size:16px}
+.tea-entry-mapping p>span:nth-child(2){color:var(--tea-jade)}
+.tea-entry-mapping strong{font-weight:400;color:var(--tea-strong)}
+.tea-concept-art{width:100%;max-width:1040px;margin-inline:auto}
+#sketches>.tea-subsection{gap:28px}
+#sketches>.tea-subsection+.tea-subsection{margin-top:32px}
+#sketches h3{margin-bottom:0}
+#sketches [id]{scroll-margin-top:100px}
+.tea-experience-path{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:32px}
+.tea-experience-path li{position:relative;min-width:0}
+.tea-experience-path li:not(:last-child):after{content:'→';position:absolute;right:-23px;top:4px;color:var(--tea-jade)}
+.tea-experience-path a{display:flex;flex-direction:column;gap:10px}
+.tea-experience-path strong{font-weight:500;font-size:22px;line-height:1.4;color:var(--tea-strong)}
+.tea-experience-path span{font-size:14px;color:var(--dim);line-height:1.7}
+.tea-experience>.tea-subsection{gap:36px}
+@media(max-width:1000px){
+ .tea-map-labels,.tea-translation-map>li{grid-template-columns:1fr 1.2fr 1fr;gap:24px}
+ .tea-map-source{font-size:16px}.tea-map-result strong{font-size:22px}
+ .tea-experience-path{gap:24px}.tea-experience-path li:not(:last-child):after{right:-19px}
+ .tea-experience-path strong{font-size:20px}
+}
+@media(max-width:600px){
+ .tea-stage{margin-bottom:14px;font-size:12px}
+ .tea-source-links{margin-top:-10px;gap:6px 22px}
+ .tea-map-labels{display:none}
+ .tea-translation-map>li{grid-template-columns:1fr;gap:18px;padding-block:28px}
+ .tea-map-source{justify-content:flex-start;font-size:16px}
+ .tea-map-result{margin-top:2px;padding-left:20px;border-left:2px solid var(--tea-jade)}
+ .tea-map-result strong{font-size:25px}
+ .tea-narrative-next{font-size:16px}
+ .tea-entry-mapping{gap:18px}
+ .tea-experience-path{grid-template-columns:1fr;gap:32px}
+ .tea-experience-path li{padding-left:26px;border-left:1px solid var(--tea-jade)}
+ .tea-experience-path li:not(:last-child):after{content:'↓';left:-6px;right:auto;top:auto;bottom:-30px}
+ .tea-experience-path a{gap:4px}.tea-experience-path strong{font-size:24px}
+}
+@media(prefers-reduced-motion:reduce){.tea-map-result .tea-map-arrow{transition:none}}
