@@ -66,6 +66,9 @@
 .liangzhu-sankey-scroll.is-dragging{cursor:grabbing}
 .liangzhu-sankey{display:block;width:max(100%,2400px);height:auto;overflow:visible;--sankey-green:#438356;--sankey-ochre:#af7b20;--sankey-violet:#7864b1}
 [data-sankey="repaint"] .liangzhu-sankey{width:max(100%,1800px)}
+[data-sankey="overview"]{min-height:0;overflow:visible;cursor:default;user-select:auto}
+[data-sankey="overview"] .liangzhu-sankey-folded{width:100%;height:auto;overflow:visible}
+.liangzhu-sankey-folded .liangzhu-sankey-node{font-size:var(--folded-font,18px)}
 .liangzhu-sankey-mark.tone-green{fill:var(--sankey-green)}
 .liangzhu-sankey-mark.tone-ochre{fill:var(--sankey-ochre)}
 .liangzhu-sankey-mark.tone-violet{fill:var(--sankey-violet)}

@@ -18,7 +18,7 @@ board screenshots.
 | 09 Implementation | `#liangzhu-panorama-implementation` | Existing editable graph, latent reference, draft/production modes |
 | 10 Workflow description | `#liangzhu-panorama-stages` | Models, reference/text conditions, sampling, and separately identified seamless/HDR extensions |
 | 11 Final panorama works | `#liangzhu-panorama-outputs` | Both input/output comparisons and both original generation records |
-| 12 General workflow | `#liangzhu-complete-path` | Original PDF Sankey vector geometry, all 17 labels, links to the detailed sections |
+| 12 General workflow | `#liangzhu-complete-path` | Responsive two-row U-shaped Sankey, preserving all 17 labels, 23 connections and links to the detailed sections |
 | 13 Workflow 3 | `#liangzhu-scene-understanding` | Existing editable Janus-Pro graph, original full generated text in its text node, and step explanations |
 | 14 Marble input | `#liangzhu-marble-inputs`, `#liangzhu-marble-handoff` | All three original image inputs, image/text handoff and actual Marble interface |
 | 15 Scene models | `#process-result` | Both three-image result rows: point-cloud preview and two scene views each, plus their original Web/VR links |
@@ -31,6 +31,16 @@ ribbons in the PDF into native SVG path data. `board/sources.json` records sourc
 hash, image xrefs, original dimensions and page rectangles. `sankey-paths.json`
 records each original drawing index. Image content is preserved; no images are
 generated, repainted or reconstructed from approximate scenery.
+
+The overview now follows the requested folded reading order: four columns from
+left to right above, then four columns from right to left below. Its SVG geometry
+is recomputed for the available width and language, with no horizontal scroller.
+Text wraps at its real font width; each text block's rendered bounds are vertically
+centred against its node dot. The original straight paths remain in the source
+JSON as provenance, and the repainting-path figure retains its original geometry.
+Below 480 px the visible labels use short equivalents so the same two rows remain
+readable at 16 px; every node keeps its complete original label in its accessible
+name and tooltip, and still links to the full explanation.
 
 The supplied `02_矢量/体验流程框架.svg` was inspected but is a separate generic
 workflow ending in a social upload. It is not used in place of this board’s two

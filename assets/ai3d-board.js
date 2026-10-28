@@ -66,6 +66,158 @@
     return node;
   };
   const english = () => window.PortfolioI18n?.language === 'en';
+  function installFoldedOverview(host) {
+    const svg = element('svg',{role:'group',class:'liangzhu-sankey liangzhu-sankey-folded'});
+    const canvas = document.createElement('canvas');
+    const measure = canvas.getContext('2d');
+    host.replaceChildren(svg);
+    let frame = 0, signature = '', fontRevision = 0;
+    const columns = [[0],[1,2,3,4],[5],[6,7,8],[9],[10,11,12],[13],[14,15,16]];
+    const connections = [
+      [0,1,'green'],[0,2,'green'],[0,3,'green'],[0,4,'green'],
+      [1,5,'green'],[2,5,'ochre'],[3,5,'violet'],[4,5,'ochre'],
+      [5,6,'violet'],[5,7,'violet'],[5,8,'violet'],
+      [6,9,'green'],[7,9,'ochre'],[8,9,'violet'],
+      [9,10,'ochre'],[9,11,'ochre'],[9,12,'ochre'],
+      [10,13,'ochre'],[11,13,'green'],[12,13,'violet'],
+      [13,14,'violet'],[13,15,'violet'],[13,16,'violet']
+    ];
+    const tones = ['green','green','ochre','violet','ochre','violet','green','ochre',
+      'violet','ochre','ochre','green','violet','violet','ochre','ochre','green'];
+    const compactLabels = [
+      ['风格重绘','Repaint'],['以图生图','Img →\nimg'],['良渚实景','Site image'],
+      ['锁定结构','Keep shape'],['风格图','Style image'],['全景扩展','360° pano'],
+      ['画风一致','Same style'],['360° 全景','360° view'],['2:1 比例','2:1 ratio'],
+      ['反推描述','Scene text'],['全景图','Pano'],['场景文本','Text'],['提示词','Prompt'],
+      ['Marble 生成','Marble'],['图像输入','Image input'],['语义引导','Text guide'],
+      ['三维场景','3D scene']
+    ];
+    function wrap(copy,width) {
+      const lines=[];
+      for (const paragraph of copy.split('\n')) {
+        let line='';
+        const tokens=[];
+        for (const part of paragraph.match(/[A-Za-z0-9°._-]+|\s+|[^\s]/gu)||[]) {
+          if (tokens.length && (/^[，。；：！？、）】》」』]$/.test(part) || /^[（【《「『]$/.test(tokens.at(-1))))
+            tokens[tokens.length-1]+=part;
+          else tokens.push(part);
+        }
+        for (const token of tokens) {
+          if (measure.measureText(line+token).width<=width) { line+=token; continue; }
+          if (line.trim()) { lines.push(line.trim()); line=''; }
+          if (measure.measureText(token).width<=width) { line=token.trimStart(); continue; }
+          for (const letter of token) {
+            if (line && measure.measureText(line+letter).width>width) {
+              lines.push(line);line='';
+            }
+            line+=letter;
+          }
+        }
+        if (line.trim()) lines.push(line.trim());
+      }
+      return lines;
+    }
+    function paint() {
+      frame=0;
+      const width=host.clientWidth;
+      if (!width) return;
+      const next=`${width}:${english()}:${fontRevision}`;
+      if (next===signature) return;
+      signature=next;
+      const narrow=width<720, fontSize=narrow?16:18, lineHeight=fontSize*1.42;
+      const margin=narrow?12:28, gap=narrow?8:32, turn=narrow?26:46, railInset=24;
+      const slot=(width-margin*2-turn-railInset-gap*3)/4;
+      const inset=narrow?11:15, tail=4, textWidth=slot-inset-tail-4;
+      const padding=24, nodeGap=narrow?22:26, rowGap=narrow?76:96;
+      svg.style.setProperty('--folded-font',`${fontSize}px`);
+      const ruler=element('text',{class:'liangzhu-sankey-node',visibility:'hidden'});
+      svg.replaceChildren(ruler);
+      const style=getComputedStyle(ruler);
+      measure.font=`${style.fontWeight} ${fontSize}px ${style.fontFamily}`;
+      const nodes=labels.overview.map(([,,zh,en,href,stage],id)=>{
+        const fullCopy=english()?en:zh;
+        const copy=width<480?compactLabels[id][english()?1:0]:fullCopy;
+        const lines=wrap(copy,textWidth);
+        return {id,copy,fullCopy,href,stage,lines,height:Math.max(lineHeight,lines.length*lineHeight)};
+      });
+      const heights=columns.map(ids=>ids.reduce((sum,id)=>sum+nodes[id].height,0)+(ids.length-1)*nodeGap);
+      const topHeight=Math.max(...heights.slice(0,4));
+      const bottomHeight=Math.max(...heights.slice(4));
+      const height=padding*2+topHeight+rowGap+bottomHeight;
+      columns.forEach((ids,index)=>{
+        const row=index<4?0:1, column=row?7-index:index;
+        const available=row?bottomHeight:topHeight;
+        let y=padding+(row?topHeight+rowGap:0)+(available-heights[index])/2;
+        ids.forEach(id=>{
+          Object.assign(nodes[id],{row,column,x:margin+column*(slot+gap),y:y+nodes[id].height/2});
+          nodes[id].right=nodes[id].x+inset+Math.max(...nodes[id].lines.map(line=>measure.measureText(line).width))+5;
+          y+=nodes[id].height+nodeGap;
+        });
+      });
+      svg.setAttribute('viewBox',`0 0 ${width} ${height}`);
+      svg.setAttribute('width',width);svg.setAttribute('height',height);
+      svg.setAttribute('aria-label',english()?'The complete workflow, in two folded rows':'两排折返的工作流程总说明');
+      host.setAttribute('aria-label',svg.getAttribute('aria-label'));
+      const paths=element('g',{'aria-hidden':'true',class:'liangzhu-sankey-paths'});
+      const arrows=element('g',{'aria-hidden':'true'});
+      for (const [from,to,tone] of connections) {
+        const a=nodes[from],b=nodes[to],fold=a.row!==b.row,reverse=a.row===1;
+        const sx=reverse?a.x+4:a.right,tx=fold||reverse?b.right:b.x+4;
+        const sy=a.y,ty=b.y,half=narrow?2:2.7;
+        const cx=fold?width-margin/2-railInset:(sx+tx)/2;
+        const turnJoin=width-margin-turn-railInset+8;
+        const d=fold
+          ? `M${sx} ${sy-half}L${turnJoin} ${sy-half}C${cx} ${sy-half} ${cx} ${ty-half} ${turnJoin} ${ty-half}`+
+            `L${tx} ${ty-half}L${tx} ${ty+half}L${turnJoin} ${ty+half}`+
+            `C${cx} ${ty+half} ${cx} ${sy+half} ${turnJoin} ${sy+half}L${sx} ${sy+half}Z`
+          : `M${sx} ${sy-half}C${cx} ${sy-half} ${cx} ${ty-half} ${tx} ${ty-half}`+
+            `L${tx} ${ty+half}C${cx} ${ty+half} ${cx} ${sy+half} ${sx} ${sy+half}Z`;
+        paths.append(element('path',{d,class:`liangzhu-sankey-mark tone-${tone}`,opacity:'.34',
+          'data-flow-from':from,'data-flow-to':to,'data-path-stage':a.stage}));
+        if ((from===0&&to===2)||(from===5&&to===7)||(from===7&&to===9)||
+            (from===9&&to===11)||(from===13&&to===15)) {
+          const x=fold?turnJoin*.25+cx*.75:(sx+tx)/8+cx*.75,y=(sy+ty)/2;
+          const dx=fold?0:(tx-sx)*.75,dy=(ty-sy)*1.5;
+          arrows.append(element('path',{d:'M-3.5 -3L4 0L-3.5 3Z',
+            transform:`translate(${x} ${y}) rotate(${Math.atan2(dy,dx)*180/Math.PI})`,
+            class:'liangzhu-sankey-mark tone-ink',opacity:'.65'}));
+        }
+      }
+      svg.replaceChildren(paths,arrows);
+      for (const node of nodes) {
+        const link=element('a',{href:node.href,class:'liangzhu-sankey-node',
+          'aria-label':node.fullCopy.replaceAll('\n',' '),'data-node-id':node.id,
+          'data-flow-row':node.row,'data-flow-column':node.column,'data-path-stage':node.stage});
+        const tooltip=element('title');tooltip.textContent=node.fullCopy.replaceAll('\n',' ');link.append(tooltip);
+        link.append(element('rect',{x:node.x-3,y:node.y-node.height/2-5,
+          width:node.right-node.x+7,height:node.height+10,fill:'transparent'}));
+        const circle=element('circle',{cx:node.x+4,cy:node.y,r:narrow?3.5:4.5,
+          class:`liangzhu-sankey-mark tone-${tones[node.id]} liangzhu-overview-dot`});
+        link.append(circle,element('rect',{x:node.right-1,y:node.y-7,
+          width:2,height:14,class:`liangzhu-sankey-mark tone-${tones[node.id]}`}));
+        const text=element('text',{x:node.x+inset,'data-node-label':node.id});
+        node.lines.forEach((line,index)=>{
+          const span=element('tspan',{x:node.x+inset,y:node.y+(index-(node.lines.length-1)/2)*lineHeight});
+          span.textContent=line;text.append(span);
+        });
+        link.append(text);svg.append(link);
+        // Align the actual glyph bounds, including wrapped English and CJK text.
+        const box=text.getBBox();
+        text.setAttribute('transform',`translate(0 ${node.y-box.y-box.height/2})`);
+        const focus=()=>{svg.dataset.activeStage=String(node.stage);};
+        const blur=()=>{delete svg.dataset.activeStage;};
+        link.addEventListener('pointerenter',focus);link.addEventListener('pointerleave',blur);
+        link.addEventListener('focus',focus);link.addEventListener('blur',blur);
+      }
+      host.dataset.ready='true';host.dataset.layout='folded';
+    }
+    const schedule=()=>{if(!frame)frame=requestAnimationFrame(paint);};
+    new ResizeObserver(schedule).observe(host);
+    addEventListener('portfolio:language',schedule);
+    document.fonts.addEventListener('loadingdone',()=>{fontRevision++;schedule();});
+    document.fonts.ready.then(()=>{fontRevision++;schedule();});
+    paint();
+  }
   async function render() {
     try {
       const dataURL = new URL('works/ai3d/board/sankey-paths.json', scriptURL);
@@ -75,6 +227,7 @@
       const data = await response.json();
       for (const host of document.querySelectorAll('[data-sankey]')) {
         const kind = host.dataset.sankey, entry = data[kind];
+        if (kind==='overview') { installFoldedOverview(host); continue; }
         const svg = element('svg', {viewBox:entry.viewBox.join(' '),role:'group',class:'liangzhu-sankey'});
         const title = element('title'); svg.append(title);
         const paths = element('g',{'aria-hidden':'true',class:'liangzhu-sankey-paths'});
