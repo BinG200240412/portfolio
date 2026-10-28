@@ -1,26 +1,26 @@
 # Liangzhu original-board coverage
 
 Source: `assets/works/ai3d/liangzhu-3d.pdf`, one original 2721.26 × 6165.35 pt board.
-The four-stage overview and conclusion connect every original module. Every original numbered module is
-part of the visible narrative, rather than being available only in collapsed
-board screenshots.
+The four-stage overview and conclusion connect the original modules. Necessary
+explanations sit beside their actual components; repeated model-loading prose is
+removed, and the board's additional export plans remain available on demand.
 
 | Original module | Website location | Representation |
 | --- | --- | --- |
 | 01 Background research | `#liangzhu-background` | Three vertical research branches, beside the site-reference grid |
 | 02 Existing scenarios | `#liangzhu-site-references` | All four original photographs in a hover-expanding 2 × 2 crop grid |
 | 03 Style preview | `#liangzhu-style-studies` | Original description and four author-requested horizontal redraws; original references remain in the source folder |
-| 04 Workflow 1 | `#liangzhu-workflow` | Existing editable graph, with image-input, LoRA, ControlNet and sampling explanations |
-| 05 Output pictures | `#liangzhu-style-outputs` | All six original style outputs |
-| 06 Implementation path | `#liangzhu-repaint-path` | Responsive native SVG: stages on the left, components on the right; all 16 original labels and 15 relationships |
+| 04 Workflow 1 | `#liangzhu-workflow` | Editable graph with four attached image-input, LoRA, ControlNet and sampling annotations |
+| 05 Output pictures | `#liangzhu-style-outputs` | All six originals in two equal-window rows, expanding on hover by cropping neighbours |
+| 06 Implementation path | `#liangzhu-repaint-path` | Responsive native SVG: stages on the left, components on the right; all 16 labels and 15 relationships, without small-node links |
 | 07 Case concept | `#liangzhu-spatial-cinema` | Spatial-cinema and game pre-production intent |
-| 08 Key points | Workflow 2, “关键要点和意义” | Style continuity, edge continuity, 2:1 geometry |
-| 09 Implementation | `#liangzhu-panorama-implementation` | Existing editable graph, latent reference, draft/production modes |
-| 10 Workflow description | `#liangzhu-panorama-stages` | Models, reference/text conditions, sampling, and separately identified seamless/HDR extensions |
+| 08 Key points | Workflow 2 component annotations | Style continuity at the image reference; 2:1 geometry and edge continuity at EmptyLatent |
+| 09 Implementation | `#liangzhu-panorama-implementation` | Editable graph with three attached reference, draft/production and panorama-geometry annotations |
+| 10 Workflow description | `#liangzhu-panorama-stages` | Actual models and conditions remain visible in the graph; unique seamless/HDR extension plans are optional |
 | 11 Final panorama works | `#liangzhu-panorama-outputs` | Both input/output comparisons and both original generation records |
 | 12 General workflow | `#liangzhu-complete-path` | Compact two-row U-shaped Sankey with four labelled group frames, preserving all 17 nodes, 23 connections and detail links |
-| 13 Workflow 3 | `#liangzhu-scene-understanding` | Existing editable Janus-Pro graph, original full generated text in its text node, and step explanations |
-| 14 Marble input | `#liangzhu-marble-inputs`, `#liangzhu-marble-handoff` | All three original image inputs, image/text handoff and actual Marble interface |
+| 13 Workflow 3 | `#liangzhu-scene-understanding`, `#liangzhu-prompt-output` | Editable Janus-Pro graph with two attached annotations; full generated text stays in its node, with a readable excerpt beside the panorama |
+| 14 Marble input | `#liangzhu-marble-inputs`, `#liangzhu-marble-handoff` | Three equal-window image inputs; the actual Marble interface is paired with image, semantic and output notes |
 | 15 Scene models | `#process-result` | Both three-image result rows: point-cloud preview and two scene views each, plus their original Web/VR links |
 
 ## Source fidelity and technical scope
@@ -41,13 +41,15 @@ Text wraps at its real font width; each text block's rendered bounds are vertica
 centred against its node dot. The original straight paths remain in the source
 JSON as provenance. The repainting-path figure is now recomposed into a vertical
 sequence of left-hand stages and right-hand components, preserving all 16 labels,
-their links and the 15 relationships. Model choice feeds upward into sampling;
+the 15 relationships. Model choice feeds upward into sampling;
 it is an auxiliary input rather than a stage after sampling. Neither explanatory
 diagram requires horizontal scrolling; the editable ComfyUI graphs retain their
 independent canvas controls.
 Visible labels use concise equivalents; below 480 px these are shortened further so the two rows remain
 readable at 16 px; every node keeps its complete original label in its accessible
-name and tooltip, and still links to the full explanation.
+name and tooltip. Only the four workflow headings link to their chapter starts;
+small nodes in both diagrams are noninteractive labels. The heading links use an
+explicit instant chapter jump, avoiding smooth-scroll and snap conflicts.
 
 The supplied `02_矢量/体验流程框架.svg` was inspected but is a separate generic
 workflow ending in a social upload. It is not used in place of this board’s two
@@ -74,7 +76,7 @@ to its own chapter. Janus-Pro is Workflow 3; the existing Marble image inputs an
 handoff are Workflow 4. The original three editable ComfyUI graphs remain intact.
 The page-snap registry discovers all four chapter anchors automatically.
 
-Workflow 1 starts with a horizontal, dotted-frame input/process/output sequence.
+All four workflows start with a horizontal, dotted-frame input/process/output sequence.
 Its two dotted arrows animate in order when the sequence enters view, with static
 rendering for reduced-motion preferences. Three research branches and the 2 × 2
 site-reference grid share a desktop row, followed by a downward arrow into the
@@ -90,14 +92,27 @@ keys move keyboard focus. Escape resets. Container heights remain
 fixed during the transition, avoiding page jumps. Source images, alt text, shared
 media corners and all other full-image viewers are preserved.
 
-The input/process/output sequence uses compact coloured blocks with actual
-round-dot SVG borders. All 22 explanatory arrows are sampled with individual SVG
+The input/process/output sequences use compact coloured blocks with actual
+round-dot SVG borders. All explanatory arrows are sampled with individual SVG
 circles rather than dashed strokes. Both arrowhead arms use exactly mirrored
 coordinates and matching animation phases. Card arrival animates opacity only,
 so a stagger cannot temporarily move one card away from its arrow. Research
 branches are measured from the current title and item bounds, then drawn as
 three round-dot arrows. Arrow and text positions are recalculated when language,
-font loading or responsive layout changes. Desktop (1280 px) and phone (390 px)
-checks in Chinese/English and light/dark modes found no label overlaps,
-out-of-bounds text or horizontal overflow; all 22 arrowheads had zero symmetry
-error and all three editable workflow graphs were ready.
+font loading or responsive layout changes.
+
+## Component-side explanations and output windows
+
+The three graph JSON files add only bilingual `annotations` metadata. Original
+nodes, positions, parameters, groups and links are unchanged. The SVG renderer
+wraps each explanation at its actual font width, includes it in the drawing
+bounds, and moves its dotted leader and text with the owning component. Four,
+three and two notes respectively replace the repeated explanation blocks below
+the graphs. Reset restores both components and notes.
+
+Style outputs use two rows of three equal-size windows; Marble inputs and scene
+comparisons use the same interaction. Hover/focus expands the chosen window and
+crops its neighbours, keeping row height and image proportions fixed. Pointer
+exit returns to equal widths. The two panorama pairs retain the complete 2:1
+images for checking boundaries and aspect ratio. All 30 original image assets
+remain on the page; the prompt-output excerpt reuses the corresponding panorama.

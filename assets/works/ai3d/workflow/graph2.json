@@ -789,5 +789,55 @@
       "input": 0,
       "type": "IMAGE"
     }
+  ],
+  "annotations": [
+    {
+      "id": "kontext-reference",
+      "node": 20,
+      "dx": -1080,
+      "dy": 100,
+      "w": 900,
+      "side": "left",
+      "title": {
+        "zh": "Flux-Kontext · 延续首图画风",
+        "en": "Flux-Kontext · Retain the first image’s style"
+      },
+      "copy": {
+        "zh": "原展板比较了 IP-Adapter 思路，实际节点采用 Flux-Kontext。风格图经 VAEEncode 与 ReferenceLatent 转成潜空间参考，在“create a 360 hdr”引导下延展场景。",
+        "en": "The board considers IP-Adapter; the actual graph uses Flux-Kontext. VAEEncode and ReferenceLatent turn the style image into a latent reference, guided by “create a 360 hdr”."
+      }
+    },
+    {
+      "id": "upscale-switch",
+      "node": 34,
+      "dx": 0,
+      "dy": -650,
+      "w": 1100,
+      "side": "top",
+      "title": {
+        "zh": "放大开关 · 先调试，再高清",
+        "en": "Upscaling switch · Draft, then refine"
+      },
+      "copy": {
+        "zh": "调试时跳过高清放大，先判断莫角山台基、芦苇荡等构图与画风；确认底图后再开启放大。预览、对比与高清结果分别保留。",
+        "en": "Bypass upscaling while checking the composition and style of the platform and reed scenes. Enable refinement after approving the base image. Preview, comparison and high-resolution results remain separate."
+      }
+    },
+    {
+      "id": "panorama-ratio",
+      "node": 37,
+      "dx": 0,
+      "dy": 400,
+      "w": 1500,
+      "side": "bottom",
+      "title": {
+        "zh": "核心几何约束 · 2:1",
+        "en": "Core geometry · 2:1"
+      },
+      "copy": {
+        "zh": "2:1 长宽比对应 360° 经度与 180° 纬度。把方形图片直接映射为完整全景，会压缩天顶与地面；生成后还需检查左右边界和地平线是否连续。",
+        "en": "A 2:1 image corresponds to 360° longitude and 180° latitude. Mapping a square as a full panorama distorts the zenith and ground. Check that the left and right edges and horizon connect."
+      }
+    }
   ]
 }

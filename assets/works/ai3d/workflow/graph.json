@@ -3369,5 +3369,71 @@
       "input": 0,
       "type": "IMAGE"
     }
+  ],
+  "annotations": [
+    {
+      "id": "site-input",
+      "node": 12,
+      "dx": -1140,
+      "dy": 30,
+      "w": 850,
+      "side": "left",
+      "title": {
+        "zh": "上传图像与艺术风格",
+        "en": "Image input and visual style"
+      },
+      "copy": {
+        "zh": "输入良渚现场采集的实景或参考图。ImageScale 统一尺寸，WD14Tagger 反推图像语义，再与艺术风格触发词组合。",
+        "en": "Load a Liangzhu site or reference image. ImageScale normalises its dimensions; WD14Tagger derives semantic tags, which are combined with the style trigger words."
+      }
+    },
+    {
+      "id": "lora-style",
+      "node": 45,
+      "dx": -80,
+      "dy": 760,
+      "w": 800,
+      "side": "bottom",
+      "title": {
+        "zh": "LoRA · 水乡泽国",
+        "en": "LoRA · A waterside settlement"
+      },
+      "copy": {
+        "zh": "训练围绕莫角山夯土台基、干栏式木构与芦苇湿地展开；以青灰水体、葱郁植被和柔光约束场景画风。",
+        "en": "The scene training focuses on Mojiaoshan’s rammed-earth platforms, timber stilt houses and reed wetlands, with blue-grey water, lush vegetation and soft light."
+      }
+    },
+    {
+      "id": "control-sequence",
+      "node": 28,
+      "dx": -150,
+      "dy": 1550,
+      "w": 1700,
+      "side": "bottom",
+      "title": {
+        "zh": "ControlNet · 接力式串联",
+        "en": "ControlNet · Sequential constraints"
+      },
+      "copy": {
+        "zh": "Conditioning → Lineart → Tile → KSampler。先用 Lineart 锁定建筑轮廓，再由 Tile 保留局部信息进行重绘，让结构与细节共同约束采样。",
+        "en": "Conditioning → Lineart → Tile → KSampler. Lineart first locks the architectural outlines; Tile then retains local information while repainting, constraining both structure and detail."
+      }
+    },
+    {
+      "id": "sampling-passes",
+      "node": 3,
+      "dx": 0,
+      "dy": 1200,
+      "w": 2300,
+      "side": "bottom",
+      "title": {
+        "zh": "三阶采样与潜空间放大",
+        "en": "Three sampling passes and latent upscaling"
+      },
+      "copy": {
+        "zh": "以 Flat-2D Animerge V3.0 与场景 LoRA 确定画风。两次采样之后进行 LatentUpscale，再用第三次采样补充细节。",
+        "en": "Flat-2D Animerge V3.0 and the scene LoRA establish the style. Two sampling passes are followed by LatentUpscale and a final pass to refine detail."
+      }
+    }
   ]
 }

@@ -15,7 +15,8 @@
     const figure = host.closest('.workflow-figure'), frame = host.querySelector('.workflow-frame');
     const stage = host.querySelector('.workflow-stage'), svg = host.querySelector('svg'), message = host.querySelector('.workflow-message');
     const tr = key => words[window.PortfolioI18n?.language === 'en' ? 'en' : 'zh'][key];
-    let data, original, world, nodeLayer, groupLayer, linkLayer, pulseLayer, width = 1, scale = .5, tx = 0, ty = 0;
+    let data, original, world, nodeLayer, groupLayer, linkLayer, pulseLayer, annotationLayer, width = 1, scale = .5, tx = 0, ty = 0;
+    let annotationRects = [];
     let drag = null, pinch = null, loaded = false, visible = false, selected = null, lastHit = null, mode = 'reader';
     const activePointers = new Map(), uploaded = new Map(), elements = new Map(), groupElements = new Map(), links = new Map();
     const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
@@ -29,11 +30,12 @@
       frame.querySelectorAll('[data-workflow-text]').forEach(e => { e.textContent = tr(e.dataset.workflowText); });
       svg.setAttribute('aria-label', tr('canvas'));
       if (!loaded) message.textContent = tr('loading');
+      else { paintAnnotations(); layout(); }
     }
     labels(); addEventListener('portfolio:language', labels);
     const readingScale = () => width < 700 ? .55 : .5;
     function bounds() {
-      const items = [...data.nodes, ...data.groups];
+      const items = [...data.nodes, ...data.groups, ...annotationRects];
       const x = Math.min(...items.map(n => n.x)), y = Math.min(...items.map(n => n.y - (data.nodes.includes(n) ? 50 : 0)));
       return { x, y, w: Math.max(...items.map(n => n.x + n.w)) - x, h: Math.max(...items.map(n => n.y + n.h)) - y };
     }
@@ -167,6 +169,58 @@
       if (ids && !ids.includes(link.source) && !ids.includes(link.target)) continue;
       links.get(link.id).setAttribute('d', route(link));
     }
+    paintAnnotations();
+  }
+  // Board explanations share the drawing plane and follow their actual component.
+  // Source node positions, parameters and links are kept intact.
+  function paintAnnotations() {
+    if(!annotationLayer)return;
+    annotationLayer.replaceChildren();annotationRects=[];
+    const language=window.PortfolioI18n?.language==='en'?'en':'zh';
+    const measure=document.createElement('canvas').getContext('2d');
+    const wrap=(copy,width)=>{
+      const lines=[];let line='';
+      for(const token of copy.match(/[A-Za-z0-9°._/-]+|\s+|[^\s]/gu)||[]){
+        if(line&&measure.measureText(line+token).width>width){lines.push(line.trim());line='';}
+        line+=token;
+      }
+      if(line.trim())lines.push(line.trim());return lines;
+    };
+    for(const note of data.annotations||[]){
+      const owner=note.group?data.groups.find(g=>g.id===note.group):nodeById(note.node);
+      if(!owner)continue;
+      const x=owner.x+note.dx,y=owner.y+note.dy,w=note.w;
+      const group=S('g',{class:'wf-annotation','data-annotation':note.id,
+        'data-annotation-node':note.node??'', 'data-annotation-group':note.group??'',role:'note',
+        'aria-label':`${note.title[language]}. ${note.copy[language]}`});
+      const title=S('text',{x:0,y:0,class:'wf-annotation-title'});group.append(title);annotationLayer.append(group);
+      const style=getComputedStyle(title);
+      measure.font=`${style.fontSize} ${style.fontFamily}`;
+      const titleLines=wrap(note.title[language],w);
+      titleLines.forEach((line,i)=>title.append(S('tspan',{x:0,y:36+i*46},line)));
+      const text=S('text',{class:'wf-annotation-copy'});group.append(text);
+      const copyStyle=getComputedStyle(text);
+      measure.font=`${copyStyle.fontSize} ${copyStyle.fontFamily}`;
+      const lines=wrap(note.copy[language],w),textTop=titleLines.length*46+20;
+      lines.forEach((line,i)=>text.append(S('tspan',{x:0,y:textTop+32+i*48},line)));
+      const h=textTop+lines.length*48+12;
+      group.setAttribute('transform',`translate(${x} ${y})`);
+      annotationRects.push({x:x-12,y:y-12,w:w+24,h:h+24});
+      const side=note.side||'bottom';let a,b,d;
+      if(side==='left'||side==='right'){
+        a=[side==='left'?owner.x:owner.x+owner.w,owner.y+Math.min(owner.h/2,160)];
+        b=[side==='left'?x+w+18:x-18,y+30];
+        const bend=(a[0]+b[0])/2;
+        d=`M${a[0]} ${a[1]}H${bend}V${b[1]}H${b[0]}`;
+      }else{
+        a=[owner.x+owner.w/2,side==='top'?owner.y-50:owner.y+owner.h];
+        b=[x+Math.min(w/2,owner.w/2),side==='top'?y+h+16:y-16];
+        const bend=(a[1]+b[1])/2;
+        d=`M${a[0]} ${a[1]}V${bend}H${b[0]}V${b[1]}`;
+      }
+      annotationLayer.prepend(S('path',{d,class:'wf-annotation-leader','aria-hidden':'true'}));
+    }
+    host.dataset.annotations=String(annotationRects.length);
   }
   function highlight(id) {
     if (selected === id) return; selected = id;
@@ -176,8 +230,8 @@
   function render() {
     svg.replaceChildren(); elements.clear(); groupElements.clear(); links.clear();
     world = S('g', { class: 'workflow-world' }); svg.append(world);
-    groupLayer = S('g'); linkLayer = S('g'); pulseLayer = S('g'); nodeLayer = S('g');
-    world.append(groupLayer, linkLayer, pulseLayer, nodeLayer);
+    groupLayer = S('g'); linkLayer = S('g'); pulseLayer = S('g'); nodeLayer = S('g');annotationLayer=S('g');
+    world.append(groupLayer, linkLayer, pulseLayer, nodeLayer,annotationLayer);
     data.groups.forEach(group);
     data.links.forEach((link, i) => {
       const path = S('path', { id: `${uid}-link-${link.id}`, class: 'wf-link', stroke: color(link.type), 'data-link': link.id });
@@ -274,5 +328,7 @@
     fetch(graphURL).then(response=>{if(!response.ok)throw new Error(response.status);return response.json();}).then(value=>{
       data=value;original=structuredClone(value);loaded=true;render();resize();reader();message.hidden=true;host.dataset.ready='true';
     }).catch(error=>{console.error(`Liangzhu ${uid}:`,error);message.textContent=tr('error');host.dataset.ready='false';});
+    document.fonts.ready.then(()=>{if(loaded){paintAnnotations();layout();}});
+    document.fonts.addEventListener('loadingdone',()=>{if(loaded){paintAnnotations();layout();}});
   });
 })();

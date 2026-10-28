@@ -220,5 +220,39 @@
       "input": 0,
       "type": "STRING"
     }
+  ],
+  "annotations": [
+    {
+      "id": "janus-instruction",
+      "node": 25,
+      "dx": 0,
+      "dy": 1000,
+      "w": 900,
+      "side": "bottom",
+      "title": {
+        "zh": "Janus-Pro · 读取场景",
+        "en": "Janus-Pro · Read the scene"
+      },
+      "copy": {
+        "zh": "原指令：“帮我具体描述这幅图，加入光影信息，构图信息，不超过75词”。重点提取建筑、植被、地形、光影和构图。",
+        "en": "Original instruction: describe this image, including lighting and composition, in no more than 75 words. Extract the architecture, vegetation, terrain, lighting and composition."
+      }
+    },
+    {
+      "id": "text-handoff",
+      "node": 21,
+      "dx": 0,
+      "dy": 1000,
+      "w": 1000,
+      "side": "bottom",
+      "title": {
+        "zh": "文本输出 · 补充语义",
+        "en": "Text output · Add semantic guidance"
+      },
+      "copy": {
+        "zh": "将草屋、岩石、稻田、远山与积云转成文字条件。全景提供视觉信息，描述补充语义，接下来一起交给 Marble。",
+        "en": "Turn the hut, rocks, paddy fields, distant hills and clouds into text conditions. The panorama supplies visual information; the description adds semantic guidance. Both continue to Marble."
+      }
+    }
   ]
 }

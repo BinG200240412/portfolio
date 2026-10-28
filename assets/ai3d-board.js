@@ -171,8 +171,7 @@
     schedule();
   }
   function installAnalysisInteractions() {
-    const sequence=document.querySelector('[data-io-sequence]');
-    if(sequence){
+    for(const sequence of document.querySelectorAll('[data-io-sequence]')){
       [...sequence.children].forEach((step,index)=>{
         step.style.setProperty('--io-step',index);
         const frame=element('svg',{class:'liangzhu-io-frame','aria-hidden':'true'});
@@ -191,6 +190,7 @@
     }
     document.querySelector('.liangzhu-research-flow')?.append(dotArrow());
     document.querySelector('.liangzhu-research-down')?.append(dotArrow());
+    document.querySelectorAll('[data-analysis-arrow]').forEach(host=>host.append(dotArrow()));
     installResearchBranches();
     for(const gallery of document.querySelectorAll('[data-crop-gallery]')){
       const buttons=[...gallery.querySelectorAll('button')];
@@ -198,6 +198,8 @@
       const select=index=>{
         if(index<0)delete gallery.dataset.selected;
         else gallery.dataset.selected=String(index);
+        if(gallery.dataset.cropGallery==='strip')
+          gallery.style.setProperty('--crop-columns',buttons.map((_,i)=>i===index?'4fr':'1fr').join(' '));
         buttons.forEach((button,i)=>button.setAttribute('aria-pressed',String(i===index)));
       };
       const sync=()=>select(hovered>=0?hovered:focused>=0?focused:touched);
@@ -348,6 +350,13 @@
           class:'liangzhu-overview-frame','data-workflow-group':group.stage,'data-path-stage':group.stage}));
         const heading=element('a',{href:group.href,class:'liangzhu-overview-heading','data-path-stage':group.stage,
           'aria-label':english()?`Workflow ${group.stage}: ${group.en}`:`工作流${['','一','二','三','四'][group.stage]}：${group.zh}`});
+        heading.addEventListener('click',event=>{
+          if(event.button>0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+          const target=document.querySelector(group.href);if(!target)return;
+          event.preventDefault();
+          history.pushState(null,'',group.href);
+          target.scrollIntoView({block:'start',inline:'nearest',behavior:'instant'});
+        });
         heading.append(element('rect',{x,y,width:groupWidth,height:headerHeights[group.row],fill:'transparent'}));
         const number=element('text',{x:x+8,y:y+14,class:'liangzhu-overview-number'});
         number.textContent=english()?`Workflow ${group.stage}`:`工作流${['','一','二','三','四'][group.stage]}`;
@@ -372,7 +381,7 @@
         dotRoute(leader.element,[[leader.x+8+box.width+12,cy],[leader.end,cy],[leader.end,leader.boxY]],{pitch:5,radius:.9});
       }
       for (const node of nodes) {
-        const link=element('a',{href:node.href,class:'liangzhu-sankey-node',
+        const link=element('g',{class:'liangzhu-sankey-node',role:'group',
           'aria-label':node.fullCopy.replaceAll('\n',' '),'data-node-id':node.id,
           'data-flow-row':node.row,'data-flow-column':node.column,'data-path-stage':node.stage});
         const tooltip=element('title');tooltip.textContent=node.fullCopy.replaceAll('\n',' ');link.append(tooltip);
@@ -475,7 +484,7 @@
         route(from,to,[[a.x,a.y+(down?1:-1)*(a.height/2+9)],[b.x,b.y+(down?-1:1)*(b.height/2+9)]],a.stage);
       }
       for(const node of nodes){
-        const link=element('a',{href:node.href,class:'liangzhu-sankey-node','data-path-stage':node.stage,
+        const link=element('g',{class:'liangzhu-sankey-node',role:'group','data-path-stage':node.stage,
           'data-repaint-node':node.id,'aria-label':node.fullCopy});
         const title=element('title');title.textContent=node.fullCopy;link.append(title);
         const textX=node.x+14;

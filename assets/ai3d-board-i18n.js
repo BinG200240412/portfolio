@@ -115,3 +115,16 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {"网页场景": "Web scene", 
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {"沿上排向右，再沿下排向左阅读；点选节点查看对应内容。": "Follow the top row to the right, then return along the bottom row; select a node for its section."});
 
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {"点选节点查看组件说明。": "Select a node to read about its components."});
+
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
+  "展板中的扩展方案": "Extensions documented on the board",
+  "提示词输出": "Prompt output",
+  "原始生成描述 · 节选": "Original generated description · Excerpt",
+  "完整描述保留在上方“展示文本”节点中。": "The complete description is retained in the Show Text node above.",
+  "图像条件": "Image condition",
+  "输入工作流二的 2:1 全景图，提供建筑、地形与整体画风。": "Use the 2:1 panorama from Workflow 2 for the architecture, terrain and overall visual style.",
+  "语义条件": "Semantic condition",
+  "加入工作流三的场景描述，补充草屋、岩石、稻田、远山和光影信息。": "Add the description from Workflow 3 for the hut, rocks, paddy fields, distant hills and lighting.",
+  "三维输出": "3D output",
+  "Marble 生成可探索的高斯泼溅场景；下方保留两个场景的点云与视角对照。": "Marble generates an explorable Gaussian-splat scene. The two scenes below retain their point-cloud and camera-view comparisons."
+});

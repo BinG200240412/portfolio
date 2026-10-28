@@ -72,6 +72,10 @@ html[data-theme="dark"] .workflow-native{
 .wf-upload-surface{fill:var(--wf-widget);stroke:var(--wf-line);stroke-width:2}
 .wf-preview{pointer-events:none}
 .wf-preview-label{fill:var(--wf-muted);font-size:21px}
+.wf-annotation{pointer-events:none}
+.workflow-world .wf-annotation-title{font-size:36px;fill:var(--wf-ink)}
+.workflow-world .wf-annotation-copy{font-size:32px;fill:var(--wf-muted)}
+.wf-annotation-leader{fill:none;stroke:var(--wf-edge);stroke-width:2;stroke-dasharray:.1 8;stroke-linecap:round;pointer-events:none}
 .workflow-native .workflow-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;width:min(1200px,100%);margin-inline:auto;padding:12px clamp(20px,5vw,64px) 0;border:0;background:transparent;font-size:12px;color:var(--wf-muted)}
 .workflow-bar p{margin:0!important;color:var(--wf-muted)!important;font-size:12px!important;line-height:1.45!important;max-width:none!important}
 .workflow-bar .workflow-buttons{display:flex;align-items:center;gap:20px;flex:none}
