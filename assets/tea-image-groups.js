@@ -69,7 +69,7 @@
     const activate = index => {
       if (document.querySelector('dialog[open]')) return;
       const count = rowItems.length;
-      const share = count === 2 ? .78 : count === 3 ? .7 : .65;
+      const share = 4 / (count + 3);
       const spacing = parseFloat(getComputedStyle(row).columnGap) || 0;
       const available = row.clientWidth - spacing * (count - 1);
       const origin = row.getBoundingClientRect().left;
@@ -103,10 +103,21 @@
       img.style.setProperty('--tea-paint-height', `${measured.imageHeight}px`);
       img.style.setProperty('--tea-natural-width', `${img.naturalWidth || Number(img.getAttribute('width')) || measured.imageWidth}px`);
       frame.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') activate(index); }, options);
-      item.addEventListener('focusin', () => activate(index), options);
+      item.addEventListener('focusin', event => { if (event.target.matches(':focus-visible')) activate(index); }, options);
     });
-    row.addEventListener('pointerleave', () => { if (!row.contains(document.activeElement)) reset(); }, options);
+    row.addEventListener('pointerleave', () => {
+      if (!row.contains(document.activeElement) || !document.activeElement.matches(':focus-visible')) reset();
+    }, options);
     row.addEventListener('focusout', event => { if (!row.contains(event.relatedTarget)) reset(); }, options);
+    row.addEventListener('keydown', event => {
+      if (event.key === 'Escape') { reset(); return; }
+      if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+      const index = rowItems.findIndex(item => item.contains(event.target));
+      if (index < 0) return;
+      const next = (index + (event.key === 'ArrowRight' ? 1 : -1) + rowItems.length) % rowItems.length;
+      const button = rowItems[next].querySelector('button,[role="button"],[tabindex]');
+      if (button) { event.preventDefault(); button.focus({ preventScroll: true }); }
+    }, options);
     document.addEventListener('click', () => { if (document.querySelector('dialog[open]')) reset(); }, options);
     record.cleanups.push(() => controller.abort());
   }
