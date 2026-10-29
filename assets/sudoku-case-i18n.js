@@ -418,3 +418,22 @@ Object.assign(window.PORTFOLIO_TRANSLATIONS, {
   "当前维护工程采集，产品已发布并持续维护。": "Captured from the maintained build. The app is released and remains under maintenance.",
   "它经历了多轮变化：从网页原型，到原生界面，再到辅导、分享与盘面细节的反复调整。这里选出五个阶段的留存画面，回看设计怎样逐步成形。": "The app developed through repeated revisions: from a web prototype to native screens, then through coaching, sharing and board refinements. These five stages trace how the design took shape."
 });
+
+/* Compact chronological filmstrip. */
+Object.assign(window.PORTFOLIO_TRANSLATIONS, {
+  "从网页原型，到现在。沿着时间，回看界面怎样一步步变得清晰。": "From the web prototype to today. Follow the timeline to see the interface become clearer.",
+  "迭代时间轴": "Design timeline",
+  "横向浏览历史界面": "Browse archived interfaces horizontally",
+  "网页原型": "Web prototype",
+  "原生初版": "First native app",
+  "层级整理": "Hierarchy",
+  "细节打磨": "Refinement",
+  "当前版本": "Current version",
+  "现在": "Now",
+  "迭代记录": "Iteration notes",
+  "先完成一局数独，再寻找自己的表达。": "First, make a complete game. Then find its own expression.",
+  "点阵进度、分步辅导与残局分享，逐渐围绕同一局展开。": "Dotted progress, step-by-step coaching and sharing begin to revolve around the same game.",
+  "收拢顶栏入口，把设置与教程组织得更清楚。": "Fewer header entries, clearer settings and a more organised guide.",
+  "从整页布局，细化到分享卡的一行对齐。": "From whole-screen layouts to the alignment of a single row in the sharing card.",
+  "用字形区分题目与笔迹，把辅助留到需要时。": "Distinct type for givens and handwriting. Assistance appears when needed."
+});
