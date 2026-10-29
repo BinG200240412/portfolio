@@ -180,3 +180,12 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
 });
 
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {"原展板日志：在主收集品周围布置 6 个小收集品，并分别挂载脚本。":"Original board log: place six small collectibles around the main item and attach their scripts."});
+
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
+  "现场图片流动展示": "Moving on-site photo gallery",
+  "现场照片第一排": "On-site photos, row one",
+  "现场照片第二排": "On-site photos, row two",
+  "现场照片第三排": "On-site photos, row three",
+  "暂停现场图片移动": "Pause on-site photo movement",
+  "继续现场图片移动": "Resume on-site photo movement"
+});
