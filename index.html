@@ -182,7 +182,7 @@
     .cols section{padding:0;border-left:0;border-top:1px solid #e3e3e3;padding-top:28px}
     .cols section:first-child{border-top:0;padding-top:0}}
 </style>
-<link rel="stylesheet" href="assets/theme.css?v=language-optics-20261026">
+<link rel="stylesheet" href="assets/theme.css?v=fast-first-paint-20261029">
 <link rel="stylesheet" href="assets/pixel-loader.css?v=dot-fan-20261025">
 <link rel="stylesheet" href="assets/works/ai3d/particle-cover.css?v=dot-fan-20261025">
 <link rel="stylesheet" href="assets/matrix-field.css?v=led-speech-20261027">
@@ -236,7 +236,7 @@
         </ul>
       </div>
       <figure class="about-portrait rv">
-        <img src="assets/portraits/caizhengyang-photo-20261024.jpg" alt="蔡正阳" width="1600" height="1746" decoding="async">
+        <img src="assets/portraits/caizhengyang-photo-20261024.jpg" alt="蔡正阳" width="1600" height="1746" loading="lazy" decoding="async">
       </figure>
     </div>
     <div class="about-companion-track" aria-hidden="true" data-i18n-ignore>
@@ -474,6 +474,12 @@ function dismissProjectLoading(frame){
 addEventListener('message',event=>{
   const frame=section.querySelector('iframe');
   if(!frame||event.origin!==location.origin||event.source!==frame.contentWindow)return;
+  // The translated, styled document is ready before distant images finish.
+  // Do not hold the whole case behind a spinner until iframe `load`.
+  if(event.data?.type==='portfolio:language-ready'){
+    requestAnimationFrame(()=>requestAnimationFrame(()=>dismissProjectLoading(frame)));
+    return;
+  }
   if(event.data?.type==='portfolio:cover-state'&&['loading','ready','error'].includes(event.data.state)){
     dismissProjectLoading(frame);
   }
@@ -491,6 +497,7 @@ function enterSection(name){
     frameURL.searchParams.set("media", "video-preview-detail-20261026");
     frameURL.searchParams.set("chrome", "stepped-type-20261026");
     frameURL.searchParams.set("rail", "content-bead-rail-20261027");
+    frameURL.searchParams.set("render", "fast-first-paint-20261029");
     const fontPreview = document.documentElement.dataset.cjkPreview;
     if (fontPreview) frameURL.searchParams.set("cjk", fontPreview);
     const frame=document.createElement('iframe');

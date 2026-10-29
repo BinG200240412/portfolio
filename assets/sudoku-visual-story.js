@@ -286,9 +286,10 @@
       marksVisible = false;
       targets.style.opacity = '0'; leader.style.opacity = '0';
       message(false); state('loading');
-      warm(index);
       try {
-        await preload(step.image);
+        const focusedImage = preload(step.image);
+        warm(index);
+        await focusedImage;
         if (serial !== request || disposed) return;
         if (blocked()) { deferred = index; return; }
         const currentSource = absolute(screens[shownScreen].getAttribute('src'));
@@ -465,7 +466,8 @@
     document.fonts?.ready.then(refresh);
     measure();
     root.classList.add('visual-story-ready');
-    [...new Set(steps.map(step => step.image))].forEach(source => preload(source).catch(() => {}));
+    // The visible step starts its own image request; warm() prepares only the
+    // neighbouring screens once this chapter is reached.
     schedule();
   }
 

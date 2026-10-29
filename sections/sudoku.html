@@ -19,7 +19,7 @@
 <script defer src="../assets/sudoku-anatomy.js?v=case-story-20261029"></script>
 <script defer src="../assets/sudoku-case.js?v=docked-board-20261024"></script>
 <script defer src="../assets/sudoku-product-scene.js?v=studio-dots-20261025"></script>
-<script defer src="../assets/sudoku-visual-story.js?v=visual-lens-20261028"></script>
+<script defer src="../assets/sudoku-visual-story.js?v=on-demand-screens-20261029"></script>
 <script defer src="../assets/sudoku-evolution.js?v=evolution-rail-20261029"></script>
 <script defer src="../assets/sudoku-ui-wall.js?v=restore-analysis-20261027"></script>
 <meta name="description" content="Sudoku.2026：为数独爱好者设计的纯净数独，极简克制，支持分步辅导、记录与分享。">
@@ -32,7 +32,7 @@
 @media(max-width:720px){.viewer-bar{height:66px;padding-inline:20px}.viewer-image{padding:20px 15px 35px;min-height:calc(100% - 66px)}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
-<link rel="stylesheet" href="../assets/theme.css?v=language-optics-20261026">
+<link rel="stylesheet" href="../assets/theme.css?v=fast-first-paint-20261029">
 <link rel="stylesheet" href="../assets/sudoku-hero.css?v=iphone-device-20261025">
 <link rel="stylesheet" href="../assets/sudoku-case.css?v=black-phones-20261025">
 <link rel="stylesheet" href="../assets/sudoku-character.css?v=history-gallery-20261027">
@@ -90,9 +90,9 @@
           <button class="image-open case-product-shot" type="button" data-image="../assets/works/sudoku/iphone-duo-studio-black-transparent.png" data-caption="双机产品展示" data-kind="mockup" aria-label="放大查看双机产品展示">
             <span class="case-phone-scene" role="group" aria-label="双机展示，前方为分步辅导，后方为 Logo 启动页" data-media-corners-ignore>
               <span class="case-phone-canvas">
-                <img class="case-phone-base" src="../assets/works/sudoku/iphone-duo-studio-black-transparent.png" width="1254" height="1254" alt="" decoding="async">
-                <span class="case-phone-clip case-phone-clip--back"><span class="case-phone-occlusion"><img class="case-phone-screen" data-scene-screen="back" src="../assets/works/sudoku/launch.png?v=native-launch-20261027" width="1320" height="2868" alt="" decoding="async"></span></span>
-                <span class="case-phone-clip case-phone-clip--front"><img class="case-phone-screen" data-scene-screen="front" src="../assets/works/sudoku/coach.png?v=green-20261024" width="1320" height="2868" alt="" decoding="async"></span>
+                <img class="case-phone-base" src="../assets/works/sudoku/iphone-duo-studio-black-transparent.png" width="1254" height="1254" alt="" decoding="async" loading="lazy">
+                <span class="case-phone-clip case-phone-clip--back"><span class="case-phone-occlusion"><img class="case-phone-screen" data-scene-screen="back" src="../assets/works/sudoku/launch.png?v=native-launch-20261027" width="1320" height="2868" alt="" decoding="async" loading="lazy"></span></span>
+                <span class="case-phone-clip case-phone-clip--front"><img class="case-phone-screen" data-scene-screen="front" src="../assets/works/sudoku/coach.png?v=green-20261024" width="1320" height="2868" alt="" decoding="async" loading="lazy"></span>
               </span>
               <span class="case-scene-feedback" role="status" data-i18n-ignore hidden></span>
             </span>
@@ -124,7 +124,7 @@
     <div class="sudoku-anatomy" id="sudoku-anatomy">
     <svg class="anatomy-connections" aria-hidden="true"></svg>
     <figure class="sudoku-gallery-figure">
-      <button class="image-open" id="sudoku-active-open" type="button" data-image="../assets/works/sudoku/demos/board.jpg" data-caption="主棋盘" data-kind="screen" aria-label="放大查看主棋盘截图"><span class="sudoku-device"><img class="sudoku-device-screen" id="sudoku-active-image" src="../assets/works/sudoku/demos/board.jpg" width="1320" height="2868" alt="数独主棋盘，鼠尾草绿色进度条与输入工具" decoding="async"></span></button>
+      <button class="image-open" id="sudoku-active-open" type="button" data-image="../assets/works/sudoku/demos/board.jpg" data-caption="主棋盘" data-kind="screen" aria-label="放大查看主棋盘截图"><span class="sudoku-device"><img class="sudoku-device-screen" id="sudoku-active-image" src="../assets/works/sudoku/demos/board.jpg" width="1320" height="2868" alt="数独主棋盘，鼠尾草绿色进度条与输入工具" decoding="async" loading="lazy"></span></button>
       <figcaption id="sudoku-active-caption" class="case-sr-only">主棋盘</figcaption>
     </figure>
     <div class="anatomy-callouts" id="sudoku-anatomy-callouts"></div>
@@ -153,8 +153,8 @@
         <div class="visual-device-stage">
           <button class="image-open visual-device-open" type="button" data-image="../assets/works/sudoku/board.png" data-caption="主盘面" data-kind="screen" aria-label="放大查看主盘面截图" data-media-corners-ignore>
             <span class="sudoku-device">
-              <img class="sudoku-device-screen" data-visual-screen="a" fetchpriority="high" src="../assets/works/sudoku/board.png" width="1320" height="2868" alt="主盘面" decoding="async">
-              <img class="sudoku-device-screen" data-visual-screen="b" src="../assets/works/sudoku/board.png" width="1320" height="2868" alt="主盘面" aria-hidden="true" decoding="async">
+              <img class="sudoku-device-screen" data-visual-screen="a" src="../assets/works/sudoku/board.png" width="1320" height="2868" alt="主盘面" decoding="async" loading="lazy">
+              <img class="sudoku-device-screen" data-visual-screen="b" src="../assets/works/sudoku/board.png" width="1320" height="2868" alt="主盘面" aria-hidden="true" decoding="async" loading="lazy">
             </span>
           </button>
           <svg class="visual-device-overlay" aria-hidden="true"><g class="visual-targets"></g><g class="visual-leader"></g></svg>

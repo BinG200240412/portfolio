@@ -9,6 +9,7 @@
   const retry = status.querySelector('[data-cover-retry]');
   window.PortfolioLoading?.mount(status);
   const assetURL = new URL('liangzhu-village.ply', document.currentScript.src);
+  const compressedAssetURL = new URL('liangzhu-village.ply.gz', document.currentScript.src);
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const words = {
     zh: { loading: '正在载入场景', preparing: '正在点亮场景', failed: '场景暂时未能载入。', unavailable: '当前浏览器无法显示三维场景。', lost: '正在恢复场景', retry: '重试', canvas: '可交互的良渚粒子封面。拖动旋转，滚轮、触控板双指滑动或捏合缩放，双击循环切换近景、环绕、俯瞰和远景。也可使用方向键、加减键及数字键 1 至 4。' },
@@ -322,30 +323,30 @@
     try { disposeGPU(); initializeGPU(); ready = true; requestRender(); }
     catch (error) { console.error('Liangzhu cover:', error); setStatus('unavailable'); }
   }
+  async function fetchPoints(url, signal, compressed = false) {
+    const response = await fetch(url, { signal, priority: 'high' });
+    if (!response.ok) throw new Error(`PLY request failed: ${response.status}`);
+    if (!compressed) return response.arrayBuffer();
+    if (!response.body) throw new Error('Compressed point stream is unavailable');
+    // This is the exact original PLY, losslessly packed for transfer. Keep the
+    // existing parser and all point coordinates, order, colors and density.
+    const stream = response.body.pipeThrough(new DecompressionStream('gzip'));
+    return new Response(stream).arrayBuffer();
+  }
   async function loadPoints() {
     const current = ++generation;
     controller?.abort(); controller = new AbortController();
     ready = false; presented = false; points = null; suspend(); disposeGPU();
     setStatus('loading');
     try {
-      const response = await fetch(assetURL, { signal: controller.signal });
-      if (!response.ok) throw new Error(`PLY request failed: ${response.status}`);
-      const total = Number(response.headers.get('Content-Length'));
-      const encoding = response.headers.get('Content-Encoding');
       let buffer;
-      if (response.body && total > 0 && (!encoding || encoding === 'identity')) {
-        const reader = response.body.getReader(), chunks = [];
-        let received = 0;
-        while (true) {
-          const { done, value } = await reader.read();
-          if (current !== generation) { await reader.cancel(); return; }
-          if (done) break;
-          chunks.push(value); received += value.byteLength;
+      if (typeof DecompressionStream === 'function') {
+        try { buffer = await fetchPoints(compressedAssetURL, controller.signal, true); }
+        catch (error) {
+          if (current !== generation || controller.signal.aborted || error.name === 'AbortError') throw error;
+          buffer = await fetchPoints(assetURL, controller.signal);
         }
-        const bytes = new Uint8Array(received); let offset = 0;
-        chunks.forEach(chunk => { bytes.set(chunk, offset); offset += chunk.byteLength; });
-        buffer = bytes.buffer;
-      } else buffer = await response.arrayBuffer();
+      } else buffer = await fetchPoints(assetURL, controller.signal);
       if (current !== generation) return;
       setStatus('preparing');
       points = parsePLY(buffer); prepareScene();

@@ -3,6 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  // Begin the cover transfer while the shared page scripts are loading.
+  (() => {
+    const preload = document.createElement('link');
+    preload.rel = 'preload'; preload.as = 'fetch'; preload.crossOrigin = 'anonymous';
+    preload.href = '../assets/works/ai3d/liangzhu-village.ply' + (typeof DecompressionStream === 'function' ? '.gz' : '');
+    preload.setAttribute('fetchpriority', 'high');
+    document.head.appendChild(preload);
+  })();
+</script>
 <script src="../assets/i18n-main.js?v=focused-works-20261024"></script>
 <script src="../assets/i18n-cases.js?v=project-reflection-20261028"></script>
 <script src="../assets/ai3d-story-i18n.js?v=framed-world-prompt-20261028-4"></script>
@@ -158,11 +168,11 @@
   .pdfbar a:hover{transform:translateY(-1px);filter:brightness(1.08);box-shadow:0 10px 28px -12px rgba(0,0,0,.6)}
   .pdfbar a svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8}
 </style>
-<link rel="stylesheet" href="../assets/theme.css?v=language-optics-20261026">
+<link rel="stylesheet" href="../assets/theme.css?v=fast-first-paint-20261029">
 <link rel="stylesheet" href="../assets/pixel-loader.css?v=dot-fan-20261025">
 <script defer src="../assets/pixel-loader.js?v=dot-fan-20261025"></script>
 <link rel="stylesheet" href="../assets/works/ai3d/particle-cover.css?v=dot-fan-20261025">
-<script defer src="../assets/works/ai3d/particle-cover.js?v=dot-fan-20261025"></script>
+<script defer src="../assets/works/ai3d/particle-cover.js?v=lossless-transfer-20261029"></script>
 <link rel="stylesheet" href="../assets/works/ai3d/workflow/graph.css?v=framed-world-prompt-20261028-4">
 <script defer src="../assets/works/ai3d/workflow/graph.js?v=framed-world-prompt-20261028-4"></script>
 <link rel="stylesheet" href="../assets/ambient-field.css?v=tidal-led-20261024">
