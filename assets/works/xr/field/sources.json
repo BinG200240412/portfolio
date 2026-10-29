@@ -1,0 +1,181 @@
+{
+  "source_library": "06_良渚_狗GO_XR/01_原图/gougo现场",
+  "reviewed_originals": 13,
+  "selection": [
+    {
+      "file": "live-headset.webp",
+      "source_file": "Weixin Image_20261029170911_486_71.jpg",
+      "source_sha256": "51424d7864feb32636be3ed7818466bc090b707cad6db38dd93d21c1ef11ead8",
+      "output_sha256": "428c2a438cbcc0948a3d8bfdacb0b293699e8ba29b8e3c9518f6e4c6fad7ea30",
+      "dimensions": [
+        2000,
+        1333
+      ],
+      "caption_zh": "头显、手柄与现场屏幕",
+      "caption_en": "Headset, controller and the on-site display",
+      "transform": "Full-frame proportional web export, EXIF orientation applied; original retained. HEIC decoded through macOS sips; no content editing."
+    },
+    {
+      "file": "gallery-demo.webp",
+      "source_file": "IMG_5011.HEIC",
+      "source_sha256": "f19ff6fa78d27dd533037a21b816d5386c06c177e77b9e2450da56a425833455",
+      "output_sha256": "44a9c14ee7c59b6be44a6e86b3988d135efe170d4af8276990418ffbe27563b7",
+      "dimensions": [
+        2000,
+        1500
+      ],
+      "caption_zh": "展板旁的头显与机器狗演示",
+      "caption_en": "Headset and robot dog demonstration beside the project boards",
+      "transform": "Full-frame proportional web export, EXIF orientation applied; original retained. HEIC decoded through macOS sips; no content editing."
+    },
+    {
+      "file": "outdoor-demo.webp",
+      "source_file": "Weixin Image_20261029170637_481_71.jpg",
+      "source_sha256": "6ba54b3c1a8e1aa12dca914b008beead8c73c44926e942422dcfae4d04a7aae8",
+      "output_sha256": "9881a159c49c6284cbcc60a106e9f54b76a1e6dca003612ec0bab0dcde2fd3a7",
+      "dimensions": [
+        2000,
+        1333
+      ],
+      "caption_zh": "展板与设备的现场呈现",
+      "caption_en": "Project boards and equipment on site",
+      "transform": "Full-frame proportional web export, EXIF orientation applied; original retained. HEIC decoded through macOS sips; no content editing."
+    },
+    {
+      "file": "group-explanation.webp",
+      "source_file": "Weixin Image_20261029170640_482_71.jpg",
+      "source_sha256": "23dc14f4c9b8f710e4be64373f3a40d8470e4b136075841d7af359a8b6ec7083",
+      "output_sha256": "448acb587c87b6bdc13b1de949d1f53d45ae4b8429ba4386b5e1096a0fe1140e",
+      "dimensions": [
+        2000,
+        1333
+      ],
+      "caption_zh": "围绕项目展板的现场交流",
+      "caption_en": "Discussing the project around its exhibition boards",
+      "transform": "Full-frame proportional web export, EXIF orientation applied; original retained. HEIC decoded through macOS sips; no content editing."
+    },
+    {
+      "file": "board-setup.webp",
+      "source_file": "IMG_2117.HEIC",
+      "source_sha256": "c7bb5245b7d8696aa1b1d7df9867a6f70a145f420908f9202fde0033b8dee027",
+      "output_sha256": "4a7294b4fe5fbcf38f6a94aad125d9c3d09bce33a3b42e81c55909e74528684c",
+      "dimensions": [
+        1500,
+        2000
+      ],
+      "caption_zh": "展板、电脑与设备布置",
+      "caption_en": "Project boards, computer and equipment setup",
+      "transform": "Full-frame proportional web export, EXIF orientation applied; original retained. HEIC decoded through macOS sips; no content editing."
+    },
+    {
+      "file": "live-discussion.webp",
+      "source_file": "Weixin Image_20261029170643_483_71.jpg",
+      "source_sha256": "a617dfffb0055e8ef9c04a20a991ff187c3c2c343223d5c07569208df5f2da8f",
+      "output_sha256": "7d3028dc7a635580dd550698826d8cafd4f1e9d68baf820e493ed534aa54d421",
+      "dimensions": [
+        1600,
+        1066
+      ],
+      "caption_zh": "佩戴头显时的操作说明与交流",
+      "caption_en": "Explaining the controls while a participant wears the headset",
+      "transform": "Full-frame proportional web export, EXIF orientation applied; original retained. HEIC decoded through macOS sips; no content editing."
+    },
+    {
+      "file": "family-demo.webp",
+      "source_file": "Weixin Image_20261029170647_484_71.jpg",
+      "source_sha256": "3dc2fdd19bf0006b9fc12896642572c8ef09e08d2d2ea2c99368dfb7600d43e5",
+      "output_sha256": "5229ca4fac3d169a229ed5f53c2e51ca4af4da49c762ea3faa9c38c1d86167a3",
+      "dimensions": [
+        2000,
+        1334
+      ],
+      "caption_zh": "现场体验与操作引导",
+      "caption_en": "On-site participation and guidance",
+      "transform": "Full-frame proportional web export, EXIF orientation applied; original retained. HEIC decoded through macOS sips; no content editing."
+    },
+    {
+      "file": "guided-demo.webp",
+      "source_file": "Weixin Image_20261029170913_487_71.jpg",
+      "source_sha256": "364042312efd5208f65a397b579449505b2d2d2f3593db270feccf4a5e8a9977",
+      "output_sha256": "eac9f6b33d56619209a844a1090d311e3146b1c80fd1fdbe7f84e33aa0c1fada",
+      "dimensions": [
+        2000,
+        1333
+      ],
+      "caption_zh": "机器狗旁的头显操作说明",
+      "caption_en": "Explaining headset controls beside the robot dog",
+      "transform": "Full-frame proportional web export, EXIF orientation applied; original retained. HEIC decoded through macOS sips; no content editing."
+    },
+    {
+      "file": "team-photo.webp",
+      "source_file": "IMG_2104.HEIC",
+      "source_sha256": "1dca42556af12e94ede32349a8c0f6b09da3e0a6c5781d9d5f346a52556bce4e",
+      "output_sha256": "8a728f319dce517a3cfe39784ebb987ebc82d6c88d36f6da0dfac0e72b16a09e",
+      "dimensions": [
+        1500,
+        2000
+      ],
+      "caption_zh": "现场合影",
+      "caption_en": "A photograph taken at the exhibition setup",
+      "transform": "Full-frame proportional web export, EXIF orientation applied; original retained. HEIC decoded through macOS sips; no content editing."
+    },
+    {
+      "file": "headset-display-demo.webp",
+      "source_file": "1141.JPG",
+      "source_sha256": "1e5f9e43f6be669d299739cb5ff26ff030a6a7da8264eaf0d888d4c6177fce84",
+      "caption_zh": "头显、手柄、电脑与机器狗的现场演示",
+      "caption_en": "On-site demonstration with headset, controller, computer and robot dog",
+      "source_kind": "photograph",
+      "transform": "Full-frame proportional web export, EXIF orientation applied; original retained. HEIC decoded through macOS sips; no content editing.",
+      "output_sha256": "ef0ca6ee14fbd0908b9d6da18d1fe91192f28964d947977da49528b10f6c474a",
+      "dimensions": [
+        1334,
+        2000
+      ]
+    },
+    {
+      "file": "board-group-photo.webp",
+      "source_file": "IMG_2124.HEIC",
+      "source_sha256": "616fe3ed8c3692bfd0aaa6e7746d274ff9ee77c310d2120a0e9b3e2dea457e54",
+      "caption_zh": "项目展板前与机器狗的合影",
+      "caption_en": "A group photograph with the robot dog in front of the project boards",
+      "source_kind": "photograph",
+      "transform": "Full-frame proportional web export, EXIF orientation applied; original retained. HEIC decoded through macOS sips; no content editing.",
+      "output_sha256": "5a91e19e095a66baf370eaf0a52b0ca5c86a3779264352339b51a87451be80b6",
+      "dimensions": [
+        1500,
+        2000
+      ]
+    },
+    {
+      "file": "video-frame-headset.webp",
+      "source_file": "1139.JPG",
+      "source_sha256": "d5d857354420cb284cbeccaac3b7f3deb130f19d7101b44f4dd0ed80e76b3122",
+      "caption_zh": "视频画面截屏：头显、机器狗与现场屏幕",
+      "caption_en": "Video frame screenshot: headset, robot dog and on-site displays",
+      "source_kind": "video-frame screenshot",
+      "transform": "Full-frame proportional web export, EXIF orientation applied; original retained. HEIC decoded through macOS sips; no content editing.",
+      "output_sha256": "4f46bd7c14ac2bdefd0ffa36e5f1b900c1b681b8538d492393da91a45a93275b",
+      "dimensions": [
+        923,
+        2000
+      ]
+    },
+    {
+      "file": "video-frame-guidance.webp",
+      "source_file": "1144.JPG",
+      "source_sha256": "c210aa14b825c5b6de0ccb40d419a04765d0040760bd54924d0541f58db6be2c",
+      "caption_zh": "视频画面截屏：佩戴头显与手柄操作",
+      "caption_en": "Video frame screenshot: wearing the headset and using a controller",
+      "source_kind": "video-frame screenshot",
+      "transform": "Full-frame proportional web export, EXIF orientation applied; original retained. HEIC decoded through macOS sips; no content editing.",
+      "output_sha256": "78c0280133877ecadcdbed3bb32f5da26c9f9c1e221d4dfddee170babbc3b387",
+      "dimensions": [
+        923,
+        2000
+      ]
+    }
+  ],
+  "caption_basis": "Visible setup, operation and discussion only; video frame screenshots are identified as screenshots. No inferred event names, dates, media identities or device model.",
+  "included_originals": 13
+}
