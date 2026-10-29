@@ -377,5 +377,68 @@
       }
     },
     "notes": "Outcome composition follows the source: primary image left, wide image right, detail and video entry below. QR codes become explicit video previews. Repeated outcome and fabrication photos removed from introductions and circuit explanation."
+  },
+  "webPreviews20261029": {
+    "format": "WebP",
+    "quality": 88,
+    "maxDimensions": [
+      1200,
+      900
+    ],
+    "sourceBytes": 8765151,
+    "previewBytes": 378734,
+    "originals": "Unchanged PNGs remain the enlarged image sources; WebP previews are used only in the case layout.",
+    "assets": [
+      {
+        "source": "painting-sample-1.png",
+        "sourceBytes": 1637750,
+        "preview": "previews/painting-sample-1.webp",
+        "previewBytes": 81064,
+        "dimensions": [
+          1200,
+          340
+        ]
+      },
+      {
+        "source": "painting-sample-2.png",
+        "sourceBytes": 1565914,
+        "preview": "previews/painting-sample-2.webp",
+        "previewBytes": 79306,
+        "dimensions": [
+          1200,
+          315
+        ]
+      },
+      {
+        "source": "painting-sample-3.png",
+        "sourceBytes": 1563213,
+        "preview": "previews/painting-sample-3.webp",
+        "previewBytes": 79828,
+        "dimensions": [
+          1200,
+          330
+        ]
+      },
+      {
+        "source": "painting-sample-4.png",
+        "sourceBytes": 1471153,
+        "preview": "previews/painting-sample-4.webp",
+        "previewBytes": 66332,
+        "dimensions": [
+          1200,
+          330
+        ]
+      },
+      {
+        "source": "led-strip.png",
+        "sourceBytes": 2527121,
+        "preview": "previews/led-strip.webp",
+        "previewBytes": 72204,
+        "dimensions": [
+          1200,
+          898
+        ]
+      }
+    ]
   }
 }

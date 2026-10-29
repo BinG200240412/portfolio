@@ -1,7 +1,7 @@
 /* Source images are displayed in the case and its viewer, without file links. */
 (() => {
   'use strict';
-  // Re-align a direct chapter link once fonts settle. Leave scrolling alone
+  // Align a direct chapter link after snap layout. Leave scrolling alone
   // as soon as the reader interacts with the page.
   const hash = location.hash;
   const target = hash ? document.getElementById(hash.slice(1))?.closest('.q-panel') : null;
@@ -10,15 +10,16 @@
     const cancel = () => { interacted = true; };
     const events = ['pointerdown', 'wheel', 'touchstart', 'keydown'];
     events.forEach(name => addEventListener(name, cancel, { once: true, passive: true }));
-    const align = () => document.fonts.ready.then(() => {
+    const align = () => {
       if (!interacted && location.hash === hash) {
         (target.closest('.portfolio-snap-page') || target)
           .scrollIntoView({ behavior: 'instant', block: 'start' });
       }
       events.forEach(name => removeEventListener(name, cancel));
-    });
-    if (document.readyState === 'complete') align();
-    else addEventListener('load', align, { once: true });
+    };
+    // The snap wrappers are already installed. Show the requested chapter now;
+    // distant images and fonts must not delay navigation behind the cover.
+    requestAnimationFrame(align);
   }
   const dialog = document.getElementById('qianli-viewer');
   if (!dialog || typeof dialog.showModal !== 'function') return;
@@ -84,7 +85,7 @@
     });
   }
   if (document.readyState === 'complete') mountPosters();
-  else addEventListener('load', mountPosters, { once: true });
+  else document.addEventListener('DOMContentLoaded', mountPosters, { once: true });
   const observer = new IntersectionObserver(entries => entries.forEach(entry => {
     if (!entry.isIntersecting && !entry.target.paused) entry.target.pause();
   }), { threshold: 0 });

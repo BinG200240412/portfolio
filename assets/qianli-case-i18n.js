@@ -214,3 +214,13 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
   "放大查看：青蓝色光纤山形": "Enlarge: Blue and cyan fibre mountains",
   "触摸光纤装置原视频": "Original touch-responsive fibre installation video"
 });
+
+// Keep this case independent of the other projects' translation payload.
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
+  "千里江山 — 「千里江山图」的现代演绎": "A Thousand Li — Reinterpreting A Thousand Li of Rivers and Mountains",
+  "「千里江山图」的现代演绎": "A Contemporary Interpretation of A Thousand Li of Rivers and Mountains",
+  "为什么做": "Why I made it",
+  "我想让一幅静止的青绿山水，被声音和触摸重新感知。": "I wanted sound and touch to make a still blue-green landscape felt in a new way.",
+  "从中学到": "What I learned",
+  "在音频、传感器、光纤与灯带之间，我学会从原画提取节奏与色彩，再把它们变成观众能触发的反馈。": "Working with audio, sensors, optical fibres and LEDs taught me to draw rhythm and colour from the painting and turn them into feedback visitors can trigger."
+});
