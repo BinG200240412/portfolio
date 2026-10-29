@@ -833,3 +833,5 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
   "击拂界面演示 · 现场屏幕": "Whisking interface demonstration · On-site screen",
   "现场屏幕播放击拂界面的演示画面，桌面摆放 iPad": "An on-site screen showing a whisking interface demonstration, with iPads on the table"
 });
+
+window.PORTFOLIO_CASE_TRANSLATIONS["五张课程现场照片，横向浏览"] = "Five course photographs, browse horizontally";

@@ -26,8 +26,18 @@
 @media(max-width:1000px){.tea-game-story{grid-template-columns:1fr;gap:28px}.tea-game-recording{max-width:780px;width:100%;margin-inline:auto!important}.tea-game-instructions{grid-template-columns:1fr 1fr;gap:24px 36px}.tea-game-instructions .tea-action{grid-column:1/-1}.tea-case .tea-game-instructions h3{font-size:23px}.tea-hardware-label p{max-width:20ch}}
 @media(max-width:650px){.tea-game-instructions{grid-template-columns:1fr;gap:24px}.tea-game-instructions .tea-action{grid-column:auto}.tea-hardware-figure{aspect-ratio:600/820}.tea-hardware-whisk{left:1%;top:48%;max-width:145px}.tea-hardware-module{left:55%;top:3%;max-width:150px}.tea-hardware-response{left:10%;top:91%;max-width:170px}.tea-case .tea-hardware-label h3{font-size:17px}.tea-case .tea-hardware-label p{font-size:13px}.tea-hardware-controls{gap:24px;align-items:start;justify-content:space-between}.tea-hardware-speed{min-width:0;font-size:14px}.tea-hardware-controls button{font-size:14px;flex-shrink:0}.tea-hardware-explanation{grid-template-columns:1fr;gap:30px}.tea-case .tea-hardware-explanation h3{font-size:23px}}
 
-.tea-course-photos{display:grid;grid-template-columns:1.15fr 1fr;gap:5%;align-items:center}.tea-course-photos img{width:100%;height:auto}
-@media(max-width:650px){.tea-course-photos{grid-template-columns:1fr;gap:34px}}
-
-.tea-course-more{color:var(--soft);font-size:16px}.tea-course-more summary{cursor:pointer;width:fit-content;padding:8px 0}.tea-course-more[open] summary{margin-bottom:30px}.tea-course-extra{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;align-items:start}.tea-course-extra img{width:100%;height:auto}
-@media(max-width:650px){.tea-course-extra{grid-template-columns:1fr;gap:30px}}
+/* Compact single-row photographs, retaining each complete image. */
+.tea-course-chapter{--course-photo-height:clamp(180px,19vw,230px);gap:36px}
+.tea-course-heading-copy{display:flex;align-items:flex-end;flex-direction:column;gap:12px}
+.tea-course-heading-copy p{font-size:14px}.tea-course-heading-copy button{font-size:14px}
+.tea-course-lane{overflow-x:auto;overflow-y:hidden;min-width:0;padding:6px 0;overscroll-behavior-x:contain;scrollbar-width:none}
+.tea-course-lane::-webkit-scrollbar{display:none}
+.tea-course-track,.tea-course-group{display:flex;gap:24px;width:max-content;align-items:start}
+.tea-course-group{flex:none}
+.tea-course-group figure{width:calc(var(--course-ratio)*var(--course-photo-height));flex:none}
+.tea-course-group button,.tea-course-group img{width:100%;height:var(--course-photo-height);object-fit:contain}
+.tea-course-group figcaption{font-size:13px;margin-top:10px}
+.tea-course-lane:focus-visible{outline:1px solid var(--tea-jade);outline-offset:5px}
+@media(max-width:1000px){.tea-course-heading-copy{align-items:flex-start}.tea-course-heading-copy p{justify-self:start}}
+@media(max-width:650px){.tea-course-chapter{--course-photo-height:165px;gap:28px}.tea-course-track,.tea-course-group{gap:18px}}
+@media(prefers-reduced-motion:reduce){.tea-course-group[data-flow-repeat]{display:none}}
