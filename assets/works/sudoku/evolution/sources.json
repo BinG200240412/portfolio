@@ -1,0 +1,79 @@
+{
+  "web_source_commit": "fac6789",
+  "web_source_date": "2026-05-31",
+  "web_recapture_date": "2026-10-29",
+  "files": [
+    {
+      "file": "web-board.png",
+      "source": "web prototype fac6789:index.html / recaptured board.png",
+      "sha256": "2c7a2adefd77d61002dd117d474595001fd0de3ee6fda1bad9bac0d759474bbe",
+      "capture_kind": "unchanged archived source run again"
+    },
+    {
+      "file": "web-settings.png",
+      "source": "web prototype fac6789:index.html / recaptured settings.png",
+      "sha256": "fff894ab2d2864ad8aee8e42c00cfefb0cbec1072d3928d4e4e0bb140ba8cab9",
+      "capture_kind": "unchanged archived source run again"
+    },
+    {
+      "file": "web-classics.png",
+      "source": "web prototype fac6789:index.html / recaptured classics.png",
+      "sha256": "954b1e5950b5dd26de0f66f42ebdc7694406b05bfd31453855a8d4adb951e767",
+      "capture_kind": "unchanged archived source run again"
+    },
+    {
+      "file": "native-board.png",
+      "source": "产品截图/Simulator Screenshot - iPhone 17 Pro - 2026-06-12 at 12.24.33.png",
+      "sha256": "10a2768c7363acf337a5f73da36de4a240c3a2c9f8a373a7938382216d673ac1",
+      "capture_kind": "original archived screenshot"
+    },
+    {
+      "file": "native-coach.png",
+      "source": "产品截图/Simulator Screenshot - iPhone 17 Pro - 2026-06-12 at 12.24.42.png",
+      "sha256": "7d1ba0373722b71fd530c4fe397bd908dc57d71ed2f7ac42ed2c030d7d778155",
+      "capture_kind": "original archived screenshot"
+    },
+    {
+      "file": "native-settings.png",
+      "source": "产品截图/Simulator Screenshot - iPhone 17 Pro - 2026-06-12 at 12.25.04.png",
+      "sha256": "0acb7007b4c3edeffd9780fd38d1dcb8a83b3781b9b32aa44d9fa07139e14974",
+      "capture_kind": "original archived screenshot"
+    },
+    {
+      "file": "native-share.png",
+      "source": "产品截图/Simulator Screenshot - iPhone 17 Pro - 2026-06-12 at 12.25.42.png",
+      "sha256": "e0d9038be9ffabb07e518874c7a4669af3153550698e7f4c08eef6e7deefa9de",
+      "capture_kind": "original archived screenshot"
+    },
+    {
+      "file": "july-board.png",
+      "source": "iPhone截图-6.9寸/08-棋盘-ZH.png",
+      "sha256": "0d4be475bb6711c833e8ba8ab1678d43fd6a0f8b91091ed631ae5c37848b9cb9",
+      "capture_kind": "original archived screenshot"
+    },
+    {
+      "file": "july-settings.png",
+      "source": "iPhone截图-6.9寸/06-设置-EN.png",
+      "sha256": "60057abc6a6bbc094560ae1e6568b55168a10727bbbefb7a0075db1735e4ab82",
+      "capture_kind": "original archived screenshot"
+    },
+    {
+      "file": "july-guide.png",
+      "source": "iPhone截图-6.9寸/05-教程-EN.png",
+      "sha256": "d92a16a970d39dbf6d0c021e04c025f9d1303e246c50e873337ada64b8bce36b",
+      "capture_kind": "original archived screenshot"
+    },
+    {
+      "file": "share-before.png",
+      "source": "sudoku-share-layout/share-row-before.png",
+      "sha256": "a9e8835d0ff17913cfbae827e20f43e09db14b984d46381c3457294885373fe1",
+      "capture_kind": "original archived screenshot"
+    },
+    {
+      "file": "share-after.png",
+      "source": "sudoku-share-layout/share-row-centered.png",
+      "sha256": "c53ecb639a059c1b0c4dd98ff8531f1147d126c049a2f6557822a71cd9318cd5",
+      "capture_kind": "original archived screenshot"
+    }
+  ]
+}

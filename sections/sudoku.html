@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="../assets/i18n-main.js?v=green-sudoku-20261024"></script>
 <script src="../assets/i18n-cases.js?v=project-reflection-20261028"></script>
-<script src="../assets/sudoku-case-i18n.js?v=case-story-20261029"></script>
+<script src="../assets/sudoku-case-i18n.js?v=evolution-20261029"></script>
 <script src="../assets/sudoku-anatomy-data.js?v=case-story-20261029"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=active-chrome-20261026"></script>
@@ -52,6 +52,7 @@
 <link rel="stylesheet" href="../assets/editorial-hierarchy.css?v=stepped-type-20261026">
 <link rel="stylesheet" href="../assets/project-reflection.css?v=project-reflection-20261028">
 <link rel="stylesheet" href="../assets/sudoku-case-story.css?v=case-story-20261029">
+<link rel="stylesheet" href="../assets/sudoku-evolution.css?v=evolution-20261029">
 </head>
 <body>
 <main class="sudoku-scenes">
@@ -243,21 +244,118 @@
     <section class="case-chapter case-outcome" id="outcome" aria-labelledby="outcome-title">
       <header class="case-editorial-head">
         <h2 id="outcome-title">迭代与交付</h2>
-        <p class="case-lead">从普通的数独初版，到有字形分工与清晰操作层级的原生 App。我负责定位、设计与 AI 辅助开发，完成发布后继续维护。</p>
+        <p class="case-lead">它经历了多轮变化：从网页原型，到原生界面，再到辅导、分享与盘面细节的反复调整。这里选出五个阶段的留存画面，回看设计怎样逐步成形。</p>
       </header>
-      <div class="case-evolution">
-        <figure>
-          <button class="image-open case-evolution-window" type="button" data-image="../assets/works/sudoku/board-blue.png" data-caption="早期界面" data-kind="screen" aria-label="放大查看早期界面"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/board-blue.png" width="1206" height="2622" alt="早期英文数独界面，蓝色强调与较统一的数字字形" loading="lazy"></span></button>
-          <figcaption>早期界面</figcaption>
-        </figure>
-        <figure>
-          <button class="image-open case-evolution-window" type="button" data-image="../assets/works/sudoku/board.png?v=green-20261024" data-caption="当前维护版本" data-kind="screen" aria-label="放大查看当前维护版本"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/board.png?v=green-20261024" width="1320" height="2868" alt="当前维护版本的主棋盘，鼠尾绿强调与衬线数字" loading="lazy"></span></button>
-          <figcaption>当前维护版本</figcaption>
-        </figure>
-      </div>
-      <div class="case-evolution-copy">
-        <h3>把条件、笔迹与操作分清。</h3>
-        <p>早期的数字字形较统一。后来用衬线字承载题目，以手写字和信号色区分填写与候选；重新安排工具层级，让阅读与操作围绕盘面展开。</p>
+      <div class="case-iteration-sequence">
+        <section class="iteration-stage">
+          <header class="iteration-stage-head">
+            <div><p class="iteration-date" data-i18n-ignore>2026.05</p><h3>从网页原型开始</h3></div>
+            <p>先把一局数独做完整：四档难度直接排在盘面上方，错误次数与计时同时显示，设置集中在一张长列表里。此时先验证能否独立完成产品，界面仍是较常见的工具布局。</p>
+          </header>
+          <div class="iteration-screens iteration-screens--3">
+            <figure>
+              <button class="image-open iteration-shot" type="button" data-image="../assets/works/sudoku/evolution/web-board.png" data-caption="初版盘面 · 四档难度常驻" data-kind="screen" aria-label="放大查看：初版盘面 · 四档难度常驻"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/evolution/web-board.png" alt="初版盘面 · 四档难度常驻" loading="lazy" decoding="async"></span></button>
+              <figcaption>初版盘面 · 四档难度常驻</figcaption>
+            </figure>
+            <figure>
+              <button class="image-open iteration-shot" type="button" data-image="../assets/works/sudoku/evolution/web-settings.png" data-caption="初版设置 · 集中式开关" data-kind="screen" aria-label="放大查看：初版设置 · 集中式开关"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/evolution/web-settings.png" alt="初版设置 · 集中式开关" loading="lazy" decoding="async"></span></button>
+              <figcaption>初版设置 · 集中式开关</figcaption>
+            </figure>
+            <figure>
+              <button class="image-open iteration-shot" type="button" data-image="../assets/works/sudoku/evolution/web-classics.png" data-caption="经典残局 · 从 Master 进入" data-kind="screen" aria-label="放大查看：经典残局 · 从 Master 进入"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/evolution/web-classics.png" alt="经典残局 · 从 Master 进入" loading="lazy" decoding="async"></span></button>
+              <figcaption>经典残局 · 从 Master 进入</figcaption>
+            </figure>
+          </div>
+          <p class="iteration-source">网页原型取自 5 月 31 日的工程快照，本次重新运行采集。</p>
+        </section>
+        <section class="iteration-stage">
+          <header class="iteration-stage-head">
+            <div><p class="iteration-date" data-i18n-ignore>2026.06</p><h3>让自己的交互开始出现</h3></div>
+            <p>进入原生版本后，顶部增加点阵进度条；难度选择收成一个入口。辅导与分享以卡片展开，盘面仍留在背后。常用操作开始围绕同一局组织，但顶栏入口和工具文字还比较多。</p>
+          </header>
+          <div class="iteration-screens iteration-screens--4">
+            <figure>
+              <button class="image-open iteration-shot" type="button" data-image="../assets/works/sudoku/evolution/native-board.png" data-caption="点阵进度条进入主盘面" data-kind="screen" aria-label="放大查看：点阵进度条进入主盘面"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/evolution/native-board.png" alt="点阵进度条进入主盘面" loading="lazy" decoding="async"></span></button>
+              <figcaption>点阵进度条进入主盘面</figcaption>
+            </figure>
+            <figure>
+              <button class="image-open iteration-shot" type="button" data-image="../assets/works/sudoku/evolution/native-coach.png" data-caption="辅导卡与目标格一起出现" data-kind="screen" aria-label="放大查看：辅导卡与目标格一起出现"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/evolution/native-coach.png" alt="辅导卡与目标格一起出现" loading="lazy" decoding="async"></span></button>
+              <figcaption>辅导卡与目标格一起出现</figcaption>
+            </figure>
+            <figure>
+              <button class="image-open iteration-shot" type="button" data-image="../assets/works/sudoku/evolution/native-settings.png" data-caption="纸上模式进入设置" data-kind="screen" aria-label="放大查看：纸上模式进入设置"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/evolution/native-settings.png" alt="纸上模式进入设置" loading="lazy" decoding="async"></span></button>
+              <figcaption>纸上模式进入设置</figcaption>
+            </figure>
+            <figure>
+              <button class="image-open iteration-shot" type="button" data-image="../assets/works/sudoku/evolution/native-share.png" data-caption="分享当前残局的卡片" data-kind="screen" aria-label="放大查看：分享当前残局的卡片"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/evolution/native-share.png" alt="分享当前残局的卡片" loading="lazy" decoding="async"></span></button>
+              <figcaption>分享当前残局的卡片</figcaption>
+            </figure>
+          </div>
+          <p class="iteration-source">6 月 12 日留存的原生模拟器截图。</p>
+        </section>
+        <section class="iteration-stage">
+          <header class="iteration-stage-head">
+            <div><p class="iteration-date" data-i18n-ignore>2026.07</p><h3>继续整理信息与功能层级</h3></div>
+            <p>这一阶段继续调整顶栏与工具区，保留进度、难度和题目出处；辅导方式与纸上模式在设置里分组，教程按技法展开。功能逐渐完整，也促使我继续思考哪些入口应留在主盘面。</p>
+          </header>
+          <div class="iteration-screens iteration-screens--3">
+            <figure>
+              <button class="image-open iteration-shot" type="button" data-image="../assets/works/sudoku/evolution/july-board.png" data-caption="盘面与信息行的继续整理" data-kind="screen" aria-label="放大查看：盘面与信息行的继续整理"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/evolution/july-board.png" alt="盘面与信息行的继续整理" loading="lazy" decoding="async"></span></button>
+              <figcaption>盘面与信息行的继续整理</figcaption>
+            </figure>
+            <figure>
+              <button class="image-open iteration-shot" type="button" data-image="../assets/works/sudoku/evolution/july-settings.png" data-caption="辅导方式与纸上模式分组" data-kind="screen" aria-label="放大查看：辅导方式与纸上模式分组"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/evolution/july-settings.png" alt="辅导方式与纸上模式分组" loading="lazy" decoding="async"></span></button>
+              <figcaption>辅导方式与纸上模式分组</figcaption>
+            </figure>
+            <figure>
+              <button class="image-open iteration-shot" type="button" data-image="../assets/works/sudoku/evolution/july-guide.png" data-caption="按技法组织教程" data-kind="screen" aria-label="放大查看：按技法组织教程"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/evolution/july-guide.png" alt="按技法组织教程" loading="lazy" decoding="async"></span></button>
+              <figcaption>按技法组织教程</figcaption>
+            </figure>
+          </div>
+          <p class="iteration-source">7 月 1 日留存画面，保留当时的界面语言。</p>
+        </section>
+        <section class="iteration-stage">
+          <header class="iteration-stage-head">
+            <div><p class="iteration-date" data-i18n-ignore>2026.10</p><h3>从整页调整，走到具体细节</h3></div>
+            <p>进入维护阶段，迭代落到更细的地方。例如分享卡中，残局名称、编辑入口与已填进度需要形成清楚的一组。这里保留同一天的调整前后画面，让微小的对齐变化也能被看见。</p>
+          </header>
+          <div class="iteration-screens iteration-screens--2">
+            <figure>
+              <button class="image-open iteration-shot" type="button" data-image="../assets/works/sudoku/evolution/share-before.png" data-caption="分享卡 · 调整前" data-kind="screen" aria-label="放大查看：分享卡 · 调整前"><span class="sudoku-device iteration-window-capture"><img class="sudoku-device-screen" src="../assets/works/sudoku/evolution/share-before.png" alt="分享卡 · 调整前" loading="lazy" decoding="async"></span></button>
+              <figcaption>分享卡 · 调整前</figcaption>
+            </figure>
+            <figure>
+              <button class="image-open iteration-shot" type="button" data-image="../assets/works/sudoku/evolution/share-after.png" data-caption="分享卡 · 调整后" data-kind="screen" aria-label="放大查看：分享卡 · 调整后"><span class="sudoku-device iteration-window-capture"><img class="sudoku-device-screen" src="../assets/works/sudoku/evolution/share-after.png" alt="分享卡 · 调整后" loading="lazy" decoding="async"></span></button>
+              <figcaption>分享卡 · 调整后</figcaption>
+            </figure>
+          </div>
+          <p class="iteration-source">10 月 16 日分享卡的调整前后。</p>
+        </section>
+        <section class="iteration-stage">
+          <header class="iteration-stage-head">
+            <div><p class="iteration-date" data-i18n-ignore>2026.10</p><h3>落到当前的维护版本</h3></div>
+            <p>当前版本进一步区分题目、填写与候选的字形，主盘面收敛为进度、题目与输入工具。设置将规则、辅助和外观分别收纳，辅导与分享按需展开。简洁由这些具体取舍逐步形成。</p>
+          </header>
+          <div class="iteration-screens iteration-screens--4">
+            <figure>
+              <button class="image-open iteration-shot" type="button" data-image="../assets/works/sudoku/visual/board-study.png" data-caption="题目、填写与候选分清" data-kind="screen" aria-label="放大查看：题目、填写与候选分清"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/visual/board-study.png" alt="题目、填写与候选分清" loading="lazy" decoding="async"></span></button>
+              <figcaption>题目、填写与候选分清</figcaption>
+            </figure>
+            <figure>
+              <button class="image-open iteration-shot" type="button" data-image="../assets/works/sudoku/coach.png" data-caption="辅导指向具体的观察范围" data-kind="screen" aria-label="放大查看：辅导指向具体的观察范围"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/coach.png" alt="辅导指向具体的观察范围" loading="lazy" decoding="async"></span></button>
+              <figcaption>辅导指向具体的观察范围</figcaption>
+            </figure>
+            <figure>
+              <button class="image-open iteration-shot" type="button" data-image="../assets/works/sudoku/settings.png" data-caption="设置按任务分组" data-kind="screen" aria-label="放大查看：设置按任务分组"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/settings.png" alt="设置按任务分组" loading="lazy" decoding="async"></span></button>
+              <figcaption>设置按任务分组</figcaption>
+            </figure>
+            <figure>
+              <button class="image-open iteration-shot" type="button" data-image="../assets/works/sudoku/share.png" data-caption="保留当前状态的分享预览" data-kind="screen" aria-label="放大查看：保留当前状态的分享预览"><span class="sudoku-device"><img class="sudoku-device-screen" src="../assets/works/sudoku/share.png" alt="保留当前状态的分享预览" loading="lazy" decoding="async"></span></button>
+              <figcaption>保留当前状态的分享预览</figcaption>
+            </figure>
+          </div>
+          <p class="iteration-source">当前维护工程采集，产品已发布并持续维护。</p>
+        </section>
       </div>
       <div class="case-method-note">
         <h3>从视觉模仿，转向测量与校对。</h3>
