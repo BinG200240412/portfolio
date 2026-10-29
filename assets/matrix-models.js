@@ -121,7 +121,7 @@
     // During the hover reaction all four paws stay planted. Held extremes and
     // a small dip between them keep that separate happy gesture mechanical.
     const cy = Math.cos(bodyYaw), sy = Math.sin(bodyYaw);
-    const loadShift = Math.sin(walkPhase * 2) * .012 * walkAmount;
+    const loadShift = Math.cos(walkPhase * 4) * .006 * walkAmount;
     const chassisPoint = (x, y, z) => [x * cy + z * sy + bodyShift, y - crouch + loadShift, -x * sy + z * cy];
     for (const v of m.vertices) {
       const moved = chassisPoint(v[0], v[1], v[2]);
@@ -132,15 +132,18 @@
       const isFront = front === 1, sign = side === 0 ? -1 : 1;
       const x = isFront ? 0.47 : -0.49, z = sign * 0.355;
       const hip = chassisPoint(x, 0.19, z);
-      // A slow four-beat walk: one short swing while three paws support the
-      // chassis. The existing joint IK makes the legs carry every step.
+      // Four staggered steps keep three paws in support. Match the
+      // swing's end velocities to the planted phase so a foot never stalls
+      // before lifting or snaps backwards after touching down.
       const offset = isFront ? (side === 0 ? .75 : .25) : (side === 0 ? 0 : .5);
       const cycle = ((walkPhase / TAU + offset) % 1 + 1) % 1;
-      const stance = .76, stride = .23;
+      const stance = .75, stride = .21;
       const swing = Math.max(0,(cycle - stance) / (1 - stance));
       const ease = swing * swing * (3 - 2 * swing);
-      const stepX = cycle < stance ? stride * (.5 - cycle / stance) : stride * (ease - .5);
-      const stepLift = Math.sin(swing * Math.PI) ** 2 * .10;
+      const endSlope = -(1 - stance) / stance;
+      const swingX = ease - .5 + endSlope * (2*swing*swing*swing - 3*swing*swing + swing);
+      const stepX = cycle < stance ? stride * (.5 - cycle / stance) : stride * swingX;
+      const stepLift = Math.sin(swing * Math.PI) ** 2 * .08;
       const pawLift = isFront ? reaction * (side === 1 ? .25 : .06) : 0;
       const foot = [x + (isFront ? .07 : -.025) * reaction + stepX * walkAmount,
         -0.72 + pawLift + stepLift * walkAmount, z];
@@ -251,7 +254,7 @@
     const reaction = active > 0 ? input.reduced ? .72 : Math.sin(active * Math.PI * .85) : 0;
     if (id === 'robot-dog') robotDog(m,reaction,hover,
       Number.isFinite(input.gaitPhase) ? input.gaitPhase : seconds * .55,
-      seconds * TAU / 2.5,input.reduced ? 0 : 1);
+      seconds * TAU / 2.2,input.reduced ? 0 : 1);
     if (id === 'quest-3') quest3(m);
     return { vertices: m.vertices, faces: m.faces };
   }
