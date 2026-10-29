@@ -1,0 +1,405 @@
+{
+  "method": "Original PNGs copied byte-for-byte. Full-frame WebP previews preserve proportions; image detail opens the original PNG.",
+  "items": [
+    {
+      "name": "research-map",
+      "source": "image 291284.png",
+      "group": "research",
+      "label": "径山寺调研地图",
+      "width": 5792,
+      "height": 4344,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "research-map.png",
+      "preview": "research-map.webp",
+      "bytes": 24538648,
+      "sha256": "8f70292403f527a8860a32e55da98b5fa72f83985df43386b44da809016a622d"
+    },
+    {
+      "name": "banquet-process",
+      "source": "展板一/jimeng-2026-07-04-1822-未命名项目 1.png",
+      "group": "research",
+      "label": "径山寺茶宴流程",
+      "width": 1786,
+      "height": 326,
+      "alpha": [
+        0,
+        255
+      ],
+      "original": "banquet-process.png",
+      "preview": "banquet-process.webp",
+      "bytes": 276136,
+      "sha256": "385489456f89e4773988d6eed8b8b0d9914768a9ae7b476fa6865405cc09d15e"
+    },
+    {
+      "name": "tea-making-steps",
+      "source": "展板一/image 291293.png",
+      "group": "research",
+      "label": "宋代点茶步骤",
+      "width": 1842,
+      "height": 354,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "tea-making-steps.png",
+      "preview": "tea-making-steps.webp",
+      "bytes": 535794,
+      "sha256": "46afb3c24a6bc4cecfa4000925fdc9d5e4c5bbacf2b826224424fc36c3555776"
+    },
+    {
+      "name": "tea-tools",
+      "source": "展板一/jimeng-2026-07-04-3381-未命名项目 2.png",
+      "group": "research",
+      "label": "茶百戏工具与十二茶先生",
+      "width": 798,
+      "height": 754,
+      "alpha": [
+        0,
+        255
+      ],
+      "original": "tea-tools.png",
+      "preview": "tea-tools.webp",
+      "bytes": 517503,
+      "sha256": "5da4b2fbe24af691f733e6f7acd22009a9ebcd95e6d4b2afd446b78fb503506b"
+    },
+    {
+      "name": "logic-study",
+      "source": "展板一/草图/玩法逻辑草图.png",
+      "group": "sketch-row-0",
+      "label": "玩法逻辑推演",
+      "width": 2500,
+      "height": 1621,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "logic-study.png",
+      "preview": "logic-study.webp",
+      "bytes": 178863,
+      "sha256": "891665a16a076f3ab45888a7d88f11289d8ad075ab9bf053dcfcc15f55447f06"
+    },
+    {
+      "name": "screen-study",
+      "source": "展板一/草图/大屏草图 · STUDIO.png",
+      "group": "sketch-row-0",
+      "label": "大屏交互推演",
+      "width": 2100,
+      "height": 1450,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "screen-study.png",
+      "preview": "screen-study.webp",
+      "bytes": 164309,
+      "sha256": "3777bd82e4c0567ebebf3d6d0c629c1bb9b7ffd09a2edc1896c3d5f74c8bf379"
+    },
+    {
+      "name": "particle-study",
+      "source": "展板一/草图/粒子分析图.png",
+      "group": "sketch-row-0",
+      "label": "粒子形态分析",
+      "width": 2400,
+      "height": 2060,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "particle-study.png",
+      "preview": "particle-study.webp",
+      "bytes": 227987,
+      "sha256": "1dca699cc4df79e4b541c9d46e4c5a5e129257795c8838adee1d2172f0223f4e"
+    },
+    {
+      "name": "picking-rules",
+      "source": "展板一/草图/摘茶 · 玩法图.png",
+      "group": "sketch-row-0",
+      "label": "摘茶玩法推演",
+      "width": 1920,
+      "height": 1080,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "picking-rules.png",
+      "preview": "picking-rules.webp",
+      "bytes": 892474,
+      "sha256": "84fae232bede7a7846babda6241afe5236bbe7a312afa0b680be946707f5311a"
+    },
+    {
+      "name": "grinding-rules",
+      "source": "展板一/草图/碾罗 · 玩法图.png",
+      "group": "sketch-row-0",
+      "label": "碾罗玩法推演",
+      "width": 1920,
+      "height": 1080,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "grinding-rules.png",
+      "preview": "grinding-rules.webp",
+      "bytes": 897141,
+      "sha256": "f1baf59d942f9869aed8c85ff3b6d9a2b7800e34f72c40520d4f26c7b52bd50f"
+    },
+    {
+      "name": "whisking-rules",
+      "source": "展板一/草图/击拂 · 玩法图.png",
+      "group": "sketch-row-0",
+      "label": "击拂玩法推演",
+      "width": 1920,
+      "height": 1080,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "whisking-rules.png",
+      "preview": "whisking-rules.webp",
+      "bytes": 896574,
+      "sha256": "260585b5abe691ffc869fc6a383a76f3236026b189d8c181cbf5f63de7ece48b"
+    },
+    {
+      "name": "gent-whisk",
+      "source": "展板一/草图/image 291330.png",
+      "group": "sketch-row-1",
+      "label": "茶筅角色探索",
+      "width": 1468,
+      "height": 1958,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "gent-whisk.png",
+      "preview": "gent-whisk.webp",
+      "bytes": 4619595,
+      "sha256": "aff1159e53a41b09e536a319fbcc211d255946d94b777bf84afa37db4707d354"
+    },
+    {
+      "name": "gent-pour",
+      "source": "展板一/草图/image 291246.png",
+      "group": "sketch-row-1",
+      "label": "汤瓶角色探索",
+      "width": 1468,
+      "height": 1958,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "gent-pour.png",
+      "preview": "gent-pour.webp",
+      "bytes": 4549520,
+      "sha256": "682cdc38e8121f27309ba61fbeab469c6da4643a85705c34753fbaed6b54430f"
+    },
+    {
+      "name": "gent-bowl",
+      "source": "展板一/草图/image 291329.png",
+      "group": "sketch-row-1",
+      "label": "建盏角色探索",
+      "width": 1468,
+      "height": 1958,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "gent-bowl.png",
+      "preview": "gent-bowl.webp",
+      "bytes": 4169881,
+      "sha256": "927623164e3761b06cc7672d7030d316f11766b3935c825297106e6501000835"
+    },
+    {
+      "name": "gent-mill",
+      "source": "展板一/草图/74686b1f-0b47-43c1-bd71-63fb3dc07452 1.png",
+      "group": "sketch-row-1",
+      "label": "茶磨角色探索",
+      "width": 1468,
+      "height": 1958,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "gent-mill.png",
+      "preview": "gent-mill.webp",
+      "bytes": 4035521,
+      "sha256": "7deb8dd12f26126f370334f2429f6701d0e79d97f79d86ec019ad06f0b32af15"
+    },
+    {
+      "name": "gent-sieve",
+      "source": "展板一/草图/424f69b7-82b8-44ee-99de-122ef2c8edbf 1.png",
+      "group": "sketch-row-1",
+      "label": "茶罗角色探索",
+      "width": 1468,
+      "height": 1958,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "gent-sieve.png",
+      "preview": "gent-sieve.webp",
+      "bytes": 4847802,
+      "sha256": "fbee80869e045897213dc15e3d62e043d2fe51820078a246c5042fda8f9c5242"
+    },
+    {
+      "name": "gent-brazier",
+      "source": "展板一/草图/07a33922-2f7f-43d8-9622-2aa1dd4f17d3 1.png",
+      "group": "sketch-row-1",
+      "label": "茶焙角色探索",
+      "width": 1470,
+      "height": 1960,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "gent-brazier.png",
+      "preview": "gent-brazier.webp",
+      "bytes": 4523355,
+      "sha256": "3d6b9c514b7a4712a0cbca5cad862c5a498c16b6d04517078f446cc70fcb5826"
+    },
+    {
+      "name": "gent-spoon",
+      "source": "展板一/草图/image 291244.png",
+      "group": "sketch-row-1",
+      "label": "茶匙角色探索",
+      "width": 1468,
+      "height": 1958,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "gent-spoon.png",
+      "preview": "gent-spoon.webp",
+      "bytes": 3988006,
+      "sha256": "fa152b95c08129c8e7e26254eaed18dcb7275f26d99542751151601cdd663058"
+    },
+    {
+      "name": "gent-holder",
+      "source": "展板一/草图/image 291245.png",
+      "group": "sketch-row-1",
+      "label": "盏托角色探索",
+      "width": 1474,
+      "height": 1964,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "gent-holder.png",
+      "preview": "gent-holder.webp",
+      "bytes": 4623354,
+      "sha256": "48f8496e2a7b531b56ea27df2ae1a3e74f356a6fb3b737aeb41ee961e1547288"
+    },
+    {
+      "name": "gent-cloth",
+      "source": "展板一/草图/image 291328.png",
+      "group": "sketch-row-1",
+      "label": "茶巾角色探索",
+      "width": 1474,
+      "height": 1964,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "gent-cloth.png",
+      "preview": "gent-cloth.webp",
+      "bytes": 4323673,
+      "sha256": "f455bd77b8f419b3ed67467f20b818ab9a33b2a19982bf5b463d43b49b80fc8e"
+    },
+    {
+      "name": "gent-water",
+      "source": "展板一/草图/image 291252.png",
+      "group": "sketch-row-1",
+      "label": "水脉角色探索",
+      "width": 1474,
+      "height": 1964,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "gent-water.png",
+      "preview": "gent-water.webp",
+      "bytes": 4230218,
+      "sha256": "164735e6ebe8dc6c941226aa31d8bad9a909aec856ee72b17d0711f9c71db08d"
+    },
+    {
+      "name": "grinding-interface",
+      "source": "展板一/草图/碾罗 · 界面效果图（扁平·收集音粒）.png",
+      "group": "sketch-row-2",
+      "label": "碾罗界面试验",
+      "width": 1600,
+      "height": 1000,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "grinding-interface.png",
+      "preview": "grinding-interface.webp",
+      "bytes": 64730,
+      "sha256": "4daa8244d5ad493cb19146bf0060b5adbc2671876195b5d838340656ed6af5cd"
+    },
+    {
+      "name": "concentric-interface",
+      "source": "展板一/草图/image 93.png",
+      "group": "sketch-row-2",
+      "label": "径向交互界面试验",
+      "width": 1512,
+      "height": 836,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "concentric-interface.png",
+      "preview": "concentric-interface.webp",
+      "bytes": 701481,
+      "sha256": "376c4ab47df03c0cc82e75596c91ee8f798f5d24fb552628400ce38efb174113"
+    },
+    {
+      "name": "particle-scene-a",
+      "source": "展板一/草图/image 143.png",
+      "group": "sketch-row-2",
+      "label": "点阵茶盏界面试验",
+      "width": 1600,
+      "height": 1072,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "particle-scene-a.png",
+      "preview": "particle-scene-a.webp",
+      "bytes": 1312207,
+      "sha256": "052bfe434228797a8d0a02f666fffaaddcf076542cfa2a5a64c1f688ce5f83c4"
+    },
+    {
+      "name": "particle-screen",
+      "source": "展板一/草图/大屏 · 粒子流光.png",
+      "group": "sketch-row-2",
+      "label": "大屏粒子流光试验",
+      "width": 2200,
+      "height": 1240,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "particle-screen.png",
+      "preview": "particle-screen.webp",
+      "bytes": 80068,
+      "sha256": "79087265e8ca41a61367d7c77157710b80bdb2a207dc83b9e665a4a737f85f15"
+    },
+    {
+      "name": "particle-scene-b",
+      "source": "展板一/草图/image 144.png",
+      "group": "sketch-row-2",
+      "label": "点阵流动界面试验",
+      "width": 1600,
+      "height": 1072,
+      "alpha": [
+        255,
+        255
+      ],
+      "original": "particle-scene-b.png",
+      "preview": "particle-scene-b.webp",
+      "bytes": 1437570,
+      "sha256": "3811577844b1779c676308498f9a1594700907d333c8654e8158b2fa252493f5"
+    }
+  ]
+}

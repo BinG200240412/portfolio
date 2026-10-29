@@ -7,7 +7,7 @@
   const zoomLabel = viewer.querySelector('output');
   const minus = viewer.querySelector('[data-board-minus]');
   const plus = viewer.querySelector('[data-board-plus]');
-  let boardOpener, zoom = 1;
+  let boardOpener, boardFocusTarget, zoom = 1;
   function scale(value) {
     zoom = Math.max(1, Math.min(4, value));
     const available = scroller.clientWidth - (matchMedia('(max-width:600px)').matches ? 24 : 48);
@@ -17,17 +17,20 @@
     minus.disabled = zoom === 1; plus.disabled = zoom === 4;
   }
   boardImage.addEventListener('load', () => { if (viewer.open) scale(zoom); });
-  document.querySelectorAll('[data-board],[data-tea-detail]').forEach(button => button.addEventListener('click', () => {
+  document.addEventListener('click', event => {
+    const button = event.target.closest('[data-board],[data-tea-detail]');
+    if (!button) return;
     boardOpener = button;
+    boardFocusTarget = button.closest('[data-flow-repeat]') ? button.closest('[data-tea-flow-lane]') : button;
     boardImage.src = button.dataset.board
       ? `../assets/works/tea/board-${button.dataset.board}-detail.webp`
-      : button.querySelector('img').currentSrc || button.querySelector('img').src;
+      : button.dataset.teaOriginal || button.querySelector('img').currentSrc || button.querySelector('img').src;
     boardImage.alt = button.querySelector('img').alt;
     viewer.querySelector('h2').textContent = button.closest('figure').querySelector('figcaption').textContent;
     document.documentElement.classList.add('tea-board-detail-open');
     viewer.showModal(); scale(1); scroller.scrollTo(0, 0);
     viewer.querySelector('[data-board-close]').focus();
-  }));
+  });
   minus.addEventListener('click', () => scale(zoom - .5));
   plus.addEventListener('click', () => scale(zoom + .5));
   viewer.querySelector('[data-board-fit]').addEventListener('click', () => scale(1));
@@ -35,7 +38,7 @@
   viewer.addEventListener('close', () => {
     document.documentElement.classList.remove('tea-board-detail-open');
     boardImage.removeAttribute('src');
-    boardOpener?.focus({ preventScroll: true });
+    boardFocusTarget?.focus({ preventScroll: true });
   });
   addEventListener('resize', () => { if (viewer.open) scale(zoom); }, { passive: true });
   addEventListener('pagehide', () => { if (viewer.open) viewer.close(); });

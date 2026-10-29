@@ -717,3 +717,45 @@ window.PORTFOLIO_CASE_TRANSLATIONS = Object.assign(window.PORTFOLIO_CASE_TRANSLA
 window.PORTFOLIO_CASE_TRANSLATIONS["当前浏览器暂不能进入全屏，可继续在窗口内试玩。"] = "Full screen is unavailable in this browser. You can keep playing in this window.";
 
 window.PORTFOLIO_CASE_TRANSLATIONS["网易雷火联合课程"] = "Joint course with NetEase ThunderFire";
+
+/* Author-supplied research and sketch studies, 2026-10-29. */
+window.PORTFOLIO_CASE_TRANSLATIONS = Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS || {}, {
+  "前期调研": "Preliminary research",
+  "草图转译": "From research to sketches",
+  "从径山寺的茶宴、点茶流程与器物出发。": "Tea ceremonies, preparation and utensils at Jingshan Temple form the starting point.",
+  "径山寺调研地图": "Jingshan Temple research map",
+  "茶百戏工具": "Tea painting tools",
+  "茶百戏工具与十二茶先生": "Tea preparation tools and the Twelve Tea Masters",
+  "十二茶先生 · 器物图像提取": "Twelve Tea Masters · Forms drawn from utensils",
+  "径山寺茶宴流程": "Jingshan Temple tea feast sequence",
+  "宋代点茶步骤": "Song dynasty tea preparation",
+  "从调研中的器物与动作，推演玩法、角色和界面。": "Utensils and actions from the research become studies for game rules, characters and interfaces.",
+  "暂停流动": "Pause flow",
+  "继续流动": "Resume flow",
+  "玩法与结构": "Rules and structure",
+  "角色与器物": "Characters and utensils",
+  "界面与粒子": "Interfaces and particles",
+  "玩法逻辑推演": "Game logic study",
+  "大屏交互推演": "Large-screen interaction study",
+  "粒子形态分析": "Particle form analysis",
+  "摘茶玩法推演": "Tea picking rules study",
+  "碾罗玩法推演": "Grinding rules study",
+  "击拂玩法推演": "Whisking rules study",
+  "茶筅角色探索": "Tea whisk character study",
+  "汤瓶角色探索": "Pouring vessel character study",
+  "建盏角色探索": "Tea bowl character study",
+  "茶磨角色探索": "Tea mill character study",
+  "茶罗角色探索": "Tea sieve character study",
+  "茶焙角色探索": "Tea brazier character study",
+  "茶匙角色探索": "Tea spoon character study",
+  "盏托角色探索": "Bowl holder character study",
+  "茶巾角色探索": "Tea cloth character study",
+  "水脉角色探索": "Water character study",
+  "碾罗界面试验": "Grinding interface exploration",
+  "径向交互界面试验": "Radial interaction exploration",
+  "点阵茶盏界面试验": "Particle tea bowl interface exploration",
+  "大屏粒子流光试验": "Large-screen particle flow exploration",
+  "点阵流动界面试验": "Flowing particle interface exploration"
+});
+
+window.PORTFOLIO_CASE_TRANSLATIONS["静态浏览"] = "Static view";
