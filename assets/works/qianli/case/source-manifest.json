@@ -333,5 +333,49 @@
       "4057:6732"
     ],
     "note": "Sensor nodes, glow effects and delayed activation colour regions compose the complete SVG illustrations alongside their base point groups."
+  },
+  "layoutRepair20261029": {
+    "sourceFrames": {
+      "concepts": "4038:2202",
+      "formStudy": "4038:2365",
+      "woodProcess": "4040:2215",
+      "musicOutcome": "4040:2273",
+      "hardware": "4041:2239",
+      "touchOutcome": "4041:2398"
+    },
+    "figmaLayoutAssets": {
+      "15": {
+        "img": "music-note.png",
+        "img1": "touch-hand.png",
+        "img2": "light-bulb.png",
+        "imgVector420": "form-arrow.svg"
+      },
+      "18": {
+        "imgImage11": "painting-sample-1.png",
+        "imgImage12": "painting-sample-2.png",
+        "imgImage13": "painting-sample-3.png",
+        "imgImage14": "painting-sample-4.png",
+        "imgImage180": "contour-cut-drawing.png",
+        "imgVector414": "contour-left.svg",
+        "imgVector415": "contour-right.svg",
+        "imgVector416": "contour-baseline.svg"
+      },
+      "26": {
+        "imgOip21": "arduino-board.png",
+        "imgImage179": "led-strip.png",
+        "img7801": "touch-sensor.png"
+      }
+    },
+    "videoPosters": {
+      "music-video-preview.jpg": {
+        "source": "music-installation.mp4",
+        "seconds": 6
+      },
+      "touch-video-preview.jpg": {
+        "source": "touch-installation.mp4",
+        "seconds": 60
+      }
+    },
+    "notes": "Outcome composition follows the source: primary image left, wide image right, detail and video entry below. QR codes become explicit video previews. Repeated outcome and fabrication photos removed from introductions and circuit explanation."
   }
 }

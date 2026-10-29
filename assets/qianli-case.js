@@ -4,7 +4,7 @@
   // Re-align a direct chapter link once fonts settle. Leave scrolling alone
   // as soon as the reader interacts with the page.
   const hash = location.hash;
-  const target = hash ? document.getElementById(hash.slice(1)) : null;
+  const target = hash ? document.getElementById(hash.slice(1))?.closest('.q-panel') : null;
   if (target?.matches('.q-panel')) {
     let interacted = false;
     const cancel = () => { interacted = true; };

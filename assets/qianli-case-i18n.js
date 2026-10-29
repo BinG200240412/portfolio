@@ -179,3 +179,38 @@ window.PORTFOLIO_CASE_TRANSLATIONS = Object.assign(window.PORTFOLIO_CASE_TRANSLA
 });
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {"提取山形样本": "Extract a mountain sample", "放大查看：提取山形样本": "Enlarge: Extract a mountain sample"});
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {"音光互动装置原视频": "Original music-reactive installation video", "打开视频": "Open video", "触摸光纤装置原视频": "Original touch-responsive fibre installation video"});
+
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
+  "音光互动": "Music and light",
+  "随音乐变换色调": "Colour follows the music",
+  "触摸光互动": "Touch and light",
+  "通过触摸激发光点": "Touch activates the points of light",
+  "音光互动 · 造型设计": "Music and light · Form study",
+  "山形抽象为二维线条": "Mountain silhouettes reduced to two-dimensional lines",
+  "二维轮廓的切割图": "Cutting plan for the extracted contours",
+  "放大查看：二维轮廓的切割图": "Enlarge: Cutting plan for the extracted contours",
+  "木板轮廓与灯带位置": "Wooden contours and LED placement",
+  "放大查看：木板轮廓与灯带位置": "Enlarge: Wooden contours and LED placement",
+  "原画山形取样 · 图 1-1": "Mountain sample from the painting · Fig. 1-1",
+  "放大查看：原画山形取样 · 图 1-1": "Enlarge: Mountain sample from the painting · Fig. 1-1",
+  "原画山形取样 · 图 1-2": "Mountain sample from the painting · Fig. 1-2",
+  "放大查看：原画山形取样 · 图 1-2": "Enlarge: Mountain sample from the painting · Fig. 1-2",
+  "原画山形取样 · 图 1-3": "Mountain sample from the painting · Fig. 1-3",
+  "放大查看：原画山形取样 · 图 1-3": "Enlarge: Mountain sample from the painting · Fig. 1-3",
+  "原画山形取样 · 图 1-4": "Mountain sample from the painting · Fig. 1-4",
+  "放大查看：原画山形取样 · 图 1-4": "Enlarge: Mountain sample from the painting · Fig. 1-4",
+  "触摸传感器": "Touch sensor",
+  "放大查看：触摸传感器": "Enlarge: Touch sensor",
+  "Arduino 单片机": "Arduino microcontroller",
+  "放大查看：Arduino 单片机": "Enlarge: Arduino microcontroller",
+  "LED 灯带": "LED strip",
+  "放大查看：LED 灯带": "Enlarge: LED strip",
+  "触摸光互动 · 点阵造型": "Touch and light · Dot-matrix form",
+  "音光装置全景": "Complete music-reactive installation",
+  "放大查看：音光装置全景": "Enlarge: Complete music-reactive installation",
+  "音光互动装置原视频": "Original music-reactive installation video",
+  "播放装置视频": "Play installation video",
+  "青蓝色光纤山形": "Blue and cyan fibre mountains",
+  "放大查看：青蓝色光纤山形": "Enlarge: Blue and cyan fibre mountains",
+  "触摸光纤装置原视频": "Original touch-responsive fibre installation video"
+});

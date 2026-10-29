@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="../assets/i18n-main.js?v=focused-works-20261024">
 </script>
 <script src="../assets/i18n-cases.js?v=project-reflection-20261028">
 </script>
-<script src="../assets/qianli-case-i18n.js?v=figma-breakdown-20261025">
+<script src="../assets/qianli-case-i18n.js?v=figma-layout-repair-20261029">
 </script>
 <script src="../assets/i18n.js?v=bilingual-20261023">
 </script>
@@ -25,35 +25,66 @@
 <link rel="stylesheet" href="../assets/page-snap.css?v=adaptive-contrast-20261027">
 <script defer src="../assets/page-snap.js?v=content-bead-rail-20261027">
 </script>
-<link rel="stylesheet" href="../assets/qianli-case.css?v=view-only-media-20261026">
-<script defer src="../assets/qianli-case.js?v=view-only-media-20261026">
+<link href="../assets/qianli-case.css?v=figma-layout-repair-20261029" rel="stylesheet"/>
+<script defer="" src="../assets/qianli-case.js?v=figma-layout-repair-20261029">
 </script>
 <link rel="stylesheet" href="../assets/media-corners.css?v=image-back-layer-20261027">
 <link rel="stylesheet" href="../assets/video-detail.css?v=video-preview-detail-20261026">
-<script defer src="../assets/video-detail.js?v=video-preview-detail-20261026"></script>
-<script defer src="../assets/media-corners.js?v=image-back-layer-20261027"></script>
+<script defer src="../assets/video-detail.js?v=video-preview-detail-20261026">
+</script>
+<script defer src="../assets/media-corners.js?v=image-back-layer-20261027">
+</script>
 <link rel="stylesheet" href="../assets/media-view-only.css?v=view-only-media-20261026">
-<script defer src="../assets/media-view-only.js?v=view-only-media-20261026"></script>
+<script defer src="../assets/media-view-only.js?v=view-only-media-20261026">
+</script>
 <link rel="stylesheet" href="../assets/editorial-hierarchy.css?v=stepped-type-20261026">
 <link rel="stylesheet" href="../assets/project-reflection.css?v=project-reflection-20261028">
 </head>
 <body class="legacy-case qianli-case">
 <div class="hero qianli-light-hero">
-  <div class="hero-media">
-    <canvas id="qianli-light-cover" role="button" tabindex="0" data-i18n-ignore aria-label="点击山水，让点阵光珠从触碰处泛起涟漪；也可按 Enter 或空格。">点阵光珠山水 · 千里江山</canvas>
-  </div>
-  <div class="hero-cap">
-    <div class="title" data-i18n-ignore>千里江山</div>
-  </div>
-  <div class="hero-foot">
-    <div class="zh">「千里江山图」的现代演绎</div>
-  </div>
+<div class="hero-media">
+<canvas id="qianli-light-cover" role="button" tabindex="0" data-i18n-ignore aria-label="点击山水，让点阵光珠从触碰处泛起涟漪；也可按 Enter 或空格。">点阵光珠山水 · 千里江山</canvas>
 </div>
-
+<div class="hero-cap">
+<div class="title" data-i18n-ignore>千里江山</div>
+</div>
+<div class="hero-foot">
+<div class="zh">「千里江山图」的现代演绎</div>
+</div>
+</div>
 <div class="wrap q-content">
 <section id="overview" class="q-panel">
 <div class="q-heading intro">
 <h2>从青绿山水到互动装置</h2> <p>以《千里江山图》为原型，尝试用程序、灯光与新材料，让观看者通过音乐和触摸参与作品。</p>
+</div>
+<nav class="q-paths" aria-label="两种表现形式">
+<a href="#music">
+<span aria-hidden="true" class="q-method-art" data-media-corners-ignore="">
+<img alt="" height="96" src="../assets/works/qianli/case/figma-layout/music-note.png" width="96"/>
+<img alt="" class="q-method-arrow" height="99.0501" src="../assets/works/qianli/case/figma-layout/form-arrow.svg" width="78.4703"/>
+<img alt="" height="96" src="../assets/works/qianli/case/figma-layout/light-bulb.png" width="96"/>
+</span>
+<span>
+<b>音光互动</b>
+<small>随音乐变换色调</small>
+</span>
+</a>
+<a href="#touch">
+<span aria-hidden="true" class="q-method-art" data-media-corners-ignore="">
+<img alt="" height="96" src="../assets/works/qianli/case/figma-layout/touch-hand.png" width="96"/>
+<img alt="" class="q-method-arrow" height="99.0501" src="../assets/works/qianli/case/figma-layout/form-arrow.svg" width="78.4703"/>
+<img alt="" height="96" src="../assets/works/qianli/case/figma-layout/light-bulb.png" width="96"/>
+</span>
+<span>
+<b>触摸光互动</b>
+<small>通过触摸激发光点</small>
+</span>
+</a>
+</nav>
+</section>
+<section class="q-panel" id="elements">
+<div class="q-heading">
+<h2>提取什么，如何转译</h2>
 </div>
 <div class="q-painting">
 <figure class="">
@@ -63,36 +94,7 @@
 <figcaption>《千里江山图》局部</figcaption>
 </figure>
 </div>
-<nav class="q-paths" aria-label="两种表现形式">
-<a href="#music">
-<img src="../assets/works/qianli/case/music-detail.webp" alt="" loading="lazy">
-<span>
-<b>音光互动</b>
-<small>木板山形 · 灯带 · 音频</small>
-</span>
-<span aria-hidden="true">↗</span>
-</a>
-<a href="#touch">
-<img src="../assets/works/qianli/case/touch-blue.webp" alt="" loading="lazy">
-<span>
-<b>触摸光互动</b>
-<small>点阵 · 光纤 · 触摸传感器</small>
-</span>
-<span aria-hidden="true">↗</span>
-</a>
-</nav>
-</section>
-<section id="elements" class="q-panel ">
-<div class="q-heading">
-<h2>提取什么，如何转译</h2>
-</div>
 <div class="q-elements">
-<figure class="q-paper">
-<button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/mountain-contours.svg" aria-label="放大查看：山形轮廓与灯带布置" data-caption="山形轮廓与灯带布置">
-<img width="388" height="156" src="../assets/works/qianli/case/mountain-contours.svg"  alt="山形轮廓与灯带布置" loading="lazy" decoding="async">
-</button>
-<figcaption>山形轮廓与灯带布置</figcaption>
-</figure>
 <dl>
 <div>
 <dt>色彩与材质</dt>
@@ -135,38 +137,62 @@
 </span>
 </div>
 </section>
-<section id="music" class="q-panel ">
+<section class="q-panel" id="music">
 <div class="q-heading">
-<h2>音光互动</h2> <p>从长卷中提取山形，切成独立木板；在层叠结构后布置灯带，让音乐改变山水的光色。</p>
+<h2>音光互动 · 造型设计</h2> <p>从长卷中提取山形，切成独立木板；在层叠结构后布置灯带，让音乐改变山水的光色。</p>
 </div>
-<figure class="q-panorama">
-<button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/music-full.webp" aria-label="放大查看：音光装置全景" data-caption="音光装置全景">
-<img src="../assets/works/qianli/case/music-full.webp" width="1178" height="314" alt="音光装置全景" loading="lazy" decoding="async">
-</button>
-<figcaption>音光装置全景</figcaption>
+<div class="q-styling-grid">
+<div class="q-line-studies">
+<figure>
+<div aria-label="山形抽象为二维线条" class="q-contour-drawing" data-media-corners-ignore="" role="img">
+<img alt="" class="q-contour-left" height="77.1805" src="../assets/works/qianli/case/figma-layout/contour-left.svg" width="212.473"/>
+<img alt="" class="q-contour-right" height="139.128" src="../assets/works/qianli/case/figma-layout/contour-right.svg" width="293.715"/>
+<img alt="" class="q-contour-baseline" height="16.3228" src="../assets/works/qianli/case/figma-layout/contour-baseline.svg" width="496.977"/>
+</div>
+<figcaption>山形抽象为二维线条</figcaption>
 </figure>
-<div class="q-design-row">
+<figure class="q-cut-study">
+<button aria-haspopup="dialog" aria-label="放大查看：二维轮廓的切割图" class="q-image" data-caption="二维轮廓的切割图" data-image="../assets/works/qianli/case/figma-layout/contour-cut-drawing.png" type="button">
+<img alt="二维轮廓的切割图" decoding="async" height="288" loading="lazy" src="../assets/works/qianli/case/figma-layout/contour-cut-drawing.png" width="571"/>
+</button>
+<figcaption>二维轮廓的切割图</figcaption>
+</figure>
 <figure class="q-paper">
-<button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/mountain-contours.svg" aria-label="放大查看：轮廓与灯带位置" data-caption="轮廓与灯带位置">
-<img width="388" height="156" src="../assets/works/qianli/case/mountain-contours.svg"  alt="轮廓与灯带位置" loading="lazy" decoding="async">
+<button aria-haspopup="dialog" aria-label="放大查看：木板轮廓与灯带位置" class="q-image" data-caption="木板轮廓与灯带位置" data-image="../assets/works/qianli/case/mountain-contours.svg" type="button">
+<img alt="木板轮廓与灯带位置" decoding="async" height="156" loading="lazy" src="../assets/works/qianli/case/mountain-contours.svg" width="388"/>
 </button>
-<figcaption>轮廓与灯带位置</figcaption>
+<figcaption>木板轮廓与灯带位置</figcaption>
 </figure>
-<figure class="">
-<button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/wood-cut.webp" aria-label="放大查看：激光切割图纸" data-caption="激光切割图纸">
-<img src="../assets/works/qianli/case/wood-cut.webp" width="1588" height="888" alt="激光切割图纸" loading="lazy" decoding="async">
+</div>
+<div class="q-painting-samples">
+<figure class="" data-sample="1">
+<button aria-haspopup="dialog" aria-label="放大查看：原画山形取样 · 图 1-1" class="q-image q-sample-window" data-caption="原画山形取样 · 图 1-1" data-image="../assets/works/qianli/case/figma-layout/painting-sample-1.png" type="button">
+<img alt="原画山形取样 · 图 1-1" decoding="async" height="522" loading="lazy" src="../assets/works/qianli/case/figma-layout/painting-sample-1.png" width="1844"/>
 </button>
-<figcaption>激光切割图纸</figcaption>
+<figcaption>原画山形取样 · 图 1-1</figcaption>
 </figure>
-<figure class="">
-<button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/wood-gold.webp" aria-label="放大查看：丙烯底色与金粉反光" data-caption="丙烯底色与金粉反光">
-<img src="../assets/works/qianli/case/wood-gold.webp" width="1517" height="903" alt="丙烯底色与金粉反光" loading="lazy" decoding="async">
+<figure class="" data-sample="2">
+<button aria-haspopup="dialog" aria-label="放大查看：原画山形取样 · 图 1-2" class="q-image q-sample-window" data-caption="原画山形取样 · 图 1-2" data-image="../assets/works/qianli/case/figma-layout/painting-sample-2.png" type="button">
+<img alt="原画山形取样 · 图 1-2" decoding="async" height="484" loading="lazy" src="../assets/works/qianli/case/figma-layout/painting-sample-2.png" width="1844"/>
 </button>
-<figcaption>丙烯底色与金粉反光</figcaption>
+<figcaption>原画山形取样 · 图 1-2</figcaption>
 </figure>
+<figure class="" data-sample="3">
+<button aria-haspopup="dialog" aria-label="放大查看：原画山形取样 · 图 1-3" class="q-image q-sample-window" data-caption="原画山形取样 · 图 1-3" data-image="../assets/works/qianli/case/figma-layout/painting-sample-3.png" type="button">
+<img alt="原画山形取样 · 图 1-3" decoding="async" height="503" loading="lazy" src="../assets/works/qianli/case/figma-layout/painting-sample-3.png" width="1827"/>
+</button>
+<figcaption>原画山形取样 · 图 1-3</figcaption>
+</figure>
+<figure class="" data-sample="4">
+<button aria-haspopup="dialog" aria-label="放大查看：原画山形取样 · 图 1-4" class="q-image q-sample-window" data-caption="原画山形取样 · 图 1-4" data-image="../assets/works/qianli/case/figma-layout/painting-sample-4.png" type="button">
+<img alt="原画山形取样 · 图 1-4" decoding="async" height="500" loading="lazy" src="../assets/works/qianli/case/figma-layout/painting-sample-4.png" width="1817"/>
+</button>
+<figcaption>原画山形取样 · 图 1-4</figcaption>
+</figure>
+</div>
 </div>
 </section>
-<section id="colour-study" class="q-panel ">
+<section class="q-panel" id="colour-study">
 <div class="q-heading">
 <h2>音调、颜色与情感</h2> <p>原稿记录了 10 位测试者的颜色选择，作为调性与光色匹配的探索。</p>
 </div>
@@ -177,7 +203,7 @@
 <figcaption>10 位测试者的调性与颜色匹配记录</figcaption>
 </figure>
 </section>
-<section id="audio" class="q-panel ">
+<section class="q-panel" id="audio">
 <div class="q-heading">
 <h2>从声音到灯光</h2>
 </div>
@@ -230,11 +256,11 @@ FastLED.show();</code>
 </pre>
 </details>
 </section>
-<section id="wood" class="q-panel ">
+<section class="q-panel" id="wood">
 <div class="q-heading">
-<h2>木板切割与赋色</h2> <p>激光切割后按山体分组排列，用丙烯铺底色，再以金粉增强反光。</p>
+<h2>木板切割与赋色</h2>
 </div>
-<div class="q-gallery ">
+<div class="q-gallery q-production">
 <figure class="">
 <button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/wood-cut.webp" aria-label="放大查看：制作切割图" data-caption="制作切割图">
 <img src="../assets/works/qianli/case/wood-cut.webp" width="1588" height="888" alt="制作切割图" loading="lazy" decoding="async">
@@ -271,13 +297,14 @@ FastLED.show();</code>
 </button>
 <figcaption>金粉增效</figcaption>
 </figure>
+<p class="q-production-note">激光切割后按山体分组排列，用丙烯铺底色，再以金粉增强反光。</p>
 </div>
 </section>
-<section id="led" class="q-panel ">
+<section class="q-panel" id="led">
 <div class="q-heading">
 <h2>灯带装配</h2> <p>灯带位置同时服从山形层次与布线路径，通过结构钻孔连接前后线路，再接入 Arduino。</p>
 </div>
-<div class="q-gallery ">
+<div class="q-gallery">
 <figure class="">
 <button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/led-layout.webp" aria-label="放大查看：确定位置" data-caption="确定位置">
 <img src="../assets/works/qianli/case/led-layout.webp" width="513" height="329" alt="确定位置" loading="lazy" decoding="async">
@@ -320,40 +347,54 @@ FastLED.show();</code>
 <div class="q-heading">
 <h2>音光装置呈现</h2>
 </div>
-<figure class="q-film">
-<video controlslist="nodownload" playsinline preload="none" width="1280" height="720" poster="../assets/works/qianli/case/music-detail.webp" aria-label="音光互动装置原视频">
-<source src="../assets/works/qianli/case/music-installation.mp4" type="video/mp4">
-</video>
-</figure>
-<div class="q-result-row">
-<figure class="q-result-main">
+<div class="q-result-layout">
+<figure class="q-result-primary">
 <button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/music-detail.webp" aria-label="放大查看：层叠山形与背后的光" data-caption="层叠山形与背后的光">
 <img src="../assets/works/qianli/case/music-detail.webp" width="729" height="365" alt="层叠山形与背后的光" loading="lazy" decoding="async">
 </button>
 <figcaption>层叠山形与背后的光</figcaption>
 </figure>
-<figure class="">
+<div class="q-result-aside">
+<figure class="q-result-wide">
+<button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/music-full.webp" aria-label="放大查看：音光装置全景" data-caption="音光装置全景">
+<img src="../assets/works/qianli/case/music-full.webp" width="1178" height="314" alt="音光装置全景" loading="lazy" decoding="async">
+</button>
+<figcaption>音光装置全景</figcaption>
+</figure>
+<div class="q-result-bottom">
+<figure class="q-result-detail">
 <button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/music-light.webp" aria-label="放大查看：光色变化下的山形" data-caption="光色变化下的山形">
 <img src="../assets/works/qianli/case/music-light.webp" width="1644" height="1079" alt="光色变化下的山形" loading="lazy" decoding="async">
 </button>
 <figcaption>光色变化下的山形</figcaption>
 </figure>
+<figure class="q-film q-film-card">
+<div class="q-film-visual">
+<video aria-label="音光互动装置原视频" controlslist="nodownload" height="720" playsinline="" poster="../assets/works/qianli/case/music-video-preview.jpg" preload="none" width="1280">
+<source src="../assets/works/qianli/case/music-installation.mp4" type="video/mp4">
+</video>
+<span aria-hidden="true" class="q-film-play">
+<svg fill="none" viewBox="0 0 64 64">
+<circle cx="32" cy="32" r="30">
+</circle>
+<path d="M26 20 45 32 26 44Z">
+</path>
+</svg>
+</span>
 </div>
-</section>
-<section id="touch" class="q-panel ">
-<div class="q-heading">
-<h2>触摸光互动</h2> <p>把山形的颜色分区转成点阵，一个点对应一根光纤。触摸传感器控制局部光源，依次点亮周围的光点。</p>
-</div>
-<figure class="q-result-main">
-<button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/touch-blue.webp" aria-label="放大查看：触摸光纤装置的青蓝光点" data-caption="触摸光纤装置的青蓝光点">
-<img src="../assets/works/qianli/case/touch-blue.webp" width="1909" height="836" alt="触摸光纤装置的青蓝光点" loading="lazy" decoding="async">
-</button>
-<figcaption>触摸光纤装置的青蓝光点</figcaption>
+<figcaption>
+<span>播放装置视频</span>
+<time>01:25</time>
+</figcaption>
 </figure>
+</div>
+</div>
+</div>
 </section>
-<section id="matrix" class="q-panel ">
-<div class="q-heading">
-<h2>从色块到点阵</h2>
+<section class="q-panel" id="matrix">
+<div class="q-heading" id="touch">
+<h2>触摸光互动 · 点阵造型</h2>
+<p>把山形的颜色分区转成点阵，一个点对应一根光纤。触摸传感器控制局部光源，依次点亮周围的光点。</p>
 </div>
 <div class="q-matrix">
 <figure class="q-paper">
@@ -394,7 +435,7 @@ FastLED.show();</code>
 </figure>
 </div>
 </section>
-<section id="circuit" class="q-panel ">
+<section class="q-panel" id="circuit">
 <div class="q-heading">
 <h2>一组光纤，一个触摸区域</h2>
 </div>
@@ -416,32 +457,32 @@ FastLED.show();</code>
 <span>发光端与表面齐平</span>
 </li>
 </ol>
-<div class="q-gallery q-three">
-<figure class="">
-<button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/fibre-bundle.webp" aria-label="放大查看：按区域编组光纤" data-caption="按区域编组光纤">
-<img src="../assets/works/qianli/case/fibre-bundle.webp" width="1300" height="976" alt="按区域编组光纤" loading="lazy" decoding="async">
+<div class="q-hardware">
+<figure class="q-paper">
+<button aria-haspopup="dialog" aria-label="放大查看：触摸传感器" class="q-image" data-caption="触摸传感器" data-image="../assets/works/qianli/case/figma-layout/touch-sensor.png" type="button">
+<img alt="触摸传感器" decoding="async" height="548" loading="lazy" src="../assets/works/qianli/case/figma-layout/touch-sensor.png" width="600"/>
 </button>
-<figcaption>按区域编组光纤</figcaption>
+<figcaption>触摸传感器</figcaption>
 </figure>
-<figure class="">
-<button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/fibre-box.webp" aria-label="放大查看：每组光纤接入对应灯箱" data-caption="每组光纤接入对应灯箱">
-<img src="../assets/works/qianli/case/fibre-box.webp" width="1300" height="970" alt="每组光纤接入对应灯箱" loading="lazy" decoding="async">
+<figure class="q-paper">
+<button aria-haspopup="dialog" aria-label="放大查看：Arduino 单片机" class="q-image" data-caption="Arduino 单片机" data-image="../assets/works/qianli/case/figma-layout/arduino-board.png" type="button">
+<img alt="Arduino 单片机" decoding="async" height="474" loading="lazy" src="../assets/works/qianli/case/figma-layout/arduino-board.png" width="474"/>
 </button>
-<figcaption>每组光纤接入对应灯箱</figcaption>
+<figcaption>Arduino 单片机</figcaption>
 </figure>
-<figure class="">
-<button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/sensor-wire.webp" aria-label="放大查看：触摸传感器与单片机连接" data-caption="触摸传感器与单片机连接">
-<img src="../assets/works/qianli/case/sensor-wire.webp" width="525" height="345" alt="触摸传感器与单片机连接" loading="lazy" decoding="async">
+<figure class="q-paper">
+<button aria-haspopup="dialog" aria-label="放大查看：LED 灯带" class="q-image" data-caption="LED 灯带" data-image="../assets/works/qianli/case/figma-layout/led-strip.png" type="button">
+<img alt="LED 灯带" decoding="async" height="1263" loading="lazy" src="../assets/works/qianli/case/figma-layout/led-strip.png" width="1688"/>
 </button>
-<figcaption>触摸传感器与单片机连接</figcaption>
+<figcaption>LED 灯带</figcaption>
 </figure>
 </div>
 </section>
-<section id="fibre" class="q-panel ">
+<section class="q-panel" id="fibre">
 <div class="q-heading">
 <h2>打孔与光纤编组</h2>
 </div>
-<div class="q-gallery ">
+<div class="q-gallery">
 <figure class="">
 <button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/fibre-drawing.webp" aria-label="放大查看：打印山形图纸" data-caption="打印山形图纸">
 <img src="../assets/works/qianli/case/fibre-drawing.webp" width="528" height="350" alt="打印山形图纸" loading="lazy" decoding="async">
@@ -480,7 +521,7 @@ FastLED.show();</code>
 </figure>
 </div>
 </section>
-<section id="light-boxes" class="q-panel ">
+<section class="q-panel" id="light-boxes">
 <div class="q-heading">
 <h2>光纤与灯箱</h2> <p>在背面把光纤分组，接入各自灯箱；木条内侧贴镜，加强光线的传导。</p>
 </div>
@@ -535,11 +576,11 @@ FastLED.show();</code>
 </figure>
 </div>
 </section>
-<section id="sensors" class="q-panel ">
+<section class="q-panel" id="sensors">
 <div class="q-heading">
 <h2>触摸传感器装配</h2> <p>修整正面光纤，让发光端与表面齐平；每个触摸区域对应一组光源。</p>
 </div>
-<div class="q-gallery ">
+<div class="q-gallery">
 <figure class="">
 <button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/sensor-mount.webp" aria-label="放大查看：安装灯箱" data-caption="安装灯箱">
 <img src="../assets/works/qianli/case/sensor-mount.webp" width="518" height="341" alt="安装灯箱" loading="lazy" decoding="async">
@@ -582,28 +623,58 @@ FastLED.show();</code>
 <div class="q-heading">
 <h2>触摸光纤装置呈现</h2>
 </div>
-<figure class="q-film">
-<video controlslist="nodownload" playsinline preload="none" width="1272" height="576" poster="../assets/works/qianli/case/touch-blue.webp" aria-label="触摸光纤装置原视频">
-<source src="../assets/works/qianli/case/touch-installation.mp4" type="video/mp4">
-</video>
+<div class="q-result-layout">
+<figure class="q-result-primary">
+<button aria-haspopup="dialog" aria-label="放大查看：青蓝色光纤山形" class="q-image" data-caption="青蓝色光纤山形" data-image="../assets/works/qianli/case/touch-blue.webp" type="button">
+<img alt="青蓝色光纤山形" decoding="async" height="836" loading="lazy" src="../assets/works/qianli/case/touch-blue.webp" width="1909"/>
+</button>
+<figcaption>青蓝色光纤山形</figcaption>
 </figure>
-<div class="q-result-row">
-<figure class="q-result-main">
+<div class="q-result-aside">
+<figure class="q-result-wide">
 <button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/touch-white.webp" aria-label="放大查看：光纤勾勒出的山形" data-caption="光纤勾勒出的山形">
 <img src="../assets/works/qianli/case/touch-white.webp" width="2125" height="719" alt="光纤勾勒出的山形" loading="lazy" decoding="async">
 </button>
 <figcaption>光纤勾勒出的山形</figcaption>
 </figure>
-<figure class="">
+<div class="q-result-bottom">
+<figure class="q-result-detail">
 <button type="button" aria-haspopup="dialog" class="q-image" data-image="../assets/works/qianli/case/touch-violet.webp" aria-label="放大查看：紫色光源" data-caption="紫色光源">
 <img src="../assets/works/qianli/case/touch-violet.webp" width="2200" height="1445" alt="紫色光源" loading="lazy" decoding="async">
 </button>
 <figcaption>紫色光源</figcaption>
 </figure>
+<figure class="q-film q-film-card">
+<div class="q-film-visual">
+<video aria-label="触摸光纤装置原视频" controlslist="nodownload" height="576" playsinline="" poster="../assets/works/qianli/case/touch-video-preview.jpg" preload="none" width="1272">
+<source src="../assets/works/qianli/case/touch-installation.mp4" type="video/mp4">
+</video>
+<span aria-hidden="true" class="q-film-play">
+<svg fill="none" viewBox="0 0 64 64">
+<circle cx="32" cy="32" r="30">
+</circle>
+<path d="M26 20 45 32 26 44Z">
+</path>
+</svg>
+</span>
+</div>
+<figcaption>
+<span>播放装置视频</span>
+<time>01:42</time>
+</figcaption>
+</figure>
+</div>
+</div>
 </div>
 <div class="project-reflection">
-<div><h3>为什么做</h3><p>我想让一幅静止的青绿山水，被声音和触摸重新感知。</p></div>
-<div><h3>从中学到</h3><p>在音频、传感器、光纤与灯带之间，我学会从原画提取节奏与色彩，再把它们变成观众能触发的反馈。</p></div>
+<div>
+<h3>为什么做</h3>
+<p>我想让一幅静止的青绿山水，被声音和触摸重新感知。</p>
+</div>
+<div>
+<h3>从中学到</h3>
+<p>在音频、传感器、光纤与灯带之间，我学会从原画提取节奏与色彩，再把它们变成观众能触发的反馈。</p>
+</div>
 </div>
 </section>
 </div>
