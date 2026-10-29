@@ -122,3 +122,61 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
   "视频画面截屏：头显、机器狗与现场屏幕": "Video frame screenshot: headset, robot dog and on-site displays",
   "视频画面截屏：佩戴头显与手柄操作": "Video frame screenshot: wearing the headset and using a controller"
 });
+
+/* Additions within the restored original layout. */
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
+  "以良渚遗址公园为可行走的探索地图，在不同地点布置任务。玩家操控机器狗，让狗背上的虚拟纹样与头显中的场景物体发生交互。": "Use Liangzhu Archaeological Site Park as a walkable exploration map, with tasks at different locations. Players control a robot dog, bringing the virtual motif on its back into interaction with scene objects in the headset.",
+  "完成地点任务、取得文化纹样，再继续探索。当前以 Unity / Meta Quest 3 小样验证位置、碰撞与反馈；完整园区任务及个人游记属于继续完善的方案。": "Complete place-based tasks, collect cultural motifs and continue exploring. The current Unity / Meta Quest 3 demo tests position, collision and feedback; park-wide tasks and personal journals remain part of the developing proposal.",
+  "项目分工与进展": "Project role and progress",
+  "操控与行动": "Control and movement",
+  "玩家选择地点任务，操控机器狗的移动与停留；同行游览是辅助。": "Players choose a place-based task and control the robot dog’s movement and pauses; walking together is secondary.",
+  "狗背上的虚拟纹样随运动，与头显中的数字物体相交并触发反馈。": "The virtual motif on the dog’s back moves with it, intersects with digital objects in the headset and triggers feedback.",
+  "进入地点任务": "Enter a place-based task",
+  "任务与文化线索": "Tasks and cultural clues",
+  "通过手柄绑定、碰撞体与脚本挂载，在 Unity / Meta Quest 3 小样中验证纹样收集与场景反馈。": "Test motif collecting and scene feedback in a Unity / Meta Quest 3 demo using controller binding, colliders and scripts.",
+  "声音、纹样、光影与器物，为地点任务提供文化素材。": "Sound, motifs, light and artifacts provide cultural material for place-based tasks.",
+  "依据地貌设想声、影、纹的触发点；场地与纹样的对应属于设计转译。": "Propose triggers for sound, light and motifs based on the landscape; the pairing of places and motifs is a design interpretation.",
+  "原方案的使用场景分类，作为设计背景，未作为实测行为结论。": "Use-context categories from the original proposal, presented as design background rather than measured behavior findings.",
+  "原方案分类 · 休息空间。": "Original proposal · Rest spaces.",
+  "原方案分类 · 亲子空间。": "Original proposal · Family spaces.",
+  "原方案分类 · 休闲空间。": "Original proposal · Leisure spaces.",
+  "原方案分类 · 商品空间。": "Original proposal · Retail spaces.",
+  "原方案分类 · 运动空间。": "Original proposal · Exercise spaces.",
+  "完整系统设想；当前小样验证范围见技术实现。": "The overall system concept; see Implementation for the current demo’s tested scope.",
+  "方案中的运动与设备联动模块；具体接口和定位方式继续验证。": "Proposed movement and device integration; specific interfaces and positioning require further testing.",
+  "围绕地点任务组织声、影、纹与反馈；完整定位和记录机制继续完善。": "Organize sound, light, motifs and feedback around place-based tasks; full positioning and recording mechanisms remain in development.",
+  "将收集的碎片组织为个人游记，作为整体方案的后续延展。": "Organize collected fragments into a personal journal as a later extension of the overall concept.",
+  "原方案的三类体验分支。": "Three experience branches from the original proposal.",
+  "原方案的完整园区流程。": "The park-wide flow from the original proposal.",
+  "个性化游玩日志（设想）": "Personal exploration journal (concept)",
+  "AI 游记 · 后续延展": "AI journal · Future extension",
+  "以地点任务和纹样收集组织探索；路径转译与个人游记作为后续延展。": "Organize exploration through place-based tasks and motif collecting, with route interpretation and personal journals as later extensions."
+});
+
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {"原展板重绘的交互示意，展示方案中的操作关系。":"An interaction illustration redrawn from the original board, showing the proposed controls."});
+
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
+  "良渚遗址公园拥有大尺度、可真实行走的地形。我希望直接借用这些地点组织探索地图，以虚拟内容补充任务与奖励，让真实行走成为游玩的过程。": "Liangzhu has large-scale terrain that people can physically explore. I wanted to use these existing places as an exploration map, adding virtual tasks and rewards so that walking through the park becomes part of play.",
+  "我把机器狗作为行动伙伴：玩家操控它移动，让狗背上的虚拟纹样与场景数字物体相交，完成任务并取得文化纹样。当前用 Unity / Quest 3 小样说明交互；全园区内容继续完善。": "I treated the robot dog as an active companion: players control its movement, bringing the virtual motif on its back into contact with digital scene objects to complete tasks and collect cultural motifs. A Unity / Quest 3 demo illustrates the interaction; park-wide content remains in development.",
+  "玩家选择地点任务，操控机器狗移动与停留，把探索转为可操作的行动。": "Players choose place-based tasks and control the dog’s movement and pauses, turning exploration into an action they can perform.",
+  "头显叠加狗背纹样与数字物体。狗的运动改变纹样的位置，成为空间相交与触发的任务输入。": "The headset overlays a motif on the dog’s back alongside digital objects. The dog’s movement changes the motif’s position, providing spatial input for contact and triggers.",
+  "地点任务 → 操控机器狗 → 虚实触发 → 纹样收集 → 继续探索；个人游记作为延展。": "Place-based task → Control the dog → Physical–virtual trigger → Collect a motif → Continue exploring. Personal journals are an extension.",
+  "先用手柄绑定的代理验证位置、碰撞与反馈，再换入文化纹样。目标是玩家操控真实机器狗参与任务；当前录屏验证的是代理交互小样。": "Test position, collision and feedback with a controller-bound proxy, then introduce cultural motifs. The intended experience lets players control a real dog during tasks; the recording demonstrates the proxy interaction prototype.",
+  "玩家移动手柄绑定的代理": "Move the controller-bound proxy",
+  "代理与纹样的位置变化": "The proxy and motif change position",
+  "Unity 碰撞体检测相交": "Unity colliders detect contact",
+  "触发消失、收集与可见反馈": "Trigger disappearance, collecting and visible feedback",
+  "先测试方块触碰消失，再替换鳄鱼纹样。手柄须处于头显摄像头的检测范围，并按场地调试安装与位置。": "First test disappearance of a cube on contact, then replace it with the crocodile motif. Keep the controller within the headset cameras’ tracking range, and adjust its mounting and position for the site.",
+  "方案目标是操控机器狗，让其运动改变虚拟纹样的位置。下图按原展板重绘；实际代理验证见前面的技术演示。": "The concept uses control of the dog to move the virtual motif. The drawing below is redrawn from the original board; see the earlier technical demo for the proxy test.",
+  "从地点任务到交互反馈与继续探索": "From place-based tasks to feedback and continued exploration",
+  "纹样收集": "Collect cultural motifs"
+});
+
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
+  "Meta XR Simulator · 室内交互模拟预览": "Meta XR Simulator · Indoor interaction simulation preview",
+  "RingItem：碰撞触发收集": "RingItem: collision-triggered collecting",
+  "RitualManager：收集计数与变换条件": "RitualManager: collection count and transformation condition",
+  "AutoRotate：展示物旋转": "AutoRotate: display object rotation"
+});
+
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {"原展板日志：在主收集品周围布置 6 个小收集品，并分别挂载脚本。":"Original board log: place six small collectibles around the main item and attach their scripts."});

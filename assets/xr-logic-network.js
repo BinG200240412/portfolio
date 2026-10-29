@@ -1,6 +1,6 @@
 /* Fixed LED cells: animation changes their light, never their screen position.
  * Dog, glasses and cultural fragment use the original PDF motifs.
- * Maps and narrative symbols are simplified diagrams of the original concept. */
+ * Task, contact, collecting and exploration symbols stay inside the original card layout. */
 (() => {
   'use strict';
   const page=document.querySelector('.gogo-logic-page'),stage=page?.querySelector('.gogo-logic-network');
@@ -127,12 +127,9 @@
     }
     path(m,b,route,role,1.25);disc(m,b,.13,.77,1.25,14);disc(m,b,.87,.23,1.25,14);
   }
-  function story(m,b,time){
-    const brain=[[.5,.18],[.4,.12],[.3,.17],[.25,.28],[.25,.4],[.2,.48],[.27,.61],[.4,.65],[.5,.72],[.61,.65],[.73,.6],[.8,.48],[.75,.39],[.75,.27],[.65,.15],[.55,.13]];
-    path(m,b,brain,6,1.4,true);path(m,b,[[.5,.18],[.5,.65]],5,1);
-    path(m,b,[[.32,.3],[.42,.3],[.42,.43],[.34,.43]],5,1);path(m,b,[[.66,.3],[.57,.3],[.57,.51],[.68,.51]],5,1);
-    const clues=[[.07,.12],[.93,.13],[.06,.78],[.94,.78]];
-    clues.forEach((p,i)=>{const cell=[b[0]+(p[0]-.045)*b[2],b[1]+(p[1]-.06)*b[3],b[2]*.09,b[3]*.12];rectangle(m,cell,Math.floor(time*1.4)%4===i?14:12,1.1);path(m,b,[p,[p[0]<.5?.25:.75,p[1]]],1,.8);});
+  function collectionBadge(m,b,time){
+    path(m,b,[[.2,.08],[.8,.08],[.9,.2],[.9,.69],[.75,.84],[.25,.84],[.1,.69],[.1,.2]],Math.floor(time*1.5)%2?14:6,1.4,true);
+    path(m,b,[[.35,.84],[.3,.98],[.5,.91],[.7,.98],[.65,.84]],12,1.15);
   }
   function cellsFor(m,time){
     const full=box(m);
@@ -141,13 +138,15 @@
     if(m.id==='walk'||m.id==='route'){
       const b=box(m,.02,.03,.94,.92);roadMap(m,b);paths.push([b,route,7]);
     }else if(m.id==='translation'){
-      const left=box(m,.01,.1,.35,.78),right=box(m,.64,.1,.35,.78);roadMap(m,left,6);roadMap(m,right,14);
-      path(m,full,[[.43,.5],[.57,.5]],1,1.4);path(m,full,[[.51,.34],[.58,.5],[.51,.66]],14,1.3);
-      paths.push([left,route,7],[right,route,15]);
+      // Two collider bounds share a contact zone. Only fixed cell lighting changes.
+      rectangle(m,box(m,.08,.22,.46,.6),6,1.2);rectangle(m,box(m,.46,.22,.46,.6),12,1.2);
+      path(m,full,[[.5,.13],[.5,.9]],Math.floor(time*2)%2?14:7,1.5);
+      path(m,full,[[.3,.48],[.7,.48]],3,1.2);path(m,full,[[.62,.35],[.72,.48],[.62,.62]],14,1.1);
     }else if(m.id==='memory'){
-      rectangle(m,box(m,.1,.03,.8,.92),3,1.6);const b=box(m,.2,.12,.59,.5);roadMap(m,b);paths.push([b,route,7]);
-      path(m,full,[[.22,.72],[.75,.72]],1,1);path(m,full,[[.22,.81],[.61,.81]],1,1);path(m,full,[[.45,.9],[.55,.9]],3,1);
-    }else if(m.id==='story')story(m,full,time);
+      const b=box(m,.02,.03,.94,.92);roadMap(m,b);paths.push([b,route,7]);
+      path(m,b,[[.87,.23],[.9,.49],[.76,.59]],14,1.2);
+      path(m,b,[[.76,.48],[.76,.59],[.88,.58]],14,1.2);
+    }else if(m.id==='story')collectionBadge(m,full,time);
     else if(m.id==='fragment'){
       const bars=Math.max(5,Math.min(13,2*Math.floor((m.cols-2)/4)+1)),cx=m.cols*.5,cy=m.rows*.82,max=Math.max(2,Math.floor(m.rows*.1));
       for(let i=0;i<bars;i++){const x=Math.round(cx+(i-(bars-1)/2)*2)+.5,level=1+Math.round(Math.abs(Math.sin(time*3.2+i*.65))*max);poly(m.mask,[[x,cy-level],[x,cy+level]],colour(6),1);}
@@ -156,6 +155,9 @@
     }
     const slots=readMask(m);
     paths.forEach(([b,p,role])=>signal(m,slots,b,p,time,role));
+    if(m.id==='story'){
+      const original=sourceCells(m,'fragment',[m.cols*.22,m.rows*.14,m.cols*.56,m.rows*.57],0);for(let i=0;i<slots.length;i++)if(original[i])slots[i]=original[i];
+    }
     if(m.id==='fragment'){
       const original=sourceCells(m,'fragment',[m.cols*.09,0,m.cols*.82,m.rows*.61],0);for(let i=0;i<slots.length;i++)if(original[i])slots[i]=original[i];
     }
