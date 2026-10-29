@@ -69,6 +69,22 @@
   addEventListener('portfolio:language', language);
   language();
   const videos = [...document.querySelectorAll('.q-film video')];
+  // Keep the preview independent of the native video's seek/render state.
+  // The shared detail player continues to own playback and resume progress.
+  function mountPosters() {
+    videos.forEach(video => {
+      const host = video.closest('.video-preview');
+      if (!host || !video.poster) return;
+      const poster = document.createElement('img');
+      poster.className = 'q-film-poster'; poster.src = video.poster; poster.alt = '';
+      poster.setAttribute('aria-hidden', 'true');
+      poster.setAttribute('data-media-corners-ignore', '');
+      host.append(poster);
+      video.classList.add('q-preview-source');
+    });
+  }
+  if (document.readyState === 'complete') mountPosters();
+  else addEventListener('load', mountPosters, { once: true });
   const observer = new IntersectionObserver(entries => entries.forEach(entry => {
     if (!entry.isIntersecting && !entry.target.paused) entry.target.pause();
   }), { threshold: 0 });
