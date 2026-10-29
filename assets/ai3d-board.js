@@ -260,7 +260,10 @@
     const wrap=(copy,width)=>wrapCopy(measure,copy,width);
     function paint() {
       frame=0;
-      const zoom=host.clientWidth>=720?1.18:host.clientWidth>=480?1.1:1;
+      const laptopZoom=host.clientWidth>=720?1.18:host.clientWidth>=480?1.1:1;
+      // Redraw the native diagram at a comparable screen proportion on monitors.
+      const displayScale=innerWidth>1800?Math.max(1,Math.min(innerWidth/1512,innerHeight/982)):1;
+      const zoom=Math.min(1.8,laptopZoom*displayScale);
       const width=host.clientWidth/zoom;
       if (!width) return;
       const next=`${width}:${zoom}:${english()}:${fontRevision}`;
@@ -410,6 +413,7 @@
     const schedule=()=>{if(!frame)frame=requestAnimationFrame(paint);};
     new ResizeObserver(schedule).observe(host);
     addEventListener('portfolio:language',schedule);
+    addEventListener('resize',schedule,{passive:true});
     document.fonts.addEventListener('loadingdone',()=>{fontRevision++;schedule();});
     document.fonts.ready.then(()=>{fontRevision++;schedule();});
     paint();

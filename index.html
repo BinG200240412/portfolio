@@ -199,6 +199,7 @@
 <link rel="stylesheet" href="assets/media-view-only.css?v=view-only-media-20261026">
 <script defer src="assets/media-view-only.js?v=view-only-media-20261026"></script>
 <link rel="stylesheet" href="assets/editorial-hierarchy.css?v=stepped-type-20261026">
+<link rel="stylesheet" href="assets/wide-screen.css?v=large-display-20261029" media="(min-width: 1801px)">
 </head>
 <body class="portfolio-shell">
   <canvas id="ambient-page" aria-hidden="true" data-i18n-ignore></canvas>
@@ -497,7 +498,7 @@ function enterSection(name){
     frameURL.searchParams.set("media", "video-preview-detail-20261026");
     frameURL.searchParams.set("chrome", "stepped-type-20261026");
     frameURL.searchParams.set("rail", "content-bead-rail-20261027");
-    frameURL.searchParams.set("render", "fast-first-paint-20261029");
+    frameURL.searchParams.set("render", "large-display-20261029");
     const fontPreview = document.documentElement.dataset.cjkPreview;
     if (fontPreview) frameURL.searchParams.set("cjk", fontPreview);
     const frame=document.createElement('iframe');

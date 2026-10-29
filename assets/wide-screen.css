@@ -1,0 +1,252 @@
+/* The approved laptop layouts remain unchanged. Large displays get their own
+   artwork proportions and reading measures, without page zoom or transforms. */
+@media (min-width: 1801px) {
+  :root {
+    --editorial-title: clamp(50px, 2.5vw, 64px);
+    --editorial-subtitle: clamp(31px, 1.55vw, 40px);
+    --editorial-body: clamp(18px, 1vw, 22px);
+    --editorial-note: clamp(14px, .7vw, 16px);
+  }
+  .portfolio-shell .line { font-size: clamp(64px, 3.3vw, 84px); }
+  .portfolio-shell .menu {
+    top: calc(50% + clamp(64px, 4vw, 88px));
+    width: min(80vw, 1080px);
+    max-width: 1080px;
+    gap: 14px 32px;
+  }
+  .portfolio-shell #stage.hublv .mi { font-size: clamp(20px, 1vw, 25px); }
+  body.portfolio-shell #resume {
+    max-width: min(88vw, 1640px);
+    padding-inline: clamp(72px, 4vw, 112px);
+  }
+  .about-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(380px, .95fr);
+    gap: clamp(76px, 5vw, 144px);
+  }
+  .about-portrait { width: clamp(380px, 22vw, 600px); max-width: 100%; }
+  #resume .about-intro .cv-head h1 { font-size: clamp(64px, 3.3vw, 84px) !important; }
+  #resume .about-intro .intro { max-width: 620px; }
+  #resume .about-details > section { padding-inline: 36px; }
+  #resume .about-details > section:first-child { padding-left: 0; }
+  #resume .about-details > section:last-child { padding-right: 0; }
+  .practice { width: min(92vw, 2240px); padding-inline: clamp(72px, 4vw, 112px); }
+  .practice-grid { gap: clamp(64px, 4vw, 112px); }
+  .skills-page .page-width { width: min(94vw, 2320px); max-width: none; }
+  .skills-page .hero-heading { gap: clamp(80px, 6vw, 160px); }
+  .skills-page .hero-note { max-width: 32ch; }
+  .legacy-case.archive .wrap { max-width: min(80vw, 1320px); }
+  .qianli-case .q-study { max-width: min(88vw, 2200px); }
+}
+
+/* Wide monitors get their own composition. Laptop and mobile rules stay intact. */
+@media (min-width: 1801px) {
+  .sudoku-scenes {
+    --layout-width: min(100vw, 2320px);
+    --scene-gutter: clamp(88px, 5.5vw, 128px);
+  }
+
+  /* Keep the diagonally cropped board in the left half, with the title right. */
+  .sudoku-opening > .hero {
+    padding-block: clamp(88px, 9svh, 144px);
+  }
+  .sudoku-board-angle {
+    --board-size: calc(var(--layout-width) * 1.42);
+    left: calc(50vw - var(--board-size) * 1.12);
+  }
+  .sudoku-scenes .hero-main {
+    width: 50%;
+    padding-right: var(--scene-gutter);
+  }
+  .sudoku-scenes .hero h1 {
+    font-size: clamp(180px, calc(var(--layout-width) * .112), 268px);
+  }
+  .sudoku-scenes .hero-main .case-role,
+  .sudoku-scenes .hero-main .case-release {
+    max-width: 32em;
+    margin-left: auto;
+  }
+  .sudoku-actions {
+    gap: 16px 32px;
+    margin-top: clamp(36px, 3svh, 48px);
+  }
+
+  /* The measured dock still drives the existing rotation/shrink animation. */
+  .sudoku-scenes .case-chapter.sudoku-intro {
+    max-width: 2320px;
+    grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+    gap: clamp(96px, 7vw, 200px);
+    padding-inline: var(--scene-gutter);
+  }
+  .sudoku-board-dock {
+    width: min(100%, 32vw, 62svh);
+  }
+  .sudoku-intro-copy {
+    width: 100%;
+    max-width: 880px;
+    justify-self: start;
+  }
+  .sudoku-intro-copy .case-lead {
+    max-width: 42em;
+  }
+
+  /* Later chapters use the wider stage, while prose keeps a reading measure. */
+  .sudoku-story {
+    max-width: 2320px;
+    padding-inline: var(--scene-gutter);
+  }
+  .sudoku-scenes .case-product-art {
+    width: min(100%, calc(100svh - 280px), 1280px);
+  }
+  .sudoku-story .sudoku-gallery-copy {
+    max-width: 46em;
+  }
+  .sudoku-anatomy {
+    --anatomy-phone-height: clamp(600px, 65svh, 840px);
+    max-width: 1760px;
+    margin-inline: auto;
+  }
+  .sudoku-scenes .anatomy-callout {
+    max-width: 280px;
+  }
+  .sudoku-scenes .case-visual-system {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
+    column-gap: clamp(96px, 6vw, 160px);
+  }
+  .sudoku-scenes .visual-device-stage {
+    top: clamp(112px, 12svh, 176px);
+    width: min(100%, calc((100svh - 220px) * .49), 560px);
+  }
+  .sudoku-scenes .visual-system-block > p {
+    max-width: 32em;
+  }
+  .case-iteration-sequence {
+    --iteration-phone: clamp(160px, 15svh, 224px);
+  }
+  .sudoku-ui-wall {
+    --ui-wall-bleed: var(--scene-gutter);
+  }
+}
+
+/* Large displays get roomier artwork, while the approved laptop composition
+   remains untouched. Text keeps its existing reading measure and hierarchy. */
+@media (min-width: 1801px) {
+  /* GouGO: the original grids and native drawings grow with their container. */
+  .gogo-case {
+    --gogo-stage-width: min(100vw, 2200px);
+    --gogo-page-safe: clamp(88px, 5.5vw, 140px);
+  }
+  .gogo-case .gogo-hero-photo h1 { font-size: clamp(76px, 4vw, 112px); }
+  .gogo-case .gogo-project-meta > div {
+    grid-template-columns: minmax(112px, 5vw) minmax(0, 1fr);
+    gap: clamp(24px, 1.3vw, 36px);
+  }
+  .gogo-case .gogo-project-meta dt { white-space: nowrap; }
+  .gogo-case .gogo-wrap {
+    width: min(88vw, 2200px);
+  }
+  .gogo-case .gogo-terrain-shell {
+    width: 92%;
+    max-width: 1800px;
+    height: clamp(680px, 64svh, 960px);
+  }
+  .gogo-case .gogo-logic-network {
+    height: clamp(680px, 70svh, 980px);
+  }
+  .gogo-case .gogo-research-sprite svg {
+    height: clamp(180px, 17svh, 245px);
+  }
+  .gogo-case .gogo-code-grid {
+    width: 100%;
+    max-width: 1680px;
+  }
+  .gogo-case .gogo-code-grid .gogo-zoom {
+    max-width: 100%;
+  }
+  .gogo-case .gogo-mode-visual,
+  .gogo-case .gogo-experience-pair .gogo-mode figure {
+    max-width: clamp(300px, 18vw, 430px);
+  }
+  .gogo-case .gogo-experience-pair .gogo-interaction-overview {
+    width: min(100%, 1440px);
+  }
+  .gogo-case .gogo-field-motion {
+    --field-height: clamp(168px, 14svh, 210px);
+  }
+
+  /* Tea: retain full source-image geometry and the flowing photo rows. */
+  .tea-case .tea-page {
+    width: min(92vw, 2320px);
+    padding-inline: clamp(72px, 4vw, 112px);
+  }
+  .tea-case .tea-cover h1 {
+    font-size: clamp(126px, 6.6vw, 164px);
+  }
+  .tea-case .tea-cover .tea-english {
+    font-size: clamp(43px, 2.2vw, 58px);
+  }
+  .tea-case .tea-particle-stage {
+    height: clamp(680px, 72svh, 1080px);
+  }
+  .tea-case .tea-game-recording {
+    max-width: min(100%, calc(68svh * 4 / 3));
+  }
+  .tea-case .tea-tools-study .tea-study-image {
+    max-width: 600px;
+  }
+  .tea-case .tea-character-study,
+  .tea-case .tea-prototype-base,
+  .tea-case .tea-native-gestures {
+    max-width: min(100%, 1560px);
+  }
+  .tea-case .tea-spatial-flow {
+    width: min(85%, 1350px);
+  }
+  .tea-case .tea-sketch-chapter {
+    width: 100%;
+    max-width: none;
+    padding-inline: 0;
+  }
+  .tea-case .tea-sketch-chapter > .tea-heading,
+  .tea-case .tea-sketch-row-label {
+    width: min(92vw, 2320px);
+    max-width: none;
+    padding-inline: clamp(72px, 4vw, 112px);
+  }
+  .tea-case .tea-sketch-row:nth-child(1) {
+    --study-height: clamp(230px, 20svh, 300px);
+  }
+  .tea-case .tea-sketch-row:nth-child(2) {
+    --study-height: clamp(280px, 25svh, 380px);
+  }
+  .tea-case .tea-sketch-row:nth-child(3) {
+    --study-height: clamp(225px, 20svh, 295px);
+  }
+  .tea-case .tea-course-chapter {
+    --course-photo-height: clamp(250px, 24svh, 360px);
+  }
+
+  /* Liangzhu: give diagrams and result windows the width of a visual case,
+     instead of constraining them to a text article's 1200px shell. */
+  .liangzhu-case .wrap {
+    width: min(92vw, 2320px);
+    max-width: none;
+    padding-inline: clamp(72px, 4vw, 112px);
+  }
+  .liangzhu-case .liangzhu-overview-map {
+    width: min(88vw, 2200px);
+    max-width: none;
+  }
+  .liangzhu-case .liangzhu-io-sequence {
+    width: min(100%, 1400px);
+    --io-gap: clamp(44px, 3vw, 72px);
+  }
+  .liangzhu-case .liangzhu-crop-gallery[data-crop-gallery="grid"] {
+    height: clamp(362px, 36svh, 520px);
+  }
+  .liangzhu-case .liangzhu-crop-gallery[data-crop-gallery="strip"] {
+    height: clamp(300px, 28svh, 430px);
+  }
+  .liangzhu-case .liangzhu-output-rows .liangzhu-crop-gallery {
+    height: clamp(280px, 27svh, 420px);
+  }
+}
