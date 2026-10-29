@@ -28,3 +28,6 @@
 
 .tea-course-photos{display:grid;grid-template-columns:1.15fr 1fr;gap:5%;align-items:center}.tea-course-photos img{width:100%;height:auto}
 @media(max-width:650px){.tea-course-photos{grid-template-columns:1fr;gap:34px}}
+
+.tea-course-more{color:var(--soft);font-size:16px}.tea-course-more summary{cursor:pointer;width:fit-content;padding:8px 0}.tea-course-more[open] summary{margin-bottom:30px}.tea-course-extra{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;align-items:start}.tea-course-extra img{width:100%;height:auto}
+@media(max-width:650px){.tea-course-extra{grid-template-columns:1fr;gap:30px}}

@@ -822,3 +822,14 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
 });
 
 window.PORTFOLIO_CASE_TRANSLATIONS["实体击拂"] = "Physical whisking";
+
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
+  "茶弦记现场记录 · 共 5 张照片。": "Tea String Chronicles on site · Five photographs.",
+  "查看其余 3 张现场照片": "View the other three on-site photographs",
+  "课程现场合影": "Course group photograph",
+  "展板与展台之间的课程现场合影": "Course group photograph among the design boards and display tables",
+  "茶弦记展板与茶器陈列": "Tea String Chronicles boards and tea utensils",
+  "两张茶弦记设计展板及桌面的茶器陈列": "Two Tea String Chronicles design boards and tea utensils on the table",
+  "击拂界面演示 · 现场屏幕": "Whisking interface demonstration · On-site screen",
+  "现场屏幕播放击拂界面的演示画面，桌面摆放 iPad": "An on-site screen showing a whisking interface demonstration, with iPads on the table"
+});
