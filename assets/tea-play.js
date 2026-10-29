@@ -4,7 +4,7 @@
   const dialog = document.getElementById('tea-game-viewer');
   const mount = dialog.querySelector('.tea-game-mount');
   const tabs = [...document.querySelectorAll('[data-tea-stage]')];
-  const known = new Set(tabs.map(tab => tab.dataset.teaStage));
+  const known = new Set(['xingcha', 'nianluo', 'fencha', 'chazhan']);
   let opener;
   function select(tab, focus = false) {
     tabs.forEach(item => {
@@ -51,7 +51,7 @@
     dialog.showModal(); load(stage, auto);
   }
   document.querySelectorAll('[data-tea-launch]').forEach(button => button.addEventListener('click', () => open(button.dataset.teaLaunch, false, button)));
-  document.querySelector('[data-tea-auto]').addEventListener('click', event => open('chazhan', true, event.currentTarget));
+  document.querySelector('[data-tea-auto]')?.addEventListener('click', event => open('chazhan', true, event.currentTarget));
   dialog.querySelector('[data-tea-menu]').addEventListener('click', () => load('index'));
   dialog.querySelector('[data-tea-game-close]').addEventListener('click', () => dialog.close());
   dialog.querySelector('[data-tea-fullscreen]').addEventListener('click', async () => {

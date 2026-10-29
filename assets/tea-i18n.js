@@ -759,3 +759,66 @@ window.PORTFOLIO_CASE_TRANSLATIONS = Object.assign(window.PORTFOLIO_CASE_TRANSLA
 });
 
 window.PORTFOLIO_CASE_TRANSLATIONS["静态浏览"] = "Static view";
+
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
+  "摘茶，把茶声唤醒": "Pick tea, awaken a soundscape",
+  "顺着音符的节奏，完成一场采集。": "Collect tea through the rhythm of incoming notes.",
+  "点、双击、按住": "Tap, double-tap, hold",
+  "茶苗轻点，钟声双击；清泉长条按住到尾，避开迷雾。": "Tap tea shoots, double-tap bells and hold water notes to the end. Avoid the mist.",
+  "采集变成声场": "A soundscape grows",
+  "每次准确回应都添一层声音；茶韵达到七成，完成醒茶。": "Each accurate response adds sound. Reach 70% tea clarity to complete the chapter.",
+  "摘茶，把茶声唤醒 · 原游戏自动演示": "Pick tea, awaken a soundscape · Original game autoplay",
+  "碾罗，把茶末碾成旋律": "Grind tea into a melody",
+  "把传统的碾磨动作，转成停留与收集。": "Grinding becomes an interaction of movement, dwell and collection.",
+  "移过去，再停住": "Move, then stay",
+  "将茶磨移到冒出的茶团上，停留半秒；掠过不会完成碾磨。": "Move the mill onto a tea lump and stay for half a second. Passing over it does not grind it.",
+  "攒满自己的声部": "Build your musical part",
+  "每份茶末填入一个音格，集齐十六格，让旋律逐渐完整。": "Each portion fills a note slot. Collect all sixteen to complete the musical part.",
+  "碾罗，把茶末碾成旋律 · 原游戏自动演示": "Grind tea into a melody · Original game autoplay",
+  "分茶，在汤面画出山水": "Paint a landscape on tea",
+  "手指跟随汤痕，线条与旋律同时生成。": "A traced gesture creates a line and a melody together.",
+  "按住发光的汤痕": "Hold the glowing tea mark",
+  "沿着路径持续描摹，连贯的动作让茶面上的山水逐渐显现。": "Follow its path continuously to reveal a landscape on the surface of the tea.",
+  "守住线条的神韵": "Keep the line alive",
+  "偏离路径会让线条变灰、连击中断；在神韵耗尽前完成描摹。": "Drifting off the path grays the line and breaks the combo. Finish before charm runs out.",
+  "分茶，在汤面画出山水 · 原游戏自动演示": "Paint a landscape on tea · Original game autoplay",
+  "击拂，让七汤渐入共振": "Whisk through seven pours",
+  "从手指绕圈，到真实茶筅的身体节奏。": "From a circling finger to the rhythm of a real bamboo whisk.",
+  "短波绕圈，长波驻留": "Circle short waves, dwell on long waves",
+  "按住盏沿接住短波；长波驻留猛切，红波停手。双指轻点可满环应急。": "Hold around the rim to catch short waves; dwell and cut long ones. Rest on red waves. A two-finger tap provides an emergency full ring.",
+  "从青沫，到汤花成纹": "From green foam to tea patterns",
+  "七汤由缓入急，准确回应积累共振；茶沫渐白，最后收束为茶纹。": "Seven pours build in pace. Accurate responses raise resonance; foam turns white, then gathers into a tea pattern.",
+  "击拂，让七汤渐入共振 · 原游戏自动演示": "Whisk through seven pours · Original game autoplay",
+  "iPad 模拟器录屏 · 原游戏自动演示 · 静音": "iPad simulator capture · Original game autoplay · Silent",
+  "四关均可在网页中实际操作，支持鼠标与触屏；进入试玩后有声音，横屏体验更完整。": "All four games are playable with mouse or touch. Sound is available in the playable version; landscape works best.",
+  "让真实茶筅，成为游戏输入": "A real tea whisk becomes the input",
+  "手在点茶，屏幕回应击拂的节奏。把屏幕里的动作，带回真实的一盏茶。": "Whisk real tea while the screen responds to your rhythm. Bring the gesture back to a real bowl.",
+  "真实茶筅": "Bamboo tea whisk",
+  "柄端可拆卸套筒": "Removable handle sleeve",
+  "陀螺仪 · 主控 · USB": "Gyroscope · Controller · USB",
+  "屏幕回应": "Screen response",
+  "绕圈频率 · 粒子 · 节奏": "Circling rate · Particles · Rhythm",
+  "装入柄端": "Fit into handle",
+  "拆开看结构": "Explode assembly",
+  "模拟击拂强度": "Simulated whisking intensity",
+  "停手": "Rest",
+  "急拂": "Fast whisking",
+  "动作怎样进入游戏": "From motion to game input",
+  "陀螺仪读取转动强度，转换成绕圈频率；动作越急，屏幕中的击拂越快，停手后逐渐回落。": "The gyroscope reads rotational intensity and maps it to a circling rate. Faster motion accelerates virtual whisking; stopping lets it settle.",
+  "实体接入方案": "Physical input proposal",
+  "模块收在柄端套筒内，与真实茶筅一起运动。现有固件输出 USB 串口数据，经电脑转发后可送入游戏。": "A handle sleeve holds the module so it moves with the whisk. The existing firmware sends USB serial data to a computer, which would relay it to the game.",
+  "结构与动作映射示意。已有固件与游戏输入接口；套筒装配、串口转发与实体联调待完成。滑杆仅模拟动作强度。": "Assembly and motion-mapping concept. Firmware and a game input interface exist; sleeve fitting, serial relay and physical integration remain to be completed. The slider simulates intensity only."
+});
+
+window.PORTFOLIO_CASE_TRANSLATIONS["iPad 游戏 · 四关网页可试玩"] = "iPad game · Four playable web chapters";
+
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
+  "结构与动作映射示意，依据现有固件与游戏输入接口绘制。滑杆模拟动作强度，实体联动过程需另行录制。": "Assembly and motion mapping illustrated from the existing firmware and game input interface. The slider simulates intensity; physical interaction needs a separate on-site recording.",
+  "展板、iPad 小样与现场交流。": "Design boards, iPad prototypes and project discussion.",
+  "茶弦记展示台：屏幕播放空间方案，桌面摆放四台 iPad": "Tea String Chronicles display: a spatial proposal on screen and four iPads on the table",
+  "项目展示台 · 屏幕演示与 iPad 小样": "Project display · Screen presentation and iPad prototypes",
+  "展板旁的项目交流，参与者手持 iPad 与记录本": "Project discussion beside the design boards, with participants holding an iPad and notebooks",
+  "展板旁的项目交流": "Project discussion beside the design boards"
+});
+
+window.PORTFOLIO_CASE_TRANSLATIONS["实体击拂"] = "Physical whisking";
