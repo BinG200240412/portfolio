@@ -80,7 +80,8 @@
     return { vertices, faces, vertex, face, box, prism, roundedPoints, roundedPrism, bridge, band };
   }
 
-  function robotDog(m, reaction = 0, hover = 0, gaitPhase = 0) {
+  function robotDog(m, reaction = 0, hover = 0, gaitPhase = 0, walkPhase = 0, walking = 0) {
+    const walkAmount = walking * (1 - hover) * (1 - Math.min(1,reaction));
     m.box(-0.03, 0.32, 0, 1.37, 0.31, 0.55, 1, 6);
     m.box(-0.06, 0.496, 0, 1.12, 0.045, 0.43, 6, 1);
     m.box(-0.17, 0.524, 0, 0.56, 0.018, 0.28, 7);
@@ -117,10 +118,11 @@
       const v=m.vertices[i],x=v[0]-.63,y=v[1]-.35;
       v[0]=.63+x*c-y*sn;v[1]=.35+x*sn+y*c;
     }
-    // The chassis turns at the hip joints while all four paws remain planted.
-    // Held extremes and a small dip between them give the motion a mechanical beat.
+    // During the hover reaction all four paws stay planted. Held extremes and
+    // a small dip between them keep that separate happy gesture mechanical.
     const cy = Math.cos(bodyYaw), sy = Math.sin(bodyYaw);
-    const chassisPoint = (x, y, z) => [x * cy + z * sy + bodyShift, y - crouch, -x * sy + z * cy];
+    const loadShift = Math.sin(walkPhase * 2) * .012 * walkAmount;
+    const chassisPoint = (x, y, z) => [x * cy + z * sy + bodyShift, y - crouch + loadShift, -x * sy + z * cy];
     for (const v of m.vertices) {
       const moved = chassisPoint(v[0], v[1], v[2]);
       v[0] = moved[0]; v[1] = moved[1]; v[2] = moved[2];
@@ -130,8 +132,18 @@
       const isFront = front === 1, sign = side === 0 ? -1 : 1;
       const x = isFront ? 0.47 : -0.49, z = sign * 0.355;
       const hip = chassisPoint(x, 0.19, z);
+      // A slow four-beat walk: one short swing while three paws support the
+      // chassis. The existing joint IK makes the legs carry every step.
+      const offset = isFront ? (side === 0 ? .75 : .25) : (side === 0 ? 0 : .5);
+      const cycle = ((walkPhase / TAU + offset) % 1 + 1) % 1;
+      const stance = .76, stride = .23;
+      const swing = Math.max(0,(cycle - stance) / (1 - stance));
+      const ease = swing * swing * (3 - 2 * swing);
+      const stepX = cycle < stance ? stride * (.5 - cycle / stance) : stride * (ease - .5);
+      const stepLift = Math.sin(swing * Math.PI) ** 2 * .10;
       const pawLift = isFront ? reaction * (side === 1 ? .25 : .06) : 0;
-      const foot = [x + (isFront ? .07 : -.025) * reaction, -0.72 + pawLift, z];
+      const foot = [x + (isFront ? .07 : -.025) * reaction + stepX * walkAmount,
+        -0.72 + pawLift + stepLift * walkAmount, z];
       const dx = foot[0] - hip[0], dy = foot[1] - hip[1], distance = Math.hypot(dx, dy);
       const upper = 0.46, lower = 0.49;
       const along = (upper * upper - lower * lower + distance * distance) / (2 * distance);
@@ -238,7 +250,8 @@
     const seconds = input.reduced ? 0 : Number.isFinite(time) ? time : 0;
     const reaction = active > 0 ? input.reduced ? .72 : Math.sin(active * Math.PI * .85) : 0;
     if (id === 'robot-dog') robotDog(m,reaction,hover,
-      Number.isFinite(input.gaitPhase) ? input.gaitPhase : seconds * .55);
+      Number.isFinite(input.gaitPhase) ? input.gaitPhase : seconds * .55,
+      seconds * TAU / 2.5,input.reduced ? 0 : 1);
     if (id === 'quest-3') quest3(m);
     return { vertices: m.vertices, faces: m.faces };
   }
