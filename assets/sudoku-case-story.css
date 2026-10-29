@@ -1,0 +1,23 @@
+/* Decision-led case copy. Existing phone, lens and analysis motion are shared. */
+.case-role{max-width:32em;margin-top:28px;color:var(--mid);font-size:16px;line-height:1.8}
+.case-release{margin-top:12px;font-size:13px;color:var(--mid)}
+.sudoku-gallery-copy .case-more-screens{margin-top:14px;width:100%}
+.case-more-screens summary{display:list-item;width:fit-content;margin-inline:auto;cursor:pointer;color:var(--mid);min-height:44px;padding-block:8px}
+.case-more-screens summary:focus-visible{outline:1px solid var(--ink);outline-offset:5px}
+.sudoku-gallery-copy .sudoku-screen-tabs--secondary{margin-block:8px 18px;gap:16px}
+.sudoku-screen-tabs--secondary .sudoku-screen-tab{font-size:16px}
+.anatomy-detail-toggle{display:block;justify-self:center;min-height:44px;padding:8px 0;color:var(--mid);border-bottom:1px dotted var(--soft);font-size:14px}
+.anatomy-detail-toggle[hidden]{display:none}
+.case-design-decisions{max-width:42em;margin:56px auto 0}
+.case-design-decisions h3,.case-method-note h3{margin:0 0 20px}
+.case-design-decisions p,.case-method-note p{color:var(--mid)}
+.case-design-decisions [hidden]{display:none}
+.case-evidence-caption{margin-top:16px;font-size:14px}
+.case-method-note{max-width:44em;margin:64px auto 0}
+.case-method-note .sudoku-action{margin-top:24px;font-size:15px;display:inline-flex;gap:16px}
+.visual-system-column .visual-implementation-note{margin-top:18px;max-width:28em}
+@media(max-width:720px){
+ .case-role{font-size:15px;max-width:24em}
+ .case-design-decisions{margin-top:36px}
+ .case-method-note{margin-top:44px}
+}

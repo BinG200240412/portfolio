@@ -321,3 +321,48 @@ Object.assign(window.PORTFOLIO_TRANSLATIONS, {
   "界面一览": "Interface gallery",
   "数独界面展示墙": "Sudoku interface gallery"
 });
+
+/* Author narrative and decision-led case, 2026-10-29. */
+Object.assign(window.PORTFOLIO_TRANSLATIONS, {
+  "我想安静地玩一局，却常被广告和繁杂界面打断。这是我在没有系统学过代码的情况下，第一次借助 AI 独立完成的 App：为已有数独兴趣的日常玩家，保留轻松进入、独自推敲与分享的空间。": "I wanted a quiet game of Sudoku, but ads and clutter often got in the way. With no formal coding background, this became the first app I built independently with AI: a place for everyday Sudoku players to settle in, think for themselves and share a puzzle.",
+  "多一点耐心，再找一条线索。": "A little patience. One more clue.",
+  "产品定位、交互与视觉设计、AI 辅助原生开发": "Product direction, interaction & visual design, AI-assisted native development",
+  "已发布 · iOS": "Released · iOS",
+  "独立填写，也能回查过程。纸上模式关闭即时纠错；需要检查时，拖动进度条回到较早的落子状态，再继续推理。": "Enter your own digits and revisit your reasoning. Paper mode turns off immediate correction; the progress strip lets you return to an earlier move and think again.",
+  "长按绿色进度条，展开离线分步辅导。先观察高亮的范围，再逐步查看线索；完整的分步解法另列在「更多界面」中。": "Hold the green progress strip to open offline coaching. Observe the highlighted area, then reveal clues step by step. The complete solution replay is separate, under More screens.",
+  "把当前填写与候选一起留在残局里，为它命名，再分享给朋友。交流从同一个盘面状态开始。": "Keep your entries and pencil marks in a saved puzzle, give it a name and share it. The conversation starts from the same board state.",
+  "更多界面": "More screens",
+  "显示常规控件": "Show standard controls",
+  "收起常规控件": "Hide standard controls",
+  "不即时纠错，也要能回看。": "No immediate correction. Room to look back.",
+  "纸上模式把判断留给玩家，回溯为自查提供退路。完成比例回答「填了多少」，历史位置回答「回到哪一步」；回溯恢复状态，不替玩家判断哪一步出错。": "Paper mode leaves judgement to the player, while history supports self-review. Completion measures how much is filled; the history position identifies a past move. Rewinding restores a state—it does not diagnose an error.",
+  "辅导的目标，是让人自己想通。": "Help a player reach their own insight.",
+  "最初的 AI 回答太长。我把要求写进 Skill：语气温和、语言简短，逐步提供线索，避免直接代答。希望一次提示只推进一点思考，留出自己顿悟的空间。": "The first AI responses were too long. I put my requirements into a Skill: a gentle tone, concise language, gradual clues and no direct answers. Each hint should advance the thought just enough to leave room for a personal insight.",
+  "上方录屏展示内置离线辅导，不是联网 AI 对话。": "The recording above shows built-in offline coaching, not a live AI conversation.",
+  "分享的不只是题目，还有进行到哪一步。": "Share a puzzle—and the point you reached.",
+  "卡住的一局也值得交流。保留填写与候选，让朋友从相同的条件继续观察，而不必重新描述整个盘面。": "A stuck puzzle can start a conversation. Keeping entries and pencil marks lets a friend examine the same state without reconstructing the board.",
+  "盘面是主体，工具与辅助退到需要时。": "The board comes first; tools and assistance appear when needed.",
+  "不设竞速和排名。五档难度承接不同的投入程度。": "No racing or rankings. Five difficulty levels accommodate different levels of involvement.",
+  "原生组件的选择与实现": "Choosing and adapting native components",
+  "先了解 SwiftUI 已有的能力，再指导 AI 选择实现。保留熟悉的操作，在字形、颜色和层级上建立自己的气质。": "I first explored what SwiftUI already offered, then guided AI towards appropriate implementations. Familiar interactions remain; typography, colour and hierarchy give the app its character.",
+  "暂停与更多使用系统玻璃材质；我决定控件位置与强调程度。": "Pause and More use system glass. I set their placement and visual emphasis.",
+  "用 TabView 收纳记录、残局、教程与设置，让主盘面保持专注。": "TabView groups records, saved puzzles, the guide and settings, keeping the main board focused.",
+  "用 Sheet 承载设置与次级任务；调整内容层级，保留返回对局的上下文。": "Sheets hold settings and secondary tasks. I organise their content while retaining the context of the game underneath.",
+  "沿用圆角形状，让盘面容器和数字键属于同一套视觉规则。": "Rounded shapes give the board container and number keys a shared visual rule.",
+  "迭代与交付": "Iteration and delivery",
+  "从普通的数独初版，到有字形分工与清晰操作层级的原生 App。我负责定位、设计与 AI 辅助开发，完成发布后继续维护。": "From a conventional first version to a native app with distinct typographic roles and a clear interaction hierarchy. I led the product direction, design and AI-assisted development, then continued maintenance after release.",
+  "把条件、笔迹与操作分清。": "Separate the givens, the handwriting and the controls.",
+  "早期的数字字形较统一。后来用衬线字承载题目，以手写字和信号色区分填写与候选；重新安排工具层级，让阅读与操作围绕盘面展开。": "The early version used more uniform digits. Serif givens and handwritten entries and notes now separate the puzzle from the player’s work. Signal colour and revised tool placement keep reading and action centred on the board.",
+  "从视觉模仿，转向测量与校对。": "From visual imitation to measurement and verification.",
+  "AI 仅凭画面复刻时，位置与细节常有偏差。我把流程写成 Skill：理解 Figma 分组与按钮功能，测量边界和间距，再回到模拟器逐项比对。": "When AI reproduced a screen by sight, positions and details often drifted. I turned the correction process into a Skill: understand Figma groups and button functions, measure bounds and spacing, then compare the result in the simulator.",
+  "查看界面还原方法": "Explore the UI reproduction method",
+  "这是一次为自己，也为相似爱好者做产品的尝试。我选择随手玩一局的便利与分享，而不是穷尽专业工具的功能。": "I made this for myself and players with similar habits. I chose the convenience of a casual game and sharing over exhaustive specialist features.",
+  "AI 让我一个人覆盖更多制作环节，质量仍取决于我怎样判断和验证。它也让我相信，受众不大、出于热爱的小作品，值得被认真做出来。": "AI let me cover more of the production myself; quality still depended on my judgement and verification. It also made me believe that small projects, made out of love for a narrow audience, deserve to exist.",
+  "产品与体验设计 · 视觉设计 · AI 辅助原生 iOS 开发": "Product & experience design · Visual design · AI-assisted native iOS development"
+});
+Object.assign(window.PORTFOLIO_TRANSLATIONS, {
+  '显示完成程度；拖动切换历史位置，恢复较早的填写状态。': 'Shows completion; drag to a point in history to restore earlier entries.',
+  '给定数字、自己的填写与小号候选各有字形与层级，便于回看推理。': 'Distinct styles for givens, entries and smaller pencil marks make the reasoning easier to review.'
+});
+
+Object.assign(window.PORTFOLIO_TRANSLATIONS, {"填写、候选与撤销围绕同一局。顶部进度条兼作回溯入口，向左右拖动，就能回查较早的落子状态。": "Entries, pencil marks and undo stay close to the game. The progress strip also provides access to history: drag left or right to revisit earlier moves."});

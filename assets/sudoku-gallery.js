@@ -63,6 +63,11 @@
       document.querySelector('.sudoku-actions')?.setAttribute('aria-label', english ? 'Product links' : '产品链接');
       copy.forEach(({ element, source }) => { element.textContent = t(source); });
       if (groupLabel) group.setAttribute('aria-label', t(groupLabel));
+      gallery.querySelectorAll('[data-gallery-more-label]').forEach(label => { label.textContent = t('更多界面'); });
+      gallery.querySelector('.sudoku-screen-tabs--secondary')?.setAttribute('aria-label', t('更多界面'));
+      document.querySelectorAll('[data-experience-panel]').forEach(panel => {
+        panel.hidden = panel.dataset.experiencePanel !== current.id;
+      });
       items.forEach(item => {
         item.button.setAttribute('aria-pressed', String(item === current));
         const label = item.button.querySelector('[data-screen-label]') || item.button;
@@ -137,6 +142,8 @@
     document.querySelectorAll('[data-screen-jump]').forEach(button => button.addEventListener('click', () => {
       const item = items.find(item => item.id === button.dataset.screenJump);
       if (!item) return;
+      const disclosure = item.button.closest('details');
+      if (disclosure) disclosure.open = true;
       select(item);
       gallery.scrollIntoView({ behavior: reduced.matches ? 'auto' : 'smooth', block: 'center' });
       item.button.focus({ preventScroll: true });

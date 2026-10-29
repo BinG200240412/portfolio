@@ -36,6 +36,8 @@
     const t = source => window.PortfolioI18n?.t(source) ?? source;
     const hint = gallery.querySelector('.anatomy-instruction');
     const hintSource = hint?.textContent.trim();
+    const detailToggle = gallery.querySelector('.anatomy-detail-toggle');
+    let showSecondary = false;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     let items = [], buttons = [], paths = [], boxes = [], frames = [], nodes = [], selected = -1, active = -1, frame = 0;
     let demoState = gallery.dataset.demoState || '', growthPending = false, growthRun = 0, animations = [];
@@ -249,7 +251,14 @@
     function schedule() { if (!frame) frame = requestAnimationFrame(draw); }
     function render() {
       if (stage.dataset.analysisState === 'growing') finishGrowth();
-      items = window.SudokuAnatomyScreens[gallery.dataset.screen || 'board'] || [];
+      const allItems = window.SudokuAnatomyScreens[gallery.dataset.screen || 'board'] || [];
+      items = allItems.filter(item => showSecondary || !item.secondary)
+        .map(item => ({ ...item, position: !showSecondary ? item.focusPosition ?? item.position : item.position }));
+      if (detailToggle) {
+        detailToggle.hidden = !allItems.some(item => item.secondary);
+        detailToggle.setAttribute('aria-expanded', String(showSecondary));
+        detailToggle.textContent = t(showSecondary ? '收起常规控件' : '显示常规控件');
+      }
       selected = -1; active = -1; notes.replaceChildren();
       buttons = items.map((item, i) => {
         const button = document.createElement('button');
@@ -279,6 +288,10 @@
       activate(-1); schedule();
     }
     gallery.addEventListener('sudoku:screen', render);
+    detailToggle?.addEventListener('click', () => {
+      showSecondary = !showSecondary;
+      render();
+    });
     gallery.addEventListener('sudoku:demo-state', demoChanged);
     screen.addEventListener('load', schedule);
     const resize = new ResizeObserver(schedule);
