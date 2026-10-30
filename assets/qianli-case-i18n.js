@@ -218,7 +218,7 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
 // Keep this case independent of the other projects' translation payload.
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
   "千里江山 — 「千里江山图」的现代演绎": "A Thousand Li — Reinterpreting A Thousand Li of Rivers and Mountains",
-  "我的工作": "My work",
+  "负责事项": "Responsibilities",
   "进度": "Progress",
   "我负责山形与色彩转译、两种交互路线设计，以及木板造型、赋色和光纤点阵制作。": "I translated the mountain forms and colours into two interaction designs, and worked on the wooden forms, painted finishes and optical-fibre matrix.",
   "已做出音光与触摸光两种实体装置，完成对应的灯光互动演示。": "Both physical installations were built, with demonstrations of the music-reactive and touch-responsive lighting.",

@@ -210,3 +210,14 @@ Object.assign(window.PORTFOLIO_TRANSLATIONS, {
   "艺术与设计学院": "College of Art and Design",
   "艺术与科技": "Art and Technology"
 });
+
+Object.assign(window.PORTFOLIO_TRANSLATIONS, {
+  "负责事项": "Responsibilities",
+  "开始时间": "Started"
+});
+
+Object.assign(window.PORTFOLIO_TRANSLATIONS, {
+  "美式海报风": "American poster style",
+  "手绘图标": "Handcut icons",
+  "UI 还原": "UI reconstruction"
+});

@@ -192,7 +192,7 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
 
 /* Project copy, in the author’s voice. */
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
-  "我的工作": "My work",
+  "负责事项": "Responsibilities",
   "我负责交互设计、体验视觉，以及 Unity 原型的主要交互程序。": "I worked on the interaction design, visual design and the main interaction code for the Unity prototype.",
   "合作": "Collaboration",
   "校企合作项目，合作方为云深处与 Rokid。": "A university–industry project with DEEP Robotics and Rokid.",

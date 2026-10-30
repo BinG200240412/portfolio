@@ -11,3 +11,15 @@ dl.project-overview dd{margin:0;min-width:0;color:var(--ink);font:inherit;overfl
  .hero-main>dl.project-overview{margin-left:0}
 }
 @media(max-width:380px){dl.project-overview>div{grid-template-columns:1fr;gap:3px}}
+
+.project-start-row[hidden]{display:none!important}
+html[lang="en"] dl.project-overview>div,html[lang="en"] .gogo-project-meta>div{grid-template-columns:112px minmax(0,1fr)}
+@media(max-width:720px){html[lang="en"] dl.project-overview>div,html[lang="en"] .gogo-project-meta>div{grid-template-columns:1fr;gap:4px}}
+
+.project-start-list{display:flex;flex-wrap:wrap;gap:8px 24px}
+.project-start-list>span{display:inline-flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.project-start-list>span>span{color:var(--mid)}
+.project-start-list time{white-space:nowrap;font-variant-numeric:tabular-nums}
+.skills-page .chapter-heading .skill-start-date{display:block;margin-top:16px;font-size:var(--editorial-body,16px);font-weight:400;line-height:1.5;letter-spacing:0;color:var(--mid);font-variant-numeric:tabular-nums}
+
+.skills-page .chapter-heading .skill-start-date[hidden]{display:none}

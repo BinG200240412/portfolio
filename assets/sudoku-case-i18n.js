@@ -1,6 +1,6 @@
 /* Page-local copy is registered before the shared language engine starts. */
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
-  "我的工作": "My work",
+  "负责事项": "Responsibilities",
   "进度": "Progress",
   "我独立负责产品、交互与视觉设计，并借助 AI 完成原生 App 开发。": "I independently designed the product, interactions and visuals, and built the native app with AI assistance.",
   "已在 App Store 发布，持续维护与迭代。": "Released on the App Store, with ongoing maintenance and iteration."

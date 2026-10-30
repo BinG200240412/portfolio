@@ -141,3 +141,12 @@ html[lang="en"] #resume .about-details li{font-size:14px;line-height:1.7}
   .about-portrait>img{forced-color-adjust:none}
   #about-companion{filter:none}
 }
+
+/* Project dates share the body scale and keep the project title dominant. */
+.about-project h3{display:flex;align-items:baseline;flex-wrap:wrap;column-gap:22px;row-gap:6px}
+.about-project-start{font-size:var(--editorial-body);font-weight:400;line-height:1.5;letter-spacing:0;color:var(--mid);font-variant-numeric:tabular-nums;white-space:nowrap}
+.about-project-start[hidden]{display:none}
+
+.about-skill-starts{display:flex;flex-wrap:wrap;gap:7px 22px;margin:-4px 0 16px;font-size:var(--editorial-body);line-height:1.5;color:var(--mid)}
+.about-skill-starts>span{display:inline-flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.about-skill-starts time{color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}

@@ -1,6 +1,6 @@
 /* Tea String Chronicles: supplied design artwork and bilingual exhibition copy. */
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
-  "我的工作": "My work",
+  "负责事项": "Responsibilities",
   "合作": "Collaboration",
   "进度": "Progress",
   "我负责主要交互程序、交互设计与体验视觉，并做茶筅动作和屏幕反馈的联动开发。": "I wrote the main interaction code, designed the interactions and experience visuals, and developed the link between tea-whisk movement and on-screen feedback.",

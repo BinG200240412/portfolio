@@ -1,5 +1,5 @@
 window.PORTFOLIO_CASE_TRANSLATIONS = Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS || {}, {
-  "我的工作": "My work",
+  "负责事项": "Responsibilities",
   "进度": "Progress",
   "？": "?",
   "我独立完成了概念提案，把“感知被悄悄改写”整理成空间设定、体验流程、行为关系图与分镜。": "I independently developed the concept proposal, translating the idea of perception being quietly rewritten into a spatial setting, experience sequence, behaviour diagrams and storyboard.",
