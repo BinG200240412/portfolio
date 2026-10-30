@@ -7,7 +7,7 @@
   function syncVideos() {
     const paused = document.hidden || reduced.matches || !!document.querySelector('dialog[open]');
     videos.forEach(v => {
-      if (!paused && videoVisible.has(v)) {
+      if (!paused && videoVisible.has(v) && !v.closest('[data-rolling="true"]')) {
         const s = v.querySelector('source');
         if (!s.src) {s.src = s.dataset.src; v.load();}
         v.play().catch(() => {});
