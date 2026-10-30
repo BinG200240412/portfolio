@@ -8,7 +8,8 @@
     if(!gl)return null;
     let program,buffer,quadBuffer,texture,extension,instanced,resolutionLocation,ratioLocation,capacity=65536,uploaded=0,count=0,ratio=1,disposed=false;
     let data=new Float32Array(capacity*5),images=new Map(),atlas=null;
-    const api={lost:false};
+    const api={lost:false,timing:{prepare:0,upload:0,submit:0}};
+    const clock=()=>typeof performance==='object'?performance.now():Date.now();
     function shader(type,code){
       const item=gl.createShader(type);gl.shaderSource(item,code);gl.compileShader(item);
       if(!gl.getShaderParameter(item,gl.COMPILE_STATUS)){const error=gl.getShaderInfoLog(item);gl.deleteShader(item);throw Error(error||'Bead shader unavailable');}return item;
@@ -68,11 +69,20 @@
     };
     function flush(){
       if(disposed||api.lost)return;
+      const started=clock();
       gl.viewport(0,0,canvas.width,canvas.height);gl.clear(gl.COLOR_BUFFER_BIT);if(!count)return;
       gl.useProgram(program);gl.uniform2f(resolutionLocation,canvas.width/ratio,canvas.height/ratio);gl.uniform1f(ratioLocation,ratio);
       gl.bindBuffer(gl.ARRAY_BUFFER,buffer);if(uploaded!==capacity){gl.bufferData(gl.ARRAY_BUFFER,data.byteLength,gl.DYNAMIC_DRAW);uploaded=capacity;}
-      gl.bufferSubData(gl.ARRAY_BUFFER,0,data.subarray(0,count*5));
+      const prepared=clock();gl.bufferSubData(gl.ARRAY_BUFFER,0,data.subarray(0,count*5));const uploadedAt=clock();
       if(instanced)extension.drawArraysInstancedANGLE(gl.TRIANGLES,0,6,count);else gl.drawArrays(gl.POINTS,0,count);
+      const submitted=clock();api.timing.prepare=prepared-started;api.timing.upload=uploadedAt-prepared;api.timing.submit=submitted-uploadedAt;
+    }
+    function drawBatch(points,length){
+      if(disposed||api.lost)return;
+      data=points;count=length;
+      const nextCapacity=points.byteLength/20;
+      if(capacity!==nextCapacity){capacity=nextCapacity;uploaded=0;}
+      flush();
     }
     function destroy(){
       if(disposed)return;disposed=true;images.clear();atlas=null;data=new Float32Array(0);
@@ -85,7 +95,7 @@
       const fallback=canvas.cloneNode(true);canvas.replaceWith(fallback);
       return {canvas:fallback,context:fallback.getContext('2d'),renderer:null};
     }
-    Object.assign(api,{setAtlas,flush,destroy,restore:init});Object.defineProperty(api,'points',{get:()=>count});
+    Object.assign(api,{setAtlas,flush,drawBatch,destroy,restore:init});Object.defineProperty(api,'points',{get:()=>count});
     return {canvas,context,renderer:api};
   }
   window.QianliBeadsRenderer=Object.freeze({create});

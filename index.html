@@ -450,8 +450,12 @@ function releaseProjectView(){
   // A hidden iframe still owns its page, media, timers and pending requests.
   // Capture only the departing children so a subsequent entry stays intact.
   const departing=[...section.childNodes];
+  const frames=[...section.querySelectorAll('iframe')], disposers=[];
+  // Nested navigation can replace an old iframe before the media-restoration
+  // microtask runs; its contentWindow is then null. Capture its cleanup now.
+  for(const frame of frames){try{const lifecycle=frame.contentWindow?.PortfolioLifecycle;if(typeof lifecycle?.dispose==='function')disposers.push(lifecycle.dispose.bind(lifecycle));}catch(_){}}
   let closingImageLayer=false;
-  for(const frame of section.querySelectorAll('iframe')){
+  for(const frame of frames){
     try{
       for(const dialog of frame.contentDocument?.querySelectorAll('dialog[open]')||[]){
         closingImageLayer=true;dialog.close();
@@ -460,13 +464,10 @@ function releaseProjectView(){
   }
   section.classList.remove('on','native');secBack.classList.remove('on');
   section.scrollTop=0;
-  const remove=()=>departing.forEach(node=>{
-    // Parent-node observers can retain a detached child document. Dispose only
-    // this captured departure after media layers have returned the back mark.
-    const frames=node.nodeType===1?[...(node.matches('iframe')?[node]:[]),...node.querySelectorAll('iframe')]:[];
-    for(const frame of frames){try{frame.contentWindow?.PortfolioLifecycle?.dispose();}catch(_){}}
-    node.remove();
-  });
+  const remove=()=>{
+    for(const dispose of disposers){try{dispose();}catch(_){}}
+    departing.forEach(node=>node.remove());
+  };
   // Child image layers temporarily borrow the parent return button. Let their
   // existing open-attribute observers restore it before discarding the frame.
   if(closingImageLayer)queueMicrotask(remove);else remove();
@@ -567,7 +568,7 @@ const SECTION_PAGE={
   "良渚 · AI 3D":"sections/ai3d.html?v=site-loading-20261031",
   "良渚 · XR":"sections/xr.html?v=site-loading-20261031",
   "漂移之屋":"sections/drift.html?v=site-loading-20261031",
-  "千里江山":"sections/qianli.html?v=site-loading-20261031",
+  "千里江山":"sections/qianli.html?v=qianli-worker-20261031",
   "设计工具 · Skills":"sections/design-skills.html?v=site-loading-20261031",
   "作品归档":"sections/more.html?v=site-loading-20261031",
   "练习":"sections/practice.html?v=site-loading-20261031",

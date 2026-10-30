@@ -13,14 +13,7 @@
   const hero = canvas?.closest('.qianli-light-hero');
   if (!ctx || !hero) return;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const TAU = Math.PI * 2, FPS = 30, RIPPLE_LIFE=4.8;
-  const FIELD_DENSITY=300,FIELD_ROWS=400,FIELD_TOP=-.15;
-  const depths=[{speed:.50,swell:.014},{speed:.90,swell:.022},{speed:1.30,swell:.030}];
-  const profiles = [
-    [[-.08,.70],[.02,.62],[.10,.53],[.15,.60],[.22,.42],[.28,.34],[.33,.44],[.40,.62],[.46,.58],[.53,.43],[.59,.49],[.66,.39],[.72,.51],[.79,.60],[.86,.52],[.94,.64],[1.08,.61]],
-    [[-.08,.74],[.01,.65],[.075,.49],[.13,.57],[.19,.64],[.24,.42],[.29,.29],[.32,.35],[.365,.56],[.41,.68],[.46,.64],[.51,.57],[.56,.64],[.605,.47],[.65,.36],[.69,.40],[.745,.57],[.80,.62],[.86,.68],[.94,.73],[1.08,.64]],
-    [[-.08,.84],[.02,.77],[.09,.74],[.16,.82],[.24,.75],[.31,.77],[.39,.85],[.48,.80],[.55,.84],[.64,.72],[.70,.68],[.77,.75],[.83,.82],[.92,.79],[1.08,.84]],
-  ];
+  const TAU=Math.PI*2,FPS=30,RIPPLE_LIFE=4.8;
   // Separate mineral colour families: hue follows mountain regions, rather
   // than every shaded LED becoming another tint of the same green.
   const palettes = {
@@ -39,21 +32,12 @@
       ['#d7ccad','#c2ad7d','#ac9258','#92773c','#80622c','#6b4d22','#533818'],
     ],
   };
-  const fields=depths.map(()=>new Map());
-  const fieldSample={alpha:0,ink:0};
-  let width=0,height=0,pitch=5,columns=[],sprites=[],glows=[],light=false;
-  let yScale=1.38,yOffset=-.12*1.38,lastPrune=0;
+  let width=0,height=0,sprites=[],glows=[],light=false;
   let frame=0,lastFrame=0,elapsed=0,onScreen=true,shown=true,disposed=false;
   let renderCount=0,renderSamples=[];
   let aim=null,hit=null,pointerLevel=0,pulses=[];
   let parentSection=null;
   try { parentSection=window.frameElement?.closest('#section') || null; } catch (_) {}
-  const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
-  const smooth=v=>{const t=clamp(v);return t*t*(3-2*t);};
-  const hash=(x,y,s=0)=>{
-    const n=Math.sin(x*127.1+y*311.7+s*74.7)*43758.5453;
-    return n-Math.floor(n);
-  };
   function label() {
     const english=window.PortfolioI18n?.language==='en' || document.documentElement.lang==='en';
     const title=hero.querySelector('.title');
@@ -64,6 +48,227 @@
       ? 'A continuously unfolding mountain scroll. Touch the landscape to send ripples through the light beads. You can also press Enter or Space.'
       : '徐徐展开、起伏流动的点阵山水长卷。点击山水，让光珠泛起涟漪；也可按 Enter 或空格。');
   }
+  function makeSprites() {
+    if(disposed)return;
+    light=document.documentElement.dataset.theme==='light';
+    glows=[];
+    sprites=palettes[light?'light':'dark'].flat().map(colour=>{
+      const sprite=document.createElement('canvas');sprite.width=sprite.height=24;
+      const paint=sprite.getContext('2d');
+      paint.fillStyle=colour;paint.beginPath();paint.arc(12,12,6.8,0,TAU);paint.fill();
+      // Bloom belongs to each individual lit bead, never to a painted ring.
+      const glow=document.createElement('canvas');glow.width=glow.height=40;
+      const g=glow.getContext('2d'),bloom=g.createRadialGradient(20,20,1,20,20,20);
+      bloom.addColorStop(0,colour+'a0');bloom.addColorStop(.3,colour+'55');bloom.addColorStop(1,colour+'00');
+      g.fillStyle=bloom;g.fillRect(0,0,40,40);glows.push(glow);
+      return sprite;
+    });
+    renderer?.setAtlas(sprites,glows);renderGeneration++;
+  }
+  function resize() {
+    if(disposed)return;
+    const box=canvas.getBoundingClientRect();
+    const w=Math.round(box.width),h=Math.round(box.height);
+    if (!w || !h) return;
+    const ratio=Math.min(devicePixelRatio || 1,2);
+    const backingW=Math.round(w*ratio),backingH=Math.round(h*ratio);
+    if(w===width && h===height && canvas.width===backingW && canvas.height===backingH)return;
+    // Repeated visibility/theme events must never clear a correctly sized canvas.
+    if(canvas.width!==backingW || canvas.height!==backingH) {
+      canvas.width=backingW;canvas.height=backingH;
+    }
+    width=w;height=h;ctx.setTransform(ratio,0,0,ratio,0,0);
+    renderGeneration++;if(!worker)kernel.configure(width,height);
+    pulses=[];aim=null;hit=null;pointerLevel=0;makeSprites();sync();
+  }
+  const kernel=createLandscapeKernel();
+  let renderGeneration=0,worker=null,workerTried=false,workerBusy=false,workerURL='',pendingInput=null,spareBuffer=null;
+  let workerSequence=0,workerJob=0;
+  const clock=()=>typeof performance==='object'?performance.now():Date.now();
+  function workerThread(){
+    const engine=createLandscapeKernel();
+    self.onmessage=event=>{
+      const input=event.data,start=performance.now();
+      try{
+        engine.configure(input.width,input.height);const result=engine.compute(input,input.buffer);
+        self.postMessage({generation:input.generation,sequence:input.sequence,input:input.report,buffer:result.buffer,count:result.count,workerMs:performance.now()-start},[result.buffer]);
+      }catch(error){self.postMessage({error:String(error?.message||error)});}
+    };
+  }
+  function reportFrame(total,compute,flush,input,workerMs=0){
+    renderCount++;renderSamples.push({total,compute,flush,worker:workerMs,
+      prepare:renderer?.timing?.prepare||0,upload:renderer?.timing?.upload||0,submit:renderer?.timing?.submit||0});if(renderSamples.length>30)renderSamples.shift();
+    if(renderCount===1||renderCount%30===0){
+      const median=key=>{const values=renderSamples.map(sample=>sample[key]).sort((a,b)=>a-b);return values[Math.floor(values.length/2)].toFixed(1);};
+      canvas.dataset.renderBackend=worker?'webgl-worker':renderer?'webgl':'2d';canvas.dataset.renderMs=median('total');
+      canvas.dataset.renderMaxMs=Math.max(...renderSamples.map(sample=>sample.total)).toFixed(1);canvas.dataset.renderCount=String(renderCount);
+      canvas.dataset.renderComputeMs=median('compute');canvas.dataset.renderFlushMs=median('flush');canvas.dataset.renderWorkerMs=median('worker');
+      canvas.dataset.renderPrepareMs=median('prepare');canvas.dataset.renderUploadMs=median('upload');canvas.dataset.renderSubmitMs=median('submit');
+      canvas.dataset.renderPointer=input.pointer?'1':'0';canvas.dataset.renderRipples=String(input.ripples);canvas.dataset.renderPoints=String(renderer?.points||0);
+    }
+    canvas.dataset.renderReady='true';
+  }
+  function paintBatch(buffer,count,input,workerMs=0,started=clock(),computed=started){
+    const values=new Float32Array(buffer);
+    if(renderer)renderer.drawBatch(values,count);
+    else{
+      ctx.clearRect(0,0,width,height);
+      for(let i=0;i<count;i++){
+        const offset=i*5,x=values[offset],y=values[offset+1],size=values[offset+2],index=values[offset+3];
+        ctx.globalAlpha=values[offset+4];ctx.drawImage(index<35?sprites[index]:glows[index-35],x-size/2,y-size/2,size,size);
+      }ctx.globalAlpha=1;
+    }
+    const finished=clock();reportFrame(finished-started,computed-started,finished-computed,input,workerMs);
+  }
+  function releaseWorkerURL(){if(workerURL){URL.revokeObjectURL(workerURL);workerURL='';}}
+  function failWorker(){
+    worker?.terminate();worker=null;workerBusy=false;pendingInput=null;releaseWorkerURL();
+    canvas.dataset.renderWorkerState='fallback';
+    if(!disposed&&active())draw(elapsed);
+  }
+  function sendWork(input){
+    if(!worker||!active())return;
+    if(workerBusy){pendingInput=input;return;}
+    workerBusy=true;workerJob=++workerSequence;input.sequence=workerJob;
+    if(spareBuffer?.byteLength){input.buffer=spareBuffer;spareBuffer=null;worker.postMessage(input,[input.buffer]);}
+    else worker.postMessage(input);
+  }
+  function startWorker(){
+    if(workerTried||!renderer||typeof Worker!=='function')return;
+    workerTried=true;
+    try{
+      const source='const createLandscapeKernel='+createLandscapeKernel.toString()+';('+workerThread.toString()+')();';
+      workerURL=URL.createObjectURL(new Blob([source],{type:'text/javascript'}));worker=new Worker(workerURL);
+      canvas.dataset.renderWorkerState='starting';
+      worker.onerror=event=>{event.preventDefault?.();if(!disposed)failWorker();};
+      worker.onmessage=event=>{
+        if(disposed)return;const result=event.data;
+        if(result.error){failWorker();return;}
+        if(result.sequence!==workerJob)return;
+        workerBusy=false;releaseWorkerURL();spareBuffer=result.buffer;
+        if(result.generation===renderGeneration&&active()){
+          paintBatch(result.buffer,result.count,result.input,result.workerMs);canvas.dataset.renderWorkerState='ready';
+        }
+        const next=pendingInput;pendingInput=null;if(next&&active())sendWork(next);
+      };
+    }catch(_){worker?.terminate();worker=null;releaseWorkerURL();canvas.dataset.renderWorkerState='fallback';}
+  }
+  function draw(time){
+    if(disposed||!width||!height||!sprites.length)return;
+    const input={time,width,height,generation:renderGeneration,hit:hit?{x:hit.x,y:hit.y}:null,pointerLevel,
+      pulses:pulses.map(p=>({x:p.x,y:p.y,time:p.time})),reduced:reduced.matches,light,
+      report:{pointer:Boolean(hit&&pointerLevel>.005),ripples:pulses.length}};
+    if(worker){sendWork(input);return;}
+    const started=clock();kernel.configure(width,height);const result=kernel.compute(input,spareBuffer);spareBuffer=result.buffer;
+    paintBatch(result.buffer,result.count,input.report,0,started,clock());startWorker();
+  }
+  function active() {
+    return !disposed && !renderer?.lost && onScreen && shown && !document.hidden && (!parentSection || parentSection.classList.contains('on'));
+  }
+  function tick(now) {
+    frame=0;if(!active() || reduced.matches)return;
+    if(!lastFrame)lastFrame=now;
+    const dt=now-lastFrame;
+    if(dt>=1000/FPS) {
+      const step=Math.min(dt/1000,.1);lastFrame=now;elapsed+=step;
+      const follow=1-Math.exp(-step*8);
+      pointerLevel+=((aim?1:0)-pointerLevel)*follow;
+      if(aim) {
+        if(!hit)hit={...aim};
+        hit.x+=(aim.x-hit.x)*follow;hit.y+=(aim.y-hit.y)*follow;
+      }
+      pulses=pulses.filter(p=>elapsed-p.time<RIPPLE_LIFE);
+      draw(elapsed);
+    }
+    frame=requestAnimationFrame(tick);
+  }
+  function sync() {
+    if(frame)cancelAnimationFrame(frame);
+    frame=0;lastFrame=0;
+    if(!active()){pendingInput=null;return;}
+    draw(elapsed);
+    if(!reduced.matches)frame=requestAnimationFrame(tick);
+  }
+  function position(event) {
+    const box=canvas.getBoundingClientRect();
+    return {x:event.clientX-box.left,y:event.clientY-box.top};
+  }
+  hero.addEventListener('pointermove',event=>{
+    if(event.pointerType!=='touch')aim=position(event);
+  },{passive:true});
+  hero.addEventListener('pointerleave',()=>{aim=null;});
+  function awaken(p) {
+    if(reduced.matches) {hit=p;pointerLevel=1;draw(elapsed);return;}
+    pulses.push({...p,time:elapsed});
+    if(pulses.length>5)pulses.shift();
+    draw(elapsed);
+  }
+  hero.addEventListener('pointerdown',event=>{
+    if(event.button!==undefined && event.button!==0)return;
+    awaken(position(event));
+  },{passive:true});
+  canvas.addEventListener('keydown',event=>{
+    if(event.key==='Enter' || event.key===' ') {
+      event.preventDefault();awaken({x:width*.56,y:height*.56});
+    }
+  });
+  const resizeObserver=new ResizeObserver(resize),visibilityObserver=new IntersectionObserver(entries=>{onScreen=entries[0].isIntersecting&&entries[0].intersectionRatio>.001;sync();},{threshold:[0,.001],rootMargin:'-1px 0px'});
+  const themeObserver=new MutationObserver(()=>{makeSprites();sync();});
+  resizeObserver.observe(canvas);visibilityObserver.observe(hero);
+  themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  const lifecycle=window.PortfolioLifecycle,parentOptions={attributes:true,attributeFilter:['class']};
+  let parentObserver=null;
+  if(parentSection) {
+    if(lifecycle?.observeParent)parentObserver=lifecycle.observeParent(parentSection,sync,parentOptions);
+    else {parentObserver=new MutationObserver(sync);parentObserver.observe(parentSection,parentOptions);}
+  }
+  function dispose() {
+    if(disposed)return;
+    disposed=true;shown=false;cancelAnimationFrame(frame);frame=0;lastFrame=0;
+    resizeObserver.disconnect();visibilityObserver.disconnect();themeObserver.disconnect();parentObserver?.disconnect();
+    worker?.terminate();worker=null;workerBusy=false;pendingInput=null;spareBuffer=null;releaseWorkerURL();kernel.dispose();
+    sprites=[];glows=[];pulses=[];aim=null;hit=null;
+    renderer?.destroy();
+    canvas.width=0;canvas.height=0;
+  }
+  lifecycle?.onDispose(dispose);
+  if(renderer){
+    canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();renderer.lost=true;sync();});
+    canvas.addEventListener('webglcontextrestored',()=>{if(disposed)return;renderer.restore();makeSprites();sync();});
+  }
+  reduced.addEventListener('change',()=>{renderGeneration++;aim=null;hit=null;pointerLevel=0;pulses=[];sync();});
+  document.addEventListener('visibilitychange',sync);
+  addEventListener('portfolio:language',label);
+  addEventListener('pagehide',event=>{
+    shown=false;sync();
+    if(!lifecycle) {if(event.persisted)parentObserver?.disconnect();else dispose();}
+  });
+  addEventListener('pageshow',()=>{
+    if(disposed)return;
+    if(!lifecycle&&parentSection)parentObserver?.observe(parentSection,parentOptions);
+    shown=true;sync();
+  });
+
+  // One pure engine runs either locally or, by its own source, in the Worker.
+  // It contains no DOM, palette sprites, timers or rendering context.
+  function createLandscapeKernel(){
+  const TAU = Math.PI * 2, FPS = 30, RIPPLE_LIFE=4.8;
+  const FIELD_DENSITY=300,FIELD_ROWS=400,FIELD_TOP=-.15;
+  const depths=[{speed:.50,swell:.014},{speed:.90,swell:.022},{speed:1.30,swell:.030}];
+  const profiles = [
+    [[-.08,.70],[.02,.62],[.10,.53],[.15,.60],[.22,.42],[.28,.34],[.33,.44],[.40,.62],[.46,.58],[.53,.43],[.59,.49],[.66,.39],[.72,.51],[.79,.60],[.86,.52],[.94,.64],[1.08,.61]],
+    [[-.08,.74],[.01,.65],[.075,.49],[.13,.57],[.19,.64],[.24,.42],[.29,.29],[.32,.35],[.365,.56],[.41,.68],[.46,.64],[.51,.57],[.56,.64],[.605,.47],[.65,.36],[.69,.40],[.745,.57],[.80,.62],[.86,.68],[.94,.73],[1.08,.64]],
+    [[-.08,.84],[.02,.77],[.09,.74],[.16,.82],[.24,.75],[.31,.77],[.39,.85],[.48,.80],[.55,.84],[.64,.72],[.70,.68],[.77,.75],[.83,.82],[.92,.79],[1.08,.84]],
+  ];
+    const fields=depths.map(()=>new Map()),fieldSample={alpha:0,ink:0};
+    let width=0,height=0,pitch=5,columns=[],yScale=1.38,yOffset=-.12*1.38,lastPrune=0;
+    let pointerRows=new Float64Array(0),points=new Float32Array(0),count=0;
+  const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+  const smooth=v=>{const t=clamp(v);return t*t*(3-2*t);};
+  const hash=(x,y,s=0)=>{
+    const n=Math.sin(x*127.1+y*311.7+s*74.7)*43758.5453;
+    return n-Math.floor(n);
+  };
   function ridge(profile,x) {
     let i=0;while(i<profile.length-2 && x>profile[i+1][0])i++;
     const a=profile[i],b=profile[i+1],t=clamp((x-a[0])/(b[0]-a[0]));
@@ -146,36 +351,9 @@
       for(const index of cache.keys())if(index<first || index>last)cache.delete(index);
     });
   }
-  function makeSprites() {
-    if(disposed)return;
-    light=document.documentElement.dataset.theme==='light';
-    glows=[];
-    sprites=palettes[light?'light':'dark'].flat().map(colour=>{
-      const sprite=document.createElement('canvas');sprite.width=sprite.height=24;
-      const paint=sprite.getContext('2d');
-      paint.fillStyle=colour;paint.beginPath();paint.arc(12,12,6.8,0,TAU);paint.fill();
-      // Bloom belongs to each individual lit bead, never to a painted ring.
-      const glow=document.createElement('canvas');glow.width=glow.height=40;
-      const g=glow.getContext('2d'),bloom=g.createRadialGradient(20,20,1,20,20,20);
-      bloom.addColorStop(0,colour+'a0');bloom.addColorStop(.3,colour+'55');bloom.addColorStop(1,colour+'00');
-      g.fillStyle=bloom;g.fillRect(0,0,40,40);glows.push(glow);
-      return sprite;
-    });
-    renderer?.setAtlas(sprites,glows);
-  }
-  function resize() {
-    if(disposed)return;
-    const box=canvas.getBoundingClientRect();
-    const w=Math.round(box.width),h=Math.round(box.height);
-    if (!w || !h) return;
-    const ratio=Math.min(devicePixelRatio || 1,2);
-    const backingW=Math.round(w*ratio),backingH=Math.round(h*ratio);
-    if(w===width && h===height && canvas.width===backingW && canvas.height===backingH)return;
-    // Repeated visibility/theme events must never clear a correctly sized canvas.
-    if(canvas.width!==backingW || canvas.height!==backingH) {
-      canvas.width=backingW;canvas.height=backingH;
-    }
-    width=w;height=h;ctx.setTransform(ratio,0,0,ratio,0,0);
+    function configure(w,h){
+      if(w===width&&h===height)return;
+      width=w;height=h;
     const mobile=width<650;
     // The field fills the viewport at every size. Foreground foothills continue
     // below the fold, with no centred artboard or horizontal cutoff at the base.
@@ -197,12 +375,16 @@
       }
       columns.push(column);
     }
-    pulses=[];aim=null;hit=null;pointerLevel=0;makeSprites();sync();
-  }
-  function draw(time) {
-    if(disposed || !width || !height || !sprites.length)return;
-    const started=typeof performance==='object'?performance.now():Date.now();
-    ctx.clearRect(0,0,width,height);
+    }
+    function emit(index,alpha,x,y,size){
+      if((count+1)*5>points.length){const grown=new Float32Array(Math.max(65536*5,points.length*2));grown.set(points);points=grown;}
+      const offset=count++*5;points[offset]=x;points[offset+1]=y;points[offset+2]=size;points[offset+3]=index;points[offset+4]=alpha;
+    }
+    function compute(input,buffer){
+      const {time,hit,pointerLevel,pulses,reduced,light}=input;
+      if(buffer?.byteLength)points=new Float32Array(buffer);
+      else if(!points.length)points=new Float32Array(65536*5);
+      count=0;
     const wave=(time*.052)%1.5-.2;
     const breathSin=Math.sin(time*.75),breathCos=Math.cos(time*.75);
     const size=pitch*1.13;
@@ -210,13 +392,26 @@
     const ripples=pulses.map(p=>({...p,age:time-p.time,radius:(time-p.time)*speed,fade:smooth((RIPPLE_LIFE-(time-p.time))/1.3)}));
     const hasPointer=hit && pointerLevel>.005,hasWaking=hasPointer || ripples.length;
     const wakingRadius=Math.max(56,Math.min(width,height)*.14),wakingArea=wakingRadius*wakingRadius;
+    if(hasPointer){
+      const rowPoints=columns[0].points;
+      if(pointerRows.length!==rowPoints.length)pointerRows=new Float64Array(rowPoints.length);
+      for(let row=0;row<rowPoints.length;row++){
+        const dy=rowPoints[row].y-hit.y;pointerRows[row]=Math.exp(-dy*dy/wakingArea);
+      }
+    }
     for(const column of columns) {
       const views=depths.map((_,layer)=>columnView(layer,column.u,time));
       const first=Math.min(views[0].first,views[1].first,views[2].first);
       const last=Math.max(views[0].last,views[1].last,views[2].last);
-      for(const p of column.points) {
+      const dx=hasPointer?column.points[0].x-hit.x:0;
+      const pointerColumn=hasPointer?Math.exp(-dx*dx/wakingArea)*pointerLevel:0;
+      for(let row=0;row<column.points.length;row++) {
+        const p=column.points[row];
         const inTerrain=p.row>=first && p.row<last;
         if(!inTerrain && !hasWaking)continue;
+        // Gaussian exp(-(x²+y²)/R²) is separable. Reuse one X value per
+        // column and one Y value per row; invisible sky still stays empty.
+        if(!inTerrain && !ripples.length && (!hasPointer||pointerColumn*pointerRows[row]*.14<.012))continue;
         let terrainAlpha=0,terrainInk=10,terrain=false;
         // The former painter's order always kept the nearest non-empty
         // sample. Looking front-to-back produces the same bead and avoids
@@ -226,14 +421,11 @@
           if(sample) {terrainAlpha=sample.alpha;terrainInk=sample.ink;terrain=true;break;}
         }
         if(!terrain && !hasWaking)continue;
-        const breath=reduced.matches?1:.88+.12*(breathSin*p.breathCos+breathCos*p.breathSin);
+        const breath=reduced?1:.88+.12*(breathSin*p.breathCos+breathCos*p.breathSin);
         const distance=p.u-wave+p.v*.10;
-        const traveling=reduced.matches || !terrain ? 0 : Math.exp(-distance*distance/.006)*.14;
+        const traveling=reduced || !terrain ? 0 : Math.exp(-distance*distance/.006)*.14;
         let waking=0;
-        if(hasPointer) {
-          const dx=p.x-hit.x,dy=p.y-hit.y;
-          waking=Math.exp(-(dx*dx+dy*dy)/wakingArea)*(terrain?.38:.14)*pointerLevel;
-        }
+        if(hasPointer)waking=pointerColumn*pointerRows[row]*(terrain?.38:.14);
         for(const ripple of ripples) {
           const d=Math.hypot(p.x-ripple.x,p.y-ripple.y);
           let energy=0;
@@ -257,109 +449,17 @@
         // There is deliberately no canvas arc/stroke for the circular wavefront.
         const bloom=clamp(waking-.18)*.18+(terrain && role>=5?.035:0);
         if(bloom>.025) {
-          ctx.globalAlpha=bloom*(light?.20:1);
-          ctx.drawImage(glows[index],p.x-size*1.2,p.y-size*1.2,size*2.4,size*2.4);
+          emit(35+index,bloom*(light?.20:1),p.x,p.y,size*2.4);
         }
-        ctx.globalAlpha=alpha;
-        ctx.drawImage(sprites[index],p.x-size/2,p.y-size/2,size,size);
+        emit(index,alpha,p.x,p.y,size);
       }
     }
-    ctx.globalAlpha=1;
-    renderer?.flush();
-    const duration=(typeof performance==='object'?performance.now():Date.now())-started;
-    renderCount++;renderSamples.push(duration);if(renderSamples.length>30)renderSamples.shift();
-    if(renderCount===1 || renderCount%30===0){
-      const sorted=renderSamples.slice().sort((a,b)=>a-b);
-      canvas.dataset.renderBackend=renderer?'webgl':'2d';canvas.dataset.renderMs=sorted[Math.floor(sorted.length/2)].toFixed(1);
-      canvas.dataset.renderMaxMs=Math.max(...renderSamples).toFixed(1);canvas.dataset.renderCount=String(renderCount);
+      pruneFields(time);
+      return {buffer:points.buffer,count};
     }
-    if(canvas.dataset.renderReady!=='true')canvas.dataset.renderReady='true';
-    pruneFields(time);
+    function dispose(){fields.forEach(cache=>cache.clear());columns=[];points=new Float32Array(0);pointerRows=new Float64Array(0);width=height=0;}
+    return {configure,compute,dispose};
   }
-  function active() {
-    return !disposed && !renderer?.lost && onScreen && shown && !document.hidden && (!parentSection || parentSection.classList.contains('on'));
-  }
-  function tick(now) {
-    frame=0;if(!active() || reduced.matches)return;
-    if(!lastFrame)lastFrame=now;
-    const dt=now-lastFrame;
-    if(dt>=1000/FPS) {
-      const step=Math.min(dt/1000,.1);lastFrame=now;elapsed+=step;
-      const follow=1-Math.exp(-step*8);
-      pointerLevel+=((aim?1:0)-pointerLevel)*follow;
-      if(aim) {
-        if(!hit)hit={...aim};
-        hit.x+=(aim.x-hit.x)*follow;hit.y+=(aim.y-hit.y)*follow;
-      }
-      pulses=pulses.filter(p=>elapsed-p.time<RIPPLE_LIFE);
-      draw(elapsed);
-    }
-    frame=requestAnimationFrame(tick);
-  }
-  function sync() {
-    if(frame)cancelAnimationFrame(frame);
-    frame=0;lastFrame=0;
-    if(!active())return;
-    draw(elapsed);
-    if(!reduced.matches)frame=requestAnimationFrame(tick);
-  }
-  function position(event) {
-    const box=canvas.getBoundingClientRect();
-    return {x:event.clientX-box.left,y:event.clientY-box.top};
-  }
-  hero.addEventListener('pointermove',event=>{
-    if(event.pointerType!=='touch')aim=position(event);
-  },{passive:true});
-  hero.addEventListener('pointerleave',()=>{aim=null;});
-  function awaken(p) {
-    if(reduced.matches) {hit=p;pointerLevel=1;draw(elapsed);return;}
-    pulses.push({...p,time:elapsed});
-    if(pulses.length>5)pulses.shift();
-    draw(elapsed);
-  }
-  hero.addEventListener('pointerdown',event=>{
-    if(event.button!==undefined && event.button!==0)return;
-    awaken(position(event));
-  },{passive:true});
-  canvas.addEventListener('keydown',event=>{
-    if(event.key==='Enter' || event.key===' ') {
-      event.preventDefault();awaken({x:width*.56,y:height*.56});
-    }
-  });
-  const resizeObserver=new ResizeObserver(resize),visibilityObserver=new IntersectionObserver(entries=>{onScreen=entries[0].isIntersecting&&entries[0].intersectionRatio>.001;sync();},{threshold:[0,.001],rootMargin:'-1px 0px'});
-  const themeObserver=new MutationObserver(()=>{makeSprites();sync();});
-  resizeObserver.observe(canvas);visibilityObserver.observe(hero);
-  themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
-  const lifecycle=window.PortfolioLifecycle,parentOptions={attributes:true,attributeFilter:['class']};
-  let parentObserver=null;
-  if(parentSection) {
-    if(lifecycle?.observeParent)parentObserver=lifecycle.observeParent(parentSection,sync,parentOptions);
-    else {parentObserver=new MutationObserver(sync);parentObserver.observe(parentSection,parentOptions);}
-  }
-  function dispose() {
-    if(disposed)return;
-    disposed=true;shown=false;cancelAnimationFrame(frame);frame=0;lastFrame=0;
-    resizeObserver.disconnect();visibilityObserver.disconnect();themeObserver.disconnect();parentObserver?.disconnect();
-    fields.forEach(cache=>cache.clear());columns=[];sprites=[];glows=[];pulses=[];aim=null;hit=null;
-    renderer?.destroy();
-    canvas.width=0;canvas.height=0;
-  }
-  lifecycle?.onDispose(dispose);
-  if(renderer){
-    canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();renderer.lost=true;sync();});
-    canvas.addEventListener('webglcontextrestored',()=>{if(disposed)return;renderer.restore();makeSprites();sync();});
-  }
-  reduced.addEventListener('change',()=>{aim=null;hit=null;pointerLevel=0;pulses=[];sync();});
-  document.addEventListener('visibilitychange',sync);
-  addEventListener('portfolio:language',label);
-  addEventListener('pagehide',event=>{
-    shown=false;sync();
-    if(!lifecycle) {if(event.persisted)parentObserver?.disconnect();else dispose();}
-  });
-  addEventListener('pageshow',()=>{
-    if(disposed)return;
-    if(!lifecycle&&parentSection)parentObserver?.observe(parentSection,parentOptions);
-    shown=true;sync();
-  });
+
   label();resize();
 })();

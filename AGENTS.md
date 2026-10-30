@@ -39,3 +39,5 @@ About me 原照与装饰画框、Skills 版画纸面保留完整四角，豁免�
 连续浏览的性能同样需要验收：真正离开案例时释放其 iframe、动画、媒体与请求；媒体层返回仍先关闭媒体，再退出作品。多资源图组不能以全成功的 Promise.all 作为整组可见条件，逐项显示成功内容，失败项限时并可独立重试。运动图库用等比轻量预览，原 SVG/原片仅在详情读取；Skills 更新素材后运行 `scripts/build-archive-previews.cjs`。茶弦记 play 的 HTML/JS 文字变化后用 `UV_NATIVE_TLS=true uv run --script scripts/subset-tea-play-fonts.py` 重建原字形字体子集。固定尺寸的图片切角不可在每次 resize 重造与重复写入路径。
 
 子页面对父文档的观察通过 `assets/frame-lifecycle.js` 登记，重型绘图用 `onDispose` 释放 GPU、画布、缓存与未完成请求；父页移除 iframe 前显式清理，不能只依赖 pagehide。BFCache 暂存只暂停，返回后恢复，不能提前销毁。良渚完整点云分片解析，离开封面后暂停细节升级；原坐标、颜色与视角保持。狗GO 场所源数据由 `scripts/build-xr-place.py` 随绘图脚本生成，`sync-shared-assets.py` 自动同步；不在读者滚到地图时才额外请求数据。
+
+千里江山的持续采样与点缓冲计算在 Worker 中执行，主线程只负责输入和原贴图批绘；同一纯计算内核供同步回退与 Worker 复用。转移缓冲需回收复用，尺寸、主题、减少动态与上下文恢复按代际丢弃旧结果；离屏停止投递，退出终止线程，BFCache 返回可恢复。性能验收必须包含真实浏览器的大屏持续运行，不能只凭 Node 计算桩认定顺畅。
