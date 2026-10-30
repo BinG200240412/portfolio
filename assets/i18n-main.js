@@ -194,14 +194,14 @@ window.PORTFOLIO_TRANSLATIONS = {
 Object.assign(window.PORTFOLIO_TRANSLATIONS, {
   "代表项目": "Projects",
   "项目经历": "Project experience",
-  "独立设计并借助 AI 开发原生数独，已上架 App Store。": "Independently designed and built a native Sudoku app with AI assistance. Available on the App Store.",
-  "负责交互、视觉与 Unity 程序，完成 Quest 3 交互原型。": "Designed the interactions and visuals, and wrote the main Unity interaction code for a Quest 3 prototype.",
-  "负责交互、视觉与网页程序，制作四关点茶游戏及茶筅联动原型。": "Designed and coded four tea-game stages and a prototype linking whisk movements to the screen.",
-  "独立设计排列推理规则与界面，持续迭代玩法和关卡。": "Independently designed the placement rules and interface; gameplay and levels are still evolving.",
-  "串联图像到三维的生成工作流，制作可交互网页点云。": "Connected image-to-3D workflows and built an interactive web point-cloud viewer.",
-  "提取青绿山水造型与色彩，制作音光与触摸光纤装置。": "Translated landscape forms and colors into sound-reactive lights and touch-responsive fiber installations.",
-  "整理版画、界面还原与手绘图标流程，编写三套可复用 Skill。": "Wrote three reusable Skills for print imagery, interface reconstruction and handcut icons.",
-  "提出 AI 感知漂移的 MR 概念，设计空间与体验流程。": "Developed an MR concept about AI and perceptual drift, with spatial and experience-flow designs."
+  "独立设计与 AI 开发，已上架。": "Independent design and AI-assisted iOS development; released.",
+  "交互、视觉与 Quest 3 原型程序。": "Interaction, visuals and main Unity code for a Quest 3 prototype.",
+  "点茶游戏、网页程序与茶筅联动。": "Tea-game interaction, web code and a whisk-to-screen prototype.",
+  "独立设计玩法、关卡与界面。": "Independent gameplay, level and interface design.",
+  "生成工作流搭建与交互点云。": "Image-to-3D workflows and an interactive point-cloud viewer.",
+  "山形转译、音光与触摸光纤装置。": "Landscape forms, sound-reactive light and touch-responsive fibers.",
+  "三套设计工作流的整理与编写。": "Three reusable design Skills, documented and coded.",
+  "AI 感知漂移的 MR 体验概念。": "An MR concept about AI and perceptual drift."
 });
 Object.assign(window.PORTFOLIO_TRANSLATIONS, {
   "研究生": "Graduate studies",
