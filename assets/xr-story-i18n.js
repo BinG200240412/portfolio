@@ -271,3 +271,12 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {"现场合影":"Group 
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {"这段原型的位置数据来自手柄。手柄必须留在头显摄像头的视野里，安装和位置也要按场地调整。": "I use the controller’s tracked position in this prototype. It needs to stay in view of the headset cameras, with its mounting and position adjusted for the site."});
 
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {"场所点阵：河边、高台、草地、林地与服务点":"Site map: waterside, raised ground, grassland, woodland and service points"});
+
+/* Reported tracking limitation and the team’s next prototype, October 30. */
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
+  "这段原型的位置数据来自 VR 手柄。头显要看见它的追踪区域，机器狗转向时会出现跟丢，玩的时候也得顾着这个朝向。": "This prototype gets its position from a VR controller. The headset needs to see the controller’s tracking area. We have had tracking drop out when the dog turns, so players also have to pay attention to its orientation.",
+  "我们准备重新设计套件，放到机器狗背部并接入程序，让玩家只拿机器狗控制手柄，不再额外拿 VR 手柄。希望转向少受限制，操作也少几步；这些还没做出来，追踪稳不稳、是否更好上手，要到下一轮原型里试。": "We plan to redesign the kit, put it on the dog’s back and connect it to the software. Players would then hold only the dog controller, without an extra VR controller. We hope this gives turns more freedom and leaves fewer controls to learn. This is not built yet; the next prototype needs to test whether tracking stays stable and whether it is easier to use.",
+  "头显要看见 VR 手柄的追踪区域；机器狗转向时仍会跟丢。": "The headset needs to see the VR controller’s tracking area; tracking still drops out when the dog turns.",
+  "下一步准备重新设计背部套件并接入程序，尝试去掉玩家额外手持的 VR 手柄。": "Next, we plan to redesign the back-mounted kit and connect it to the software, trying to remove the extra VR controller players have to hold.",
+  "地点任务和数字内容仍在做。转向跟丢还没解决，背部套件和程序接入是下一步。": "The place-based tasks and digital content are still in progress. Tracking loss during turns is unresolved; the back-mounted kit and software connection are next."
+});

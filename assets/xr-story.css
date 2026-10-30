@@ -5,6 +5,7 @@
 .gogo-project-meta dd{margin:0;font-size:16px;line-height:1.7;color:var(--ink)}
 .gogo-prototype-chain{margin:22px 0!important;padding-left:1.2em;display:grid;gap:8px;color:var(--ink);font-size:16px;line-height:1.7}
 .gogo-technical-copy>.gogo-prototype-limit{font-size:14px;line-height:1.8;color:var(--mid);max-width:36ch}
+.gogo-technical-copy>.gogo-prototype-limit+.gogo-prototype-limit{margin-top:16px}
 .gogo-context-note{font-size:14px!important;line-height:1.7!important;color:var(--mid);max-width:60ch!important;margin:0 0 20px!important}
 .gogo-field-page{gap:30px}
 .gogo-field-page>.gogo-subhead{margin:0!important}
