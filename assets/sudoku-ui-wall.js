@@ -11,13 +11,12 @@
 
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const compact = matchMedia('(max-width: 720px)');
-    const hoverCapable = matchMedia('(hover: hover) and (pointer: fine)');
     const canAnimate = typeof Element.prototype.animate === 'function';
     const toggle = root.querySelector('[data-wall-toggle]');
     const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
     let frameHost = null;
     try { frameHost = window.frameElement?.closest('#section') || null; } catch (_) {}
-    let inView = false, pageShown = true, hovered = false, userPaused = false;
+    let inView = false, pageShown = true, userPaused = false;
     let frame = 0, rebuildPending = false, clones = [];
 
     const lanes = laneElements.map((element, index) => {
@@ -93,7 +92,7 @@
     }
     function blocked() {
       const focusedCard = document.activeElement?.closest?.('.ui-wall-open');
-      return !pageShown || document.hidden || !inView || hovered || userPaused ||
+      return !pageShown || document.hidden || !inView || userPaused ||
         Boolean(focusedCard && root.contains(focusedCard)) ||
         Boolean(document.querySelector('#media-viewer[open], #portfolio-video-detail[open]')) ||
         Boolean(frameHost && !frameHost.classList.contains('on'));
@@ -242,14 +241,10 @@
       hit.record.button.click();
       sync();
     }
-    function enter() { hovered = hoverCapable.matches; sync(); }
-    function leave() { hovered = false; sync(); }
     function hide() { pageShown = false; sync(); }
     function show() { pageShown = true; schedule(true); }
 
     stage.addEventListener('click', proxyClick, true);
-    stage.addEventListener('pointerenter', enter);
-    stage.addEventListener('pointerleave', leave);
     root.addEventListener('focusin', focusIn);
     root.addEventListener('focusout', focusOut);
     toggle?.addEventListener('click', () => { userPaused = !userPaused; sync(); });
@@ -261,7 +256,6 @@
     addEventListener('resize', () => schedule(true), { passive: true });
     reduced.addEventListener('change', () => schedule(true));
     compact.addEventListener('change', () => schedule(true));
-    hoverCapable.addEventListener('change', () => { hovered = false; sync(); });
     const visibility = typeof IntersectionObserver === 'function' ? new IntersectionObserver(entries => {
       inView = entries.some(entry => entry.isIntersecting); sync();
     }, { threshold: 0 }) : null;

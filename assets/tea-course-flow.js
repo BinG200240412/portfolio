@@ -10,7 +10,7 @@
   repeat.querySelectorAll('button').forEach(b=>b.tabIndex=-1);
   lane.querySelector('.tea-course-track').append(repeat);
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-  let paused=false,visible=false,hovered=false,focused=false,span=0,position=0,last=0,frame=0;
+  let paused=false,visible=false,focused=false,span=0,position=0,last=0,frame=0;
   function label(){
     const en=document.documentElement.lang.startsWith('en');
     toggle.disabled=reduced.matches;
@@ -18,7 +18,7 @@
     toggle.textContent=reduced.matches?(en?'Static view':'静态浏览'):paused?(en?'Resume flow':'继续流动'):(en?'Pause flow':'暂停流动');
     lane.dataset.paused=String(paused||reduced.matches);
   }
-  function active(){return visible&&!paused&&!reduced.matches&&!hovered&&!focused&&!document.hidden&&!document.querySelector('dialog[open]');}
+  function active(){return visible&&!paused&&!reduced.matches&&!focused&&!document.hidden&&!document.querySelector('dialog[open]');}
   function tick(time){
     frame=0;if(!active()){last=0;return;}
     const dt=last?Math.max(0,Math.min(.05,(time-last)/1000)):0;last=time;
@@ -30,8 +30,6 @@
   function measure(){span=group.getBoundingClientRect().width+parseFloat(getComputedStyle(group.parentElement).gap);position=span?lane.scrollLeft%span:0;lane.scrollLeft=position;sync();}
   function remember(){position=span?lane.scrollLeft%span:0;}
   toggle.addEventListener('click',()=>{paused=!paused;remember();label();sync();});
-  lane.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'){hovered=true;sync();}});
-  lane.addEventListener('pointerleave',()=>{hovered=false;remember();sync();});
   lane.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'){paused=true;label();sync();}});
   lane.addEventListener('focusin',()=>{focused=true;sync();});
   lane.addEventListener('focusout',()=>queueMicrotask(()=>{focused=lane.contains(document.activeElement);remember();sync();}));

@@ -102,7 +102,7 @@
     pause.setAttribute('aria-pressed', String(stopped));
     status.textContent = stopped
       ? tr('滚动已暂停 · 点击作品可放大', 'Motion paused · Select a work to enlarge')
-      : tr('各列缓慢循环 · 悬停暂停', 'Slow, continuous columns · Hover to pause');
+      : tr('各列缓慢循环', 'Slow, continuous columns');
   }
   function makeTile(entry, index) {
     const button = document.createElement('button');
@@ -128,7 +128,7 @@
     const canPlay = onScreen && !document.hidden && !paused && !reducedMotion.matches && !viewer.open;
     columns.forEach(column => {
       const focused = column.element.contains(document.activeElement);
-      if (canPlay && !column.hovered && !focused) column.animation?.play();
+      if (canPlay && !focused) column.animation?.play();
       else column.animation?.pause();
     });
   }
@@ -143,13 +143,8 @@
       const track = document.createElement('div'); track.className = 'archive-track';
       const sequence = document.createElement('div'); sequence.className = 'archive-sequence';
       track.append(sequence); column.append(track); wall.append(column);
-      const state = {element:column, track, sequence, hovered:false, animation:null};
+      const state = {element:column, track, sequence, animation:null};
       columns.push(state);
-      column.addEventListener('pointerenter', event => {
-        if (event.pointerType === 'touch') return;
-        state.hovered = true; syncMotion();
-      });
-      column.addEventListener('pointerleave', () => { state.hovered = false; syncMotion(); });
     }
     visible.forEach((entry, index) => {
       const shortest = heights.indexOf(Math.min(...heights));

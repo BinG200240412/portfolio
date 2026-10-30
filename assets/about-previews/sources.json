@@ -1,0 +1,82 @@
+[
+  {
+    "id": "sudoku",
+    "source": "assets/works/sudoku/demos/board.jpg",
+    "sourceSha256": "3313fc396de5a4d76893c2d374094632fdb788f604a981e6ab6e63e0ea062325",
+    "preview": "assets/about-previews/sudoku.webp",
+    "width": 175,
+    "height": 380,
+    "bytes": 4584,
+    "processing": "Equal-aspect WebP thumbnail of the original source; no cropping or retouching."
+  },
+  {
+    "id": "gogo",
+    "source": "assets/works/xr/originals/cover-f237d814.webp",
+    "sourceSha256": "90ef096eda013c01f76479b2b781a4c2476db45fdd6a87dde51fd3cec4a4c5e6",
+    "preview": "assets/about-previews/gogo.webp",
+    "width": 640,
+    "height": 358,
+    "bytes": 60732,
+    "processing": "Equal-aspect WebP thumbnail of the original source; no cropping or retouching."
+  },
+  {
+    "id": "tea",
+    "source": "assets/works/tea/source/hero-ritual-original.webp",
+    "sourceSha256": "7332cedda01184c986c84cdad1990f13c6ea8a571bc493a1fffbda0e88f8e93c",
+    "preview": "assets/about-previews/tea.webp",
+    "width": 507,
+    "height": 380,
+    "bytes": 21864,
+    "processing": "Equal-aspect WebP thumbnail of the original source; no cropping or retouching."
+  },
+  {
+    "id": "arright",
+    "source": "assets/works/arright/native/home-C04-demonstration-air.webp",
+    "sourceSha256": "45ec6314f9cbcb129d6ab6b05029ac62d5c486dd0dcb920f09fae4f805284cfb",
+    "preview": "assets/about-previews/arright.webp",
+    "width": 175,
+    "height": 380,
+    "bytes": 5826,
+    "processing": "Equal-aspect WebP thumbnail of the original source; no cropping or retouching."
+  },
+  {
+    "id": "ai3d",
+    "source": "assets/works/ai3d/board/scene-hut-view-a.webp",
+    "sourceSha256": "8e776e73bc5acdd5ce8a66e9acedeb5d4d88dbaa4eb8e2266a0ed51bcf5e92dd",
+    "preview": "assets/about-previews/ai3d.webp",
+    "width": 505,
+    "height": 230,
+    "bytes": 20814,
+    "processing": "Equal-aspect WebP thumbnail of the original source; no cropping or retouching."
+  },
+  {
+    "id": "qianli",
+    "source": "assets/works/qianli/case/music-detail.webp",
+    "sourceSha256": "82f8b705ec34140adf6191909404acb9fe9c703697ad444edb3e3b24b1c6ddd1",
+    "preview": "assets/about-previews/qianli.webp",
+    "width": 640,
+    "height": 320,
+    "bytes": 27902,
+    "processing": "Equal-aspect WebP thumbnail of the original source; no cropping or retouching."
+  },
+  {
+    "id": "skills",
+    "source": "assets/works/design-skills/archive/engraving-075.svg",
+    "sourceSha256": "27481e119e7e632e3230c827d90451671f76dcc2a1a0e900d0cda34578ddd223",
+    "preview": "assets/about-previews/skills.webp",
+    "width": 285,
+    "height": 380,
+    "bytes": 13746,
+    "processing": "Equal-aspect thumbnail rendered from the original SVG on warm white paper; no cropping."
+  },
+  {
+    "id": "drift",
+    "source": "assets/works/drift/hero-preview.webp",
+    "sourceSha256": "8ca48c7d818c2e1f1828c5f668dc11cf0175989b9cf839f555caf9764684c9e0",
+    "preview": "assets/about-previews/drift.webp",
+    "width": 481,
+    "height": 380,
+    "bytes": 26448,
+    "processing": "Equal-aspect WebP thumbnail of the original source; no cropping or retouching."
+  }
+]

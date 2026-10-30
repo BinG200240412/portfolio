@@ -154,3 +154,41 @@ body.portfolio-shell #resume .about-details>section{padding-inline:0}
 @media(min-width:769px) and (max-width:1250px){
  body.portfolio-shell #resume .about-details{grid-template-columns:repeat(2,minmax(0,1fr));gap:48px 42px}
 }
+
+/* A continuous resume, with one category per row instead of a two-by-two grid. */
+body.portfolio-shell #resume .about-details{
+  grid-template-columns:minmax(0,1fr);gap:64px;align-content:start;
+}
+body.portfolio-shell #resume .about-details>section{
+  display:grid;grid-template-columns:minmax(116px,.25fr) minmax(0,1fr);
+  align-items:start;gap:clamp(28px,4vw,56px);padding-inline:0;
+}
+body.portfolio-shell #resume .about-details h2{margin:0;line-height:1.65}
+#resume .about-project-list{gap:22px;overflow-anchor:none}
+#resume .about-project h3{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:16px;
+}
+#resume .about-project h3>a{justify-self:start;min-width:0}
+#resume .about-project p{max-width:62ch}
+#resume .about-skill-starts{gap:2px 20px}
+#resume .about-details .about-education{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.about-project-preview{
+  display:grid;grid-template-rows:0fr;opacity:0;min-width:0;
+  transition:grid-template-rows 320ms cubic-bezier(.22,1,.36,1),opacity 240ms ease;
+}
+.about-project-preview-inner{min-height:0;overflow:hidden}
+.about-project-preview a{display:block;width:fit-content;max-width:100%;padding-block:12px;pointer-events:none}
+.about-project-preview img{display:block;width:auto;height:auto;max-width:min(100%,320px);max-height:184px}
+.about-project[data-preview-open="true"][data-preview-ready="true"] .about-project-preview{
+  grid-template-rows:1fr;opacity:1;
+}
+.about-project[data-preview-open="true"][data-preview-ready="true"] .about-project-preview a{pointer-events:auto}
+@media(max-width:768px){
+  body.portfolio-shell #resume .about-details{gap:28px}
+  body.portfolio-shell #resume .about-details>section{grid-template-columns:minmax(0,1fr);gap:24px;padding-inline:0}
+  #resume .about-details .about-education{grid-template-columns:minmax(0,1fr)}
+  #resume .about-project-list{gap:22px}
+  #resume .about-project h3{gap:12px}
+  .about-project-preview img{max-width:min(100%,280px);max-height:168px}
+}
+@media(prefers-reduced-motion:reduce){.about-project-preview{transition:none}}

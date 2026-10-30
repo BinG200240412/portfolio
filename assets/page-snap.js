@@ -95,6 +95,9 @@
       addEventListener('portfolio:navigation', () => rebuild());
     }
     rebuild();
+    // Defer scripts can run at readyState=interactive, before this file has
+    // assigned the page classes below. Recheck after that layout is installed.
+    requestAnimationFrame(() => rebuild());
   }
   if (document.readyState === 'loading')
     document.addEventListener('DOMContentLoaded', installPageRail, {once:true});

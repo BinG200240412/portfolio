@@ -22,7 +22,7 @@ html[data-theme="light"] #icon-library{--il-glyph:#41403d}
 #icon-library .il-ribbon-group{display:flex;align-items:center;gap:27px;padding-right:27px;flex-shrink:0;min-width:0}
 #icon-library .il-ribbon-cell{width:64px;height:73px;display:grid;place-items:center;flex:none}
 #icon-library .il-ribbon-cell .il-artwork{animation:il-drift 7s ease-in-out infinite;animation-delay:var(--il-drift-delay,0s)}
-#icon-library.il-animation-paused .il-ribbon-track,#icon-library.il-animation-paused .il-ribbon-cell .il-artwork,#icon-library .il-ribbons:hover .il-ribbon-track,#icon-library .il-ribbons:hover .il-ribbon-cell .il-artwork{animation-play-state:paused}
+#icon-library.il-animation-paused .il-ribbon-track,#icon-library.il-animation-paused .il-ribbon-cell .il-artwork{animation-play-state:paused}
 #icon-library .il-tools{padding-top:14px}
 #icon-library .il-heading-row{display:flex;align-items:baseline;justify-content:space-between;gap:20px}
 #icon-library .il-heading{font-size:21px;line-height:1.45;margin:0;letter-spacing:-.025em}

@@ -179,7 +179,7 @@
 <link rel="stylesheet" href="assets/pixel-loader.css?v=129635cc74">
 <link rel="stylesheet" href="assets/works/ai3d/particle-cover.css?v=cf5a2226e3">
 <link rel="stylesheet" href="assets/matrix-field.css?v=6a32da6f6c">
-<link rel="stylesheet" href="assets/about.css?v=f02057d4d5">
+<link rel="stylesheet" href="assets/about.css?v=49c976a543">
 <link rel="stylesheet" href="assets/ambient-field.css?v=46d61ec273">
 <link rel="stylesheet" href="assets/portfolio-assistant.css?v=618e2470f9">
 <link rel="stylesheet" href="assets/title-dot.css?v=5f0b650f0b">
@@ -199,6 +199,7 @@
 <script defer src="assets/theme.js?v=6640566b84"></script>
 <script defer src="assets/pixel-loader.js?v=df8d4dfee5"></script>
 <script defer src="assets/about-companion.js?v=e982aadfb3"></script>
+<script defer src="assets/about-project-previews.js?v=6b4c1409f9"></script>
 <script defer src="assets/ambient-field.js?v=5db5bf9a71"></script>
 <script defer src="assets/assistant-connection.js?v=46fc972fe9"></script>
 <script defer src="assets/portfolio-assistant.js?v=0ace57386e"></script>
@@ -213,7 +214,7 @@
 
 
 
-<script defer src="assets/page-snap.js?v=f9f68f17e8"></script>
+<script defer src="assets/page-snap.js?v=8753da79ad"></script>
 
 
 <script defer src="assets/video-detail.js?v=d2de5c7d69"></script>
@@ -276,37 +277,45 @@
       <section class="about-projects" aria-labelledby="about-projects-title">
         <h2 id="about-projects-title">项目经历</h2>
         <ul class="about-project-list">
-        <li class="about-project">
+        <li class="about-project" data-about-project="sudoku">
           <h3><a href="sections/sudoku.html" data-resume-project="数独"><span>Sudoku.</span><svg class="about-project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a><time class="about-project-start" data-project-start="sudoku" title="开始时间" hidden></time></h3>
+          <div class="about-project-preview" aria-hidden="true"><div class="about-project-preview-inner"><a href="sections/sudoku.html" data-resume-project="数独" tabindex="-1" aria-hidden="true"><img data-about-preview-src="assets/about-previews/sudoku.webp" width="175" height="380" alt="" decoding="async"></a></div></div>
           <p>独立设计与 AI 开发，已上架。</p>
         </li>
-        <li class="about-project">
+        <li class="about-project" data-about-project="gogo">
           <h3><a href="sections/xr.html" data-resume-project="良渚 · XR"><span>狗GO</span><svg class="about-project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a><time class="about-project-start" data-project-start="gogo" title="开始时间" hidden></time></h3>
+          <div class="about-project-preview" aria-hidden="true"><div class="about-project-preview-inner"><a href="sections/xr.html" data-resume-project="良渚 · XR" tabindex="-1" aria-hidden="true"><img data-about-preview-src="assets/about-previews/gogo.webp" width="640" height="358" alt="" decoding="async"></a></div></div>
           <p>交互、视觉与 Quest 3 原型程序。</p>
         </li>
-        <li class="about-project">
+        <li class="about-project" data-about-project="tea">
           <h3><a href="sections/tea.html" data-resume-project="茶弦记"><span>茶弦记</span><svg class="about-project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a><time class="about-project-start" data-project-start="tea" title="开始时间" hidden></time></h3>
+          <div class="about-project-preview" aria-hidden="true"><div class="about-project-preview-inner"><a href="sections/tea.html" data-resume-project="茶弦记" tabindex="-1" aria-hidden="true"><img data-about-preview-src="assets/about-previews/tea.webp" width="507" height="380" alt="" decoding="async"></a></div></div>
           <p>点茶游戏、网页程序与茶筅联动。</p>
         </li>
-        <li class="about-project">
+        <li class="about-project" data-about-project="arright">
           <h3><a href="sections/arright.html" data-resume-project="arright"><span>Arright</span><svg class="about-project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a><time class="about-project-start" data-project-start="arright" title="开始时间" hidden></time></h3>
+          <div class="about-project-preview" aria-hidden="true"><div class="about-project-preview-inner"><a href="sections/arright.html" data-resume-project="arright" tabindex="-1" aria-hidden="true"><img data-about-preview-src="assets/about-previews/arright.webp" width="175" height="380" alt="" decoding="async"></a></div></div>
           <p>独立设计玩法、关卡与界面。</p>
         </li>
-        <li class="about-project">
+        <li class="about-project" data-about-project="ai3d">
           <h3><a href="sections/ai3d.html" data-resume-project="良渚 · AI 3D"><span>良渚 · AI 3D</span><svg class="about-project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a><time class="about-project-start" data-project-start="ai3d" title="开始时间" hidden></time></h3>
+          <div class="about-project-preview" aria-hidden="true"><div class="about-project-preview-inner"><a href="sections/ai3d.html" data-resume-project="良渚 · AI 3D" tabindex="-1" aria-hidden="true"><img data-about-preview-src="assets/about-previews/ai3d.webp" width="505" height="230" alt="" decoding="async"></a></div></div>
           <p>生成工作流搭建与交互点云。</p>
         </li>
-        <li class="about-project">
+        <li class="about-project" data-about-project="qianli">
           <h3><a href="sections/qianli.html" data-resume-project="千里江山"><span>千里江山</span><svg class="about-project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a><time class="about-project-start" data-project-start="qianli" title="开始时间" hidden></time></h3>
+          <div class="about-project-preview" aria-hidden="true"><div class="about-project-preview-inner"><a href="sections/qianli.html" data-resume-project="千里江山" tabindex="-1" aria-hidden="true"><img data-about-preview-src="assets/about-previews/qianli.webp" width="640" height="320" alt="" decoding="async"></a></div></div>
           <p>山形转译、音光与触摸光纤装置。</p>
         </li>
-        <li class="about-project">
+        <li class="about-project" data-about-project="skills">
           <h3><a href="sections/design-skills.html" data-resume-project="设计工具 · Skills"><span>Design Skills</span><svg class="about-project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a></h3>
+          <div class="about-project-preview" aria-hidden="true" data-media-corners-ignore><div class="about-project-preview-inner"><a href="sections/design-skills.html" data-resume-project="设计工具 · Skills" tabindex="-1" aria-hidden="true"><img data-about-preview-src="assets/about-previews/skills.webp" width="285" height="380" alt="" decoding="async"></a></div></div>
           <div class="about-skill-starts"><span><span>美式海报风</span> <time data-project-start="skills-print" title="开始时间" hidden></time></span><span><span>手绘图标</span> <time data-project-start="skills-icons" title="开始时间" hidden></time></span><span><span>UI 还原</span> <time data-project-start="skills-ui" title="开始时间" hidden></time></span></div>
           <p>三套设计工作流的整理与编写。</p>
         </li>
-        <li class="about-project">
+        <li class="about-project" data-about-project="drift">
           <h3><a href="sections/drift.html" data-resume-project="漂移之屋"><span>漂移之屋</span><svg class="about-project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a><time class="about-project-start" data-project-start="drift" title="开始时间" hidden></time></h3>
+          <div class="about-project-preview" aria-hidden="true"><div class="about-project-preview-inner"><a href="sections/drift.html" data-resume-project="漂移之屋" tabindex="-1" aria-hidden="true"><img data-about-preview-src="assets/about-previews/drift.webp" width="481" height="380" alt="" decoding="async"></a></div></div>
           <p>AI 感知漂移的 MR 体验概念。</p>
         </li>
         </ul>
@@ -638,7 +647,8 @@ resume.addEventListener('click',event=>{
   const link=event.target.closest('a[data-resume-project]');
   if(!link||event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
   event.preventDefault();
-  enterSection(link.dataset.resumeProject,true,link);
+  const returnLink=link.closest('.about-project')?.querySelector('h3 a')||link;
+  enterSection(link.dataset.resumeProject,true,returnLink);
 });
 
 // The same project pages open from the typographic menu and the LED objects.

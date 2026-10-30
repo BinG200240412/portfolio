@@ -14,7 +14,7 @@
     const play = root.querySelector('[data-iteration-play]');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     let stops = [], active = -1, frame = 0, last = 0, visible = false;
-    let paused = false, hovered = false, modal = false, shown = true, host = null, controlState = '';
+    let paused = false, modal = false, shown = true, host = null, controlState = '';
     try { host = window.frameElement?.closest('#section'); } catch (_) {}
     const english = () => window.PortfolioI18n?.language === 'en';
     const end = () => rail.scrollLeft >= rail.scrollWidth - rail.clientWidth - 2;
@@ -64,7 +64,7 @@
       update();
     }
     function canPlay() {
-      return visible && shown && !document.hidden && !paused && !hovered && !modal && !reduced.matches &&
+      return visible && shown && !document.hidden && !paused && !modal && !reduced.matches &&
         !root.querySelector('.iteration-note:not([hidden]) .iteration-record[open]') && !rail.contains(document.activeElement) &&
         (!host || host.classList.contains('on')) && !end();
     }
@@ -103,8 +103,6 @@
     rail.addEventListener('wheel', hold, {passive:true});
     rail.addEventListener('pointerdown', hold, {passive:true});
     rail.addEventListener('keydown', hold);
-    rail.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { hovered = true; sync(); } });
-    rail.addEventListener('pointerleave', () => { hovered = false; sync(); });
     rail.addEventListener('focusin', sync);
     rail.addEventListener('focusout', () => requestAnimationFrame(sync));
     root.querySelectorAll('.iteration-record').forEach(detail => detail.addEventListener('toggle', sync));

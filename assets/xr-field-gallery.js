@@ -5,7 +5,7 @@
   if(!gallery)return;
   const rows=[...gallery.querySelectorAll('.gogo-field-row')],toggle=gallery.querySelector('.gogo-field-toggle');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)'),forced=matchMedia('(forced-colors: active)');
-  let visible=false,shown=true,paused=false,hovered=false,host=null;
+  let visible=false,shown=true,paused=false,host=null;
   try{host=window.frameElement?.closest('#section')||null;}catch(_){}
   function label(){
     const zh=document.documentElement.lang.startsWith('zh');
@@ -14,7 +14,7 @@
   }
   function sync(){
     const focused=rows.some(row=>row.contains(document.activeElement));
-    const running=visible&&shown&&!document.hidden&&!paused&&!hovered&&!focused&&!document.querySelector('dialog[open]')&&!reduced.matches&&!forced.matches&&(!host||host.classList.contains('on'));
+    const running=visible&&shown&&!document.hidden&&!paused&&!focused&&!document.querySelector('dialog[open]')&&!reduced.matches&&!forced.matches&&(!host||host.classList.contains('on'));
     gallery.classList.toggle('is-field-running',running);
     gallery.dataset.motion=reduced.matches||forced.matches?'static':running?'running':'paused';
     label();
@@ -39,8 +39,6 @@
     });
   }
   toggle.addEventListener('click',()=>{paused=!paused;sync();});
-  gallery.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'){hovered=true;sync();}});
-  gallery.addEventListener('pointerleave',()=>{hovered=false;sync();});
   rows.forEach(row=>{
     row.addEventListener('focusin',()=>{row.classList.add('is-field-browsing');sync();});
     row.addEventListener('focusout',()=>requestAnimationFrame(()=>{

@@ -10,7 +10,7 @@
   const dialog=document.getElementById('gogo-lightbox');
   const reduced=matchMedia('(prefers-reduced-motion: reduce)');
   const forced=matchMedia('(forced-colors: active)');
-  let onScreen=false,shown=true,paused=false,hovered=false,focused=false,host=null;
+  let onScreen=false,shown=true,paused=false,focused=false,host=null;
   try{host=window.frameElement?.closest('#section')||null;}catch(_){}
 
   function label(){
@@ -20,7 +20,7 @@
   }
   function sync(){
     const visible=onScreen&&shown&&!document.hidden&&!dialog?.open&&(!host||host.classList.contains('on'));
-    const running=visible&&!paused&&!hovered&&!focused&&!reduced.matches&&!forced.matches;
+    const running=visible&&!paused&&!focused&&!reduced.matches&&!forced.matches;
     page.classList.toggle('is-technical-running',running);
     page.classList.toggle('is-technical-browsing',focused);
     page.dataset.reelMotion=reduced.matches||forced.matches?'static':running?'running':'paused';
@@ -54,8 +54,6 @@
     while(track.children.length>needed)track.lastElementChild.remove();
   }
   toggle.addEventListener('click',()=>{paused=!paused;sync();});
-  reel.addEventListener('pointerenter',()=>{hovered=true;sync();});
-  reel.addEventListener('pointerleave',()=>{hovered=false;sync();});
   reel.addEventListener('focusin',()=>{focused=true;sync();});
   reel.addEventListener('focusout',()=>{
     requestAnimationFrame(()=>{focused=reel.contains(document.activeElement);sync();});
