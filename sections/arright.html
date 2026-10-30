@@ -1,239 +1,35 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <script src="../assets/i18n-main.js?v=project-starts-20261030"></script>
-<script src="../assets/i18n-cases.js?v=project-reflection-20261028"></script>
-<script src="../assets/arright-project-context-i18n.js?v=project-starts-20261030"></script>
-<script src="../assets/i18n.js?v=bilingual-20261023"></script>
-<script src="../assets/theme.js?v=active-chrome-20261026"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="arright：独立排列推理游戏。目前是一版可玩原型，这里展示第一章的 12 份装修委托。">
-  <title>arright — 蔡正阳</title>
-  <style>
-    :root,
-    html[data-theme="dark"] {
-      color-scheme: dark;
-      --paper: #0b0b0b;
-      --ink: #f1f1ed;
-      --mid: #babbb7;
-      --soft: #868782;
-      --line: #30312e;
-      --mono: "Portfolio Mono", "JetBrains Mono", ui-monospace, monospace;
-    }
-    html[data-theme="light"] {
-      color-scheme: light;
-      --paper: #f7f7f3;
-      --ink: #171815;
-      --mid: #51534e;
-      --soft: #777a72;
-      --line: #d4d6cf;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: var(--paper);
-      color: var(--ink);
-      font-family: var(--mono);
-      -webkit-font-smoothing: antialiased;
-    }
-    ::selection { color: var(--paper); background: var(--ink); }
-    img { display: block; width: 100%; height: auto; }
-    figure, p, h1, h2 { margin: 0; }
-    .wrap {
-      width: min(100%, 1360px);
-      margin-inline: auto;
-      padding: 80px clamp(20px, 5vw, 76px) 28px;
-    }
-    .hero { padding: clamp(32px, 6vw, 72px) 0 42px; }
-    .eyebrow, .meta, .figure-index, figcaption, .mechanics .num, .foot {
-      font-size: 10px;
-      line-height: 1.7;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--soft);
-    }
-    .hero-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 24px;
-      margin-top: 22px;
-    }
-    h1 {
-      font-size: clamp(62px, 15.5vw, 180px);
-      font-weight: 500;
-      line-height: .94;
-      letter-spacing: -.09em;
-      padding-right: .08em;
-    }
-    .meta { padding-bottom: 7px; text-align: right; white-space: nowrap; }
-    .intro {
-      max-width: 44em;
-      margin-top: 30px;
-      color: var(--mid);
-      font-size: clamp(13px, 1.3vw, 16px);
-      line-height: 1.9;
-      letter-spacing: .02em;
-      text-wrap: pretty;
-    }
-    .figure-index {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 20px;
-      padding-block: 16px;
-      border-top: 1px solid var(--line);
-    }
-    .figure-index b { color: var(--mid); font-weight: 400; }
-    .screen { background: #f6f7f1; overflow: hidden; }
-    .screen img { opacity: 1; }
-    figcaption {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      padding-top: 14px;
-      letter-spacing: .04em;
-    }
-    .mechanics {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      list-style: none;
-      margin: 0;
-      padding: clamp(42px, 7vw, 88px) 0;
-      gap: 22px;
-    }
-    .mechanics li { padding-top: 14px; border-top: 1px solid var(--line); }
-    .mechanics .num { display: block; }
-    .mechanics h2 {
-      margin-top: 0;
-      font-size: clamp(15px, 1.5vw, 19px);
-      line-height: 1.45;
-      font-weight: 400;
-      letter-spacing: -.02em;
-    }
-    .mechanics p {
-      margin-top: 8px;
-      color: var(--soft);
-      font-size: 14px;
-      line-height: 1.7;
-    }
-    .mobile-section {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: start;
-      gap: clamp(32px, 8vw, 120px);
-      margin-top: clamp(60px, 10vw, 130px);
-      padding-top: 18px;
-      border-top: 1px solid var(--line);
-    }
-    .mobile-copy { position: sticky; top: 100px; padding-top: 4px; }
-    .mobile-copy h2 {
-      margin-top: 0;
-      font-size: clamp(28px, 4.8vw, 58px);
-      line-height: 1.4;
-      font-weight: 400;
-      letter-spacing: -.05em;
-    }
-    .mobile-copy .note {
-      margin-top: 26px;
-      color: var(--soft);
-      font-size: 15px;
-      line-height: 1.9;
-    }
-    .mobile-screen {
-      width: min(100%, 360px);
-      justify-self: end;
-      margin-top: 16px;
-      border: 1px solid var(--line);
-    }
-    .foot {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px 20px;
-      margin-top: clamp(60px, 10vw, 130px);
-      padding-top: 18px;
-      border-top: 1px solid var(--line);
-      letter-spacing: .06em;
-    }
-    @media (max-width: 620px) {
-      .hero { padding-top: 34px; padding-bottom: 30px; }
-      .hero-line { display: block; margin-top: 24px; }
-      .meta { margin-top: 20px; text-align: left; padding: 0; }
-      .intro { margin-top: 22px; }
-      .figure-index { font-size: 9px; letter-spacing: .06em; }
-      figcaption { font-size: 9px; }
-      .mechanics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 20px; }
-      .mechanics h2 { margin-top: 0; }
-      .mobile-section { grid-template-columns: 1fr; gap: 26px; }
-      .mobile-copy { position: static; }
-      .mobile-copy h2 { margin-top: 0; }
-      .mobile-copy .note { margin-top: 18px; }
-      .mobile-screen { width: min(100%, 340px); justify-self: center; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-    }
-  </style>
-<link rel="stylesheet" href="../assets/theme.css?v=project-starts-20261030">
-<link rel="stylesheet" href="../assets/ambient-field.css?v=tidal-led-20261024">
-<script defer src="../assets/ambient-field.js?v=tidal-led-20261024"></script>
-<link rel="stylesheet" href="../assets/page-snap.css?v=adaptive-contrast-20261027">
-<script defer src="../assets/page-snap.js?v=content-bead-rail-20261027"></script>
-<link rel="stylesheet" href="../assets/media-corners.css?v=image-back-layer-20261027">
-<link rel="stylesheet" href="../assets/video-detail.css?v=video-preview-detail-20261026">
-<script defer src="../assets/video-detail.js?v=video-preview-detail-20261026"></script>
-<script defer src="../assets/media-corners.js?v=image-back-layer-20261027"></script>
-<link rel="stylesheet" href="../assets/media-view-only.css?v=view-only-media-20261026">
-<script defer src="../assets/media-view-only.js?v=view-only-media-20261026"></script>
-<link rel="stylesheet" href="../assets/editorial-hierarchy.css?v=stepped-type-20261026">
-<link rel="stylesheet" href="../assets/project-reflection.css?v=project-reflection-20261028">
-<link rel="stylesheet" href="../assets/project-overview.css?v=project-starts-20261030">
-<link rel="stylesheet" href="../assets/wide-screen.css?v=large-display-20261029" media="(min-width: 1801px)">
-<script defer src="../assets/project-dates.js?v=project-starts-20261030"></script>
-</head>
-<body class="arright-case">
-  <main class="wrap">
-    <header class="hero">
-      <div class="hero-line">
-        <h1>arright</h1>
-      </div>
-      <p class="intro">把物品放到合适的位置，让一个场景成立的排列推理游戏。</p>
-      <dl class="project-overview"><div class="project-start-row" hidden><dt>开始时间</dt><dd><time data-project-start="arright"></time></dd></div>
-        <div><dt>负责事项</dt><dd>这是我的独立游戏。我构思玩法、设计委托关卡与界面，并借助 AI 把想法做成可玩的网页 demo。</dd></div>
-        <div><dt>进度</dt><dd>目前是一版可玩原型；这里展示第一章的 12 份装修委托，规则和关卡仍在迭代。</dd></div>
-      </dl>
-    </header>
-
-    <figure>
-      <div class="screen"><img src="../assets/works/arright/overview.jpg" width="1265" height="1129" alt="arright 首页：把生活，摆得刚刚好；右侧是带家具与路线的住宅平面图" fetchpriority="high" decoding="async"></div>
-    </figure>
-
-    <ol class="mechanics" aria-label="四个相互牵制的玩法条件">
-      <li><h2>摆得下</h2><p>家具的实体占地</p></li>
-      <li><h2>用得了</h2><p>留出使用空间</p></li>
-      <li><h2>相互照应</h2><p>位置、搭配与朝向</p></li>
-      <li><h2>走得通</h2><p>画一条验收动线</p></li>
-    </ol>
-
-    <figure>
-      <div class="screen"><img src="../assets/works/arright/gameplay.jpg" width="1280" height="1118" alt="第十二份整屋委托：六个住宅空间中摆放十九件家具，绿色验收路线连接各个使用区域，两侧呈现条件与操作" loading="lazy" decoding="async"></div>
-      <figcaption><span>87 格整屋 / 19 件家具</span></figcaption>
-    </figure>
-
-    <section class="mobile-section" aria-labelledby="mobile-heading">
-      <div class="mobile-copy">
-        <h2 id="mobile-heading">手机界面</h2>
-        <p class="note">查看条件、摆家具、画路线。<br>在手机上，也能完成一份整屋委托。</p>
-      </div>
-      <figure class="mobile-screen"><img src="../assets/works/arright/mobile.jpg" width="393" height="1774" alt="arright 手机界面：房间条件、整屋平面图、家具选择和验收操作依次排列" loading="lazy" decoding="async"></figure>
-    </section>
-    <div class="project-reflection">
-      <div><h3>为什么做</h3><p>我想把家居布置变成真正需要判断的游戏：放得下还不够，还要用得了、彼此照应、走得通。</p></div>
-      <div><h3>从中学到</h3><p>我学会把模糊的“舒服”拆成可验证的条件，再让规则、关卡与手机操作围绕同一套判断工作。</p></div>
-    </div>
-  </main>
-</body>
-</html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Arright：从美式海报数独走向空间关系推理。真实原型、设计取舍与原生开发版。"><title>Arright — 蔡正阳</title>
+<script src="../assets/i18n-main.js?v=project-starts-20261030"></script><script src="../assets/i18n-cases.js?v=project-reflection-20261028"></script>
+<script src="../assets/arright-project-context-i18n.js?v=arright-case-20261030"></script><script src="../assets/i18n.js?v=bilingual-20261023"></script><script src="../assets/theme.js?v=active-chrome-20261026"></script>
+<link rel="stylesheet" href="../assets/theme.css?v=project-starts-20261030"><link rel="stylesheet" href="../assets/ambient-field.css?v=tidal-led-20261024"><script defer src="../assets/ambient-field.js?v=tidal-led-20261024"></script>
+<link rel="stylesheet" href="../assets/page-snap.css?v=adaptive-contrast-20261027"><script defer src="../assets/page-snap.js?v=content-bead-rail-20261027"></script>
+<link rel="stylesheet" href="../assets/media-corners.css?v=image-back-layer-20261027"><link rel="stylesheet" href="../assets/video-detail.css?v=video-preview-detail-20261026"><script defer src="../assets/video-detail.js?v=video-preview-detail-20261026"></script><script defer src="../assets/media-corners.js?v=image-back-layer-20261027"></script>
+<link rel="stylesheet" href="../assets/media-view-only.css?v=view-only-media-20261026"><script defer src="../assets/media-view-only.js?v=view-only-media-20261026"></script>
+<link rel="stylesheet" href="../assets/editorial-hierarchy.css?v=stepped-type-20261026"><link rel="stylesheet" href="../assets/project-overview.css?v=project-starts-20261030"><link rel="stylesheet" href="../assets/project-reflection.css?v=project-reflection-20261028">
+<link rel="stylesheet" href="../assets/arright-case.css?v=arright-case-20261030"><link rel="stylesheet" href="../assets/arright-rule-demo.css?v=arright-case-20261030"><script defer src="../assets/arright-rule-demo.js?v=arright-case-20261030"></script><script defer src="../assets/arright-case.js?v=arright-case-20261030"></script>
+<link rel="stylesheet" href="../assets/wide-screen.css?v=large-display-20261029" media="(min-width:1801px)"><script defer src="../assets/project-dates.js?v=project-starts-20261030"></script></head>
+<body class="arright-case"><main class="wrap arright-wrap">
+<header class="arright-cover portfolio-snap-page portfolio-snap-cover" id="arright">
+<div class="cover-copy"><h1>Arright</h1><p class="cover-intro">让物品各得其所，
+让一个空间成立。</p>
+<dl class="project-overview"><div class="project-start-row" hidden><dt>开始时间</dt><dd><time data-project-start="arright"></time></dd></div><div><dt>负责事项</dt><dd>独立游戏。我构思玩法、设计关卡与界面，借助 AI 完成网页原型和原生实现。</dd></div><div><dt>进度</dt><dd>原生本地开发版 0.2.0（2）；家装 12 题、花园 6 题、工厂 4 题。尚未上架。</dd></div></dl>
+<div class="case-actions"><a class="text-link" href="#relationships">转一把椅子，看看规则 <span aria-hidden="true">↓</span></a><a class="text-link" href="../assets/works/arright/play/index.html" target="_blank" rel="noopener">试玩历史网页原型 <span aria-hidden="true">↗</span></a></div></div>
+<div class="cover-art"><div class="cover-phones"><figure class="native-shot"><img class="" src="../assets/works/arright/native/home-restored-air.webp" alt="Arright 0.2.0 美式海报首页与五枚邮票" loading="eager" decoding="async" fetchpriority="high" width="1260" height="2736"></figure><figure class="native-shot"><img class="" src="../assets/works/arright/native/home-C04-demonstration-air.webp" alt="Arright 0.2.0 家装 C04 客厅聚焦与示范布局" loading="eager" decoding="async" fetchpriority="high" width="1260" height="2736"></figure></div><p class="caption">0.2.0 · iPhone Air 模拟器 · 示范布局</p></div>
+</header><section class="case-page origin-page portfolio-snap-page" id="voice"><div class="section-heading"><h2>风格从画面，进入操作</h2><p>起点是极简数独；后来的另一条分支，逐渐长出美式海报、旧报纸广告、版画与手绘痕迹。</p></div>
+<div class="origin-comparison"><figure class="origin-minimal"><img class="" src="../assets/works/arright/../sudoku/visual/board-study.png" alt="独立作品 Sudoku by BinG 的极简白色盘面" loading="lazy" decoding="async" width="1320" height="2868"><figcaption>极简数独 · 独立作品 <a href="sudoku.html">查看案例 ↗</a></figcaption></figure>
+<div class="origin-statement"><blockquote>“我的风格非常重要，我的风格是美式的海报风格。”</blockquote><p>衬线标题与广告版画，也进入卷纸翻页、邮票入口、设置抽屉和档案翻牌。</p></div>
+<figure class="origin-poster"><img class="" src="../assets/works/arright/history/poster-sudoku-20261012.webp" alt="2026年10月12日原海报数独阶段的真实模拟器首页" loading="lazy" decoding="async" width="1206" height="2622"><figcaption>海报数独阶段 · 2026.10.12 模拟器</figcaption></figure></div></section><section class="case-page garden-page portfolio-snap-page" id="garden"><div class="section-heading"><h2>从填满数字，到安排关系</h2><p>最早的园艺方案仍依附数独：1–8 是八种工具，9 是花果，完成行、列、宫推动生长。后来，盘面开始留空，植物、水井与树荫成为推理对象。</p></div>
+<div class="garden-evolution"><figure class="garden-web"><img class="" src="../assets/works/arright/history/garden-web-20260920.webp" alt="2026年9月20日关系花园网页原型，六株植物与树荫条件" loading="lazy" decoding="async" width="1185" height="988"><figcaption>关系花园网页原型 · 2026.09.20</figcaption></figure>
+<div class="garden-native"><div class="garden-history-control" role="group" aria-label="花园阶段"><button type="button" data-garden-stage="growth" aria-pressed="true">曾经的成长</button><button type="button" data-garden-stage="current" aria-pressed="false">当前花园</button></div><figure id="garden-growth"><img class="" src="../assets/works/arright/history/garden-growth-20261006.webp" alt="2026年10月6日旧花园原生模拟器中的成长状态" loading="lazy" decoding="async" width="1206" height="2622"><figcaption>旧阶段成长状态 · 2026.10.06 模拟器</figcaption></figure><figure id="garden-current" hidden><img class="" src="../assets/works/arright/native/garden-F01-from-picker-air.webp" alt="当前0.2.0花园F01题面，空盘与植物选择" loading="lazy" decoding="async" width="1260" height="2736"><figcaption>当前 F01 · 0.2.0 模拟器</figcaption></figure></div></div>
+<div class="garden-judgment"><h3>井多，并不一定更难</h3><p>试玩推翻了直接按井数分档的想法。可解性、唯一性先交给求解器；耗时、操作与主观评分留给隐藏难度的试玩。场地大小、宫形与植物特性继续作为变量探索，尚未完成玩家难度标定。</p><p class="caption">成长曾进入旧阶段实现；当前版本不代表完整保留三阶段成长。</p></div></section><section class="case-page home-page portfolio-snap-page" id="home"><div class="section-heading"><h2>住宅，让规则有了生活依据</h2><p>2026.10.11，从“排列、排对”确定 Arright。两天后，对花园与 Murdoku 相似的担忧推动了家装方向：家具的占地、朝向、使用区、门窗和相互关系，都成为条件。</p></div>
+<div class="plan-evolution"><div class="plan-stage-list" role="group" aria-label="住宅原型演变"><button type="button" data-plan="P04" aria-pressed="true"><span>P04</span><b>每一格，都有用</b><small>16 格紧凑小屋</small></button><button type="button" data-plan="P06" aria-pressed="false"><span>P06</span><b>家，不必方正</b><small>87 格 · 玄关与折线走廊</small></button><button type="button" data-plan="P07" aria-pressed="false"><span>P07</span><b>家具彼此照应</b><small>客厅 · 桌椅与门窗关系</small></button><button type="button" data-plan="P08" aria-pressed="false"><span>P08</span><b>整屋关系成立</b><small>87 格 · 19 件家具</small></button></div>
+<figure class="plan-visual" id="plan-visual"><img class="" src="../assets/works/arright/plans/P04.svg" alt="P04源数据生成的完整示范布局，家具实体、使用区和验收路线" loading="lazy" decoding="async" width="244" height="242"><figcaption>历史原型源数据生成 · 示范布局，非玩家盲解</figcaption></figure></div>
+<div class="home-principle"><h3>零自然留白</h3><p>每个空格都要属于真实功能空间。试玩暴露了只追求长路线的问题：画过一条线，不能让任意空地自动合法。</p></div></section><section class="case-page rule-page portfolio-snap-page" id="relationships"><div class="section-heading"><h2>椅子应该朝向书桌</h2><p>客厅原型曾为了收窄答案，把椅子朝向窗户。作者在试玩中纠正：家具的使用关系，应该先于为题目添加的限制。</p></div><div class="rule-layout"><blockquote>“我希望规则符合真实生活，不要为了凑题目硬加限制。”</blockquote><div class="arright-rule-demo" id="rule-demo" data-i18n-ignore></div></div></section><section class="case-page shell-page portfolio-snap-page" id="native"><div class="section-heading"><h2>迁回整个界面与交互</h2><p>0.1.0 另建了通用原生界面，规则能跑，风格却没有跟过来。10 月 28 日，0.2.0 直接迁回原美式海报数独的主要界面与操作。</p></div>
+<div class="shell-main"><div class="shell-switch"><div class="stage-controls" role="group" aria-label="原生版本对照"><button type="button" data-shell-version="old" aria-pressed="false">0.1.0</button><button type="button" data-shell-version="restored" aria-pressed="true">0.2.0</button></div><figure id="shell-old" hidden><img class="" src="../assets/works/arright/native/home-0-1.webp" alt="0.1.0另建的通用原生首页，历史模拟器截图" loading="lazy" decoding="async" width="1260" height="2736"></figure><figure id="shell-restored"><img class="" src="../assets/works/arright/native/home-restored-air.webp" alt="0.2.0迁回的美式海报首页，真实模拟器截图" loading="lazy" decoding="async" width="1260" height="2736"></figure><p class="caption">同日原生版本对照 · 2026.10.28 模拟器</p></div>
+<div class="shell-detail"><div class="native-controls" role="group" aria-label="原生交互界面"><button type="button" data-native-shot="new-puzzle-restored-air" aria-pressed="true">选题</button><button type="button" data-native-shot="settings-restored-air" aria-pressed="false">设置</button><button type="button" data-native-shot="settings-name-input-air" aria-pressed="false">姓名输入</button><button type="button" data-native-shot="archive-restored-air" aria-pressed="false">档案</button><button type="button" data-native-shot="awards-real-completion-air" aria-pressed="false">成就</button><button type="button" data-native-shot="guide-restored-air" aria-pressed="false">教程</button><button type="button" data-native-shot="paper-curl-actual-frame-air" aria-pressed="false">卷纸</button></div><figure class="detail-shot"><img class="" src="../assets/works/arright/native/new-puzzle-restored-air.webp" alt="0.2.0 New Puzzle选题抽屉，实际模拟器截图" loading="lazy" decoding="async" width="1260" height="2736"><figcaption id="native-shot-caption">0.2.0 · 选题抽屉 · 模拟器截图</figcaption></figure></div></div>
+<p class="caption shell-limit">五枚邮票、抽屉、翻牌与 Metal 卷纸已经迁入；原插画仍有 Sudoku 与旧报价文字，品牌图文尚未重制完整。卷纸展示为实际捕获帧。</p></section><section class="case-page current-page portfolio-snap-page" id="current"><div class="section-heading"><h2>现在，三组关系</h2></div><div class="current-worlds"><article><figure class="native-shot"><img class="" src="../assets/works/arright/native/home-C04-demonstration-air.webp" alt="当前家装C04客厅示范布局" loading="lazy" decoding="async" width="1260" height="2736"></figure><h3>家装 · 12 题</h3><p>实体、使用区、功能留白与验收动线同时成立。接受不同合法布局。</p></article><article><figure class="native-shot"><img class="" src="../assets/works/arright/native/garden-F01-from-picker-air.webp" alt="当前花园F01空盘题面" loading="lazy" decoding="async" width="1260" height="2736"></figure><h3>花园 · 6 题</h3><p>植物、水与树荫的关系布局。六题均有完整枚举唯一解记录。</p></article><article><figure class="native-shot"><img class="" src="../assets/works/arright/native/factory-T04-demonstration-air.webp" alt="当前工厂T04示范布局，新增试玩方案" loading="lazy" decoding="async" width="1260" height="2736"></figure><h3>工厂 · 4 题</h3><p>机器、检修交接区与固定工序物流。新增试玩方案，仍待作者判断。</p></article></div>
+<div class="current-status"><h3>验证到哪一步</h3><p>10 月 28 日的记录：32 项原生规则／存档测试，以及 iPhone Air、17e 模拟器关键流程通过。尚无本轮实体 iPhone 验证、TestFlight 上传或 App Store 发布。</p></div>
+<p class="caption reflection-draft">项目反思 · 根据迭代记录整理，待作者校准。</p><div class="project-reflection"><div><h3>为什么继续做</h3><p>我想把家居布置变成真正需要判断的游戏：放得下还不够，还要用得了、彼此照应、走得通。</p></div><div><h3>留下的判断</h3><p>我把“规则正确”和“体验成立”分开检查：求解器不能替代试玩，能运行也不等于保留了我想要的交互。</p></div></div>
+<div class="case-end"><a class="text-link" href="../assets/works/arright/play/index.html" target="_blank" rel="noopener">试玩 2026.10.18 网页原型（中文） ↗</a><p class="caption">该网页原型承载家装第一章；与上方 0.2.0 原生版属于不同阶段。</p></div></section></main></body></html>

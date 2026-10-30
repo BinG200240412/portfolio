@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f8f5">
+  <meta name="description" content="arright 点阵玩法实验：不规则整屋中的家具配套、门窗与动线推理，保留零自然留白。">
+  <title>arright — 玩法实验室</title>
+  <link rel="stylesheet" href="./style.css">
+<style>.portfolio-return{display:block;width:fit-content;margin:16px auto;padding:10px 16px;color:#41483c;font:13px monospace;text-decoration:none;min-height:44px}.portfolio-return:focus-visible{outline:2px solid currentColor}</style></head>
+<body><a class="portfolio-return" href="../../../../sections/arright.html">← Arright 作品页 / Back to case</a>
+  <header class="masthead"><a class="wordmark" href="./">arright<span></span></a><span class="edition">PLAY STUDIES / 001—008</span><button id="help-open" class="text-button">怎么玩 ↗</button></header>
+  <main>
+    <section class="intro"><div><p class="eyebrow">THE SPACE BETWEEN THINGS</p><h1>给物品位置，<br>也给生活留白。</h1></div><p class="intro-note">八个可玩的点阵原型。<br>P08：把生活关系，放进一整个家。</p></section>
+    <nav id="cases" aria-label="选择实验"></nav>
+    <section class="workspace">
+      <aside class="brief"><p class="eyebrow" id="case-code"></p><h2 id="case-title"></h2><p id="case-aim" class="case-aim"></p><div id="clues"></div><details class="experiment"><summary>本轮实验规则</summary><p>家具可旋转，不可镜像。使用区之间、使用区与活动区允许共享，通常不能摆家具。P07、P08 的书桌座位区允许放配套书椅；另一格留空，椅背后也要留出抽拉空间。</p><p>路线需经过每件家具的空闲使用区，以及活动区，各经过一格即可。只能横竖连接，不能重走。P08 的“相接”指共享或横竖相邻，不包括隔墙相邻；表达就近使用，不固定哪一行哪一列。</p><p id="space-rule"></p></details></aside>
+      <section class="play-area" aria-label="游戏区域"><div class="board-heading"><span id="floor-label"></span><span id="placed-count"></span></div><div id="coverage" class="coverage" hidden aria-live="polite"></div><div class="board-wrap"><svg id="board" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="点阵房屋棋盘"></svg></div><div class="legend"><span><i class="solid-key"></i>家具</span><span><i class="use-key"></i>使用区</span><span><i class="activity-key"></i>活动区</span><span id="fixed-legend" hidden><i class="fixed-key"></i><span id="fixed-label">固定走廊</span></span><span id="direction-legend" hidden>↗ 家具正面</span><span><i class="route-key"></i>验收路线</span><span id="natural-legend" hidden><i class="natural-key"></i>未分配空格</span></div><p id="notice" role="status" aria-live="polite"></p><div id="result" hidden></div></section>
+      <aside class="tools">
+        <div class="step-label"><span>01</span> 选择 · 摆放</div>
+        <nav id="room-tabs" aria-label="按房间选择家具" hidden></nav>
+        <div id="palette"></div><div class="piece-actions"><button id="rotate">旋转 90° <kbd>R</kbd></button><button id="remove">移回场外</button></div><p id="selection-note" class="selection-note"></p>
+        <div class="step-label route-step"><span>02</span> 画线 · 验收</div><button id="route-mode" class="route-mode">开始画路线 ↗</button><p class="small-note" id="route-help"></p>
+        <button id="inspect" class="primary">验收这个安排 <span>↗</span></button><div class="minor-actions"><button id="undo">撤销</button><button id="clear-route">清除路线</button><button id="reset">重来</button></div>
+        <details class="sample"><summary>卡住了？看一种摆法</summary><p>这是合法示范。验收按公开条件判断，不比对预存位置或路线。</p><button id="sample-layout">只看家具摆法</button><button id="sample-all">看完整示范</button></details>
+      </aside>
+    </section>
+    <footer><span>arright / 玩法草模</span><span>不计错误 · 不排名 · 随时撤销</span><button id="feedback-open" class="text-button">记下试玩感受 ↗</button></footer>
+  </main>
+  <dialog id="help"><form method="dialog"><button class="close" aria-label="关闭说明">×</button></form><p class="eyebrow">A LITTLE ROOM TO THINK</p><h2>先摆，再走一遍。</h2><ol><li>选家具，点方格放下，R 或按钮旋转。整屋题先切换房间；P08 的条件也随房间切换。小箭头表示正面。</li><li>斜线区域通常须留空，可以通行、与其他功能区共享。P07、P08 书桌的两格座位区允许配套书椅占一格，另一格须留空。</li><li>选择活动区，以点击格子为左上角放下，尺寸不能任意扩大。固定走廊或入户区不需要放置。</li><li>P04–P08 要求每格地面都有用途；红圈表示尚未分配，画线不能代替分配。</li><li>书椅贴着桌前沿、朝向书桌，椅背后留一格。窗提供书桌侧向采光，门洞及固定通行区须留空。P08 的“相接”允许共享或横竖相邻，不包括隔墙相邻。</li><li>从起点到终点，经过各空闲使用区、活动区和固定通行区至少一格，不重复走。点击验收查看条件，不比对隐藏答案。</li></ol><p class="small-note">只走横竖相邻空格，不穿家具或墙；不要求走遍全部空格。P05、P06、P08 未完成全局唯一性认证；本系列均未作正式星级难度标定。这是生活逻辑的格点简化，不是施工图或建筑规范。</p></dialog>
+  <dialog id="feedback"><form method="dialog"><button class="close" aria-label="关闭反馈">×</button></form><p class="eyebrow">PLAY NOTES</p><h2>哪一步让你想了一下？</h2><p class="small-note">只保存在此浏览器，不上传。</p><label>你的试玩感受<textarea id="feedback-text" rows="6" placeholder="比如：一直试摆才过 / 为了留出动线，移动了柜子 / 使用区没看清……"></textarea></label><button id="feedback-save" class="primary">保存记录</button></dialog>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

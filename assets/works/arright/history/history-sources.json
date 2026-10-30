@@ -1,0 +1,35 @@
+[
+  {
+    "filename": "poster-sudoku-20261012.webp",
+    "sourceFilename": "after-return-home.png",
+    "stage": "原海报数独原生首页（模拟器）",
+    "date": "2026-10-12",
+    "originalSha256": "bbb44ba8ab4ec5b9917ed51728774f1933a14ac47d7407e3588adb86d8c5f2ea",
+    "originalDimensions": {
+      "width": 1206,
+      "height": 2622
+    }
+  },
+  {
+    "filename": "garden-web-20260920.webp",
+    "sourceFilename": "preview-desktop.png",
+    "stage": "早期关系花园网页原型（浏览器）",
+    "date": "2026-09-20",
+    "originalSha256": "9c5dea9cdc1ef5496a0a2f00e6191545f355a31c513425861c4c15b9acf3764e",
+    "originalDimensions": {
+      "width": 1185,
+      "height": 988
+    }
+  },
+  {
+    "filename": "garden-growth-20261006.webp",
+    "sourceFilename": "03-growth-demo.png",
+    "stage": "旧关系花园成长状态（原生模拟器）",
+    "date": "2026-10-06",
+    "originalSha256": "e81841033f1827d20e40aa41f31c4e9a84d6319bf5dad977f66928aaadb06bf3",
+    "originalDimensions": {
+      "width": 1206,
+      "height": 2622
+    }
+  }
+]

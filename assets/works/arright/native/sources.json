@@ -1,0 +1,98 @@
+[
+  {
+    "file": "home-restored-air.webp",
+    "stage": "0.2.0 (2), iPhone Air simulator, 2026-10-28",
+    "source": "home-restored-air.png",
+    "source_sha256": "7beb2470a5b6245687740999081fd7cbfffae2ec20728bae4f6cd0105f1a922b",
+    "width": 1260,
+    "height": 2736
+  },
+  {
+    "file": "home-C04-demonstration-air.webp",
+    "stage": "0.2.0 (2), iPhone Air simulator, 2026-10-28",
+    "source": "home-C04-demonstration-air.png",
+    "source_sha256": "58890a5e2bda89b06d640a1e18f8434f76ba528258fdb37d86642b0d80046830",
+    "width": 1260,
+    "height": 2736
+  },
+  {
+    "file": "garden-F01-from-picker-air.webp",
+    "stage": "0.2.0 (2), iPhone Air simulator, 2026-10-28",
+    "source": "garden-F01-from-picker-air.png",
+    "source_sha256": "594cfef57af083600bc2f302ca487740b38d7a7bb06211902c61943c62c00922",
+    "width": 1260,
+    "height": 2736
+  },
+  {
+    "file": "factory-T04-demonstration-air.webp",
+    "stage": "0.2.0 (2), iPhone Air simulator, 2026-10-28",
+    "source": "factory-T04-demonstration-air.png",
+    "source_sha256": "9ba553bb38353e1780fff195e8abbc4286c208a63372435a8d3934838f64dc70",
+    "width": 1260,
+    "height": 2736
+  },
+  {
+    "file": "new-puzzle-restored-air.webp",
+    "stage": "0.2.0 (2), iPhone Air simulator, 2026-10-28",
+    "source": "new-puzzle-restored-air.png",
+    "source_sha256": "903c3a28b15da4d8706e184da41205324165da0fe1149a54ff48398ae5ae3065",
+    "width": 1260,
+    "height": 2736
+  },
+  {
+    "file": "settings-restored-air.webp",
+    "stage": "0.2.0 (2), iPhone Air simulator, 2026-10-28",
+    "source": "settings-restored-air.png",
+    "source_sha256": "684b8eeba6ade0a7dd49021315ffca111f7d2b371d02ade6877b17268f786eea",
+    "width": 1260,
+    "height": 2736
+  },
+  {
+    "file": "settings-name-input-air.webp",
+    "stage": "0.2.0 (2), iPhone Air simulator, 2026-10-28",
+    "source": "settings-name-input-air.png",
+    "source_sha256": "8c213787ec296125e248dbde270d49bb9e5fca5efffaa7d5735d5f4a04a621b7",
+    "width": 1260,
+    "height": 2736
+  },
+  {
+    "file": "archive-restored-air.webp",
+    "stage": "0.2.0 (2), iPhone Air simulator, 2026-10-28",
+    "source": "archive-restored-air.png",
+    "source_sha256": "7732238a2479aec1b8069e5a905fa617c8c3f4e75462119c1182f211988e35ce",
+    "width": 1260,
+    "height": 2736
+  },
+  {
+    "file": "awards-real-completion-air.webp",
+    "stage": "0.2.0 (2), iPhone Air simulator, 2026-10-28",
+    "source": "awards-real-completion-air.png",
+    "source_sha256": "23fad8f7ed8704df785cb95fa5ea2f96fada3ecba6370e63e9db50f8c989842c",
+    "width": 1260,
+    "height": 2736
+  },
+  {
+    "file": "guide-restored-air.webp",
+    "stage": "0.2.0 (2), iPhone Air simulator, 2026-10-28",
+    "source": "guide-restored-air.png",
+    "source_sha256": "d29f47ba776fc134612de98a24b7ee27f28fdea4a4f5a706a7a44c5aef0affa9",
+    "width": 1260,
+    "height": 2736
+  },
+  {
+    "file": "paper-curl-actual-frame-air.webp",
+    "stage": "0.2.0 (2), iPhone Air simulator, 2026-10-28",
+    "source": "paper-curl-actual-frame-air.png",
+    "source_sha256": "05563396f5605c708a6480194b0a0d2afcd2760e9648de44245b94de9819dc1b",
+    "width": 1260,
+    "height": 2736
+  },
+  {
+    "file": "home-0-1.webp",
+    "stage": "0.1.0, iPhone Air simulator, 2026-10-28",
+    "source": "Arright-home-air.png",
+    "source_sha256": "1f7a61d87bbce577d2c338aa37864c82b95c65e58594e75eb6899b7dd8b32411",
+    "width": 1260,
+    "height": 2736
+  }
+]
