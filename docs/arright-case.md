@@ -49,3 +49,12 @@ Puzzle data, solver, placement, routes, hint logic and save validation are uncha
 ## Maintenance
 
 Main text remains HTML. The exact-string English dictionary is `assets/arright-project-context-i18n.js`. Selection controls are scoped to `arright-case.js`; the explanatory chair interaction has its own CSS/JS. Shared theme, image viewer, media policy and page snapping remain the portfolio implementations. Seven predeclared `.portfolio-snap-page` sections are registered by the existing Arright branch in `page-snap.js`; no shared file changes are required.
+
+## Verification for this page update
+
+- 320×852, 390×844, 768×1024, 1512×982, 1728×1117, 1920×1080 and 2560×1440: no horizontal overflow in DOM geometry checks. Complete 2560px and mobile page captures were inspected; lazy media was also checked when entering its chapter.
+- Chinese/English and light/dark switching; chair rotation from invalid to desk-facing valid; functional-space toggle; P04/P08 plan selection; 0.1.0/0.2.0 comparison; native page-curl image selection.
+- Image detail and the original top-left return restore the page, focus and native snapping. The same layer sequence was checked in the portfolio iframe.
+- Archived first chapter A01 was manually completed through furniture placement, two-cell route and delivery. Its original test suite was rerun: 1,885 laboratory assertions + 1,250 campaign assertions passed. Ten copied engine/data modules match that tested source byte for byte.
+- Shared media policy verifier and JavaScript syntax checks passed. No error/warning was captured for the case page during the checked interactions.
+- Two reflection paragraphs remain explicitly marked as editorial wording awaiting author review.
