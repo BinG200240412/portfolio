@@ -3,61 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>
-if (!matchMedia('(prefers-reduced-motion: reduce), (forced-colors: active)').matches) {
-  document.documentElement.classList.add('gogo-cover-pending');
-  setTimeout(() => document.documentElement.classList.remove('gogo-cover-pending'), 3000);
-}
+<script data-portfolio-first-paint>
+(() => {
+  const root=document.documentElement, query=new URLSearchParams(location.search);
+  let theme='dark', language='zh';
+  try { theme=localStorage.getItem('portfolio-theme')||theme; language=localStorage.getItem('portfolio-language')||language; } catch (_) {}
+  root.dataset.theme=theme==='light'?'light':'dark'; root.style.colorScheme=root.dataset.theme;
+  const requested=query.get('lang'); if(requested==='zh'||requested==='en')language=requested;
+  root.lang=language==='en'?'en':'zh-CN'; root.dataset.language=language==='en'?'en':'zh';
+  const font=query.get('cjk'); if(font==='plix'||font==='plix-extra')root.dataset.cjkPreview=font;
+})();
 </script>
+<link rel="preload" as="font" type="font/woff2" href="../assets/fonts/PortfolioSlab-Regular.woff2" crossorigin>
+<link rel="stylesheet" href="../assets/theme.css?v=2a7de5fd17">
+<link rel="stylesheet" href="../assets/xr-page.css?v=d1e082e54a">
+<link rel="stylesheet" href="../assets/xr-concept.css?v=592108997c">
+<link rel="stylesheet" href="../assets/xr-scroll-pages.css?v=4871af0b58">
+<link rel="stylesheet" href="../assets/xr-relationship.css?v=482adc9e90">
+<link rel="stylesheet" href="../assets/xr-workflow.css?v=204491e59b">
+<link rel="stylesheet" href="../assets/xr-technical.css?v=f6ade127ef">
+<link rel="stylesheet" href="../assets/xr-place-native.css?v=83fe1e287d">
+<link rel="stylesheet" href="../assets/xr-interaction-native.css?v=514628c682">
+<link rel="stylesheet" href="../assets/xr-experience-pair.css?v=ad88109668">
+<link rel="stylesheet" href="../assets/xr-research-field.css?v=4eb379cf75">
+<link rel="stylesheet" href="../assets/xr-research-pair.css?v=59975714a0">
+<link rel="stylesheet" href="../assets/xr-scene-triggers.css?v=5cf905bdbd">
+<link rel="stylesheet" href="../assets/xr-logic-network.css?v=4ce3f5d15e">
+<link rel="stylesheet" href="../assets/xr-dog-hero.css?v=ad51692038">
+<link rel="stylesheet" href="../assets/ambient-field.css?v=46d61ec273">
+<link rel="stylesheet" href="../assets/page-snap.css?v=b080d0a43e">
+<link rel="stylesheet" href="../assets/media-corners.css?v=8f1ee9eda7">
+<link rel="stylesheet" href="../assets/video-detail.css?v=4dfc0d0f0d">
+<link rel="stylesheet" href="../assets/media-view-only.css?v=899ee04344">
+<link rel="stylesheet" href="../assets/editorial-hierarchy.css?v=932fdd7dc9">
+<link rel="stylesheet" href="../assets/xr-story.css?v=bc7696b2e4">
+<link rel="stylesheet" href="../assets/project-overview.css?v=5e8f1086da">
+<link rel="stylesheet" href="../assets/wide-screen.css?v=faac84ee2a" media="(min-width: 1801px)">
+
+
 <meta name="description" content="狗GO：在良渚遗址公园操控机器狗、完成任务的体验设计。Unity 与 Quest 3 交互原型。">
-<script src="../assets/i18n-main.js?v=project-starts-20261030"></script>
-<script src="../assets/i18n-cases.js?v=woven-process-20261030"></script>
-<script src="../assets/xr-page.js?v=dot-growth-20261027"></script>
-<script src="../assets/xr-story-i18n.js?v=woven-process-20261030"></script>
-<script src="../assets/i18n.js?v=bilingual-20261023"></script>
-<script src="../assets/theme.js?v=active-chrome-20261026"></script>
+<script defer src="../assets/i18n-main.js?v=9cce2dc4b5"></script>
+<script defer src="../assets/i18n-cases.js?v=71b948215d"></script>
+<script defer src="../assets/xr-page.js?v=bcf981a347"></script>
+<script defer src="../assets/xr-story-i18n.js?v=2733d9ca21"></script>
+<script defer src="../assets/i18n.js?v=3094438d9c"></script>
+<script defer src="../assets/theme.js?v=6640566b84"></script>
 <title>狗GO — 良渚遗址公园探索式体验设计</title>
-<link rel="stylesheet" href="../assets/theme.css?v=woven-process-20261030">
-<link rel="stylesheet" href="../assets/xr-page.css?v=large-chapters-20261024">
-<link rel="stylesheet" href="../assets/xr-concept.css?v=grey-snap-20261025">
-<link rel="stylesheet" href="../assets/xr-scroll-pages.css?v=grey-snap-20261025">
-<link rel="stylesheet" href="../assets/xr-relationship.css?v=relation-heading-20261026">
-<link rel="stylesheet" href="../assets/xr-workflow.css?v=dot-growth-fit2-20261027">
-<script defer src="../assets/xr-workflow.js?v=tail-only-arrows-20261027"></script>
-<script defer src="../assets/xr-relationship.js?v=relationship-flow-20261025"></script>
-<link rel="stylesheet" href="../assets/xr-technical.css?v=technical-film-20261025">
-<script defer src="../assets/xr-technical.js?v=reel-motion-20261026"></script>
-<script defer src="../assets/xr-field-gallery.js?v=three-rows-r1-20261029"></script>
-<link rel="stylesheet" href="../assets/xr-place-native.css?v=neutral-materials-20261026">
-<script defer src="../assets/xr-place-native.js?v=native-experience-20261025"></script>
-<link rel="stylesheet" href="../assets/xr-interaction-native.css?v=assembled-scene-20261027">
-<script defer src="../assets/xr-interaction-native.js?v=assembled-scene-20261027"></script>
-<link rel="stylesheet" href="../assets/xr-experience-pair.css?v=dot-growth-20261027">
-<link rel="stylesheet" href="../assets/xr-research-field.css?v=smaller-terrain-20261027">
-<link rel="stylesheet" href="../assets/xr-research-pair.css?v=research-pair-20261026">
-<link rel="stylesheet" href="../assets/xr-scene-triggers.css?v=growing-fragments-20261027">
-<script defer src="../assets/xr-research-field.js?v=growing-fragments-20261027"></script>
-<link rel="stylesheet" href="../assets/xr-logic-network.css?v=neutral-materials-20261026">
-<script defer src="../assets/xr-logic-network.js?v=task-symbols-20261029"></script>
-<link rel="stylesheet" href="../assets/xr-dog-hero.css?v=cover-wordmark-20261025">
-<script src="../assets/xr-dog-matrix.js?v=neutral-materials-20261026" defer></script>
-<script defer src="../assets/vendor/gsap/gsap.min.js"></script>
-<script defer src="../assets/xr-cover-motion.js?v=clean-cover-20261025"></script>
-<link rel="stylesheet" href="../assets/ambient-field.css?v=tidal-led-20261024">
-<script defer src="../assets/ambient-field.js?v=tidal-led-20261024"></script>
-<link rel="stylesheet" href="../assets/page-snap.css?v=adaptive-contrast-20261027">
-<script defer src="../assets/page-snap.js?v=content-bead-rail-20261027"></script>
-<link rel="stylesheet" href="../assets/media-corners.css?v=image-back-layer-20261027">
-<link rel="stylesheet" href="../assets/video-detail.css?v=video-preview-detail-20261026">
-<script defer src="../assets/video-detail.js?v=video-preview-detail-20261026"></script>
-<script defer src="../assets/media-corners.js?v=image-back-layer-20261027"></script>
-<link rel="stylesheet" href="../assets/media-view-only.css?v=view-only-media-20261026">
-<script defer src="../assets/media-view-only.js?v=view-only-media-20261026"></script>
-<link rel="stylesheet" href="../assets/editorial-hierarchy.css?v=stepped-type-20261026">
-<link rel="stylesheet" href="../assets/xr-story.css?v=woven-process-20261030">
-<link rel="stylesheet" href="../assets/project-overview.css?v=composed-copy-20261030">
-<link rel="stylesheet" href="../assets/wide-screen.css?v=large-display-20261029" media="(min-width: 1801px)">
-<script defer src="../assets/project-dates.js?v=project-starts-20261030"></script>
+
+
+
+
+
+
+<script defer src="../assets/xr-workflow.js?v=60704afea2"></script>
+<script defer src="../assets/xr-relationship.js?v=e864d57363"></script>
+
+<script defer src="../assets/xr-technical.js?v=d6d51003c7"></script>
+<script defer src="../assets/xr-field-gallery.js?v=9d40d5e45f"></script>
+
+<script defer src="../assets/xr-place-native.js?v=b1bedecb66"></script>
+
+<script defer src="../assets/xr-interaction-native.js?v=ec6f3cc12a"></script>
+
+
+
+
+<script defer src="../assets/xr-research-field.js?v=7e408bd2b6"></script>
+
+<script defer src="../assets/xr-logic-network.js?v=78b082293e"></script>
+
+<script src="../assets/xr-dog-matrix.js?v=7013dab3c1" defer></script>
+<script defer src="../assets/vendor/gsap/gsap.min.js?v=92bb9a9647"></script>
+<script defer src="../assets/xr-cover-motion.js?v=2512003889"></script>
+
+<script defer src="../assets/ambient-field.js?v=5db5bf9a71"></script>
+
+<script defer src="../assets/page-snap.js?v=f9f68f17e8"></script>
+
+
+<script defer src="../assets/video-detail.js?v=d2de5c7d69"></script>
+<script defer src="../assets/media-corners.js?v=c90e126498"></script>
+
+<script defer src="../assets/media-view-only.js?v=6e9cb46552"></script>
+
+
+
+
+<script defer src="../assets/project-dates.js?v=e6f38734ac"></script>
 </head>
 <body class="gogo-case">
 <main id="gogo-main">

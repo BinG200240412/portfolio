@@ -1,4 +1,37 @@
-(() => {
+/* Offscreen media starts near its section, after the first screen can render.
+ * data-nearby-state records only initialization, not download completion. */
+((target, scriptURL, initialize) => {
+  'use strict';
+  if (!target) return;
+  target.dataset.nearbyState = 'waiting';
+  let navigatedBeforeInit = false;
+  ['wheel', 'touchstart', 'keydown'].forEach(type => addEventListener(type, () => { navigatedBeforeInit = true; }, {once: true, passive: true}));
+  let started = false, observer;
+  function check() {
+    if (started) return;
+    const box = target.getBoundingClientRect();
+    const viewport = window.innerHeight || 800;
+    const lead = viewport * .8;
+    const visible = box.top < viewport && box.bottom >= 0;
+    const approaching = window.scrollY > 8 && box.top < viewport + lead && box.bottom > -lead;
+    // A below-fold section may already lie inside the lookahead on first load.
+    // Keep that work out of the opening; direct links already in view still run.
+    if (!visible && !approaching) return;
+    started = true;
+    observer?.disconnect();
+    ['scroll', 'resize', 'hashchange', 'pageshow'].forEach(type => removeEventListener(type, check));
+    target.dataset.nearbyState = 'started';
+    initialize(scriptURL, navigatedBeforeInit);
+  }
+  if (typeof IntersectionObserver === 'function') {
+    observer = new IntersectionObserver(check, {rootMargin: `${Math.round((window.innerHeight || 800) * .8)}px 0px`});
+    observer.observe(target);
+  }
+  // Geometry checks also provide the fallback when IntersectionObserver is absent.
+  ['scroll', 'resize', 'hashchange', 'pageshow'].forEach(type => addEventListener(type, check, {passive: true}));
+  check();
+})(document.getElementById("visual-archive"), document.currentScript?.src || document.baseURI, (scriptURL, navigatedBeforeInit) => {
+
   'use strict';
   const root = document.getElementById('visual-archive');
   if (!root) return;
@@ -17,7 +50,7 @@
   const next = document.getElementById('archive-next');
   const position = document.getElementById('archive-position');
   const initialHash = location.hash;
-  let userNavigated = false;
+  let userNavigated = navigatedBeforeInit;
   ['wheel', 'touchstart', 'keydown'].forEach(type => addEventListener(type, () => { userNavigated = true; }, {once:true, passive:true}));
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let entries = [], visible = [], active = 'all', current = -1, opener;
@@ -236,4 +269,4 @@
     status.replaceChildren(document.createTextNode(tr('档案暂时未载入，请刷新重试。', 'The archive could not load. Please refresh.')));
     sentinel.hidden = true;
   });
-})();
+});

@@ -1,5 +1,36 @@
 /* Geometry-normalised previews preserve the source SVG paths. */
-(() => {
+/* Offscreen media starts near its section, after the first screen can render.
+ * data-nearby-state records only initialization, not download completion. */
+((target, scriptURL, initialize) => {
+  'use strict';
+  if (!target) return;
+  target.dataset.nearbyState = 'waiting';
+  let started = false, observer;
+  function check() {
+    if (started) return;
+    const box = target.getBoundingClientRect();
+    const viewport = window.innerHeight || 800;
+    const lead = viewport * .8;
+    const visible = box.top < viewport && box.bottom >= 0;
+    const approaching = window.scrollY > 8 && box.top < viewport + lead && box.bottom > -lead;
+    // A below-fold section may already lie inside the lookahead on first load.
+    // Keep that work out of the opening; direct links already in view still run.
+    if (!visible && !approaching) return;
+    started = true;
+    observer?.disconnect();
+    ['scroll', 'resize', 'hashchange', 'pageshow'].forEach(type => removeEventListener(type, check));
+    target.dataset.nearbyState = 'started';
+    initialize(scriptURL);
+  }
+  if (typeof IntersectionObserver === 'function') {
+    observer = new IntersectionObserver(check, {rootMargin: `${Math.round((window.innerHeight || 800) * .8)}px 0px`});
+    observer.observe(target);
+  }
+  // Geometry checks also provide the fallback when IntersectionObserver is absent.
+  ['scroll', 'resize', 'hashchange', 'pageshow'].forEach(type => addEventListener(type, check, {passive: true}));
+  check();
+})(document.getElementById("icon-library"), document.currentScript?.src || document.baseURI, scriptURL => {
+
   'use strict';
   const host = document.getElementById('icon-library');
   if (!host) return;
@@ -287,4 +318,4 @@
       } else { inView = true; updateMotion(); }
     })
     .catch(() => { host.dataset.state = 'error'; loading.textContent = w('failed'); });
-})();
+});

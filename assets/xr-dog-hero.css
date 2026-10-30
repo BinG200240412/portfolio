@@ -10,7 +10,6 @@
 .gogo-cover-panel{position:relative;z-index:1;padding:var(--gogo-frame);background:var(--paper)}
 .gogo-cover-panel::before{content:"";position:absolute;inset:0;z-index:4;border:var(--gogo-frame) solid transparent;border-image-source:var(--gogo-frame-art);border-image-slice:32;border-image-width:1;border-image-repeat:round;pointer-events:none}
 .gogo-cover-panel::after{content:"";position:absolute;inset:var(--gogo-frame);z-index:1;background:linear-gradient(180deg,transparent 42%,color-mix(in srgb,var(--paper) 16%,transparent) 60%,color-mix(in srgb,var(--paper) 70%,transparent) 100%),linear-gradient(270deg,color-mix(in srgb,var(--paper) 58%,transparent),transparent 66%);pointer-events:none}
-.gogo-cover-pending .gogo-cover-panel{visibility:hidden}
 .gogo-hero-photo[data-cover-motion="opening"] .gogo-cover-panel{will-change:transform,opacity}
 .gogo-hero-photo img{width:100%;height:auto;max-height:none;object-fit:contain;object-position:right center}
 .gogo-hero-photo .gogo-zoom{background:none;overflow:hidden}

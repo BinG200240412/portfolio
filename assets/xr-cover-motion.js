@@ -27,9 +27,9 @@
     timeline?.kill();
     started = settled = false;
     figure.dataset.coverMotion = 'pending';
-    gsap.set(panel, { x: innerWidth <= 720 ? 24 : 48, opacity: 0 });
+    gsap.set(panel, { x: innerWidth <= 720 ? 12 : 24, opacity: 1 });
     timeline = gsap.timeline({ paused: true, onComplete: finish });
-    timeline.to(panel, { x: 0, opacity: 1, duration: .9, ease: 'power3.out' }, 0);
+    timeline.to(panel, { x: 0, opacity: 1, duration: .45, ease: 'power3.out' }, 0);
   }
   function sync() {
     if (reduced.matches) { finish(); return; }
@@ -48,7 +48,7 @@
   function loaded() {
     if (ready) return;
     ready = true;
-    if (reduced.matches || !image.naturalWidth) { finish(); return; }
+    if (reduced.matches) { finish(); return; }
     prepare();
     requestAnimationFrame(sync);
   }
@@ -65,6 +65,6 @@
   addEventListener('pagehide', () => { shown = false; timeline?.pause(); });
   addEventListener('pageshow', event => { shown = true; if (event.persisted) finish(); else sync(); });
   image.addEventListener('error', finish, { once: true });
-  if (image.complete) image.decode().catch(() => {}).then(loaded);
-  else image.addEventListener('load', () => image.decode().catch(() => {}).then(loaded), { once: true });
+  // The title and layout are already usable; never wait for the photo to decode.
+  loaded();
 })();

@@ -29,3 +29,10 @@ html[lang="en"] .particle-cover .title{font-size:clamp(60px,9vw,128px);max-width
  .particle-cover .hero-foot .zh{font-size:12px;line-height:1.65;max-width:27em}
  .particle-cover .hero-foot .sub{font-size:9px;margin-top:7px}
 }
+
+/* Full detail refines the usable first scene without covering it or adding copy. */
+.particle-cover .cover-detail-loader{--pixel-loader-size:22px;position:absolute;z-index:3;right:clamp(24px,5vw,76px);bottom:96px;width:44px;height:44px;color:#a6afa2;pointer-events:none}
+.particle-cover .cover-detail-loader[hidden]{display:none}
+.particle-cover .cover-detail-loader button{position:absolute;inset:0;width:44px;height:44px;padding:0;border:0;background:none;color:inherit;cursor:pointer;pointer-events:auto;border-radius:50%}
+.particle-cover .cover-detail-loader button:focus-visible{outline:1px solid var(--cover-accent);outline-offset:2px}
+.particle-cover .cover-detail-loader[data-loading-state="error"]{color:var(--cover-accent)}

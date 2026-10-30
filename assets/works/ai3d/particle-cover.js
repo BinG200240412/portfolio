@@ -10,12 +10,15 @@
   window.PortfolioLoading?.mount(status);
   const assetURL = new URL('liangzhu-village.ply', document.currentScript.src);
   const compressedAssetURL = new URL('liangzhu-village.ply.gz', document.currentScript.src);
+  const previewURL = new URL('liangzhu-village-preview.ply', document.currentScript.src);
+  const compressedPreviewURL = new URL('liangzhu-village-preview.ply.gz', document.currentScript.src);
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const words = {
-    zh: { loading: '正在载入场景', preparing: '正在点亮场景', failed: '场景暂时未能载入。', unavailable: '当前浏览器无法显示三维场景。', lost: '正在恢复场景', retry: '重试', canvas: '可交互的良渚粒子封面。拖动旋转，滚轮、触控板双指滑动或捏合缩放，双击循环切换近景、环绕、俯瞰和远景。也可使用方向键、加减键及数字键 1 至 4。' },
-    en: { loading: 'Loading the scene', preparing: 'Lighting up the scene', failed: 'The scene could not load.', unavailable: '3D rendering is unavailable in this browser.', lost: 'Restoring the scene', retry: 'Retry', canvas: 'Interactive Liangzhu particle cover. Drag to rotate; scroll or pinch to zoom; double-click to cycle close-up, orbit, overhead and wide views. Keyboard: arrows, plus/minus, and 1–4.' }
+    zh: { loading: '正在载入场景', preparing: '正在点亮场景', failed: '场景暂时未能载入。', unavailable: '当前浏览器无法显示三维场景。', lost: '正在恢复场景', retry: '重试', refining: '正在载入完整细节', detailRetry: '重试完整细节', canvas: '可交互的良渚粒子封面。拖动旋转，滚轮、触控板双指滑动或捏合缩放，双击循环切换近景、环绕、俯瞰和远景。也可使用方向键、加减键及数字键 1 至 4。' },
+    en: { loading: 'Loading the scene', preparing: 'Lighting up the scene', failed: 'The scene could not load.', unavailable: '3D rendering is unavailable in this browser.', lost: 'Restoring the scene', retry: 'Retry', refining: 'Loading full detail', detailRetry: 'Retry full detail', canvas: 'Interactive Liangzhu particle cover. Drag to rotate; scroll or pinch to zoom; double-click to cycle close-up, orbit, overhead and wide views. Keyboard: arrows, plus/minus, and 1–4.' }
   };
-  // Full density and zero drift/scatter. Only the camera responds to input.
+  // A small subset appears first; the final scene retains every original point.
+  // Both use identical coordinates, camera and zero drift/scatter.
   // Start at the farthest distance, and retain every view until the next gesture.
   const subject = [0, -.3, 1.85];
   const home = Object.freeze({ yaw: -.035, pitch: .18, distance: 4 });
@@ -30,8 +33,33 @@
   const camera = { ...target };
   let presetIndex = 0, viewName = 'wide';
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
-  const tr = key => words[window.PortfolioI18n?.language === 'en' ? 'en' : 'zh'][key];
+  const tr = key => words[(window.PortfolioI18n?.language || document.documentElement.dataset.language) === 'en' ? 'en' : 'zh'][key];
+  let quality = 'none', fullState = 'idle', hasPresented = false;
   let statusKey = 'loading';
+  // Only the initial load covers the scene. Full detail refines an already
+  // usable preview, with a small LED fan and an accessible retry target.
+  const detailStatus = document.createElement('div');
+  detailStatus.className = 'cover-detail-loader';
+  detailStatus.setAttribute('data-i18n-ignore', '');
+  detailStatus.hidden = true;
+  window.PortfolioLoading?.mount(detailStatus);
+  const detailRetry = document.createElement('button');
+  detailRetry.type = 'button'; detailRetry.hidden = true;
+  detailStatus.appendChild(detailRetry); root.appendChild(detailStatus);
+  function syncDetailStatus() {
+    const loading = fullState === 'loading', failed = fullState === 'error';
+    detailStatus.hidden = !hasPresented || quality === 'full' || (!loading && !failed);
+    detailStatus.dataset.loadingState = failed ? 'error' : 'loading';
+    detailStatus.setAttribute('aria-label', tr(failed ? 'detailRetry' : 'refining'));
+    detailRetry.setAttribute('aria-label', tr('detailRetry'));
+    detailRetry.hidden = !failed;
+    root.dataset.detailState = quality === 'full' ? 'ready' : fullState;
+  }
+  detailRetry.addEventListener('click', event => {
+    event.stopPropagation();
+    if (fullState !== 'error') return;
+    fullState = 'idle'; loadFull('high');
+  });
   function notifyParent(state) {
     if (parent !== window) parent.postMessage({ type: 'portfolio:cover-state', state }, location.origin);
   }
@@ -39,6 +67,7 @@
     canvas.setAttribute('aria-label', tr('canvas'));
     statusLabel.textContent = tr(statusKey);
     retry.textContent = tr('retry');
+    syncDetailStatus();
   }
   function setStatus(key) {
     statusKey = key;
@@ -59,10 +88,12 @@
   const gl = canvas.getContext('webgl', { alpha: false, antialias: false, powerPreference: 'low-power' });
   if (!gl) { setStatus('unavailable'); return; }
   let ready = false, lost = false, onScreen = true, raf = 0, last = 0;
-  let presented = false, presentationFrame = 0, pageShown = true, generation = 0, controller = null;
+  let presented = false, presentationFrame = 0, pageShown = true, generation = 0;
+  let previewController = null, fullController = null;
   let host = null;
   try { host = window.frameElement?.closest('#section') || null; } catch (_) {}
-  const active = () => pageShown && onScreen && !document.hidden && (!host || host.classList.contains('on'));
+  const mayFetch = () => root.isConnected && pageShown && !document.hidden && (!host || host.classList.contains('on'));
+  const active = () => mayFetch() && onScreen;
   let width = 1, height = 1, dpr = 1, frame = 0;
   let points, program, uniforms, buffers = [], shaders = [];
   let dragPointer = null, previousX = 0, previousY = 0;
@@ -99,6 +130,10 @@
     if (end < 0 || !match || !beginning.startsWith('ply\nformat binary_little_endian 1.0\n') || !beginning.includes(properties)) throw new Error('Unsupported Liangzhu PLY layout');
     const count = Number(match[1]), offset = end + 'end_header\n'.length;
     if (!Number.isSafeInteger(count) || count <= 0 || count > 500000 || buffer.byteLength !== offset + count * 16) throw new Error('Invalid Liangzhu point data');
+    const stride = Number(beginning.match(/comment source_stride (\d+)\n/)?.[1]) || 1;
+    const regular = Number(beginning.match(/comment source_regular_count (\d+)\n/)?.[1]) || count;
+    const extrema = (beginning.match(/comment source_extrema ([\d,]*)\n/)?.[1] || '').split(',').filter(Boolean).map(Number);
+    if (stride !== 1 && (regular > count || extrema.length !== count - regular)) throw new Error('Invalid preview source indices');
     const source = new DataView(buffer), bytes = new Uint8Array(buffer);
     const positions = new Float32Array(count * 3), colors = new Uint8Array(count * 4), seeds = new Float32Array(count);
     for (let i = 0; i < count; i++) {
@@ -107,7 +142,8 @@
       if (![x, y, z].every(Number.isFinite)) throw new Error('Invalid point coordinate');
       positions.set([x, -y, z], i * 3);
       colors.set(bytes.subarray(at + 12, at + 16), i * 4);
-      seeds[i] = ((i * 16807) % 2147483647) / 2147483647;
+      const sourceIndex = i < regular ? i * stride : extrema[i - regular];
+      seeds[i] = ((sourceIndex * 16807) % 2147483647) / 2147483647;
     }
     return { count, positions, colors, seeds };
   }
@@ -200,14 +236,18 @@
       // One successful draw must reach the next presentation opportunity before
       // replacing the loading state. Downloads and iframe load are not ready.
       if (!presentationFrame) {
-        const current = generation;
+        const current = generation, paintedPoints = points;
         presentationFrame = requestAnimationFrame(() => {
           presentationFrame = 0;
-          if (current !== generation || !ready || lost || !active() || gl.isContextLost()) return;
-          presented = true; canvas.dataset.ready = 'true';
+          if (current !== generation || paintedPoints !== points || !ready || lost || !active() || gl.isContextLost()) return;
+          presented = true; hasPresented = true; canvas.dataset.ready = 'true';
+          canvas.dataset.quality = quality;
           status.dataset.state = 'ready'; status.dataset.loadingState = 'ready';
           canvas.setAttribute('aria-busy', 'false'); status.hidden = true;
           notifyParent('ready');
+          if (quality === 'full') fullState = 'ready';
+          syncDetailStatus();
+          if (quality === 'preview' && fullState === 'idle') loadFull();
         });
       }
     }
@@ -292,10 +332,27 @@
     event.preventDefault(); keys[event.key]();
     requestRender();
   });
-  const syncActivity = () => { if (active()) requestRender(); else suspend(); };
+  const syncActivity = () => {
+    if (active()) requestRender(); else suspend();
+    if (!mayFetch() && fullController) {
+      fullState = 'paused'; fullController.abort(); fullController = null; syncDetailStatus();
+    } else if (mayFetch() && fullState === 'paused' && quality !== 'full' && (hasPresented || !previewController)) {
+      fullState = 'idle'; loadFull(quality === 'none' ? 'high' : 'low');
+    }
+  };
   document.addEventListener('visibilitychange', syncActivity);
-  addEventListener('pagehide', () => { pageShown = false; suspend(); });
-  addEventListener('pageshow', () => { pageShown = true; syncActivity(); });
+  addEventListener('pagehide', () => {
+    pageShown = false; ++generation;
+    previewController?.abort(); fullController?.abort();
+    previewController = fullController = null;
+    if (quality !== 'full') fullState = 'paused';
+    suspend(); syncDetailStatus();
+  });
+  addEventListener('pageshow', () => {
+    pageShown = true;
+    if (!points && !previewController && !fullController) loadPoints();
+    else syncActivity();
+  });
   if (host) new MutationObserver(syncActivity).observe(host, { attributes: true, attributeFilter: ['class'] });
   reducedMotion.addEventListener('change', requestRender);
   new ResizeObserver(resize).observe(root);
@@ -309,51 +366,91 @@
     event.preventDefault(); lost = true; ready = false; presented = false; suspend();
     // Context restoration invalidates the previous GPU handles. Clear them
     // while the context is lost, before a restored context can delete them.
-    disposeGPU(); uniforms = null; setStatus('lost');
+    hasPresented = false; disposeGPU(); uniforms = null; setStatus('lost');
   });
   canvas.addEventListener('webglcontextrestored', () => {
     lost = false;
-    if (points) prepareScene();
-    else if (controller) setStatus('loading');
+    if (points) installScene(points, quality);
+    else if (previewController || fullController) setStatus('loading');
     else loadPoints();
   });
-  function prepareScene() {
-    if (lost || gl.isContextLost()) { setStatus('lost'); return; }
-    setStatus('preparing'); ready = false; presented = false;
-    try { disposeGPU(); initializeGPU(); ready = true; requestRender(); }
-    catch (error) { console.error('Liangzhu cover:', error); setStatus('unavailable'); }
+  function installScene(nextPoints, nextQuality) {
+    const previous = points, previousQuality = quality;
+    const keepPreview = hasPresented && previous && previousQuality === 'preview';
+    points = nextPoints; quality = nextQuality;
+    if (lost || gl.isContextLost()) { ready = false; setStatus('lost'); return true; }
+    ready = false; presented = false; suspend();
+    if (!hasPresented) setStatus('preparing');
+    try {
+      disposeGPU(); initializeGPU(); ready = true; requestRender(); return true;
+    } catch (error) {
+      console.error('Liangzhu scene:', error); disposeGPU();
+      if (keepPreview && !gl.isContextLost()) {
+        // GPU allocation for full detail may fail on a constrained device.
+        // Restore the already usable preview and keep its camera unchanged.
+        points = previous; quality = previousQuality;
+        try { initializeGPU(); ready = true; requestRender(); return false; }
+        catch (restoreError) { console.error('Liangzhu preview:', restoreError); }
+      }
+      ready = false; setStatus('unavailable'); return false;
+    }
   }
-  async function fetchPoints(url, signal, compressed = false) {
-    const response = await fetch(url, { signal, priority: 'high' });
+  async function fetchPoints(url, signal, compressed = false, priority = 'high') {
+    const response = await fetch(url, { signal, priority });
     if (!response.ok) throw new Error(`PLY request failed: ${response.status}`);
     if (!compressed) return response.arrayBuffer();
     if (!response.body) throw new Error('Compressed point stream is unavailable');
-    // This is the exact original PLY, losslessly packed for transfer. Keep the
-    // existing parser and all point coordinates, order, colors and density.
     const stream = response.body.pipeThrough(new DecompressionStream('gzip'));
     return new Response(stream).arrayBuffer();
   }
+  async function transfer(rawURL, gzipURL, signal, priority) {
+    if (typeof DecompressionStream === 'function') {
+      try { return await fetchPoints(gzipURL, signal, true, priority); }
+      catch (error) {
+        if (signal.aborted || error.name === 'AbortError') throw error;
+      }
+    }
+    return fetchPoints(rawURL, signal, false, priority);
+  }
+  async function loadFull(priority = 'low') {
+    if (quality === 'full' || fullState === 'loading') return;
+    if (!mayFetch()) { fullState = 'paused'; syncDetailStatus(); return; }
+    const current = generation, task = new AbortController();
+    fullController?.abort(); fullController = task;
+    fullState = 'loading'; syncDetailStatus();
+    try {
+      const buffer = await transfer(assetURL, compressedAssetURL, task.signal, priority);
+      if (current !== generation || task.signal.aborted || !root.isConnected) return;
+      const complete = parsePLY(buffer);
+      if (!installScene(complete, 'full')) {
+        fullState = 'error'; syncDetailStatus();
+      }
+    } catch (error) {
+      if (current !== generation || task.signal.aborted || error.name === 'AbortError') return;
+      console.error('Liangzhu detail:', error); fullState = 'error';
+      if (!hasPresented || !points) { ready = false; setStatus('failed'); }
+      syncDetailStatus();
+    } finally { if (fullController === task) fullController = null; }
+  }
   async function loadPoints() {
     const current = ++generation;
-    controller?.abort(); controller = new AbortController();
-    ready = false; presented = false; points = null; suspend(); disposeGPU();
-    setStatus('loading');
+    previewController?.abort(); fullController?.abort();
+    const task = new AbortController(); previewController = task; fullController = null;
+    ready = false; presented = false; hasPresented = false;
+    points = null; quality = 'none'; fullState = 'idle';
+    suspend(); disposeGPU(); setStatus('loading');
     try {
-      let buffer;
-      if (typeof DecompressionStream === 'function') {
-        try { buffer = await fetchPoints(compressedAssetURL, controller.signal, true); }
-        catch (error) {
-          if (current !== generation || controller.signal.aborted || error.name === 'AbortError') throw error;
-          buffer = await fetchPoints(assetURL, controller.signal);
-        }
-      } else buffer = await fetchPoints(assetURL, controller.signal);
-      if (current !== generation) return;
-      setStatus('preparing');
-      points = parsePLY(buffer); prepareScene();
+      const buffer = await transfer(previewURL, compressedPreviewURL, task.signal, 'high');
+      if (current !== generation || task.signal.aborted || !root.isConnected) return;
+      const preview = parsePLY(buffer);
+      if (!installScene(preview, 'preview')) throw new Error('Preview could not be drawn');
     } catch (error) {
-      if (current !== generation || error.name === 'AbortError') return;
-      console.error('Liangzhu cover:', error); ready = false; setStatus('failed');
-    } finally { if (current === generation) controller = null; }
+      if (current !== generation || task.signal.aborted || error.name === 'AbortError') return;
+      // A missing/corrupt small preview must not block the original scene.
+      console.warn('Liangzhu preview:', error);
+      if (!lost && !gl.isContextLost()) { ready = false; setStatus('loading'); }
+      loadFull('high');
+    } finally { if (previewController === task) previewController = null; }
   }
   loadPoints();
 })();

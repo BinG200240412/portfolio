@@ -3,26 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>蔡正阳 — Who am I</title>
-<meta name="description" content="蔡正阳的作品集。独立开发、交互与艺术。">
-<script src="assets/i18n-main.js?v=compact-resume-r2-20261030"></script>
-<script src="assets/i18n-cases.js?v=woven-process-20261030"></script>
-<script src="assets/i18n.js?v=bilingual-20261023"></script>
-<script src="assets/theme.js?v=active-chrome-20261026"></script>
-<script defer src="assets/pixel-loader.js?v=dot-fan-20261025"></script>
-<script defer src="assets/matrix-motifs.js?v=sticker-collage-20261023"></script>
-<script defer src="assets/matrix-symbols.js?v=work-objects-20261023"></script>
-<script defer src="assets/matrix-models.js?v=dog-coordinated-walk-20261029"></script>
-<script defer src="assets/matrix-3d.js?v=quest-native-scan-20261028"></script>
-<script defer src="assets/matrix-project-stickers.js?v=marquee-sudoku-20261027"></script>
-<script defer src="assets/matrix-liangzhu.js?v=hover-reactions-20261027"></script>
-<script defer src="assets/matrix-gorilla.js?v=interactive-objects-20261024"></script>
-<script defer src="assets/matrix-field.js?v=quest-native-scan-20261028"></script>
-<script defer src="assets/about-companion.js?v=portrait-and-companion-20261023"></script>
-<script defer src="assets/ambient-field.js?v=tidal-led-20261024"></script>
-<script defer src="assets/assistant-connection.js?v=assistant-preview-20261024"></script>
-<script defer src="assets/portfolio-assistant.js?v=integrated-voice-20261026"></script>
-<script defer src="assets/title-dot.js?v=quiet-chat-20261025"></script>
+<script data-portfolio-first-paint>
+(() => {
+  const root=document.documentElement, query=new URLSearchParams(location.search);
+  let theme='dark', language='zh';
+  try { theme=localStorage.getItem('portfolio-theme')||theme; language=localStorage.getItem('portfolio-language')||language; } catch (_) {}
+  root.dataset.theme=theme==='light'?'light':'dark'; root.style.colorScheme=root.dataset.theme;
+  const requested=query.get('lang'); if(requested==='zh'||requested==='en')language=requested;
+  root.lang=language==='en'?'en':'zh-CN'; root.dataset.language=language==='en'?'en':'zh';
+  const font=query.get('cjk'); if(font==='plix'||font==='plix-extra')root.dataset.cjkPreview=font;
+})();
+</script>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/PortfolioSlab-Regular.woff2" crossorigin>
 <style>
   :root{
     --mono:"JetBrains Mono","Noto Sans SC",monospace;
@@ -182,25 +174,61 @@
     .cols section{padding:0;border-left:0;border-top:1px solid #e3e3e3;padding-top:28px}
     .cols section:first-child{border-top:0;padding-top:0}}
 </style>
-<link rel="stylesheet" href="assets/theme.css?v=woven-process-20261030">
-<link rel="stylesheet" href="assets/pixel-loader.css?v=dot-fan-20261025">
-<link rel="stylesheet" href="assets/works/ai3d/particle-cover.css?v=dot-fan-20261025">
-<link rel="stylesheet" href="assets/matrix-field.css?v=led-speech-20261027">
-<link rel="stylesheet" href="assets/about.css?v=compact-resume-20261030">
-<link rel="stylesheet" href="assets/ambient-field.css?v=tidal-led-20261024">
-<link rel="stylesheet" href="assets/portfolio-assistant.css?v=integrated-voice-20261026">
-<link rel="stylesheet" href="assets/title-dot.css?v=quiet-chat-20261025">
-<link rel="stylesheet" href="assets/page-snap.css?v=adaptive-contrast-20261027">
-<script defer src="assets/page-snap.js?v=compact-resume-20261030"></script>
-<link rel="stylesheet" href="assets/media-corners.css?v=image-back-layer-20261027">
-<link rel="stylesheet" href="assets/video-detail.css?v=video-preview-detail-20261026">
-<script defer src="assets/video-detail.js?v=video-preview-detail-20261026"></script>
-<script defer src="assets/media-corners.js?v=image-back-layer-20261027"></script>
-<link rel="stylesheet" href="assets/media-view-only.css?v=view-only-media-20261026">
-<script defer src="assets/media-view-only.js?v=view-only-media-20261026"></script>
-<link rel="stylesheet" href="assets/editorial-hierarchy.css?v=stepped-type-20261026">
-<link rel="stylesheet" href="assets/wide-screen.css?v=large-display-20261029" media="(min-width: 1801px)">
-<script defer src="assets/project-dates.js?v=project-starts-20261030"></script>
+<link rel="stylesheet" href="assets/theme.css?v=2a7de5fd17">
+<link rel="stylesheet" href="assets/pixel-loader.css?v=129635cc74">
+<link rel="stylesheet" href="assets/works/ai3d/particle-cover.css?v=cf5a2226e3">
+<link rel="stylesheet" href="assets/matrix-field.css?v=6a32da6f6c">
+<link rel="stylesheet" href="assets/about.css?v=f02057d4d5">
+<link rel="stylesheet" href="assets/ambient-field.css?v=46d61ec273">
+<link rel="stylesheet" href="assets/portfolio-assistant.css?v=618e2470f9">
+<link rel="stylesheet" href="assets/title-dot.css?v=5f0b650f0b">
+<link rel="stylesheet" href="assets/page-snap.css?v=b080d0a43e">
+<link rel="stylesheet" href="assets/media-corners.css?v=8f1ee9eda7">
+<link rel="stylesheet" href="assets/video-detail.css?v=4dfc0d0f0d">
+<link rel="stylesheet" href="assets/media-view-only.css?v=899ee04344">
+<link rel="stylesheet" href="assets/editorial-hierarchy.css?v=932fdd7dc9">
+<link rel="stylesheet" href="assets/wide-screen.css?v=faac84ee2a" media="(min-width: 1801px)">
+
+
+<title>蔡正阳 — Who am I</title>
+<meta name="description" content="蔡正阳的作品集。独立开发、交互与艺术。">
+<script defer src="assets/i18n-main.js?v=9cce2dc4b5"></script>
+<script defer src="assets/i18n.js?v=3094438d9c"></script>
+<script defer src="assets/theme.js?v=6640566b84"></script>
+<script defer src="assets/pixel-loader.js?v=df8d4dfee5"></script>
+<script defer src="assets/matrix-motifs.js?v=4f927e5829"></script>
+<script defer src="assets/matrix-symbols.js?v=7d061cb86c"></script>
+<script defer src="assets/matrix-models.js?v=21aac4ae77"></script>
+<script defer src="assets/matrix-3d.js?v=ba743544a4"></script>
+<script defer src="assets/matrix-project-stickers.js?v=860f1b2d35"></script>
+<script defer src="assets/matrix-liangzhu.js?v=9c49f9691b"></script>
+<script defer src="assets/matrix-gorilla.js?v=9c890bbd95"></script>
+<script defer src="assets/matrix-field.js?v=121e56fac2"></script>
+<script defer src="assets/about-companion.js?v=e982aadfb3"></script>
+<script defer src="assets/ambient-field.js?v=5db5bf9a71"></script>
+<script defer src="assets/assistant-connection.js?v=46fc972fe9"></script>
+<script defer src="assets/portfolio-assistant.js?v=0ace57386e"></script>
+<script defer src="assets/title-dot.js?v=26bd04c324"></script>
+
+
+
+
+
+
+
+
+
+
+<script defer src="assets/page-snap.js?v=f9f68f17e8"></script>
+
+
+<script defer src="assets/video-detail.js?v=d2de5c7d69"></script>
+<script defer src="assets/media-corners.js?v=c90e126498"></script>
+
+<script defer src="assets/media-view-only.js?v=6e9cb46552"></script>
+
+
+<script defer src="assets/project-dates.js?v=e6f38734ac"></script>
 </head>
 <body class="portfolio-shell">
   <canvas id="ambient-page" aria-hidden="true" data-i18n-ignore></canvas>
@@ -212,7 +240,7 @@
     <canvas id="matrix-field" aria-hidden="true"></canvas>
     <button id="gorilla-hit" type="button" class="matrix-gorilla-hit" aria-pressed="false" aria-label="让猩猩的屁股变成红色爱心" data-i18n-ignore hidden></button>
     <div class="caption" id="cap" aria-hidden="true"></div>
-    <div class="line"><span class="text" id="text" data-i18n-ignore></span><button class="dot" id="dot" type="button" aria-label="进入导航" aria-controls="menu" aria-expanded="false" data-i18n-ignore></button></div>
+    <div class="line"><span class="text" id="text" data-i18n-ignore><span class="ch">W</span><span class="ch">h</span><span class="ch">o</span><span class="ch"> </span><span class="ch">a</span><span class="ch">m</span><span class="ch"> </span><span class="ch">I</span><span class="ch"> </span><span class="ch">?</span></span><button class="dot" id="dot" type="button" aria-label="进入导航" aria-controls="menu" aria-expanded="false" data-i18n-ignore></button></div>
     <nav class="menu" id="menu" data-i18n-ignore></nav>
     <div class="hint" id="hint" aria-hidden="true"></div>
   </div>
@@ -244,7 +272,7 @@
         </ul>
       </div>
       <figure class="about-portrait rv">
-        <img src="assets/portraits/caizhengyang-photo-20261024.jpg" alt="蔡正阳" width="1600" height="1746" loading="lazy" decoding="async">
+        <img src="assets/portraits/caizhengyang-preview.webp" data-full-image="assets/portraits/caizhengyang-photo-20261024.jpg" alt="蔡正阳" width="1600" height="1746" loading="lazy" decoding="async">
       </figure>
     </div>
     <div class="about-companion-track" aria-hidden="true" data-i18n-ignore>
@@ -332,7 +360,7 @@ const textEl=$('text'), dotEl=$('dot'), stage=$('stage'), resume=$('resume'),
 const TYPE=130, ERASE=70, wait=ms=>new Promise(r=>setTimeout(r,ms));
 
 /* ---- 打字机引擎 ---- */
-let current="",target="",pumping=false,settlers=[];
+let current=textEl.textContent,target=current,pumping=false,settlers=[];
 function addChar(c){const s=document.createElement('span');s.className='ch';s.textContent=c;textEl.appendChild(s);}
 function delChar(){if(textEl.lastChild)textEl.removeChild(textEl.lastChild);}
 function pump(){if(pumping)return;pumping=true;(async()=>{
@@ -504,17 +532,25 @@ section.addEventListener('load',event=>{if(event.target.matches('iframe'))update
 /* ---- 进板块：极简淡出 ---- */
 /* 原生重建页（可编辑元素，非贴图） */
 const SECTION_PAGE={
-  "茶弦记":"sections/tea.html?v=woven-process-20261030",
-  "arright":"sections/arright.html?v=woven-process-20261030",
-  "数独":"sections/sudoku.html?v=woven-process-20261030",
-  "良渚 · AI 3D":"sections/ai3d.html?v=woven-process-20261030",
-  "良渚 · XR":"sections/xr.html?v=woven-process-20261030",
-  "漂移之屋":"sections/drift.html?v=woven-process-20261030",
-  "千里江山":"sections/qianli.html?v=woven-process-20261030",
-  "设计工具 · Skills":"sections/design-skills.html?v=woven-process-20261030",
+  "茶弦记":"sections/tea.html?v=first-paint-20261030",
+  "arright":"sections/arright.html?v=first-paint-20261030",
+  "数独":"sections/sudoku.html?v=first-paint-20261030",
+  "良渚 · AI 3D":"sections/ai3d.html?v=first-paint-20261030",
+  "良渚 · XR":"sections/xr.html?v=first-paint-20261030",
+  "漂移之屋":"sections/drift.html?v=first-paint-20261030",
+  "千里江山":"sections/qianli.html?v=first-paint-20261030",
+  "设计工具 · Skills":"sections/design-skills.html?v=first-paint-20261030",
   "作品归档":"sections/more.html?v=peer-collections-20261024",
   "练习":"sections/practice.html?v=peer-collections-20261024",
 };
+function createProjectLoading(){
+  if(window.PortfolioLoading)return window.PortfolioLoading.create('');
+  const gate=document.createElement('div');gate.className='pixel-loader';gate.setAttribute('role','status');gate.setAttribute('data-pixel-loader','');gate.setAttribute('data-i18n-ignore','');
+  const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 40 40');svg.setAttribute('class','pixel-loader__fan');svg.setAttribute('aria-hidden','true');
+  const rows=['.............##.....','....##.....######...','..#####....######...','..#####...########..','.#######..########..','.#######.########...','..######.######.....','..##########........','....##########......','......##########....','........##########..','.....######.######..','...########.#######.','..########..#######.','..########...#####..','...######....#####..','...######.....##....','.....##.............'];
+  rows.forEach((row,y)=>[...row].forEach((bead,x)=>{if(bead!=='#')return;const dot=document.createElementNS(ns,'circle');dot.setAttribute('cx',1+x*2);dot.setAttribute('cy',3+y*2);dot.setAttribute('r','.65');svg.appendChild(dot);}));
+  const label=document.createElement('p');label.className='pixel-loader__label';gate.append(svg,label);return gate;
+}
 function updateProjectLoadingLabel(gate=section.querySelector('.project-loading-gate')){
   if(!gate)return;
   const english=window.PortfolioI18n?.language==='en';
@@ -566,12 +602,16 @@ function enterSection(name,fromResume=false,opener=null){
     if (fontPreview) frameURL.searchParams.set("cjk", fontPreview);
     const frame=document.createElement('iframe');
     frame.className='native-frame';frame.title=tr(PROJECT_LABELS[name]||name);frame.loading='eager';frame.allowFullscreen=true;
-    const gate=window.PortfolioLoading.create('');
+    const gate=createProjectLoading();
     gate.classList.add('project-loading-gate');
     gate.dataset.loadingState='loading';
     if(frameURL.pathname.endsWith('/ai3d.html'))gate.dataset.loadingKind='ai3d';
     updateProjectLoadingLabel(gate);
-    frame.addEventListener('load',()=>dismissProjectLoading(frame));
+    frame.addEventListener('load',()=>{
+      const doc=frame.contentDocument;
+      if(!doc||doc.URL==='about:blank'||new URL(doc.URL).pathname!==frameURL.pathname)return;
+      requestAnimationFrame(()=>dismissProjectLoading(frame));
+    });
     frame.addEventListener('error',()=>{
       if(section.querySelector('iframe')!==frame)return;
       gate.dataset.loadingState='error';

@@ -168,7 +168,7 @@
     makeViewer();
     if (viewer.open) return;
     opener = image; feedback.hidden = true;
-    fullImage.alt = label(image); fullImage.src = image.currentSrc || image.src;
+    fullImage.alt = label(image); fullImage.src = image.dataset.fullImage || image.currentSrc || image.src;
     document.documentElement.classList.add('media-detail-open');
     viewer.showModal(); closeButton.focus({ preventScroll: true });
   }

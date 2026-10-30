@@ -1,6 +1,37 @@
 /* Native terrain vertices and edges. Lighting never displaces the mesh;
  * only a deliberate camera gesture changes its projection. */
-(() => {
+/* Offscreen media starts near its section, after the first screen can render.
+ * data-nearby-state records only initialization, not download completion. */
+((target, scriptURL, initialize) => {
+  'use strict';
+  if (!target) return;
+  target.dataset.nearbyState = 'waiting';
+  let started = false, observer;
+  function check() {
+    if (started) return;
+    const box = target.getBoundingClientRect();
+    const viewport = window.innerHeight || 800;
+    const lead = viewport * .8;
+    const visible = box.top < viewport && box.bottom >= 0;
+    const approaching = window.scrollY > 8 && box.top < viewport + lead && box.bottom > -lead;
+    // A below-fold section may already lie inside the lookahead on first load.
+    // Keep that work out of the opening; direct links already in view still run.
+    if (!visible && !approaching) return;
+    started = true;
+    observer?.disconnect();
+    ['scroll', 'resize', 'hashchange', 'pageshow'].forEach(type => removeEventListener(type, check));
+    target.dataset.nearbyState = 'started';
+    initialize(scriptURL);
+  }
+  if (typeof IntersectionObserver === 'function') {
+    observer = new IntersectionObserver(check, {rootMargin: `${Math.round((window.innerHeight || 800) * .8)}px 0px`});
+    observer.observe(target);
+  }
+  // Geometry checks also provide the fallback when IntersectionObserver is absent.
+  ['scroll', 'resize', 'hashchange', 'pageshow'].forEach(type => addEventListener(type, check, {passive: true}));
+  check();
+})(document.getElementById("gogo-research-terrain"), document.currentScript?.src || document.baseURI, scriptURL => {
+
   'use strict';
   const canvas=document.getElementById('gogo-research-terrain');
   if(!canvas)return;
@@ -199,11 +230,12 @@
     }else if(event.key==='Enter'||event.key===' '){event.preventDefault();illuminate(selected<0?Math.floor(ROWS/2)*COLS+Math.floor(COLS/2):selected);}
     else if(event.key.toLowerCase()==='r')resetView();
   });
-  new IntersectionObserver(entries=>{onScreen=entries[0].isIntersecting;sync();},{threshold:.01}).observe(canvas);
+  if(typeof IntersectionObserver==='function')new IntersectionObserver(entries=>{onScreen=entries[0].isIntersecting;sync();},{threshold:.01}).observe(canvas);
+  else onScreen=true;
   new ResizeObserver(resize).observe(shell);
   new MutationObserver(resize).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
   if(dialog)new MutationObserver(sync).observe(dialog,{attributes:true,attributeFilter:['open']});
   if(host)new MutationObserver(sync).observe(host,{attributes:true,attributeFilter:['class']});
   document.addEventListener('visibilitychange',sync);reduced.addEventListener('change',sync);forced.addEventListener('change',()=>{resize();sync();});
   addEventListener('pagehide',()=>{shown=false;sync();});addEventListener('pageshow',()=>{shown=true;sync();});resize();
-})();
+});
