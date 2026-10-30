@@ -4,8 +4,8 @@
   const scriptURL = document.currentScript.src;
   const NS = 'http://www.w3.org/2000/svg', XHTML = 'http://www.w3.org/1999/xhtml';
   const words = {
-    zh: { hint: '拖空白 / 双指横滑浏览 · 捏合缩放 · 拖标题移动节点', fit: '全览', reset: '复位', reader: '原尺寸', loading: '正在展开工作流', error: '工作流暂时无法载入，请刷新重试。', canvas: '可编辑的工作流。空白处左右拖动、触控板双指横滑或触屏横滑浏览。捏合或 Ctrl / Command 加滚动缩放。拖动节点和分组标题可移动；双击看细节。普通纵向滚动继续浏览网页。参数编辑用于展示。' },
-    en: { hint: 'Drag space / swipe sideways · Pinch to zoom · Drag titles to move nodes', fit: 'Overview', reset: 'Reset', reader: 'Reading size', loading: 'Unfolding the workflow', error: 'The workflow could not load. Refresh to retry.', canvas: 'Editable workflow. Drag blank space or swipe sideways to browse. Pinch or Ctrl / Command plus scroll to zoom. Drag node or group titles to move them; double-click to focus. Vertical scrolling continues through the page. Parameter edits are for this visual demonstration.' }
+    zh: { hint: '拖空白 / 双指横滑浏览 · 捏合缩放 · 拖标题移动节点', fit: '全览', reset: '复位', reader: '原尺寸', loading: '正在展开工作流', error: '工作流暂时无法载入，请刷新重试。', preview: '本地换图预览', boundary: '节点图用于展示流程；换图和参数编辑不会执行生成。', canvas: '可编辑的工作流。空白处左右拖动、触控板双指横滑或触屏横滑浏览。捏合或 Ctrl / Command 加滚动缩放。拖动节点和分组标题可移动；双击看细节。普通纵向滚动继续浏览网页。节点图用于展示流程；换图和参数编辑不会执行生成。' },
+    en: { hint: 'Drag space / swipe sideways · Pinch to zoom · Drag titles to move nodes', fit: 'Overview', reset: 'Reset', reader: 'Reading size', loading: 'Unfolding the workflow', error: 'The workflow could not load. Refresh to retry.', preview: 'Local image preview', boundary: 'This node diagram illustrates the workflow; changing images or parameters does not run generation.', canvas: 'Editable workflow. Drag blank space or swipe sideways to browse. Pinch or Ctrl / Command plus scroll to zoom. Drag node or group titles to move them; double-click to focus. Vertical scrolling continues through the page. This node diagram illustrates the workflow; changing images or parameters does not run generation.' }
   };
   document.querySelectorAll('[data-workflow-native]').forEach((host, index) => {
     const uid = `workflow-${host.dataset.workflowNative || index + 1}`;
@@ -28,6 +28,14 @@
     };
     function labels() {
       frame.querySelectorAll('[data-workflow-text]').forEach(e => { e.textContent = tr(e.dataset.workflowText); });
+      frame.querySelectorAll('[data-load-node]').forEach(e=>e.setAttribute('aria-label',tr('preview')));
+      frame.querySelectorAll('[data-workflow-preview-label]').forEach(e=>{e.textContent=tr('preview');});
+      if(data)for(const n of data.nodes)for(const [index,widget] of n.widgets.entries()){
+        if(widget.valueI18n){
+          const input=elements.get(n.id)?.querySelector(`[data-wf-widget-index="${index}"]`);
+          if(input)input.value=widget.valueI18n[window.PortfolioI18n?.language==='en'?'en':'zh'];
+        }
+      }
       svg.setAttribute('aria-label', tr('canvas'));
       if (!loaded) message.textContent = tr('loading');
       else { paintAnnotations(); layout(); }
@@ -101,8 +109,10 @@
     input.setAttribute('class', widget ? `wf-field${String(n.widgets[index].value).length > 20 ? ' wf-field-long' : ''}` : 'wf-text-field');
     input.setAttribute('xmlns', XHTML); input.setAttribute('data-wf-field', String(n.id));
     input.setAttribute('aria-label', `${n.title} #${n.id} · ${widget ? n.widgets[index].label : '文本'}`);
-    input.setAttribute('spellcheck', 'false'); input.value = widget ? n.widgets[index].value : n.text.value;
-    input.addEventListener('input', () => { if (widget) n.widgets[index].value = input.value; else n.text.value = input.value; host.dataset.edited = 'true'; });
+    input.setAttribute('spellcheck', 'false');
+    if(widget)input.setAttribute('data-wf-widget-index',index);
+    input.value = widget ? (n.widgets[index].valueI18n?.[window.PortfolioI18n?.language==='en'?'en':'zh']??n.widgets[index].value) : n.text.value;
+    input.addEventListener('input', () => { if (widget) {n.widgets[index].value = input.value;delete n.widgets[index].valueI18n;} else n.text.value = input.value; host.dataset.edited = 'true'; });
     input.addEventListener('keydown', event => { if (event.key === 'Escape') input.blur(); event.stopPropagation(); });
     f.append(input); parent.append(f);
   }
@@ -137,9 +147,9 @@
     if (n.text) field(e, n, 0, false, { x: n.text.x, y: n.text.y, width: n.text.w, height: n.text.h });
     if (n.file) {
       const fileY = n.file.y ?? 166, previewY = n.file.previewY ?? 224;
-      const button = S('g', { 'data-load-node': n.id, role: 'button', tabindex: 0, 'aria-label': '选择图片，仅在本地预览', style: 'cursor:pointer' });
+      const button = S('g', { 'data-load-node': n.id, role: 'button', tabindex: 0, 'aria-label': tr('preview'), style: 'cursor:pointer' });
       button.append(S('rect', { class: 'wf-upload-surface', x: 24, y: fileY, width: n.w - 48, height: 36, rx: 6 }));
-      label(button, '选择文件上传', n.w / 2, fileY + 26, 'wf-widget-label', { 'text-anchor': 'middle' }); e.append(button);
+      label(button, tr('preview'), n.w / 2, fileY + 26, 'wf-widget-label', { 'text-anchor': 'middle','data-workflow-preview-label':'' }); e.append(button);
       if (uploaded.has(n.id)) e.append(S('image', { href: uploaded.get(n.id), x: 24, y: previewY, width: n.w - 48, height: n.h - previewY - 24, preserveAspectRatio: 'xMidYMid meet' }));
     }
     if (n.preview && !uploaded.has(n.id)) {
@@ -307,8 +317,9 @@
       node(n);host.dataset.edited='true';
     }
     function loadImage(id){
-      const picker=document.createElement('input');picker.type='file';picker.accept='image/*';
-      picker.addEventListener('change',()=>{const file=picker.files[0];if(!file)return;if(uploaded.has(id))URL.revokeObjectURL(uploaded.get(id));uploaded.set(id,URL.createObjectURL(file));const n=nodeById(id);n.widgets[0].value=file.name;node(n);});picker.click();
+      const picker=document.createElement('input');picker.type='file';picker.accept='image/*';picker.hidden=true;host.append(picker);
+      picker.addEventListener('cancel',()=>picker.remove(),{once:true});
+      picker.addEventListener('change',()=>{const file=picker.files[0];picker.remove();if(!file)return;if(uploaded.has(id))URL.revokeObjectURL(uploaded.get(id));uploaded.set(id,URL.createObjectURL(file));const n=nodeById(id);n.widgets[0].value=file.name;delete n.widgets[0].valueI18n;node(n);});picker.click();
     }
     svg.addEventListener('click',event=>{const a=event.target.closest('[data-adjust]'),f=event.target.closest('[data-load-node]');if(a)adjust(a.dataset.adjust);if(f)loadImage(Number(f.dataset.loadNode));});
     svg.addEventListener('keydown',event=>{

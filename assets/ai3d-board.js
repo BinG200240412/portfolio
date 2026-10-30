@@ -32,9 +32,9 @@
       [820,4954,'输出相应风格360度全景图','360° panorama output','#liangzhu-panorama-outputs',2],
       [820,5026,'控制图像比例（全景图比例）','Control the panorama ratio','#liangzhu-panorama-geometry',2],
       [1215,4943,'提示词反推','Scene\ndescription','#liangzhu-scene-understanding',3],
-      [1461,4876,'PANO → CLIP','PANO → CLIP','#liangzhu-scene-understanding',3],
-      [1461,4948,'CLIP → TEXT','CLIP → TEXT','#liangzhu-scene-understanding',3],
-      [1461,5017,'TEXT → PROMPT','TEXT → PROMPT','#liangzhu-scene-understanding',3],
+      [1461,4876,'全景图 → Janus-Pro','Panorama → Janus-Pro','#liangzhu-scene-understanding',3],
+      [1461,4948,'Janus-Pro → 场景描述','Janus-Pro → Scene description','#liangzhu-scene-understanding',3],
+      [1461,5017,'场景描述 → 提示词','Scene description → Prompt','#liangzhu-scene-understanding',3],
       [1828,4943,'MARBLE 模型生成','MARBLE generation','#workflow-four',4],
       [2177,4826,'PANO → 图像输入 → MARBLE','PANO → Image input → MARBLE','#liangzhu-marble-handoff',4],
       [2177,4952,'TEXT → 语义引导 → MARBLE','TEXT → Semantic guidance → MARBLE','#liangzhu-marble-handoff',4],
@@ -56,7 +56,7 @@
       [2510,1774,'第三阶\nKSampler 3','Third pass\nKSampler 3','#liangzhu-sampling',4],
       [2280,1857,'模型选择','Model choice','#liangzhu-lora',5],
       [2072,1964,'大模型\nFlat-2D Animerge V3.0','Base model\nFlat-2D Animerge V3.0','#liangzhu-lora',5],
-      [2383,1964,'LoRA\n自训吉卜力风格场景','LoRA\nTrained Ghibli-style scenes','#liangzhu-lora',5],
+      [2383,1964,'LoRA\n画风控制','LoRA\nStyle control','#liangzhu-lora',5],
     ]
   };
   const element = (tag, attrs = {}) => {
@@ -253,7 +253,7 @@
       ['风格重绘','Repaint'],['以图生图','Img2img'],['良渚实景','Site image'],
       ['锁定结构','Keep shape'],['风格图','Style image'],['全景扩展','360° pano'],
       ['画风一致','Same style'],['360° 全景','360° view'],['2:1 比例','2:1 ratio'],
-      ['提示词反推','Scene text'],['PANO → CLIP','PANO → CLIP'],['CLIP → TEXT','CLIP → TEXT'],['TEXT → PROMPT','TEXT → PROMPT'],
+      ['提示词反推','Scene text'],['全景输入','Panorama'],['Janus-Pro','Janus-Pro'],['场景描述','Scene text'],
       ['Marble 生成','Marble'],['图像输入','Image input'],['语义引导','Text guide'],
       ['三维场景','3D scene']
     ];
@@ -285,7 +285,7 @@
         const fullCopy=english()?en:zh;
         const phoneEnglish={0:'Style',1:'Img →\nimg',5:'Pano',9:'Text',13:'3D'};
         const copy=width<480&&english()&&phoneEnglish[id] ? phoneEnglish[id]
-          : width<480&&id>=10&&id<=12 ? (english()?['Pano','Text','Prompt'][id-10]:['全景图','场景文本','提示词'][id-10])
+          : width<480&&id>=10&&id<=12 ? (english()?['Pano','Janus-Pro','Scene text'][id-10]:['全景图','Janus-Pro','场景描述'][id-10])
           : compactLabels[id][english()?1:0];
         const lines=wrap(copy,textWidth);
         return {id,copy,fullCopy,href,stage,lines,height:Math.max(lineHeight,lines.length*lineHeight)};

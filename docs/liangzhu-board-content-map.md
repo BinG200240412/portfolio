@@ -73,7 +73,7 @@ at the vertical tangent. Dotted frames identify style repainting and
 image-to-panorama above, then prompt derivation and Marble generation below in
 right-to-left order. Each frame has a round-dot leader to its numbered title and links
 to its own chapter. Janus-Pro is Workflow 3; the existing Marble image inputs and
-handoff are Workflow 4. The original three editable ComfyUI graphs remain intact.
+handoff are Workflow 4. The three editable ComfyUI reconstructions remain available; the public display cleanup below records the two omitted text-only nodes in Workflow 1.
 The page-snap registry discovers all four chapter anchors automatically.
 
 All four workflows start with a horizontal, dotted-frame input/process/output sequence.
@@ -103,8 +103,9 @@ font loading or responsive layout changes.
 
 ## Component-side explanations and output windows
 
-The three graph JSON files add bilingual `annotations` metadata. Original
-groups and links remain intact. At the author's request on 2026-10-28, the Janus
+The three graph JSON files add bilingual `annotations` metadata. Apart from the
+public display cleanup recorded below, the reconstructed groups and links are
+preserved. At the author's request on 2026-10-28, the Janus
 instruction is replaced and its text field/node height increased to show the
 full requirements; parameter rows and the two notes move to accommodate it.
 Other original component parameters and positions remain unchanged. The SVG renderer
@@ -133,3 +134,46 @@ crops its neighbours, keeping row height and image proportions fixed. Pointer
 exit returns to equal widths. The two panorama pairs retain the complete 2:1
 images for checking boundaries and aspect ratio. All 30 original image assets
 remain on the page; the prompt-output excerpt reuses the corresponding panorama.
+
+
+## Public display cleanup — 2026-10-30
+
+This pass cleans the website representation; it does not rerun ComfyUI,
+Janus-Pro or Marble, modify the original PNG/PDF board, or establish that the
+reconstructed node data is an executable source project.
+
+- Workflow 1 omits display-only text nodes 89 and 56, their incoming links 19
+  and 20, and their prompt-group memberships. These contained unrelated
+  character/wardrobe/Christmas template output. No replacement landscape output
+  is invented. The remaining graph has 24 nodes, 9 groups and 38 links.
+- Node 12 uses a bilingual functional label, “场景参考图 / Scene reference image”,
+  because the actual input filename has not been verified. Node 51's `1boy`
+  exclusion is cleared; node 7 retains generic image-quality negatives while
+  removing human-anatomy terms. The original Ghibli/gongqijun style trigger and
+  actual CLIP encoder components are preserved.
+- The four-stage overview now names Janus-Pro in full, compact, phone,
+  tooltip and accessible labels. This corrects the overview's former CLIP
+  image-understanding label; it does not remove real CLIP encoders elsewhere.
+- No training logs, exported LoRA weights or training artifacts were found in
+  the inspected Liangzhu source folder or this repository's AI3D assets. The
+  site therefore describes LoRA conditioning and the author's workflow role,
+  without asserting a verified self-training result. This is an evidence limit,
+  not a claim that training never occurred.
+- All three image controls say “本地换图预览 / Local image preview”. A short
+  bilingual boundary statement appears before Workflow 1's node canvas and
+  in each canvas accessible description: changing images or parameters does
+  not execute generation. The renderer owns these translations under the
+  ignored native graph hosts. Local previews use object URLs; a reset clears
+  them. A user-selected filename stays unchanged across language switching.
+- The panorama ratio note distinguishes 2:1 image dimensions from correct
+  equirectangular projection, complete 360° × 180° coverage and a seamless
+  boundary. These require separate inspection. Existing optional seamless/HDR
+  plans and the original Janus text output remain identified as such.
+
+Validation covers all node/port references, link IDs, group memberships and
+annotation owners in the three reconstructions. All remaining original links
+are preserved. The pre-existing reconstructed link 15 uses LIST → STRING;
+this display cleanup does not invent an execution repair. Group dragging and
+reset, local image selection, both languages/themes, and 390, 1512, 1728, 1920
+and 2560 px widths were checked. The latest “负责事项 / 进度” project overview,
+all page image URLs and four workflow chapters remain preserved.

@@ -84,6 +84,7 @@ html[data-theme="dark"] .workflow-native{
 .workflow-bar button::before{content:"";width:3px;height:3px;border-radius:50%;background:var(--wf-edge)}
 .workflow-bar button:hover::before{background:var(--wf-ink)}
 .workflow-bar button:focus-visible{outline:1px dotted var(--wf-edge);outline-offset:4px}
+.workflow-native .workflow-scope-note{width:min(1200px,100%);margin:0 auto 16px;padding:0 clamp(20px,5vw,64px);font-size:var(--editorial-body,18px);line-height:1.6;color:var(--wf-muted)}
 .workflow-message{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--wf-muted);font-size:13px;padding:25px;pointer-events:none}
 .workflow-message[hidden]{display:none}
 @media(max-width:600px){.workflow-native .workflow-bar{align-items:flex-start;gap:8px}.workflow-bar p{max-width:17em!important;font-size:11px!important}.workflow-bar .workflow-buttons{gap:11px}.workflow-bar button{font-size:11px}}

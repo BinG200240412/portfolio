@@ -835,8 +835,8 @@
         "en": "Core geometry · 2:1"
       },
       "copy": {
-        "zh": "2:1 长宽比对应 360° 经度与 180° 纬度。把方形图片直接映射为完整全景，会压缩天顶与地面；生成后还需检查左右边界和地平线是否连续。",
-        "en": "A 2:1 image corresponds to 360° longitude and 180° latitude. Mapping a square as a full panorama distorts the zenith and ground. Check that the left and right edges and horizon connect."
+        "zh": "完整的等距柱状全景采用 2:1 图像覆盖 360° × 180° 视域。只设定长宽比并不保证投影正确、边界无缝或视域完整，还需检查投影方式、左右接缝与地平线。",
+        "en": "A full equirectangular panorama uses a 2:1 image for a 360° × 180° view. The aspect ratio alone does not establish correct projection, seamless edges or complete coverage; check the projection, left/right seam and horizon."
       }
     }
   ]

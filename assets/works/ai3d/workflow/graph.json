@@ -3,7 +3,7 @@
   "width": 7376,
   "height": 3945,
   "source": "Group 2.png",
-  "note": "Editable visual reconstruction from the supplied Figma PNG. Not a runnable ComfyUI workflow. Cropped model names remain ellipsized as in the source; connection routing is reconstructed from visible ports.",
+  "note": "Editable visual reconstruction from the supplied Figma PNG, not a runnable ComfyUI workflow. The public display omits unrelated text-preview nodes 89/56 and their incoming links; character-only tags are removed, and the input image uses a neutral display label. Original PNG/PDF sources remain unchanged. Visible port connections are reconstructed, not execution logs.",
   "colors": {
     "IMAGE": "#79b3f2",
     "MASK": "#82b978",
@@ -1729,8 +1729,6 @@
         86,
         85,
         84,
-        89,
-        56,
         51,
         7
       ]
@@ -1847,9 +1845,13 @@
       "widgets": [
         {
           "label": "图像",
-          "value": "吸猫 | blender - 小红书.webp",
+          "value": "场景参考图",
           "y": 144,
-          "kind": "text"
+          "kind": "text",
+          "valueI18n": {
+            "zh": "场景参考图",
+            "en": "Scene reference image"
+          }
         }
       ],
       "tag": "#12 🦊",
@@ -2272,74 +2274,6 @@
       "tag": "#84 🦊"
     },
     {
-      "id": 89,
-      "title": "展示文本",
-      "x": 1166,
-      "y": 1919,
-      "w": 690,
-      "h": 626,
-      "group": "prompt",
-      "inputs": [
-        {
-          "label": "文本",
-          "type": "STRING",
-          "y": 117
-        }
-      ],
-      "outputs": [
-        {
-          "label": "字符串 ▦",
-          "type": "STRING",
-          "y": 77
-        }
-      ],
-      "widgets": [],
-      "tag": "#89 Custom-Scripts",
-      "text": {
-        "value": "Ghibli style,gongqijun\\(style\\),, 1girl, solo, looking at viewer, smile, open mouth, short hair, blue eyes, skirt, long sleeves, hat, holding, jewelry, standing, full body, white hair, :d, earrings, boots, artist name, blunt bangs, star \\(symbol\\), chibi, sweater, fur trim, beret, brown footwear, facial mark, stuffed toy, white skirt, stuffed animal, box, red headwear, red background, christmas, gift, gift box, holding stuffed toy, pink sweater,",
-        "x": 18,
-        "y": 160,
-        "w": 654,
-        "h": 448,
-        "mono": true
-      },
-      "help": true
-    },
-    {
-      "id": 56,
-      "title": "展示文本",
-      "x": 1162,
-      "y": 2655,
-      "w": 385,
-      "h": 378,
-      "group": "prompt",
-      "inputs": [
-        {
-          "label": "文本",
-          "type": "STRING",
-          "y": 116.5
-        }
-      ],
-      "outputs": [
-        {
-          "label": "字符串 ▦",
-          "type": "STRING",
-          "y": 77
-        }
-      ],
-      "widgets": [],
-      "tag": "#56 Custom-Scripts",
-      "text": {
-        "value": "1girl, solo, looking at viewer, smile, open mouth, short hair, blue eyes, skirt, long sleeves, hat, holding, jewelry, standing, full body, white hair, :d, earrings, boots, artist name, blunt bangs,",
-        "x": 18,
-        "y": 160,
-        "w": 349,
-        "h": 201,
-        "mono": true
-      },
-      "help": true
-    },
-    {
       "id": 51,
       "title": "WD14反推提示词",
       "x": 1622,
@@ -2402,7 +2336,7 @@
         },
         {
           "label": "排除标签",
-          "value": "1boy",
+          "value": "",
           "y": 331,
           "kind": "text"
         }
@@ -2434,7 +2368,7 @@
       "widgets": [],
       "tag": "#7 🦊",
       "text": {
-        "value": "lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry",
+        "value": "lowres, text, error, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry",
         "x": 18,
         "y": 118,
         "w": 621,
@@ -3194,22 +3128,6 @@
       "type": "STRING"
     },
     {
-      "id": 19,
-      "source": 85,
-      "output": 0,
-      "target": 89,
-      "input": 0,
-      "type": "STRING"
-    },
-    {
-      "id": 20,
-      "source": 51,
-      "output": 0,
-      "target": 56,
-      "input": 0,
-      "type": "STRING"
-    },
-    {
       "id": 21,
       "source": 84,
       "output": 0,
@@ -3395,12 +3313,12 @@
       "w": 800,
       "side": "bottom",
       "title": {
-        "zh": "LoRA · 水乡泽国",
-        "en": "LoRA · A waterside settlement"
+        "zh": "LoRA · 画风控制",
+        "en": "LoRA · Style control"
       },
       "copy": {
-        "zh": "训练围绕莫角山夯土台基、干栏式木构与芦苇湿地展开；以青灰水体、葱郁植被和柔光约束场景画风。",
-        "en": "The scene training focuses on Mojiaoshan’s rammed-earth platforms, timber stilt houses and reed wetlands, with blue-grey water, lush vegetation and soft light."
+        "zh": "通过 LoRA 加载器及强度参数调整画风条件，与场景提示词和 ControlNet 结构约束配合。",
+        "en": "Use the LoRA loader and its strength parameters to adjust style conditioning, alongside scene prompts and ControlNet structure constraints."
       }
     },
     {
@@ -3431,8 +3349,8 @@
         "en": "Three sampling passes and latent upscaling"
       },
       "copy": {
-        "zh": "以 Flat-2D Animerge V3.0 与场景 LoRA 确定画风。两次采样之后进行 LatentUpscale，再用第三次采样补充细节。",
-        "en": "Flat-2D Animerge V3.0 and the scene LoRA establish the style. Two sampling passes are followed by LatentUpscale and a final pass to refine detail."
+        "zh": "图中依次组织两次采样、LatentUpscale 和第三次采样，用于分阶段控制重绘与细节；模型选择由对应加载器配置。",
+        "en": "The diagram arranges two sampling passes, LatentUpscale and a final pass for staged repainting and detail control. Model choices are configured in their loaders."
       }
     }
   ]
