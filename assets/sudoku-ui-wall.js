@@ -46,6 +46,7 @@
       }).filter(Boolean)));
     if (!openers.length) return;
 
+    const metadataRequests = new WeakMap();
     const english = () => window.PortfolioI18n?.language === 'en' || /^en\b/i.test(document.documentElement.lang);
     function metadata(record, cloneButton = null) {
       const { button, image } = record;
@@ -55,6 +56,8 @@
       const target = cloneButton || button;
       const targetImage = cloneButton?.querySelector('.sudoku-device-screen, img') || image;
       if (targetImage.getAttribute('src') !== source || targetImage.style.opacity === '0') {
+        const request = (metadataRequests.get(targetImage) || 0) + 1;
+        metadataRequests.set(targetImage, request);
         const fallback = targetImage.currentSrc || record.src;
         // A decode rejection must never leave a real screenshot transparent.
         // Keep a visible frame while the new language variant is loading.
@@ -63,7 +66,9 @@
         const expected = targetImage.src;
         const failed = () => {
           targetImage.removeEventListener('error', failed);
-          if (targetImage.src !== expected) return;
+          // A later switch can reuse this URL (ZH → EN → ZH), so URL equality
+          // alone cannot identify the decode request that still owns the image.
+          if (metadataRequests.get(targetImage) !== request || targetImage.src !== expected) return;
           targetImage.style.opacity = '';
           if (fallback && new URL(fallback, document.baseURI).href !== expected) {
             targetImage.src = fallback;
