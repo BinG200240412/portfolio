@@ -41,7 +41,6 @@
 .gogo-progress-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:42px}
 .gogo-progress-grid h3{font-size:18px!important;line-height:1.5!important;margin-bottom:12px!important}
 .gogo-progress-grid p{color:var(--mid)}
-.gogo-progress-page .project-reflection{margin:0;padding-block:24px}
 @media(max-width:720px){
  .gogo-project-meta{padding-right:22px;gap:20px}
  .gogo-project-meta>div{grid-template-columns:1fr;gap:5px}

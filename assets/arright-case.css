@@ -86,9 +86,6 @@
 .current-worlds article>p{margin-top:14px;color:var(--mid)}
 .current-status{display:grid;grid-template-columns:.75fr 1.25fr;gap:56px;margin-top:58px}
 .current-status>p{color:var(--mid)}
-.arright-case .project-reflection{margin:62px 0 0;padding:0;gap:56px}
-.arright-case .project-reflection h3{font-size:25px!important;line-height:1.35!important;color:var(--ink)}
-.arright-case .project-reflection p{font-size:18px!important;color:var(--mid);line-height:1.75!important;margin-top:18px}
 .case-end{margin-top:46px}
 .case-end>.caption{margin-top:14px;max-width:48em}
 @media(min-width:1801px){
@@ -160,7 +157,6 @@
  .current-worlds article>h3{margin-top:0;align-self:end;font-size:24px}
  .current-worlds article>p{margin:0;align-self:start;font-size:16px!important}
  .current-status{grid-template-columns:1fr;gap:20px;margin-top:46px}
- .arright-case .project-reflection{grid-template-columns:1fr;gap:34px;margin-top:46px}
  .case-end{margin-top:36px}
 }
 @media(max-width:360px){
@@ -171,8 +167,6 @@
 }
 @media(prefers-reduced-motion:reduce){.arright-case *{scroll-behavior:auto!important;transition:none!important}}
 .garden-web img{aspect-ratio:1185/988;object-fit:contain}
-.arright-case .reflection-draft{margin-top:52px}
-.arright-case .reflection-draft+.project-reflection{margin-top:22px}
 /* On a phone, let the work precede the longer project facts. */
 @media(max-width:700px){
  .arright-cover{display:flex;flex-direction:column;align-items:stretch;gap:0}

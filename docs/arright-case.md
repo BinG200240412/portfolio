@@ -13,7 +13,7 @@ Seven reading panels: current work → visual voice → garden mechanisms and di
 - Current native state is **0.2.0 (2)**, a local development build. The native project's `README.md`, `original-shell-migration.md`, `original-shell-verification.md`, `garden-catalog.md` and `factory-mechanics.md` were checked on 30 October.
 - **12 home / 6 garden / 4 factory** puzzles. Only the six garden puzzles claim exhaustive unique-solution validation. Home and factory accept alternative legal layouts. Factory is a new playable proposal awaiting author judgment.
 - **32 native rule/save tests**, plus key iPhone Air/17e simulator flows, refer to the **28 October record**, not a rerun by this portfolio task. No physical iPhone, TestFlight, App Store or player difficulty calibration is claimed.
-- Two closing first-person reflections are editorial drafts derived from documented decisions. The page explicitly marks them for the author's wording review.
+- Motivation and design judgment stay with the documented garden, housing and native-shell iterations. The separate closing reflection draft has been removed to avoid repeating those decisions.
 
 ## Image provenance
 
@@ -57,4 +57,4 @@ Main text remains HTML. The exact-string English dictionary is `assets/arright-p
 - Image detail and the original top-left return restore the page, focus and native snapping. The same layer sequence was checked in the portfolio iframe.
 - Archived first chapter A01 was manually completed through furniture placement, two-cell route and delivery. Its original test suite was rerun: 1,885 laboratory assertions + 1,250 campaign assertions passed. Ten copied engine/data modules match that tested source byte for byte.
 - Shared media policy verifier and JavaScript syntax checks passed. No error/warning was captured for the case page during the checked interactions.
-- Two reflection paragraphs remain explicitly marked as editorial wording awaiting author review.
+- No fixed motivation/learning summary or public reflection-draft banner remains; the source-based decisions stay beside their corresponding prototypes and version comparisons.

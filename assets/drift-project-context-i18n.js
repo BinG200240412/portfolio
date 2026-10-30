@@ -60,3 +60,8 @@ window.PORTFOLIO_CASE_TRANSLATIONS = Object.assign(window.PORTFOLIO_CASE_TRANSLA
   "计划先用 Passthrough + Cube 代替书桌，以头部转动触发漂移并显示偏差读数；": "The first planned test would use passthrough and a cube in place of the desk, triggering drift with head turns and displaying the displacement;",
   "我设想在摘下头显前，让房间恢复原位，再留下一个问题：刚才只是桌子动了几厘米，还是“正常”的感觉也跟着偏移了？我希望借这个结尾追问 AI 与人的关系：当环境持续适应、影响我们，是否可能": "I imagine resetting the room before the headset comes off, then leaving a question: did only the desk move a few centimetres, or did the feeling of normality shift with it? Through this ending, I want to ask whether an environment that continually adapts to and influences us could leave us feeling that"
 });
+
+/* The reasoning sits beside the relevant process, rather than a closing reflection. */
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
+  "我设想让环境在注意力移开时改变，观察体验者何时察觉变化，又会如何重新判断自己的感知。": "I propose changing the environment while attention is elsewhere, then observing when participants notice and how they reconsider their own perception."
+});

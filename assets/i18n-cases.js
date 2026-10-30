@@ -543,25 +543,3 @@ window.PORTFOLIO_CASE_TRANSLATIONS = {
   "时间 · 计数 · 标签": "Time · Counts · Labels",
   "这页只演示「排版/字体/网格/题签」的视觉效果。功能层（按技法评级、教下一步的提示、每日一题、剪报分享）不在这版里。": "This page demonstrates typography, fonts, grid hierarchy and puzzle labels only. Technique-based difficulty, step-by-step hints, daily puzzles and newspaper-clipping sharing are outside this preview."
 };
-
-/* Short first-person reflections: the work itself shows the transferable method. */
-Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
-  "为什么做": "Why I made it",
-  "从中学到": "What I learned",
-  "我想做一款让人安心独立推理的数独：界面安静，卡住时有线索可循，解开时也能把这份专注分享出去。": "I wanted a Sudoku that makes independent reasoning feel calm: a quiet interface, a clue when you get stuck, and a way to share the focus of solving a puzzle.",
-  "从产品定位到原生 iOS 上架与持续维护，我学会把审美判断落到每一次操作中，也学会让辅导停在提示，而不是代答。": "From product direction through native iOS release and maintenance, I learned to carry visual judgment into each interaction, and to stop guidance at a clue rather than an answer.",
-  "我想让良渚的文化线索在行走中被发现。机器狗负责同行与提示，AR 负责把看不见的故事带到眼前。": "I wanted visitors to discover Liangzhu's cultural traces as they walked. The robot dog accompanies and prompts; AR brings unseen stories into view.",
-  "我学会从场地和游客行为出发，把设备动作、空间触发与个人游览记录接成一条体验路径。": "I learned to start with the site and visitor behaviour, then connect device actions, spatial triggers and a personal visit record into one journey.",
-  "我参与茶弦记，是想让点茶从被观看的传统，变成手里真正完成的一件事。": "I joined Tea String Chronicles to turn tea preparation from a tradition people watch into something they can make with their own hands.",
-  "在茶具、动作、节奏与展厅之间反复对照后，我更清楚如何让数字反馈服务真实材料，而不是代替它。": "Working across utensils, gestures, rhythm and exhibition space taught me to make digital feedback support physical materials rather than replace them.",
-  "我想测试生成式图像能否成为空间设计的起点，而不只是一张漂亮的结果图。": "I wanted to test whether generated imagery could begin a spatial design process instead of ending as an attractive image.",
-  "我学会把风格、全景几何和场景理解拆成可检查的步骤；每一步都有输入、输出和验证标准，问题才不会被下一步掩盖。": "I learned to separate style, panorama geometry and scene understanding into steps with clear inputs, outputs and checks, so an error cannot hide in the next stage.",
-  "我想让一幅静止的青绿山水，被声音和触摸重新感知。": "I wanted sound and touch to make a still blue-green landscape felt in a new way.",
-  "在音频、传感器、光纤与灯带之间，我学会从原画提取节奏与色彩，再把它们变成观众能触发的反馈。": "Working with audio, sensors, optical fibres and LEDs taught me to draw rhythm and colour from the painting and turn them into feedback visitors can trigger.",
-  "我想把家居布置变成真正需要判断的游戏：放得下还不够，还要用得了、彼此照应、走得通。": "I wanted arranging a home to become a game of judgment: objects must fit, work in use, relate to one another and leave a walkable route.",
-  "我学会把模糊的“舒服”拆成可验证的条件，再让规则、关卡与手机操作围绕同一套判断工作。": "I learned to turn the vague idea of comfort into testable conditions, then make rules, levels and mobile controls work around the same logic.",
-  "我想追问：当 AI 在人没有察觉的瞬间调整环境，我们还能否相信自己的感知？": "I wanted to ask: if AI changes a space while we are unaware, can we still trust our perception?",
-  "这个概念让我学会先设计观众会经历的错觉，再倒推传感、预测与空间反馈；技术路径也要接受伦理边界的检验。": "This concept taught me to design the visitor's perceptual experience first, then work back to sensing, prediction and spatial feedback, while testing the technical path against ethical limits.",
-  "我不想让每次版画转绘、界面还原和图标描摹都从零开始，于是把反复做的判断整理成可复用的工作流。": "I did not want every print conversion, interface recreation and icon drawing to begin from scratch, so I turned recurring judgments into reusable workflows.",
-  "我学会把审美手感翻译成可检查的步骤，同时保留最后由人决定构图、边缘与尺度的权利。": "I learned to translate visual intuition into checkable steps while keeping final decisions about composition, edges and scale in human hands."
-});

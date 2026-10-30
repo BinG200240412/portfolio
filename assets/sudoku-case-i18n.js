@@ -359,11 +359,7 @@ Object.assign(window.PORTFOLIO_TRANSLATIONS, {
   "从普通的数独初版，到有字形分工与清晰操作层级的原生 App。我负责定位、设计与 AI 辅助开发，完成发布后继续维护。": "From a conventional first version to a native app with distinct typographic roles and a clear interaction hierarchy. I led the product direction, design and AI-assisted development, then continued maintenance after release.",
   "把条件、笔迹与操作分清。": "Separate the givens, the handwriting and the controls.",
   "早期的数字字形较统一。后来用衬线字承载题目，以手写字和信号色区分填写与候选；重新安排工具层级，让阅读与操作围绕盘面展开。": "The early version used more uniform digits. Serif givens and handwritten entries and notes now separate the puzzle from the player’s work. Signal colour and revised tool placement keep reading and action centred on the board.",
-  "从视觉模仿，转向测量与校对。": "From visual imitation to measurement and verification.",
-  "AI 仅凭画面复刻时，位置与细节常有偏差。我把流程写成 Skill：理解 Figma 分组与按钮功能，测量边界和间距，再回到模拟器逐项比对。": "When AI reproduced a screen by sight, positions and details often drifted. I turned the correction process into a Skill: understand Figma groups and button functions, measure bounds and spacing, then compare the result in the simulator.",
   "查看界面还原方法": "Explore the UI reproduction method",
-  "这是一次为自己，也为相似爱好者做产品的尝试。我选择随手玩一局的便利与分享，而不是穷尽专业工具的功能。": "I made this for myself and players with similar habits. I chose the convenience of a casual game and sharing over exhaustive specialist features.",
-  "AI 让我一个人覆盖更多制作环节，质量仍取决于我怎样判断和验证。它也让我相信，受众不大、出于热爱的小作品，值得被认真做出来。": "AI let me cover more of the production myself; quality still depended on my judgement and verification. It also made me believe that small projects, made out of love for a narrow audience, deserve to exist.",
   "产品与体验设计 · 视觉设计 · AI 辅助原生 iOS 开发": "Product & experience design · Visual design · AI-assisted native iOS development"
 });
 Object.assign(window.PORTFOLIO_TRANSLATIONS, {
@@ -427,7 +423,6 @@ Object.assign(window.PORTFOLIO_TRANSLATIONS, {
 
 /* Compact chronological filmstrip. */
 Object.assign(window.PORTFOLIO_TRANSLATIONS, {
-  "从网页原型，到现在。沿着时间，回看界面怎样一步步变得清晰。": "From the web prototype to today. Follow the timeline to see the interface become clearer.",
   "迭代时间轴": "Design timeline",
   "横向浏览历史界面": "Browse archived interfaces horizontally",
   "网页原型": "Web prototype",
@@ -442,4 +437,9 @@ Object.assign(window.PORTFOLIO_TRANSLATIONS, {
   "收拢顶栏入口，把设置与教程组织得更清楚。": "Fewer header entries, clearer settings and a more organised guide.",
   "从整页布局，细化到分享卡的一行对齐。": "From whole-screen layouts to the alignment of a single row in the sharing card.",
   "用字形区分题目与笔迹，把辅助留到需要时。": "Distinct type for givens and handwriting. Assistance appears when needed."
+});
+
+/* The working method sits with the timeline, not in a closing reflection. */
+Object.assign(window.PORTFOLIO_TRANSLATIONS, {
+  "反复口述微调很慢。我先在 Figma 定稿，再把分组测量、原生实现与模拟器校对写成 Skill。": "Repeatedly describing small adjustments was slow. I began finalising the design in Figma, then made group measurements, native implementation and simulator checks into a Skill."
 });

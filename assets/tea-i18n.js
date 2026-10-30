@@ -6,7 +6,6 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
   "我负责主要交互程序、交互设计与体验视觉，并做茶筅动作和屏幕反馈的联动开发。": "I wrote the main interaction code, designed the interactions and experience visuals, and developed the link between tea-whisk movement and on-screen feedback.",
   "网易雷火联合课程，团队共同创作。": "A team project in a joint course with NetEase ThunderFire.",
   "四段游戏原型可试玩，已做过课程现场展示；展厅空间为设计方案。": "The four game prototypes are playable and have been shown at the course exhibition. The exhibition space is a design proposal.",
-  "我把茶筅的转动强度、游戏里的绕圈频率和画面反馈连在一起思考。设计这段交互时，需要同时照顾手里的动作和屏幕里的节奏。": "I considered the whisk’s movement intensity, the game’s circling frequency and visual feedback together. Designing this interaction meant considering both the movement in the hand and the rhythm on screen."
 });
 window.PORTFOLIO_CASE_TRANSLATIONS = Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS || {}, {
   "茶弦记：以宋代点茶为叙事线索，将茶百戏、音游与展厅空间连接的体验设计。": "Tea String Chronicles: an exhibition experience connecting Song dynasty tea preparation, tea foam painting and rhythm games.",
@@ -813,7 +812,7 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
   "停手": "Rest",
   "急拂": "Fast whisking",
   "动作怎样进入游戏": "From motion to game input",
-  "陀螺仪读取转动强度，转换成绕圈频率；动作越急，屏幕中的击拂越快，停手后逐渐回落。": "The gyroscope reads rotational intensity and maps it to a circling rate. Faster motion accelerates virtual whisking; stopping lets it settle.",
+  "我用转动强度来控制绕圈频率：动作越急，屏幕击拂越快；停手后，反馈逐渐回落。": "I use movement intensity to control the circling rate: faster movement speeds up on-screen whisking; stopping lets the feedback settle.",
   "实体接入方案": "Physical input proposal",
   "模块收在柄端套筒内，与真实茶筅一起运动。现有固件输出 USB 串口数据，经电脑转发后可送入游戏。": "A handle sleeve holds the module so it moves with the whisk. The existing firmware sends USB serial data to a computer, which would relay it to the game.",
   "结构与动作映射示意。已有固件与游戏输入接口；套筒装配、串口转发与实体联调待完成。滑杆仅模拟动作强度。": "Assembly and motion-mapping concept. Firmware and a game input interface exist; sleeve fitting, serial relay and physical integration remain to be completed. The slider simulates intensity only."

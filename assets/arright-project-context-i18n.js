@@ -75,10 +75,7 @@ window.PORTFOLIO_CASE_TRANSLATIONS = Object.assign(window.PORTFOLIO_CASE_TRANSLA
   "机器、检修交接区与固定工序物流。新增试玩方案，仍待作者判断。": "Machines, maintenance and handover zones, and a fixed production flow. A new playable proposal awaiting further author judgment.",
   "验证到哪一步": "What has been verified",
   "10 月 28 日的记录：32 项原生规则／存档测试，以及 iPhone Air、17e 模拟器关键流程通过。尚无本轮实体 iPhone 验证、TestFlight 上传或 App Store 发布。": "The 28 October record: 32 native rule/save tests and key flows on iPhone Air and 17e simulators passed. This iteration has no physical-iPhone validation, TestFlight upload or App Store release.",
-  "为什么继续做": "Why keep making it",
-  "我想把家居布置变成真正需要判断的游戏：放得下还不够，还要用得了、彼此照应、走得通。": "I want furnishing a home to become a game of real decisions: things must fit, be usable, work together and leave a way through.",
-  "留下的判断": "The judgment that stays",
-  "我把“规则正确”和“体验成立”分开检查：求解器不能替代试玩，能运行也不等于保留了我想要的交互。": "I check rule correctness and the experience separately: a solver cannot replace playing, and a running build does not guarantee the interactions I intended.",
+
   "试玩 2026.10.18 网页原型（中文）": "Play the 18 Oct 2026 web prototype (Chinese)",
   "该网页原型承载家装第一章；与上方 0.2.0 原生版属于不同阶段。": "The web prototype contains the first home chapter. It is a different stage from the native 0.2.0 build shown above.",
   "花园阶段": "Garden stages",
@@ -87,7 +84,7 @@ window.PORTFOLIO_CASE_TRANSLATIONS = Object.assign(window.PORTFOLIO_CASE_TRANSLA
   "原生交互界面": "Native interaction screens",
   "查看案例 ↗": "View case ↗",
   "试玩 2026.10.18 网页原型（中文） ↗": "Play the 18 Oct 2026 web prototype (Chinese) ↗",
-  "项目反思 · 根据迭代记录整理，待作者校准。": "Project reflection · Drafted from the iteration record; awaiting the author’s wording review.",
+
   "负责事项": "Responsibilities",
   "开始时间": "Started"
 });

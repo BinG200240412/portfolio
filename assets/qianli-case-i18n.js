@@ -223,8 +223,9 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
   "我负责山形与色彩转译、两种交互路线设计，以及木板造型、赋色和光纤点阵制作。": "I translated the mountain forms and colours into two interaction designs, and worked on the wooden forms, painted finishes and optical-fibre matrix.",
   "已做出音光与触摸光两种实体装置，完成对应的灯光互动演示。": "Both physical installations were built, with demonstrations of the music-reactive and touch-responsive lighting.",
   "「千里江山图」的现代演绎": "A Contemporary Interpretation of A Thousand Li of Rivers and Mountains",
-  "为什么做": "Why I made it",
-  "我想让一幅静止的青绿山水，被声音和触摸重新感知。": "I wanted sound and touch to make a still blue-green landscape felt in a new way.",
-  "从中学到": "What I learned",
-  "在音频、传感器、光纤与灯带之间，我学会从原画提取节奏与色彩，再把它们变成观众能触发的反馈。": "Working with audio, sensors, optical fibres and LEDs taught me to draw rhythm and colour from the painting and turn them into feedback visitors can trigger."
+});
+
+/* The reasoning sits beside the relevant process, rather than a closing reflection. */
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
+  "我从山形与青绿设色出发，把画面转成两条互动路线：音乐改变光色，触摸点亮局部光纤。": "Starting from the mountain forms and blue-green palette, I developed two interaction routes: music changes the light and color, while touch lights up groups of optical fibers."
 });

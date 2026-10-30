@@ -45,7 +45,6 @@
 .tea-object-edit p{font-size:18px;max-width:24ch}
 .tea-merch-edit{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
 .tea-counter-edit{width:75%;margin-left:auto!important}
-.tea-case .project-reflection{margin:0}
 .tea-archive .tea-board-grid{margin-top:30px;max-width:800px;gap:40px}
 .tea-archive .tea-board-grid img{max-height:390px}
 .tea-game-viewer{position:fixed;inset:0;width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;padding:0;border:0;background:#0c1113;color:#ede8db;overflow:hidden}
