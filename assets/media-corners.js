@@ -100,19 +100,40 @@
     return `polygon(${points.join(',')})`;
   }
 
-  function size(surface) {
+  const geometry = new WeakMap(), pendingSizes = new Set();
+  let sizeFrame = 0;
+  function measure(surface) {
     const short = Math.min(surface.clientWidth, surface.clientHeight);
-    if (!short) return;
+    if (!short) return null;
     const video = surface.matches('video') || surface.querySelector('video');
     const style = getComputedStyle(surface);
     const padding = Math.min(12, Math.max(parseFloat(style.paddingTop) || 0, parseFloat(style.paddingLeft) || 0));
     const preview = surface.hasAttribute('data-video-preview');
     const radius = video && !preview ? Math.min(10, Math.max(5, short * .035)) : Math.min(short * .15, Math.max(8, Math.min(26, short * .055)) + padding);
     const active = video && !preview ? radius : Math.min(96, short * .34, radius * 3.4);
+    const previous = geometry.get(surface);
+    return previous?.radius === radius && previous?.active === active ? null : {surface, radius, active};
+  }
+  function applyGeometry({surface, radius, active}) {
     surface.style.setProperty('--media-cut', `${radius.toFixed(2)}px`);
     surface.style.setProperty('--media-cut-active', `${active.toFixed(2)}px`);
     surface.style.setProperty('--media-corner-rest', cornerPath([radius, radius, radius, radius]));
     surface.style.setProperty('--media-corner-selected', cornerPath([active, radius, active, radius]));
+    geometry.set(surface, {radius, active});
+  }
+  function flushSizes() {
+    sizeFrame = 0;
+    // Read the whole changed batch before writing any style. Long image pages
+    // must not force layout again between every pair of adjacent photographs.
+    const measured = [...pendingSizes]
+      .filter(surface => surface.isConnected && surfaces.has(surface))
+      .map(measure).filter(Boolean);
+    pendingSizes.clear();
+    measured.forEach(applyGeometry);
+  }
+  function size(surface) {
+    pendingSizes.add(surface);
+    if (!sizeFrame) sizeFrame = requestAnimationFrame(flushSizes);
   }
   const resize = typeof ResizeObserver === 'function' ? new ResizeObserver(entries => entries.forEach(entry => size(entry.target))) : null;
 
@@ -231,7 +252,7 @@
     if (root.nodeType !== 1) return;
     const removed = root.matches('[data-media-corners]') ? [root] : [];
     removed.push(...root.querySelectorAll('[data-media-corners]'));
-    removed.forEach(surface => { resize?.unobserve(surface); surfaces.delete(surface); });
+    removed.forEach(surface => { resize?.unobserve(surface); surfaces.delete(surface); pendingSizes.delete(surface); });
   }
   function init() {
     scan(document.body);

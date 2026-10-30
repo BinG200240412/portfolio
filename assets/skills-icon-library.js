@@ -40,20 +40,20 @@
 
   const words = {
     zh: {
-      loading: '正在读取 SVG 图标库…', failed: '图标库暂时无法读取。请刷新页面重试。',
+      loading: '正在读取 SVG 图标库…', failed: '图标库暂未载入。',
       empty: '还没有可供展示的 SVG。', library: '图标预览', original: 'SVG / 保留原始路径 · #41403D',
       all: '全部', found: n => `${n} 枚图标`, open: name => `放大查看${name}`,
       pause: '暂停动态', play: '播放动态', reduced: '静态展示', movement: '动态图标展示',
       close: '关闭预览', format: '格式', dimensions: '尺寸', filters: '按分类筛选图标',
-      noResults: '这个分类暂时没有图标。',
+      noResults: '这个分类暂时没有图标。', retry: '重试', partial: n => `${n} 枚暂未载入`,
     },
     en: {
-      loading: 'Loading the SVG library…', failed: 'The icon library could not be loaded. Please refresh and try again.',
+      loading: 'Loading the SVG library…', failed: 'The icon catalog could not load.',
       empty: 'There are no SVGs to display yet.', library: 'Icon preview', original: 'SVG / original paths preserved · #41403D',
       all: 'All', found: n => `${n} icons`, open: name => `Preview ${name}`,
       pause: 'Pause motion', play: 'Play motion', reduced: 'Static display', movement: 'Animated icon showcase',
       close: 'Close preview', format: 'Format', dimensions: 'Dimensions', filters: 'Filter icons by category',
-      noResults: 'There are no icons in this category.',
+      noResults: 'There are no icons in this category.', retry: 'Retry', partial: n => `${n} icons unavailable`,
     },
   };
   let language = window.PortfolioI18n?.language === 'en' ? 'en' : 'zh';
@@ -73,7 +73,11 @@
   const loading = el('p', 'il-message', w('loading'));
   loading.setAttribute('role', 'status');
   host.append(loading);
-  let icons = [], categories = [], activeCategory = '';
+  let icons = [], candidates = [], categories = [], activeCategory = '';
+  const cards = new Map(), filterButtons = new Map(), failures = new Map(), requests = new Map();
+  let queue = [], catalogReady = false, catalogFailed = false, pageShown = true, uiMounted = false;
+  let renderTimer = 0, lastRender = 0, nearHost = true, hostFrame = null;
+  try { hostFrame = window.frameElement?.closest('#section') || null; } catch (_) {}
   let openIcon = null, opener = null;
   const artworkCache = new Map();
   let userPaused = false, inView = false;
@@ -127,10 +131,12 @@
     updateMotion();
   });
 
-  async function prepareArtwork(icon, stage) {
-    const response = await fetch(icon.src);
+  async function prepareArtwork(icon, stage, signal) {
+    const response = await fetch(icon.src, {signal, priority:'low'});
     if (!response.ok) throw new Error(`SVG ${response.status}`);
-    const parsed = new DOMParser().parseFromString(await response.text(), 'image/svg+xml');
+    const text = await response.text();
+    if (signal.aborted || !host.isConnected) throw new DOMException('Aborted', 'AbortError');
+    const parsed = new DOMParser().parseFromString(text, 'image/svg+xml');
     const source = parsed.documentElement;
     if (source.localName !== 'svg' || parsed.querySelector('parsererror')) throw new Error('Invalid SVG');
     const svg = document.importNode(source, true);
@@ -150,6 +156,7 @@
     const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     while (svg.firstChild) group.append(svg.firstChild);
     svg.append(group);
+    if (!stage.isConnected) host.append(stage);
     stage.append(svg);
     // The parent group's box includes each path's existing transform. Source
     // canvas margins no longer determine how large the visible icon appears.
@@ -163,7 +170,7 @@
     svg.dataset.inkBounds = [bounds.x, bounds.y, bounds.width, bounds.height].map(value => Number(value.toFixed(6))).join(' ');
     svg.dataset.normalized = 'true';
     svg.remove();
-    artworkCache.set(icon.id, svg);
+    return svg;
   }
 
   const displayArtwork = icon => artworkCache.get(icon.id).cloneNode(true);
@@ -173,9 +180,14 @@
     // Each loop half must cover the viewport, including on wide monitors.
     // The 64px cell width is a conservative minimum; gaps add more coverage.
     const copies = rows.map(row => Math.max(1, Math.ceil(document.documentElement.clientWidth / Math.max(64, row.length * 64))));
-    const layout = copies.join(':');
+    const layout = icons.map(icon => icon.id).join(',') + '|' + copies.join(':');
     if (ribbons.dataset.layout === layout) return;
     ribbons.dataset.layout = layout;
+    const phases = [...ribbons.querySelectorAll('.il-ribbon-track')].map(track => {
+      const animation = track.getAnimations?.()[0];
+      const duration = Number(animation?.effect?.getComputedTiming().duration);
+      return duration > 0 ? Number(animation.currentTime || 0) % duration / duration : 0;
+    });
     ribbons.replaceChildren();
     rows.forEach((row, index) => {
       if (!row.length) return;
@@ -195,48 +207,55 @@
       }
       ribbon.append(track);
       ribbons.append(ribbon);
+      const animation = track.getAnimations?.()[0];
+      const duration = Number(animation?.effect?.getComputedTiming().duration);
+      if (animation && duration > 0) animation.currentTime = (phases[index] || 0) * duration;
     });
   }
 
   function renderFilters() {
-    filters.replaceChildren();
-    const makeFilter = (key, label, count) => {
-      const item = button('il-filter', () => {
-        activeCategory = key;
-        renderFilters();
-        renderGrid();
-        // Keep keyboard position after the filter buttons are rebuilt.
-        [...filters.children].find(child => child.dataset.category === key)?.focus({ preventScroll: true });
-      });
-      item.dataset.category = key;
+    const definitions = [['', w('all'), icons.length], ...categories.map(category => {
+      const matches = icons.filter(icon => icon.category === category);
+      const source = candidates.find(icon => icon.category === category);
+      return [category, categoryOf(source), matches.length];
+    })];
+    definitions.forEach(([key, label, count], index) => {
+      let item = filterButtons.get(key);
+      if (!item) {
+        item = button('il-filter', () => {
+          activeCategory = key; renderFilters(); renderGrid();
+        });
+        item.dataset.category = key;
+        item.append(el('span'), el('span', 'il-filter-count'));
+        filterButtons.set(key, item);
+      }
       item.setAttribute('aria-pressed', String(activeCategory === key));
-      item.append(el('span', '', label), el('span', 'il-filter-count', String(count)));
-      filters.append(item);
-    };
-    makeFilter('', w('all'), icons.length);
-    categories.forEach(category => {
-      const items = icons.filter(icon => icon.category === category);
-      makeFilter(category, categoryOf(items[0]), items.length);
+      if (item.firstChild.textContent !== label) item.firstChild.textContent = label;
+      if (item.lastChild.textContent !== String(count)) item.lastChild.textContent = String(count);
+      if (filters.children[index] !== item) filters.insertBefore(item, filters.children[index] || null);
     });
   }
 
   function renderGrid() {
-    grid.replaceChildren();
-    const visible = visibleIcons();
+    const visible = visibleIcons(), desired = new Set();
     total.textContent = w('found', visible.length);
-    if (!visible.length) { grid.append(el('p', 'il-message', w('noResults'))); return; }
-    visible.forEach(icon => {
-      const card = el('article', 'il-card');
-      card.dataset.iconId = icon.id;
-      const open = button('il-card-open', () => openDetails(icon, open));
+    visible.forEach((icon, index) => {
+      let card = cards.get(icon.id);
+      if (!card) {
+        card = el('article', 'il-card'); card.dataset.iconId = icon.id;
+        const open = button('il-card-open', () => openDetails(icon, open));
+        const picture = el('span', 'il-card-picture'); picture.append(displayArtwork(icon));
+        open.append(picture, el('span', 'il-card-title')); card.append(open);
+        cards.set(icon.id, card);
+      }
+      const open = card.querySelector('.il-card-open'), title = card.querySelector('.il-card-title');
       open.setAttribute('aria-label', w('open', nameOf(icon)));
-      const picture = el('span', 'il-card-picture');
-      picture.append(displayArtwork(icon));
-      const title = el('span', 'il-card-title', nameOf(icon));
-      open.append(picture, title);
-      card.append(open);
-      grid.append(card);
+      if (title.textContent !== nameOf(icon)) title.textContent = nameOf(icon);
+      desired.add(card);
+      if (grid.children[index] !== card) grid.insertBefore(card, grid.children[index] || null);
     });
+    [...grid.children].forEach(child => { if (!desired.has(child)) child.remove(); });
+    if (!visible.length && !queue.length && !requests.size) grid.append(el('p', 'il-message', w('noResults')));
   }
 
   function openDetails(icon, source) {
@@ -259,7 +278,7 @@
   }
 
   function updateMotion() {
-    host.classList.toggle('il-animation-paused', userPaused || reducedMotion.matches || !inView || document.hidden || dialog.open);
+    host.classList.toggle('il-animation-paused', userPaused || reducedMotion.matches || !inView || !pageShown || document.hidden || dialog.open || (hostFrame && !hostFrame.classList.contains('on')));
     motionButton.disabled = reducedMotion.matches;
     motionButton.textContent = reducedMotion.matches ? w('reduced') : userPaused ? w('play') : w('pause');
     motionButton.setAttribute('aria-pressed', String(userPaused || reducedMotion.matches));
@@ -277,45 +296,138 @@
     updateMotion();
   }
 
+  const measureStage = el('div', 'il-measure-stage');
+  measureStage.setAttribute('aria-hidden', 'true');
+  const loadStatus = el('div', 'il-loading-status page-width');
+  const retry = button('il-text-button', () => {
+    if (catalogFailed) { catalogFailed = false; updateLoadStatus(); loadCatalog(); return; }
+    for (const icon of failures.values()) if (!queue.some(item => item.id === icon.id) && !requests.has(icon.id)) queue.push(icon);
+    failures.clear(); syncLoading();
+  });
+  loadStatus.append(loading, retry);
+  host.append(loadStatus);
+
+  function mayLoad() {
+    return host.isConnected && pageShown && nearHost && !document.hidden &&
+      (!hostFrame || hostFrame.classList.contains('on'));
+  }
+  function updateLoadStatus() {
+    const pending = queue.length + requests.size;
+    const failed = failures.size;
+    host.dataset.count = String(icons.length);
+    host.dataset.normalizedCount = String(artworkCache.size);
+    host.dataset.pendingCount = String(pending);
+    host.dataset.failedCount = String(failed);
+    host.dataset.state = catalogFailed || (catalogReady && !pending && !icons.length && failed) ? 'error'
+      : !catalogReady || pending ? 'loading' : failed ? 'partial' : icons.length ? 'ready' : 'empty';
+    host.dataset.loadingState = (pending || !catalogReady) && !mayLoad() ? 'paused' : pending || !catalogReady ? 'loading' : failed || catalogFailed ? 'error' : 'ready';
+    loading.textContent = catalogFailed ? w('failed') : failed ? w('partial', failed)
+      : !catalogReady || pending ? w('loading') : !icons.length ? w('empty') : '';
+    retry.textContent = w('retry');
+    retry.hidden = !failed && !catalogFailed;
+    loadStatus.hidden = host.dataset.state === 'ready';
+  }
+  function renderLoaded() {
+    lastRender = performance.now();
+    if (!host.isConnected) return;
+    renderRibbons(); renderFilters(); renderGrid(); updateMotion(); updateLoadStatus();
+  }
+  function scheduleRender() {
+    if (renderTimer || !host.isConnected) return;
+    // Coalesce arrivals instead of rebuilding ribbons once for every response.
+    renderTimer = setTimeout(() => { renderTimer = 0; renderLoaded(); }, Math.max(0, 120 - (performance.now() - lastRender)));
+  }
+  function pump() {
+    if (!catalogReady || !mayLoad()) { updateLoadStatus(); return; }
+    while (requests.size < 4 && queue.length) {
+      const icon = queue.shift();
+      if (artworkCache.has(icon.id) || requests.has(icon.id)) continue;
+      const controller = new AbortController();
+      let timedOut = false;
+      const deadline = setTimeout(() => { timedOut = true; controller.abort(); }, 10000);
+      requests.set(icon.id, controller);
+      prepareArtwork(icon, measureStage, controller.signal).then(svg => {
+        if (!host.isConnected) return;
+        if (controller.signal.aborted) {
+          if (!queue.some(item => item.id === icon.id)) queue.unshift(icon);
+          return;
+        }
+        artworkCache.set(icon.id, svg);
+        if (!icons.some(item => item.id === icon.id)) icons.push(icon);
+        icons.sort((a, b) => candidates.indexOf(a) - candidates.indexOf(b));
+        failures.delete(icon.id);
+      }).catch(error => {
+        if (controller.signal.aborted && !timedOut) {
+          if (host.isConnected && !artworkCache.has(icon.id) && !queue.some(item => item.id === icon.id)) queue.unshift(icon);
+        } else if (host.isConnected) failures.set(icon.id, icon);
+      }).finally(() => {
+        clearTimeout(deadline);
+        if (requests.get(icon.id) === controller) requests.delete(icon.id);
+        scheduleRender(); pump();
+        if (!queue.length && !requests.size) measureStage.remove();
+      });
+    }
+    updateLoadStatus();
+  }
+  function syncLoading() {
+    if (!mayLoad()) {
+      catalogRequest?.abort(); requests.forEach(controller => controller.abort());
+      clearTimeout(renderTimer); renderTimer = 0;
+    } else { pump(); if (uiMounted) scheduleRender(); }
+    updateLoadStatus(); updateMotion();
+  }
+  function mount() {
+    if (uiMounted) return;
+    uiMounted = true;
+    const libraryContent = el('div', 'il-library-content page-width');
+    libraryContent.append(tools, grid);
+    host.replaceChildren(showcase, libraryContent, dialog, loadStatus);
+    localize(); updateLoadStatus();
+    if ('ResizeObserver' in window) new ResizeObserver(renderRibbons).observe(ribbons);
+    else window.addEventListener('resize', renderRibbons);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(entries => { inView = entries.some(entry => entry.isIntersecting); updateMotion(); }, {rootMargin:'100px'}).observe(showcase);
+      new IntersectionObserver(entries => { nearHost = entries.some(entry => entry.isIntersecting); syncLoading(); }, {rootMargin:'250px'}).observe(host);
+    } else { inView = true; updateMotion(); }
+  }
+  let catalogRequest = null;
+  async function loadCatalog() {
+    if (catalogRequest || !mayLoad()) return;
+    const controller = new AbortController(); catalogRequest = controller;
+    let timedOut = false;
+    const deadline = setTimeout(() => { timedOut = true; controller.abort(); }, 10000);
+    try {
+      const response = await fetch(host.dataset.catalog || '../assets/works/design-skills/catalog.json', {signal:controller.signal});
+      if (!response.ok) throw new Error(`Catalog ${response.status}`);
+      const catalog = await response.json();
+      if (!host.isConnected || controller.signal.aborted) return;
+      const ids = new Set();
+      candidates = (catalog.icons || []).filter(icon => {
+        if (!icon.id || !icon.src || ids.has(icon.id)) return false;
+        ids.add(icon.id); return true;
+      });
+      candidates.forEach(icon => { if (!icon.category) icon.category = '图标'; });
+      categories = [...new Set(candidates.map(icon => icon.category))];
+      catalogReady = true; catalogFailed = false; queue = candidates.slice();
+      mount(); pump();
+    } catch (error) {
+      if (host.isConnected && (!controller.signal.aborted || timedOut)) { catalogFailed = true; mount(); updateLoadStatus(); }
+    } finally {
+      clearTimeout(deadline); if (catalogRequest === controller) catalogRequest = null;
+      if (!catalogReady && !catalogFailed && mayLoad()) queueMicrotask(loadCatalog);
+    }
+  }
   window.addEventListener('portfolio:language', event => {
     language = event.detail?.language === 'en' ? 'en' : 'zh';
-    if (host.dataset.state === 'ready') localize();
-    else loading.textContent = w(host.dataset.state === 'error' ? 'failed' : host.dataset.state === 'empty' ? 'empty' : 'loading');
+    if (uiMounted) { localize(); updateLoadStatus(); }
+    else loading.textContent = w('loading');
   });
-  document.addEventListener('visibilitychange', updateMotion);
+  document.addEventListener('visibilitychange', () => { syncLoading(); if (!catalogReady && !catalogFailed) loadCatalog(); });
   reducedMotion.addEventListener('change', updateMotion);
-
-  fetch(host.dataset.catalog || '../assets/works/design-skills/catalog.json')
-    .then(response => { if (!response.ok) throw new Error(`Catalog ${response.status}`); return response.json(); })
-    .then(async catalog => {
-      const ids = new Set();
-      icons = (catalog.icons || []).filter(icon => {
-        if (!icon.id || !icon.src || ids.has(icon.id)) return false;
-        ids.add(icon.id);
-        return true;
-      });
-      if (!icons.length) { host.dataset.state = 'empty'; loading.textContent = w('empty'); return; }
-      categories = [...new Set(icons.map(icon => icon.category || '图标'))];
-      icons.forEach(icon => { if (!icon.category) icon.category = '图标'; });
-      const stage = el('div', 'il-measure-stage');
-      stage.setAttribute('aria-hidden', 'true');
-      host.append(stage);
-      try { await Promise.all(icons.map(icon => prepareArtwork(icon, stage))); }
-      finally { stage.remove(); }
-      renderRibbons();
-      const libraryContent = el('div', 'il-library-content page-width');
-      libraryContent.append(tools, grid);
-      host.replaceChildren(showcase, libraryContent, dialog);
-      if ('ResizeObserver' in window) new ResizeObserver(renderRibbons).observe(ribbons);
-      else window.addEventListener('resize', renderRibbons);
-      host.dataset.state = 'ready';
-      host.dataset.count = String(icons.length);
-      host.dataset.normalizedCount = String(artworkCache.size);
-      localize();
-      if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver(entries => { inView = entries.some(entry => entry.isIntersecting); updateMotion(); }, { rootMargin: '100px' });
-        observer.observe(showcase);
-      } else { inView = true; updateMotion(); }
-    })
-    .catch(() => { host.dataset.state = 'error'; loading.textContent = w('failed'); });
+  addEventListener('pagehide', () => { pageShown = false; catalogRequest?.abort(); syncLoading(); });
+  addEventListener('pageshow', () => { pageShown = true; syncLoading(); if (!catalogReady && !catalogFailed) loadCatalog(); });
+  if (hostFrame) new MutationObserver(() => {
+    syncLoading(); if (!catalogReady && !catalogFailed) loadCatalog();
+  }).observe(hostFrame, {attributes:true, attributeFilter:['class']});
+  updateLoadStatus(); loadCatalog();
 });

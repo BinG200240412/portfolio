@@ -41,7 +41,7 @@
     for(let q=0;q<54;q++){const a=q*2.4,rr=Math.sqrt(q/54)*bR*.7;dot(x+Math.cos(a)*rr,rim+Math.sin(a)*rr*.1,1.1,'#d7dfcf');}
     const from=x+bR+8,to=cx-R-15;
     for(let q=from;q<to;q+=7)dot(q,cy,1,'#6c9381');
-    ctx.font='18px "GenWanMin",serif';ctx.textAlign='center';ctx.fillStyle='#bac7b9';ctx.fillText(en?'Physical gesture study':'真实动作示意',x,H*.84);
+    ctx.font='18px "GenWanMin UI","GenWanMin",serif';ctx.textAlign='center';ctx.fillStyle='#bac7b9';ctx.fillText(en?'Physical gesture study':'真实动作示意',x,H*.84);
     ctx.textAlign='left';
   }
   draw=function(time){

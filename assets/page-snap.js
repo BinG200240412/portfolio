@@ -189,4 +189,20 @@
     sync(); enabled = false;
   } else enabled = false;
   if (enabled) root.classList.add('portfolio-paged');
+  if (file === 'design-skills.html' && location.hash) {
+    // A deep link can be resolved before lazy libraries have any height. With
+    // mandatory snapping that can land back on the cover and never start them.
+    let interacted = false;
+    const stop = () => { interacted = true; };
+    const events = ['pointerdown', 'wheel', 'touchstart', 'keydown'];
+    events.forEach(type => addEventListener(type, stop, {passive:true}));
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      events.forEach(type => removeEventListener(type, stop));
+      if (interacted) return;
+      let target;
+      try { target = document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch (_) {}
+      const chapter = target?.closest('.skill-chapter,.skills-hero');
+      if (chapter) chapter.scrollIntoView({block:'start', behavior:'instant'});
+    }));
+  }
 })();

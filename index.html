@@ -214,11 +214,11 @@
 
 
 
-<script defer src="assets/page-snap.js?v=8753da79ad"></script>
+<script defer src="assets/page-snap.js?v=c0b6524c05"></script>
 
 
-<script defer src="assets/video-detail.js?v=d2de5c7d69"></script>
-<script defer src="assets/media-corners.js?v=c90e126498"></script>
+<script defer src="assets/video-detail.js?v=8d14df614e"></script>
+<script defer src="assets/media-corners.js?v=e039b41c4b"></script>
 
 <script defer src="assets/media-view-only.js?v=6e9cb46552"></script>
 
@@ -445,6 +445,25 @@ function renderMenu(level){
 }
 
 /* ---- 顶层：关于我 / 作品集 ---- */
+function releaseProjectView(){
+  // A hidden iframe still owns its page, media, timers and pending requests.
+  // Capture only the departing children so a subsequent entry stays intact.
+  const departing=[...section.childNodes];
+  let closingImageLayer=false;
+  for(const frame of section.querySelectorAll('iframe')){
+    try{
+      for(const dialog of frame.contentDocument?.querySelectorAll('dialog[open]')||[]){
+        closingImageLayer=true;dialog.close();
+      }
+    }catch(_){}
+  }
+  section.classList.remove('on','native');secBack.classList.remove('on');
+  section.scrollTop=0;
+  const remove=()=>departing.forEach(node=>node.remove());
+  // Child image layers temporarily borrow the parent return button. Let their
+  // existing open-attribute observers restore it before discarding the frame.
+  if(closingImageLayer)queueMicrotask(remove);else remove();
+}
 function showHub(){
   if(['#about','#works'].includes(location.hash)){const url=new URL(location.href);url.hash='';history.replaceState(history.state,'',url);}
   stage.inert=false;
@@ -452,7 +471,7 @@ function showHub(){
   resume.classList.remove('reveal','live');
   resume.setAttribute('aria-hidden','true');
   document.body.classList.remove('expanded','works-mode');
-  if(section.classList.contains('on')){section.classList.remove('on','native');secBack.classList.remove('on');}
+  releaseProjectView();
   window.scrollTo(0,0);
   stage.classList.remove('faded','gone');stage.classList.add('works','hublv');
   renderMenu('hub');cap.textContent='';hint.textContent='';
@@ -463,7 +482,7 @@ function showWorks(){
   phase='works';
   resume.classList.remove('reveal','live');
   resume.setAttribute('aria-hidden','true');
-  if(section.classList.contains('on')){section.classList.remove('on','native');secBack.classList.remove('on');}
+  releaseProjectView();
   document.body.classList.remove('expanded');document.body.classList.add('works-mode');
   window.scrollTo(0,0);
   stage.classList.remove('faded','gone','hublv');stage.classList.add('works');
@@ -473,7 +492,7 @@ function showWorks(){
 function expandPage(which){
   disarmHint();clearWatch();
   if(location.hash!=='#about'){const url=new URL(location.href);url.hash='about';history.pushState(history.state,'',url);}
-  if(section.classList.contains('on')){section.classList.remove('on','native');secBack.classList.remove('on');}
+  releaseProjectView();
   stage.inert=true;
   phase=which;
   document.body.classList.remove('works-mode');
@@ -535,16 +554,16 @@ section.addEventListener('load',event=>{if(event.target.matches('iframe'))update
 /* ---- 进板块：极简淡出 ---- */
 /* 原生重建页（可编辑元素，非贴图） */
 const SECTION_PAGE={
-  "茶弦记":"sections/tea.html?v=first-paint-20261030",
-  "arright":"sections/arright.html?v=first-paint-20261030",
-  "数独":"sections/sudoku.html?v=first-paint-20261030",
-  "良渚 · AI 3D":"sections/ai3d.html?v=first-paint-20261030",
-  "良渚 · XR":"sections/xr.html?v=first-paint-20261030",
-  "漂移之屋":"sections/drift.html?v=first-paint-20261030",
-  "千里江山":"sections/qianli.html?v=first-paint-20261030",
-  "设计工具 · Skills":"sections/design-skills.html?v=first-paint-20261030",
-  "作品归档":"sections/more.html?v=peer-collections-20261024",
-  "练习":"sections/practice.html?v=peer-collections-20261024",
+  "茶弦记":"sections/tea.html?v=stability-20261031",
+  "arright":"sections/arright.html?v=stability-20261031",
+  "数独":"sections/sudoku.html?v=stability-20261031",
+  "良渚 · AI 3D":"sections/ai3d.html?v=stability-20261031",
+  "良渚 · XR":"sections/xr.html?v=stability-20261031",
+  "漂移之屋":"sections/drift.html?v=stability-20261031",
+  "千里江山":"sections/qianli.html?v=stability-20261031",
+  "设计工具 · Skills":"sections/design-skills.html?v=stability-20261031",
+  "作品归档":"sections/more.html?v=stability-20261031",
+  "练习":"sections/practice.html?v=stability-20261031",
 };
 function createProjectLoading(){
   if(window.PortfolioLoading)return window.PortfolioLoading.create('');

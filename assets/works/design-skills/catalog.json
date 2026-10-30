@@ -8,10 +8,15 @@
       "title": "数独测试员招募",
       "titleEn": "Sudoku testers wanted",
       "category": "posters",
-      "width": 2400.0,
-      "height": 3200.0,
+      "width": 2400,
+      "height": 3200,
       "bytes": 548197,
-      "sha256": "27481e119e7e632e3230c827d90451671f76dcc2a1a0e900d0cda34578ddd223"
+      "sha256": "27481e119e7e632e3230c827d90451671f76dcc2a1a0e900d0cda34578ddd223",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-075.webp",
+      "previewWidth": 640,
+      "previewHeight": 853,
+      "previewBytes": 63966,
+      "previewSha256": "8e5d9a7577a04c0ca7f4ed43298e062ec78a07eb088ce041d84d516c27f44d91"
     },
     {
       "id": "engraving-021",
@@ -20,10 +25,15 @@
       "title": "捂胸惊讶",
       "titleEn": "What a surprise",
       "category": "illustrations",
-      "width": 1144.0,
-      "height": 1375.0,
+      "width": 1144,
+      "height": 1375,
       "bytes": 812546,
-      "sha256": "7e5c35ba18aec8af20f6cf18b38190159a5f0c2fa99a83cde716e396dba6ea99"
+      "sha256": "7e5c35ba18aec8af20f6cf18b38190159a5f0c2fa99a83cde716e396dba6ea99",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-021.webp",
+      "previewWidth": 640,
+      "previewHeight": 770,
+      "previewBytes": 122926,
+      "previewSha256": "5f23cbb0a9da527f01b126d5bcb114bb097ca955c3641cc64db78fafebe92b7a"
     },
     {
       "id": "engraving-071",
@@ -32,10 +42,15 @@
       "title": "残局分享",
       "titleEn": "Share the endgame",
       "category": "illustrations",
-      "width": 2088.0,
-      "height": 1988.0,
+      "width": 2088,
+      "height": 1988,
       "bytes": 1599297,
-      "sha256": "1f32b354797541b2105c1085a1d51427a227695d3b2da0d0c06c4a775c6bf486"
+      "sha256": "1f32b354797541b2105c1085a1d51427a227695d3b2da0d0c06c4a775c6bf486",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-071.webp",
+      "previewWidth": 640,
+      "previewHeight": 609,
+      "previewBytes": 103188,
+      "previewSha256": "573e368f1978bd4bcd5c1d96c43adc8783707cc1e335bdcd851588184224ea56"
     },
     {
       "id": "engraving-022",
@@ -44,10 +59,15 @@
       "title": "放大镜女士",
       "titleEn": "Woman with a magnifier",
       "category": "illustrations",
-      "width": 1346.0,
-      "height": 1169.0,
+      "width": 1346,
+      "height": 1169,
       "bytes": 698325,
-      "sha256": "8dfab2d0c5ebe2fc899dfe1c7446b333305a80df1545d2988a2b2eb9b4bb981e"
+      "sha256": "8dfab2d0c5ebe2fc899dfe1c7446b333305a80df1545d2988a2b2eb9b4bb981e",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-022.webp",
+      "previewWidth": 640,
+      "previewHeight": 556,
+      "previewBytes": 74260,
+      "previewSha256": "8ebc43dcc78afac97ad6fb8f6a526c74ac5df842a7890966d4ba9a8b41495d02"
     },
     {
       "id": "engraving-006",
@@ -56,10 +76,15 @@
       "title": "数独女士",
       "titleEn": "Sudoku woman",
       "category": "illustrations",
-      "width": 1084.0,
-      "height": 1451.0,
+      "width": 1084,
+      "height": 1451,
       "bytes": 289643,
-      "sha256": "a9d23f675240ab5fb899cae84eca4b81c0bfd1715bf66813b971578ca4d577d2"
+      "sha256": "a9d23f675240ab5fb899cae84eca4b81c0bfd1715bf66813b971578ca4d577d2",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-006.webp",
+      "previewWidth": 640,
+      "previewHeight": 857,
+      "previewBytes": 85632,
+      "previewSha256": "1af834c3b7b27b725312fd830b9d3819c5c3ad268b147cd819e409d76588f035"
     },
     {
       "id": "engraving-064",
@@ -68,10 +93,15 @@
       "title": "惊喜男孩",
       "titleEn": "Surprised boy",
       "category": "daily",
-      "width": 668.0,
-      "height": 800.0,
+      "width": 668,
+      "height": 800,
       "bytes": 151962,
-      "sha256": "c5606ccd98253e71d657b8eb4cf147dac3a08ce5de79f055a2c1b3dc5f724534"
+      "sha256": "c5606ccd98253e71d657b8eb4cf147dac3a08ce5de79f055a2c1b3dc5f724534",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-064.webp",
+      "previewWidth": 640,
+      "previewHeight": 767,
+      "previewBytes": 26974,
+      "previewSha256": "df3edff3a163bfa2b2cd9333161badce6abb2070b800cad771d2de954a6eb277"
     },
     {
       "id": "engraving-065",
@@ -80,10 +110,15 @@
       "title": "飞吻女孩",
       "titleEn": "A flying kiss",
       "category": "daily",
-      "width": 1146.0,
-      "height": 1372.0,
+      "width": 1146,
+      "height": 1372,
       "bytes": 53224,
-      "sha256": "d936cba23e6ec2bf881b091fadb22327204eee2d312813fbd5142507297270c6"
+      "sha256": "d936cba23e6ec2bf881b091fadb22327204eee2d312813fbd5142507297270c6",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-065.webp",
+      "previewWidth": 640,
+      "previewHeight": 766,
+      "previewBytes": 33798,
+      "previewSha256": "be6403bbe83afcf2460baf6bd7adf273a84d519013f7a0318af6d465b58f385b"
     },
     {
       "id": "engraving-026",
@@ -92,10 +127,15 @@
       "title": "数独宣传",
       "titleEn": "Sudoku campaign",
       "category": "posters",
-      "width": 1503.0,
-      "height": 1046.0,
+      "width": 1503,
+      "height": 1046,
       "bytes": 1297855,
-      "sha256": "1f3dea85b1f5b57cee22bdff98bab4ee6362f7c77c03a7897257e7d0699b6d1f"
+      "sha256": "1f3dea85b1f5b57cee22bdff98bab4ee6362f7c77c03a7897257e7d0699b6d1f",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-026.webp",
+      "previewWidth": 640,
+      "previewHeight": 445,
+      "previewBytes": 92180,
+      "previewSha256": "05799bc82b9498fb543faed3c28a877f6e18c3cf1eaaa5703e394e39f4c287f9"
     },
     {
       "id": "engraving-035",
@@ -104,10 +144,15 @@
       "title": "手势合集",
       "titleEn": "A collection of gestures",
       "category": "daily",
-      "width": 1200.0,
-      "height": 1198.0,
+      "width": 1200,
+      "height": 1198,
       "bytes": 346525,
-      "sha256": "dad473d844ed35891408181d4dc57e76e9c4cb088cc32d98804f79d8432ea65f"
+      "sha256": "dad473d844ed35891408181d4dc57e76e9c4cb088cc32d98804f79d8432ea65f",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-035.webp",
+      "previewWidth": 640,
+      "previewHeight": 639,
+      "previewBytes": 89218,
+      "previewSha256": "700a9b273dab6feab7d2dab0829de70f6b03f3c9291c73adbab2cbf1e09e98a1"
     },
     {
       "id": "engraving-037",
@@ -116,10 +161,15 @@
       "title": "教程",
       "titleEn": "The tutorial",
       "category": "illustrations",
-      "width": 3548.0,
-      "height": 1774.0,
+      "width": 3548,
+      "height": 1774,
       "bytes": 1551378,
-      "sha256": "61fec44c8f1c3606dccfde65eb282b62e3121b18a8f5854b68a53c388aae36fa"
+      "sha256": "61fec44c8f1c3606dccfde65eb282b62e3121b18a8f5854b68a53c388aae36fa",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-037.webp",
+      "previewWidth": 640,
+      "previewHeight": 320,
+      "previewBytes": 93698,
+      "previewSha256": "a4a3535a11eca6e93dda61f1e84861e6a19ad0473808adced9cc79073496dad5"
     },
     {
       "id": "engraving-019",
@@ -128,10 +178,15 @@
       "title": "设置页海报",
       "titleEn": "Settings Poster",
       "category": "stamps",
-      "width": 390.0,
-      "height": 285.0,
+      "width": 390,
+      "height": 285,
       "bytes": 2637110,
-      "sha256": "1477db73b47eb2398e7dfa16c3749c6c33b8f465f4313ceb8c6b5f8f2827ac6e"
+      "sha256": "1477db73b47eb2398e7dfa16c3749c6c33b8f465f4313ceb8c6b5f8f2827ac6e",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-019.webp",
+      "previewWidth": 390,
+      "previewHeight": 285,
+      "previewBytes": 26052,
+      "previewSha256": "ff782891c368d45a67ad3710cb0b1a35e80a9d0bf047d5e440aa6d953da8c294"
     },
     {
       "id": "engraving-001",
@@ -140,10 +195,15 @@
       "title": "指南图章",
       "titleEn": "Guide stamp",
       "category": "stamps",
-      "width": 1254.0,
-      "height": 1254.0,
+      "width": 1254,
+      "height": 1254,
       "bytes": 306538,
-      "sha256": "c8a5aaba2b7f40141623fd856d351dbc47b64bc6818b2a4cb31052f4705b1379"
+      "sha256": "c8a5aaba2b7f40141623fd856d351dbc47b64bc6818b2a4cb31052f4705b1379",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-001.webp",
+      "previewWidth": 640,
+      "previewHeight": 640,
+      "previewBytes": 74788,
+      "previewSha256": "f9d35a269f61698923014f8887728ece7f2298bb70fe945dc2e7b95d33eabff1"
     },
     {
       "id": "engraving-059",
@@ -152,10 +212,15 @@
       "title": "残局",
       "titleEn": "The endgame",
       "category": "daily",
-      "width": 1085.0,
-      "height": 1450.0,
+      "width": 1085,
+      "height": 1450,
       "bytes": 431669,
-      "sha256": "424facd5e69912baa100130dd899ca4581c6bcbfa56da6e3eb4589fa989aa9e9"
+      "sha256": "424facd5e69912baa100130dd899ca4581c6bcbfa56da6e3eb4589fa989aa9e9",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-059.webp",
+      "previewWidth": 640,
+      "previewHeight": 855,
+      "previewBytes": 105898,
+      "previewSha256": "4940fdb0daa3803f514b82ee99a630b7de523ddea88657c2cb73d5041b3fc72c"
     },
     {
       "id": "engraving-024",
@@ -164,10 +229,15 @@
       "title": "灵光一闪",
       "titleEn": "A snap of inspiration",
       "category": "illustrations",
-      "width": 1537.0,
-      "height": 1023.0,
+      "width": 1537,
+      "height": 1023,
       "bytes": 152699,
-      "sha256": "112e4648774e902aa867189d218fa18a961c5c26be24a23a354bb7faef08a652"
+      "sha256": "112e4648774e902aa867189d218fa18a961c5c26be24a23a354bb7faef08a652",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-024.webp",
+      "previewWidth": 640,
+      "previewHeight": 426,
+      "previewBytes": 29984,
+      "previewSha256": "c136e623bb36474af156ca34a8cb7585f3bf074dfbc683c24ab97f15164c78e6"
     },
     {
       "id": "engraving-025",
@@ -176,10 +246,15 @@
       "title": "托腮思考",
       "titleEn": "Deep in thought",
       "category": "illustrations",
-      "width": 969.0,
-      "height": 1622.0,
+      "width": 969,
+      "height": 1622,
       "bytes": 887760,
-      "sha256": "75554cfc400e3201e313d7a1817375908ca2d902d0ed9ea704fcadf3f425eb1c"
+      "sha256": "75554cfc400e3201e313d7a1817375908ca2d902d0ed9ea704fcadf3f425eb1c",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-025.webp",
+      "previewWidth": 573,
+      "previewHeight": 960,
+      "previewBytes": 141524,
+      "previewSha256": "6f3c723a776129d92bde0c1cd7cfa6aa50040d87fab08a4b67fd9a345eb7a187"
     },
     {
       "id": "engraving-029",
@@ -188,10 +263,15 @@
       "title": "档案老虎机",
       "titleEn": "Archive slot machine",
       "category": "posters",
-      "width": 1087.0,
-      "height": 1447.0,
+      "width": 1087,
+      "height": 1447,
       "bytes": 159431,
-      "sha256": "902666b1f500c6d023ab290b337a80894c93c37da3000c4e050f1edd975f3d1a"
+      "sha256": "902666b1f500c6d023ab290b337a80894c93c37da3000c4e050f1edd975f3d1a",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-029.webp",
+      "previewWidth": 640,
+      "previewHeight": 852,
+      "previewBytes": 22260,
+      "previewSha256": "2479989babe9c52e7a53567b657e53592681c7eb5d30d8dff6328af79d9ac309"
     },
     {
       "id": "engraving-031",
@@ -200,10 +280,15 @@
       "title": "过关时刻",
       "titleEn": "A puzzle solved",
       "category": "posters",
-      "width": 2108.0,
-      "height": 2984.0,
+      "width": 2108,
+      "height": 2984,
       "bytes": 1279535,
-      "sha256": "f55f5c5463fca250244b705ecfe86d7f372d8aae4a19a3a4555963e4782966c1"
+      "sha256": "f55f5c5463fca250244b705ecfe86d7f372d8aae4a19a3a4555963e4782966c1",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-031.webp",
+      "previewWidth": 640,
+      "previewHeight": 906,
+      "previewBytes": 156510,
+      "previewSha256": "bfbcf9875186d7dd96261fde1e4e80c2a24818425b2193581366f4491e4b4165"
     },
     {
       "id": "engraving-041",
@@ -212,10 +297,15 @@
       "title": "郁金香 · 中期",
       "titleEn": "Tulip · Growing",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 19129,
-      "sha256": "8633083f695daeff5bd2511f12d922729715bc7be6a7d0844e111adbbf9a3dd5"
+      "sha256": "8633083f695daeff5bd2511f12d922729715bc7be6a7d0844e111adbbf9a3dd5",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-041.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 9804,
+      "previewSha256": "45d92be7035a6a39e0e65a970f773499b22c1b6cea3ab3045aea29680cf01c7e"
     },
     {
       "id": "engraving-007",
@@ -224,10 +314,15 @@
       "title": "Cruncher 图章",
       "titleEn": "Cruncher Stamp",
       "category": "achievements",
-      "width": 98.0,
-      "height": 99.0,
+      "width": 98,
+      "height": 99,
       "bytes": 202220,
-      "sha256": "fba3d2fb8413379e55b59ce334c5bf5046659d0b475c6371968da41984d824fc"
+      "sha256": "fba3d2fb8413379e55b59ce334c5bf5046659d0b475c6371968da41984d824fc",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-007.webp",
+      "previewWidth": 98,
+      "previewHeight": 99,
+      "previewBytes": 5358,
+      "previewSha256": "0d6d81e550570ee857be25df3ed4c3ebcb459c92ec397ae8d48cc795fcb42fa5"
     },
     {
       "id": "engraving-023",
@@ -236,10 +331,15 @@
       "title": "阅读纸条",
       "titleEn": "Reading a note",
       "category": "illustrations",
-      "width": 941.0,
-      "height": 1672.0,
+      "width": 941,
+      "height": 1672,
       "bytes": 587311,
-      "sha256": "5c5d45df959245152f8fe2201506bd51026495af107fd8f161a1cd8c6da535d2"
+      "sha256": "5c5d45df959245152f8fe2201506bd51026495af107fd8f161a1cd8c6da535d2",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-023.webp",
+      "previewWidth": 540,
+      "previewHeight": 960,
+      "previewBytes": 86124,
+      "previewSha256": "9dc7b178a01fe15b6bc4f2127b912cd4aa547acc5d829ed85e40f1d95696f3d7"
     },
     {
       "id": "engraving-002",
@@ -248,10 +348,15 @@
       "title": "成就",
       "titleEn": "Achievements",
       "category": "illustrations",
-      "width": 2172.0,
-      "height": 2896.0,
+      "width": 2172,
+      "height": 2896,
       "bytes": 1651311,
-      "sha256": "35a7172d6edd20eb6ab29cdf0b292f002067ad2725bb40d2fe5f947674f929b6"
+      "sha256": "35a7172d6edd20eb6ab29cdf0b292f002067ad2725bb40d2fe5f947674f929b6",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-002.webp",
+      "previewWidth": 640,
+      "previewHeight": 853,
+      "previewBytes": 118920,
+      "previewSha256": "1294741ea7da9f9f0fdaa463674376ccedfe520cc8426ee2e8697d608ee37b9f"
     },
     {
       "id": "engraving-003",
@@ -260,10 +365,15 @@
       "title": "设置",
       "titleEn": "Settings",
       "category": "illustrations",
-      "width": 2048.0,
-      "height": 3072.0,
+      "width": 2048,
+      "height": 3072,
       "bytes": 1185512,
-      "sha256": "ab0d090e921593d1d2b0ed057c2000c7a010aeaf1e6a179ed7d6c1e2f5eb80fa"
+      "sha256": "ab0d090e921593d1d2b0ed057c2000c7a010aeaf1e6a179ed7d6c1e2f5eb80fa",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-003.webp",
+      "previewWidth": 640,
+      "previewHeight": 960,
+      "previewBytes": 189448,
+      "previewSha256": "371aeb757648e2e3bda51bd956b54c3a3d964997abc94b05004a02f267a27880"
     },
     {
       "id": "engraving-004",
@@ -272,10 +382,15 @@
       "title": "新一局",
       "titleEn": "A new puzzle",
       "category": "illustrations",
-      "width": 3072.0,
-      "height": 2048.0,
+      "width": 3072,
+      "height": 2048,
       "bytes": 1293235,
-      "sha256": "920b2494c86863844d96275d25cdfc7215750bad0379d9304ead4d93b2942a37"
+      "sha256": "920b2494c86863844d96275d25cdfc7215750bad0379d9304ead4d93b2942a37",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-004.webp",
+      "previewWidth": 640,
+      "previewHeight": 427,
+      "previewBytes": 65018,
+      "previewSha256": "134fb1302db02f46e0fa107be07796c3c70c423fc631917b0066264cfa608808"
     },
     {
       "id": "engraving-005",
@@ -284,10 +399,15 @@
       "title": "档案图章",
       "titleEn": "Records stamp",
       "category": "stamps",
-      "width": 1254.0,
-      "height": 1254.0,
+      "width": 1254,
+      "height": 1254,
       "bytes": 295296,
-      "sha256": "9fc380d17f746df70aaea553741ed21fe9b1c05a0456e64f0350ec6b678e665c"
+      "sha256": "9fc380d17f746df70aaea553741ed21fe9b1c05a0456e64f0350ec6b678e665c",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-005.webp",
+      "previewWidth": 640,
+      "previewHeight": 640,
+      "previewBytes": 69080,
+      "previewSha256": "298e3ff352c29e71e232cec3e1f49c65891a9ac3786715ef952dda10f6e4a120"
     },
     {
       "id": "engraving-008",
@@ -296,10 +416,15 @@
       "title": "Club 图章",
       "titleEn": "Club Stamp",
       "category": "achievements",
-      "width": 137.0,
-      "height": 140.0,
+      "width": 137,
+      "height": 140,
       "bytes": 154785,
-      "sha256": "71bcb76517efb24713a968f052a384d3fdc102e1242c7c008e1382ebc67b0922"
+      "sha256": "71bcb76517efb24713a968f052a384d3fdc102e1242c7c008e1382ebc67b0922",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-008.webp",
+      "previewWidth": 137,
+      "previewHeight": 140,
+      "previewBytes": 6270,
+      "previewSha256": "90242f08c78028b1a8b83b2004a656af948870df0ab975c04d32e5fcb348b7f6"
     },
     {
       "id": "engraving-009",
@@ -308,10 +433,15 @@
       "title": "Daily 图章",
       "titleEn": "Daily Stamp",
       "category": "achievements",
-      "width": 124.0,
-      "height": 97.0,
+      "width": 124,
+      "height": 97,
       "bytes": 82862,
-      "sha256": "428e792bdcbf9f3bec7cbf87013f79da0d73a8305272a2bd05d7e5e3a7c4d0a9"
+      "sha256": "428e792bdcbf9f3bec7cbf87013f79da0d73a8305272a2bd05d7e5e3a7c4d0a9",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-009.webp",
+      "previewWidth": 124,
+      "previewHeight": 97,
+      "previewBytes": 4186,
+      "previewSha256": "1886abe919098025a83b06905c611f504ab744a9f5ff4ac10a849f2581ffa972"
     },
     {
       "id": "engraving-010",
@@ -320,10 +450,15 @@
       "title": "Press 图章",
       "titleEn": "Press Stamp",
       "category": "achievements",
-      "width": 74.0,
-      "height": 40.0,
+      "width": 74,
+      "height": 40,
       "bytes": 328542,
-      "sha256": "7207998cac2f3fe6406cbeed0f1cdc24fbb7065161d429be6f09f59e74273d80"
+      "sha256": "7207998cac2f3fe6406cbeed0f1cdc24fbb7065161d429be6f09f59e74273d80",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-010.webp",
+      "previewWidth": 74,
+      "previewHeight": 40,
+      "previewBytes": 2584,
+      "previewSha256": "5c82aca14ac6ee21bdbc271dae28a2f7c55cc86229aa11f498cdc4dbc9b3b872"
     },
     {
       "id": "engraving-011",
@@ -332,10 +467,15 @@
       "title": "Solvers 图章",
       "titleEn": "Solvers Stamp",
       "category": "achievements",
-      "width": 172.0,
-      "height": 129.0,
+      "width": 172,
+      "height": 129,
       "bytes": 166844,
-      "sha256": "4fcd0b28b5fbcfa42f74381567d598dfbaeae19a18e754846d14c69735086e5f"
+      "sha256": "4fcd0b28b5fbcfa42f74381567d598dfbaeae19a18e754846d14c69735086e5f",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-011.webp",
+      "previewWidth": 172,
+      "previewHeight": 129,
+      "previewBytes": 7438,
+      "previewSha256": "7d781b455f708602ea6ec70d9ec589640bc9f66c7f7ba4ffad407c2ce6af49b8"
     },
     {
       "id": "engraving-012",
@@ -344,10 +484,15 @@
       "title": "Enthusiast 图章",
       "titleEn": "Enthusiast Stamp",
       "category": "achievements",
-      "width": 199.0,
-      "height": 150.0,
+      "width": 199,
+      "height": 150,
       "bytes": 195888,
-      "sha256": "eed44700d2fb8f878eae1ecf4f2e397c46117da3927ef59259479b4ff2caa932"
+      "sha256": "eed44700d2fb8f878eae1ecf4f2e397c46117da3927ef59259479b4ff2caa932",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-012.webp",
+      "previewWidth": 199,
+      "previewHeight": 150,
+      "previewBytes": 10472,
+      "previewSha256": "ebd4a208b8524f7eb651e276963836830c90389bc2021f701020a1abc873be7e"
     },
     {
       "id": "engraving-013",
@@ -356,10 +501,15 @@
       "title": "Stumbler 图章",
       "titleEn": "Stumbler Stamp",
       "category": "achievements",
-      "width": 136.0,
-      "height": 122.0,
+      "width": 136,
+      "height": 122,
       "bytes": 224241,
-      "sha256": "5bf77102321d2045a3658868875ec761443028019ea940caaeb4878fb97a0c73"
+      "sha256": "5bf77102321d2045a3658868875ec761443028019ea940caaeb4878fb97a0c73",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-013.webp",
+      "previewWidth": 136,
+      "previewHeight": 122,
+      "previewBytes": 6514,
+      "previewSha256": "91ca5bf89c0909444a6684ac999cc20d1e7b9ec995a2062d1758268417426b43"
     },
     {
       "id": "engraving-014",
@@ -368,10 +518,15 @@
       "title": "Logic 图章",
       "titleEn": "Logic Stamp",
       "category": "achievements",
-      "width": 102.0,
-      "height": 96.0,
+      "width": 102,
+      "height": 96,
       "bytes": 187811,
-      "sha256": "39c2c4a478d9d46055c6a4501a2b28ed012dcaa34e25b61de989cb171df212a1"
+      "sha256": "39c2c4a478d9d46055c6a4501a2b28ed012dcaa34e25b61de989cb171df212a1",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-014.webp",
+      "previewWidth": 102,
+      "previewHeight": 96,
+      "previewBytes": 4368,
+      "previewSha256": "ecd5e371ae3b0a25e21cbf0ef3e66b733811c80b9a28d718c01312eebebff20e"
     },
     {
       "id": "engraving-015",
@@ -380,10 +535,15 @@
       "title": "Patience 图章",
       "titleEn": "Patience Stamp",
       "category": "achievements",
-      "width": 76.0,
-      "height": 75.0,
+      "width": 76,
+      "height": 75,
       "bytes": 88103,
-      "sha256": "57439c9bb290379e3d1c9a3422f3bece843d5c50da89c29f9d1be6edd124dea5"
+      "sha256": "57439c9bb290379e3d1c9a3422f3bece843d5c50da89c29f9d1be6edd124dea5",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-015.webp",
+      "previewWidth": 76,
+      "previewHeight": 75,
+      "previewBytes": 2824,
+      "previewSha256": "8dc3ca3e91071d0c6fa07ef6a61d5703f08eee1ef81fc907b852cfabf40b70af"
     },
     {
       "id": "engraving-016",
@@ -392,10 +552,15 @@
       "title": "Passport 图章",
       "titleEn": "Passport Stamp",
       "category": "achievements",
-      "width": 142.0,
-      "height": 112.0,
+      "width": 142,
+      "height": 112,
       "bytes": 101288,
-      "sha256": "84b8d0a3a28203cb31ba8f872dad865f3221e4fa1978310c90dc5318ad885686"
+      "sha256": "84b8d0a3a28203cb31ba8f872dad865f3221e4fa1978310c90dc5318ad885686",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-016.webp",
+      "previewWidth": 142,
+      "previewHeight": 112,
+      "previewBytes": 4458,
+      "previewSha256": "572d6c7c9bd7b7db3f4550253bccd04afd7f9b7ea2892da0aba4c680dddd050a"
     },
     {
       "id": "engraving-017",
@@ -404,10 +569,15 @@
       "title": "Legend 图章",
       "titleEn": "Legend Stamp",
       "category": "achievements",
-      "width": 131.0,
-      "height": 135.0,
+      "width": 131,
+      "height": 135,
       "bytes": 78386,
-      "sha256": "60a74b5bfc1d2f85b5312e776cd01718abdc5ec230ff398886631805e67729e6"
+      "sha256": "60a74b5bfc1d2f85b5312e776cd01718abdc5ec230ff398886631805e67729e6",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-017.webp",
+      "previewWidth": 131,
+      "previewHeight": 135,
+      "previewBytes": 4360,
+      "previewSha256": "a7d875fb5f898d8701839cb8660e94f60b36c3ed699c45d78f5829f39bd7c9f4"
     },
     {
       "id": "engraving-018",
@@ -416,10 +586,15 @@
       "title": "Sudoku Daily 图章",
       "titleEn": "Sudoku Daily Stamp",
       "category": "achievements",
-      "width": 92.0,
-      "height": 85.0,
+      "width": 92,
+      "height": 85,
       "bytes": 96191,
-      "sha256": "736abb8dc4dcbd106c4cf61f7f1f9dfeef2913ba627f421ad07079360ac157cd"
+      "sha256": "736abb8dc4dcbd106c4cf61f7f1f9dfeef2913ba627f421ad07079360ac157cd",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-018.webp",
+      "previewWidth": 92,
+      "previewHeight": 85,
+      "previewBytes": 2826,
+      "previewSha256": "68bcd0be1b14274b6d2e1a0c0ed7903f8c03b90a9070dddc81831c800550f329"
     },
     {
       "id": "engraving-020",
@@ -428,10 +603,15 @@
       "title": "档案馆主视觉",
       "titleEn": "Archive Hero",
       "category": "stamps",
-      "width": 385.0,
-      "height": 302.0,
+      "width": 385,
+      "height": 302,
       "bytes": 958963,
-      "sha256": "ac45d6dec8424d6344a55c1761f5167916d66fd325fdb88cc2d21b0e6bebd303"
+      "sha256": "ac45d6dec8424d6344a55c1761f5167916d66fd325fdb88cc2d21b0e6bebd303",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-020.webp",
+      "previewWidth": 385,
+      "previewHeight": 302,
+      "previewBytes": 14996,
+      "previewSha256": "8f3938503b11b1c1257e0d074787b5561b04ebfa61821d516750759e4f9d2371"
     },
     {
       "id": "engraving-027",
@@ -440,10 +620,15 @@
       "title": "再来一次",
       "titleEn": "Try again",
       "category": "posters",
-      "width": 1132.0,
-      "height": 1389.0,
+      "width": 1132,
+      "height": 1389,
       "bytes": 1282493,
-      "sha256": "80d387284ad0705b9565fe42b17669290cca8b962f06dab867d19dd18addfef7"
+      "sha256": "80d387284ad0705b9565fe42b17669290cca8b962f06dab867d19dd18addfef7",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-027.webp",
+      "previewWidth": 640,
+      "previewHeight": 785,
+      "previewBytes": 129200,
+      "previewSha256": "bf977b919f1e5e5ebdf19454fbb016b2006c93e2ec1a0783d340182fda23464b"
     },
     {
       "id": "engraving-028",
@@ -452,10 +637,15 @@
       "title": "成就海报",
       "titleEn": "Achievement poster",
       "category": "posters",
-      "width": 2108.0,
-      "height": 2986.0,
+      "width": 2108,
+      "height": 2986,
       "bytes": 1568094,
-      "sha256": "7f0708ea64b1b77353c7ec0e6540273fd7f52cf1173fe883653def139fa0a96a"
+      "sha256": "7f0708ea64b1b77353c7ec0e6540273fd7f52cf1173fe883653def139fa0a96a",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-028.webp",
+      "previewWidth": 640,
+      "previewHeight": 907,
+      "previewBytes": 232404,
+      "previewSha256": "d7141e3ff10e7567d1c36eca7c95442d9c27763bee158c6ef23c5b2d287471cf"
     },
     {
       "id": "engraving-030",
@@ -464,10 +654,15 @@
       "title": "档案馆",
       "titleEn": "The archive",
       "category": "posters",
-      "width": 1404.0,
-      "height": 1120.0,
+      "width": 1404,
+      "height": 1120,
       "bytes": 459720,
-      "sha256": "7cddf8ea353d45a0133dfe357042d6bc804868320119185e86ebcf5684afc9ea"
+      "sha256": "7cddf8ea353d45a0133dfe357042d6bc804868320119185e86ebcf5684afc9ea",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-030.webp",
+      "previewWidth": 640,
+      "previewHeight": 510,
+      "previewBytes": 38076,
+      "previewSha256": "6ded8ce6d8b585476c50eccc4155648a731836ebb8ff578eee1eb420560b6ba8"
     },
     {
       "id": "engraving-032",
@@ -476,10 +671,15 @@
       "title": "手势",
       "titleEn": "Hand gesture",
       "category": "posters",
-      "width": 261.0,
-      "height": 290.0,
+      "width": 261,
+      "height": 290,
       "bytes": 152512,
-      "sha256": "3781b7501e2a303abf3e7075b1e1eb38af42244ab3d1c58c78fd3dd65b8caa30"
+      "sha256": "3781b7501e2a303abf3e7075b1e1eb38af42244ab3d1c58c78fd3dd65b8caa30",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-032.webp",
+      "previewWidth": 261,
+      "previewHeight": 290,
+      "previewBytes": 12014,
+      "previewSha256": "46de8f95963dc2ee9404f66fd4d9c23a7ea270f302e70385c2345c5faff91252"
     },
     {
       "id": "engraving-033",
@@ -488,10 +688,15 @@
       "title": "爱的指导",
       "titleEn": "A little guidance",
       "category": "daily",
-      "width": 1536.0,
-      "height": 1024.0,
+      "width": 1536,
+      "height": 1024,
       "bytes": 1061103,
-      "sha256": "e11bec189a806e3b6ae3e5397b39a060125bfa4dc44fffcb5c17559d45fd6292"
+      "sha256": "e11bec189a806e3b6ae3e5397b39a060125bfa4dc44fffcb5c17559d45fd6292",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-033.webp",
+      "previewWidth": 640,
+      "previewHeight": 427,
+      "previewBytes": 77484,
+      "previewSha256": "e84e9bd0e1842f8e63d28faa6edd8a6ec19633bfba163a2930f5adc9a188a033"
     },
     {
       "id": "engraving-034",
@@ -500,10 +705,15 @@
       "title": "园艺工具",
       "titleEn": "Gardening tools",
       "category": "botanical",
-      "width": 1536.0,
-      "height": 1024.0,
+      "width": 1536,
+      "height": 1024,
       "bytes": 582915,
-      "sha256": "068893ae448ab31910697b515a42d102b12b2bea46bde04f1b4479e13dc17594"
+      "sha256": "068893ae448ab31910697b515a42d102b12b2bea46bde04f1b4479e13dc17594",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-034.webp",
+      "previewWidth": 640,
+      "previewHeight": 427,
+      "previewBytes": 37432,
+      "previewSha256": "63258f903e78d8e878a33e7afb543890c6afeaa87c674a9f166a89f6bd3e96f3"
     },
     {
       "id": "engraving-036",
@@ -512,10 +722,15 @@
       "title": "数字与煎锅",
       "titleEn": "Numbers in the pan",
       "category": "daily",
-      "width": 1024.0,
-      "height": 1024.0,
+      "width": 1024,
+      "height": 1024,
       "bytes": 719512,
-      "sha256": "022cc608569bfbe332d2d28a73048cff53446459ffb4d6ea9e1fbe5eea49ea2d"
+      "sha256": "022cc608569bfbe332d2d28a73048cff53446459ffb4d6ea9e1fbe5eea49ea2d",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-036.webp",
+      "previewWidth": 640,
+      "previewHeight": 640,
+      "previewBytes": 71368,
+      "previewSha256": "bd92086e8b35b64de2d87695da8091d915668951faa656a2a1a810f7addf1520"
     },
     {
       "id": "engraving-038",
@@ -524,10 +739,15 @@
       "title": "数独人物",
       "titleEn": "Sudoku character",
       "category": "daily",
-      "width": 2168.0,
-      "height": 2902.0,
+      "width": 2168,
+      "height": 2902,
       "bytes": 1799408,
-      "sha256": "3847cb2ddc078c7598d1664269d14b3d7ada3b2c3838460672b711ce02557429"
+      "sha256": "3847cb2ddc078c7598d1664269d14b3d7ada3b2c3838460672b711ce02557429",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-038.webp",
+      "previewWidth": 640,
+      "previewHeight": 857,
+      "previewBytes": 152222,
+      "previewSha256": "ae9a80f99b10feab2ee3f364bb98fd600963e795d171b60edfb235c135784da4"
     },
     {
       "id": "engraving-039",
@@ -536,10 +756,15 @@
       "title": "数字与相机",
       "titleEn": "A numerical snapshot",
       "category": "daily",
-      "width": 1024.0,
-      "height": 1024.0,
+      "width": 1024,
+      "height": 1024,
       "bytes": 1285259,
-      "sha256": "aa96bd05647feedfcd6748cd4b6f3db3aedc2c1c87a669dc09c47f820f7920bb"
+      "sha256": "aa96bd05647feedfcd6748cd4b6f3db3aedc2c1c87a669dc09c47f820f7920bb",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-039.webp",
+      "previewWidth": 640,
+      "previewHeight": 640,
+      "previewBytes": 94702,
+      "previewSha256": "32dab62f313c01193603903e40aa702dd6648d4093e07f3dd8c772b129efb192"
     },
     {
       "id": "engraving-040",
@@ -548,10 +773,15 @@
       "title": "花卉与水果",
       "titleEn": "Flowers & fruit",
       "category": "botanical",
-      "width": 1680.0,
-      "height": 1680.0,
+      "width": 1680,
+      "height": 1680,
       "bytes": 340983,
-      "sha256": "d26eb0fe59a1c48201f0499b5e60ec45a63c9c63eba9b03652416a2a4971a26d"
+      "sha256": "d26eb0fe59a1c48201f0499b5e60ec45a63c9c63eba9b03652416a2a4971a26d",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-040.webp",
+      "previewWidth": 640,
+      "previewHeight": 640,
+      "previewBytes": 54696,
+      "previewSha256": "5170c4edd76bc4a9c9c934e1b171487e5d4e71ad47f1e7ed77f0c705edf87208"
     },
     {
       "id": "engraving-042",
@@ -560,10 +790,15 @@
       "title": "苹果 · 初期",
       "titleEn": "Apple · Early",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 10343,
-      "sha256": "06a32e6ff9bd77d5cb006bc9ab3987231e09ba7b748391017fa6db4b7796ed24"
+      "sha256": "06a32e6ff9bd77d5cb006bc9ab3987231e09ba7b748391017fa6db4b7796ed24",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-042.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 5202,
+      "previewSha256": "97411655865b81d30b23dc83469712a84ba2310b54d7dce56f09ad2b1b544ee2"
     },
     {
       "id": "engraving-043",
@@ -572,10 +807,15 @@
       "title": "玫瑰 · 中期",
       "titleEn": "Rose · Growing",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 16121,
-      "sha256": "624018037f82a39af21bf4694e2d86c1439529e723e97c550888345f3f2923e6"
+      "sha256": "624018037f82a39af21bf4694e2d86c1439529e723e97c550888345f3f2923e6",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-043.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 8714,
+      "previewSha256": "7fcb8914c7f93d22e4a257332b0df8b6401899b54c03f4423e7c777eaf260174"
     },
     {
       "id": "engraving-044",
@@ -584,10 +824,15 @@
       "title": "向日葵 · 初期",
       "titleEn": "Sunflower · Early",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 17678,
-      "sha256": "2778443bff9ef11826ab4ee3d7da69231da938062ec3b70158a926314ce487b2"
+      "sha256": "2778443bff9ef11826ab4ee3d7da69231da938062ec3b70158a926314ce487b2",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-044.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 9312,
+      "previewSha256": "950d512d584894606538452cd90fae82e92a5d52aabef2a5274f6871d6610596"
     },
     {
       "id": "engraving-045",
@@ -596,10 +841,15 @@
       "title": "葡萄 · 中期",
       "titleEn": "Grape · Growing",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 22694,
-      "sha256": "4c8495a6dfb59013f73eb122f5444f859986e98b5cbe1812ff039c7d9bd80593"
+      "sha256": "4c8495a6dfb59013f73eb122f5444f859986e98b5cbe1812ff039c7d9bd80593",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-045.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 11126,
+      "previewSha256": "da42f1049bae6c1f6beebde5b9634e9ff1d7d34dc4a0350ba046e94acdcac48b"
     },
     {
       "id": "engraving-046",
@@ -608,10 +858,15 @@
       "title": "柠檬 · 初期",
       "titleEn": "Lemon · Early",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 15876,
-      "sha256": "4759866e8be11c7779bf70954a402ff953260dce11a4bfe3e2944f335dbd73f2"
+      "sha256": "4759866e8be11c7779bf70954a402ff953260dce11a4bfe3e2944f335dbd73f2",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-046.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 9184,
+      "previewSha256": "7a525c2ba5cc0f80ab6ad2966b20ac340e380a1c0406718d7beb0e1f2ad2ba61"
     },
     {
       "id": "engraving-047",
@@ -620,10 +875,15 @@
       "title": "玫瑰 · 初期",
       "titleEn": "Rose · Early",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 13795,
-      "sha256": "8ce75a5ceda148c61e1eb3c8fff63f3e7577ff5e6025d6c3f9c943320a8dcbf9"
+      "sha256": "8ce75a5ceda148c61e1eb3c8fff63f3e7577ff5e6025d6c3f9c943320a8dcbf9",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-047.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 7338,
+      "previewSha256": "ee0789cb0f8a297482aa988a7568792349e253f40178a91f9a3a551cb32ea5d2"
     },
     {
       "id": "engraving-048",
@@ -632,10 +892,15 @@
       "title": "柠檬 · 中期",
       "titleEn": "Lemon · Growing",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 21716,
-      "sha256": "a14994e809974f2c28842d282d5362220a03fcd2f3ce9b7827a3872b81c41cd3"
+      "sha256": "a14994e809974f2c28842d282d5362220a03fcd2f3ce9b7827a3872b81c41cd3",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-048.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 9482,
+      "previewSha256": "27a3d2982ae642cdbdd6d47cb9bc667fa56d8ee34f0ee9105025a7035109fd70"
     },
     {
       "id": "engraving-049",
@@ -644,10 +909,15 @@
       "title": "郁金香 · 初期",
       "titleEn": "Tulip · Early",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 12413,
-      "sha256": "e730c57e2b223a87957d9de984d0065b73e364dcba4c0dbd9bc2304f6aa94ad9"
+      "sha256": "e730c57e2b223a87957d9de984d0065b73e364dcba4c0dbd9bc2304f6aa94ad9",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-049.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 7286,
+      "previewSha256": "112628ea57f95412ff5fe139869d6b757055d92e384ef5f07047ff00d9b235de"
     },
     {
       "id": "engraving-050",
@@ -656,10 +926,15 @@
       "title": "梨 · 初期",
       "titleEn": "Pear · Early",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 9736,
-      "sha256": "4407980a01e0412fc8c838bbc73c7f29f870c091e31fd680dfbcdb8b420683c3"
+      "sha256": "4407980a01e0412fc8c838bbc73c7f29f870c091e31fd680dfbcdb8b420683c3",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-050.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 5160,
+      "previewSha256": "00a618d5c4ded784abfa0167e642793ca4fe68a4af507802547e4d5175b8663c"
     },
     {
       "id": "engraving-051",
@@ -668,10 +943,15 @@
       "title": "雏菊 · 中期",
       "titleEn": "Daisy · Growing",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 15565,
-      "sha256": "d4f1405a4d8e7a3b493145293abe3298b69a75b46970f81e17fb7a8526246964"
+      "sha256": "d4f1405a4d8e7a3b493145293abe3298b69a75b46970f81e17fb7a8526246964",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-051.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 9582,
+      "previewSha256": "a70a5cf4176e7b294954ef44bc9f30821389acf763dea879b71574e3000f8a25"
     },
     {
       "id": "engraving-052",
@@ -680,10 +960,15 @@
       "title": "葡萄 · 初期",
       "titleEn": "Grape · Early",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 16415,
-      "sha256": "1d76bfd721873bde0f9aaffe767bcc5ad31197827a2faaf1370d6e173485307f"
+      "sha256": "1d76bfd721873bde0f9aaffe767bcc5ad31197827a2faaf1370d6e173485307f",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-052.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 9998,
+      "previewSha256": "996a2742e3f2188d52373c5d8f3bbddf9346dcdc757b5cf6ea0c0d3ca36964ed"
     },
     {
       "id": "engraving-053",
@@ -692,10 +977,15 @@
       "title": "草莓 · 中期",
       "titleEn": "Strawberry · Growing",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 16494,
-      "sha256": "376c9dd77438fd91f211aa84d036504af2dead2768ae9a387d4bb857e4592890"
+      "sha256": "376c9dd77438fd91f211aa84d036504af2dead2768ae9a387d4bb857e4592890",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-053.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 8406,
+      "previewSha256": "98671c9092670d09432c6f7275bf23d5f47b2f524420b157f947e5d6fef02c61"
     },
     {
       "id": "engraving-054",
@@ -704,10 +994,15 @@
       "title": "梨 · 中期",
       "titleEn": "Pear · Growing",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 16760,
-      "sha256": "78d154f90397dbf6b343fed51b898ed6703ec23008da7804422cfc86f86148d0"
+      "sha256": "78d154f90397dbf6b343fed51b898ed6703ec23008da7804422cfc86f86148d0",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-054.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 7720,
+      "previewSha256": "1884a87e2c1d88a26a22eeb271928dc7d3f5ef5e5e963199d1c5affccfee4632"
     },
     {
       "id": "engraving-055",
@@ -716,10 +1011,15 @@
       "title": "苹果 · 中期",
       "titleEn": "Apple · Growing",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 21224,
-      "sha256": "db185a0f96f4d2da39be6c91659c26f7d02b8492d2eb2449f1046faffca6bd1b"
+      "sha256": "db185a0f96f4d2da39be6c91659c26f7d02b8492d2eb2449f1046faffca6bd1b",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-055.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 9958,
+      "previewSha256": "8e61abd24fd8ef472b757e32991b65d54fb28bf1e8a6808073d6de0e361bcab8"
     },
     {
       "id": "engraving-056",
@@ -728,10 +1028,15 @@
       "title": "雏菊 · 初期",
       "titleEn": "Daisy · Early",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 10877,
-      "sha256": "30725d83fcd977c12a216ba37090f24307842d75873a7c934e3b314c6c9c433b"
+      "sha256": "30725d83fcd977c12a216ba37090f24307842d75873a7c934e3b314c6c9c433b",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-056.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 6610,
+      "previewSha256": "a6ae313893f0d9a6ab63faeaaca80867a9617f3c61ce0ac24f18823cb71959fa"
     },
     {
       "id": "engraving-057",
@@ -740,10 +1045,15 @@
       "title": "向日葵 · 中期",
       "titleEn": "Sunflower · Growing",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 21635,
-      "sha256": "c2b78d1198c77ed6487dcfe4f2e16dbc399680a6327c986ddefb45ea1bfd1ad6"
+      "sha256": "c2b78d1198c77ed6487dcfe4f2e16dbc399680a6327c986ddefb45ea1bfd1ad6",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-057.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 11104,
+      "previewSha256": "fb98fd307c1446d974134834aca9d26f0ff4b681c33d4a1ffb6be3ed147dc573"
     },
     {
       "id": "engraving-058",
@@ -752,10 +1062,15 @@
       "title": "草莓 · 初期",
       "titleEn": "Strawberry · Early",
       "category": "botanical",
-      "width": 400.0,
-      "height": 400.0,
+      "width": 400,
+      "height": 400,
       "bytes": 11978,
-      "sha256": "0bbc928b41310c8942ababeb441e4eb71315b0610d009bc7843226ff23e5b937"
+      "sha256": "0bbc928b41310c8942ababeb441e4eb71315b0610d009bc7843226ff23e5b937",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-058.webp",
+      "previewWidth": 400,
+      "previewHeight": 400,
+      "previewBytes": 7890,
+      "previewSha256": "c44ada8574d2d51a8de7cc95867340cbb7dce6cd152d04b4a2dab3920dd123e3"
     },
     {
       "id": "engraving-060",
@@ -764,10 +1079,15 @@
       "title": "放大镜",
       "titleEn": "A closer look",
       "category": "daily",
-      "width": 1024.0,
-      "height": 1024.0,
+      "width": 1024,
+      "height": 1024,
       "bytes": 1133843,
-      "sha256": "6bcac2e47a66dff47f3519197409023fcf315a57a6408165a28364b1bed06407"
+      "sha256": "6bcac2e47a66dff47f3519197409023fcf315a57a6408165a28364b1bed06407",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-060.webp",
+      "previewWidth": 640,
+      "previewHeight": 640,
+      "previewBytes": 89096,
+      "previewSha256": "20d7c5d49013e3aa9ffddf3bb58b95ae939fa04f2353fde1b68e35539a5e05d8"
     },
     {
       "id": "engraving-061",
@@ -776,10 +1096,15 @@
       "title": "扩音器",
       "titleEn": "Megaphone",
       "category": "daily",
-      "width": 736.0,
-      "height": 1041.0,
+      "width": 736,
+      "height": 1041,
       "bytes": 72645,
-      "sha256": "f1d10105ce62f293815cef768ed620c06f4e9327ad89778fe001bb06841e75be"
+      "sha256": "f1d10105ce62f293815cef768ed620c06f4e9327ad89778fe001bb06841e75be",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-061.webp",
+      "previewWidth": 640,
+      "previewHeight": 905,
+      "previewBytes": 41560,
+      "previewSha256": "eed9a3405ec2d6553f9257ea4a6b88ab55033b6380d07d330c2eddc648d7ca3b"
     },
     {
       "id": "engraving-062",
@@ -788,10 +1113,15 @@
       "title": "灵感亮起",
       "titleEn": "An idea lights up",
       "category": "daily",
-      "width": 1254.0,
-      "height": 1254.0,
+      "width": 1254,
+      "height": 1254,
       "bytes": 1070628,
-      "sha256": "785712752f990b8f3e1d69fd05a1fdc3c8afb25910586ee54dc8785fd323a203"
+      "sha256": "785712752f990b8f3e1d69fd05a1fdc3c8afb25910586ee54dc8785fd323a203",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-062.webp",
+      "previewWidth": 640,
+      "previewHeight": 640,
+      "previewBytes": 124010,
+      "previewSha256": "93e44f2f43aa753a79b8c7b27171b155ce556b9f9f1d17b3aca5d74bd0651b27"
     },
     {
       "id": "engraving-063",
@@ -800,10 +1130,15 @@
       "title": "花盆里的数字",
       "titleEn": "Numbers in a flowerpot",
       "category": "daily",
-      "width": 1024.0,
-      "height": 1024.0,
+      "width": 1024,
+      "height": 1024,
       "bytes": 1750986,
-      "sha256": "6b222c7ae3e435279857b0890400fe3a7551d75e454560b26d23f03fb5a59f31"
+      "sha256": "6b222c7ae3e435279857b0890400fe3a7551d75e454560b26d23f03fb5a59f31",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-063.webp",
+      "previewWidth": 640,
+      "previewHeight": 640,
+      "previewBytes": 157676,
+      "previewSha256": "833820a815938b7f435e250238395e3cb8bc550cc2e5c6bffebc9661069f81f9"
     },
     {
       "id": "engraving-066",
@@ -812,10 +1147,15 @@
       "title": "没问题",
       "titleEn": "All right",
       "category": "daily",
-      "width": 1334.0,
-      "height": 1179.0,
+      "width": 1334,
+      "height": 1179,
       "bytes": 356250,
-      "sha256": "d3108568a43ccaf521017d74718a8388b3f32b003968485e03b9edc8f18f7f0b"
+      "sha256": "d3108568a43ccaf521017d74718a8388b3f32b003968485e03b9edc8f18f7f0b",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-066.webp",
+      "previewWidth": 640,
+      "previewHeight": 566,
+      "previewBytes": 60836,
+      "previewSha256": "a41bf64de1bef7ee03c29c5dc1b06ddce97d2b6eb44be63de1d54bcc93848b4b"
     },
     {
       "id": "engraving-067",
@@ -824,10 +1164,15 @@
       "title": "放声大笑",
       "titleEn": "A good laugh",
       "category": "daily",
-      "width": 1140.0,
-      "height": 1380.0,
+      "width": 1140,
+      "height": 1380,
       "bytes": 512978,
-      "sha256": "4febc4d928c4e6f995b648b5f5cad50e4284afdcdc931f1bf63aeeb28c4eea11"
+      "sha256": "4febc4d928c4e6f995b648b5f5cad50e4284afdcdc931f1bf63aeeb28c4eea11",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-067.webp",
+      "previewWidth": 640,
+      "previewHeight": 775,
+      "previewBytes": 125562,
+      "previewSha256": "336c83d03d9e0e6299ee94b0317adfe4b86ca01888b999aa481dfae98da4c358"
     },
     {
       "id": "engraving-068",
@@ -836,10 +1181,15 @@
       "title": "拿不定主意",
       "titleEn": "A moment of doubt",
       "category": "daily",
-      "width": 1050.0,
-      "height": 1498.0,
+      "width": 1050,
+      "height": 1498,
       "bytes": 421717,
-      "sha256": "afd6f20ae79cb29626bd45a63912667503244ec35cfb2fc9ecb7b17cfae44569"
+      "sha256": "afd6f20ae79cb29626bd45a63912667503244ec35cfb2fc9ecb7b17cfae44569",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-068.webp",
+      "previewWidth": 640,
+      "previewHeight": 913,
+      "previewBytes": 132028,
+      "previewSha256": "ae0ea23c634e2741d789d2952328b576aba318a6ffb280dda47cb15e044e86d5"
     },
     {
       "id": "engraving-069",
@@ -848,10 +1198,15 @@
       "title": "有点头疼",
       "titleEn": "A puzzling moment",
       "category": "daily",
-      "width": 1115.0,
-      "height": 1411.0,
+      "width": 1115,
+      "height": 1411,
       "bytes": 615498,
-      "sha256": "e06414292c1fc238f446deb8452d080f918ddb28056d82510da45248f469b369"
+      "sha256": "e06414292c1fc238f446deb8452d080f918ddb28056d82510da45248f469b369",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-069.webp",
+      "previewWidth": 640,
+      "previewHeight": 810,
+      "previewBytes": 168476,
+      "previewSha256": "33f7dd7a8734645e05dafce917e2886ebc85cbae9890ab31e02e98ef67af14d3"
     },
     {
       "id": "engraving-070",
@@ -860,10 +1215,15 @@
       "title": "惊讶指点",
       "titleEn": "Look at that",
       "category": "daily",
-      "width": 1254.0,
-      "height": 1254.0,
+      "width": 1254,
+      "height": 1254,
       "bytes": 711438,
-      "sha256": "a3bfb42e87103078c8ab347167f24acc1bb0c2cc2e6b9d5bcbe102536a1473b6"
+      "sha256": "a3bfb42e87103078c8ab347167f24acc1bb0c2cc2e6b9d5bcbe102536a1473b6",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-070.webp",
+      "previewWidth": 640,
+      "previewHeight": 640,
+      "previewBytes": 133324,
+      "previewSha256": "23ba1e6a761079575beddc61bd06cd67ed25c29503ec72d201bcfc73bfcb9bf0"
     },
     {
       "id": "engraving-072",
@@ -872,10 +1232,15 @@
       "title": "新一局图稿",
       "titleEn": "A new puzzle",
       "category": "illustrations",
-      "width": 2138.0,
-      "height": 736.0,
+      "width": 2138,
+      "height": 736,
       "bytes": 331544,
-      "sha256": "6cd50e48df9820b10df515a7fc7d37cc01d1af2fed130e82b91e94a0741cf1ae"
+      "sha256": "6cd50e48df9820b10df515a7fc7d37cc01d1af2fed130e82b91e94a0741cf1ae",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-072.webp",
+      "previewWidth": 640,
+      "previewHeight": 220,
+      "previewBytes": 21564,
+      "previewSha256": "afc21db741a5a5531a8d967d68fe64a59290d02db3e6026c80855da8edd04bc7"
     },
     {
       "id": "engraving-073",
@@ -884,10 +1249,15 @@
       "title": "档案库图稿",
       "titleEn": "The archive",
       "category": "illustrations",
-      "width": 1402.0,
-      "height": 1122.0,
+      "width": 1402,
+      "height": 1122,
       "bytes": 127905,
-      "sha256": "d45a7884835c0451ebff4762b3b6e5743742a20e0dcb23170c15f780f22102c9"
+      "sha256": "d45a7884835c0451ebff4762b3b6e5743742a20e0dcb23170c15f780f22102c9",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-073.webp",
+      "previewWidth": 640,
+      "previewHeight": 512,
+      "previewBytes": 52238,
+      "previewSha256": "9bf19ec74ade947bd4357b08f2a1a5d60d25b56d6a333e64f5f29bf272a9a443"
     },
     {
       "id": "engraving-074",
@@ -896,10 +1266,15 @@
       "title": "导师",
       "titleEn": "The mentor",
       "category": "illustrations",
-      "width": 1502.0,
-      "height": 1047.0,
+      "width": 1502,
+      "height": 1047,
       "bytes": 526354,
-      "sha256": "72fe567c5c0c4b311846615a07af153d4d3b599dafeb40f02042bcbf276a1ff6"
+      "sha256": "72fe567c5c0c4b311846615a07af153d4d3b599dafeb40f02042bcbf276a1ff6",
+      "preview": "../assets/works/design-skills/archive/previews/engraving-074.webp",
+      "previewWidth": 640,
+      "previewHeight": 446,
+      "previewBytes": 66124,
+      "previewSha256": "d7009709655b43779e4f192e7c2d7cebd1a44d31a98c2bcd279ee7fe212840bc"
     }
   ],
   "icons": [
@@ -912,8 +1287,8 @@
       "category": "通信",
       "categoryEn": "Communication",
       "categoryId": "communication",
-      "width": 1024.0,
-      "height": 1024.0,
+      "width": 1024,
+      "height": 1024,
       "bytes": 22129,
       "sha256": "1cdbf9248d9bb449fa7482071971fc5f22de638f86a852119593cce613748c4f",
       "inkNormalized": false
@@ -927,8 +1302,8 @@
       "category": "通信",
       "categoryEn": "Communication",
       "categoryId": "communication",
-      "width": 1024.0,
-      "height": 1024.0,
+      "width": 1024,
+      "height": 1024,
       "bytes": 15009,
       "sha256": "36135164782127e8cf478b94d66d63fc75781ccca600eb424737f7da71069749",
       "inkNormalized": false
@@ -942,8 +1317,8 @@
       "category": "通信",
       "categoryEn": "Communication",
       "categoryId": "communication",
-      "width": 1024.0,
-      "height": 1024.0,
+      "width": 1024,
+      "height": 1024,
       "bytes": 20056,
       "sha256": "c88f9f9db700fdd0dd695c701a7784fdb4a7716a2055598b2b27551b866568b0",
       "inkNormalized": false
@@ -957,8 +1332,8 @@
       "category": "通信",
       "categoryEn": "Communication",
       "categoryId": "communication",
-      "width": 1024.0,
-      "height": 1024.0,
+      "width": 1024,
+      "height": 1024,
       "bytes": 10463,
       "sha256": "f96ba5fe5c0648a0c639ee924932e0c30f48dab1755945dd64efadc56346610d",
       "inkNormalized": false
@@ -972,8 +1347,8 @@
       "category": "符号",
       "categoryEn": "Symbols",
       "categoryId": "symbols",
-      "width": 1024.0,
-      "height": 1024.0,
+      "width": 1024,
+      "height": 1024,
       "bytes": 460,
       "sha256": "7710135f9d606cfb6b138fa00760001f91a9ec317622564cb5e4b6c06ae501c4",
       "inkNormalized": false
@@ -987,8 +1362,8 @@
       "category": "符号",
       "categoryEn": "Symbols",
       "categoryId": "symbols",
-      "width": 1024.0,
-      "height": 1024.0,
+      "width": 1024,
+      "height": 1024,
       "bytes": 2499,
       "sha256": "f7442286bc1e7c4351ea7f0cf7e34e9551f04bd4790a96c0bef83142e0bb2bea",
       "inkNormalized": false
@@ -1002,8 +1377,8 @@
       "category": "符号",
       "categoryEn": "Symbols",
       "categoryId": "symbols",
-      "width": 1024.0,
-      "height": 1024.0,
+      "width": 1024,
+      "height": 1024,
       "bytes": 77531,
       "sha256": "de1815af1f78e0da0d641354a76ca287596fa49e0396f1e08566936ef8fd87fa",
       "inkNormalized": false
@@ -1017,8 +1392,8 @@
       "category": "符号",
       "categoryEn": "Symbols",
       "categoryId": "symbols",
-      "width": 1024.0,
-      "height": 1024.0,
+      "width": 1024,
+      "height": 1024,
       "bytes": 201460,
       "sha256": "bdc83bd08098afa8f40f122bccfd1b210296cf4f567b7f41f2b496bc73a002d4",
       "inkNormalized": false
@@ -1032,8 +1407,8 @@
       "category": "符号",
       "categoryEn": "Symbols",
       "categoryId": "symbols",
-      "width": 1024.0,
-      "height": 1024.0,
+      "width": 1024,
+      "height": 1024,
       "bytes": 53156,
       "sha256": "0fbc73a07c62dbc8fca212a16a64fbd5802e1ce60954d118411a0e25d3048292",
       "inkNormalized": false
@@ -1047,8 +1422,8 @@
       "category": "出行",
       "categoryEn": "Travel",
       "categoryId": "travel",
-      "width": 1254.0,
-      "height": 1254.0,
+      "width": 1254,
+      "height": 1254,
       "bytes": 2820,
       "sha256": "7d2ddc09815c41b9aee6f22c73cec58ac917cb6ab1001efa8d0ce3316e20eb67",
       "inkNormalized": false
@@ -1062,8 +1437,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 323.0,
+      "width": 340,
+      "height": 323,
       "bytes": 4487,
       "sha256": "1768af7c6114f5bb9d9a2f5570123aca34ab0d5f29b3f906174d70218eff4d85",
       "inkNormalized": true
@@ -1077,8 +1452,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 342.0,
+      "width": 340,
+      "height": 342,
       "bytes": 8714,
       "sha256": "32fd3107201a478b36470d8e760bc10c76f1582e93a3a5b231aa3667b3f55ba5",
       "inkNormalized": true
@@ -1092,8 +1467,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 375.0,
+      "width": 340,
+      "height": 375,
       "bytes": 3450,
       "sha256": "cf6f2ba02e7af0fe9596af21c2dbc31412c8c5da29677432564ee0e530943756",
       "inkNormalized": true
@@ -1107,8 +1482,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 336.0,
+      "width": 340,
+      "height": 336,
       "bytes": 5170,
       "sha256": "29c8a40634e908b16964228047698f29170ebfd1276bd6b9e6abfa8ee4f5ddd9",
       "inkNormalized": true
@@ -1122,8 +1497,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 304.0,
+      "width": 340,
+      "height": 304,
       "bytes": 3518,
       "sha256": "79655ab110ed3a93d372f45878cc3bb8b234f4fe7d2aa39267391a75f63f6f7e",
       "inkNormalized": true
@@ -1137,8 +1512,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 336.0,
+      "width": 340,
+      "height": 336,
       "bytes": 2858,
       "sha256": "1bfd9d2d1959efc7b4d1bdd0167d4ecba36b750e2254f65ceb81983c1b639760",
       "inkNormalized": true
@@ -1152,8 +1527,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 267.0,
+      "width": 340,
+      "height": 267,
       "bytes": 4483,
       "sha256": "86dbbf85db8c3a2f348745d5827381d30105f47f598aa40f94d3d455363ea802",
       "inkNormalized": true
@@ -1167,8 +1542,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 391.0,
+      "width": 340,
+      "height": 391,
       "bytes": 4801,
       "sha256": "4d42b79317d38d8db4e35ca853b5f8e0457bd4a70b5ae7e5643fc6adc6361ed9",
       "inkNormalized": true
@@ -1182,8 +1557,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 397.0,
+      "width": 340,
+      "height": 397,
       "bytes": 4401,
       "sha256": "4af7b052ad1d9507c454b871aa01f424d2228fc37afcb26b29c5c2b8f0da4e6c",
       "inkNormalized": true
@@ -1197,8 +1572,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 299.0,
+      "width": 340,
+      "height": 299,
       "bytes": 6598,
       "sha256": "36d0daece3df5ae2f47a0b263bf120f7e9aea77e52690439523f225759e2d5a6",
       "inkNormalized": true
@@ -1212,8 +1587,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 295.0,
+      "width": 340,
+      "height": 295,
       "bytes": 7512,
       "sha256": "a2e2057c155ea50f50dbb57283971803b8ca983d1f44120819494fbb477ff6a8",
       "inkNormalized": true
@@ -1227,8 +1602,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 325.0,
+      "width": 340,
+      "height": 325,
       "bytes": 5572,
       "sha256": "4babbcdbd40ade841b4e8c3300938c416c1fe3003cf9c5ce12d2a8bf143dd06a",
       "inkNormalized": true
@@ -1242,8 +1617,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 433.0,
+      "width": 340,
+      "height": 433,
       "bytes": 4562,
       "sha256": "6b9417b9a5d08364148af1b4cd066342f5171471593275d2169a17d2016f3bcd",
       "inkNormalized": true
@@ -1257,8 +1632,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 427.0,
+      "width": 340,
+      "height": 427,
       "bytes": 4552,
       "sha256": "2c405152edeb688e3ef0a415393be02de56d06c2e0644acbb51a69624a4e8b8a",
       "inkNormalized": true
@@ -1272,8 +1647,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 259.0,
+      "width": 340,
+      "height": 259,
       "bytes": 2512,
       "sha256": "4a73d42585071ebe0931d307652ef4f60043e984aacd661b959638e3db8d8166",
       "inkNormalized": true
@@ -1287,8 +1662,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 97.0,
+      "width": 340,
+      "height": 97,
       "bytes": 2964,
       "sha256": "a6e365af152a65924755af2a232a9690220881ac2ac6289c6b19dd9860deed9b",
       "inkNormalized": true
@@ -1302,8 +1677,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 560.0,
+      "width": 340,
+      "height": 560,
       "bytes": 3135,
       "sha256": "b28f5fb421d632dd8b0b8b1d50cd56f593b434e9b255ffaf13cde374a644ecff",
       "inkNormalized": true
@@ -1317,8 +1692,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 310.0,
+      "width": 340,
+      "height": 310,
       "bytes": 6589,
       "sha256": "f03ad3e556a9e17a191ae29d3c6b231772bdda5520bfc57e2ae1ee55af49a5e6",
       "inkNormalized": true
@@ -1332,8 +1707,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 250.0,
+      "width": 340,
+      "height": 250,
       "bytes": 5120,
       "sha256": "a357d11ff3449431568660809ff6d38240f95f0c6ef46f219370ad491f289bcd",
       "inkNormalized": true
@@ -1347,8 +1722,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 431.0,
+      "width": 340,
+      "height": 431,
       "bytes": 2810,
       "sha256": "1e4d6dc9a0372fc2a101855264f590e27aa2ae76098d62a7b6058b34d188d859",
       "inkNormalized": true
@@ -1362,8 +1737,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 375.0,
+      "width": 340,
+      "height": 375,
       "bytes": 1465,
       "sha256": "de38933bd49aa868a9e7d0e66ad757afba34359ccd0ac2c954bf4ed36556d006",
       "inkNormalized": true
@@ -1377,8 +1752,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 335.0,
+      "width": 340,
+      "height": 335,
       "bytes": 6235,
       "sha256": "0c79955174cb0abf23fdf12d1a58cc2782a8228f5982c00f7b0f0c7040507d52",
       "inkNormalized": true
@@ -1392,8 +1767,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 299.0,
+      "width": 340,
+      "height": 299,
       "bytes": 2054,
       "sha256": "8fdc0bcafb7d5071ebc8cf244f361de169f6682755a5389129af68cc15baef26",
       "inkNormalized": true
@@ -1407,8 +1782,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 304.0,
+      "width": 340,
+      "height": 304,
       "bytes": 5056,
       "sha256": "7b211ab1ade8b034882f116a76100e36147be95b21f147c3e1d84fe1b8c17a4c",
       "inkNormalized": true
@@ -1422,8 +1797,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 359.0,
+      "width": 340,
+      "height": 359,
       "bytes": 5065,
       "sha256": "7f93072845734590d8d959f25dbe2611d97d198939097498c24d53943338d525",
       "inkNormalized": true
@@ -1437,8 +1812,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 364.0,
+      "width": 340,
+      "height": 364,
       "bytes": 4554,
       "sha256": "90068c2c8680c57c89ad82e39d16526b2c17b09b5046b150ba8e5b94fcc549b7",
       "inkNormalized": true
@@ -1452,8 +1827,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 265.0,
+      "width": 340,
+      "height": 265,
       "bytes": 3949,
       "sha256": "5c0b2d974e53aa8a803349b42562b3ddeb77b613354fda6931bb57b16bedd1ad",
       "inkNormalized": true
@@ -1467,8 +1842,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 340.0,
+      "width": 340,
+      "height": 340,
       "bytes": 8895,
       "sha256": "5624a142cfc12dd3d36aaf6244a782ad248393ab51bae044f4fb3e0ee88189b7",
       "inkNormalized": true
@@ -1482,8 +1857,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 403.0,
+      "width": 340,
+      "height": 403,
       "bytes": 6422,
       "sha256": "d7839c2d63ce0f694514948b25435d5dcab7c846e4af753bc97f599fcb94c8bd",
       "inkNormalized": true
@@ -1497,8 +1872,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 307.0,
+      "width": 340,
+      "height": 307,
       "bytes": 8010,
       "sha256": "8797a0f47822c2d165386b67aeed44b0775a20f644274994d92a35429de474d9",
       "inkNormalized": true
@@ -1512,8 +1887,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 430.0,
+      "width": 340,
+      "height": 430,
       "bytes": 3440,
       "sha256": "54b2390f958891135d36d3dc8e1ecf12942b06c3b2ab7f43349b975ee76206e7",
       "inkNormalized": true
@@ -1527,8 +1902,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 340.0,
+      "width": 340,
+      "height": 340,
       "bytes": 7946,
       "sha256": "693ec22bf68941df4be6809751d9b0be847fdcb736309b97a4f87f68cdcd964a",
       "inkNormalized": true
@@ -1542,8 +1917,8 @@
       "category": "数独 UI",
       "categoryEn": "Sudoku UI",
       "categoryId": "sudoku-ui",
-      "width": 340.0,
-      "height": 324.0,
+      "width": 340,
+      "height": 324,
       "bytes": 4333,
       "sha256": "a66435a8ca6c5178b37772f97fcb82393998f8fa50d2b3367ac0e87d523accda",
       "inkNormalized": true

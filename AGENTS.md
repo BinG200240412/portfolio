@@ -35,3 +35,5 @@ About me 原照与装饰画框、Skills 版画纸面保留完整四角，豁免�
 首屏不得依赖同步外链脚本、完整大图或完整三维数据才出现内容。保留HTML可见标题，外链脚本按依赖顺序使用defer；黑白/语言由短inline初始化避免闪色。大素材以真实轻量预览先显示，原图/完整点云按需补齐；下方复杂图库到临近视口再初始化。修改JS/CSS后运行 `python3 scripts/sync-shared-assets.py`，同一资源以内容hash统一缓存版本，不用每次全站随机换版本破坏复用。字体内容变化先运行subset脚本，再同步JS/CSS版本。
 
 首页点阵与中间标题属于同一首屏。原生点阵绘图需在语言、主题和其他非绘图脚本之前启动，不能等待字体或远处媒体。编辑原有 `assets/matrix-*.js` 源码，使用 `scripts/build-home-matrix.py` 生成首页单请求入口；`sync-shared-assets.py` 会先重建它并同步内容版本。不要手改生成物，也不要同时引入 bundle 与八份原脚本。
+
+连续浏览的性能同样需要验收：真正离开案例时释放其 iframe、动画、媒体与请求；媒体层返回仍先关闭媒体，再退出作品。多资源图组不能以全成功的 Promise.all 作为整组可见条件，逐项显示成功内容，失败项限时并可独立重试。运动图库用等比轻量预览，原 SVG/原片仅在详情读取；Skills 更新素材后运行 `scripts/build-archive-previews.cjs`。茶弦记 play 的 HTML/JS 文字变化后用 `UV_NATIVE_TLS=true uv run --script scripts/subset-tea-play-fonts.py` 重建原字形字体子集。固定尺寸的图片切角不可在每次 resize 重造与重复写入路径。

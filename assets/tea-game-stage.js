@@ -28,7 +28,7 @@
     const active=selected===3&&visible&&!document.hidden&&!document.querySelector('dialog[open]');
     if(!active){removeGuide();audio=false;audioButton.disabled=true;soundLabel();return;}
     if(mount.querySelector('iframe')){if(rolling)mount.querySelector('iframe').contentWindow?.TeaWhiskGuide?.suspend();else mount.querySelector('iframe').contentWindow?.TeaWhiskGuide?.resume();return;}
-    const frame=document.createElement('iframe');frame.title=english()?'Whisking mechanism demonstration':'击拂机制演示';frame.tabIndex=-1;frame.setAttribute('aria-hidden','true');frame.allow='autoplay';const guideURL='../assets/works/tea/play/chazhan.html?guide&v=tea-wheel-20261030&run='+(++guideRun);
+    const frame=document.createElement('iframe');frame.title=english()?'Whisking mechanism demonstration':'击拂机制演示';frame.tabIndex=-1;frame.setAttribute('aria-hidden','true');frame.allow='autoplay';const guideURL='../assets/works/tea/play/chazhan.html?guide&v=play-font-subset-20261031&run='+(++guideRun);
     audioButton.disabled=true;whiskSurface.style.visibility='hidden';let attempt=0;
     frame.addEventListener('load',()=>{
       // A newly inserted subframe can emit its initial about:blank load first.

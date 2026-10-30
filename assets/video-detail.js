@@ -6,7 +6,7 @@
   try { frameHost = window.frameElement?.closest('#section') || null; } catch (_) {}
   const english = () => window.PortfolioI18n?.language === 'en' || document.documentElement.lang.startsWith('en');
   const available = () => !document.hidden && (!frameHost || frameHost.classList.contains('on'));
-  const sourceURL = video => video.currentSrc || video.src || video.querySelector('source[src]')?.src || '';
+  const sourceURL = video => video.dataset.fullVideo || video.currentSrc || video.src || video.querySelector('source[src]')?.src || '';
   const sourceLabel = video => video.getAttribute('aria-label') || video.closest('figure')?.querySelector('figcaption')?.textContent.trim() || '';
   const finiteTime = value => Number.isFinite(value) && value >= 0;
 

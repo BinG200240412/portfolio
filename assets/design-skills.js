@@ -114,7 +114,7 @@
     button.setAttribute('aria-label', tr(`放大查看：${entry.title}`, `View ${label(entry)}`));
     const paper = document.createElement('span'); paper.className = 'archive-paper';
     const img = document.createElement('img');
-    img.dataset.src = entry.src; img.alt = label(entry); img.decoding = 'async';
+    img.dataset.src = entry.preview || entry.src; img.alt = label(entry); img.decoding = 'async';
     img.width = Math.round(entry.width || 1000); img.height = Math.round(entry.height || 1200);
     img.style.aspectRatio = `${entry.width || 1000} / ${entry.height || 1200}`;
     paper.append(img);
@@ -246,7 +246,10 @@
     const scroll = scrollY; updateCopy(); buildColumns();
     if (viewer.open) showArtwork(current); else scrollTo({top:scroll,behavior:'instant'});
   });
-  fetch('../assets/works/design-skills/catalog.json').then(response => {
+  const catalogURL = new URL('../assets/works/design-skills/catalog.json', document.baseURI);
+  const catalogRevision = new URL(scriptURL).searchParams.get('v');
+  if (catalogRevision) catalogURL.searchParams.set('v', catalogRevision);
+  fetch(catalogURL).then(response => {
     if (!response.ok) throw new Error('Archive unavailable'); return response.json();
   }).then(data => {
     entries = data.gallery; render();

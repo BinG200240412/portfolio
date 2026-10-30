@@ -39,3 +39,9 @@
 .gogo-interaction-trace .gis-live text{font-weight:700!important}
 html[data-theme="light"] .gis-dog>g{stroke:#648b73;stroke-opacity:.9}
 html[data-theme="light"] .gis-dog .gis-mesh-line{stroke:#52735f;stroke-width:1.5}
+/* An unavailable source has its own compact action, outside the zoom button. */
+.gi-source-shell{position:relative}
+.gi-source-status{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.gi-source-status[hidden]{display:none}
+.gi-source-retry{pointer-events:auto;min-width:44px;min-height:44px;padding:8px 12px;border:0;background:var(--paper);color:var(--soft);font:inherit;font-size:14px;line-height:1.5;cursor:pointer}
+.gi-source-retry:focus-visible{outline:1px solid var(--ink);outline-offset:3px}

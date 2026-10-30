@@ -55,12 +55,25 @@
       const target = cloneButton || button;
       const targetImage = cloneButton?.querySelector('.sudoku-device-screen, img') || image;
       if (targetImage.getAttribute('src') !== source || targetImage.style.opacity === '0') {
-        targetImage.style.opacity = '0';
+        const fallback = targetImage.currentSrc || record.src;
+        // A decode rejection must never leave a real screenshot transparent.
+        // Keep a visible frame while the new language variant is loading.
+        targetImage.style.opacity = '';
         if (targetImage.getAttribute('src') !== source) targetImage.src = source;
         const expected = targetImage.src;
-        targetImage.decode().then(() => {
-          if (targetImage.src === expected) targetImage.style.opacity = '';
-        }).catch(() => {});
+        const failed = () => {
+          targetImage.removeEventListener('error', failed);
+          if (targetImage.src !== expected) return;
+          targetImage.style.opacity = '';
+          if (fallback && new URL(fallback, document.baseURI).href !== expected) {
+            targetImage.src = fallback;
+            target.dataset.image = fallback;
+          }
+        };
+        targetImage.addEventListener('error', failed, {once:true});
+        if (typeof targetImage.decode === 'function') targetImage.decode().then(() => {
+          targetImage.removeEventListener('error', failed);
+        }).catch(failed);
       }
       targetImage.alt = cloneButton ? '' : label;
       targetImage.draggable = false;
