@@ -5,6 +5,7 @@ import hashlib,re,subprocess,sys
 from urllib.parse import urlsplit
 ROOT=Path(__file__).resolve().parents[1]
 subprocess.run([sys.executable, str(ROOT/'scripts/build-home-matrix.py')], check=True)
+subprocess.run([sys.executable, str(ROOT/'scripts/build-xr-place.py')], check=True)
 cache={}
 def version(path):
  if path not in cache:

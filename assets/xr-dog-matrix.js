@@ -209,7 +209,7 @@
     sync();
   }
   new MutationObserver(sync).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-  if (host) new MutationObserver(sync).observe(host, { attributes: true, attributeFilter: ['class'] });
+  if(host){const parentObserver=new MutationObserver(sync);parentObserver.observe(host,{ attributes: true, attributeFilter: ['class'] });window.PortfolioLifecycle?.trackParent(parentObserver,host,{ attributes: true, attributeFilter: ['class'] });}
   if (dialog) new MutationObserver(sync).observe(dialog, { attributes: true, attributeFilter: ['open'] });
   new IntersectionObserver(entries => { onScreen = entries.some(e => e.isIntersecting); sync(); }, { threshold: 0 }).observe(hero);
   new ResizeObserver(resize).observe(hero);

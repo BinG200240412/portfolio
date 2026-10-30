@@ -113,7 +113,7 @@
       modal = Boolean(document.querySelector('dialog[open]'));
       sync();
     }).observe(document.getElementById('media-viewer'), {attributes:true,attributeFilter:['open']});
-    if (host) new MutationObserver(sync).observe(host,{attributes:true,attributeFilter:['class']});
+    if(host){const parentObserver=new MutationObserver(sync);parentObserver.observe(host,{attributes:true,attributeFilter:['class']});window.PortfolioLifecycle?.trackParent(parentObserver,host,{attributes:true,attributeFilter:['class']});}
     addEventListener('portfolio:language', () => { measure(); controls(); });
     document.addEventListener('visibilitychange', sync);
     addEventListener('pagehide', () => { shown = false; sync(); });

@@ -54,12 +54,12 @@
   }
   const observer = new IntersectionObserver(sync);
   observer.observe(figure);
-  if (host) new MutationObserver(() => {
+  if(host){const parentObserver=new MutationObserver(() => {
     const active = host.classList.contains('on');
     if (active && !hostWasActive && ready) replay = true;
     hostWasActive = active;
     sync();
-  }).observe(host, { attributes: true, attributeFilter: ['class'] });
+  });parentObserver.observe(host,{ attributes: true, attributeFilter: ['class'] });window.PortfolioLifecycle?.trackParent(parentObserver,host,{ attributes: true, attributeFilter: ['class'] });}
   reduced.addEventListener('change', sync);
   document.addEventListener('visibilitychange', sync);
   addEventListener('pagehide', () => { shown = false; timeline?.pause(); });

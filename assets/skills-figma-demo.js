@@ -78,7 +78,7 @@
     syncPlayback();
   });
   reduced.addEventListener('change', () => { userPaused = reduced.matches; syncPlayback(); });
-  if (frameHost) new MutationObserver(syncPlayback).observe(frameHost, {attributes: true, attributeFilter: ['class']});
+  if(frameHost){const parentObserver=new MutationObserver(syncPlayback);parentObserver.observe(frameHost,{attributes: true, attributeFilter: ['class']});window.PortfolioLifecycle?.trackParent(parentObserver,frameHost,{attributes: true, attributeFilter: ['class']});}
   addEventListener('pagehide', () => { shown = false; syncPlayback(); });
   addEventListener('pageshow', () => { shown = true; syncPlayback(); });
   addEventListener('portfolio:language', () => { language = window.PortfolioI18n?.language === 'en' ? 'en' : 'zh'; updateCopy(); });

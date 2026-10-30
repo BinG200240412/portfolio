@@ -286,7 +286,7 @@
     document.querySelectorAll('#media-viewer, #portfolio-video-detail').forEach(dialog => {
       modalObserver?.observe(dialog, { attributes: true, attributeFilter: ['open'] });
     });
-    if (frameHost) modalObserver?.observe(frameHost, { attributes: true, attributeFilter: ['class'] });
+    if(frameHost){const parentObserver=new MutationObserver(() => schedule());parentObserver.observe(frameHost,{attributes:true,attributeFilter:['class']});window.PortfolioLifecycle?.trackParent(parentObserver,frameHost,{attributes:true,attributeFilter:['class']});}
     document.fonts?.ready.then(() => schedule(true));
     root.dataset.wallReady = 'true';
     language();

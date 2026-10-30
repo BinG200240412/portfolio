@@ -37,36 +37,106 @@
   }
 
   function init() {
-    const scenes = new Set();
+    const scenes = new Map();
+    let shown = true, host = null;
+    try { host = window.frameElement?.closest('#section') || null; } catch (_) {}
     const resize = new ResizeObserver(entries => entries.forEach(({ target, contentRect }) => {
       target.style.setProperty('--scene-scale', String(contentRect.width / size));
     }));
+    const english = () => window.PortfolioI18n?.language === 'en' || document.documentElement.lang.startsWith('en');
+    const available = record => shown && record.near && !document.hidden && (!host || host.classList.contains('on'));
+    function update(record) {
+      const ready = record.images.filter(state => state.phase === 'ready').length;
+      const failed = record.images.filter(state => state.phase === 'error').length;
+      record.scene.classList.toggle('is-ready', ready === record.images.length);
+      record.scene.classList.toggle('is-failed', failed > 0);
+      record.scene.dataset.sceneReady = String(ready);
+      record.scene.dataset.sceneFailed = String(failed);
+      record.feedback.hidden = true;
+      record.retry.hidden = !failed;
+      record.retry.textContent = english() ? 'Retry' : '重试';
+      record.retry.setAttribute('aria-label', english() ? 'Reload unavailable image layers' : '重新载入未完成的图片');
+    }
+    function settle(record, state, phase) {
+      clearTimeout(state.timer); state.timer = 0;
+      state.phase = phase; state.image.dataset.sceneState = phase;
+      update(record);
+    }
+    function watch(record, state, retry = false) {
+      if (state.image.complete && state.image.naturalWidth) { settle(record, state, 'ready'); return; }
+      if (!available(record) || state.phase === 'ready' || (state.phase === 'error' && !retry)) return;
+      clearTimeout(state.timer);
+      const request = ++state.request;
+      state.phase = 'loading'; state.image.dataset.sceneState = 'loading';
+      state.image.loading = 'eager';
+      if (retry) {
+        const url = new URL(state.source, document.baseURI);
+        url.searchParams.set('scene-retry', String(++state.attempt));
+        state.image.src = url.href;
+      }
+      state.timer = setTimeout(() => {
+        if (state.request !== request) return;
+        settle(record, state, state.image.complete && state.image.naturalWidth ? 'ready' : 'error');
+      }, 10000);
+    }
+    function sync(record) {
+      record.images.forEach(state => {
+        if (available(record)) watch(record, state);
+        else if (state.phase === 'loading') {
+          clearTimeout(state.timer); state.timer = 0; ++state.request;
+          state.phase = 'paused'; state.image.dataset.sceneState = 'paused';
+        }
+      });
+      update(record);
+    }
+    const nearby = typeof IntersectionObserver === 'function' ? new IntersectionObserver(entries => {
+      entries.forEach(entry => { const record = scenes.get(entry.target); if (record) { record.near = entry.isIntersecting; sync(record); } });
+    }, {rootMargin:'300px 0px'}) : null;
     function mount(scene) {
       if (scenes.has(scene)) return;
-      scenes.add(scene);
       ['front', 'back'].forEach(side => {
         const screen = scene.querySelector(`[data-scene-screen="${side}"]`);
         screen.style.transform = project(quads[side]);
         scene.querySelector(`.case-phone-clip--${side}`).style.clipPath = `path("${outlines[side]}")`;
       });
       scene.querySelector('.case-phone-occlusion').style.clipPath = `path(evenodd, "M0 0 H1254 V1254 H0 Z ${outlines.body}")`;
-      const images = [...scene.querySelectorAll('img')];
-      const feedback = scene.querySelector('.case-scene-feedback');
-      const message = '图片未能加载，请刷新页面。';
-      const failed = () => {
-        scene.classList.add('is-failed');
-        feedback.textContent = window.PortfolioI18n?.t(message) ?? message;
-        feedback.hidden = false;
-      };
-      const ready = () => {
-        const loaded = images.every(image => image.complete && image.naturalWidth);
-        scene.classList.toggle('is-ready', loaded);
-        if (loaded) { scene.classList.remove('is-failed'); feedback.hidden = true; }
-      };
-      images.forEach(image => { image.addEventListener('load', ready); image.addEventListener('error', failed); });
+      scene.classList.add('is-positioned');
+      const retry = document.createElement('button');
+      retry.type = 'button'; retry.className = 'case-scene-retry'; retry.hidden = true;
+      retry.setAttribute('data-i18n-ignore', '');
+      // The main composition is already inside its zoom button. Keep retry a
+      // sibling, so a failed layer never creates a button nested in that button.
+      const anchor = scene.parentElement?.matches('button') ? scene.parentElement : scene;
+      anchor.after(retry);
+      const record = {scene, retry, feedback:scene.querySelector('.case-scene-feedback'), near:!nearby, images:[]};
+      record.images = [...scene.querySelectorAll('img')].map(image => {
+        const state = {image, source:image.getAttribute('src'), phase:'idle', timer:0, request:0, attempt:0};
+        state.loaded = () => { if (image.complete && image.naturalWidth) settle(record, state, 'ready'); };
+        state.failed = () => { if (!image.naturalWidth) settle(record, state, 'error'); };
+        image.addEventListener('load', state.loaded); image.addEventListener('error', state.failed);
+        // A cloned detail layer may already have loaded, or may carry an old
+        // error attribute. Its own natural pixels decide visibility afresh.
+        if (image.complete && image.naturalWidth) state.phase = 'ready';
+        else if (image.complete) state.phase = 'error';
+        image.dataset.sceneState = state.phase;
+        return state;
+      });
+      retry.addEventListener('click', event => {
+        event.preventDefault(); event.stopPropagation();
+        record.images.filter(state => state.phase === 'error').forEach(state => watch(record, state, true));
+        update(record);
+      });
+      scenes.set(scene, record);
       scene.style.setProperty('--scene-scale', String(scene.getBoundingClientRect().width / size));
-      ready(); resize.observe(scene);
-      if (images.some(image => image.complete && !image.naturalWidth)) failed();
+      update(record); resize.observe(scene); nearby?.observe(scene); sync(record);
+    }
+    function unmount(scene) {
+      const record = scenes.get(scene); if (!record) return;
+      record.images.forEach(state => {
+        clearTimeout(state.timer);
+        state.image.removeEventListener('load', state.loaded); state.image.removeEventListener('error', state.failed);
+      });
+      record.retry.remove(); nearby?.unobserve(scene); resize.unobserve(scene); scenes.delete(scene);
     }
     function scan(root) {
       if (root.nodeType !== 1) return;
@@ -74,21 +144,25 @@
       root.querySelectorAll('.case-phone-scene').forEach(mount);
     }
     scan(document.body);
-    new MutationObserver(records => records.forEach(record => {
+    const sceneObserver = new MutationObserver(records => records.forEach(record => {
       record.addedNodes.forEach(scan);
       record.removedNodes.forEach(root => {
         if (root.nodeType !== 1) return;
-        const removed = root.matches('.case-phone-scene') ? [root] : [];
-        removed.push(...root.querySelectorAll('.case-phone-scene'));
-        removed.forEach(scene => { resize.unobserve(scene); scenes.delete(scene); });
+        if (root.matches('.case-phone-scene')) unmount(root);
+        root.querySelectorAll('.case-phone-scene').forEach(unmount);
       });
-    })).observe(document.body, { childList: true, subtree: true });
-    addEventListener('pagehide', () => resize.disconnect());
-    addEventListener('pageshow', () => scenes.forEach(scene => resize.observe(scene)));
-    addEventListener('portfolio:language', () => scenes.forEach(scene => {
-      const feedback = scene.querySelector('.case-scene-feedback');
-      feedback.textContent = window.PortfolioI18n?.t('图片未能加载，请刷新页面。') ?? '图片未能加载，请刷新页面。';
     }));
+    sceneObserver.observe(document.body, { childList: true, subtree: true });
+    const syncAll = () => scenes.forEach(sync);
+    document.addEventListener('visibilitychange', syncAll);
+    if(host){const parentObserver=new MutationObserver(syncAll);parentObserver.observe(host,{attributes:true, attributeFilter:['class']});window.PortfolioLifecycle?.trackParent(parentObserver,host,{attributes:true, attributeFilter:['class']});}
+    addEventListener('pagehide', () => { shown = false; syncAll(); resize.disconnect(); });
+    addEventListener('pageshow', () => { shown = true; scenes.forEach(record => resize.observe(record.scene)); syncAll(); });
+    addEventListener('portfolio:language', () => scenes.forEach(update));
+    window.PortfolioLifecycle?.onDispose(() => {
+      shown = false; sceneObserver.disconnect(); nearby?.disconnect();
+      [...scenes.keys()].forEach(unmount); resize.disconnect();
+    });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
   else init();

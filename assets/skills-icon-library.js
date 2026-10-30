@@ -426,8 +426,12 @@
   reducedMotion.addEventListener('change', updateMotion);
   addEventListener('pagehide', () => { pageShown = false; catalogRequest?.abort(); syncLoading(); });
   addEventListener('pageshow', () => { pageShown = true; syncLoading(); if (!catalogReady && !catalogFailed) loadCatalog(); });
-  if (hostFrame) new MutationObserver(() => {
-    syncLoading(); if (!catalogReady && !catalogFailed) loadCatalog();
-  }).observe(hostFrame, {attributes:true, attributeFilter:['class']});
+  if (hostFrame) {
+    const parentObserver=new MutationObserver(() => {
+      syncLoading(); if (!catalogReady && !catalogFailed) loadCatalog();
+    });
+    parentObserver.observe(hostFrame,{attributes:true,attributeFilter:['class']});
+    window.PortfolioLifecycle?.trackParent(parentObserver,hostFrame,{attributes:true,attributeFilter:['class']});
+  }
   updateLoadStatus(); loadCatalog();
 });

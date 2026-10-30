@@ -78,7 +78,7 @@
       sync();
     }, {threshold: .1}).observe(figure);
     new MutationObserver(sync).observe(document.body, {subtree: true, attributes: true, attributeFilter: ['open']});
-    if (frameHost) new MutationObserver(sync).observe(frameHost, {attributes: true, attributeFilter: ['class']});
+    if(frameHost){const parentObserver=new MutationObserver(sync);parentObserver.observe(frameHost,{attributes: true, attributeFilter: ['class']});window.PortfolioLifecycle?.trackParent(parentObserver,frameHost,{attributes: true, attributeFilter: ['class']});}
     document.addEventListener('visibilitychange', sync);
     document.addEventListener('portfolio:video-detail', sync);
     motion.addEventListener('change', sync);

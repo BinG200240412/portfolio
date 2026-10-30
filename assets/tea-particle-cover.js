@@ -180,7 +180,7 @@
   new IntersectionObserver(es=>{visible=es.some(e=>e.isIntersecting);sync();}).observe(stage);
   new MutationObserver(palette).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
   new MutationObserver(rs=>{if(rs.some(r=>r.target instanceof HTMLDialogElement))sync();}).observe(document.body,{subtree:true,attributes:true,attributeFilter:['open']});
-  if(host)new MutationObserver(sync).observe(host,{attributes:true,attributeFilter:['class']});
+  if(host){const parentObserver=new MutationObserver(sync);parentObserver.observe(host,{attributes:true,attributeFilter:['class']});window.PortfolioLifecycle?.trackParent(parentObserver,host,{attributes:true,attributeFilter:['class']});}
   document.addEventListener('visibilitychange',sync);addEventListener('portfolio:language',labels);
   reduced.addEventListener('change',sync);addEventListener('pagehide',()=>{shown=false;sync();});addEventListener('pageshow',()=>{shown=true;sync();});
   addEventListener('resize',resize,{passive:true});labels();palette();resize();

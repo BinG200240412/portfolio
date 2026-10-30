@@ -6,8 +6,10 @@
  */
 (() => {
   'use strict';
-  const canvas = document.getElementById('qianli-light-cover');
-  const ctx = canvas?.getContext('2d', {alpha:true});
+  let canvas = document.getElementById('qianli-light-cover');
+  const batch=canvas&&window.QianliBeadsRenderer?.create(canvas),renderer=batch?.renderer||null;
+  if(batch)canvas=batch.canvas;
+  const ctx = batch?.context || canvas?.getContext('2d', {alpha:true});
   const hero = canvas?.closest('.qianli-light-hero');
   if (!ctx || !hero) return;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -41,7 +43,8 @@
   const fieldSample={alpha:0,ink:0};
   let width=0,height=0,pitch=5,columns=[],sprites=[],glows=[],light=false;
   let yScale=1.38,yOffset=-.12*1.38,lastPrune=0;
-  let frame=0,lastFrame=0,elapsed=0,onScreen=true,shown=true;
+  let frame=0,lastFrame=0,elapsed=0,onScreen=true,shown=true,disposed=false;
+  let renderCount=0,renderSamples=[];
   let aim=null,hit=null,pointerLevel=0,pulses=[];
   let parentSection=null;
   try { parentSection=window.frameElement?.closest('#section') || null; } catch (_) {}
@@ -88,6 +91,7 @@
     if(cache.has(index))return cache.get(index);
     const u=index/FIELD_DENSITY,top=worldRidge(layer,u),base=[.825,.86,.90][layer];
     const alpha=new Uint8Array(FIELD_ROWS),ink=new Uint8Array(FIELD_ROWS);
+    let first=FIELD_ROWS,last=-1;
     for(let row=0;row<FIELD_ROWS;row++) {
       const y=FIELD_TOP+row/FIELD_DENSITY;
       if(y<top || y>base)continue;
@@ -98,6 +102,7 @@
       const facet=clamp(.46+folds*.32+Math.sin(u*171-depth*8)*.12+grain*.13);
       const foot=smooth((1-depth)/.12);
       alpha[row]=Math.round(clamp((.27+facet*.70+edge*.36)*foot*(layer===0?.55:layer===2?.86:1))*255);
+      if(alpha[row]) {if(first===FIELD_ROWS)first=row;last=row;}
       const role=Math.round(clamp(facet*.76+edge*.30)*6);
       const vein=Math.sin(u*16+depth*2.2)+Math.cos(u*31-depth*4)*.35;
       let bank=layer===0 ? 3 : vein>.55 ? 1 : vein<-.55 ? 0 : 2;
@@ -105,17 +110,21 @@
       if(layer===2 && vein>.65 && grain>.62)bank=4;
       ink[row]=bank*7+role;
     }
-    const value={alpha,ink};cache.set(index,value);return value;
+    const value={alpha,ink,first,last};cache.set(index,value);return value;
   }
   function columnView(layer,u,time) {
     const world=u+time*.019*depths[layer].speed;
     const sample=world*FIELD_DENSITY,index=Math.floor(sample);
     const swell=depths[layer].swell*Math.sin(time*.42-world*TAU*1.35+layer*1.7)
       +.008*Math.sin(time*.23+world*TAU*2.2+layer);
-    return {left:fieldColumn(layer,index),right:fieldColumn(layer,index+1),mix:sample-index,
-      shift:swell*FIELD_DENSITY,index};
+    const left=fieldColumn(layer,index),right=fieldColumn(layer,index+1),shift=swell*FIELD_DENSITY;
+    return {left,right,mix:sample-index,shift,index,
+      first:Math.min(left.first,right.first)-1+shift,last:Math.max(left.last,right.last)+1+shift};
   }
   function sampleField(view,row) {
+    // The landscape occupies only a band of each column. Empty sky never
+    // needs four byte reads and bilinear interpolation for every depth.
+    if(row<view.first || row>=view.last)return null;
     const r=row-view.shift,y0=Math.floor(r),f=r-y0;
     if(y0<0 || y0>=FIELD_ROWS-1)return null;
     const a=view.left.alpha,b=view.right.alpha;
@@ -138,6 +147,7 @@
     });
   }
   function makeSprites() {
+    if(disposed)return;
     light=document.documentElement.dataset.theme==='light';
     glows=[];
     sprites=palettes[light?'light':'dark'].flat().map(colour=>{
@@ -151,13 +161,16 @@
       g.fillStyle=bloom;g.fillRect(0,0,40,40);glows.push(glow);
       return sprite;
     });
+    renderer?.setAtlas(sprites,glows);
   }
   function resize() {
+    if(disposed)return;
     const box=canvas.getBoundingClientRect();
     const w=Math.round(box.width),h=Math.round(box.height);
     if (!w || !h) return;
     const ratio=Math.min(devicePixelRatio || 1,2);
     const backingW=Math.round(w*ratio),backingH=Math.round(h*ratio);
+    if(w===width && h===height && canvas.width===backingW && canvas.height===backingH)return;
     // Repeated visibility/theme events must never clear a correctly sized canvas.
     if(canvas.width!==backingW || canvas.height!==backingH) {
       canvas.width=backingW;canvas.height=backingH;
@@ -178,36 +191,48 @@
         const x=px/width,y=py/height,grain=hash(Math.round(px/pitch),Math.round(py/pitch));
         const titleQuiet=1-.70*Math.exp(-Math.pow((x-.15)/.23,4)-Math.pow((y-.17)/.16,4));
         const captionQuiet=.16+.84*smooth((1-y)/.22);
-        column.points.push({x:px,y:py,v:y,row:((y-yOffset)/yScale-FIELD_TOP)*FIELD_DENSITY,
-          quiet:titleQuiet*captionQuiet,phase:grain*TAU});
+        column.points.push({x:px,y:py,u:x,v:y,row:((y-yOffset)/yScale-FIELD_TOP)*FIELD_DENSITY,
+          quiet:titleQuiet*captionQuiet,
+          breathSin:Math.sin(grain*TAU*.35),breathCos:Math.cos(grain*TAU*.35)});
       }
       columns.push(column);
     }
     pulses=[];aim=null;hit=null;pointerLevel=0;makeSprites();sync();
   }
   function draw(time) {
-    if(!width || !height || !sprites.length)return;
+    if(disposed || !width || !height || !sprites.length)return;
+    const started=typeof performance==='object'?performance.now():Date.now();
     ctx.clearRect(0,0,width,height);
     const wave=(time*.052)%1.5-.2;
+    const breathSin=Math.sin(time*.75),breathCos=Math.cos(time*.75);
     const size=pitch*1.13;
     const speed=Math.max(220,Math.max(width,height)*.30),band=Math.max(9,pitch*1.6),gap=Math.max(70,pitch*8);
     const ripples=pulses.map(p=>({...p,age:time-p.time,radius:(time-p.time)*speed,fade:smooth((RIPPLE_LIFE-(time-p.time))/1.3)}));
+    const hasPointer=hit && pointerLevel>.005,hasWaking=hasPointer || ripples.length;
+    const wakingRadius=Math.max(56,Math.min(width,height)*.14),wakingArea=wakingRadius*wakingRadius;
     for(const column of columns) {
       const views=depths.map((_,layer)=>columnView(layer,column.u,time));
+      const first=Math.min(views[0].first,views[1].first,views[2].first);
+      const last=Math.max(views[0].last,views[1].last,views[2].last);
       for(const p of column.points) {
+        const inTerrain=p.row>=first && p.row<last;
+        if(!inTerrain && !hasWaking)continue;
         let terrainAlpha=0,terrainInk=10,terrain=false;
-        for(let layer=0;layer<3;layer++) {
+        // The former painter's order always kept the nearest non-empty
+        // sample. Looking front-to-back produces the same bead and avoids
+        // interpolating two hidden mountain layers underneath it.
+        for(let layer=inTerrain?2:-1;layer>=0;layer--) {
           const sample=sampleField(views[layer],p.row);
-          if(sample) {terrainAlpha=sample.alpha;terrainInk=sample.ink;terrain=true;}
+          if(sample) {terrainAlpha=sample.alpha;terrainInk=sample.ink;terrain=true;break;}
         }
-        const breath=reduced.matches?1:.88+.12*Math.sin(time*.75+p.phase*.35);
-        const distance=p.x/width-wave+p.v*.10;
+        if(!terrain && !hasWaking)continue;
+        const breath=reduced.matches?1:.88+.12*(breathSin*p.breathCos+breathCos*p.breathSin);
+        const distance=p.u-wave+p.v*.10;
         const traveling=reduced.matches || !terrain ? 0 : Math.exp(-distance*distance/.006)*.14;
         let waking=0;
-        if(hit && pointerLevel>.005) {
+        if(hasPointer) {
           const dx=p.x-hit.x,dy=p.y-hit.y;
-          const radius=Math.max(56,Math.min(width,height)*.14);
-          waking=Math.exp(-(dx*dx+dy*dy)/(radius*radius))*(terrain?.38:.14)*pointerLevel;
+          waking=Math.exp(-(dx*dx+dy*dy)/wakingArea)*(terrain?.38:.14)*pointerLevel;
         }
         for(const ripple of ripples) {
           const d=Math.hypot(p.x-ripple.x,p.y-ripple.y);
@@ -240,10 +265,19 @@
       }
     }
     ctx.globalAlpha=1;
+    renderer?.flush();
+    const duration=(typeof performance==='object'?performance.now():Date.now())-started;
+    renderCount++;renderSamples.push(duration);if(renderSamples.length>30)renderSamples.shift();
+    if(renderCount===1 || renderCount%30===0){
+      const sorted=renderSamples.slice().sort((a,b)=>a-b);
+      canvas.dataset.renderBackend=renderer?'webgl':'2d';canvas.dataset.renderMs=sorted[Math.floor(sorted.length/2)].toFixed(1);
+      canvas.dataset.renderMaxMs=Math.max(...renderSamples).toFixed(1);canvas.dataset.renderCount=String(renderCount);
+    }
+    if(canvas.dataset.renderReady!=='true')canvas.dataset.renderReady='true';
     pruneFields(time);
   }
   function active() {
-    return onScreen && shown && !document.hidden && (!parentSection || parentSection.classList.contains('on'));
+    return !disposed && !renderer?.lost && onScreen && shown && !document.hidden && (!parentSection || parentSection.classList.contains('on'));
   }
   function tick(now) {
     frame=0;if(!active() || reduced.matches)return;
@@ -292,14 +326,40 @@
       event.preventDefault();awaken({x:width*.56,y:height*.56});
     }
   });
-  new ResizeObserver(resize).observe(canvas);
-  new IntersectionObserver(entries=>{onScreen=entries[0].isIntersecting;sync();},{threshold:0}).observe(hero);
-  new MutationObserver(()=>{makeSprites();sync();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
-  if(parentSection)new MutationObserver(sync).observe(parentSection,{attributes:true,attributeFilter:['class']});
+  const resizeObserver=new ResizeObserver(resize),visibilityObserver=new IntersectionObserver(entries=>{onScreen=entries[0].isIntersecting&&entries[0].intersectionRatio>.001;sync();},{threshold:[0,.001],rootMargin:'-1px 0px'});
+  const themeObserver=new MutationObserver(()=>{makeSprites();sync();});
+  resizeObserver.observe(canvas);visibilityObserver.observe(hero);
+  themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  const lifecycle=window.PortfolioLifecycle,parentOptions={attributes:true,attributeFilter:['class']};
+  let parentObserver=null;
+  if(parentSection) {
+    if(lifecycle?.observeParent)parentObserver=lifecycle.observeParent(parentSection,sync,parentOptions);
+    else {parentObserver=new MutationObserver(sync);parentObserver.observe(parentSection,parentOptions);}
+  }
+  function dispose() {
+    if(disposed)return;
+    disposed=true;shown=false;cancelAnimationFrame(frame);frame=0;lastFrame=0;
+    resizeObserver.disconnect();visibilityObserver.disconnect();themeObserver.disconnect();parentObserver?.disconnect();
+    fields.forEach(cache=>cache.clear());columns=[];sprites=[];glows=[];pulses=[];aim=null;hit=null;
+    renderer?.destroy();
+    canvas.width=0;canvas.height=0;
+  }
+  lifecycle?.onDispose(dispose);
+  if(renderer){
+    canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();renderer.lost=true;sync();});
+    canvas.addEventListener('webglcontextrestored',()=>{if(disposed)return;renderer.restore();makeSprites();sync();});
+  }
   reduced.addEventListener('change',()=>{aim=null;hit=null;pointerLevel=0;pulses=[];sync();});
   document.addEventListener('visibilitychange',sync);
   addEventListener('portfolio:language',label);
-  addEventListener('pagehide',()=>{shown=false;sync();});
-  addEventListener('pageshow',()=>{shown=true;sync();});
+  addEventListener('pagehide',event=>{
+    shown=false;sync();
+    if(!lifecycle) {if(event.persisted)parentObserver?.disconnect();else dispose();}
+  });
+  addEventListener('pageshow',()=>{
+    if(disposed)return;
+    if(!lifecycle&&parentSection)parentObserver?.observe(parentSection,parentOptions);
+    shown=true;sync();
+  });
   label();resize();
 })();

@@ -289,7 +289,7 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
       film.addEventListener('webkitendfullscreen', syncFilms);
     });
     new MutationObserver(syncFilms).observe(dialog, { attributes: true, attributeFilter: ['open'] });
-    if (host) new MutationObserver(syncFilms).observe(host, { attributes: true, attributeFilter: ['class'] });
+    if(host){const parentObserver=new MutationObserver(syncFilms);parentObserver.observe(host,{ attributes: true, attributeFilter: ['class'] });window.PortfolioLifecycle?.trackParent(parentObserver,host,{ attributes: true, attributeFilter: ['class'] });}
     document.addEventListener('visibilitychange', syncFilms);
     document.addEventListener('portfolio:video-detail', event => {
       if (typeof event.detail?.open !== 'boolean') return;

@@ -259,7 +259,7 @@
   new IntersectionObserver(entries=>{visibleRatio=entries[0].intersectionRatio;onScreen=entries[0].isIntersecting&&visibleRatio>=.01;sync();},{threshold:[.01,.025,.05,.1,.15,.25]}).observe(page);
   const observer=new ResizeObserver(resize);observer.observe(stage);canvases.forEach(c=>observer.observe(c));
   new MutationObserver(resize).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
-  if(dialog)new MutationObserver(sync).observe(dialog,{attributes:true,attributeFilter:['open']});if(host)new MutationObserver(sync).observe(host,{attributes:true,attributeFilter:['class']});
+  if(dialog)new MutationObserver(sync).observe(dialog,{attributes:true,attributeFilter:['open']});if(host){const parentObserver=new MutationObserver(sync);parentObserver.observe(host,{attributes:true,attributeFilter:['class']});window.PortfolioLifecycle?.trackParent(parentObserver,host,{attributes:true,attributeFilter:['class']});}
   document.addEventListener('visibilitychange',sync);reduced.addEventListener('change',sync);forced.addEventListener('change',resize);
   addEventListener('pagehide',()=>{shown=false;sync();});addEventListener('pageshow',()=>{shown=true;sync();});document.fonts.ready.then(resize);resize();
 })();

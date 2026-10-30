@@ -71,6 +71,7 @@
     viewObserver?.observe(opening);
     const hostObserver=host?new MutationObserver(sync):null;
     hostObserver?.observe(host,{attributes:true,attributeFilter:['class']});
+    if(hostObserver)window.PortfolioLifecycle?.trackParent(hostObserver,host,{attributes:true,attributeFilter:['class']});
     const viewerObserver=viewer?new MutationObserver(sync):null;
     viewerObserver?.observe(viewer,{attributes:true,attributeFilter:['open']});
     const hide=()=>{pageShown=false;sync();};
@@ -84,6 +85,7 @@
     return()=>{
       disposed=true;cancelAnimationFrame(refreshFrame);
       sizeObserver?.disconnect();viewObserver?.disconnect();hostObserver?.disconnect();viewerObserver?.disconnect();
+      if(hostObserver)window.PortfolioLifecycle?.forgetParent(hostObserver);
       document.removeEventListener('visibilitychange',sync);
       removeEventListener('pagehide',hide);removeEventListener('pageshow',show);
       removeEventListener('portfolio:language',refresh);removeEventListener('resize',refresh);

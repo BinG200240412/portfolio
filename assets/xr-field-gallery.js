@@ -49,7 +49,7 @@
   const sizes=new ResizeObserver(resize);sizes.observe(page);rows.forEach(row=>sizes.observe(row.querySelector('[data-field-original]')));
   new MutationObserver(sync).observe(document.body,{subtree:true,attributes:true,attributeFilter:['open']});
   new MutationObserver(label).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-  if(host)new MutationObserver(sync).observe(host,{attributes:true,attributeFilter:['class']});
+  if(host){const parentObserver=new MutationObserver(sync);parentObserver.observe(host,{attributes:true,attributeFilter:['class']});window.PortfolioLifecycle?.trackParent(parentObserver,host,{attributes:true,attributeFilter:['class']});}
   document.addEventListener('visibilitychange',sync);document.addEventListener('portfolio:video-detail',sync);
   reduced.addEventListener('change',sync);forced.addEventListener('change',sync);
   addEventListener('pagehide',()=>{shown=false;sync();});addEventListener('pageshow',()=>{shown=true;sync();});

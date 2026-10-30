@@ -235,7 +235,7 @@
   new ResizeObserver(resize).observe(shell);
   new MutationObserver(resize).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
   if(dialog)new MutationObserver(sync).observe(dialog,{attributes:true,attributeFilter:['open']});
-  if(host)new MutationObserver(sync).observe(host,{attributes:true,attributeFilter:['class']});
+  if(host){const parentObserver=new MutationObserver(sync);parentObserver.observe(host,{attributes:true,attributeFilter:['class']});window.PortfolioLifecycle?.trackParent(parentObserver,host,{attributes:true,attributeFilter:['class']});}
   document.addEventListener('visibilitychange',sync);reduced.addEventListener('change',sync);forced.addEventListener('change',()=>{resize();sync();});
   addEventListener('pagehide',()=>{shown=false;sync();});addEventListener('pageshow',()=>{shown=true;sync();});resize();
 });

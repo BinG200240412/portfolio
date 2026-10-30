@@ -7,10 +7,10 @@
 html[lang^="en"] .case-product-slogan{--portfolio-font:SudokuGaramond,serif;--portfolio-font-weight:400;font-family:SudokuGaramond,serif;letter-spacing:0;line-height:1.15;max-width:7.8em}
 .case-product-art{min-width:0;width:100%;align-self:center}
 .case-product-shot{display:block;width:100%;cursor:zoom-in}
-.case-phone-scene{display:block;position:relative;isolation:isolate;width:100%;aspect-ratio:1;overflow:hidden;background:transparent;opacity:0;transition:opacity .18s}
-.case-phone-scene.is-ready{opacity:1}
-.case-phone-scene.is-failed{opacity:1}
-.case-phone-scene.is-failed .case-phone-canvas{visibility:hidden}
+.case-phone-scene{display:block;position:relative;isolation:isolate;width:100%;aspect-ratio:1;overflow:hidden;background:transparent}
+.case-phone-scene:not(.is-positioned) .case-phone-screen,.case-phone-scene img[data-scene-state]:not([data-scene-state="ready"]){visibility:hidden}
+.case-scene-retry{display:block;margin:0 auto;padding:6px 14px;border:0;background:transparent;color:var(--mid);font:inherit;cursor:pointer}
+.case-scene-retry[hidden]{display:none}
 .case-scene-feedback{position:absolute;inset:0;display:grid;place-content:center;padding:24px;color:var(--mid);font-size:14px;line-height:1.8}
 .case-scene-feedback[hidden]{display:none}
 .case-phone-canvas{position:absolute;display:block;left:0;top:0;width:1254px;height:1254px;transform-origin:0 0;transform:scale(var(--scene-scale,0))}

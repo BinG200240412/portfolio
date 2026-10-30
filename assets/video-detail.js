@@ -143,9 +143,13 @@
       records.forEach(record => record.addedNodes.forEach(scan));
       previews.forEach((host, video) => { if (!video.isConnected) previews.delete(video); });
     }).observe(document.body, {childList: true, subtree: true});
-    if (frameHost) new MutationObserver(() => {
-      if (!frameHost.classList.contains('on')) close({resume: false, restoreFocus: false});
-    }).observe(frameHost, {attributes: true, attributeFilter: ['class']});
+    if (frameHost) {
+      const parentObserver=new MutationObserver(() => {
+        if (!frameHost.classList.contains('on')) close({resume: false, restoreFocus: false});
+      });
+      parentObserver.observe(frameHost,{attributes:true,attributeFilter:['class']});
+      window.PortfolioLifecycle?.trackParent(parentObserver,frameHost,{attributes:true,attributeFilter:['class']});
+    }
   }
   document.addEventListener('play', event => {
     if (active && event.target instanceof HTMLVideoElement && event.target !== active.player && !event.target.closest('dialog')) event.target.pause();

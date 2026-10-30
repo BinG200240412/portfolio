@@ -132,8 +132,13 @@
     sync();
   }
   const states = new MutationObserver(sync);
-  for (const element of [stage, about, section, parentSection]) if (element)
+  for (const element of [stage, about, section]) if (element)
     states.observe(element, { attributes: true, attributeFilter: ['class'] });
+  if(parentSection){
+    const parentStates=new MutationObserver(sync);
+    parentStates.observe(parentSection,{attributes:true,attributeFilter:['class']});
+    window.PortfolioLifecycle?.trackParent(parentStates,parentSection,{attributes:true,attributeFilter:['class']});
+  }
   new MutationObserver(() => { dark = document.documentElement.dataset.theme !== 'light'; sync(); })
     .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   if (stage) new ResizeObserver(resize).observe(stage);

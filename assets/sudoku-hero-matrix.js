@@ -177,7 +177,7 @@
     refresh();
   }
   new MutationObserver(refresh).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
-  if(host)new MutationObserver(sync).observe(host,{attributes:true,attributeFilter:['class']});
+  if(host){const parentObserver=new MutationObserver(sync);parentObserver.observe(host,{attributes:true,attributeFilter:['class']});window.PortfolioLifecycle?.trackParent(parentObserver,host,{attributes:true,attributeFilter:['class']});}
   if(viewer)new MutationObserver(sync).observe(viewer,{attributes:true,attributeFilter:['open']});
   if(typeof IntersectionObserver==='function')new IntersectionObserver(entries=>{
     onScreen=entries.some(entry=>entry.isIntersecting);sync();

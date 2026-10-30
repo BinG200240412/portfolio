@@ -194,13 +194,14 @@
 <title>蔡正阳 — Who am I</title>
 <meta name="description" content="蔡正阳的作品集。独立开发、交互与艺术。">
 <script defer src="assets/home-matrix.js?v=bd06c8bce7" fetchpriority="high"></script>
+<script defer src="assets/frame-lifecycle.js?v=54d357fe75"></script>
 <script defer src="assets/i18n-main.js?v=9cce2dc4b5"></script>
 <script defer src="assets/i18n.js?v=3094438d9c"></script>
 <script defer src="assets/theme.js?v=6640566b84"></script>
 <script defer src="assets/pixel-loader.js?v=df8d4dfee5"></script>
 <script defer src="assets/about-companion.js?v=e982aadfb3"></script>
 <script defer src="assets/about-project-previews.js?v=6b4c1409f9"></script>
-<script defer src="assets/ambient-field.js?v=5db5bf9a71"></script>
+<script defer src="assets/ambient-field.js?v=d418889c7a"></script>
 <script defer src="assets/assistant-connection.js?v=46fc972fe9"></script>
 <script defer src="assets/portfolio-assistant.js?v=0ace57386e"></script>
 <script defer src="assets/title-dot.js?v=26bd04c324"></script>
@@ -217,7 +218,7 @@
 <script defer src="assets/page-snap.js?v=c0b6524c05"></script>
 
 
-<script defer src="assets/video-detail.js?v=8d14df614e"></script>
+<script defer src="assets/video-detail.js?v=66a64c5a20"></script>
 <script defer src="assets/media-corners.js?v=e039b41c4b"></script>
 
 <script defer src="assets/media-view-only.js?v=6e9cb46552"></script>
@@ -459,7 +460,13 @@ function releaseProjectView(){
   }
   section.classList.remove('on','native');secBack.classList.remove('on');
   section.scrollTop=0;
-  const remove=()=>departing.forEach(node=>node.remove());
+  const remove=()=>departing.forEach(node=>{
+    // Parent-node observers can retain a detached child document. Dispose only
+    // this captured departure after media layers have returned the back mark.
+    const frames=node.nodeType===1?[...(node.matches('iframe')?[node]:[]),...node.querySelectorAll('iframe')]:[];
+    for(const frame of frames){try{frame.contentWindow?.PortfolioLifecycle?.dispose();}catch(_){}}
+    node.remove();
+  });
   // Child image layers temporarily borrow the parent return button. Let their
   // existing open-attribute observers restore it before discarding the frame.
   if(closingImageLayer)queueMicrotask(remove);else remove();
@@ -554,16 +561,16 @@ section.addEventListener('load',event=>{if(event.target.matches('iframe'))update
 /* ---- 进板块：极简淡出 ---- */
 /* 原生重建页（可编辑元素，非贴图） */
 const SECTION_PAGE={
-  "茶弦记":"sections/tea.html?v=stability-20261031",
-  "arright":"sections/arright.html?v=stability-20261031",
-  "数独":"sections/sudoku.html?v=stability-20261031",
-  "良渚 · AI 3D":"sections/ai3d.html?v=stability-20261031",
-  "良渚 · XR":"sections/xr.html?v=stability-20261031",
-  "漂移之屋":"sections/drift.html?v=stability-20261031",
-  "千里江山":"sections/qianli.html?v=stability-20261031",
-  "设计工具 · Skills":"sections/design-skills.html?v=stability-20261031",
-  "作品归档":"sections/more.html?v=stability-20261031",
-  "练习":"sections/practice.html?v=stability-20261031",
+  "茶弦记":"sections/tea.html?v=site-loading-20261031",
+  "arright":"sections/arright.html?v=site-loading-20261031",
+  "数独":"sections/sudoku.html?v=site-loading-20261031",
+  "良渚 · AI 3D":"sections/ai3d.html?v=site-loading-20261031",
+  "良渚 · XR":"sections/xr.html?v=site-loading-20261031",
+  "漂移之屋":"sections/drift.html?v=site-loading-20261031",
+  "千里江山":"sections/qianli.html?v=site-loading-20261031",
+  "设计工具 · Skills":"sections/design-skills.html?v=site-loading-20261031",
+  "作品归档":"sections/more.html?v=site-loading-20261031",
+  "练习":"sections/practice.html?v=site-loading-20261031",
 };
 function createProjectLoading(){
   if(window.PortfolioLoading)return window.PortfolioLoading.create('');

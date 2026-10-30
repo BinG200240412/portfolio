@@ -130,7 +130,7 @@
   const stageObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting)reveal(entry.target.dataset.stage);}),{threshold:.08});
   columns.forEach(c=>stageObserver.observe(c));
   new MutationObserver(sync).observe(document.body,{subtree:true,attributes:true,attributeFilter:['open']});
-  if(host)new MutationObserver(sync).observe(host,{attributes:true,attributeFilter:['class']});
+  if(host){const parentObserver=new MutationObserver(sync);parentObserver.observe(host,{attributes:true,attributeFilter:['class']});window.PortfolioLifecycle?.trackParent(parentObserver,host,{attributes:true,attributeFilter:['class']});}
   document.addEventListener('visibilitychange',sync);
   addEventListener('portfolio:language',()=>requestAnimationFrame(draw));
   document.fonts.ready.then(draw);draw();sync();

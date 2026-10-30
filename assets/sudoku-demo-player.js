@@ -339,6 +339,7 @@
     if (viewer) modal.observe(viewer, { attributes: true, attributeFilter: ['open'] });
     const hostObserver = frameHost ? new MutationObserver(sync) : null;
     hostObserver?.observe(frameHost, { attributes: true, attributeFilter: ['class'] });
+    if(hostObserver)window.PortfolioLifecycle?.trackParent(hostObserver,frameHost,{attributes:true,attributeFilter:['class']});
     document.addEventListener('visibilitychange', sync);
     document.addEventListener('portfolio:video-detail', sync);
     addEventListener('portfolio:language', copy);

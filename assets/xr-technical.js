@@ -63,7 +63,7 @@
   },{threshold:.01}).observe(page);
   new ResizeObserver(resize).observe(page);
   if(dialog)new MutationObserver(sync).observe(dialog,{attributes:true,attributeFilter:['open']});
-  if(host)new MutationObserver(sync).observe(host,{attributes:true,attributeFilter:['class']});
+  if(host){const parentObserver=new MutationObserver(sync);parentObserver.observe(host,{attributes:true,attributeFilter:['class']});window.PortfolioLifecycle?.trackParent(parentObserver,host,{attributes:true,attributeFilter:['class']});}
   new MutationObserver(label).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
   document.addEventListener('visibilitychange',sync);
   reduced.addEventListener('change',sync);forced.addEventListener('change',sync);

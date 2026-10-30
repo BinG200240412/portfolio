@@ -34,7 +34,7 @@
   let presetIndex = 0, viewName = 'wide';
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const tr = key => words[(window.PortfolioI18n?.language || document.documentElement.dataset.language) === 'en' ? 'en' : 'zh'][key];
-  let quality = 'none', fullState = 'idle', hasPresented = false;
+  let quality = 'none', fullState = 'idle', hasPresented = false, disposed = false;
   let statusKey = 'loading';
   // Only the initial load covers the scene. Full detail refines an already
   // usable preview, with a small LED fan and an accessible retry target.
@@ -61,6 +61,7 @@
     fullState = 'idle'; loadFull('high');
   });
   function notifyParent(state) {
+    if (disposed) return;
     if (parent !== window) parent.postMessage({ type: 'portfolio:cover-state', state }, location.origin);
   }
   function syncLabels() {
@@ -90,9 +91,10 @@
   let ready = false, lost = false, onScreen = true, raf = 0, last = 0;
   let presented = false, presentationFrame = 0, pageShown = true, generation = 0;
   let previewController = null, fullController = null;
+  const observers = [];
   let host = null;
   try { host = window.frameElement?.closest('#section') || null; } catch (_) {}
-  const mayFetch = () => root.isConnected && pageShown && !document.hidden && (!host || host.classList.contains('on'));
+  const mayFetch = () => !disposed && root.isConnected && pageShown && !document.hidden && (!host || host.classList.contains('on'));
   const active = () => mayFetch() && onScreen;
   let width = 1, height = 1, dpr = 1, frame = 0;
   let points, program, uniforms, buffers = [], shaders = [];
@@ -122,7 +124,7 @@
       gl_FragColor = vec4(vColor.rgb, alpha);
     }`;
 
-  function parsePLY(buffer) {
+  async function parsePLY(buffer, signal) {
     const beginning = new TextDecoder().decode(new Uint8Array(buffer, 0, Math.min(buffer.byteLength, 1024)));
     const end = beginning.indexOf('end_header\n');
     const match = beginning.match(/element vertex (\d+)\n/);
@@ -136,12 +138,25 @@
     if (stride !== 1 && (regular > count || extrema.length !== count - regular)) throw new Error('Invalid preview source indices');
     const source = new DataView(buffer), bytes = new Uint8Array(buffer);
     const positions = new Float32Array(count * 3), colors = new Uint8Array(count * 4), seeds = new Float32Array(count);
+    let budget = performance.now() + 5;
     for (let i = 0; i < count; i++) {
+      if ((i & 4095) === 0) {
+        if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+        if (performance.now() >= budget) {
+          // Keep scroll and input responsive while retaining all original points.
+          if (globalThis.scheduler?.yield) await scheduler.yield();
+          else await new Promise(resolve => setTimeout(resolve, 0));
+          if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+          budget = performance.now() + 5;
+        }
+      }
       const at = offset + i * 16;
       const x = source.getFloat32(at, true), y = source.getFloat32(at + 4, true), z = source.getFloat32(at + 8, true);
-      if (![x, y, z].every(Number.isFinite)) throw new Error('Invalid point coordinate');
-      positions.set([x, -y, z], i * 3);
-      colors.set(bytes.subarray(at + 12, at + 16), i * 4);
+      if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) throw new Error('Invalid point coordinate');
+      const pi = i * 3, ci = i * 4;
+      positions[pi] = x; positions[pi + 1] = -y; positions[pi + 2] = z;
+      colors[ci] = bytes[at + 12]; colors[ci + 1] = bytes[at + 13];
+      colors[ci + 2] = bytes[at + 14]; colors[ci + 3] = bytes[at + 15];
       const sourceIndex = i < regular ? i * stride : extrema[i - regular];
       seeds[i] = ((sourceIndex * 16807) % 2147483647) / 2147483647;
     }
@@ -160,12 +175,16 @@
     gl.enableVertexAttribArray(index); gl.vertexAttribPointer(index, size, type, normalized, 0, 0);
   }
   function initializeGPU() {
-    buffers = []; shaders = [];
-    program = gl.createProgram();
-    gl.attachShader(program, compile(gl.VERTEX_SHADER, vertexSource));
-    gl.attachShader(program, compile(gl.FRAGMENT_SHADER, fragmentSource));
-    gl.linkProgram(program);
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program));
+    buffers = [];
+    // Geometry refinement uses the same shaders and camera. Reuse the program
+    // instead of recompiling it and clearing the canvas for a second scene.
+    if (!program) {
+      program = gl.createProgram();
+      gl.attachShader(program, compile(gl.VERTEX_SHADER, vertexSource));
+      gl.attachShader(program, compile(gl.FRAGMENT_SHADER, fragmentSource));
+      gl.linkProgram(program);
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program));
+    }
     gl.useProgram(program);
     attribute('aPosition', points.positions, 3, gl.FLOAT, false);
     attribute('aColor', points.colors, 4, gl.UNSIGNED_BYTE, true);
@@ -176,9 +195,13 @@
     gl.enable(gl.DEPTH_TEST); gl.depthFunc(gl.LEQUAL);
     resize();
   }
+  function disposePointBuffers() {
+    if (!gl.isContextLost()) buffers.forEach(buffer => gl.deleteBuffer(buffer));
+    buffers = [];
+  }
   function disposeGPU() {
+    disposePointBuffers();
     if (!gl.isContextLost()) {
-      buffers.forEach(buffer => gl.deleteBuffer(buffer));
       shaders.forEach(shader => gl.deleteShader(shader));
       if (program) gl.deleteProgram(program);
     }
@@ -199,7 +222,9 @@
   function resize() {
     width = Math.max(1, root.clientWidth); height = Math.max(1, root.clientHeight);
     dpr = Math.min(devicePixelRatio || 1, width < 640 ? 1.4 : 1.75);
-    canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
+    const pixelWidth = Math.round(width * dpr), pixelHeight = Math.round(height * dpr);
+    if (canvas.width !== pixelWidth) canvas.width = pixelWidth;
+    if (canvas.height !== pixelHeight) canvas.height = pixelHeight;
     gl.viewport(0, 0, canvas.width, canvas.height);
     requestRender();
   }
@@ -334,14 +359,26 @@
   });
   const syncActivity = () => {
     if (active()) requestRender(); else suspend();
-    if (!mayFetch() && fullController) {
+    if (!active() && fullController) {
       fullState = 'paused'; fullController.abort(); fullController = null; syncDetailStatus();
-    } else if (mayFetch() && fullState === 'paused' && quality !== 'full' && (hasPresented || !previewController)) {
+    } else if (active() && fullState === 'paused' && quality !== 'full' && (hasPresented || !previewController)) {
       fullState = 'idle'; loadFull(quality === 'none' ? 'high' : 'low');
     }
   };
+  function disposeCover() {
+    if (disposed) return;
+    disposed = true; pageShown = false; ++generation;
+    previewController?.abort(); fullController?.abort();
+    previewController = fullController = null;
+    if (quality !== 'full') fullState = 'paused';
+    suspend(); syncDetailStatus();
+    observers.forEach(observer => observer.disconnect());
+    observers.length = 0; disposeGPU(); points = null; ready = false;
+  }
   document.addEventListener('visibilitychange', syncActivity);
-  addEventListener('pagehide', () => {
+  addEventListener('pagehide', event => {
+    if (!event.persisted) { disposeCover(); return; }
+    if (disposed) return;
     pageShown = false; ++generation;
     previewController?.abort(); fullController?.abort();
     previewController = fullController = null;
@@ -349,19 +386,25 @@
     suspend(); syncDetailStatus();
   });
   addEventListener('pageshow', () => {
+    if (disposed) return;
     pageShown = true;
     if (!points && !previewController && !fullController) loadPoints();
     else syncActivity();
   });
-  if (host) new MutationObserver(syncActivity).observe(host, { attributes: true, attributeFilter: ['class'] });
+  if (host) {
+    const observer = new MutationObserver(syncActivity);
+    observer.observe(host, { attributes: true, attributeFilter: ['class'] }); observers.push(observer);
+  }
   reducedMotion.addEventListener('change', requestRender);
-  new ResizeObserver(resize).observe(root);
-  new IntersectionObserver(entries => {
+  const resizeObserver = new ResizeObserver(resize);
+  resizeObserver.observe(root); observers.push(resizeObserver);
+  const coverObserver = new IntersectionObserver(entries => {
     onScreen = entries[0].isIntersecting;
     document.body.classList.toggle('liangzhu-cover-on', onScreen);
     window.frameElement?.toggleAttribute('data-particle-cover-on', onScreen);
-    if (!onScreen) suspend(); else requestRender();
-  }, { threshold: 0, rootMargin: '-72px 0px 0px 0px' }).observe(root);
+    syncActivity();
+  }, { threshold: 0, rootMargin: '-72px 0px 0px 0px' });
+  coverObserver.observe(root); observers.push(coverObserver);
   canvas.addEventListener('webglcontextlost', event => {
     event.preventDefault(); lost = true; ready = false; presented = false; suspend();
     // Context restoration invalidates the previous GPU handles. Clear them
@@ -382,7 +425,7 @@
     ready = false; presented = false; suspend();
     if (!hasPresented) setStatus('preparing');
     try {
-      disposeGPU(); initializeGPU(); ready = true; requestRender(); return true;
+      disposePointBuffers(); initializeGPU(); ready = true; requestRender(); return true;
     } catch (error) {
       console.error('Liangzhu scene:', error); disposeGPU();
       if (keepPreview && !gl.isContextLost()) {
@@ -404,24 +447,37 @@
     return new Response(stream).arrayBuffer();
   }
   async function transfer(rawURL, gzipURL, signal, priority) {
-    if (typeof DecompressionStream === 'function') {
-      try { return await fetchPoints(gzipURL, signal, true, priority); }
-      catch (error) {
-        if (signal.aborted || error.name === 'AbortError') throw error;
+    const request = new AbortController();
+    const abort = () => request.abort();
+    signal.addEventListener('abort', abort, {once:true});
+    if (signal.aborted) request.abort();
+    const deadline = setTimeout(abort, priority === 'high' ? 15000 : 30000);
+    try {
+      if (typeof DecompressionStream === 'function') {
+        try { return await fetchPoints(gzipURL, request.signal, true, priority); }
+        catch (error) {
+          if (request.signal.aborted || error.name === 'AbortError') throw error;
+        }
       }
+      return await fetchPoints(rawURL, request.signal, false, priority);
+    } catch (error) {
+      if (request.signal.aborted && !signal.aborted) throw new Error('Point cloud request timed out');
+      throw error;
+    } finally {
+      clearTimeout(deadline); signal.removeEventListener('abort', abort);
     }
-    return fetchPoints(rawURL, signal, false, priority);
   }
   async function loadFull(priority = 'low') {
     if (quality === 'full' || fullState === 'loading') return;
-    if (!mayFetch()) { fullState = 'paused'; syncDetailStatus(); return; }
+    if (!active()) { fullState = 'paused'; syncDetailStatus(); return; }
     const current = generation, task = new AbortController();
     fullController?.abort(); fullController = task;
     fullState = 'loading'; syncDetailStatus();
     try {
       const buffer = await transfer(assetURL, compressedAssetURL, task.signal, priority);
       if (current !== generation || task.signal.aborted || !root.isConnected) return;
-      const complete = parsePLY(buffer);
+      const complete = await parsePLY(buffer, task.signal);
+      if (current !== generation || task.signal.aborted || !active()) return;
       if (!installScene(complete, 'full')) {
         fullState = 'error'; syncDetailStatus();
       }
@@ -430,9 +486,15 @@
       console.error('Liangzhu detail:', error); fullState = 'error';
       if (!hasPresented || !points) { ready = false; setStatus('failed'); }
       syncDetailStatus();
-    } finally { if (fullController === task) fullController = null; }
+    } finally {
+      if (fullController === task) {
+        fullController = null;
+        if (fullState === 'loading' && !active()) { fullState = 'paused'; syncDetailStatus(); }
+      }
+    }
   }
   async function loadPoints() {
+    if (disposed) return;
     const current = ++generation;
     previewController?.abort(); fullController?.abort();
     const task = new AbortController(); previewController = task; fullController = null;
@@ -442,7 +504,8 @@
     try {
       const buffer = await transfer(previewURL, compressedPreviewURL, task.signal, 'high');
       if (current !== generation || task.signal.aborted || !root.isConnected) return;
-      const preview = parsePLY(buffer);
+      const preview = await parsePLY(buffer, task.signal);
+      if (current !== generation || task.signal.aborted || !root.isConnected) return;
       if (!installScene(preview, 'preview')) throw new Error('Preview could not be drawn');
     } catch (error) {
       if (current !== generation || task.signal.aborted || error.name === 'AbortError') return;
@@ -452,5 +515,6 @@
       loadFull('high');
     } finally { if (previewController === task) previewController = null; }
   }
-  loadPoints();
+  window.PortfolioLifecycle?.onDispose(disposeCover);
+  if (!disposed) loadPoints();
 })();

@@ -106,7 +106,7 @@
  document.addEventListener('visibilitychange',sync);
  document.addEventListener('portfolio:language',labels);
  new MutationObserver(sync).observe(document.body,{subtree:true,attributes:true,attributeFilter:['open']});
- if(host)new MutationObserver(sync).observe(host,{attributes:true,attributeFilter:['class']});
+ if(host){const parentObserver=new MutationObserver(sync);parentObserver.observe(host,{attributes:true,attributeFilter:['class']});window.PortfolioLifecycle?.trackParent(parentObserver,host,{attributes:true,attributeFilter:['class']});}
  addEventListener('pagehide',()=>{shown=false;sync();});
  addEventListener('pageshow',()=>{shown=true;sync();});
  labels();progress();sync();

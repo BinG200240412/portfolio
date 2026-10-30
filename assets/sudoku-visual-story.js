@@ -451,7 +451,7 @@
     if (viewer) modalObserver?.observe(viewer, { attributes: true, attributeFilter: ['open'] });
     const videoViewer = document.getElementById('portfolio-video-detail');
     if (videoViewer) modalObserver?.observe(videoViewer, { attributes: true, attributeFilter: ['open'] });
-    if (frameHost) modalObserver?.observe(frameHost, { attributes: true, attributeFilter: ['class'] });
+    if(frameHost){const parentObserver=new MutationObserver(schedule);parentObserver.observe(frameHost,{attributes:true,attributeFilter:['class']});window.PortfolioLifecycle?.trackParent(parentObserver,frameHost,{attributes:true,attributeFilter:['class']});}
     addEventListener('resize', refresh, { passive: true });
     addEventListener('portfolio:language', language);
     addEventListener('pagehide', hide); addEventListener('pageshow', show);
