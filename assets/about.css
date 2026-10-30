@@ -46,11 +46,24 @@ html[data-theme="light"] .about-portrait{
 #resume .about-intro .tags{gap:10px 20px;margin:0 0 26px}
 #resume .about-intro .intro{max-width:560px;margin:0 0 25px}
 #resume .about-intro .intro p{line-height:1.85}
+.about-project-links{display:flex;flex-wrap:wrap;gap:10px 22px;margin:0 0 26px}
+.about-project-links a{color:var(--ink);font-size:var(--editorial-body);line-height:1.5;text-decoration:none;text-underline-offset:6px}
+.about-project-links a:hover,.about-project-links a:focus-visible{text-decoration:underline}
+.about-project-page{grid-row:auto;display:flex;flex-direction:column;justify-content:center;gap:40px;min-width:0;padding:84px 0}
+#resume .about-project-page>h2{font-size:var(--editorial-title);line-height:1.2;letter-spacing:-.025em;margin:0}
+.about-project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:56px 64px}
+.about-project{min-width:0}
+.about-project h3{font-size:var(--editorial-subtitle);line-height:1.3;letter-spacing:-.015em;margin:0 0 16px}
+.about-project h3 a{display:inline-flex;align-items:center;gap:14px;max-width:100%;color:var(--ink);text-decoration:none}
+.about-project-arrow{flex:none;width:20px;height:20px;opacity:.6;transition:transform 180ms ease,opacity 180ms ease}
+.about-project h3 a:hover .about-project-arrow{transform:translate(2px,-2px);opacity:1}
+.about-project a:focus-visible{outline:1px solid var(--ink);outline-offset:7px}
+.about-project p{font-size:var(--editorial-body);line-height:1.75;color:var(--mid);margin:0;max-width:34em}
 #resume .about-intro .contact{margin:0;font-size:14px;line-height:1.65}
 #resume .about-intro .contact a{overflow-wrap:anywhere}
 
 #resume .about-details{
-  grid-row:3;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;width:100%;margin:0;
+  grid-row:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;width:100%;margin:0;
 }
 #resume .about-details>section{
   min-width:0;padding:0 26px;border-top:0;border-left:1px solid var(--line,#33332f);
@@ -94,6 +107,8 @@ html[lang="en"] #resume .about-details li{font-size:14px;line-height:1.7}
   #resume .about-intro .cv-head h1{font-size:clamp(42px,7.5vw,60px)}
   #resume .about-intro .cv-head .latin{font-size:14px}
   #resume .about-intro .intro{max-width:590px}
+  .about-project-page{padding-block:80px;gap:34px}
+  .about-project-grid{grid-template-columns:minmax(0,1fr);gap:38px}
   #resume .about-details{grid-template-columns:minmax(0,1fr);gap:28px}
   #resume .about-details>section{
     padding:25px 0 0;border-left:0;border-top:1px solid var(--line,#33332f);

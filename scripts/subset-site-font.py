@@ -8,6 +8,7 @@ The original full font stays in theme.css as fallback for future characters.
 from __future__ import annotations
 
 import io
+import hashlib
 import re
 import subprocess
 from pathlib import Path
@@ -91,8 +92,9 @@ def main() -> None:
     actual = set(TTFont(OUTPUT).getBestCmap())
     assert selected <= actual, "The subset lost a site glyph"
     assert not any(point < 0x2E80 for point in actual), "Latin must use Portfolio Slab"
+    revision = hashlib.sha256(OUTPUT.read_bytes()).hexdigest()[:10]
     css = (START + '\n@font-face{font-family:"Portfolio Plix CN Site";'
-           'src:url("fonts/PortfolioPlixCN-Site-ExtraLight.woff2") format("woff2");'
+           f'src:url("fonts/PortfolioPlixCN-Site-ExtraLight.woff2?v={revision}") format("woff2");'
            'font-style:normal;font-weight:200;font-display:swap;unicode-range:' +
            css_ranges(selected) + '}\n' + END)
     theme = THEME.read_text()

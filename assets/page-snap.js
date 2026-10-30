@@ -20,7 +20,7 @@
       : file === 'xr.html'
         ? '.gogo-hero, .gogo-snap-page, .gogo-concept-visual-page, .gogo-concept-details, .gogo-interaction-page'
         : file === 'index.html'
-          ? '.about-hero, .about-details, .about-details > section'
+          ? '.about-hero, .about-project-page, .about-details, .about-details > section'
           : '.portfolio-snap-page';
     // A chapter may delegate native snapping to its inner reading stops while
     // remaining a single entry in the chapter navigation.
@@ -179,6 +179,7 @@
   } else if (file === 'index.html') {
     root.dataset.snapLayout = 'about';
     page(document.querySelector('.about-hero'));
+    document.querySelectorAll('.about-project-page').forEach(page);
     page(document.querySelector('.about-details'));
     document.querySelectorAll('.about-details > section').forEach(element => element.classList.add('portfolio-snap-subpage'));
     const sync = () => root.classList.toggle('portfolio-paged', document.body.classList.contains('expanded'));

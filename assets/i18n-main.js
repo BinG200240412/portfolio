@@ -191,3 +191,15 @@ window.PORTFOLIO_TRANSLATIONS = {
   "BinG Design Skills / 流程整理": "BinG Design Skills / Workflow collection",
   "内容与来源说明 ↗": "Content and sources ↗"
 };
+Object.assign(window.PORTFOLIO_TRANSLATIONS, {
+  "代表项目": "Projects",
+  "项目经历": "Project experience",
+  "独立完成产品定位、交互与视觉设计，并借助 AI 开发原生 iOS 应用。围绕分步辅导、回溯与残局分享持续迭代，现已上架 App Store。": "I independently shaped the product, interactions and visual design, and built the native iOS app with AI assistance. I continue to refine step-by-step coaching, move history and puzzle sharing. It is available on the App Store.",
+  "在云深处、Rokid 校企合作项目中，负责交互设计、体验视觉与 Unity 原型的主要交互程序。完成位置绑定、碰撞收集与反馈，并在 Meta Quest 3 测试。": "In this university–industry project with Deep Robotics and Rokid, I handled interaction design, experience visuals and the main interaction code for the Unity prototype. I implemented position binding, collision-based collection and feedback, and tested the prototype on Meta Quest 3.",
+  "在网易雷火联合课程中，负责交互与体验视觉，并借助 AI 完成主要网页程序开发。完成摘茶、碾罗、分茶、击拂四关网页小样，并制作茶筅动作与屏幕反馈联动原型。": "For the joint course with NetEase ThunderFire, I handled the main web and AI-assisted programming, interaction forms and experience visuals. I built four playable web studies for picking, grinding, tea painting and whisking, plus a prototype linking whisk movements to screen feedback.",
+  "围绕家具摆放设计排列推理游戏，将占地、使用空间、搭配朝向与通路转为相互牵制的规则。已有网页与手机界面，规则、关卡与操作仍在持续迭代。": "An arrangement puzzle built around furniture placement, where footprint, usable space, orientation and paths constrain one another. Web and mobile interfaces are in place; the rules, levels and controls are still being refined.",
+  "串联风格重绘、全景扩展、提示词反推与 Marble 三维生成。保留各阶段输入输出，并将场景转为可旋转、缩放的网页点云，逐步检查从图像到空间的转换。": "A workflow connecting style repainting, panorama expansion, prompt derivation and Marble scene generation. Inputs and outputs are retained at each stage, and the scenes become rotatable, zoomable web point clouds for inspecting the move from image to space.",
+  "从青绿山水提取山形与色彩，探索音光和触摸光纤两条互动路线。案例呈现木板切割、灯带与传感器装配，以及装置实际运行的画面。": "Mountain forms and colors from the blue-green landscape inform two interactive routes: sound and light, and touch-responsive optical fibers. The case documents wood cutting, LED and sensor assembly, and footage of the installations running.",
+  "将版画转绘、Figma 界面还原与手绘图标制作整理为三个可复用工作流。通过原始资产导出、测量与回渲检查，减少重复制作中的偏差。": "Three reusable workflows for print-style imagery, Figma interface reconstruction and hand-drawn icons. Original asset exports, measurement and rendered checks help reduce drift during repeated production.",
+  "围绕 AI、注意力与感知错位构思 MR 空间体验，设计观众行为与环境缓慢漂移的关系。目前为概念与体验流程设计，AI 和交互逻辑尚未实装。": "An MR concept exploring AI, attention and perceptual displacement through the relationship between visitor behavior and a slowly drifting environment. It remains a concept and experience-flow design; the AI and interaction logic have not been implemented."
+});
