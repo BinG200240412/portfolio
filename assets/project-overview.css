@@ -23,3 +23,14 @@ html[lang="en"] dl.project-overview>div,html[lang="en"] .gogo-project-meta>div{g
 .skills-page .chapter-heading .skill-start-date{display:block;margin-top:16px;font-size:var(--editorial-body,16px);font-weight:400;line-height:1.5;letter-spacing:0;color:var(--mid);font-variant-numeric:tabular-nums}
 
 .skills-page .chapter-heading .skill-start-date[hidden]{display:none}
+
+/* Copy follows its composition, independently of the shared facts structure. */
+dl:is(.project-overview,.gogo-project-meta)[data-copy-align="start"]{text-align:start}
+dl:is(.project-overview,.gogo-project-meta)[data-copy-align="end"]{text-align:end}
+dl.gogo-project-meta[data-copy-align]>div{text-align:inherit}
+.sudoku-scenes .hero-main>dl.project-overview[data-copy-align="inherit"]{text-align:inherit}
+/* A right-hand opening reads as short paragraphs, rather than a left-hand table.
+   The hero already changes to left alignment on a phone; this copy follows it. */
+.sudoku-scenes .hero-main>dl.project-overview[data-copy-align="inherit"]>div{display:block}
+.sudoku-scenes .hero-main>dl.project-overview[data-copy-align="inherit"] :is(dt,dd){display:inline}
+.sudoku-scenes .hero-main>dl.project-overview[data-copy-align="inherit"] dt{margin-inline-end:16px}

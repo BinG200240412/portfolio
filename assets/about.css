@@ -49,24 +49,21 @@ html[data-theme="light"] .about-portrait{
 .about-project-links{display:flex;flex-wrap:wrap;gap:10px 22px;margin:0 0 26px}
 .about-project-links a{color:var(--ink);font-size:var(--editorial-body);line-height:1.5;text-decoration:none;text-underline-offset:6px}
 .about-project-links a:hover,.about-project-links a:focus-visible{text-decoration:underline}
-.about-project-page{grid-row:auto;display:flex;flex-direction:column;justify-content:center;gap:40px;min-width:0;padding:84px 0}
-#resume .about-project-page>h2{font-size:var(--editorial-title);line-height:1.2;letter-spacing:-.025em;margin:0}
-.about-project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:56px 64px}
 .about-project{min-width:0}
-.about-project h3{font-size:var(--editorial-subtitle);line-height:1.3;letter-spacing:-.015em;margin:0 0 16px}
-.about-project h3 a{display:inline-flex;align-items:center;gap:14px;max-width:100%;color:var(--ink);text-decoration:none}
-.about-project-arrow{flex:none;width:20px;height:20px;opacity:.6;transition:transform 180ms ease,opacity 180ms ease}
+.about-project h3{font-size:inherit;font-weight:400;line-height:1.65;letter-spacing:0;margin:0 0 5px}
+.about-project h3 a{display:inline-flex;align-items:center;gap:8px;max-width:100%;color:var(--ink);text-decoration:none}
+.about-project-arrow{flex:none;width:12px;height:12px;opacity:.6;transition:transform 180ms ease,opacity 180ms ease}
 .about-project h3 a:hover .about-project-arrow{transform:translate(2px,-2px);opacity:1}
 .about-project a:focus-visible{outline:1px solid var(--ink);outline-offset:7px}
-.about-project p{font-size:var(--editorial-body);line-height:1.75;color:var(--mid);margin:0;max-width:34em}
+.about-project p{font-size:inherit;line-height:inherit;color:var(--mid);margin:0;max-width:none}
 #resume .about-intro .contact{margin:0;font-size:14px;line-height:1.65}
 #resume .about-intro .contact a{overflow-wrap:anywhere}
 
 #resume .about-details{
-  grid-row:auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;width:100%;margin:0;
+  grid-row:auto;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) minmax(0,1.1fr) minmax(0,1.1fr);gap:clamp(24px,2.2vw,36px);width:100%;margin:0;
 }
 #resume .about-details>section{
-  min-width:0;padding:0 26px;border-top:0;border-left:1px solid var(--line,#33332f);
+  min-width:0;padding:0;border:0;
 }
 #resume .about-details>section:first-child{padding-left:0;border-left:0}
 #resume .about-details>section:last-child{padding-right:0}
@@ -111,8 +108,6 @@ html[lang="en"] #resume .about-details li{font-size:14px;line-height:1.7}
   #resume .about-intro .cv-head h1{font-size:clamp(42px,7.5vw,60px)}
   #resume .about-intro .cv-head .latin{font-size:14px}
   #resume .about-intro .intro{max-width:590px}
-  .about-project-page{padding-block:80px;gap:34px}
-  .about-project-grid{grid-template-columns:minmax(0,1fr);gap:38px}
   #resume .about-details{grid-template-columns:minmax(0,1fr);gap:28px}
   #resume .about-details>section{
     padding:25px 0 0;border-left:0;border-top:1px solid var(--line,#33332f);
@@ -143,10 +138,19 @@ html[lang="en"] #resume .about-details li{font-size:14px;line-height:1.7}
 }
 
 /* Project dates share the body scale and keep the project title dominant. */
-.about-project h3{display:flex;align-items:baseline;flex-wrap:wrap;column-gap:22px;row-gap:6px}
-.about-project-start{font-size:var(--editorial-body);font-weight:400;line-height:1.5;letter-spacing:0;color:var(--mid);font-variant-numeric:tabular-nums;white-space:nowrap}
+.about-project h3{display:flex;align-items:baseline;flex-wrap:wrap;column-gap:12px;row-gap:2px}
+.about-project-start{font-size:inherit;font-weight:400;line-height:inherit;letter-spacing:0;color:var(--mid);font-variant-numeric:tabular-nums;white-space:nowrap}
 .about-project-start[hidden]{display:none}
 
-.about-skill-starts{display:flex;flex-wrap:wrap;gap:7px 22px;margin:-4px 0 16px;font-size:var(--editorial-body);line-height:1.5;color:var(--mid)}
+.about-skill-starts{display:flex;flex-wrap:wrap;gap:3px 14px;margin:0 0 5px;font-size:inherit;line-height:1.5;color:var(--mid)}
 .about-skill-starts>span{display:inline-flex;gap:10px;align-items:baseline;flex-wrap:wrap}
 .about-skill-starts time{color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* All resume facts belong to one hierarchy, alongside education and recognition. */
+body.portfolio-shell #resume .about-details{align-items:start;column-gap:clamp(24px,2.2vw,36px)}
+body.portfolio-shell #resume .about-details>section{padding-inline:0}
+#resume .about-project-list{display:grid;gap:16px;list-style:none;padding:0;margin:0}
+#resume .about-project-list .about-project{margin:0;padding:0}
+@media(min-width:769px) and (max-width:1250px){
+ body.portfolio-shell #resume .about-details{grid-template-columns:repeat(2,minmax(0,1fr));gap:48px 42px}
+}

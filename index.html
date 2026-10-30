@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>蔡正阳 — Who am I</title>
 <meta name="description" content="蔡正阳的作品集。独立开发、交互与艺术。">
-<script src="assets/i18n-main.js?v=project-starts-20261030"></script>
+<script src="assets/i18n-main.js?v=compact-resume-20261030"></script>
 <script src="assets/i18n-cases.js?v=focused-copy-20261024"></script>
 <script src="assets/i18n.js?v=bilingual-20261023"></script>
 <script src="assets/theme.js?v=active-chrome-20261026"></script>
@@ -182,16 +182,16 @@
     .cols section{padding:0;border-left:0;border-top:1px solid #e3e3e3;padding-top:28px}
     .cols section:first-child{border-top:0;padding-top:0}}
 </style>
-<link rel="stylesheet" href="assets/theme.css?v=project-starts-20261030">
+<link rel="stylesheet" href="assets/theme.css?v=compact-resume-20261030">
 <link rel="stylesheet" href="assets/pixel-loader.css?v=dot-fan-20261025">
 <link rel="stylesheet" href="assets/works/ai3d/particle-cover.css?v=dot-fan-20261025">
 <link rel="stylesheet" href="assets/matrix-field.css?v=led-speech-20261027">
-<link rel="stylesheet" href="assets/about.css?v=project-starts-20261030">
+<link rel="stylesheet" href="assets/about.css?v=compact-resume-20261030">
 <link rel="stylesheet" href="assets/ambient-field.css?v=tidal-led-20261024">
 <link rel="stylesheet" href="assets/portfolio-assistant.css?v=integrated-voice-20261026">
 <link rel="stylesheet" href="assets/title-dot.css?v=quiet-chat-20261025">
 <link rel="stylesheet" href="assets/page-snap.css?v=adaptive-contrast-20261027">
-<script defer src="assets/page-snap.js?v=about-projects-20261030"></script>
+<script defer src="assets/page-snap.js?v=compact-resume-20261030"></script>
 <link rel="stylesheet" href="assets/media-corners.css?v=image-back-layer-20261027">
 <link rel="stylesheet" href="assets/video-detail.css?v=video-preview-detail-20261026">
 <script defer src="assets/video-detail.js?v=video-preview-detail-20261026"></script>
@@ -250,50 +250,45 @@
     <div class="about-companion-track" aria-hidden="true" data-i18n-ignore>
       <canvas id="about-companion" width="64" height="96"></canvas>
     </div>
-    <section class="about-project-page rv" aria-labelledby="about-projects-title-1">
-      <h2 id="about-projects-title-1">项目经历</h2>
-      <div class="about-project-grid">
-        <article class="about-project">
+    <div class="cols about-details rv">
+      <section class="about-projects" aria-labelledby="about-projects-title">
+        <h2 id="about-projects-title">项目经历</h2>
+        <ul class="about-project-list">
+        <li class="about-project">
           <h3><a href="sections/sudoku.html" data-resume-project="数独"><span>Sudoku.</span><svg class="about-project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a><time class="about-project-start" data-project-start="sudoku" title="开始时间" hidden></time></h3>
-          <p>独立完成产品定位、交互与视觉设计，并借助 AI 开发原生 iOS 应用。围绕分步辅导、回溯与残局分享持续迭代，现已上架 App Store。</p>
-        </article>
-        <article class="about-project">
+          <p>独立设计并借助 AI 开发原生数独，已上架 App Store。</p>
+        </li>
+        <li class="about-project">
           <h3><a href="sections/xr.html" data-resume-project="良渚 · XR"><span>狗GO</span><svg class="about-project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a><time class="about-project-start" data-project-start="gogo" title="开始时间" hidden></time></h3>
-          <p>在云深处、Rokid 校企合作项目中，负责交互设计、体验视觉与 Unity 原型的主要交互程序。完成位置绑定、碰撞收集与反馈，并在 Meta Quest 3 测试。</p>
-        </article>
-        <article class="about-project">
+          <p>负责交互、视觉与 Unity 程序，完成 Quest 3 交互原型。</p>
+        </li>
+        <li class="about-project">
           <h3><a href="sections/tea.html" data-resume-project="茶弦记"><span>茶弦记</span><svg class="about-project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a><time class="about-project-start" data-project-start="tea" title="开始时间" hidden></time></h3>
-          <p>在网易雷火联合课程中，负责交互与体验视觉，并借助 AI 完成主要网页程序开发。完成摘茶、碾罗、分茶、击拂四关网页小样，并制作茶筅动作与屏幕反馈联动原型。</p>
-        </article>
-        <article class="about-project">
+          <p>负责交互、视觉与网页程序，制作四关点茶游戏及茶筅联动原型。</p>
+        </li>
+        <li class="about-project">
           <h3><a href="sections/arright.html" data-resume-project="arright"><span>Arright</span><svg class="about-project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a><time class="about-project-start" data-project-start="arright" title="开始时间" hidden></time></h3>
-          <p>围绕家具摆放设计排列推理游戏，将占地、使用空间、搭配朝向与通路转为相互牵制的规则。已有网页与手机界面，规则、关卡与操作仍在持续迭代。</p>
-        </article>
-      </div>
-    </section>
-    <section class="about-project-page rv" aria-labelledby="about-projects-title-2">
-      <h2 id="about-projects-title-2">项目经历</h2>
-      <div class="about-project-grid">
-        <article class="about-project">
+          <p>独立设计排列推理规则与界面，持续迭代玩法和关卡。</p>
+        </li>
+        <li class="about-project">
           <h3><a href="sections/ai3d.html" data-resume-project="良渚 · AI 3D"><span>良渚 · AI 3D</span><svg class="about-project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a><time class="about-project-start" data-project-start="ai3d" title="开始时间" hidden></time></h3>
-          <p>串联风格重绘、全景扩展、提示词反推与 Marble 三维生成。保留各阶段输入输出，并将场景转为可旋转、缩放的网页点云，逐步检查从图像到空间的转换。</p>
-        </article>
-        <article class="about-project">
+          <p>串联图像到三维的生成工作流，制作可交互网页点云。</p>
+        </li>
+        <li class="about-project">
           <h3><a href="sections/qianli.html" data-resume-project="千里江山"><span>千里江山</span><svg class="about-project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a><time class="about-project-start" data-project-start="qianli" title="开始时间" hidden></time></h3>
-          <p>从青绿山水提取山形与色彩，探索音光和触摸光纤两条互动路线。以木板造型、灯带和传感器构成装置，让声音与触摸转为可感知的反馈。</p>
-        </article>
-        <article class="about-project">
+          <p>提取青绿山水造型与色彩，制作音光与触摸光纤装置。</p>
+        </li>
+        <li class="about-project">
           <h3><a href="sections/design-skills.html" data-resume-project="设计工具 · Skills"><span>Design Skills</span><svg class="about-project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a></h3>
           <div class="about-skill-starts"><span><span>美式海报风</span> <time data-project-start="skills-print" title="开始时间" hidden></time></span><span><span>手绘图标</span> <time data-project-start="skills-icons" title="开始时间" hidden></time></span><span><span>UI 还原</span> <time data-project-start="skills-ui" title="开始时间" hidden></time></span></div>
-          <p>将版画转绘、Figma 界面还原与手绘图标制作整理为三个可复用工作流。通过原始资产导出、测量与回渲检查，减少重复制作中的偏差。</p>
-        </article>
-        <article class="about-project">
+          <p>整理版画、界面还原与手绘图标流程，编写三套可复用 Skill。</p>
+        </li>
+        <li class="about-project">
           <h3><a href="sections/drift.html" data-resume-project="漂移之屋"><span>漂移之屋</span><svg class="about-project-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></a><time class="about-project-start" data-project-start="drift" title="开始时间" hidden></time></h3>
-          <p>围绕 AI、注意力与感知错位构思 MR 空间体验，设计观众行为与环境缓慢漂移的关系。目前为概念与体验流程设计，AI 和交互逻辑尚未实装。</p>
-        </article>
-      </div>
-    </section>
-    <div class="cols about-details rv">
+          <p>提出 AI 感知漂移的 MR 概念，设计空间与体验流程。</p>
+        </li>
+        </ul>
+      </section>
       <section><h2>教育背景</h2><ul class="about-education">
         <li><span class="lead">研究生</span><p>中国美术学院</p><p>AI 与智能设计</p></li>
         <li><span class="lead">本科</span><p>南京工业大学</p><p>艺术与设计学院</p><p>艺术与科技</p></li>
@@ -509,14 +504,14 @@ section.addEventListener('load',event=>{if(event.target.matches('iframe'))update
 /* ---- 进板块：极简淡出 ---- */
 /* 原生重建页（可编辑元素，非贴图） */
 const SECTION_PAGE={
-  "茶弦记":"sections/tea.html?v=project-starts-20261030",
-  "arright":"sections/arright.html?v=project-starts-20261030",
-  "数独":"sections/sudoku.html?v=project-starts-20261030",
-  "良渚 · AI 3D":"sections/ai3d.html?v=display-cleanup-20261030-1",
-  "良渚 · XR":"sections/xr.html?v=project-starts-20261030",
-  "漂移之屋":"sections/drift.html?v=project-starts-20261030",
-  "千里江山":"sections/qianli.html?v=project-starts-20261030",
-  "设计工具 · Skills":"sections/design-skills.html?v=project-starts-20261030",
+  "茶弦记":"sections/tea.html?v=composed-copy-20261030",
+  "arright":"sections/arright.html?v=composed-copy-20261030",
+  "数独":"sections/sudoku.html?v=composed-copy-20261030",
+  "良渚 · AI 3D":"sections/ai3d.html?v=display-cleanup-composed-20261030",
+  "良渚 · XR":"sections/xr.html?v=composed-copy-20261030",
+  "漂移之屋":"sections/drift.html?v=composed-copy-20261030",
+  "千里江山":"sections/qianli.html?v=composed-copy-20261030",
+  "设计工具 · Skills":"sections/design-skills.html?v=composed-copy-20261030",
   "作品归档":"sections/more.html?v=peer-collections-20261024",
   "练习":"sections/practice.html?v=peer-collections-20261024",
 };
