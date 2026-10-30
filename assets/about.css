@@ -74,6 +74,10 @@ html[data-theme="light"] .about-portrait{
 #resume .about-details ul{gap:14px}
 #resume .about-details li{font-size:13.5px;line-height:1.8;overflow-wrap:break-word}
 html[lang="en"] #resume .about-details li{font-size:14px;line-height:1.7}
+#resume .about-education{gap:26px}
+#resume .about-education .lead{display:block;margin-bottom:6px}
+#resume .about-education p{margin:0;font-size:inherit;line-height:inherit;color:var(--mid)}
+#resume .about-education p:first-of-type{color:var(--ink)}
 
 /* This empty track owns its space; the companion can never travel over the copy. */
 .about-companion-track{

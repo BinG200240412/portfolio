@@ -203,3 +203,10 @@ Object.assign(window.PORTFOLIO_TRANSLATIONS, {
   "将版画转绘、Figma 界面还原与手绘图标制作整理为三个可复用工作流。通过原始资产导出、测量与回渲检查，减少重复制作中的偏差。": "Three reusable workflows for print-style imagery, Figma interface reconstruction and hand-drawn icons. Original asset exports, measurement and rendered checks help reduce drift during repeated production.",
   "围绕 AI、注意力与感知错位构思 MR 空间体验，设计观众行为与环境缓慢漂移的关系。目前为概念与体验流程设计，AI 和交互逻辑尚未实装。": "An MR concept exploring AI, attention and perceptual displacement through the relationship between visitor behavior and a slowly drifting environment. It remains a concept and experience-flow design; the AI and interaction logic have not been implemented."
 });
+Object.assign(window.PORTFOLIO_TRANSLATIONS, {
+  "研究生": "Graduate studies",
+  "本科": "Undergraduate studies",
+  "南京工业大学": "Nanjing Tech University",
+  "艺术与设计学院": "College of Art and Design",
+  "艺术与科技": "Art and Technology"
+});
