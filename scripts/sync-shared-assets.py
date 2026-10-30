@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Use one content version for each local JS/CSS resource across portfolio pages."""
 from pathlib import Path
-import hashlib,re,subprocess
+import hashlib,re,subprocess,sys
 from urllib.parse import urlsplit
 ROOT=Path(__file__).resolve().parents[1]
+subprocess.run([sys.executable, str(ROOT/'scripts/build-home-matrix.py')], check=True)
 cache={}
 def version(path):
  if path not in cache:
