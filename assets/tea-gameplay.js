@@ -20,6 +20,7 @@
   }, {threshold:.35});
   videos.forEach(v => videoObserver.observe(v));
   document.addEventListener('visibilitychange',syncVideos);
+  document.addEventListener('tea:media-sync',syncVideos);
   document.addEventListener('close',syncVideos,true);
   new MutationObserver(syncVideos).observe(document.body,{subtree:true,attributes:true,attributeFilter:['open']});
   reduced.addEventListener('change',syncVideos);
