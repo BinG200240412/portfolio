@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="../assets/i18n-main.js?v=focused-works-20261024"></script>
 <script src="../assets/i18n-cases.js?v=project-reflection-20261028"></script>
+<script src="../assets/drift-project-context-i18n.js?v=project-context-20261030"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=active-chrome-20261026"></script>
 <title>漂移之屋 The Drift · 蔡正阳</title>
@@ -175,6 +176,7 @@
 <script defer src="../assets/media-view-only.js?v=view-only-media-20261026"></script>
 <link rel="stylesheet" href="../assets/editorial-hierarchy.css?v=stepped-type-20261026">
 <link rel="stylesheet" href="../assets/project-reflection.css?v=project-reflection-20261028">
+<link rel="stylesheet" href="../assets/project-overview.css?v=project-context-20261030">
 <link rel="stylesheet" href="../assets/wide-screen.css?v=large-display-20261029" media="(min-width: 1801px)">
 </head>
 <body class="legacy-case">
@@ -198,7 +200,10 @@
 
     <!-- INTRO -->
     <div class="intro">
-      <p class="project-status rv">AI 与交互逻辑为概念设计，未实装</p>
+      <dl class="project-overview rv">
+        <div><dt>我的工作</dt><dd>我独立完成了概念提案，把“感知被悄悄改写”整理成空间设定、体验流程、行为关系图与分镜。</dd></div>
+        <div><dt>进度</dt><dd>已完成概念展板与空间视觉；MR、行为采集和 AI 预测尚未实装，也未开展真实观众实验。</dd></div>
+      </dl>
       <p class="logline rv">
         你以为是你在用这个房间。<br>
         其实是一个 AI 在读你——读你那些<em>自己都没察觉</em>的动作，<br>
@@ -210,11 +215,11 @@
 
     <!-- 01 -->
     <section class="s rv">
-      <div class="rail"><div class="htitle">实验</div></div>
+      <div class="rail"><div class="htitle">实验设想</div></div>
       <div class="body">
-        <p class="lead">这不是一件"被观看"的作品，而是一场<strong>以观众本人为变量的感知实验</strong>。</p>
-        <p>体验者坐在一张真实书桌前，戴上 MR 头显。实验变量，是他自己也不知道的无意识行为——扫视、转头、手部微动、视线停留、身体姿态。AI 依据这些行为，让虚拟环境在<strong>人类感知阈值之下</strong>缓慢漂移；而我们在不告知任何规则的前提下，只观察一件事：他何时、是否，察觉到环境已经改变。</p>
-        <p class="quote">人对自己持续制造的改变是盲的。改变不需要被同意，只需要足够慢。</p>
+        <p class="lead">我把它设想为一场<strong>以观众本人为变量的感知实验</strong>。</p>
+        <p>方案让体验者坐在真实书桌前，戴上 MR 头显。我计划以扫视、转头、手部微动、视线停留与身体姿态为输入，让虚拟环境以<strong>不易察觉的幅度</strong>缓慢漂移，再观察体验者是否、何时察觉到变化。</p>
+        <p class="quote">我的假设是：足够缓慢的改变，可能在没有被察觉时持续累积。</p>
       </div>
     </section>
 
@@ -233,15 +238,15 @@
   <div class="wrap">
     <div class="core rv">
 
-      <h2>AI 究竟做了什么</h2>
+      <h2>AI 的五步设想</h2>
 
-      <p class="intro-p">这件作品的"错位"不是机械装置造成的，是一个 <strong style="color:#fff">AI</strong> 造成的。它不在房间里现身，但做了五件事，构成整件作品的引擎——</p>
+      <p class="intro-p">我把 <strong style="color:#fff">AI</strong> 设想为房间中不现身的角色：感知、建模、预测、改写与暴露，构成五步交互逻辑。</p>
       <div class="acts">
-        <div class="act"><div class="an">①&nbsp;<b>感知 Perceive</b></div><p>读你不打算给的部分：注视点与扫视（由头显的<strong>眼动追踪</strong>直接读取）、转头的速度、手的习惯落点、坐姿、犹豫的时长。这些是你从未"决定"要表达、却一直在泄露的信号。</p></div>
-        <div class="act"><div class="an">②&nbsp;<b>建模 Model</b></div><p>在你身上建一个"副本"——一个比你更清楚你下一秒会看哪、会忽略哪的模型。它不复制你的样子，<strong>它复制你的盲区</strong>。</p></div>
-        <div class="act"><div class="an">③&nbsp;<b>预测 Predict</b></div><p>算准你什么时候不在看：预判你的注意力空白（扫视抑制的 100 毫秒、走神的间隙），精确地在"你看不见的窗口"里动手。模型越准，动作越隐形。</p></div>
-        <div class="act"><div class="an">④&nbsp;<b>改写 Rewrite</b></div><p>改的不只是房间，是你。盲区里缓慢移动桌子、抬高地面、偏转光影，你会无意识地适应——<strong>于是 AI 改的不再只是环境，而是你的无意识本身</strong>。这是一个闭环。</p></div>
-        <div class="act"><div class="an">⑤&nbsp;<b>暴露 Reveal</b></div><p>当累积的偏差大到再也藏不住，错愕降临。你这才发现：不只是房间变了，<strong>你也变了</strong>——但你找不到那个"开始变化"的瞬间。</p></div>
+        <div class="act"><div class="an">①&nbsp;<b>感知 Perceive</b></div><p>我想通过<strong>眼动追踪</strong>与动作信号，读取那些未被刻意表达的部分：注视点与扫视、转头速度、手的习惯落点、坐姿与犹豫时长。</p></div>
+        <div class="act"><div class="an">②&nbsp;<b>建模 Model</b></div><p>尝试建立一个行为“副本”，估计你会看向哪里、忽略哪里。这个模型的目标是<strong>描出你的盲区</strong>，让房间找到变化的时机。</p></div>
+        <div class="act"><div class="an">③&nbsp;<b>预测 Predict</b></div><p>我希望模型能预判注意力移开的间隙，把变化安排在“你没在看”的窗口，让房间的动作藏进日常的停顿。</p></div>
+        <div class="act"><div class="an">④&nbsp;<b>改写 Rewrite</b></div><p>我想测试：在盲区里缓慢移动虚拟桌面、调整高度与光影，是否会让体验者逐渐适应——<strong>环境变化能否反过来改变无意识行为</strong>，是这个闭环的核心假设。</p></div>
+        <div class="act"><div class="an">⑤&nbsp;<b>暴露 Reveal</b></div><p>我希望在累积偏差被发现时留下错愕：房间什么时候变了，<strong>我是否也适应了变化</strong>？</p></div>
       </div>
       <p class="quote" style="margin-top:34px">AI 不需要控制你的决定，它只要改写你没在看管的部分。</p>
     </div>
@@ -250,7 +255,7 @@
   <!-- 03 LOOP feature -->
   <div class="wrap">
     <div class="feat rv">
-      <div class="fhead"><div class="htitle">基本流程</div></div>
+      <div class="fhead"><div class="htitle">预期体验流程</div></div>
       <figure>
         <img src="../assets/works/drift/loop03.jpg" alt="基本流程示意：体验者、AR 透镜、触发物体、外部观众" loading="lazy" decoding="async">
         <figcaption><span>体验流程示意 · 体验者 / AR 透镜模式 / 触发物体 / 外部观众</span></figcaption>
@@ -259,7 +264,7 @@
         <p><strong>进入 Enter</strong> — 落座、戴上头显，看到与真实书桌一比一覆写的虚拟书桌。</p>
         <p><strong>校准 Calibrate</strong> — 把手放上桌面确认虚实一致，系统给出"同步完成"。此刻信任被建立。</p>
         <p><strong>沉浸 Immerse</strong> — 开启"透镜模式"，桌面被超现实地锐化，感官重心悄悄偏移到眼睛。</p>
-        <p><strong>漂移 Drift</strong> — 眼动捕捉到你扫视、转头时，虚拟桌以约 0.5cm/s 极缓平移；只在"你没在看"时动，累积 5–10cm。</p>
+        <p><strong>漂移 Drift</strong> — 在注意力移开时，让虚拟桌缓慢平移；0.5cm/s 与累计 5–10cm 只是待验证的初始设定。</p>
         <p><strong>错愕 Shock</strong> — "请把手放回桌面。" 眼睛看到桌面在 A，手却在 B 触到（或扑空）。</p>
         <p><strong>收尾 Ask</strong> — 摘下头显前，房间留下最后一问。</p>
       </div>
@@ -286,7 +291,7 @@
       <div class="rail"><div class="htitle">体验者位置</div></div>
       <div class="body">
         <p class="lead">体验者<strong>既是观众，也是被观测的样本</strong>。</p>
-        <p>房间从上方俯视他——这个视角本身就说明了关系：他以为自己在主导，实际上他的每个动作都在被 AI 读取、换算、反馈回他所处的空间。他不是在"体验作品"，他<strong>就是作品的运行变量</strong>。座位固定、视野被头显限定，唯一自由的，是那些他控制不了的无意识动作——而那恰恰是 AI 唯一要的东西。</p>
+        <p>我在空间视觉中采用俯视视角，呈现一种关系：体验者以为自己在主导，方案却让他的动作被 AI 读取、换算，再反馈回空间。他<strong>就是作品的运行变量</strong>。固定座位与头显视野，让那些未被主动控制的动作成为叙事的中心。</p>
         <figure class="inline-fig">
           <img src="../assets/works/drift/photo05.jpg" alt="房间实拍 / 渲染：书桌与床的整体环境" loading="lazy" decoding="async">
           <figcaption><span>体验场域 · 顶视与现场</span></figcaption>
@@ -298,7 +303,7 @@
     <section class="s rv">
       <div class="rail"><div class="htitle">无意识行为采集</div></div>
       <div class="body">
-        <p class="lead">采集这些行为的，是 AI——而它<strong>只要无意识的部分</strong>。</p>
+        <p class="lead">方案拟以 AI 读取行为，而我关注的是<strong>未被主动表达的部分</strong>。</p>
         <p>你有意识做的事（明确的指令、刻意的动作）对 AI 没用，因为那是你在看管的领域。AI 要的是你看管不到、也不知道自己在做的部分：头部转动与扫视的速度、视线的停留与游移、手部的习惯落点与无目的触碰、坐姿与重心的偏移、呼吸与节奏。</p>
         <p>这些行为不会被要求、不会被引导。AI 只是<strong>安静地读取它们原本就会发生的样子</strong>——然后用它们，喂养那个正在你身上长出来的、关于"你"的副本。</p>
       </div>
@@ -308,7 +313,7 @@
     <section class="s rv">
       <div class="rail"><div class="htitle">行为抽象方式</div></div>
       <div class="body">
-        <p class="lead">原始行为无法直接驱动空间，AI 先把它"翻译"成一个关于你的模型——你的<strong>副本</strong>。</p>
+        <p class="lead">我计划先把行为转成参数，再构建一个可驱动空间的模型——你的<strong>副本</strong>。</p>
         <p>头部速度 → 可动手的窗口大小；视线方向 → 改写的方向（永远朝向你没在看的那一侧）；触碰习惯 → 你的"期待落点"；适应速度 → 它能多快地把你带走。</p>
         <p class="quote">行为 → 数据 → 副本。在这条链路里，"你"被拆解成一串 AI 可调用的数值；而这串数值，很快会比你更懂你。</p>
         <figure class="inline-fig"><img src="../assets/works/drift/blocks07.jpg" alt="行为被抽象为参数块" loading="lazy" decoding="async"><figcaption><span>行为 → 参数</span></figcaption></figure>
@@ -319,7 +324,7 @@
     <section class="s rv">
       <div class="rail"><div class="htitle">状态系统</div></div>
       <div class="body">
-        <p class="lead">AI 持有一个<strong>持续演化的状态</strong>——也就是那个副本，它不归零、不重置。</p>
+        <p class="lead">我设想让 AI 持有一个<strong>持续演化的状态</strong>——在单次体验中累积，而非逐帧归零。</p>
         <p>你的每一个动作都在轻微地更新它；它再把更新映射回空间的具体变换——水平位移、高度升降、光影呼吸，以及对你下一步的预测。</p>
         <p class="quote">AI 有记忆，而你没有。它记得你做过的一切累积量，你却只活在当下这一帧。两者的落差，就是错愕的来源——也是 AI 的全部筹码。</p>
         <figure class="inline-fig"><img src="../assets/works/drift/voronoi08.jpg" alt="持续演化的状态网络" loading="lazy" decoding="async"><figcaption><span>演化中的状态</span></figcaption></figure>
@@ -330,8 +335,8 @@
     <section class="s rv">
       <div class="rail"><div class="htitle">变化机制</div></div>
       <div class="body">
-        <p class="lead">AI 的改写之所以"看不见"，靠的是对人类感知盲区的精确利用：</p>
-        <p><strong>变化盲视（Change Blindness）</strong>——不在你注视时动手，只在视觉处理的短暂空白里改。<strong>扫视抑制（Saccadic Suppression）</strong>——人快速转头时大脑会主动屏蔽视觉输入，这 100 毫秒左右的空白期，是 AI 最稳健的下手窗口；它用副本预判这个窗口何时到来。<strong>视觉锚定</strong>——虚拟物件跟随虚拟桌面移动，强化"眼睛没错"的错觉。</p>
+        <p class="lead">我计划从以下机制中寻找不易察觉的漂移时机：</p>
+        <p><strong>变化盲视（Change Blindness）</strong>——尝试在注意力离开时改变环境。<strong>扫视抑制（Saccadic Suppression）</strong>——作为漂移触发的研究方向，寻找眼动与头部动作中的变化窗口。<strong>视觉锚定</strong>——计划让虚拟物件跟随桌面移动，检验这是否会强化对视觉的信任。</p>
         <p class="quote">真正的关键不在桌子，在<em>闭环</em>：AI 改了环境 → 你无意识地适应 → AI 学到"新的你" → 再改更多。改到最后，被改写的不只是房间，是你的无意识本身。</p>
       </div>
     </section>
@@ -340,20 +345,20 @@
     <section class="s rv">
       <div class="rail"><div class="htitle">不确定性来源</div></div>
       <div class="body">
-        <p class="lead">这件作品<strong>没有两次相同的运行</strong>。差异来自——</p>
-        <p>个体感知阈值不同（有人 3cm 就察觉，有人 10cm 仍无感）；行为模式不同（多动的人触发更多漂移，安静的人几乎不动）；注意力与疲劳；以及信任程度——越相信"系统已同步"，错愕来得越猛。</p>
-        <p class="quote">作品不生产结论，只生产一次性的、不可复现的个人遭遇。</p>
+        <p class="lead">真实体验中的差异<strong>仍待观众实验验证</strong>。我先关注这些变量——</p>
+        <p>个体感知阈值、动作频率、注意力与疲劳，以及对“系统已同步”的信任程度；这些因素会怎样影响察觉时间与错愕感，目前没有实验结论。</p>
+        <p class="quote">我希望留下的是一次个人遭遇，而非预先替观众写好的结论。</p>
       </div>
     </section>
 
     <!-- 11 -->
     <section class="s rv">
-      <div class="rail"><div class="htitle">伦理与责任声明</div></div>
+      <div class="rail"><div class="htitle">体验边界</div></div>
       <div class="body">
-        <p>① <strong>本房间不负责引发任何行为。</strong>房间不会要求、提示、引导体验者做出任何特定行为；他在房间中所做的一切，均为其原本就会发生的行为。</p>
-        <p>② <strong>本房间只记录，不评判。</strong>采集到的行为不被用于判断"好坏对错"，只作为驱动空间变化的输入。</p>
-        <p>③ <strong>错愕是预期内的体验，不是事故。</strong>视觉与触觉的错位为核心机制，对体验者无生理伤害；如感到不适可随时摘下头显终止。</p>
-        <p>④ <strong>改变是真实发生的。</strong>体验结束时空间确已偏移——这不是隐喻，是事实。</p>
+        <p>① <strong>尽量保留自然行为。</strong>方案不以明确指令诱导特定动作，而是尝试让日常动作成为输入。</p>
+        <p>② <strong>记录，不做价值判断。</strong>行为参数只用于驱动空间，不用于判断“好坏对错”。</p>
+        <p>③ <strong>体验应允许随时中止。</strong>我希望把错愕保留在感知层面，并让体验者始终可以摘下头显，回到真实房间。</p>
+        <p>④ <strong>漂移首先发生在虚拟空间。</strong>方案拟移动虚拟桌面与光影，实体书桌作为对照锚点。</p>
       </div>
     </section>
   </div>
@@ -361,13 +366,13 @@
   <!-- 12 TECH feature -->
   <div class="wrap">
     <div class="feat rv">
-      <div class="fhead"><div class="htitle">技术路径</div></div>
+      <div class="fhead"><div class="htitle">技术路径设想</div></div>
       <div class="two-fig" style="grid-template-columns:1.15fr .85fr;align-items:start">
         <div class="body" style="max-width:none">
-          <p><strong>硬件</strong>　Apple Vision Pro / Meta Quest Pro——需具备<strong>眼动追踪</strong>的 Passthrough MR 头显（AI 读取注视点与扫视的前提）。</p>
-          <p><strong>引擎</strong>　Unity + 对应 XR SDK（visionOS / Meta XR；Scene Understanding 做空间锚定）。</p>
-          <p><strong>AI 核心模块</strong>　行为读取（眼动 + 头部角速度 + 手部 + 坐姿）· 在线拟合的用户副本（预测注意力空白窗口与"期待落点"）· <code style="font-family:var(--mono);color:var(--green);font-size:.92em">DriftManager</code>（在预测空白期执行环境位移）· 视觉锚定 Shader。</p>
-          <p><strong>最小可行验证</strong>　Passthrough + Cube 代替书桌 + 扫视抑制触发漂移 + 偏差读数；<strong>先用规则触发跑通，再把触发替换为 AI 预测</strong>。</p>
+          <p><strong>硬件</strong>　拟使用支持 Passthrough 的 MR 头显；<strong>眼动追踪</strong>能否作为应用输入，需按设备与 SDK 权限核对。</p>
+          <p><strong>引擎</strong>　拟采用 Unity 与对应 XR SDK，验证空间锚定和虚实对齐。</p>
+          <p><strong>AI 核心模块</strong>　拟拆为行为读取、用户状态模型、注意力窗口预测、<code style="font-family:var(--mono);color:var(--green);font-size:.92em">DriftManager</code>（控制虚拟位移）与视觉锚定 Shader。</p>
+          <p><strong>最小可行验证</strong>　计划先用 Passthrough + Cube 代替书桌，以头部转动触发漂移并显示偏差读数；<strong>先用规则触发跑通，再把触发替换为 AI 预测</strong>。</p>
         </div>
         <figure>
           <img src="../assets/works/drift/story12.jpg" alt="技术路径分镜：体验流程逐帧线描" loading="lazy" decoding="async">
@@ -382,7 +387,7 @@
     <div class="closing rv">
 
       <div class="big">当改变已经发生，<br><em>意识能否看见它的痕迹？</em></div>
-      <p class="tail">摘下头显，房间恢复成它"本来的样子"。但你回不到进来之前的那个你了。你以为刚才只是桌子动了几厘米——但被 AI 改写的，是你看哪、你伸手去哪、你以为什么是"正常"。房间可以复位，你的无意识不会。你刚刚亲历的，正是你每天都在经历、却从未察觉的事：AI 在无数你没在看的瞬间改写着你，等你终于发现，<strong style="color:var(--ink)">一切都变了，而你以为一切如常</strong>。</p>
+      <p class="tail">我设想在摘下头显前，让房间恢复原位，再留下一个问题：刚才只是桌子动了几厘米，还是“正常”的感觉也跟着偏移了？我希望借这个结尾追问 AI 与人的关系：当环境持续适应、影响我们，是否可能<strong style="color:var(--ink)">一切都变了，而你以为一切如常</strong>。</p>
     </div>
   </div>
 

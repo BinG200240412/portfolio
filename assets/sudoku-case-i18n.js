@@ -1,4 +1,10 @@
 /* Page-local copy is registered before the shared language engine starts. */
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
+  "我的工作": "My work",
+  "进度": "Progress",
+  "我独立负责产品、交互与视觉设计，并借助 AI 完成原生 App 开发。": "I independently designed the product, interactions and visuals, and built the native app with AI assistance.",
+  "已在 App Store 发布，持续维护与迭代。": "Released on the App Store, with ongoing maintenance and iteration."
+});
 Object.assign(window.PORTFOLIO_TRANSLATIONS ||= {}, {
   "Sudoku.2026：从盘面秩序、操作体验到分步辅导与产品迭代。": "Sudoku.2026: board hierarchy, interaction, step-by-step coaching and the path to a native product.",
   "数独项目目录": "Sudoku project chapters",

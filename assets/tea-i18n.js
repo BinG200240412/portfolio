@@ -1,4 +1,13 @@
 /* Tea String Chronicles: supplied design artwork and bilingual exhibition copy. */
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
+  "我的工作": "My work",
+  "合作": "Collaboration",
+  "进度": "Progress",
+  "我负责主要交互程序、交互设计与体验视觉，并做茶筅动作和屏幕反馈的联动开发。": "I wrote the main interaction code, designed the interactions and experience visuals, and developed the link between tea-whisk movement and on-screen feedback.",
+  "网易雷火联合课程，团队共同创作。": "A team project in a joint course with NetEase ThunderFire.",
+  "四段游戏原型可试玩，已做过课程现场展示；展厅空间为设计方案。": "The four game prototypes are playable and have been shown at the course exhibition. The exhibition space is a design proposal.",
+  "我把茶筅的转动强度、游戏里的绕圈频率和画面反馈连在一起思考。设计这段交互时，需要同时照顾手里的动作和屏幕里的节奏。": "I considered the whisk’s movement intensity, the game’s circling frequency and visual feedback together. Designing this interaction meant considering both the movement in the hand and the rhythm on screen."
+});
 window.PORTFOLIO_CASE_TRANSLATIONS = Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS || {}, {
   "茶弦记：以宋代点茶为叙事线索，将茶百戏、音游与展厅空间连接的体验设计。": "Tea String Chronicles: an exhibition experience connecting Song dynasty tea preparation, tea foam painting and rhythm games.",
   "茶弦记 — 茶文化展厅与游戏体验设计": "Tea String Chronicles — Tea Exhibition and Game Experience Design",

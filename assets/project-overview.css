@@ -1,0 +1,13 @@
+/* Shared project facts; each case keeps its own composition and narrative. */
+dl.project-overview{display:grid;gap:14px;width:100%;max-width:46rem;margin:28px 0 0;text-align:left;font-size:16px;line-height:1.8;letter-spacing:normal;text-transform:none}
+dl.project-overview>div{display:grid;grid-template-columns:72px minmax(0,1fr);gap:18px;align-items:baseline;min-width:0}
+dl.project-overview dt{margin:0;color:var(--mid,var(--soft));font-size:14px;font-weight:400;line-height:1.8}
+dl.project-overview dd{margin:0;min-width:0;color:var(--ink);font:inherit;overflow-wrap:anywhere}
+.hero-main>dl.project-overview{max-width:36rem;margin-left:auto}
+.tea-cover-copy>dl.project-overview{max-width:none;margin-top:24px}
+@media(max-width:720px){
+ dl.project-overview{margin-top:24px;gap:12px;font-size:16px}
+ dl.project-overview>div{grid-template-columns:64px minmax(0,1fr);gap:14px}
+ .hero-main>dl.project-overview{margin-left:0}
+}
+@media(max-width:380px){dl.project-overview>div{grid-template-columns:1fr;gap:3px}}

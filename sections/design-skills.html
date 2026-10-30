@@ -8,6 +8,7 @@
 <script src="../assets/i18n-main.js?v=focused-works-20261024"></script>
 <script src="../assets/i18n-cases.js?v=project-reflection-20261028"></script>
 <script src="../assets/skills-translations.js?v=view-only-media-20261026"></script>
+<script src="../assets/skills-project-context-i18n.js?v=project-context-20261030"></script>
 <script src="../assets/i18n.js?v=bilingual-20261023"></script>
 <script src="../assets/theme.js?v=active-chrome-20261026"></script>
 <link rel="stylesheet" href="../assets/theme.css?v=about-projects-20261030">
@@ -29,12 +30,17 @@
 <script defer src="../assets/media-view-only.js?v=view-only-media-20261026"></script>
 <link rel="stylesheet" href="../assets/editorial-hierarchy.css?v=stepped-type-20261026">
 <link rel="stylesheet" href="../assets/project-reflection.css?v=project-reflection-20261028">
+<link rel="stylesheet" href="../assets/project-overview.css?v=project-context-20261030">
 <link rel="stylesheet" href="../assets/wide-screen.css?v=large-display-20261029" media="(min-width: 1801px)">
 </head>
 <body class="skills-page">
 <main>
 <header class="skills-hero page-width">
 <div class="hero-heading"><h1>Design<br>Skills<span class="accent">.</span></h1><div class="hero-note"><p>把反复做的事，<br>变成可复用的方法。</p><a class="text-link" href="https://github.com/BinG200240412/bing-design-skills" target="_blank" rel="noopener noreferrer">GitHub / 三个工作流 <span aria-hidden="true">↗</span></a></div></div>
+<dl class="project-overview">
+<div><dt>我的工作</dt><dd>我独立整理并编写三套 Skill，把版画处理、Figma 界面还原与手绘图标制作中的步骤、检查规则和示例串成可复用流程。</dd></div>
+<div><dt>进度</dt><dd>三套 Skill 已在 GitHub 公开；本页呈现版画档案、Figma 还原与校正流程，以及可交互的手绘图标库。</dd></div>
+</dl>
 <nav class="skills-index" aria-label="三个设计工作流">
 <a href="#newsprint"><span>数独 · 版画档案</span><span aria-hidden="true">↓</span></a>
 <a href="#figma"><span>Figma · 还原与校正</span><span aria-hidden="true">↓</span></a>
@@ -58,7 +64,7 @@
 <noscript><p>启用 JavaScript 浏览 SVG 档案。</p></noscript>
 </section>
 <section class="skill-chapter page-width" id="figma" aria-labelledby="figma-title">
-<div class="chapter-heading"><h2 id="figma-title">不止相似，<br>逐项校对。</h2><div class="chapter-note"><p>先理解 Figma 分组，再量距离。<br>导出原始资产、还原字体与布局，最后回到截图，逐项比对。</p><a class="text-link" href="https://github.com/BinG200240412/bing-design-skills/blob/main/skills/ui-copy-code-figma/SKILL.md" target="_blank" rel="noopener noreferrer">查看界面还原 Skill <span aria-hidden="true">↗</span></a></div></div>
+<div class="chapter-heading"><h2 id="figma-title">不止相似，<br>逐项校对。</h2><div class="chapter-note"><p>我在 Figma 排好界面后，发现只让 AI 看图，布局和间距仍会偏；反复描述细调也很慢。<br>于是我写 Skill，让 CLI 读节点、按元素与分组测量位置和间距、理解功能，再回到原生实现和模拟器检查偏差。</p><a class="text-link" href="https://github.com/BinG200240412/bing-design-skills/blob/main/skills/ui-copy-code-figma/SKILL.md" target="_blank" rel="noopener noreferrer">查看界面还原 Skill <span aria-hidden="true">↗</span></a></div></div>
 <ol class="workflow">
 <li><h3>按分组测量</h3><p>边界、对齐与间距一起核对。</p></li>
 <li><h3>先导出原始资产</h3><p>保留 SVG 与真实字体。</p></li>
