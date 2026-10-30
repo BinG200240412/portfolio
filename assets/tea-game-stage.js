@@ -29,7 +29,12 @@
     if(!active){removeGuide();audio=false;audioButton.disabled=true;soundLabel();return;}
     if(mount.querySelector('iframe')){if(rolling)mount.querySelector('iframe').contentWindow?.TeaWhiskGuide?.suspend();else mount.querySelector('iframe').contentWindow?.TeaWhiskGuide?.resume();return;}
     const frame=document.createElement('iframe');frame.title=english()?'Whisking mechanism demonstration':'击拂机制演示';frame.tabIndex=-1;frame.setAttribute('aria-hidden','true');frame.allow='autoplay';const guideURL='../assets/works/tea/play/chazhan.html?guide&v=tea-wheel-20261030&run='+(++guideRun);
-    audioButton.disabled=true;frame.addEventListener('load',()=>{frame.dataset.loaded='true';fit();send();if(rolling)frame.contentWindow?.TeaWhiskGuide?.suspend();audioButton.disabled=false;});mount.append(frame);frame.src=guideURL;fit();
+    audioButton.disabled=true;whiskSurface.style.visibility='hidden';let attempt=0;
+    frame.addEventListener('load',()=>{
+      // A newly inserted subframe can emit its initial about:blank load first.
+      if(!frame.contentDocument?.querySelector('#c')){if(attempt++<2)setTimeout(()=>{if(frame.isConnected)frame.src=guideURL+'&retry='+attempt;},60);return;}
+      frame.dataset.loaded='true';whiskSurface.style.visibility='';fit();send();if(rolling)frame.contentWindow?.TeaWhiskGuide?.suspend();audioButton.disabled=false;
+    });mount.append(frame);frame.src=guideURL;fit();
   }
   function renderModes(){
     modes.forEach(b=>{const on=b.dataset.guideMode===mode;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;});
