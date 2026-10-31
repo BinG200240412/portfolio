@@ -151,10 +151,11 @@
     const state={message,visible:'',count:0};replyReveal=state;render();
     const step=Math.max(1,Math.ceil(segments.length/260));
     function advance() {
-      if(replyReveal!==state||!opened)return;
+      if(replyReveal!==state||!opened||document.hidden)return;
       const follow=history.scrollHeight-history.scrollTop-(history.clientHeight||0)<32;
       state.count=Math.min(segments.length,state.count+step);state.visible=segments.slice(0,state.count).join('');
       const block=messageNodes.get(message);if(block)block.textContent=state.visible;
+      if (/[^\s，。！？、,.!?;；：:]/u.test(segments.slice(Math.max(0,state.count-step),state.count).join(''))) window.PortfolioSound?.play('reply');
       if(follow)history.scrollTop=history.scrollHeight;
       if(state.count===segments.length){replyReveal=null;replyTimer=0;return;}
       const punctuation=/[，。！？、,.!?;；：:]$/.test(state.visible);
@@ -173,6 +174,7 @@
     const content=input.value.trim();if(!opened||busy||voiceState||!content)return;
     if(!configured()){feedback='offline';render();return;}
     if(content.length>1000){feedback='invalid_messages';render();return;}
+    window.PortfolioSound?.play('send');
     finishReplyReveal();announcer.textContent='';
     pendingMessage={role:'user',content};const question=pendingMessage;feedback='';busy=true;
     const token=++generation;controller=new AbortController();render({follow:true});
@@ -202,6 +204,7 @@
     voiceGeneration++;clearTimeout(voiceSetupTimer);voiceSetupTimer=0;voiceController?.abort();voiceCapture?.cancel();voiceCapture=null;voiceController=null;
     if(voiceContext&&voiceContext.state!=='closed')Promise.resolve(voiceContext.close()).catch(()=>{});
     waveRenderer?.stop();popup.dataset.voiceLit='false';voiceContext=null;voiceState='';voiceExpanded=false;
+    window.PortfolioSound?.setQuiet('voice',false);
   }
   async function startVoice() {
     if(!opened||busy)return;
@@ -215,6 +218,7 @@
     const draft=input.value,start=input.selectionStart??draft.length,end=input.selectionEnd??start;
     const token=++voiceGeneration;voiceController=new AbortController();const signal=voiceController.signal;
     voiceState='requesting';voiceExpanded=true;feedback='';paintVoice();render();position();
+    window.PortfolioSound?.setQuiet('voice',true);
     voiceSetupTimer=setTimeout(()=>{if(token===voiceGeneration){cancelVoice();feedback='voice_permission_timeout';render();position();}},15000);
     try{
       // Resume during the actual click, before the lazy module or permission await.
@@ -275,6 +279,7 @@
     returnFocus=document.activeElement;feedback='';opened=true;
     popup.inert=false;popup.dataset.open='true';popup.setAttribute('aria-hidden','false');
     update();position();edgeObserver?.observe(card);popup.classList.add('is-visible');announce(true);
+    window.PortfolioSound?.play('open');
     if(options?.focusClose)closeButton.focus({preventScroll:true});
   }
   function close(options={}) {
@@ -282,6 +287,7 @@
     const focusedInside=popup.contains(document.activeElement);
     opened=false;edgeObserver?.disconnect();cancelVoice();voiceExpanded=false;abort();popup.dataset.open='false';popup.classList.remove('is-visible');
     popup.inert=true;popup.setAttribute('aria-hidden','true');announce(false);
+    if(options.sound!==false)window.PortfolioSound?.play('close');
     if(options?.restoreFocus!==false&&focusedInside) {
       const target=returnFocus?.isConnected&&!returnFocus.closest('[inert]')?returnFocus:dot();
       if(target?.isConnected&&!target.closest('[inert]'))target.focus({preventScroll:true});
@@ -292,7 +298,7 @@
     if(!opened)return;
     const anchor=dot(),path=event.composedPath?.()||[];
     if(popup.contains(event.target)||anchor?.contains(event.target)||path.includes(popup)||path.includes(anchor))return;
-    close({restoreFocus:false});
+    close({restoreFocus:false,sound:false});
   }
   closeButton.addEventListener('click',()=>close());
   voiceButton.addEventListener('click',startVoice);
@@ -315,13 +321,13 @@
     const mode=event.detail?.mode,reason=event.detail?.reason,previous=navigationMode;
     if(typeof mode==='string')navigationMode=mode;
     if(reason==='assistant'||reason==='typing')return;
-    if(opened&&(reason==='navigation'||(previous!==null&&typeof mode==='string'&&mode!==previous)))close({restoreFocus:false});
+    if(opened&&(reason==='navigation'||(previous!==null&&typeof mode==='string'&&mode!==previous)))close({restoreFocus:false,sound:false});
   });
   addEventListener('portfolio:language',()=>{update();position();});
   addEventListener('resize',position,{passive:true});addEventListener('scroll',position,{passive:true});
   window.visualViewport?.addEventListener('resize',position,{passive:true});
   window.visualViewport?.addEventListener('scroll',position,{passive:true});
-  addEventListener('pagehide',()=>{finishReplyReveal();waveRenderer?.destroy();waveRenderer=null;if(opened)close({restoreFocus:false});});
+  addEventListener('pagehide',()=>{finishReplyReveal();waveRenderer?.destroy();waveRenderer=null;if(opened)close({restoreFocus:false,sound:false});});
   if(typeof ResizeObserver==='function')edgeObserver=new ResizeObserver(paintEdge);
   window.PortfolioAssistant=Object.freeze({open,close,toggle:options=>opened?close(options):open(options),isOpen:()=>opened,clear});
   render();

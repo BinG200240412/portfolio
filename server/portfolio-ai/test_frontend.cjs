@@ -232,7 +232,7 @@ function ui(reply, voice = {}, options = {}) {
   }};
   const schedule=(fn,ms=0)=>{const id=++serial;timers.set(id,{fn,ms,at:now+Math.max(0,Number(ms)||0)});return id;};
   const clear=id=>timers.delete(id);
-  const window=eventTarget({__testVoiceModule:voice.module,__testWaveModule:fakeWaveModule,matchMedia:()=>motion,
+  const window=eventTarget({__testVoiceModule:voice.module,__testWaveModule:fakeWaveModule,matchMedia:()=>motion,PortfolioSound:options.sound,
     AudioContext:voice.module?class {constructor(){this.state='running';}resume(){return Promise.resolve();}close(){this.state='closed';return Promise.resolve();}}:undefined,
     PortfolioNavigation:{assistantAvailable:()=>available},PortfolioAssistantConnection:{mode:'transport',reply,supportsVoice:!!voice.module,transcribe:voice.transcribe},
   });
@@ -642,5 +642,144 @@ test('silent microphone PCM gives a specific localised input-device notice, pres
     env.context.document.documentElement.lang=language;env.allow();env.api.open();const input=env.nodes.get('.pa-input');input.value='Keep draft';
     env.nodes.get('.pa-voice-toggle').listeners.click();await tick();assert.equal(env.nodes.get('.pa-notice').textContent,expected);
     assert.equal(input.value,'Keep draft');assert.equal(input.readOnly,false);assert.equal(env.popup.dataset.voiceLit,'false');
+  }
+});
+
+
+function soundSpy(){
+  const events=[],quiet=new Set();
+  return{events,quiet,
+    play(name){events.push({type:'play',name,quiet:[...quiet]});},
+    setQuiet(reason,value){if(value)quiet.add(reason);else quiet.delete(reason);events.push({type:'quiet',reason,value});},
+    voiceChanges(){return events.filter(event=>event.type==='quiet'&&event.reason==='voice').map(event=>event.value);},
+    plays(name){return events.filter(event=>event.type==='play'&&(!name||event.name===name));},
+  };
+}
+
+test('sound stays quiet from requesting microphone access through listening, recorder flush and ASR until completion',async()=>{
+  const sound=soundSpy(),audioReady=deferred(),transcriptReady=deferred();let capture,uploads=0;
+  const env=ui(()=>assert.fail('voice input must not send a question'),{
+    module:{record(options){capture=options;return{result:audioReady.promise,cancel(){},stop(){options.onState('stopping');}};}},
+    transcribe:()=>{uploads++;assert.equal(sound.quiet.has('voice'),true,'recognition begins inside the same quiet interval');return transcriptReady.promise;},
+  },{sound});
+  env.allow();env.api.open();const input=env.nodes.get('.pa-input'),mic=env.nodes.get('.pa-voice-toggle');input.value='已有草稿';
+  mic.dispatchEvent({type:'click'});
+  assert.equal(env.popup.dataset.voiceState,'requesting');assert.equal(sound.quiet.has('voice'),true,'quiet starts before permissions or module loading can finish');
+  await tick();env.advance(800);assert.deepEqual(sound.voiceChanges(),[true]);
+  capture.onState('listening');assert.equal(sound.quiet.has('voice'),true);assert.equal(env.popup.dataset.voiceState,'listening');
+  mic.dispatchEvent({type:'click'});assert.equal(env.popup.dataset.voiceState,'stopping');assert.equal(sound.quiet.has('voice'),true);
+  env.advance(1500);assert.equal(uploads,0);assert.deepEqual(sound.voiceChanges(),[true],'stopping the recorder must not release quiet before its audio flushes');
+  audioReady.resolve(new Blob(['audio']));await tick();assert.equal(env.popup.dataset.voiceState,'transcribing');assert.equal(uploads,1);
+  env.advance(5000);assert.deepEqual(sound.voiceChanges(),[true],'pending recognition must remain quiet even with a long response');
+  transcriptReady.resolve({status:'ok',text:'数独'});await tick();
+  assert.deepEqual(sound.voiceChanges(),[true,false]);assert.equal(sound.quiet.has('voice'),false);assert.equal(input.readOnly,false);assert.equal(env.popup.dataset.voiceState,'');
+  assert.deepEqual(sound.plays().map(event=>event.name),['open'],'transcription never starts chat or reply sounds');assert.equal(env.timers.size,0);
+});
+
+test('cancelling, closing or hiding each asynchronous voice phase releases quiet and cannot reacquire it on late completion',async()=>{
+  for(const phase of ['requesting','stopping','transcribing'])for(const action of ['cancel','close','hidden']){
+    const label=`${action} during ${phase}`,sound=soundSpy(),audioReady=deferred(),transcriptReady=deferred();let capture,uploads=0;
+    const env=ui(()=>assert.fail('must not submit'),{
+      module:{record(options){capture=options;options.onState('listening');return{result:audioReady.promise,cancel(){},stop(){options.onState('stopping');}};}},
+      transcribe:()=>{uploads++;return transcriptReady.promise;},
+    },{sound});
+    env.allow();env.api.open();const input=env.nodes.get('.pa-input'),mic=env.nodes.get('.pa-voice-toggle');input.value='保留的语音草稿';mic.dispatchEvent({type:'click'});
+    if(phase!=='requesting'){
+      await tick();mic.dispatchEvent({type:'click'});
+      if(phase==='transcribing'){audioReady.resolve(new Blob(['audio']));await tick();}
+    }
+    assert.equal(env.popup.dataset.voiceState,phase,label);assert.equal(sound.quiet.has('voice'),true,label);
+    if(action==='cancel')mic.dispatchEvent({type:'click'});else if(action==='close')env.api.close();else{env.context.document.hidden=true;env.emitDocument('visibilitychange');}
+    assert.equal(sound.quiet.has('voice'),false,label);assert.deepEqual(sound.voiceChanges(),[true,false],label);assert.equal(input.readOnly,false,label);
+    if(capture)assert.equal(capture.signal.aborted,true,label);
+    input.value='取消后继续输入';input.dispatchEvent({type:'input'});audioReady.resolve(new Blob(['late audio']));transcriptReady.resolve({status:'ok',text:'过期识别'});
+    await tick();env.advance(10000);await tick();assert.equal(input.value,'取消后继续输入',label);assert.deepEqual(sound.voiceChanges(),[true,false],label);
+    assert.equal(uploads,phase==='transcribing'?1:0,label);assert.equal(sound.plays('reply').length,0,label);assert.equal(env.timers.size,0,label);
+  }
+});
+
+test('capture and recognition failures release the voice quiet scope without changing the draft or producing reply sounds',async()=>{
+  for(const stage of ['permission','digital silence','recognition']){
+    const sound=soundSpy();let uploads=0;
+    const env=ui(()=>assert.fail('must not submit'),{
+      module:{record({onState}){
+        if(stage==='permission')throw Object.assign(new Error('denied'),{code:'voice_permission_denied'});
+        onState('listening');return{result:stage==='digital silence'?Promise.reject(Object.assign(new Error('silent'),{code:'voice_input_silent'})):Promise.resolve(new Blob(['audio'])),cancel(){},stop(){}};
+      }},
+      transcribe:async()=>{uploads++;assert.equal(sound.quiet.has('voice'),true);return{status:'error',error:{code:'voice_busy'}};},
+    },{sound});
+    env.allow();env.api.open();const input=env.nodes.get('.pa-input');input.value='保留输入';env.nodes.get('.pa-voice-toggle').dispatchEvent({type:'click'});await tick();
+    assert.deepEqual(sound.voiceChanges(),[true,false],stage);assert.equal(sound.quiet.has('voice'),false,stage);assert.equal(input.value,'保留输入',stage);assert.equal(input.readOnly,false,stage);
+    assert.ok(env.nodes.get('.pa-notice').textContent,stage);assert.equal(uploads,stage==='recognition'?1:0,stage);assert.equal(sound.plays('reply').length,0,stage);assert.equal(env.timers.size,0,stage);
+  }
+});
+
+test('reply sound hooks follow newly visible content and skip punctuation without making completion bursts',async()=>{
+  const sound=soundSpy(),answer='甲，乙。';
+  const env=ui(async()=>({status:'ok',message:{role:'assistant',content:answer}}),{},{sound,reducedMotion:false});
+  env.allow();env.api.open();env.nodes.get('.pa-input').value='合成问题';env.submit();await tick();assert.equal(sound.plays('send').length,1);assert.equal(sound.plays('reply').length,0,'no reply sound before any characters appear');
+  env.advance(22);assert.equal(env.nodes.get('.pa-log').children[1].textContent,'甲');assert.equal(sound.plays('reply').length,1);
+  env.advance(22);assert.equal(env.nodes.get('.pa-log').children[1].textContent,'甲，');assert.equal(sound.plays('reply').length,1);
+  env.advance(90);assert.equal(env.nodes.get('.pa-log').children[1].textContent,'甲，乙');assert.equal(sound.plays('reply').length,2);
+  env.advance(22);assert.equal(env.nodes.get('.pa-log').children[1].textContent,answer);assert.equal(sound.plays('reply').length,2);assert.equal(env.timers.size,0);
+});
+
+test('closing or hiding a partial reply cancels its sound hooks, including an already queued character callback',async()=>{
+  for(const action of ['close','hidden']){
+    const sound=soundSpy(),answer='这段回复不应在关闭或隐藏之后继续播放声音。';
+    const env=ui(async()=>({status:'ok',message:{role:'assistant',content:answer}}),{},{sound,reducedMotion:false});
+    env.allow();env.api.open();env.nodes.get('.pa-input').value='问题';env.submit();await tick();env.advance(22);assert.equal(sound.plays('reply').length,1);
+    const queued=[...env.timers.values()].find(timer=>timer.ms===22);assert.ok(queued);
+    if(action==='close')env.api.close();else{env.context.document.hidden=true;env.emitDocument('visibilitychange');}
+    const before=sound.plays('reply').length;queued.fn();env.advance(10000);assert.equal(sound.plays('reply').length,before,action);assert.equal(env.timers.size,0,action);
+  }
+});
+
+test('a replaced reply generation and a response arriving to a hidden page cannot queue stale reply sounds',async()=>{
+  const sound=soundSpy(),second=deferred();let calls=0;
+  const env=ui(async()=>++calls===1?{status:'ok',message:{role:'assistant',content:'第一段尚未显示完的回复。'}}:second.promise,{},{sound,reducedMotion:false});
+  env.allow();env.api.open();const input=env.nodes.get('.pa-input');input.value='第一问';env.submit();await tick();env.advance(22);
+  const stale=[...env.timers.values()].find(timer=>timer.ms===22);assert.ok(stale);const firstSounds=sound.plays('reply').length;
+  input.value='第二问';env.submit();await tick();stale.fn();assert.equal(sound.plays('reply').length,firstSounds,'a queued callback from the old generation cannot speak during the next request');
+  second.resolve({status:'ok',message:{role:'assistant',content:'第二段新的回复。'}});await tick();stale.fn();assert.equal(sound.plays('reply').length,firstSounds);
+  env.advance(22);assert.equal(sound.plays('reply').length,firstSounds+1,'the current visible generation still produces feedback');env.api.close();
+
+  const hiddenSound=soundSpy(),late=deferred();
+  const hidden=ui(()=>late.promise,{},{sound:hiddenSound,reducedMotion:false});hidden.allow();hidden.api.open();hidden.nodes.get('.pa-input').value='等待中的问题';hidden.submit();await tick();
+  hidden.context.document.hidden=true;hidden.emitDocument('visibilitychange');late.resolve({status:'ok',message:{role:'assistant',content:'在后台到达的完整回复。'}});await tick();hidden.advance(10000);
+  assert.equal(hiddenSound.plays('reply').length,0,'a reply received in the background is not replayed audibly');assert.equal(hidden.timers.size,0);
+});
+
+test('open, send and close sounds belong to accepted UI actions rather than blocked or duplicate attempts',async()=>{
+  const sound=soundSpy(),late=deferred(),env=ui(()=>late.promise,{},{sound});
+  env.api.open();assert.equal(sound.plays().length,0,'the first-entry navigation gate cannot trigger assistant audio');
+  env.allow();env.api.open();env.api.open();assert.equal(sound.plays('open').length,1);
+  env.submit();assert.equal(sound.plays('send').length,0,'empty input has no send feedback');
+  env.nodes.get('.pa-input').value='合成问题';env.submit();env.submit();await tick();assert.equal(sound.plays('send').length,1,'a busy duplicate cannot repeat the send sound');
+  env.api.close();env.api.close();assert.equal(sound.plays('close').length,1);
+  late.resolve({status:'ok',message:{role:'assistant',content:'已关闭页面不应播放的回答。'}});await tick();env.advance(10000);
+  assert.equal(sound.plays('reply').length,0);assert.equal(env.timers.size,0);
+});
+
+test('a queued reply callback cannot call the sound service once visibility is already hidden',async()=>{
+  const sound=soundSpy(),env=ui(async()=>({status:'ok',message:{role:'assistant',content:'这段回答应只在可见界面逐字播放。'}}),{},{sound,reducedMotion:false});
+  env.allow();env.api.open();env.nodes.get('.pa-input').value='问题';env.submit();await tick();env.advance(22);
+  const queued=[...env.timers.values()].find(timer=>timer.ms===22);assert.ok(queued);const before=sound.plays('reply').length;
+  env.context.document.hidden=true;queued.fn();assert.equal(sound.plays('reply').length,before,'the hidden property protects even a callback queued before visibilitychange');
+  env.emitDocument('visibilitychange');env.advance(10000);assert.equal(sound.plays('reply').length,before);assert.equal(env.timers.size,0);
+});
+
+test('outside, navigation and page-departure auto-close stay silent while the explicit close control still plays once',()=>{
+  for(const action of ['outside','navigation','pagehide']){
+    const sound=soundSpy(),env=ui(()=>assert.fail('closing must not send a question'),{},{sound});env.allow();env.api.open();env.advance(100);
+    if(action==='outside'){
+      env.context.document.dispatchEvent({type:'pointerdown',target:env.context.document.body});
+      env.advance(100);env.context.document.dispatchEvent({type:'click',target:env.context.document.body});
+    }else if(action==='navigation')env.emitWindow('portfolio:navigation',{mode:'project',reason:'navigation'});
+    else env.emitWindow('pagehide');
+    assert.equal(env.api.isOpen(),false,action);assert.equal(sound.plays('close').length,0,`${action} must not insert a second tick before the target action`);
+    env.advance(100);env.api.open();env.advance(100);env.nodes.get('.pa-close').dispatchEvent({type:'click'});
+    assert.equal(env.api.isOpen(),false);assert.equal(sound.plays('close').length,1,'the dedicated close control keeps its feedback');
+    env.api.close();assert.equal(sound.plays('close').length,1,'a duplicate close cannot play again');
   }
 });

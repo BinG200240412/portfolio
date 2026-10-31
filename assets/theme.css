@@ -7,6 +7,9 @@ body{background-color:var(--paper);color:var(--ink)}
 .theme-controls{position:fixed;z-index:90;right:18px;top:16px;display:flex;align-items:center;gap:8px;padding:0;background:none;border:0;border-radius:0;box-shadow:none;backdrop-filter:none;-webkit-user-select:none;user-select:none}
 .theme-controls button{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:0;background:none;color:var(--ink);cursor:pointer;position:relative;touch-action:manipulation;transition:opacity .18s ease}
 .appearance-icon{display:block;width:24px;height:24px;transform:rotate(var(--appearance-angle,0deg));transform-origin:center;transition:transform 380ms cubic-bezier(.22,.61,.36,1)}
+.sound-icon{display:block;width:22px;height:22px}
+.sound-toggle[aria-pressed="true"] .sound-off,.sound-toggle[aria-pressed="false"] .sound-on{display:none}
+.sound-toggle[aria-pressed="false"]{opacity:.55}
 .theme-controls button:hover{opacity:.65}
 .theme-controls button:focus-visible,.standalone-back:focus-visible{outline:1.5px solid var(--ink);outline-offset:2px}
 .standalone-back{position:fixed;left:26px;top:25px;z-index:90;color:var(--ink);text-decoration:none;font:12px "Portfolio Mono",monospace;background:var(--chrome);border:1px solid var(--line);border-radius:30px;padding:10px 15px}

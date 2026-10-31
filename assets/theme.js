@@ -5,7 +5,6 @@
   const requestedFont = new URL(location.href).searchParams.get('cjk');
   const fontPreview = ['plix', 'plix-extra'].includes(requestedFont) ? requestedFont : null;
   if (fontPreview) document.documentElement.dataset.cjkPreview = fontPreview;
-  const tr = value => window.PortfolioI18n?.t(value) || value;
   const valid = value => value === 'dark' || value === 'light';
   let saved;
   try { saved = localStorage.getItem(key); } catch (_) {}
@@ -77,7 +76,7 @@
       host.className = 'theme-controls';
       host.setAttribute('role', 'group');
       host.setAttribute('data-i18n-ignore', '');
-      host.setAttribute('aria-label', tr('页面颜色与语言'));
+      host.setAttribute('aria-label', window.PortfolioI18n?.language === 'en' ? 'Page settings' : '页面设置');
       host.innerHTML = '<button type="button" class="appearance-toggle" data-toggle-theme><svg class="appearance-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 0 0 0 17Z" fill="currentColor"/><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.25"/></svg></button>';
       host.querySelector('[data-toggle-theme]').addEventListener('click', () => apply(theme === 'dark' ? 'light' : 'dark', true));
       const languageButton = document.createElement('button');
@@ -86,6 +85,20 @@
       languageButton.innerHTML = '<span class="language-option" data-language="zh" lang="zh-CN" aria-hidden="true">' + languageMarks.zh + '</span><span class="language-divider" aria-hidden="true">' + languageMarks.divider + '</span><span class="language-option" data-language="en" lang="en" aria-hidden="true">' + languageMarks.en + '</span>';
       languageButton.addEventListener('click', () => window.PortfolioI18n?.setLanguage(window.PortfolioI18n.language === 'en' ? 'zh' : 'en'));
       host.appendChild(languageButton);
+      if (window.PortfolioSound && (window.AudioContext || window.webkitAudioContext)) {
+        const soundButton = document.createElement('button');
+        soundButton.type = 'button'; soundButton.className = 'sound-toggle';
+        soundButton.setAttribute('data-i18n-ignore', '');
+        soundButton.innerHTML = '<svg class="sound-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4Z"/><path class="sound-on" d="M16.5 8.5a5 5 0 0 1 0 7m2.5-9.5a8.5 8.5 0 0 1 0 12"/><path class="sound-off" d="m17 10 4 4m0-4-4 4"/></svg>';
+        soundButton.addEventListener('click', event => {
+          window.PortfolioSound.setEnabled(!window.PortfolioSound.enabled);
+          if (window.PortfolioSound.enabled) {
+            window.PortfolioSound.unlock(event);
+            window.PortfolioSound.play('select');
+          }
+        });
+        host.appendChild(soundButton);
+      }
     }
     updateLanguageControls();
     apply(theme);
@@ -107,7 +120,7 @@
     }
     const host = document.getElementById('themeControls');
     if (!host) return;
-    host.setAttribute('aria-label', tr('页面颜色与语言'));
+    host.setAttribute('aria-label', window.PortfolioI18n?.language === 'en' ? 'Page settings' : '页面设置');
     updateThemeControl();
     const button = host.querySelector('.language-toggle');
     if (button) {
@@ -118,10 +131,63 @@
       button.setAttribute('aria-label', english ? 'Switch to Chinese' : '切换到英文');
       button.title = button.getAttribute('aria-label');
     }
+    updateSoundControl();
   }
+  function updateSoundControl() {
+    const button = document.querySelector('.sound-toggle');
+    if (!button) return;
+    const enabled = !!window.PortfolioSound?.enabled, english = window.PortfolioI18n?.language === 'en';
+    button.setAttribute('aria-pressed', String(enabled));
+    const label = enabled ? (english ? 'Mute interface sounds' : '关闭界面音效') : (english ? 'Enable interface sounds' : '开启界面音效');
+    button.setAttribute('aria-label', label); button.title = label;
+  }
+  addEventListener('portfolio:sound', updateSoundControl);
   addEventListener('portfolio:language', updateLanguageControls);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', controls);
   else controls();
+})();
+
+/* Tactile feedback belongs to deliberate actions, never hover or scrolling.
+ * Embedded cases delegate to the shell's single, gesture-unlocked sound engine. */
+(() => {
+  const sound = window.PortfolioSound;
+  if (!sound) return;
+  const ignored = '.sound-toggle,.pa-voice-toggle,.pa-send,.pa-close,[data-ui-sound="off"]';
+  const interactive = 'button,a[href],summary,[role="button"],[data-media-zoomable],[data-video-preview],.matrix-object-hit,#stage.intro-active';
+  const editing = 'input,textarea,select,[contenteditable="true"]';
+  const available = () => !document.hidden && window.PortfolioLifecycle?.status?.().state !== 'disposed';
+  function gesture(event) { if (available()) sound.unlock(event); }
+  document.addEventListener('pointerdown', gesture, true);
+  document.addEventListener('keydown', gesture, true);
+  document.addEventListener('click', event => {
+    if (!event.isTrusted || !available() || event.button > 0 || event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
+    const target = event.target?.closest?.(interactive);
+    if (!target || target.closest(ignored + ',[inert]') || target.matches(':disabled,[aria-disabled="true"]') || event.target.closest('audio,video,' + editing)) return;
+    // These actions own their sound after the assistant's state guard passes.
+    if (target.id === 'dot' && window.PortfolioNavigation?.assistantAvailable?.()) return;
+    sound.unlock(event);
+    const closing = target.matches('#back,#toHub,#secBack,.standalone-back,.video-detail-close,.viewer-close,[data-media-back]');
+    sound.play(closing ? 'close' : target.matches('[data-media-zoomable],[data-video-preview],.image-open,.q-image,.gogo-zoom,.archive-tile') ? 'open' : 'select');
+  }, true);
+  // Native buttons already synthesize a click for Enter/Space. A few image
+  // openers handle keys directly instead; only those need this extra path.
+  document.addEventListener('keydown', event => {
+    if (!event.isTrusted || !available() || event.repeat || event.isComposing || event.keyCode === 229 || !['Enter',' '].includes(event.key)) return;
+    const target = event.target;
+    if (!target?.matches?.('[role="button"]') || target.matches('button,a,input') || target.closest(ignored + ',[inert]')) return;
+    sound.play('open');
+  }, true);
+  function typing(event) {
+    if (event.isTrusted && available() && !event.isComposing && event.target?.matches?.('.pa-input:not([readonly]):not(:disabled)')) sound.play('type');
+  }
+  document.addEventListener('input', typing, true);
+  document.addEventListener('compositionend', typing, true);
+  document.addEventListener('portfolio:video-detail', event => sound.setQuiet('video-detail', !!event.detail?.open));
+  function mediaSound() {
+    sound.setQuiet('media', [...document.querySelectorAll('video,audio')].some(media => !media.paused && !media.ended && !media.muted && media.volume > 0));
+  }
+  for (const name of ['play','pause','ended','volumechange','emptied']) document.addEventListener(name, mediaSound, true);
+  mediaSound();
 })();
 
 /* A single-column LED shaft with a thin, open arrowhead. */
