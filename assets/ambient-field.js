@@ -5,6 +5,7 @@
   'use strict';
   const stage = document.getElementById('stage');
   const about = document.getElementById('resume');
+  const contact = document.getElementById('contact-page');
   const section = document.getElementById('section');
   let parentSection = null;
   try { parentSection = window.frameElement?.closest('#section') || null; } catch (_) {}
@@ -48,7 +49,7 @@
     if (parentSection && !parentSection.classList.contains('on')) return null;
     if (!stage) return 'page';
     if (section?.classList.contains('on')) return null;
-    if (about?.classList.contains('live')) return 'page';
+    if (about?.classList.contains('live') || contact?.classList.contains('live')) return 'page';
     return stage.classList.contains('gone') || stage.classList.contains('faded') ? null : 'stage';
   }
   function paint(target, time, still = false) {
@@ -132,7 +133,7 @@
     sync();
   }
   const states = new MutationObserver(sync);
-  for (const element of [stage, about, section]) if (element)
+  for (const element of [stage, about, contact, section]) if (element)
     states.observe(element, { attributes: true, attributeFilter: ['class'] });
   if(parentSection){
     const parentStates=new MutationObserver(sync);
