@@ -1,0 +1,8 @@
+/* The title remains first in the reading order; only part of the book is seen. */
+.archive-cover-header{position:relative;isolation:isolate;overflow:hidden;overflow:clip;min-height:clamp(145px,18svh,220px);display:flex;align-items:center}
+.archive-cover-header h1{position:relative;z-index:1;max-width:54%}
+.archive-book-cover{position:absolute;pointer-events:none;user-select:none;right:-7%;top:-140px;width:55%;height:460px;z-index:0;overflow:hidden;contain:layout paint}
+.archive-book-cover canvas{display:block;width:100%;height:100%}
+@media(min-width:1801px){.archive-book-cover{height:560px;top:-182px;width:53%;right:-6%}.archive-cover-header{min-height:220px}}
+@media(max-width:700px){.archive-cover-header{min-height:132px}.archive-cover-header h1{max-width:58%}.archive-book-cover{right:-17%;top:-62px;width:66%;height:260px}}
+@media(prefers-reduced-motion:reduce){.archive-book-cover{opacity:.8}}
