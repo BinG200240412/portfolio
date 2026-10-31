@@ -27,4 +27,11 @@
 
 真实实体麦克风、系统选中的输入设备和现场噪声仍需现场试说；上述测试不证明所有设备均无问题。后续若继续听不到，应区分浏览器采音是否为零与模型转写错误，不能再只换模型而不检查输入。
 
+## 发布验收
+
+- 功能提交 `bd1d92c` 的 GitHub Pages 构建为 built，正式首页已加载新版 assistant 资源。
+- 52 项 Python 和 30 项 JavaScript 检查全部通过；浏览器手动停止测试提交 1 次有效短 WAV，填回原有草稿，自动发送问答为 0，音轨及录音上下文各关闭 1 次。
+- 15% 音量、零开头静音的真实服务器浏览器测试通过，灯珠点亮数量从 0 到 125，识别出“你好，我想了解你的数独作品。”。这是合成音轨，不是实体麦克风验收。
+- 正式站在 1512×982、390×844 检查黑白与中英文状态，输入卡高 66px，无水平溢出；波形位于卡片外，背景透明且无滤镜、背板、阴影，页面事件穿透。正式页面本次未见控制台 error/warn。
+
 来源：[豆包官方接口](https://docs.volcengine.com/docs/doubao-voice/unidirectional-streaming-automatic-speech-recognition-websocket?lang=zh)、[试用说明](https://docs.volcengine.com/docs/doubao-voice/billing-overview?lang=zh)。
