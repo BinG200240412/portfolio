@@ -36,6 +36,8 @@ About me 原照与装饰画框、Skills 版画纸面保留完整四角，豁免�
 
 首页点阵与中间标题属于同一首屏。原生点阵绘图需在语言、主题和其他非绘图脚本之前启动，不能等待字体或远处媒体。编辑原有 `assets/matrix-*.js` 源码，使用 `scripts/build-home-matrix.py` 生成首页单请求入口；`sync-shared-assets.py` 会先重建它并同步内容版本。不要手改生成物，也不要同时引入 bundle 与八份原脚本。
 
+封面点阵是一张固定的硬件网格：圆点等径、横纵等距，物理尺寸沿用首页。动画先画入低分辨率帧缓冲，再改变固定格子的颜色与亮灭；不能沿物体轮廓摆散点、按透视改变点大小，或让灯珠随物体移动。Skills 灯牌与档案翻书共用 `assets/cover-led-runtime.js` 输出网格，绘图脚本不得直接放置可见灯珠。
+
 连续浏览的性能同样需要验收：真正离开案例时释放其 iframe、动画、媒体与请求；媒体层返回仍先关闭媒体，再退出作品。多资源图组不能以全成功的 Promise.all 作为整组可见条件，逐项显示成功内容，失败项限时并可独立重试。运动图库用等比轻量预览，原 SVG/原片仅在详情读取；Skills 更新素材后运行 `scripts/build-archive-previews.cjs`。茶弦记 play 的 HTML/JS 文字变化后用 `UV_NATIVE_TLS=true uv run --script scripts/subset-tea-play-fonts.py` 重建原字形字体子集。固定尺寸的图片切角不可在每次 resize 重造与重复写入路径。
 
 子页面对父文档的观察通过 `assets/frame-lifecycle.js` 登记，重型绘图用 `onDispose` 释放 GPU、画布、缓存与未完成请求；父页移除 iframe 前显式清理，不能只依赖 pagehide。BFCache 暂存只暂停，返回后恢复，不能提前销毁。良渚完整点云分片解析，离开封面后暂停细节升级；原坐标、颜色与视角保持。狗GO 场所源数据由 `scripts/build-xr-place.py` 随绘图脚本生成，`sync-shared-assets.py` 自动同步；不在读者滚到地图时才额外请求数据。

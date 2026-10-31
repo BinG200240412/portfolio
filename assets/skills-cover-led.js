@@ -1,5 +1,5 @@
-/* The homepage SKILL marquee, enlarged into a suspended shopfront sign.
- * Geometry consists only of individually drawn LED dots, without font assets. */
+/* Fixed LED-screen content. Every coordinate below is an integer buffer cell;
+ * the shared runtime alone determines the equal-size hardware bulbs. */
 (() => {
   'use strict';
   const glyphs = {
@@ -8,109 +8,120 @@
     I: ['11111','00100','00100','00100','00100','00100','11111'],
     L: ['11000','11000','11000','11000','11000','11000','11111'],
   };
-  const points = [];
-  const point = (x, y, z, radius = 1, role = 1, alpha = 1, phase = -1) =>
-    points.push({ x, y, z, radius, role, alpha, phase });
-  function line(a, b, gap, radius, role, alpha = 1) {
-    const count = Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]) / gap);
-    for (let i = 0; i <= count; i++) {
-      const t = i / Math.max(count, 1);
-      point(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t,
-        a[2] + (b[2] - a[2]) * t, radius, role, alpha);
+  let cached = null;
+
+  function layout(width, height) {
+    if (cached && cached.width === width && cached.height === height) return cached;
+    const staticCells = [new Set(), new Set(), new Set()];
+    function cell(x, y, role) {
+      if (x >= 0 && y >= 0 && x < width && y < height) staticCells[role].add(y * width + x);
     }
-  }
-  function perimeter(width, height, corner, z, role, radius, chasing = false) {
-    const positions = [];
-    const a = width / 2 - corner, b = height / 2 - corner;
-    const corners = [[a, -b, -Math.PI / 2], [a, b, 0], [-a, b, Math.PI / 2], [-a, -b, Math.PI]];
-    corners.forEach(([cx, cy, start], side) => {
-      for (let i = 0; i < 4; i++) {
-        const angle = start + i / 3 * Math.PI / 2;
-        positions.push([cx + Math.cos(angle) * corner, cy + Math.sin(angle) * corner]);
+    function line(x0, y0, x1, y1, role) {
+      const dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+      const dy = -Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+      let error = dx + dy;
+      while (true) {
+        cell(x0, y0, role);
+        if (x0 === x1 && y0 === y1) break;
+        const twice = 2 * error;
+        if (twice >= dy) { error += dy; x0 += sx; }
+        if (twice <= dx) { error += dx; y0 += sy; }
       }
-      const end = positions[positions.length - 1];
-      const next = corners[(side + 1) % 4];
-      const target = [next[0] + Math.cos(next[2]) * corner, next[1] + Math.sin(next[2]) * corner];
-      const count = Math.floor(Math.hypot(target[0] - end[0], target[1] - end[1]) / 7.5);
-      for (let i = 1; i < count; i++) positions.push([end[0] + (target[0] - end[0]) * i / count, end[1] + (target[1] - end[1]) * i / count]);
-    });
-    positions.forEach(([x, y], index) => point(x, y + 2, z, radius, role, 1, chasing ? index / positions.length : -1));
-  }
-
-  // Mounting plate, cantilever arm and a light triangular brace.
-  for (const x of [151, 159]) line([x, -186, -28], [x, -121, -28], 5, .95, 2, .65);
-  line([155, -174, -28], [-121, -174, -28], 5, 1.05, 1, .77);
-  line([155, -148, -28], [53, -174, -28], 5, .9, 2, .55);
-  line([-123, -171, -28], [-123, -110, -28], 5, 1, 1, .8);
-  line([121, -171, -28], [121, -110, -28], 5, 1, 1, .8);
-  for (const x of [-123, 121]) {
-    for (let i = 0; i < 15; i++) {
-      const angle = i / 15 * Math.PI * 2;
-      point(x + Math.cos(angle) * 5.5, -101 + Math.sin(angle) * 10, 0, 1.05, 2, .85);
     }
-    line([x, -91, 0], [x, -73, 13], 4, 1, 1, .8);
-  }
-  // Back shell, shallow extrusion and face matrix. The dots retain their gaps.
-  perimeter(327, 155, 13, -13, 2, .8);
-  for (let x = -153; x <= 153; x += 9) {
-    line([x, -76, -12], [x, -76, 15], 6, .65, 2, .52);
-    line([x, 79, -12], [x, 79, 15], 6, .65, 2, .46);
-  }
-  for (let y = -65; y <= 66; y += 8) {
-    line([-163, y, -12], [-163, y, 15], 6, .7, 2, .4);
-    line([163, y, -12], [163, y, 15], 6, .7, 2, .55);
-  }
-  for (let y = -54; y <= 57; y += 7.8) {
-    for (let x = -143; x <= 145; x += 7.8) point(x, y + 2, 15, .65, 0, .38);
-  }
-  perimeter(327, 155, 13, 16, 1, 1.3);
-  perimeter(305, 133, 9, 17, 2, .72);
-  perimeter(343, 171, 17, 17, 2, 1.65, true);
+    function outline(left, top, right, bottom, role) {
+      line(left + 2, top, right - 2, top, role);
+      cell(right - 1, top + 1, role);
+      line(right, top + 2, right, bottom - 2, role);
+      cell(right - 1, bottom - 1, role);
+      line(right - 2, bottom, left + 2, bottom, role);
+      cell(left + 1, bottom - 1, role);
+      line(left, bottom - 2, left, top + 2, role);
+      cell(left + 1, top + 1, role);
+    }
 
-  const pitch = 7.8, letterWidth = 5 * pitch, advance = 51.5;
-  'SKILL'.split('').forEach((letter, index) => {
-    glyphs[letter].forEach((row, y) => {
-      [...row].forEach((cell, x) => {
-        if (cell === '1') point(-122 + index * advance + x * pitch, -32 + y * pitch, 21,
-          2.05, 1, 1, 2 + index);
-      });
-    });
-  });
-  // Three small signal bars echo the three work streams below, without new labels.
-  for (let group = 0; group < 3; group++) {
-    for (let x = 0; x < 5; x++) point(-41 + group * 34 + x * 4, 45, 20, .95, group === 1 ? 3 : 2, .8);
+    const signWidth = Math.max(35, Math.floor(width * .84));
+    const signHeight = Math.max(17, Math.floor(signWidth * .43));
+    const left = Math.floor((width - signWidth) / 2);
+    const right = left + signWidth - 1;
+    const top = Math.max(15, Math.floor(height * .60 - signHeight / 2));
+    const bottom = top + signHeight - 1;
+    const wall = Math.min(width - 3, right + 3);
+    const armY = Math.max(4, top - Math.floor(signWidth * .27));
+    const hookInset = Math.max(5, Math.floor(signWidth * .16));
+    const hookXs = [left + hookInset, right - hookInset];
+
+    // The bracket and sign never move. Only their fixed cells change colour.
+    line(wall, armY - 3, wall, armY + 9, 2);
+    line(wall + 1, armY - 3, wall + 1, armY + 9, 0);
+    line(hookXs[0] - 2, armY, wall - 1, armY, 1);
+    line(wall - 1, armY + 7, wall - Math.max(7, Math.floor(signWidth * .23)), armY + 1, 0);
+    for (const x of hookXs) {
+      line(x, armY + 1, x, top - 6, 2);
+      outline(x - 1, top - 5, x + 1, top - 2, 2);
+      cell(x, top - 1, 1);
+    }
+    // One-cell side and a quieter inset keep the plaque precise and pixel-native.
+    outline(left + 1, top + 1, right + 1, bottom + 1, 0);
+    outline(left, top, right, bottom, 1);
+    outline(left + 3, top + 3, right - 3, bottom - 3, 0);
+    for (const x of [left + 3, right - 3]) {
+      cell(x, top + 3, 2);
+      cell(x, bottom - 3, 2);
+    }
+
+    const perimeter = [];
+    for (let x = left + 2; x <= right - 2; x++) perimeter.push([x, top]);
+    perimeter.push([right - 1, top + 1]);
+    for (let y = top + 2; y <= bottom - 2; y++) perimeter.push([right, y]);
+    perimeter.push([right - 1, bottom - 1]);
+    for (let x = right - 2; x >= left + 2; x--) perimeter.push([x, bottom]);
+    perimeter.push([left + 1, bottom - 1]);
+    for (let y = bottom - 2; y >= top + 2; y--) perimeter.push([left, y]);
+    perimeter.push([left + 1, top + 1]);
+
+    const letterScale = Math.max(1, Math.min(3, Math.floor((signWidth - 8) / 33)));
+    const textWidth = 33 * letterScale;
+    const textX = left + Math.floor((signWidth - textWidth) / 2);
+    const textY = top + Math.floor((signHeight - 7 * letterScale) / 2) - letterScale;
+    const letters = 'SKILL'.split('').map((letter, index) => ({
+      rows: glyphs[letter], x: textX + index * 7 * letterScale,
+      y: textY, scale: letterScale,
+    }));
+    cached = { width, height, staticCells, perimeter, letters, barY: bottom - Math.max(4, letterScale * 2) };
+    return cached;
   }
 
   window.PortfolioCoverDots.register('skills', frame => {
-    const { width, height, dot, reduced } = frame;
-    if (width <= 0 || height <= 0) return;
-    const time = reduced ? 0 : frame.time;
-    const scale = Math.min(width / 395, height / 330);
-    const yaw = .17 + Math.sin(time * .31) * .025;
-    const roll = -.045 + Math.sin(time * .39) * .007;
-    const cy = Math.cos(yaw), sy = Math.sin(yaw), cr = Math.cos(roll), sr = Math.sin(roll);
-    const chase = (time * .075) % 1;
-    const liveLetter = Math.floor(time * .45) % 5;
-    for (const p of points) {
-      const x = p.x * cy + p.z * sy;
-      const depth = p.z * cy - p.x * sy;
-      const y = p.y - depth * .12;
-      const perspective = 850 / (850 + depth);
-      const px = (x * cr - y * sr) * perspective;
-      const py = (x * sr + y * cr) * perspective;
-      let role = p.role, alpha = p.alpha, radius = p.radius;
-      if (p.phase >= 0 && p.phase <= 1) {
-        const distance = ((p.phase - chase) % 1 + 1) % 1;
-        const lamp = distance < .1 ? 1 - distance / .1 : 0;
-        role = lamp > .12 ? 3 : 2;
-        alpha = .55 + lamp * .45;
-        radius += lamp * .42;
-      } else if (p.phase >= 2) {
-        const letter = p.phase - 2;
-        role = letter === liveLetter && !reduced ? 3 : 1;
-        alpha = letter === liveLetter ? 1 : .9;
-      }
-      dot(width * .5 + px * scale, height * .62 + py * scale, Math.max(.45, radius * scale), role, alpha);
+    const width = Math.floor(frame.width), height = Math.floor(frame.height);
+    if (width < 40 || height < 40) return;
+    const { ctx, colors } = frame;
+    const time = frame.reduced ? 0 : frame.time;
+    const model = layout(width, height);
+    ctx.globalAlpha = 1;
+    model.staticCells.forEach((cells, role) => {
+      ctx.fillStyle = colors[role];
+      for (const id of cells) ctx.fillRect(id % width, Math.floor(id / width), 1, 1);
+    });
+
+    // Light travels along existing border cells; no bulb or geometry translates.
+    const head = Math.floor(time * 11) % model.perimeter.length;
+    const tail = frame.reduced ? 1 : 6;
+    ctx.fillStyle = colors[3];
+    for (let i = 0; i < tail; i++) {
+      const [x, y] = model.perimeter[(head - i + model.perimeter.length) % model.perimeter.length];
+      ctx.fillRect(x, y, 1, 1);
     }
+    const liveLetter = frame.reduced ? -1 : Math.floor(time * .65) % 5;
+    model.letters.forEach((letter, index) => {
+      const active = index === liveLetter;
+      ctx.fillStyle = colors[active ? 3 : 1];
+      letter.rows.forEach((row, y) => {
+        for (let x = 0; x < row.length; x++) {
+          if (row[x] === '1') ctx.fillRect(letter.x + x * letter.scale, letter.y + y * letter.scale, letter.scale, letter.scale);
+        }
+      });
+      ctx.fillStyle = colors[active ? 3 : 2];
+      ctx.fillRect(letter.x, model.barY, 5 * letter.scale, 1);
+    });
   });
 })();
