@@ -1072,3 +1072,6 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
  "陶瓷":"Ceramics", "竹木":"Bamboo", "金属":"Metal", "玻璃":"Glass", "石材":"Stone",
  "陶瓷材质图样":"Ceramic texture", "竹木材质图样":"Bamboo texture", "金属材质图样":"Metal texture", "玻璃材质图样":"Glass texture", "石材材质图样":"Stone texture"
 });
+
+/* Research family caption. */
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {"茶百戏工具 · 十二茶先生":"Tea utensils · The Twelve Tea Masters"});

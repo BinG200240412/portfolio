@@ -26,3 +26,12 @@
 @media(min-width:1801px){.tea-case .tea-merch-chapter{max-width:2200px;gap:36px}.tea-merch-products{gap:32px}.tea-merch-product-title{font-size:21px}.tea-merch-reward>button{height:150px}.tea-case .tea-merch-reward img{max-height:150px}.tea-merch-arrow{top:69px}.tea-merch-settings{gap:36px}.tea-merch-setting-frame{height:220px}.tea-case .tea-merch-setting img{max-height:220px}.tea-case .tea-merch-setting-copy h3{font-size:30px}.tea-case .tea-merch-setting-copy p{font-size:20px}}
 @media(max-width:1000px){.tea-merch-products{gap:18px}.tea-merch-product-title{font-size:17px}.tea-merch-settings{grid-template-columns:1.05fr 1fr 1fr;gap:20px}.tea-merch-setting-copy{padding-right:0}.tea-case .tea-merch-setting-copy h3{font-size:23px}.tea-case .tea-merch-setting-copy p{font-size:16px}}
 @media(max-width:600px){.tea-merch-chapter{gap:28px}.tea-merch-chapter>.tea-heading{grid-template-columns:1fr;gap:12px}.tea-merch-chapter>.tea-heading p{justify-self:start;font-size:17px}.tea-merch-products{grid-template-columns:1fr;gap:30px}.tea-merch-product-title{font-size:18px}.tea-merch-product-copy{max-width:none}.tea-merch-rewards{gap:28px;min-width:740px}.tea-merch-reward>button{height:100px}.tea-case .tea-merch-reward img{max-height:100px}.tea-merch-arrow{top:44px;width:22px}.tea-merch-settings{grid-template-columns:1fr 1fr;gap:20px 16px}.tea-merch-setting-copy{grid-column:1/-1;max-width:none}.tea-case .tea-merch-setting-copy h3{margin-bottom:10px}.tea-merch-setting-copy>span{margin-top:8px}.tea-merch-setting-frame{height:auto;min-height:0}.tea-case .tea-merch-setting img{max-height:none}.tea-case .tea-merch-setting figcaption{font-size:13px}}
+
+/* Frame the whole reward sequence and each source object, as on the author's board. */
+.tea-merch-flow-scroll{border:2px dotted var(--tea-jade);padding:12px}
+.tea-merch-rewards{min-width:900px;gap:30px;padding:0;align-items:stretch}
+.tea-merch-rewards>li{border:1px dotted #aa946a;padding:12px 10px}
+.tea-merch-reward{height:100%;display:flex;flex-direction:column;justify-content:space-between}
+.tea-merch-arrow{left:calc(100% + 2px);top:64px}
+@media(min-width:1801px){.tea-merch-flow-scroll{padding:16px}.tea-merch-rewards>li{padding:16px 14px}.tea-merch-arrow{top:85px}}
+@media(max-width:600px){.tea-merch-flow-scroll{padding:10px}.tea-merch-rewards{min-width:850px;gap:28px}.tea-merch-arrow{top:56px}}

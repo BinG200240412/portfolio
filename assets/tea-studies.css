@@ -34,3 +34,29 @@
 @media(max-width:600px){.tea-research-chapter{gap:44px}.tea-research-source-grid{grid-template-columns:1fr;gap:38px}.tea-tools-study .tea-study-image{width:100%;max-width:360px;margin-top:12px}.tea-tools-study p{margin-top:18px}.tea-research-flow h3{margin-bottom:20px}.tea-study-flow-labels li{font-size:16px}.tea-study-flow-labels{gap:8px}.tea-sketch-chapter>.tea-heading{padding-inline:24px}.tea-sketch-row-label{padding-inline:24px}.tea-sketch-track,.tea-sketch-group{gap:16px}.tea-sketch-row:nth-child(1){--study-height:160px}.tea-sketch-row:nth-child(2){--study-height:215px}.tea-sketch-row:nth-child(3){--study-height:150px}.tea-sketch-wall{gap:20px}}
 
 @media(prefers-reduced-motion:reduce){.tea-sketch-group[data-flow-repeat]{display:none}.tea-sketch-toggle:disabled{cursor:default}}
+
+/* Match the twelve separate source figures to the research map's full height. */
+.tea-research-source-grid{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:5%;align-items:stretch}
+.tea-research-source-grid>div{display:grid;grid-template-rows:auto minmax(0,1fr);min-width:0}
+.tea-master-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:6px 14px;align-items:stretch}
+.tea-master-item{min-width:0;display:flex;align-items:center}
+.tea-master-item .tea-detail-open{width:100%;padding:0;background:none;border:0;cursor:zoom-in}
+.tea-master-crop{display:block;position:relative;overflow:hidden;width:100%;aspect-ratio:199.5/220}
+.tea-case .tea-master-crop img{position:absolute;left:var(--master-left);top:0;width:400%;max-width:none;height:auto;transform:translateY(var(--master-top));object-fit:initial}
+.tea-tools-study h3{margin-bottom:30px}
+@media(max-width:1000px){.tea-research-source-grid{grid-template-columns:1fr;gap:38px}.tea-master-grid{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:auto;gap:24px 28px}.tea-master-item{max-width:150px;margin:auto;width:100%}}
+@media(max-width:600px){.tea-master-grid{gap:18px 10px}.tea-tools-study h3{margin-bottom:20px;font-size:23px}}
+
+/* The exhibition photos, original boards and credits now share one final chapter. */
+.tea-case .tea-course-chapter{gap:28px;--course-photo-height:clamp(165px,18vw,210px)}
+.tea-course-archive{display:flex;flex-direction:column;gap:24px;min-width:0}
+.tea-course-archive .tea-working{margin:0}
+.tea-course-archive .tea-footer{margin-top:12px;padding-top:24px}
+@media(min-width:1801px){.tea-case .tea-course-chapter{--course-photo-height:240px;gap:32px}}
+@media(max-width:600px){.tea-case .tea-course-chapter{--course-photo-height:165px}.tea-course-archive{gap:20px}}
+
+.tea-transparent-steps .tea-detail-open{display:block;position:relative;overflow:hidden;aspect-ratio:2172/280;background:none!important}
+.tea-case .tea-transparent-steps img{position:absolute;top:0;left:0;width:100%;height:auto;max-width:none;transform:translateY(-28%)}
+.tea-case #course.tea-course-chapter{--course-photo-height:clamp(165px,18vw,210px)}
+@media(min-width:1801px){.tea-case #course.tea-course-chapter{--course-photo-height:240px}}
+@media(max-width:600px){.tea-case #course.tea-course-chapter{--course-photo-height:165px}}
