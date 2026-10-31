@@ -20,7 +20,7 @@ const tick = () => new Promise(resolve => setImmediate(resolve));
 function bridge(fetchImpl, origin = 'https://bing2002.com') {
   const calls = [], timers = new Map(); let serial = 0;
   const context = {
-    window: {}, location: { origin, href: origin + '/?lang=zh' }, URL, AbortController,
+    window: {}, Blob, location: { origin, href: origin + '/?lang=zh' }, URL, AbortController,
     setTimeout(fn, ms) { const id = ++serial; timers.set(id, { fn, ms }); return id; },
     clearTimeout(id) { timers.delete(id); },
     fetch: async (url, options) => { calls.push({ url, options }); return fetchImpl(url, options, calls.length); },
@@ -155,7 +155,7 @@ test('history is capped at seven turns and 4000 characters, with the latest ques
   }
 });
 
-function ui(reply) {
+function ui(reply, voice = {}) {
   class Node {
     constructor() { this.listeners = {}; this.attributes = {}; this.children = []; this.dataset = {}; this.value = ''; this.style = { setProperty() {} }; this.classList = { add() {}, remove() {}, toggle() {} }; this.scrollHeight = 48; this.isConnected = true; }
     setAttribute(name, value) { this.attributes[name] = value; }
@@ -170,10 +170,10 @@ function ui(reply) {
     body: new Node(), getElementById() { return null; }, addEventListener() {},
   };
   let available = false;
-  const context = { document, innerHeight: 982, innerWidth: 1512, AbortController, CustomEvent: class { constructor(type, options) { this.type = type; this.detail = options?.detail; } },
-    addEventListener() {}, dispatchEvent() {}, window: { PortfolioNavigation: { assistantAvailable: () => available }, PortfolioAssistantConnection: { mode: 'transport', reply } },
+  const context = { document, URL, setTimeout, clearTimeout, location: {href:'https://bing2002.com/'}, innerHeight: 982, innerWidth: 1512, AbortController, CustomEvent: class { constructor(type, options) { this.type = type; this.detail = options?.detail; } },
+    addEventListener() {}, dispatchEvent() {}, window: { __testVoiceModule: voice.module, AudioContext: voice.module ? class { constructor(){this.state='running';} resume(){return Promise.resolve();} close(){this.state='closed';return Promise.resolve();} } : undefined, PortfolioNavigation: { assistantAvailable: () => available }, PortfolioAssistantConnection: { mode: 'transport', reply, supportsVoice: !!voice.module, transcribe: voice.transcribe } },
   };
-  vm.runInNewContext(uiSource, context);
+  vm.runInNewContext(voice.module ? uiSource.replace('import(voiceModuleURL.href)', 'Promise.resolve(window.__testVoiceModule)') : uiSource, context);
   return { api: context.window.PortfolioAssistant, nodes, popup, context, allow() { available = true; }, submit() { nodes.get('.pa-form').listeners.submit({ preventDefault() {} }); } };
 }
 
@@ -224,4 +224,68 @@ test('UI service failure notices follow the selected language and reject arbitra
     assert.equal(env.nodes.get('.pa-notice').textContent, expected, code);
     assert.equal(input.value, 'Keep this question');
   }
+});
+
+test('voice upload shares the text session and never sends a transcript as a chat message', async () => {
+  const env=bridge((_url,_options,n)=>n===1?session():n===2?ok():response({status:'ok',text:'  数独是怎样做的？  '}));
+  env.api.configureHosted();assert.equal(env.api.supportsVoice,true);await env.api.reply(question);
+  const audio=new Blob([new Uint8Array(32044)],{type:'audio/wav'});
+  assert.equal((await env.api.transcribe(audio)).text,'数独是怎样做的？');assert.equal(env.calls.length,3);
+  const request=env.calls[2];assert.equal(request.url,'https://ai.bing2002.com/portfolio-ai/transcribe');
+  assert.equal(request.options.headers['Content-Type'],'audio/wav');assert.equal(request.options.headers['X-CSRF-Token'],token);
+  assert.equal(request.options.body,audio);assert.equal(request.options.credentials,'include');assert.equal(env.timers.size,0);
+  env.api.configure({transport:async()=>({status:'not_connected'})});assert.equal(env.api.supportsVoice,false);
+  assert.equal((await env.api.transcribe(audio)).error.code,'voice_unavailable');
+});
+
+test('voice rejects non-WAV and overlong input before any network call', async () => {
+  const env=bridge(()=>assert.fail('invalid audio must not be uploaded'));env.api.configureHosted();
+  for(const input of [null,new Blob(['x'],{type:'audio/webm'}),new Blob([new Uint8Array(44)],{type:'audio/wav'}),new Blob([new Uint8Array(640045)],{type:'audio/wav'})]){
+    assert.equal((await env.api.transcribe(input)).error.code,'invalid_audio');
+  }
+  assert.equal(env.calls.length,0);
+});
+
+test('voice refreshes only a rejected session; ASR errors never trigger retries', async () => {
+  const audio=new Blob([new Uint8Array(32044)],{type:'audio/wav'});
+  const refresh=bridge((_url,_options,n)=>[session(),error('invalid_session',403),session(token+'_new'),response({status:'ok',text:'hello'})][n-1]);
+  refresh.api.configureHosted();assert.equal((await refresh.api.transcribe(audio)).text,'hello');assert.equal(refresh.calls.length,4);
+  for(const code of ['voice_busy','voice_unavailable','voice_empty','quota_exceeded','upstream_error']){
+    const env=bridge((_url,_options,n)=>n===1?session():error(code,503));env.api.configureHosted();
+    assert.equal((await env.api.transcribe(audio)).error.code,code);assert.equal(env.calls.length,2);
+  }
+});
+
+test('voice uses a bounded 40 second deadline and cancellation prevents a late upload', async () => {
+  const audio=new Blob([new Uint8Array(32044)],{type:'audio/wav'});
+  const timed=bridge(()=>new Promise(()=>{}));timed.api.configureHosted();const pending=timed.api.transcribe(audio);await tick();
+  [...timed.timers.values()].find(timer=>timer.ms===40000).fn();assert.equal((await pending).error.code,'timeout');assert.equal(timed.timers.size,0);
+  let resolve;const env=bridge(()=>new Promise(done=>{resolve=done;}));env.api.configureHosted();const controller=new AbortController();
+  const cancelled=env.api.transcribe(audio,{signal:controller.signal});await tick();controller.abort();assert.equal((await cancelled).status,'aborted');
+  resolve(session());await tick();assert.equal(env.calls.length,1);assert.equal(env.timers.size,0);
+});
+
+
+test('voice UI inserts at the draft selection and leaves the question unsent and editable',async()=>{
+  let uploads=0;
+  const env=ui(()=>assert.fail('voice must never automatically send a question'),{
+    module:{record({onState}){onState('listening');return{result:Promise.resolve(new Blob(['audio'])),cancel(){},stop(){}};}},
+    transcribe:async()=>{uploads++;return{status:'ok',text:'数独'};},
+  });
+  env.allow();env.api.open();const input=env.nodes.get('.pa-input');input.value='关于这个作品';input.selectionStart=2;input.selectionEnd=4;
+  env.nodes.get('.pa-voice-toggle').listeners.click();await tick();
+  assert.equal(input.value,'关于数独作品');assert.equal(input.readOnly,false);assert.equal(uploads,1);
+  assert.equal(env.nodes.get('.pa-log').children.length,0);assert.equal(env.popup.dataset.voiceExpanded,'false');
+});
+
+test('closing during transcription aborts the upload, keeps the draft and ignores a late result',async()=>{
+  let finish,signal;
+  const env=ui(()=>assert.fail('must not submit'),{
+    module:{record({onState}){onState('listening');return{result:Promise.resolve(new Blob(['audio'])),cancel(){},stop(){}};}},
+    transcribe:(_audio,options)=>{signal=options.signal;return new Promise(resolve=>{finish=resolve;});},
+  });
+  env.allow();env.api.open();const input=env.nodes.get('.pa-input');input.value='保留输入';
+  env.nodes.get('.pa-voice-toggle').listeners.click();await tick();assert.equal(input.readOnly,true);
+  env.api.close();assert.equal(signal.aborted,true);assert.equal(input.readOnly,false);
+  finish({status:'ok',text:'不应该出现'});await tick();assert.equal(input.value,'保留输入');
 });

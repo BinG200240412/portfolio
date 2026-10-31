@@ -53,3 +53,23 @@
 真实 Chrome 中使用只运行在 localhost 的测试服务，验证首次红点先导航、再次打开底部弹窗、失败后保留问题、手动重试后正确显示文本与清空输入。测试回复明确写为“本地连接测试：这不是模型回答”，仅用于 UI 验证，不部署测试服务或该文本。测试没有真实供应商调用或扣费；之后的独立服务安装见部署记录。
 
 服务器已验证登录与主机身份、服务安装、DNS / HTTPS、允许来源的 CORS、真实 session / cookie 和 DeepSeek 问答；无密钥时拒绝，错误来源返回 403、不配置允许来源。www 自动 301 至主域。一次数独介绍问答返回约 2.1 秒，不能视为全部访客的响应时间保证。回答资料由作者持续审核；移动端桌面视口测试不能代替真实手机和不同网络的人工体验。
+
+## 语音输入（独立 CPU 服务）
+
+浏览器只在点麦克风后申请权限；Web Audio 本地分析真实振幅，灯珠不依赖模型或音频上行。停顿或再次点击后，以单声道 16kHz PCM16 WAV 提交 `POST /portfolio-ai/transcribe`，仍须同一会话 cookie、CSRF 和允许来源。结果 `{status:"ok",text:"…"}` 只填入输入框，不自动发送给 DeepSeek。DeepSeek 的文字接口没有承担音频识别。
+
+服务端分为两个进程组：原 `portfolio-ai.service` 保持轻量，只做认证、WAV 检查、限额和内网转发；新 `portfolio-speech.service` 使用 sherpa-onnx CPU / SenseVoiceSmall int8，仅监听 `127.0.0.1:8792`。不使用 PyTorch、不接新的付费语音供应商，也不共享 DeepSeek 密钥。音频只经过内存，未写入音频文件或日志；录音不超过 20 秒、644096 字节，拒绝压缩音频、其他采样率和静音。
+
+部署前必须实测当前主机资源，不能仅凭约 229MiB 模型文件推断运行内存。独立 worker 限制 700MiB 内存、一个 CPU 核和单并发；native 推理位于常驻子进程，28 秒未返回则终止子进程、重启语音服务，不重启文字或数独服务。模型加载完成后才监听端口。关闭网页请求不能保证已进入 native 的计算立即停止，但单并发和硬期限仍有效。
+
+默认额外语音限额：每 IP 3 次/分钟、20 次/日；每会话 15 次/日；全站 60 次/日、600 次/月。SQLite 使用独立 `voice-*` 桶，在推理前预占，错误同样计数，不消耗文字问答额度。它限制的是 CPU 尝试次数，不是另行计费的语音 API 余额。
+
+安装目录和文件：
+
+- `/opt/portfolio-ai/`：更新 `server.py`，同时放入 `speech_audio.py`，不改变原私密密钥和 SQLite 文件。
+- `/opt/portfolio-speech/`：管理员所有的 `speech_worker.py`、`speech_audio.py` 与专用 `venv`；`speech-requirements.txt` 固定 CPU 依赖版本，安装使用 `--only-binary=:all:`。
+- `/opt/portfolio-speech/model/`：官方包内的 `model.int8.onnx`、`tokens.txt`，以及将 `speech-cpu.config` 复制为 `cpu.config`。禁止服务用户写代码或模型。
+- 独立无登录用户 `portfolio-speech`、unit `portfolio-speech.service`。先验收内网识别、内存和耗时，再在原私密 env 中加入非秘密 `SPEECH_ENABLED=1`，保留所有已有密钥与限额状态。
+- Caddy 仅在现有新子域段添加精确 `/portfolio-ai/transcribe` 的 644096 字节上限，其他 JSON 路由保留 16KiB。验证配置后平滑 reload，不改变旧站点。
+
+来源和许可：[SenseVoice / FunAudioLLM](https://github.com/FunAudioLLM/SenseVoice)、[官方 int8 包与用法](https://github.com/k2-fsa/sherpa-onnx/blob/master/python-api-examples/offline-sense-voice-ctc-decode-files.py)。sherpa-onnx 软件为 Apache 2.0；SenseVoice 模型权重适用 [FunASR Model License 1.1](https://github.com/modelscope/FunASR/blob/main/MODEL_LICENSE)，并非随 sherpa 软件一并变成 Apache 许可。保留模型名、作者、来源及许可证文件。此节描述实现与部署步骤，真实上线结果以部署验收记录为准。

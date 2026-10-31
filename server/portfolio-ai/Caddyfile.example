@@ -8,14 +8,22 @@
     servers {
         timeouts {
             read_header 5s
-            read_body 5s
-            write 30s
+            read_body 15s
+            write 50s
             idle 30s
         }
     }
 }
 
 ai.bing2002.com {
+    handle /portfolio-ai/transcribe {
+        request_body {
+            max_size 644096
+        }
+        reverse_proxy 127.0.0.1:8791 {
+            header_up X-Real-IP {remote_host}
+        }
+    }
     handle /portfolio-ai/* {
         request_body {
             max_size 16KB

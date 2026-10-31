@@ -22,6 +22,7 @@ from datetime import datetime, timezone
 from http.cookies import SimpleCookie
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib import error, request
+from speech_audio import AudioError, MAX_AUDIO_BYTES, read_pcm
 
 PREFIX = '/portfolio-ai/'
 COOKIE = '__Secure-portfolio_session'
@@ -67,6 +68,12 @@ class Config:
     session_day: int = 20
     global_day: int = 100
     global_month: int = 1000
+    speech_enabled: bool = False
+    voice_ip_minute: int = 3
+    voice_ip_day: int = 20
+    voice_session_day: int = 15
+    voice_global_day: int = 60
+    voice_global_month: int = 600
 
     @property
     def ready(self):
@@ -98,7 +105,13 @@ class Config:
                    ip_minute=limit('IP_MINUTE_LIMIT', 6), ip_day=limit('IP_DAY_LIMIT', 30),
                    session_day=limit('SESSION_DAY_LIMIT', 20),
                    global_day=limit('GLOBAL_DAY_LIMIT', 100),
-                   global_month=limit('GLOBAL_MONTH_LIMIT', 1000))
+                   global_month=limit('GLOBAL_MONTH_LIMIT', 1000),
+                   speech_enabled=os.environ.get('SPEECH_ENABLED', '0') == '1',
+                   voice_ip_minute=limit('VOICE_IP_MINUTE_LIMIT', 3),
+                   voice_ip_day=limit('VOICE_IP_DAY_LIMIT', 20),
+                   voice_session_day=limit('VOICE_SESSION_DAY_LIMIT', 15),
+                   voice_global_day=limit('VOICE_GLOBAL_DAY_LIMIT', 60),
+                   voice_global_month=limit('VOICE_GLOBAL_MONTH_LIMIT', 600))
 
 
 class Quotas:
@@ -153,12 +166,39 @@ def deepseek_reply(config, messages):
         raise ServiceError('upstream_error', 502) from None
 
 
+def local_transcribe(raw):
+    # Fixed loopback destination, no redirects/proxies, secrets or arbitrary URL.
+    req = request.Request('http://127.0.0.1:8792/transcribe', data=raw, method='POST',
+                          headers={'Content-Type': 'audio/wav', 'Accept': 'application/json'})
+    try:
+        with request.build_opener(request.ProxyHandler({}), NoRedirect()).open(req, timeout=32) as response:
+            data = json.loads(response.read(16 * 1024 + 1))
+        text = data.get('text')
+        if data.get('status') != 'ok' or not isinstance(text, str) or not text.strip() or len(text) > 1000:
+            raise ServiceError('voice_unavailable', 503)
+        return text.strip()
+    except error.HTTPError as exc:
+        # Only fixed status mappings; never forward a worker traceback/body.
+        status = exc.code
+        exc.close()
+        if status == 422:
+            raise ServiceError('voice_empty', 422) from None
+        raise ServiceError('voice_busy' if status == 429 else 'voice_unavailable',
+                           429 if status == 429 else 503) from None
+    except (TimeoutError, socket.timeout):
+        raise ServiceError('timeout', 504) from None
+    except (error.URLError, ValueError, TypeError, AttributeError):
+        raise ServiceError('voice_unavailable', 503) from None
+
+
 class Application:
-    def __init__(self, config, *, _upstream=None, _clock=time.time):
+    def __init__(self, config, *, _upstream=None, _speech=None, _clock=time.time):
         self.config, self.clock = config, _clock
         self.quota = Quotas(config.database)
         self.slots = threading.BoundedSemaphore(2)
         self.upstream = _upstream or deepseek_reply
+        self.voice_slot = threading.BoundedSemaphore(1)
+        self.speech = _speech or local_transcribe
 
     def digest(self, purpose, value):
         return hmac.new(self.config.session_secret, (purpose + ':' + value).encode(), hashlib.sha256).hexdigest()
@@ -235,6 +275,31 @@ class Application:
         finally:
             self.slots.release()
 
+    def transcribe(self, raw, ip, sid):
+        if not self.config.speech_enabled:
+            raise ServiceError('voice_unavailable', 503)
+        try:
+            read_pcm(raw)  # Reject codecs, oversized recordings and silence before inference.
+        except AudioError as exc:
+            raise ServiceError(exc.code, 422 if exc.code == 'voice_empty' else 400) from None
+        if not self.voice_slot.acquire(blocking=False):
+            raise ServiceError('voice_busy', 429)
+        try:
+            now = int(self.clock())
+            minute, day = now // 60, now // 86400
+            date = datetime.fromtimestamp(now, timezone.utc)
+            month = date.year * 12 + date.month
+            following = datetime(date.year + (date.month == 12), date.month % 12 + 1, 1, tzinfo=timezone.utc)
+            self.quota.reserve([
+                ('voice-global-day', '*', day, (day + 1) * 86400, self.config.voice_global_day, 'quota_exceeded'),
+                ('voice-global-month', '*', month, int(following.timestamp()), self.config.voice_global_month, 'quota_exceeded'),
+                ('voice-ip-minute', ip, minute, (minute + 1) * 60, self.config.voice_ip_minute, 'rate_limited'),
+                ('voice-ip-day', ip, day, (day + 1) * 86400, self.config.voice_ip_day, 'rate_limited'),
+                ('voice-session-day', self.digest('sid', sid), day, (day + 1) * 86400, self.config.voice_session_day, 'rate_limited')], now)
+            return self.speech(raw)
+        finally:
+            self.voice_slot.release()
+
 
 class Handler(BaseHTTPRequestHandler):
     server_version = 'PortfolioAssistant'
@@ -267,6 +332,19 @@ class Handler(BaseHTTPRequestHandler):
             if timer is not None:
                 timer.cancel()
             return self._input_expired
+
+    def voice_input_deadline(self):
+        # Header deadline remains five seconds; only an authenticated WAV upload
+        # gets a larger, still absolute body deadline.
+        with self._input_lock:
+            if self._input_expired:
+                raise ServiceError('timeout', 408)
+            if self._input_timer is not None:
+                self._input_timer.cancel()
+            self._input_timer = threading.Timer(self.server.voice_request_deadline, self.expire_input)
+            self._input_timer.daemon = True
+            self._input_timer.start()
+        self.connection.settimeout(self.server.voice_request_deadline)
 
     def finish(self):
         self.finish_input()
@@ -312,14 +390,14 @@ class Handler(BaseHTTPRequestHandler):
         if self.headers.get('Origin') not in self.app.config.origins:
             raise ServiceError('forbidden_origin', 403)
 
-    def read_json(self):
-        if self.headers.get('Transfer-Encoding') or self.headers.get_content_type() != 'application/json':
+    def read_body(self, content_type, maximum):
+        if self.headers.get('Transfer-Encoding') or self.headers.get_content_type() != content_type:
             raise ServiceError('invalid_request', 415)
         lengths = self.headers.get_all('Content-Length', [])
         if len(lengths) != 1 or not lengths[0].isdigit():
             raise ServiceError('invalid_request', 411)
         length = int(lengths[0])
-        if not 1 <= length <= MAX_BODY:
+        if not 1 <= length <= maximum:
             raise ServiceError('request_too_large', 413)
         try:
             raw = self.rfile.read(length)
@@ -329,6 +407,10 @@ class Handler(BaseHTTPRequestHandler):
             raise ServiceError('timeout', 408)
         if len(raw) != length:
             raise ServiceError('invalid_request')
+        return raw
+
+    def read_json(self):
+        raw = self.read_body('application/json', MAX_BODY)
         try:
             return json.loads(raw)
         except (ValueError, UnicodeError):
@@ -342,7 +424,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
         try:
             self.allowed()
-            if self.path not in (PREFIX + 'session', PREFIX + 'chat') or self.headers.get('Access-Control-Request-Method') != 'POST':
+            if self.path not in (PREFIX + 'session', PREFIX + 'chat', PREFIX + 'transcribe') or self.headers.get('Access-Control-Request-Method') != 'POST':
                 raise ServiceError('invalid_request')
             requested = {h.strip().lower() for h in self.headers.get('Access-Control-Request-Headers', '').split(',') if h.strip()}
             if not requested.issubset({'content-type', 'x-csrf-token'}):
@@ -354,8 +436,19 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         try:
             self.allowed()
-            if self.path not in (PREFIX + 'session', PREFIX + 'chat'):
+            if self.path not in (PREFIX + 'session', PREFIX + 'chat', PREFIX + 'transcribe'):
                 raise ServiceError('not_found', 404)
+            if self.path == PREFIX + 'transcribe':
+                if not self.app.config.ready:
+                    raise ServiceError('not_configured', 503)
+                ip = self.app.ip(self.client_address[0], self.headers.get('X-Real-IP'))
+                sid = self.app.verify_session(self.headers.get('Cookie'), self.headers.get('X-CSRF-Token'), ip)
+                if not self.app.config.speech_enabled:
+                    raise ServiceError('voice_unavailable', 503)
+                self.voice_input_deadline()
+                raw = self.read_body('audio/wav', MAX_AUDIO_BYTES)
+                text = self.app.transcribe(raw, ip, sid)
+                return self.respond(200, {'status': 'ok', 'text': text})
             data = self.read_json()
             if not self.app.config.ready:
                 raise ServiceError('not_configured', 503)
@@ -380,6 +473,7 @@ class Handler(BaseHTTPRequestHandler):
 class Server(ThreadingHTTPServer):
     daemon_threads = True
     request_deadline = 5  # Absolute header + body deadline, canceled before upstream.
+    voice_request_deadline = 15
 
     def __init__(self, address, application):
         if not ipaddress.ip_address(address[0]).is_loopback:

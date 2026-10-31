@@ -18,9 +18,7 @@
 .pa-voice-inner {display:flex;align-items:center;justify-content:center;min-height:0;overflow:hidden}
 .pa-wave {display:block;width:140px;height:44px;margin:20px 0 8px;flex:none;color:var(--mid,#b7b6b0)}
 .pa-popover[data-voice-expanded="true"] .pa-voice-panel {grid-template-rows:1fr;visibility:visible;transition-delay:0s}
-.pa-wave circle {fill:currentColor;animation:pa-dot-breathe 3.8s ease-in-out infinite;animation-delay:calc(var(--pa-column) * -.13s);animation-play-state:paused}
-.pa-popover[data-open="true"][data-voice-expanded="true"]:not([data-suspended="true"]) .pa-wave circle {animation-play-state:running}
-.pa-popover.is-pending .pa-wave circle {animation-name:pa-dot-reply;animation-duration:1.1s;animation-delay:calc(var(--pa-column) * -.055s)}
+.pa-wave circle {fill:currentColor;transition:opacity 70ms linear}
 .pa-history {display:flex;flex:1;flex-direction:column;gap:12px;min-height:0;overflow:auto;overscroll-behavior:contain;padding:22px 24px 10px;scrollbar-width:thin}
 .pa-popover:not(.has-messages) .pa-history {flex:0 1 auto;padding:18px 24px 2px}
 .pa-log {display:flex;flex:none;flex-direction:column;gap:14px}
@@ -47,18 +45,16 @@
 .pa-popover[data-compact="true"] .pa-wave {width:112px;height:32px;margin:10px 0 2px}
 .pa-popover[data-compact="true"] .pa-history {padding-top:12px;padding-bottom:4px}
 .pa-popover[data-compact="true"] .pa-form {padding-top:4px;padding-bottom:4px}
-@keyframes pa-dot-breathe {0%,100%{opacity:.48}50%{opacity:.72}}
-@keyframes pa-dot-reply {0%,100%{opacity:.22}50%{opacity:1}}
 @media(prefers-reduced-motion:reduce) {
   .pa-popover {transition:none;transform:none}
   .pa-voice-panel {transition:none}
-  .pa-wave circle {animation:none;opacity:.65}
+  .pa-wave circle {transition:none}
 }
 @media(forced-colors:active) {
   .pa-popover {color:CanvasText}
   .pa-wave,.pa-voice-toggle,.pa-close,.pa-notice {color:CanvasText}
   .pa-window {background:Canvas;border-color:CanvasText;box-shadow:none}
   .pa-voice-toggle[aria-expanded="true"] {outline:1px solid Highlight;color:Highlight}
-  .pa-wave circle {animation:none;opacity:1}
+  .pa-wave circle {fill:CanvasText}
   .pa-message--user {border:1px solid CanvasText;background:Canvas}
 }

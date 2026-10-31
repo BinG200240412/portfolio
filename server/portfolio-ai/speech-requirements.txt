@@ -1,0 +1,3 @@
+# CPU-only wheel; install into the dedicated speech venv, never the text app.
+sherpa-onnx==2.0.1
+numpy==2.2.6

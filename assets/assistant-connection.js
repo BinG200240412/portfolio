@@ -6,6 +6,8 @@
   const HOSTED_BASE = 'https://ai.bing2002.com/portfolio-ai/';
   const HOSTED_ORIGINS = new Set(['https://bing2002.com', 'https://www.bing2002.com']);
   const DEADLINE_MS = 22000;
+  const VOICE_DEADLINE_MS = 40000;
+  const MAX_WAV_BYTES = 640044;
   let connection = Object.freeze({ mode: 'not_connected' });
   const failure = (code, message, extra = {}) => ({ status: 'error', error: { code, message, ...extra } });
 
@@ -59,11 +61,11 @@
     return recent;
   }
 
-  async function postJSON(endpoint, body, signal, credentials, extraHeaders = {}) {
+  async function postBody(endpoint, body, signal, credentials, extraHeaders = {}, contentType = 'application/json') {
     const response = await fetch(endpoint, {
       method: 'POST', credentials, cache: 'no-store', redirect: 'error', signal,
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', ...extraHeaders },
-      body: JSON.stringify(body),
+      headers: { 'Content-Type': contentType, 'Accept': 'application/json', ...extraHeaders },
+      body,
     });
     let result;
     try { result = await response.json(); }
@@ -77,10 +79,13 @@
     return result;
   }
 
+  const postJSON = (endpoint, body, signal, credentials, headers) =>
+    postBody(endpoint, JSON.stringify(body), signal, credentials, headers);
+
   function configureHosted() {
     if (!HOSTED_ORIGINS.has(location.origin)) throw new TypeError('The hosted assistant is only available on the production portfolio origin.');
     let csrfToken = '';
-    async function hostedTransport(messages, { signal } = {}) {
+    async function hostedRequest(route, body, signal, contentType, timeout) {
       const deadline = new AbortController();
       let expired = false, cancel;
       const interrupted = new Promise(resolve => { cancel = resolve; });
@@ -89,7 +94,7 @@
       const timer = setTimeout(() => {
         expired = true; deadline.abort();
         cancel(failure('timeout', 'The assistant response timed out.'));
-      }, DEADLINE_MS);
+      }, timeout);
       if (signal?.aborted) abort();
       async function session() {
         const result = await postJSON(HOSTED_BASE + 'session', { version: 1 }, deadline.signal, 'include');
@@ -108,8 +113,8 @@
           if (error) return error;
         }
         if (deadline.signal.aborted) return expired ? failure('timeout', 'The assistant response timed out.') : { status: 'aborted' };
-        const body = { version: 1, messages };
-        let result = await postJSON(HOSTED_BASE + 'chat', body, deadline.signal, 'include', { 'X-CSRF-Token': csrfToken });
+        const post = () => postBody(HOSTED_BASE + route, body, deadline.signal, 'include', { 'X-CSRF-Token': csrfToken }, contentType);
+        let result = await post();
         // Only this explicit pre-charge rejection is safe to retry automatically.
         if (result?.status === 'error' && result.error?.code === 'invalid_session') {
           csrfToken = '';
@@ -117,7 +122,7 @@
           const error = await session();
           if (error) return error;
           if (deadline.signal.aborted) return expired ? failure('timeout', 'The assistant response timed out.') : { status: 'aborted' };
-          result = await postJSON(HOSTED_BASE + 'chat', body, deadline.signal, 'include', { 'X-CSRF-Token': csrfToken });
+          result = await post();
           if (result?.status === 'error' && result.error?.code === 'invalid_session') csrfToken = '';
         }
         return result;
@@ -131,7 +136,12 @@
         clearTimeout(timer); signal?.removeEventListener('abort', abort);
       }
     }
-    return configure({ transport: hostedTransport });
+    connection = Object.freeze({
+      mode: 'transport',
+      transport: (messages, { signal } = {}) => hostedRequest('chat', JSON.stringify({ version: 1, messages }), signal, 'application/json', DEADLINE_MS),
+      audioTransport: (audio, { signal } = {}) => hostedRequest('transcribe', audio, signal, 'audio/wav', VOICE_DEADLINE_MS),
+    });
+    return Object.freeze({ mode: connection.mode });
   }
 
   async function reply(messages, options = {}) {
@@ -169,8 +179,29 @@
     } finally { removeAbortListener(); }
   }
 
+  async function transcribe(audio, options = {}) {
+    const signal = options?.signal;
+    if (signal && (typeof signal.addEventListener !== 'function' || typeof signal.removeEventListener !== 'function' || typeof signal.aborted !== 'boolean')) {
+      return failure('invalid_signal', 'signal must be an AbortSignal.');
+    }
+    if (signal?.aborted) return { status: 'aborted' };
+    const current = connection;
+    if (typeof current.audioTransport !== 'function') return failure('voice_unavailable', 'Voice input is unavailable.');
+    if (typeof Blob === 'undefined' || !(audio instanceof Blob) || audio.type !== 'audio/wav' || audio.size <= 44 || audio.size > MAX_WAV_BYTES) {
+      return failure('invalid_audio', 'Expected a short PCM WAV recording.');
+    }
+    const result = await current.audioTransport(audio, { signal });
+    if (signal?.aborted || result?.status === 'aborted') return { status: 'aborted' };
+    if (result?.status === 'error') return normalizeResult(result);
+    if (result?.status === 'ok' && typeof result.text === 'string' && result.text.trim() && result.text.length <= 1000) {
+      return { status: 'ok', text: result.text.trim() };
+    }
+    return failure('invalid_response', 'The voice service returned an unsupported response.');
+  }
+
   window.PortfolioAssistantConnection = Object.freeze({
     get mode() { return connection.mode; },
-    configure, configureHosted, reply,
+    get supportsVoice() { return typeof connection.audioTransport === 'function'; },
+    configure, configureHosted, reply, transcribe,
   });
 })();
