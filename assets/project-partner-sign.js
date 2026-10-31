@@ -6,7 +6,7 @@
   const labels={tea:{zh:'网易雷火 · 校企合作项目',en:'NetEase ThunderFire · University–industry project'},gogo:{zh:'云深处 × Rokid · 校企合作项目',en:'DEEP Robotics × Rokid · University–industry project'}};
   let disposed=false;
   const states=[...document.querySelectorAll('[data-partner-sign]')].map(mount=>{
-    const image=document.createElement('img');image.className='project-partner-art';image.alt='';image.setAttribute('aria-hidden','true');image.decoding='async';
+    const image=document.createElement('img');image.className='project-partner-art';image.alt='';image.setAttribute('aria-hidden','true');image.decoding='async';image.fetchPriority='high';
     const state={mount,image,fallback:mount.querySelector('.project-partner-fallback'),path:''};
     image.addEventListener('load',()=>{if(!disposed&&image.complete&&image.naturalWidth>0&&image.getAttribute('src')===state.path)mount.dataset.ready='true';});
     image.addEventListener('error',()=>{mount.dataset.ready='false';});

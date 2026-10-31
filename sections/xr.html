@@ -17,6 +17,7 @@
   const requested=query.get('lang'); if(requested==='zh'||requested==='en')language=requested;
   root.lang=language==='en'?'en':'zh-CN'; root.dataset.language=language==='en'?'en':'zh';
   const font=query.get('cjk'); if(font==='plix'||font==='plix-extra')root.dataset.cjkPreview=font;
+  const partnerArt=document.createElement('link');partnerArt.rel='preload';partnerArt.as='image';partnerArt.fetchPriority='high';partnerArt.href={"zh":"../assets/partners/gogo-zh.svg?v=7c44fbf1a5","en":"../assets/partners/gogo-en.svg?v=735e0ff41d"}[language==='en'?'en':'zh'];document.head.appendChild(partnerArt);
 })();
 </script>
 <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/PortfolioSlab-Regular.woff2" crossorigin>
@@ -97,7 +98,7 @@
 
 <script defer src="../assets/project-dates.js?v=e6f38734ac"></script>
 <link rel="stylesheet" href="../assets/project-partner-sign.css?v=fe4d2a7060">
-<script defer src="../assets/project-partner-sign.js?v=b8fb20e6f6"></script>
+<script defer src="../assets/project-partner-sign.js?v=c2ceb6b1cf"></script>
 </head>
 <body class="gogo-case">
 <main id="gogo-main">
