@@ -6,6 +6,7 @@
   const hash = location.hash;
   const target = hash ? document.getElementById(hash.slice(1))?.closest('.q-panel') : null;
   if (target?.matches('.q-panel')) {
+    try { history.scrollRestoration = 'manual'; } catch (_) {}
     let interacted = false;
     const cancel = () => { interacted = true; };
     const events = ['pointerdown', 'wheel', 'touchstart', 'keydown'];
@@ -15,11 +16,18 @@
         (target.closest('.portfolio-snap-page') || target)
           .scrollIntoView({ behavior: 'instant', block: 'start' });
       }
-      events.forEach(name => removeEventListener(name, cancel));
     };
     // The snap wrappers are already installed. Show the requested chapter now;
     // distant images and fonts must not delay navigation behind the cover.
     requestAnimationFrame(align);
+    const finish = () => requestAnimationFrame(() => {
+      // Browsers can restore a previous scroll position at load after the
+      // first paint. Correct that once, unless the reader already took over.
+      align();
+      events.forEach(name => removeEventListener(name, cancel));
+    });
+    if (document.readyState === 'complete') finish();
+    else addEventListener('load', finish, { once: true });
   }
   const dialog = document.getElementById('qianli-viewer');
   if (!dialog || typeof dialog.showModal !== 'function') return;
@@ -69,28 +77,4 @@
   });
   addEventListener('portfolio:language', language);
   language();
-  const videos = [...document.querySelectorAll('.q-film video')];
-  // Keep the preview independent of the native video's seek/render state.
-  // The shared detail player continues to own playback and resume progress.
-  function mountPosters() {
-    videos.forEach(video => {
-      const host = video.closest('.video-preview');
-      if (!host || !video.poster) return;
-      const poster = document.createElement('img');
-      poster.className = 'q-film-poster'; poster.src = video.poster; poster.alt = '';
-      poster.setAttribute('aria-hidden', 'true');
-      poster.setAttribute('data-media-corners-ignore', '');
-      host.append(poster);
-      video.classList.add('q-preview-source');
-    });
-  }
-  if (document.readyState === 'complete') mountPosters();
-  else document.addEventListener('DOMContentLoaded', mountPosters, { once: true });
-  const observer = new IntersectionObserver(entries => entries.forEach(entry => {
-    if (!entry.isIntersecting && !entry.target.paused) entry.target.pause();
-  }), { threshold: 0 });
-  videos.forEach(video => observer.observe(video));
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) videos.forEach(video => video.pause());
-  });
 })();

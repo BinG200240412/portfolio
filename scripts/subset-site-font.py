@@ -34,6 +34,9 @@ DYNAMIC_SOURCES = {
     "assets/works/ai3d/workflow/graph2.json",
     "assets/works/ai3d/workflow/graph3.json",
     "assets/works/design-skills/catalog.json",
+    "assets/works/qianli/case/native/tonality-study.svg",
+    "assets/works/qianli/case/native/tonality-study-en.svg",
+    "assets/works/qianli/case/native/touch-logic.svg",
 }
 
 

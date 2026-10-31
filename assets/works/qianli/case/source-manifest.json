@@ -440,5 +440,14 @@
         ]
       }
     ]
+  },
+  "nativePdf20261031": {
+    "source": "千里江山.pdf",
+    "pages": 16,
+    "sha256": "c65083a021b491f5a48a1fb04c69ec2eb33cdb765ca6fa42146459987167d538",
+    "components": "native/source.json",
+    "rendering": "Editable SVG paths, circles, rectangles and text mounted into the DOM near the viewport. No full-page or diagram raster captures.",
+    "motion": "Local row growth, line reveals, touch ripples and a source-loop travelling signal; paused offscreen and in reduced motion.",
+    "video": "Silent on-screen looping previews; original full movies remain in the detail player."
   }
 }

@@ -229,3 +229,10 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS ||= {}, {
   "我从山形与青绿设色出发，把画面转成两条互动路线：音乐改变光色，触摸点亮局部光纤。": "Starting from the mountain forms and blue-green palette, I developed two interaction routes: music changes the light and color, while touch lights up groups of optical fibers."
 });
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
+ '表现形式1 · 造型设计':'Form 1 · Shape design','表现形式1 · 原理解析':'Form 1 · Principle study','表现形式2 · 造型设计':'Form 2 · Shape design','表现形式2 · 运行逻辑':'Form 2 · How it works','表现形式2 · 制作过程':'Form 2 · Fabrication','表现形式2 · 传感器装配':'Form 2 · Sensor assembly','切入点':'Starting points','元素剖析':'Element analysis','重新点亮':'Light up again','山形轮廓的线条生长':'Drawing the mountain contours','木板切割轮廓':'Wooden cutting contours','木板轮廓与灯带布置':'Wooden contours and LED placement','从长卷中拆出山体，重新组织前后层次，再以灯光附着颜色。':'Extract mountain forms from the scroll, arrange their depth, then attach colour through light.','山体堆叠与虚实':'Overlapping mountains and spatial depth','原画的山体堆叠与虚实':'Overlapping mountains in the original painting','分层切割与排列':'Cutting and arranging separate layers','山形分层排列':'Layered mountain silhouettes','在山体后方布置灯带':'LED strips behind the mountains','山体后方依次点亮灯光':'Light activates behind successive layers','触碰装置表面，激活相应区域。':'Touch the surface to activate a local zone.','读取数字信号，控制对应灯组。':'Read the digital signal and control the matching LEDs.','光源按区域改变颜色与亮度。':'Each light source changes colour and brightness by zone.','同一区域的光纤接入一组灯珠。':'Fibres from one region connect to the same LED group.','发光端与表面齐平，形成山形点阵。':'Flush fibre ends form the mountain dot matrix.'
+});
+
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {"装置视频 · 静音循环":"Installation video · Muted loop"});
+
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {"正面修整与传感器安装":"Surface finishing and sensor mounting"});

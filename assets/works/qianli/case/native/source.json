@@ -1,0 +1,29 @@
+{
+  "pdf": "千里江山.pdf",
+  "pages": 16,
+  "native": {
+    "contours.svg": 5,
+    "lighting-contours.svg": 5,
+    "cut-plan.svg": "5; source contours replacing the CAD screenshot",
+    "colour-regions.svg": "12; individual colour-cell tracing",
+    "tonality-study.svg": 6,
+    "dots-colour.svg": 12,
+    "dots-sensors.svg": 12,
+    "dots-touch.svg": 12,
+    "dots-delay.svg": 12,
+    "touch-logic.svg": "13; source loop paths, editable text, original embedded photographs; redrawn gesture and code"
+  },
+  "photos": {
+    "6401": "component-6401.webp",
+    "6377": "component-6377.webp",
+    "6407": "component-6407.webp",
+    "1587": "component-1587.webp",
+    "6393": "component-6393.webp",
+    "6389": "component-6389.webp",
+    "6373": "component-6373.webp",
+    "6411": "component-6411.webp",
+    "6381": "component-6381.webp",
+    "6385": "component-6385.webp"
+  },
+  "pdfSha256": "c65083a021b491f5a48a1fb04c69ec2eb33cdb765ca6fa42146459987167d538"
+}
