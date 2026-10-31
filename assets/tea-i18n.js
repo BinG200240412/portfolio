@@ -990,3 +990,24 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
 });
 
 Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {"点选茶芽": "Tap shoots", "收集茶芽": "Collect shoots", "滑动碾茶": "Grind the tea", "细筛茶粉": "Sift the powder", "音粒成曲": "Compose notes"});
+
+/* Tea merchandise: product studies, reward objects and smaller spatial views. */
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
+  "茶饮周边": "Tea-related merchandise",
+  "把游戏奖励，带回日常的一杯茶。": "Bring a game reward back to an everyday cup of tea.",
+  "徽章茶模": "Tea Master stencil badge",
+  "图样取自《茶具图赞》，随游戏胜利解锁。": "Tea Master motifs from Illustrated Praises of Tea Utensils, unlocked through play.",
+  "杯盖盛清水，吸管笔蘸水沿茶模描绘。": "Fill the lid with water, then dip the straw pen and trace the stencil.",
+  "茶杯与茶礼": "Tea cups and gifts",
+  "以绿色层次回应成绩，结合茶杯与一次性茶包装。": "Shades of green reflect game results in a gift of a cup and a single-use tea pack.",
+  "游戏奖励到茶百戏体验的五步流程": "Five steps from game rewards to tea painting",
+  "奖励吸管笔": "Straw pen reward",
+  "奖励茶杯": "Tea cup reward",
+  "临摹茶百戏": "Trace tea patterns",
+  "品饮茶礼": "Enjoy the tea",
+  "茶席中的周边": "Merchandise at the tea table",
+  "奖励器物与茶先生投影共同回到茶席，延续绘茶与品饮的体验。": "Reward objects return to the tea table alongside the projected Tea Masters, extending the experience through drawing and drinking.",
+  "空间设计效果图": "Spatial design renderings",
+  "茶先生投影 · 场景一": "Projected Tea Master · Scene one",
+  "茶先生投影 · 场景二": "Projected Tea Master · Scene two"
+});
