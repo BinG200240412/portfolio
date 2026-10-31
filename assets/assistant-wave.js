@@ -1,110 +1,82 @@
-/* Lazy voice visual: a travelling dot trace, never a background matrix.
- * Levels carry the real input envelope; the slow bipolar phase only gives
- * that non-negative envelope a readable time-domain shape. */
+/* Lazy voice visual: centred LED bars driven directly by the 27 audio bands.
+ * Only illuminated beads exist; silence never paints an idle matrix. */
 const SVG_NS='http://www.w3.org/2000/svg';
-const WIDTH=320,HEIGHT=48,GRID=4,CENTER=24,COLUMNS=79;
-const STEP_MS=40,TAIL_MS=1500,FADE_MS=240,STALE_MS=320;
+const WIDTH=320,HEIGHT=48,CENTER=24,COLUMNS=27,PITCH_X=12,PITCH_Y=4;
+const STALE_MS=320,QUIET=.004;
 const clamp=(value,min,max)=>Math.min(max,Math.max(min,value));
 
 export function createVoiceWave(svg,{isReducedMotion=()=>false,onLit}={}) {
   if(!svg?.ownerDocument||typeof svg.setAttribute!=='function')throw new TypeError('A voice waveform SVG is required.');
   const doc=svg.ownerDocument,layer=doc.createElementNS(SVG_NS,'g'),points=new Map();
-  let running=false,destroyed=false,frame=0,startedAt=0,lastStep=0,lastPaint=0,inputAt=-Infinity,target=0,envelope=0,previous=null,lit=false;
+  const targets=Array(COLUMNS).fill(0),levels=Array(COLUMNS).fill(0);
+  let running=false,destroyed=false,frame=0,lastPaint=0,inputAt=-Infinity,lit=false;
   layer.setAttribute('data-voice-wave','');svg.replaceChildren(layer);
   svg.setAttribute('viewBox',`0 0 ${WIDTH} ${HEIGHT}`);svg.setAttribute('fill','none');
   const reduced=()=>{try{return typeof isReducedMotion==='function'?!!isReducedMotion():!!isReducedMotion;}catch(_){return false;}};
   const notify=value=>{if(value===lit)return;lit=value;if(typeof onLit==='function'){try{onLit(value);}catch(_){}}};
-  function clear() {points.clear();layer.replaceChildren();previous=null;notify(false);}
+  const moving=()=>levels.some(value=>value>=QUIET);
+  const fresh=now=>now-inputAt<=STALE_MS&&targets.some(value=>value>0);
+  function clear(){points.clear();layer.replaceChildren();notify(false);}
+  function reset(){targets.fill(0);levels.fill(0);inputAt=-Infinity;clear();}
   function schedule(){if(!frame&&running&&!destroyed&&!doc.hidden)frame=requestAnimationFrame(draw);}
-  function dot(column,row,time,desired){
-    row=clamp(row,1,11);const key=column+':'+row;desired?.add(key);
-    let point=points.get(key);
+  function bead(column,row,opacity,desired){
+    if(opacity<.015)return;
+    const key=column+':'+row,value=opacity.toFixed(2);desired.add(key);let point=points.get(key);
     if(!point){
       const circle=doc.createElementNS(SVG_NS,'circle');
-      circle.setAttribute('cx',String(4+column*GRID));circle.setAttribute('cy',String(row*GRID));
-      circle.setAttribute('r','1.1');circle.setAttribute('fill','currentColor');circle.setAttribute('opacity','.92');
-      layer.appendChild(circle);point={circle,time,opacity:'.92'};points.set(key,point);
+      circle.setAttribute('cx',String(4+column*PITCH_X));circle.setAttribute('cy',String(CENTER+row*PITCH_Y));
+      circle.setAttribute('r','1.1');circle.setAttribute('fill','currentColor');layer.appendChild(circle);
+      point={circle,opacity:null};points.set(key,point);
     }
-    point.time=time;
-    if(point.opacity!=='.92'){point.circle.setAttribute('opacity','.92');point.opacity='.92';}
+    if(point.opacity!==value){point.circle.setAttribute('opacity',value);point.opacity=value;}
   }
-  // Rasterise just the line between two samples, keeping every lamp circular.
-  function segment(from,to,time,desired){
-    if(!from){dot(to.column,to.row,time,desired);return;}
-    let x=from.column,y=from.row;
-    const dx=Math.abs(to.column-x),sx=x<to.column?1:-1,dy=-Math.abs(to.row-y),sy=y<to.row?1:-1;let error=dx+dy;
-    for(let guard=0;guard<24;guard++){
-      dot(x,y,time,desired);if(x===to.column&&y===to.row)break;
-      const twice=error*2;if(twice>=dy){error+=dy;x+=sx;}if(twice<=dx){error+=dx;y+=sy;}
-    }
-  }
-  function expire(now){
-    for(const[key,point]of points){
-      const age=now-point.time;
-      if(age>=TAIL_MS){point.circle.remove();points.delete(key);continue;}
-      if(age>TAIL_MS-FADE_MS){
-        const opacity=(.92*(TAIL_MS-age)/FADE_MS).toFixed(2);
-        if(opacity!==point.opacity){point.circle.setAttribute('opacity',opacity);point.opacity=opacity;}
+  function paint(){
+    const desired=new Set();
+    for(let column=0;column<COLUMNS;column++){
+      const level=levels[column];if(level<QUIET)continue;
+      const halfHeight=Math.pow(level,.65)*5;
+      bead(column,0,.92*Math.min(1,level/.035),desired);
+      // Matching top/bottom opacity keeps the whole bar exactly centred.
+      // The edge pair fades continuously instead of adding a hard flashing row.
+      for(let row=1;row<=5;row++){
+        const opacity=.92*clamp(halfHeight-(row-1),0,1);
+        bead(column,-row,opacity,desired);bead(column,row,opacity,desired);
       }
     }
-  }
-  function sample(time){
-    const fresh=time-inputAt<=STALE_MS?target:0;
-    envelope+=(fresh-envelope)*(1-Math.exp(-STEP_MS/(fresh>envelope?85:155)));
-    if(envelope<.012){previous=null;return;}
-    const elapsed=time-startedAt,column=((Math.floor(elapsed/STEP_MS)%COLUMNS)+COLUMNS)%COLUMNS;
-    const phase=elapsed/1000*Math.PI*2*1.35;
-    const signed=(Math.sin(phase)+.18*Math.sin(phase*2))/1.08;
-    const row=clamp(Math.round((CENTER-signed*Math.pow(envelope,.62)*20)/GRID),1,11);
-    const current={column,row,time};
-    segment(previous&&column===previous.column+1&&time-previous.time<=STEP_MS*2?previous:null,current,time);
-    previous=current;
-  }
-  function staticTrace(time){
-    const fresh=time-inputAt<=STALE_MS?target:0;
-    envelope+=(fresh-envelope)*(1-Math.exp(-Math.max(STEP_MS,time-lastStep)/(fresh>envelope?85:155)));
-    if(envelope<.012){clear();return;}
-    const amplitude=Math.pow(envelope,.62)*20,profile=[0,.08,.16,-.34,.94,-.62,.12,.22,.07,0],desired=new Set();let from=null;
-    for(let index=0;index<profile.length;index++){
-      const current={column:34+index,row:clamp(Math.round((CENTER-profile[index]*amplitude)/GRID),1,11)};
-      segment(from,current,time,desired);from=current;
-    }
     for(const[key,point]of points)if(!desired.has(key)){point.circle.remove();points.delete(key);}
+    notify(points.size>0);
   }
   function draw(now){
     frame=0;if(!running||destroyed||doc.hidden)return;
-    if(now-lastPaint>=30){
-      if(reduced()){staticTrace(now);lastStep=now;previous=null;}
-      else{
-        // Resume from current time after a long idle; never replay missed frames.
-        if(now-lastStep>120)lastStep=now-STEP_MS;
-        while(now-lastStep>=STEP_MS){lastStep+=STEP_MS;sample(lastStep);}
-        expire(now);
+    const calm=reduced(),interval=calm?80:30;
+    if(now-lastPaint>=interval){
+      const dt=clamp(now-lastPaint,8,100),current=now-inputAt<=STALE_MS;
+      for(let column=0;column<COLUMNS;column++){
+        const target=current?targets[column]:0,tau=target>levels[column]?(calm?125:75):(calm?230:165);
+        levels[column]+=(target-levels[column])*(1-Math.exp(-dt/tau));
+        if(target===0&&levels[column]<QUIET)levels[column]=0;
       }
-      lastPaint=now;notify(points.size>0);
+      lastPaint=now;paint();
     }
-    if((target>0&&now-inputAt<=STALE_MS)||envelope>=.012||points.size)schedule();
+    if(fresh(now)||moving()||points.size)schedule();
   }
-  function setLevels(levels){
+  function setLevels(input){
     if(destroyed||doc.hidden)return;
-    let peak=0;
-    if(levels&&typeof levels.length==='number')for(let index=0;index<Math.min(64,levels.length);index++){
-      const value=levels[index];if(typeof value==='number'&&Number.isFinite(value))peak=Math.max(peak,clamp(value,0,1));
+    for(let column=0;column<COLUMNS;column++){
+      const value=input?.[column];targets[column]=typeof value==='number'&&Number.isFinite(value)&&value>.01?clamp(value,0,1):0;
     }
-    target=peak>.01?peak:0;inputAt=performance.now();
-    if(running&&(target||envelope>=.012||points.size))schedule();
+    inputAt=performance.now();
+    if(running&&(fresh(inputAt)||moving()||points.size)){if(!frame)lastPaint=Math.max(lastPaint,inputAt-32);schedule();}
   }
   function start(){
-    if(running||destroyed)return;running=true;startedAt=performance.now();lastStep=startedAt-STEP_MS;lastPaint=startedAt-32;
-    if(startedAt-inputAt>STALE_MS)target=0;
-    if(target)schedule();
+    if(running||destroyed)return;running=true;const now=performance.now();lastPaint=now-32;
+    if(now-inputAt>STALE_MS)targets.fill(0);
+    if(fresh(now))schedule();
   }
-  function stop(){
-    running=false;cancelAnimationFrame(frame);frame=0;target=0;envelope=0;inputAt=-Infinity;clear();
-  }
+  function stop(){running=false;cancelAnimationFrame(frame);frame=0;reset();}
   function visibility(){
-    if(doc.hidden){cancelAnimationFrame(frame);frame=0;target=0;envelope=0;inputAt=-Infinity;clear();}
-    // A fresh setLevels call wakes an otherwise silent, resumed recording.
+    if(doc.hidden){cancelAnimationFrame(frame);frame=0;reset();}
+    // Visible pages wait for new audio rather than replaying stale levels.
   }
   doc.addEventListener('visibilitychange',visibility);
   function destroy(){if(destroyed)return;stop();destroyed=true;doc.removeEventListener('visibilitychange',visibility);layer.remove();}

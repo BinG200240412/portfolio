@@ -7,7 +7,7 @@
   'use strict';
   if (window.PortfolioAssistant) return;
   const voiceModuleURL=new URL('assistant-voice.js?v=b07463c086',document.currentScript?.src||new URL('/assets/portfolio-assistant.js',location.href));
-  const waveModuleURL=new URL('assistant-wave.js?v=b8e092d90e',document.currentScript?.src||new URL('/assets/portfolio-assistant.js',location.href));
+  const waveModuleURL=new URL('assistant-wave.js?v=e597d1e93b',document.currentScript?.src||new URL('/assets/portfolio-assistant.js',location.href));
   const motion=window.matchMedia?.('(prefers-reduced-motion: reduce)');
   const reducedMotion=()=>!!motion?.matches;
   let voiceModule,waveModule,waveRenderer;
@@ -34,6 +34,13 @@
   const find=selector=>popup.querySelector(selector),dot=()=>document.getElementById('dot');
   const input=find('.pa-input'),sendButton=find('.pa-send'),closeButton=find('.pa-close');
   const voiceButton=find('.pa-voice-toggle');
+  // Match the site's native LED fan without a second module or asset request.
+  const fanRows=['....................','.............##.....','....##.....######...','..#####....######...','..#####...########..','.#######..########..','.#######.########...','..######.######.....','..##########........','....##########......','......##########....','........##########..','.....######.######..','...########.#######.','..########..#######.','..########...#####..','...######....#####..','...######.....##....','.....##.............','....................'];
+  const fan=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  fan.setAttribute('class','pa-processing-icon');fan.setAttribute('viewBox','0 0 40 40');fan.setAttribute('aria-hidden','true');fan.setAttribute('focusable','false');
+  const rotor=document.createElementNS('http://www.w3.org/2000/svg','g');rotor.setAttribute('class','pa-processing-rotor');fan.appendChild(rotor);
+  fanRows.forEach((row,y)=>[...row].forEach((cell,x)=>{if(cell!=='#')return;const bead=document.createElementNS('http://www.w3.org/2000/svg','circle');bead.setAttribute('cx',String(1+x*2));bead.setAttribute('cy',String(1+y*2));bead.setAttribute('r','.65');bead.setAttribute('fill','currentColor');rotor.appendChild(bead);}));
+  voiceButton.appendChild(fan);
   const history=find('.pa-history'),log=find('.pa-log'),notice=find('.pa-notice');
   const status=find('.pa-status'),announcer=find('.pa-announcer'),messages=[],messageNodes=new Map();
   let opened=false,voiceExpanded=false,busy=false,controller=null,generation=0,returnFocus=null;
@@ -75,16 +82,16 @@
   const configured=()=>!!window.PortfolioAssistantConnection&&window.PortfolioAssistantConnection.mode!=='not_connected';
   function update() {
     const t=text();popup.setAttribute('aria-label',t.title);
-    const recording=!!voiceState;
-    status.textContent=recording?(voiceState==='requesting'?t.voiceRequesting:voiceState==='transcribing'?t.voiceTranscribing:t.voiceListening):busy?t.pending:configured()?t.ready:t.preview;
+    const recording=!!voiceState,processing=voiceState==='stopping'||voiceState==='transcribing',showWave=voiceExpanded&&!processing;
+    status.textContent=recording?(voiceState==='requesting'?t.voiceRequesting:processing?t.voiceTranscribing:t.voiceListening):busy?t.pending:configured()?t.ready:t.preview;
     closeButton.setAttribute('aria-label',t.close);
     input.placeholder=t.placeholder;input.setAttribute('aria-label',t.placeholder);
-    popup.dataset.voiceExpanded=String(voiceExpanded);popup.dataset.voiceDraft=String(!!input.value.trim());
-    voiceButton.setAttribute('aria-expanded',String(voiceExpanded));
+    popup.dataset.voiceExpanded=String(showWave);popup.dataset.voiceDraft=String(!!input.value.trim());popup.dataset.voiceProcessing=String(processing);
+    voiceButton.setAttribute('aria-expanded',String(showWave));
     voiceButton.setAttribute('aria-label',recording?(voiceState==='listening'?t.voiceClose:t.voiceCancel):t.voiceOpen);
     voiceButton.setAttribute('aria-pressed',String(recording));voiceButton.disabled=busy;popup.dataset.voiceState=voiceState;
     sendButton.setAttribute('aria-label',t.send);sendButton.disabled=busy||recording||!input.value.trim();input.readOnly=busy||recording;
-    popup.classList.toggle('is-pending',busy);popup.setAttribute('aria-busy',String(busy));
+    popup.classList.toggle('is-pending',busy);popup.setAttribute('aria-busy',String(busy||processing));
     const hasHistory=messages.length>0||!!pendingMessage||!!feedback;
     history.hidden=!hasHistory;popup.classList.toggle('has-history',hasHistory);popup.classList.toggle('has-messages',messages.length>0||!!pendingMessage);
     notice.hidden=!feedback;notice.textContent=feedback?t[feedback]||t.error:'';

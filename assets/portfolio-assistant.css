@@ -47,11 +47,16 @@
 .pa-input::placeholder {color:var(--soft,#aaa);opacity:1}
 .pa-voice-toggle,.pa-send,.pa-close {display:grid;place-items:center;flex:none;width:44px;height:44px;margin:0;padding:0;border:0;border-radius:50%;background:none;cursor:pointer}
 .pa-voice-toggle,.pa-close {color:var(--soft,#aaa)}
-.pa-voice-toggle svg {width:21px;height:21px}
+.pa-voice-toggle svg {grid-area:1/1;width:21px;height:21px;transition:opacity .16s ease,scale .2s ease,visibility 0s .16s}
 .pa-voice-toggle[aria-pressed="true"] {color:var(--ink,#efeee9);background:none}
-.pa-voice-toggle .pa-stop-icon {display:none}
-.pa-voice-toggle[aria-pressed="true"] .pa-microphone-icon {display:none}
-.pa-voice-toggle[aria-pressed="true"] .pa-stop-icon {display:block}
+.pa-voice-toggle .pa-stop-icon,.pa-voice-toggle .pa-processing-icon {opacity:0;visibility:hidden;scale:.8}
+.pa-voice-toggle[aria-pressed="true"] .pa-microphone-icon {opacity:0;visibility:hidden;scale:.8}
+.pa-voice-toggle[aria-pressed="true"] .pa-stop-icon {opacity:1;visibility:visible;scale:1;transition-delay:0s}
+.pa-popover[data-voice-processing="true"] .pa-stop-icon {opacity:0;visibility:hidden;scale:.8}
+.pa-popover[data-voice-processing="true"] .pa-processing-icon {width:26px;height:26px;opacity:1;visibility:visible;scale:1;transition-delay:0s}
+.pa-processing-rotor {transform-origin:20px 20px;animation:pa-voice-turn .72s linear infinite;animation-play-state:paused}
+.pa-popover[data-open="true"][data-voice-processing="true"]:not([data-suspended="true"]) .pa-processing-rotor {animation-play-state:running}
+.pa-popover:not([data-voice-processing="true"]) .pa-processing-rotor {animation:none}
 .pa-voice-toggle:disabled {opacity:.35;cursor:default}
 .pa-send {color:var(--ink,#efeee9)}
 .pa-send svg {width:23px;height:23px}
@@ -68,6 +73,7 @@
 .pa-popover[data-compact="true"] .pa-history {padding-top:12px;padding-bottom:4px}
 .pa-popover[data-compact="true"] .pa-form {padding-top:4px;padding-bottom:4px}
 @keyframes pa-edge-travel {to{stroke-dashoffset:-1000}}
+@keyframes pa-voice-turn {to{transform:rotate(360deg)}}
 
 /* The active iris grows; the title's pupil and its hit target stay fixed. */
 #stage #dot.assistant-active {--title-ring-size:44px}
@@ -89,6 +95,8 @@ body:has(#portfolio-assistant[data-suspended="true"]) #stage #dot.assistant-acti
   .pa-popover {transition:none;transform:none}
   .pa-voice-panel {transition:none}
   .pa-wave circle {transition:none}
+  .pa-voice-toggle svg {transition:none}
+  .pa-processing-rotor {animation:none!important}
   .pa-edge-track {animation:none;stroke-dashoffset:36}
   #stage #dot.assistant-active[aria-expanded="true"]::after {animation:none;transform:translate(-50%,-50%);opacity:.58}
 }

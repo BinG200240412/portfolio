@@ -27,46 +27,69 @@ function fixture({reduced=false}={}){
 }
 function excursion(env){return Math.max(0,...env.dots().map(dot=>Math.abs(Number(dot.attributes.cy)-24)));}
 
-test('a real input envelope paints a left-to-right time trace of equal circles without a base matrix',()=>{
- const env=fixture();env.api.start();assert.equal(env.frames.size,0,'silence needs no idle animation');
- env.speak(.65,560);const dots=env.dots();assert.ok(dots.length>8&&dots.length<180);
+function columns(env){
+ const result=new Map();for(const dot of env.dots()){
+  const x=Number(dot.attributes.cx);if(!result.has(x))result.set(x,[]);result.get(x).push(dot);
+ }return result;
+}
+function centered(env){
+ for(const dots of columns(env).values()){
+  const positions=new Map(dots.map(dot=>[Number(dot.attributes.cy),dot.attributes.opacity]));
+  for(const[y,opacity]of positions)assert.equal(positions.get(48-y),opacity,'each upper bead has an equally bright lower partner');
+  assert.equal((Math.min(...positions.keys())+Math.max(...positions.keys()))/2,24);
+ }
+}
+
+test('the 27 real audio bands become fixed, centred columns of uniform lit circles without idle dots',()=>{
+ const env=fixture();env.api.start();assert.equal(env.frames.size,0);assert.equal(env.dots().length,0);
+ const input=Array.from({length:27},(_,i)=>.08+i*.028);env.api.setLevels(input);
+ for(let elapsed=0;elapsed<640;elapsed+=80){env.api.setLevels(input);env.advance(80);}
+ assert.equal(columns(env).size,27);centered(env);
  assert.equal(env.svg.attributes.viewBox,'0 0 320 48');assert.equal(env.svg.attributes.fill,'none');
- assert.equal(new Set(dots.map(dot=>dot.attributes.r)).size,1);assert.equal(dots[0].attributes.r,'1.1');
- const xs=dots.map(dot=>Number(dot.attributes.cx));assert.equal(Math.min(...xs),4);assert.ok(Math.max(...xs)>44,'new samples advance through time rather than pulsing all columns');
- assert.ok(dots.every(dot=>dot.tagName==='circle'&&Number(dot.attributes.cy)>=4&&Number(dot.attributes.cy)<=44));
- assert.deepEqual(env.lit,[true],'one speech burst must not flash its whole container on and off');env.api.destroy();
+ assert.ok(env.dots().every(dot=>dot.tagName==='circle'&&dot.attributes.r==='1.1'&&Number(dot.attributes.cy)>=4&&Number(dot.attributes.cy)<=44));
+ assert.deepEqual([...columns(env).keys()].sort((a,b)=>a-b),Array.from({length:27},(_,i)=>4+i*12));
+ assert.ok(Math.max(...columns(env).get(316).map(dot=>Number(dot.attributes.cy)))>Math.max(...columns(env).get(4).map(dot=>Number(dot.attributes.cy))),'bar length follows its own band');
+ assert.deepEqual(env.lit,[true]);env.api.destroy();
 });
 
-test('louder input increases vertical excursion while the sampling pace stays the same',()=>{
- const quiet=fixture(),loud=fixture();quiet.api.start();loud.api.start();quiet.speak(.07,1120);loud.speak(.9,1120);
- assert.ok(excursion(loud)>excursion(quiet)+8,'amplitude follows actual volume');
- assert.equal(Math.max(...quiet.dots().map(dot=>Number(dot.attributes.cx))),Math.max(...loud.dots().map(dot=>Number(dot.attributes.cx))));
+test('unequal input bands remain independent and silent bands never acquire baseline beads',()=>{
+ const env=fixture();env.api.start();const input=Array(27).fill(0);input[2]=.12;input[19]=.9;
+ for(let elapsed=0;elapsed<800;elapsed+=80){env.api.setLevels(input);env.advance(80);}
+ assert.deepEqual([...columns(env).keys()].sort((a,b)=>a-b),[28,232]);centered(env);
+ const quiet=Math.max(...columns(env).get(28).map(dot=>Math.abs(Number(dot.attributes.cy)-24)));
+ const loud=Math.max(...columns(env).get(232).map(dot=>Math.abs(Number(dot.attributes.cy)-24)));
+ assert.ok(loud>quiet+8);env.api.destroy();
+});
+
+test('real volume changes ease through edge-bead brightness instead of flashing the whole visual',()=>{
+ const env=fixture();env.api.start();env.speak(.7,400);const before=excursion(env);
+ env.api.setLevels(Array(27).fill(0));env.advance(80);assert.ok(env.dots().length>0,'a pause decays rather than disappearing in one frame');centered(env);
+ assert.ok(env.dots().some(dot=>Number(dot.attributes.opacity)>0&&Number(dot.attributes.opacity)<.9),'edge pairs soften length transitions');
+ assert.ok(excursion(env)<=before);env.advance(1400);assert.equal(env.dots().length,0);assert.equal(env.frames.size,0);assert.deepEqual(env.lit,[true,false]);env.api.destroy();
+});
+
+test('louder voice increases amplitude without moving any column sideways',()=>{
+ const quiet=fixture(),loud=fixture();quiet.api.start();loud.api.start();quiet.speak(.07,640);loud.speak(.9,640);
+ assert.ok(excursion(loud)>excursion(quiet)+8);assert.deepEqual([...columns(quiet).keys()].sort((a,b)=>a-b),[...columns(loud).keys()].sort((a,b)=>a-b));
  quiet.api.destroy();loud.api.destroy();
 });
 
-test('silence lets the short trail recede completely, then releases the animation frame',()=>{
- const env=fixture();env.api.start();env.speak(.7,640);const before=env.dots().length;
- env.api.setLevels(Array(27).fill(0));env.advance(320);assert.ok(env.dots().length>0,'a short trail remains instead of blinking off');
- env.advance(2400);assert.equal(env.dots().length,0);assert.equal(env.frames.size,0);assert.deepEqual(env.lit,[true,false]);assert.ok(before>0);
- env.api.destroy();
-});
-
-test('missing producer updates cannot keep an old voice waveform moving forever',()=>{
- const env=fixture();env.api.start();env.api.setLevels([.8]);env.advance(3000);
+test('stale producer updates decay to complete silence and release the animation frame',()=>{
+ const env=fixture();env.api.start();env.api.setLevels([.8]);env.advance(2200);
  assert.equal(env.dots().length,0);assert.equal(env.frames.size,0);env.api.destroy();
 });
 
-test('stop, hidden pages and destroy cancel frames and do not revive stale audio',()=>{
+test('stop, hidden pages and destroy cancel frames and cannot revive old audio',()=>{
  const env=fixture();env.api.start();env.speak(.6,400);env.hidden(true);
  assert.equal(env.frames.size,0);assert.equal(env.dots().length,0);env.api.setLevels([1]);env.advance(500);assert.equal(env.dots().length,0);
- env.hidden(false);assert.equal(env.frames.size,0);env.speak(.6,240);assert.ok(env.dots().length>0,'fresh voice can resume');
+ env.hidden(false);assert.equal(env.frames.size,0);env.speak(.6,240);assert.ok(env.dots().length>0);
  env.api.stop();assert.equal(env.frames.size,0);assert.equal(env.dots().length,0);env.api.setLevels([1]);env.advance(200);assert.equal(env.dots().length,0);
  env.api.start();env.advance(160);assert.ok(env.dots().length>0);env.api.destroy();assert.equal(env.frames.size,0);assert.equal(env.listeners.size,0);assert.equal(env.svg.children.length,0);
  env.api.start();env.api.setLevels([1]);env.advance(200);assert.equal(env.svg.children.length,0);
 });
 
-test('reduced motion keeps a compact fixed trace and invalid levels never light a baseline',()=>{
+test('reduced motion keeps the same centred audio information, slower updates, and no idle matrix',()=>{
  const env=fixture({reduced:true});env.api.start();env.api.setLevels([NaN,-1,Infinity]);env.advance(200);assert.equal(env.dots().length,0);
- env.speak(.6,720);const xs=env.dots().map(dot=>Number(dot.attributes.cx));assert.ok(xs.length>0);assert.ok(Math.min(...xs)>=140&&Math.max(...xs)<=176,'no sweep under reduced motion');
- env.api.setLevels(null);env.advance(1800);assert.equal(env.dots().length,0);assert.equal(env.frames.size,0);env.api.destroy();
+ env.speak(.6,720);assert.equal(columns(env).size,27);centered(env);assert.ok(env.dots().every(dot=>dot.attributes.r==='1.1'));
+ env.api.setLevels(null);env.advance(2000);assert.equal(env.dots().length,0);assert.equal(env.frames.size,0);env.api.destroy();
 });

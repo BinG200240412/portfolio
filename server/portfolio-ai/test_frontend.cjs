@@ -16,6 +16,7 @@ const session = (value = token) => response({ status: 'ok', csrfToken: value });
 const error = (code, status = 429) => response({ status: 'error', error: { code } }, status);
 const json = value => JSON.parse(JSON.stringify(value));
 const tick = () => new Promise(resolve => setImmediate(resolve));
+const deferred = () => { let resolve; const promise = new Promise(done => { resolve = done; }); return { promise, resolve: value => resolve(value) }; };
 
 function bridge(fetchImpl, origin = 'https://bing2002.com') {
   const calls = [], timers = new Map(); let serial = 0;
@@ -454,16 +455,77 @@ test('voice UI inserts at the draft selection and leaves the question unsent and
   assert.equal(env.nodes.get('.pa-log').children.length,0);assert.equal(env.popup.dataset.voiceExpanded,'false');
 });
 
-test('closing during transcription aborts the upload, keeps the draft and ignores a late result',async()=>{
-  let finish,signal;
-  const env=ui(()=>assert.fail('must not submit'),{
-    module:{record({onState}){onState('listening');return{result:Promise.resolve(new Blob(['audio'])),cancel(){},stop(){}};}},
-    transcribe:(_audio,options)=>{signal=options.signal;return new Promise(resolve=>{finish=resolve;});},
+test('voice processing stays busy through recorder flush and deferred ASR, then restores the editable draft immediately',async()=>{
+  const audioReady=deferred(),transcriptReady=deferred();let stops=0,uploads=0;
+  const env=ui(()=>assert.fail('recording or recognition must not submit a question'),{
+    module:{record({onState}){
+      onState('listening');
+      return{result:audioReady.promise,cancel(){},stop(){stops++;onState('stopping');}};
+    }},
+    transcribe:()=>{uploads++;return transcriptReady.promise;},
   });
-  env.allow();env.api.open();const input=env.nodes.get('.pa-input');input.value='保留输入';
-  env.nodes.get('.pa-voice-toggle').listeners.click();await tick();assert.equal(input.readOnly,true);
-  env.api.close();assert.equal(signal.aborted,true);assert.equal(input.readOnly,false);
-  finish({status:'ok',text:'不应该出现'});await tick();assert.equal(input.value,'保留输入');
+  env.allow();env.api.open();const input=env.nodes.get('.pa-input'),mic=env.nodes.get('.pa-voice-toggle'),send=env.nodes.get('.pa-send');
+  input.value='关于这个作品';input.selectionStart=2;input.selectionEnd=4;
+  mic.dispatchEvent({type:'click'});await tick();
+  assert.equal(env.popup.dataset.voiceState,'listening');assert.equal(env.popup.dataset.voiceProcessing,'false');
+  assert.equal(env.nodes.get('.pa-status').textContent,'正在听…');assert.equal(input.readOnly,true);
+  const processingIcon=mic.querySelector('.pa-processing-icon');
+  assert.ok(processingIcon,'the microphone has its own processing feedback rather than a second floating control');
+  assert.equal(processingIcon.getAttribute('aria-hidden'),'true');
+
+  mic.dispatchEvent({type:'click'});
+  assert.equal(stops,1);assert.equal(env.popup.dataset.voiceState,'stopping');
+  for(const stage of ['recorder flush','ASR upload']){
+    assert.equal(env.popup.dataset.voiceProcessing,'true',stage);
+    assert.equal(env.popup.getAttribute('aria-busy'),'true',stage);
+    assert.equal(env.nodes.get('.pa-status').textContent,'正在转成文字…',stage);
+    assert.equal(input.value,'关于这个作品',stage);assert.equal(input.readOnly,true,stage);
+    assert.equal(send.disabled,true,stage);assert.equal(mic.disabled,false,'processing remains cancellable');
+    assert.equal(env.waves[0].active,false,'the recording waveform stops while recognition is pending');
+    env.advance(5000);await tick();
+    assert.equal(env.popup.dataset.voiceProcessing,'true','feedback lasts as long as actual work remains pending');
+    assert.equal(input.value,'关于这个作品');env.submit();await tick();
+    if(stage==='recorder flush'){
+      assert.equal(uploads,0,'ASR cannot start before the recorder has flushed its audio');
+      audioReady.resolve(new Blob(['audio']));await tick();
+      assert.equal(uploads,1);assert.equal(env.popup.dataset.voiceState,'transcribing');
+    }
+  }
+  transcriptReady.resolve({status:'ok',text:'数独'});await tick();
+  assert.equal(input.value,'关于数独作品');assert.equal(input.readOnly,false);assert.equal(send.disabled,false);
+  assert.equal(env.popup.dataset.voiceProcessing,'false');assert.equal(env.popup.getAttribute('aria-busy'),'false');
+  assert.equal(env.nodes.get('.pa-status').textContent,'可以提问');assert.equal(mic.getAttribute('aria-pressed'),'false');
+  assert.equal(env.popup.dataset.voiceExpanded,'false');assert.equal(env.nodes.get('.pa-log').children.length,0);
+  assert.equal(env.timers.size,0,'successful recognition has no artificial minimum processing delay');
+});
+
+test('closing or cancelling either processing phase aborts it without allowing late work to replace a new draft',async()=>{
+  for(const phase of ['stopping','transcribing'])for(const action of ['close','cancel']){
+    const audioReady=deferred(),transcriptReady=deferred();let signal,uploads=0,cancels=0;
+    const label=`${action} during ${phase}`;
+    const env=ui(()=>assert.fail('must not auto-send'),{
+      module:{record(options){
+        signal=options.signal;options.onState('listening');
+        return{result:audioReady.promise,cancel(){cancels++;},stop(){options.onState('stopping');}};
+      }},
+      transcribe:()=>{uploads++;return transcriptReady.promise;},
+    });
+    env.allow();env.api.open();const input=env.nodes.get('.pa-input'),mic=env.nodes.get('.pa-voice-toggle');input.value='保留原有草稿';
+    mic.dispatchEvent({type:'click'});await tick();mic.dispatchEvent({type:'click'});
+    if(phase==='transcribing'){audioReady.resolve(new Blob(['audio']));await tick();}
+    assert.equal(env.popup.dataset.voiceState,phase,label);assert.equal(env.popup.dataset.voiceProcessing,'true',label);
+    if(action==='close')env.api.close();else mic.dispatchEvent({type:'click'});
+    assert.equal(signal.aborted,true,label);assert.equal(input.readOnly,false,label);assert.equal(input.value,'保留原有草稿',label);
+    assert.equal(env.popup.dataset.voiceProcessing,'false',label);assert.equal(env.popup.getAttribute('aria-busy'),'false',label);
+    if(phase==='stopping')assert.equal(cancels,1,'cancelling flush stops its still-active recorder');
+    if(action==='close'){assert.equal(env.api.isOpen(),false);env.api.open();}
+    input.value='取消后重新写下的问题';input.dispatchEvent({type:'input'});
+    audioReady.resolve(new Blob(['late audio']));transcriptReady.resolve({status:'ok',text:'过期识别不应出现'});await tick();env.advance(10000);await tick();
+    assert.equal(uploads,phase==='transcribing'?1:0,'cancelled recorder completion cannot start a late upload');
+    assert.equal(input.value,'取消后重新写下的问题',label);assert.equal(input.readOnly,false,label);
+    assert.equal(env.popup.dataset.voiceProcessing,'false',label);assert.equal(env.popup.getAttribute('aria-busy'),'false',label);
+    assert.equal(env.nodes.get('.pa-status').textContent,'可以提问',label);assert.equal(env.nodes.get('.pa-log').children.length,0,label);
+  }
 });
 
 
