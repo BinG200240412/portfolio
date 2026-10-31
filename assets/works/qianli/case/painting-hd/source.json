@@ -1,0 +1,216 @@
+{
+  "sourcePage": "https://commons.wikimedia.org/wiki/File:Wang_Ximeng._A_Thousand_Li_of_Rivers_and_Mountains._(Complete,_51,3x1191,5_cm)._1113._Palace_museum,_Beijing.jpg",
+  "sourceDimensions": [
+    39974,
+    1600
+  ],
+  "sourceSha256": "8642d4f3d5f7edaa022200dfe2cdea56b1183c78c6cd4abbf47620daf7fda8f4",
+  "license": "Public Domain Mark 1.0; faithful reproduction of public-domain art",
+  "treatment": "Crop and proportional resampling only; no colour edits or generative enhancement",
+  "excerpts": {
+    "entry": {
+      "sourceCrop": [
+        24000,
+        0,
+        8000,
+        1600
+      ],
+      "outputs": [
+        {
+          "file": "entry-960.webp",
+          "width": 960,
+          "height": 192,
+          "bytes": 46770
+        },
+        {
+          "file": "entry-1920.webp",
+          "width": 1920,
+          "height": 384,
+          "bytes": 181936
+        },
+        {
+          "file": "entry-3200.webp",
+          "width": 3200,
+          "height": 640,
+          "bytes": 558956
+        },
+        {
+          "file": "entry-8000.webp",
+          "width": 8000,
+          "height": 1600,
+          "bytes": 3969866
+        }
+      ]
+    },
+    "layers": {
+      "sourceCrop": [
+        26000,
+        0,
+        3400,
+        1600
+      ],
+      "outputs": [
+        {
+          "file": "layers-640.webp",
+          "width": 640,
+          "height": 301,
+          "bytes": 44446
+        },
+        {
+          "file": "layers-1280.webp",
+          "width": 1280,
+          "height": 602,
+          "bytes": 192772
+        },
+        {
+          "file": "layers-1920.webp",
+          "width": 1920,
+          "height": 904,
+          "bytes": 485054
+        },
+        {
+          "file": "layers-3400.webp",
+          "width": 3400,
+          "height": 1600,
+          "bytes": 1525970
+        }
+      ]
+    },
+    "sample-1": {
+      "sourceCrop": [
+        31900,
+        0,
+        7600,
+        1600
+      ],
+      "outputs": [
+        {
+          "file": "sample-1-640.webp",
+          "width": 640,
+          "height": 135,
+          "bytes": 21370
+        },
+        {
+          "file": "sample-1-1280.webp",
+          "width": 1280,
+          "height": 269,
+          "bytes": 81866
+        },
+        {
+          "file": "sample-1-1920.webp",
+          "width": 1920,
+          "height": 404,
+          "bytes": 190936
+        },
+        {
+          "file": "sample-1-7600.webp",
+          "width": 7600,
+          "height": 1600,
+          "bytes": 3776014
+        }
+      ]
+    },
+    "sample-2": {
+      "sourceCrop": [
+        24200,
+        0,
+        7000,
+        1600
+      ],
+      "outputs": [
+        {
+          "file": "sample-2-640.webp",
+          "width": 640,
+          "height": 146,
+          "bytes": 25552
+        },
+        {
+          "file": "sample-2-1280.webp",
+          "width": 1280,
+          "height": 293,
+          "bytes": 90234
+        },
+        {
+          "file": "sample-2-1920.webp",
+          "width": 1920,
+          "height": 439,
+          "bytes": 207822
+        },
+        {
+          "file": "sample-2-7000.webp",
+          "width": 7000,
+          "height": 1600,
+          "bytes": 3280782
+        }
+      ]
+    },
+    "sample-3": {
+      "sourceCrop": [
+        11500,
+        0,
+        7000,
+        1600
+      ],
+      "outputs": [
+        {
+          "file": "sample-3-640.webp",
+          "width": 640,
+          "height": 146,
+          "bytes": 24512
+        },
+        {
+          "file": "sample-3-1280.webp",
+          "width": 1280,
+          "height": 293,
+          "bytes": 88498
+        },
+        {
+          "file": "sample-3-1920.webp",
+          "width": 1920,
+          "height": 439,
+          "bytes": 201320
+        },
+        {
+          "file": "sample-3-7000.webp",
+          "width": 7000,
+          "height": 1600,
+          "bytes": 3236440
+        }
+      ]
+    },
+    "sample-4": {
+      "sourceCrop": [
+        2100,
+        0,
+        7000,
+        1600
+      ],
+      "outputs": [
+        {
+          "file": "sample-4-640.webp",
+          "width": 640,
+          "height": 146,
+          "bytes": 18332
+        },
+        {
+          "file": "sample-4-1280.webp",
+          "width": 1280,
+          "height": 293,
+          "bytes": 67234
+        },
+        {
+          "file": "sample-4-1920.webp",
+          "width": 1920,
+          "height": 439,
+          "bytes": 158626
+        },
+        {
+          "file": "sample-4-7000.webp",
+          "width": 7000,
+          "height": 1600,
+          "bytes": 3233746
+        }
+      ]
+    }
+  }
+}

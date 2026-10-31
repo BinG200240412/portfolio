@@ -19,7 +19,7 @@
 .q-image:hover img{opacity:.88}
 .q-content figcaption{color:var(--soft);font-size:14px;line-height:1.5;margin-top:12px;text-transform:none;letter-spacing:.02em}
 .q-painting{margin-inline:calc(-1 * var(--q-gutter));overflow:hidden}
-.q-painting img{width:100%;height:auto;max-height:32svh;object-fit:cover}
+.q-painting img{width:100%;height:auto;max-height:none;object-fit:contain}
 .q-painting figcaption{margin-left:var(--q-gutter)}
 .q-elements{display:grid;grid-template-columns:1.1fr 1fr;gap:8vw;align-items:center}
 .q-elements>.q-paper{background:none;padding:0}
@@ -104,7 +104,7 @@
 
 /* Match the source's image hierarchy. Only direct chapter art may bleed;
    a grid cell must never inherit page-width negative margins. */
-.q-result-layout{display:grid;grid-template-columns:1.12fr 1fr;gap:clamp(20px,2.5vw,40px);align-items:start}
+.q-result-layout{display:grid;grid-template-columns:minmax(0,3fr) minmax(230px,1fr);gap:clamp(28px,3vw,72px);align-items:start}
 .q-result-layout :is(figure,.q-image,.q-result-aside,.q-result-bottom){min-width:0;max-width:100%;margin:0!important}
 .q-result-aside{display:grid;gap:clamp(20px,2.5vw,36px)}
 .q-result-bottom{display:grid;grid-template-columns:1fr 1.35fr;gap:clamp(16px,2vw,28px);align-items:start}
@@ -139,17 +139,13 @@
 .q-cut-study{max-width:280px}
 .q-cut-study .q-image{background:transparent;padding:16px}
 .q-painting-samples{display:grid;gap:20px}
-.q-sample-window{position:relative;aspect-ratio:405.45/116.72;overflow:hidden}
-.q-sample-window img{position:absolute;max-width:none;object-fit:cover}
-[data-sample="1"] .q-sample-window img{inset:0;width:100%;height:100%}
-[data-sample="2"] .q-sample-window img{left:0;top:-1.11%;width:112.12%;height:102.23%}
-[data-sample="3"] .q-sample-window img{left:-27.5%;top:-11.76%;width:127.74%;height:123.53%}
-[data-sample="4"] .q-sample-window img{left:0;top:-.69%;width:106.06%;height:101.38%}
+.q-sample-window{position:relative;overflow:hidden}
+.q-sample-window img{position:static;width:100%;height:auto;object-fit:contain}
 .q-hardware{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--q-gap)}
 .q-hardware img{width:100%;height:clamp(140px,18vw,260px);object-fit:contain;padding:18px;background:transparent}
 .q-hardware figcaption{overflow-wrap:anywhere}
-.q-production{grid-template-columns:repeat(4,minmax(0,1fr));align-items:start}
-.q-production-note{grid-column:3/-1;align-self:center;margin:0;max-width:48ch;color:var(--soft)}
+.q-production{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}
+.q-production-note{align-self:flex-start;margin:0;max-width:64ch;color:var(--soft)}
 @media(max-width:900px){
  .q-styling-grid{gap:32px;grid-template-columns:1fr 1fr}
  .q-production{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -165,3 +161,10 @@
  .q-hardware{gap:14px}.q-hardware img{height:120px;padding:10px}
  .q-film-card figcaption{font-size:13px}
 }
+
+/* The moving installation is the primary evidence; photos support it. */
+.q-result-video .video-preview{aspect-ratio:var(--q-film-aspect)}
+.q-result-video video{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
+.q-result-photo img{display:block;width:100%;height:auto;object-fit:contain}
+.q-result-aside{gap:22px}
+@media(max-width:700px){.q-result-aside{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 18px}.q-result-photo:first-child{grid-column:1/-1}}

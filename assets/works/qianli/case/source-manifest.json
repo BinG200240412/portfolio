@@ -458,5 +458,15 @@
       "native/led-cutout.webp": "image_gen transparent edit of native/component-1587.webp"
     },
     "paintingViewer": "native/painting-sample.svg embeds the unchanged source photograph and original silhouette clip; transparent outside the mountain."
+  },
+  "layoutPolish20261101": {
+    "painting": "painting-hd/source.json: proportionate excerpts of the 39974 x 1600 Commons scan; responsive inline previews and full-resolution excerpts in the viewer",
+    "colourStudy": {
+      "ribbonFillOpacity": 0.25,
+      "dotFillOpacity": 0.72
+    },
+    "production": "Wood and LED: two rows of three on desktop; notes after the gallery",
+    "results": "Large, visible autoplay video on the left, three supporting photographs on the right; original videos at >=800px, light previews on phones",
+    "circuit": "12 sequentially revealed translucent ribbons, including the added right-hand sensor-to-zone connection; removed decorative dotted signal path"
   }
 }

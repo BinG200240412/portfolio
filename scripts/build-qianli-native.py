@@ -22,6 +22,22 @@ def pathdata(d):
    q=item[1];out.append('M'+' L'.join(f'{num(p.x)} {num(p.y)}' for p in (q.ul,q.ur,q.lr,q.ll))+'Z');last=None
  if d.get('closePath'):out.append('Z')
  return ' '.join(out)
+def flow_guide(b):
+ x,y,w,h=b.x0,b.y0,b.width,b.height
+ if y<400 and x<800:return 0,'M694 349H757'
+ if y<400 and x<1000:return 1,'M842 349C1100 349 1100 516 1308 516'
+ if y<400:return 2,'M1330 349C1215 349 1251 516 1152 516'
+ if x>1100 and y<600:return 2,'M1258 516H1152'
+ if x>880 and y<600:return 3,'M1022 516C970 516 965 527 898 527'
+ if x>600 and y<600:return 4,'M786 524C740 524 725 558 681 558'
+ if x<500:return 5,'M541 558C360 558 360 721 529 721'
+ if x<800 and h>150:return 7,'M665 723C760 723 765 881 865 881'
+ if x<800:return 6,'M665 721C720 721 735 719 794 719'
+ if x<1100:return 7,'M930 719L1045 711'
+ return 8,'M1181 710L1244 710'
+def masked_flow(markup,guide,stage,index,width=180):
+ mid=f'q-flow-{index}'
+ return f'<defs><mask id="{mid}" maskUnits="userSpaceOnUse" x="375" y="295" width="1170" height="683"><path class="q-flow-reveal" style="--flow-stage:{stage}" d="{guide}" pathLength="1000" fill="none" stroke="white" stroke-width="{width}"/></mask></defs><g class="q-flow-band" mask="url(#{mid})">{markup}</g>'
 def vectors(page,box):
  p=pdf[page-1];box=fitz.Rect(box);spans=[s for b in p.get_text('dict')['blocks'] if b['type']==0 for l in b['lines'] for s in l['spans']]
  paths=[]
@@ -35,8 +51,16 @@ def vectors(page,box):
    if min(d['fill'])>.8 and max(d['fill'])-min(d['fill'])<.01:continue
   if page==5 and box.y0==325 and (not d['fill'] or d['fill'][1]<.5 or b.width<100):continue
   if any(fitz.Rect(s['bbox'])+(-5,-5,5,5) and (fitz.Rect(s['bbox'])+(-5,-5,5,5)).contains(b) for s in spans):continue
-  paths.append(f'<path d="{pathdata(d)}" fill="{color(d["fill"])}" fill-opacity="{d.get("fill_opacity",1)}" stroke="{color(d["color"])}" stroke-width="{d.get("width") or 0}"/>')
- return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{num(box.x0)} {num(box.y0)} {num(box.width)} {num(box.height)}"><g class="q-reveal-lines">'+''.join(paths)+'</g></svg>'
+  markup=f'<path d="{pathdata(d)}" fill="{color(d["fill"])}" fill-opacity="{d.get("fill_opacity",1)}" stroke="{color(d["color"])}" stroke-width="{d.get("width") or 0}"/>'
+  if page==13 and d.get('fill_opacity')==.25:
+   stage,guide=flow_guide(b);markup=masked_flow(markup,guide,stage,len(paths))
+  paths.append(markup)
+ if page==13:
+  guide='M1378.7 515.75C1534 515.75 1534 708.7 1382.5 708.7'
+  markup=f'<path id="q-sensor-distribution-link" data-from="touch-sensor" data-to="sensor-distribution" d="{guide}" fill="none" stroke="#5e8c75" stroke-opacity=".25" stroke-width="69"/>'
+  paths.append(masked_flow(markup,guide,9,'sensor',74))
+ group='q-logic-structure' if page==13 else 'q-reveal-lines'
+ return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{num(box.x0)} {num(box.y0)} {num(box.width)} {num(box.height)}"><g class="{group}">'+''.join(paths)+'</g></svg>'
 (O/'contours.svg').write_text(vectors(5,(450,325,1000,485)))
 (O/'lighting-contours.svg').write_text(vectors(5,(595,620,1000,787)))
 # The CAD bitmap is replaced by the same original vector contours at cutting scale.
@@ -101,8 +125,7 @@ for parent in root.iter():
    parent.remove(el);g=E.SubElement(parent,ns+'g',{'transform':'translate(-10 113)','fill':'none','stroke':'#388e74','stroke-width':'2.8','stroke-linejoin':'round'})
    E.SubElement(g,ns+'path',{'d':'M21 28V8q0-9 7-8t7 8v19q6-8 11-2 7-5 10 3 9-4 11 5v22q-1 16-17 18H35L13 49q-6-8 0-12t14 9'})
 E.register_namespace('',ns[1:-1]);f.write_text(E.tostring(root,encoding='unicode'))
-f=O/'source.json';data=json.loads(f.read_text());data['pdfSha256']=hashlib.sha256(Path(sys.argv[1]).read_bytes()).hexdigest();f.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
-f=O/'touch-logic.svg';t=f.read_text();t=t.replace('</svg>','<path class="q-circuit-signal" d="M800 350C1060 350 1070 520 1170 520H1320C1510 520 1510 715 1320 715H590C350 715 380 560 590 555L1080 520" fill="none" stroke="#397e69" stroke-width="3" stroke-linecap="round" stroke-dasharray="3 49" opacity=".65"/></svg>');f.write_text(t)
+f=O/'source.json';data=json.loads(f.read_text());data['webAdaptation']={'circuit':'12 masked growing ribbons; added right-hand sensor-to-zone connection; no decorative dots'};data['pdfSha256']=hashlib.sha256(Path(sys.argv[1]).read_bytes()).hexdigest();f.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
 
 # The existing mountain silhouette is also transparent when opened in the viewer.
 import base64

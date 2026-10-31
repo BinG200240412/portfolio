@@ -43,8 +43,8 @@
 .q-mountain-layer{opacity:1;transform-box:fill-box;transform-origin:center bottom}
 .q-motion-on .q-mountain-layer{animation:q-layer-rise 1.3s calc(var(--layer)*110ms) both}
 .q-motion-on .q-layer-light{animation:q-light-up 2s calc(700ms + var(--layer)*160ms) both}
-.q-led-production{grid-template-columns:repeat(4,minmax(0,1fr));align-items:start}
-.q-led-note{grid-column:1/3;grid-row:2;max-width:52ch;margin:0;color:var(--soft)}
+.q-led-production{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}
+.q-led-note{align-self:flex-start;max-width:64ch;margin:0;color:var(--soft)}
 .q-six{grid-template-columns:repeat(6,minmax(0,1fr));gap:18px}
 .q-six img{aspect-ratio:1.45;object-fit:cover}
 .q-box-production{grid-template-columns:repeat(6,minmax(0,1fr));gap:28px 18px}
@@ -62,7 +62,6 @@
 @keyframes q-light-up{from{opacity:0}to{opacity:.9}}
 @media(min-width:1801px){.q-native-study{max-width:1760px}.q-native-logic{width:min(100%,1740px);align-self:center}}
 @media(max-width:1000px){
- .q-led-production{grid-template-columns:repeat(2,minmax(0,1fr))}.q-led-note{grid-row:auto;grid-column:1/-1}
  .q-six,.q-box-production{grid-template-columns:repeat(3,minmax(0,1fr))}.q-box-production>figure:nth-child(7),.q-box-production>figure:nth-child(8){grid-column:auto}
  .q-sensor-finish{display:block}.q-sensor-finish>.q-heading{margin-bottom:30px}
 }
@@ -90,16 +89,23 @@
 .q-serpentine>figure:nth-child(n+4):not(:last-child)::after{content:'←';left:-4.3vw;right:auto}
 
 .q-serpentine .q-image{background:none!important}
-.q-circuit-signal{animation:q-circuit-flow 9s linear infinite;animation-play-state:paused}
-.q-native[data-motion="true"] .q-circuit-signal{animation-play-state:running}
-@keyframes q-circuit-flow{to{stroke-dashoffset:-520}}
-@media(prefers-reduced-motion:reduce){.q-circuit-signal{animation:none!important}}
-
 .q-sensor-finish h3{font-size:var(--editorial-subtitle,28px);margin-top:0}
-@media(min-width:1001px) and (max-width:1800px){.q-styling-grid{max-width:1120px;align-self:center;grid-template-columns:1.18fr 1fr;gap:60px}}
-@media(min-width:1801px){.q-styling-grid{max-width:1600px;align-self:center}}
+@media(min-width:1001px) and (max-width:1800px){.q-styling-grid{max-width:1120px;align-self:center;grid-template-columns:1.18fr 1fr;gap:clamp(80px,7vw,120px)}}
+@media(min-width:1801px){.q-styling-grid{max-width:1600px;align-self:center;gap:160px}}
 .q-styling-grid{width:100%}
 
 /* Dark samples keep their source colour after removing the white sheet. */
 html[data-theme="dark"] .q-native-chart :is(circle,path):is([fill="black"],[fill="#202020"]){stroke:var(--soft);stroke-width:1.1;paint-order:stroke fill}
 html[data-theme="dark"] .q-native-chart circle[stroke="black"]{stroke:var(--soft);stroke-width:1.1}
+
+/* Source PDF ribbons use 25 percent opacity; keep their overlaps visible. */
+.q-native-chart circle{fill-opacity:.72;stroke-opacity:.6}
+.q-native-chart .q-native-link{fill-opacity:.25;stroke-opacity:.25}
+.q-deconstruction img{aspect-ratio:auto;object-fit:contain}
+.q-flow-reveal{stroke-dasharray:1000;stroke-dashoffset:1000;animation-duration:1.65s;animation-delay:calc(var(--flow-stage)*180ms);animation-timing-function:cubic-bezier(.22,.6,.35,1);animation-fill-mode:both;animation-play-state:paused}
+.is-revealing .q-flow-reveal{animation-name:q-flow-grow}
+.q-native[data-motion="true"] .q-flow-reveal{animation-play-state:running}
+@keyframes q-flow-grow{to{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){.q-flow-reveal{animation:none!important;stroke-dashoffset:0}}
+
+@media(max-width:900px){.q-led-production{grid-template-columns:repeat(2,minmax(0,1fr))}}

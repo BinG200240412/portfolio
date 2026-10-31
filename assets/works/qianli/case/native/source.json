@@ -25,5 +25,8 @@
     "6381": "component-6381.webp",
     "6385": "component-6385.webp"
   },
+  "webAdaptation": {
+    "circuit": "12 masked growing ribbons; added right-hand sensor-to-zone connection; no decorative dots"
+  },
   "pdfSha256": "c65083a021b491f5a48a1fb04c69ec2eb33cdb765ca6fa42146459987167d538"
 }
