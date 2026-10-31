@@ -1,0 +1,35 @@
+{
+  "source": "桌面/作品集网站素材/11_茶弦记/交互演示",
+  "files": [
+    {
+      "original": "未标题-1dfcewf 1.png",
+      "file": "central-plan.png",
+      "sha256": "aa74433641d3cd90f336a5ff4c6b5333282838c41909e6e0b8215d8762efd586"
+    }
+  ],
+  "existing_originals": [
+    "space-wake.png",
+    "space-grind.png",
+    "space-ritual.png",
+    "central-room.png",
+    "central-room-top.png",
+    "action-wake-01.png",
+    "action-wake-02.png",
+    "action-wake-03.png",
+    "action-grind-01.png",
+    "action-grind-02.png",
+    "action-grind-03.png",
+    "action-ritual-01.png",
+    "action-ritual-02.png",
+    "action-ritual-03.png",
+    "feedback-wake-01.png",
+    "feedback-wake-02.png",
+    "feedback-wake-03.png",
+    "feedback-grind-01.png",
+    "feedback-grind-02.png",
+    "feedback-grind-03.png",
+    "feedback-ritual-01.png",
+    "feedback-ritual-02.png",
+    "feedback-ritual-03.png"
+  ]
+}

@@ -965,3 +965,28 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
   "临窗茶席 · 空间设计效果图": "Tea by the window · Spatial design rendering",
   "展厅外观 · 空间设计效果图": "Exhibition exterior · Spatial design rendering"
 });
+
+/* Exhibition interaction demonstration, original board composition. */
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
+  "交互演示": "Interaction demonstration",
+  "空间设计效果与交互流程": "Spatial design renderings and interaction sequences",
+  "核心茶室 · 击拂成弦": "Central tea room · Whisking into music",
+  "击拂茶室 · 茶席互动效果图": "Whisking room · Interactive tea station rendering",
+  "中央茶室平面图": "Central tea room plan",
+  "环绕茶室陈列十二茶先生的茶具，观众先游览，再进入中央茶席。": "Utensils of the Twelve Tea Masters surround the room. Visitors explore before taking a seat at its center.",
+  "用茶筅回应光轮的节奏，让手里的击拂与屏幕中的茶沫、粒子和乐音相呼应。": "Whisk to the rhythm of the light rings. The physical gesture responds through virtual foam, particles and musical notes.",
+  "入席点茶，让击拂成为一次演奏。": "Take a seat, prepare tea and play through whisking.",
+  "查看击拂玩法 ↗": "Explore whisking gameplay ↗",
+  "查看实体联动 ↗": "Explore physical interaction ↗",
+  "听钟入拍": "Enter on the bell",
+  "依次点击青芽、金芽": "Tap green and golden shoots",
+  "收集所有茶芽": "Collect all tea shoots",
+  "滑动碾为粗末": "Slide to break the tea",
+  "细筛得茶粉": "Sift the tea powder",
+  "音粒谱写成曲": "Compose with sound particles",
+  "分茶行盏": "Share and pass the bowls",
+  "奉茶致礼": "Offer tea respectfully",
+  "正面奉茶": "Offering tea"
+});
+
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {"点选茶芽": "Tap shoots", "收集茶芽": "Collect shoots", "滑动碾茶": "Grind the tea", "细筛茶粉": "Sift the powder", "音粒成曲": "Compose notes"});
