@@ -40,6 +40,5 @@ body.archive {margin:0;padding-top:82px;background:var(--paper);color:var(--ink)
   .archive-document--portfolio-2025{max-width:280px}
   .archive-grid--projects .archive-tile{height:auto;max-height:none}
   .archive-grid--projects .archive-tile img{width:100%;height:auto;max-height:none}
-  .archive-document--tea-presentation .archive-tile img{max-width:280px}
   .archive-caption{margin-top:18px}.archive-caption h3{font-size:18px}
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the seven approved archive PDFs into lightweight, page-by-page WebP.
+"""Render the approved archive PDFs into lightweight, page-by-page WebP.
 
 Requires PyMuPDF and Pillow. Originals are read only. By default the script reads
 PDFs already in this checkout; --source-root can supply the same relative paths
@@ -71,15 +71,6 @@ DOCUMENTS = (
         "group": "project",
         "pdf": "assets/works/drift/drift.pdf",
         "board": True,
-    },
-    {
-        "id": "tea-presentation",
-        "title": {
-            "zh": "一盏茶，接回九百年 · 演示稿",
-            "en": "A Bowl of Tea, Nine Centuries Reconnected · Presentation",
-        },
-        "group": "project",
-        "pdf": "assets/works/more/tea-presentation.pdf",
     },
 )
 
