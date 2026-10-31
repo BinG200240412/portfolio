@@ -938,3 +938,30 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
 });
 
 window.PORTFOLIO_CASE_TRANSLATIONS["长波抵达后仍停留在盏沿，持续转动会在驻留窗口内多次切中；过早停手会减少切奏次数。"] = "A long wave stays at the rim after arriving. Continued movement makes repeated cuts during its dwell; stopping early reduces the number of cuts.";
+
+/* Spatial behavior analysis and the original rendering strip. */
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
+  "空间行为分析": "Spatial behavior analysis",
+  "重播动线 ↻": "Replay routes ↻",
+  "横向空间行为分析，六种体验与展厅动线": "Landscape spatial analysis: six experiences and exhibition routes",
+  "空间轴测图 · 游览、驻留与交互动线": "Spatial axonometric showing walking, staying and interaction routes",
+  "空间轴测图 · 行为与动线": "Spatial axonometric · Behavior and routes",
+  "交流互动": "Social interaction",
+  "独处静思": "Quiet reflection",
+  "游览参观": "Walking and viewing",
+  "左右滑动查看空间分析": "Swipe horizontally to explore the spatial analysis",
+  "空间效果图": "Spatial renderings",
+  "六张空间效果图，横向浏览": "Six spatial renderings, browse horizontally",
+  "核心茶室": "Central tea room",
+  "入口与步道": "Entrance and walkway",
+  "游览廊道": "Exhibition passage",
+  "互动茶席": "Interactive tea station",
+  "临窗茶席": "Tea by the window",
+  "展厅外观": "Exhibition exterior",
+  "核心茶室 · 空间设计效果图": "Central tea room · Spatial design rendering",
+  "入口与步道 · 空间设计效果图": "Entrance and walkway · Spatial design rendering",
+  "游览廊道 · 空间设计效果图": "Exhibition passage · Spatial design rendering",
+  "互动茶席 · 空间设计效果图": "Interactive tea station · Spatial design rendering",
+  "临窗茶席 · 空间设计效果图": "Tea by the window · Spatial design rendering",
+  "展厅外观 · 空间设计效果图": "Exhibition exterior · Spatial design rendering"
+});
