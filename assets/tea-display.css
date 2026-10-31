@@ -1,0 +1,56 @@
+/* Display vocabulary above; transparent original objects compose the family below. */
+.tea-display-chapter{gap:30px;padding-block:clamp(72px,7.8vh,108px)}
+.tea-display-chapter>.tea-heading{display:block}
+.tea-display-analysis{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);gap:40px;align-items:start}
+.tea-case .tea-display-analysis h3{font-size:25px;line-height:1.3;margin:0 0 20px}
+.tea-display-forms{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;text-align:center}
+.tea-display-forms article{min-width:0}
+.tea-display-forms h4{font-size:18px;font-weight:400;line-height:1.35;color:var(--tea-strong);margin:0}
+.tea-case .tea-display-semantic{font-size:14px;line-height:1.4;color:var(--dim);margin-top:3px}
+.tea-display-chapter .tea-detail-open{display:block;width:100%;padding:0;border:0;background:none;color:inherit;cursor:zoom-in}
+.tea-display-form{width:clamp(64px,5.2vw,94px);max-width:100%;margin:10px auto!important}
+.tea-display-form .tea-detail-open{aspect-ratio:1;padding:5px;border:1px solid var(--tea-jade);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.tea-display-form img{width:100%;height:100%;object-fit:contain}
+.tea-display-form figcaption,.tea-display-unit figcaption,.tea-display-array-item figcaption{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.tea-case .tea-display-form-note{font-size:14px;line-height:1.55;color:var(--soft)}
+.tea-display-palette{display:grid;grid-template-columns:1fr 1.15fr;gap:24px;margin-top:24px;align-items:start}
+.tea-display-palette h4{font-size:16px;font-weight:400;line-height:1.4;color:var(--soft);margin:0 0 12px}
+.tea-display-swatches{display:flex;flex-wrap:wrap;gap:6px}
+.tea-case .tea-display-swatches img{width:22px;height:22px;object-fit:contain}
+.tea-display-materials{mix-blend-mode:screen;max-width:285px}
+.tea-case .tea-display-materials figcaption{font-size:14px;color:var(--dim);line-height:1.5;margin-top:5px}
+.tea-display-types{display:grid;grid-template-columns:repeat(5,minmax(0,1fr)) minmax(0,1.85fr);gap:12px}
+.tea-display-types article{min-width:0;text-align:center}
+.tea-display-types h4{font-size:18px;font-weight:400;line-height:1.4;min-height:1.4em;margin:0;color:var(--tea-strong)}
+.tea-case .tea-display-use{font-size:13px;line-height:1.5;color:var(--dim);min-height:1.5em;margin:3px 0 8px}
+.tea-display-unit>button{height:142px;display:flex!important;align-items:center;justify-content:center}
+.tea-case .tea-display-unit img{width:auto;max-width:100%;height:auto;max-height:142px;object-fit:contain}
+.tea-case .tea-display-type-note{font-size:14px;line-height:1.65;color:var(--soft);margin-top:13px}
+.tea-display-assembly{display:grid;grid-template-columns:minmax(0,2.4fr) minmax(0,1fr);gap:36px;align-items:center}
+.tea-display-array{position:relative;width:100%;max-width:1100px;margin-inline:auto;aspect-ratio:1100/480}
+.tea-display-array-item{position:absolute;left:var(--array-x);top:var(--array-y);width:var(--array-width)}
+.tea-case .tea-display-array-item img{width:100%;height:auto}
+.tea-display-story{display:grid;grid-template-columns:minmax(0,1fr) 64px;gap:24px;align-items:center}
+.tea-case .tea-display-story h3{font-size:25px;line-height:1.35;margin-bottom:18px}
+.tea-case .tea-display-story p{font-size:18px;line-height:1.8;max-width:24ch;color:var(--mid)}
+.tea-display-story p+p{margin-top:14px}
+.tea-display-values{list-style:none;margin:0;padding:0;display:grid;gap:20px;text-align:center;mix-blend-mode:screen}
+.tea-display-value>button{width:48px!important;margin:auto}
+.tea-case .tea-display-value img{width:100%;height:auto}
+.tea-case .tea-display-value figcaption{margin-top:6px;color:var(--soft);line-height:1.4}
+html[data-theme=light] .tea-display-materials,html[data-theme=light] .tea-display-values{mix-blend-mode:multiply}
+html[data-theme=light] .tea-display-materials img,html[data-theme=light] .tea-display-values img{filter:invert(1) hue-rotate(180deg)}
+html[data-theme=light] .tea-display-unit img,html[data-theme=light] .tea-display-array-item img{filter:drop-shadow(0 1px 1px #32574425)}
+@media(min-width:1801px){.tea-case .tea-display-chapter{max-width:2200px;gap:38px}.tea-display-analysis{gap:60px}.tea-case .tea-display-analysis h3,.tea-case .tea-display-story h3{font-size:30px}.tea-display-forms{gap:18px}.tea-display-form{width:100px}.tea-display-palette{gap:32px;margin-top:28px}.tea-display-types{gap:18px}.tea-display-unit>button{height:175px}.tea-case .tea-display-unit img{max-height:175px}.tea-display-assembly{gap:54px}.tea-display-story{grid-template-columns:minmax(0,1fr) 80px;gap:30px}.tea-case .tea-display-story p{font-size:20px}.tea-display-value>button{width:60px!important}.tea-display-values{gap:26px}}
+@media(max-width:1150px){.tea-display-analysis{grid-template-columns:1fr;gap:40px}.tea-display-form{width:94px}.tea-display-palette{max-width:700px}.tea-display-types{gap:16px}.tea-display-types h4{min-height:1.4em}.tea-display-use{min-height:1.5em}.tea-display-assembly{grid-template-columns:1fr;gap:30px}.tea-display-array{max-width:900px;margin:auto}.tea-display-story{grid-template-columns:1fr auto;gap:30px}.tea-display-story>div{max-width:46ch}.tea-case .tea-display-story p{max-width:none}.tea-display-values{grid-template-columns:repeat(3,70px);gap:20px}}
+@media(max-width:600px){.tea-display-forms{grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 14px}.tea-display-form{width:80px}.tea-display-palette{grid-template-columns:1fr;gap:24px}.tea-display-materials{max-width:300px}.tea-display-types{grid-template-columns:repeat(3,minmax(0,1fr));gap:26px 16px}.tea-display-types h4{font-size:17px;min-height:2.8em}.tea-display-unit>button{height:135px}.tea-case .tea-display-unit img{max-height:135px}.tea-display-types .tea-display-use{min-height:3em}.tea-display-array{min-width:0;aspect-ratio:1100/480}.tea-display-story{grid-template-columns:1fr;gap:24px}.tea-display-values{justify-content:start;grid-template-columns:repeat(3,72px);gap:28px}.tea-case .tea-display-story h3{font-size:23px}.tea-case .tea-display-story p{font-size:16px}}
+@media(max-width:600px){
+ .tea-display-array{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 16px;aspect-ratio:auto}
+ .tea-display-array-item{position:static;width:auto}
+ .tea-display-array-item>button{height:132px;display:flex!important;align-items:center;justify-content:center}
+ .tea-case .tea-display-array-item img{width:auto;max-width:100%;height:auto;max-height:132px;object-fit:contain}
+ .tea-display-array-item figcaption{position:static;width:auto;height:auto;overflow:visible;clip-path:none;white-space:normal;text-align:center;margin-top:7px;color:var(--dim)}
+}
+
+html[lang^=en] .tea-display-types h4{min-height:4.2em}
+html[lang^=en] .tea-display-types .tea-display-use{min-height:3em}
