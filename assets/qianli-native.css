@@ -84,7 +84,7 @@
 @media(prefers-reduced-motion:reduce){.q-native-row,.q-reveal-lines,.q-native-link,.q-tap-ring,.q-mountain-layer,.q-layer-light{animation:none!important;clip-path:none!important;opacity:1!important;transform:none!important}}
 .q-method-art>svg{width:clamp(58px,7vw,100px);height:auto;aspect-ratio:1;color:#5e8c75;flex-shrink:0}
 .q-production>.q-native,.q-production>figure>.q-native{aspect-ratio:1.6;display:grid;align-content:center;background:transparent;padding:10px}
-.q-native svg .q-native-label,.q-native-logic text,.q-native-chart text,.q-native-chart circle[fill="black"]{fill:var(--ink)}
+.q-native svg .q-native-label,.q-native-logic text,.q-native-chart text{fill:var(--ink)}
 .q-serpentine .q-native,.q-serpentine .q-image{height:clamp(150px,15vw,260px);aspect-ratio:auto;min-height:0}
 .q-serpentine .q-native>svg,.q-serpentine .q-image>svg{display:block;width:100%;height:100%;object-fit:contain}
 .q-serpentine>figure:nth-child(n+4):not(:last-child)::after{content:'←';left:-4.3vw;right:auto}
@@ -99,3 +99,7 @@
 @media(min-width:1001px) and (max-width:1800px){.q-styling-grid{max-width:1120px;align-self:center;grid-template-columns:1.18fr 1fr;gap:60px}}
 @media(min-width:1801px){.q-styling-grid{max-width:1600px;align-self:center}}
 .q-styling-grid{width:100%}
+
+/* Dark samples keep their source colour after removing the white sheet. */
+html[data-theme="dark"] .q-native-chart :is(circle,path):is([fill="black"],[fill="#202020"]){stroke:var(--soft);stroke-width:1.1;paint-order:stroke fill}
+html[data-theme="dark"] .q-native-chart circle[stroke="black"]{stroke:var(--soft);stroke-width:1.1}
