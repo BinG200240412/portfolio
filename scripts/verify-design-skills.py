@@ -16,7 +16,8 @@ assert len(catalog['gallery']) == 75
 assert len(catalog['icons']) == 43
 assert len({entry['id'] for entries in (catalog['gallery'], catalog['icons']) for entry in entries}) == 118
 assert '/Users/' not in (folder / 'catalog.json').read_text()
-assert not re.search(r'\.png|\.jpe?g|\.webp', page_text, re.I)
+# App icons in <head> do not rasterize the vector artwork in the page body.
+assert not re.search(r'\.png|\.jpe?g|\.webp', page_text.partition('<body')[2], re.I)
 
 class PreviewLinks(HTMLParser):
     def handle_starttag(self, tag, attrs):

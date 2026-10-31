@@ -31,7 +31,10 @@
 <link rel="stylesheet" href="../assets/wide-screen.css?v=faac84ee2a">
 <link rel="stylesheet" href="../assets/archive-library.css?v=668b919cad">
 <link rel="stylesheet" href="../assets/archive-reader.css?v=5c9ac10811">
+<link rel="stylesheet" href="../assets/archive-cover-led.css?v=c384227944">
 <script defer src="../assets/frame-lifecycle.js?v=54d357fe75"></script>
+<script defer src="../assets/cover-led-runtime.js?v=27552df454"></script>
+<script defer src="../assets/archive-cover-led.js?v=066dfefeca"></script>
 <script defer src="../assets/i18n-main.js?v=9cce2dc4b5"></script>
 <script defer src="../assets/i18n-cases.js?v=71b948215d"></script>
 <script defer src="../assets/archive-copy.js?v=f7ff59f7a0"></script>
@@ -48,7 +51,7 @@
 <body class="legacy-case archive">
 <main class="archive-library">
   <section class="archive-shelf archive-shelf--books" aria-labelledby="archive-title">
-    <header class="archive-heading"><h1 id="archive-title">档案库</h1></header>
+    <header class="archive-heading archive-cover-header"><h1 id="archive-title">档案库</h1><div class="archive-book-cover" aria-hidden="true" data-media-corners-ignore><canvas data-led-cover="archive"></canvas></div></header>
     <h2>作品集</h2>
     <div class="archive-grid archive-grid--books">
 <!-- archive-portfolio-start -->
