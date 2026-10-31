@@ -54,7 +54,23 @@
 
 服务器已验证登录与主机身份、服务安装、DNS / HTTPS、允许来源的 CORS、真实 session / cookie 和 DeepSeek 问答；无密钥时拒绝，错误来源返回 403、不配置允许来源。www 自动 301 至主域。一次数独介绍问答返回约 2.1 秒，不能视为全部访客的响应时间保证。回答资料由作者持续审核；移动端桌面视口测试不能代替真实手机和不同网络的人工体验。
 
-## 语音输入（独立 CPU 服务）
+## 语音输入（豆包 2.0，当前线上方式）
+
+`SPEECH_PROVIDER=doubao` 使用已开通的豆包流式语音识别模型 **2.0 小时版**，固定资源 `volc.seedasr.sauc.duration` 与官方一句话识别地址 `wss://openspeech.bytedance.com/api/v3/sauc/bigmodel_nostream`。录音仍通过现有 `POST /portfolio-ai/transcribe` 提交，浏览器的灯珠由本地真实音量驱动；服务器识别成功后只把文字填回输入框，不自动提问。无需在 2GB 主机加载识别模型。
+
+先运行 `python3 -m venv /opt/portfolio-ai/venv`，再用该环境的 pip 安装 `requirements-doubao.txt` 固定的 `websockets==15.0.1` 到本服务独立虚拟环境，并让本服务使用该环境的 Python；DeepSeek 文字问答不增加其他 SDK。本地 CPU 识别模式不加载此依赖。通过 `store_speech_key.py` 的隐藏输入把已有豆包语音 Key 保存到 root:root 0600 的 `/etc/portfolio-ai/doubao-speech.env`；unit 在主私密环境之后加载这份文件，不覆盖 DeepSeek 配置。该文件包含 `SPEECH_PROVIDER=doubao`、`DOUBAO_SPEECH_API_KEY`；仅在账号权限和真实音频验收后设 `SPEECH_ENABLED=1`。密钥来自[豆包语音 API Key 页面](https://console.volcengine.com/speech/new/setting/apikeys?projectName=default)，不能拿 DeepSeek 或方舟文本模型 Key 代替。密钥不进入前端、仓库、日志或命令参数。
+
+`doubao_speech.py` 复用 20 秒、16kHz、单声道 PCM16 WAV 校验；去掉 WAV 容器后按官方序列号及 gzip 二进制协议发送。它等待初始确认，再并行上传短录音和读取结果，只接受最后一包的完整文本。已录好的音频以 200ms 数据块连续上传，省去二次按录音时长播放的等待；官方示例的实时模拟间隔没有加到此路径，该路径已通过真实中英文和完整 20 秒音频验收：分别约 1.167、1.623、3.187 秒返回。部署记录见 `../../docs/portfolio-speech-doubao-20261031.md`。
+
+连接固定目标、校验证书及主机名、禁用环境代理和全部重定向，禁用 WebSocket 压缩；供应商自身 gzip 消息另做 32KiB 解压上限、长度和 JSON 结构校验。每条消息最多 32KiB、响应最多 128 条，正常异步交换截止 25 秒、调用线程最长等待 25.2 秒，DNS 通过唯一线程的常驻循环处理，失败不重试、不切换到别家或其他付费型号。关闭或超时会中断连接；已经发出的供应商调用仍可能计费。网关原有会话、CSRF、持久化语音限额和并发限制沿用，音频及原始响应不写入文件或日志。
+
+官方当前 2.0 小时版后付费为 **1 元/小时**；提供 **20 小时、半年**的试用额度，需在控制台领取，实际资格、剩余量和有效期以该服务页面为准。方舟文本模型赠送的 token 不等于语音识别额度。本站现有月上限 600 次、每次最多 20 秒，对应最多约 3.34 小时音频尝试；这是调用上限推算，不是供应商账单承诺。此配置不调用 `volc.bigasr.auc_turbo` 的旧极速 HTTP 产品，不能把两者型号和价格混用。
+
+来源：[官方一句话 API 与协议附件](https://docs.volcengine.com/docs/doubao-voice/unidirectional-streaming-automatic-speech-recognition-websocket?lang=zh)、[计费说明](https://docs.volcengine.com/docs/doubao-voice/billing-instructions?lang=zh)、[试用额度与有效期](https://docs.volcengine.com/docs/doubao-voice/billing-overview?lang=zh)、[websockets 固定版本文档](https://websockets.readthedocs.io/en/15.0.1/)。
+
+本地验证：`python3 -m unittest discover -s server/portfolio-ai -p 'test_doubao_speech.py' -v`。测试不访问付费接口，覆盖二进制音频、序列、最终结果、TLS/固定地址/拒绝重定向、gzip 体积上限、消息数量、总超时和凭据脱敏。
+
+## 语音输入（独立 CPU 服务，local 备选）
 
 浏览器只在点麦克风后申请权限；Web Audio 本地分析真实振幅，灯珠不依赖模型或音频上行。停顿或再次点击后，以单声道 16kHz PCM16 WAV 提交 `POST /portfolio-ai/transcribe`，仍须同一会话 cookie、CSRF 和允许来源。结果 `{status:"ok",text:"…"}` 只填入输入框，不自动发送给 DeepSeek。DeepSeek 的文字接口没有承担音频识别。
 

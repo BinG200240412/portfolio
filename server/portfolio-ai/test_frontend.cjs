@@ -156,18 +156,38 @@ test('history is capped at seven turns and 4000 characters, with the latest ques
 });
 
 function ui(reply, voice = {}) {
-  class Node {
-    constructor() { this.listeners = {}; this.attributes = {}; this.children = []; this.dataset = {}; this.value = ''; this.style = { setProperty() {} }; this.classList = { add() {}, remove() {}, toggle() {} }; this.scrollHeight = 48; this.isConnected = true; }
-    setAttribute(name, value) { this.attributes[name] = value; }
-    addEventListener(name, handler) { this.listeners[name] = handler; }
-    appendChild(node) { this.children.push(node); return node; }
-    replaceChildren() { this.children = []; }
-    focus() {} closest() { return null; } contains() { return false; }
-  }
   const nodes = new Map(); let popup;
+  const matches=(node,selector)=>selector.startsWith('.')?node.className.split(/\s+/).includes(selector.slice(1)):selector.startsWith('#')?node.attributes.id===selector.slice(1):selector==='[inert]'?!!node.inert:node.tagName===selector;
+  class Node {
+    constructor(tagName='div') { this.tagName=tagName;this.className='';this.parentElement=null;this.listeners = {}; this.attributes = {}; this.children = []; this.dataset = {}; this.value = ''; this.style = { setProperty() {} }; this.classList = { add() {}, remove() {}, toggle() {} }; this.scrollHeight = 48; this.isConnected = true; }
+    setAttribute(name, value) { this.attributes[name] = value;if(name==='class')this.className=value; }
+    addEventListener(name, handler) { this.listeners[name] = handler; }
+    appendChild(node) { this.children.push(node);node.parentElement=this;return node; }
+    replaceChildren() { this.children = []; }
+    focus() {} closest(selector) { for(let current=this;current;current=current.parentElement)if(matches(current,selector))return current;return null; }
+    contains(target) {for(let current=target;current;current=current.parentElement)if(current===this)return true;return false;}
+    querySelectorAll(selector) {
+      const parts=selector.split(/\s+/),found=[];
+      const visit=node=>{for(const child of node.children){
+        if(matches(child,parts.at(-1))){let ancestor=child.parentElement,index=parts.length-2;while(index>=0&&ancestor){if(matches(ancestor,parts[index]))index--;ancestor=ancestor.parentElement;}if(index<0)found.push(child);}
+        visit(child);
+      }};visit(this);return found;
+    }
+    querySelector(selector) {const node=this.querySelectorAll(selector)[0]||null;if(node)nodes.set(selector,node);return node;}
+    set innerHTML(html) {
+      this.html=html;this.children=[];const stack=[this];
+      for(const match of html.matchAll(/<(\/?)([a-z][a-z0-9-]*)([^>]*?)(\/?)>/gi)){
+        const [,closing,tag,attributes,selfClosing]=match;
+        if(closing){stack.pop();continue;}
+        const node=new Node(tag);for(const attribute of attributes.matchAll(/([a-z][a-z0-9-]*)="([^"]*)"/gi))node.setAttribute(attribute[1],attribute[2]);
+        stack.at(-1).appendChild(node);if(!selfClosing&&!['input','br','img','hr','meta','link'].includes(tag))stack.push(node);
+      }
+    }
+    get innerHTML(){return this.html||'';}
+  }
   const document = { hidden: false, activeElement: null, documentElement: { lang: 'zh' },
-    createElement(name) { const node = new Node(); if (name === 'section') { popup = node; node.querySelector = selector => { if (!nodes.has(selector)) nodes.set(selector, new Node()); return nodes.get(selector); }; } return node; },
-    body: new Node(), getElementById() { return null; }, addEventListener() {},
+    createElement(name) {const node=new Node(name);if(name==='section')popup=node;return node;},
+    body: new Node('body'), getElementById() { return null; }, addEventListener() {},
   };
   let available = false;
   const context = { document, URL, setTimeout, clearTimeout, location: {href:'https://bing2002.com/'}, innerHeight: 982, innerWidth: 1512, AbortController, CustomEvent: class { constructor(type, options) { this.type = type; this.detail = options?.detail; } },
@@ -288,4 +308,22 @@ test('closing during transcription aborts the upload, keeps the draft and ignore
   env.nodes.get('.pa-voice-toggle').listeners.click();await tick();assert.equal(input.readOnly,true);
   env.api.close();assert.equal(signal.aborted,true);assert.equal(input.readOnly,false);
   finish({status:'ok',text:'不应该出现'});await tick();assert.equal(input.value,'保留输入');
+});
+
+
+test('voice dots are a decorative sibling of the input card and keep the microphone accessibility connection',async()=>{
+  let finish;
+  const env=ui(()=>assert.fail('voice must not auto-send'),{
+    module:{record({onState}){onState('listening');return{result:new Promise(resolve=>{finish=resolve;}),cancel(){},stop(){}};}},
+    transcribe:async()=>({status:'ok',text:'数独'}),
+  });
+  const card=env.popup.querySelector('.pa-window'),wave=env.popup.querySelector('.pa-wave'),panel=env.popup.querySelector('.pa-voice-panel'),mic=env.nodes.get('.pa-voice-toggle');
+  assert.equal(panel.parentElement,env.popup,'waveform must stay outside the card background');assert.equal(card.contains(wave),false);
+  assert.equal(wave.querySelectorAll('circle').length,243,'uniform 27 by 9 point grid');assert.equal(panel.attributes['aria-hidden'],'true');
+  assert.equal(mic.attributes['aria-controls'],panel.attributes.id);
+  const originalCardChildren=[...card.children];env.allow();env.api.open();env.nodes.get('.pa-voice-toggle').listeners.click();await tick();
+  assert.equal(mic.attributes['aria-expanded'],'true');assert.equal(mic.attributes['aria-pressed'],'true');
+  assert.deepEqual(card.children,originalCardChildren,'recording must not insert an expanding tray into the card');
+  assert.match(env.popup.style.maxHeight,/886px/,'floating dots reserve visual viewport headroom');
+  finish(new Blob(['audio']));await tick();assert.equal(mic.attributes['aria-expanded'],'false');assert.equal(mic.attributes['aria-pressed'],'false');
 });

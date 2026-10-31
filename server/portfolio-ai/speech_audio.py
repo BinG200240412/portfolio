@@ -38,6 +38,8 @@ def read_pcm(raw, *, require_sound=True):
     samples.frombytes(frames)
     if sys.byteorder != 'little':
         samples.byteswap()
-    if require_sound and math.sqrt(sum(x * x for x in samples) / len(samples)) < 82:
+    # Only discard near-digital silence here. Device loudness and pauses vary;
+    # a high whole-recording RMS gate can discard genuine quiet speech.
+    if require_sound and math.sqrt(sum(x * x for x in samples) / len(samples)) < 8:
         raise AudioError('voice_empty')
     return samples

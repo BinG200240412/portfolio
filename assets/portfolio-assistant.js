@@ -6,7 +6,7 @@
 (() => {
   'use strict';
   if (window.PortfolioAssistant) return;
-  const voiceModuleURL=new URL('assistant-voice.js?v=097f4d14b9',document.currentScript?.src||new URL('/assets/portfolio-assistant.js',location.href));
+  const voiceModuleURL=new URL('assistant-voice.js?v=e1f5af2919',document.currentScript?.src||new URL('/assets/portfolio-assistant.js',location.href));
   let voiceModule;
   const waveform=Array.from({length:27},(_,column)=>Array.from({length:9},(_,row)=>
     `<circle cx="${4+column*4}" cy="${2+row*4}" r="1.1"/>`
@@ -17,9 +17,9 @@
   popup.setAttribute('aria-describedby','pa-status');
   popup.setAttribute('data-i18n-ignore','');popup.setAttribute('aria-hidden','true');
   popup.dataset.open='false';popup.dataset.voiceExpanded='false';popup.dataset.suspended=String(document.hidden);popup.inert=true;
-  popup.innerHTML=`<div class="pa-window">
+  popup.innerHTML=`<div class="pa-voice-panel" id="pa-voice-panel" aria-hidden="true"><svg class="pa-wave" viewBox="0 0 112 36" aria-hidden="true" focusable="false">${waveform}</svg></div>
+  <div class="pa-window">
     <div class="pa-history" hidden><div class="pa-log" role="log" aria-live="polite" aria-relevant="additions"></div><p class="pa-notice" role="status" hidden></p></div>
-    <div class="pa-voice-panel" id="pa-voice-panel" aria-hidden="true"><div class="pa-voice-inner"><svg class="pa-wave" viewBox="0 0 112 36" aria-hidden="true" focusable="false">${waveform}</svg></div></div>
     <form class="pa-form">
       <button class="pa-voice-toggle" type="button" aria-controls="pa-voice-panel" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M6 11v1a6 6 0 0 0 12 0v-1M12 18v3m-3 0h6"/></svg></button>
       <textarea class="pa-input" rows="1" maxlength="1000"></textarea>
@@ -192,7 +192,9 @@
     // Fixed positioning uses the layout viewport; lift the bottom edge above
     // a software keyboard, then retain the ordinary safe-area breathing room.
     const bottom=Math.max(0,innerHeight-viewTop-height)+16;
-    const maxHeight=`max(0px, min(480px, calc(${Math.max(0,height-32)}px - env(safe-area-inset-bottom, 0px))))`;
+    // Keep the floating dots inside the visual viewport without adding a tray.
+    const voiceReserve=voiceExpanded?(height<400?48:64):0;
+    const maxHeight=`max(0px, min(480px, calc(${Math.max(0,height-32-voiceReserve)}px - env(safe-area-inset-bottom, 0px))))`;
     popup.style.width=`${boxWidth}px`;popup.style.left=`${left}px`;popup.style.top='auto';
     popup.style.bottom=`calc(${bottom}px + env(safe-area-inset-bottom, 0px))`;
     popup.style.maxHeight=maxHeight;

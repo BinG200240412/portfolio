@@ -9,9 +9,10 @@ User=portfolio-ai
 Group=portfolio-ai
 WorkingDirectory=/opt/portfolio-ai
 EnvironmentFile=/etc/portfolio-ai/portfolio-ai.env
+EnvironmentFile=-/etc/portfolio-ai/doubao-speech.env
 Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONUNBUFFERED=1
-ExecStart=/usr/bin/python3 /opt/portfolio-ai/server.py
+ExecStart=/opt/portfolio-ai/venv/bin/python /opt/portfolio-ai/server.py
 Restart=on-failure
 RestartSec=5
 UMask=0077

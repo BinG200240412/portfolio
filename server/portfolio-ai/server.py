@@ -11,6 +11,7 @@ import ipaddress
 import json
 import os
 from pathlib import Path
+import re
 import secrets
 import socket
 import sqlite3
@@ -74,6 +75,8 @@ class Config:
     voice_session_day: int = 15
     voice_global_day: int = 60
     voice_global_month: int = 600
+    speech_provider: str = 'local'
+    doubao_speech_key: str = ''
 
     @property
     def ready(self):
@@ -97,6 +100,9 @@ class Config:
         model = os.environ.get('DEEPSEEK_MODEL', 'deepseek-flash')
         if model != 'deepseek-flash':
             raise ValueError('Review model pricing before changing the allowlisted model')
+        speech_provider = os.environ.get('SPEECH_PROVIDER', 'local')
+        if speech_provider not in ('local', 'doubao'):
+            raise ValueError('Unsupported speech provider')
         return cls(os.environ.get('DEEPSEEK_API_KEY', '').strip(),
                    os.environ.get('SESSION_SECRET', '').encode(),
                    os.environ.get('QUOTA_DATABASE', '/var/lib/portfolio-ai/quota.sqlite3'),
@@ -111,7 +117,9 @@ class Config:
                    voice_ip_day=limit('VOICE_IP_DAY_LIMIT', 20),
                    voice_session_day=limit('VOICE_SESSION_DAY_LIMIT', 15),
                    voice_global_day=limit('VOICE_GLOBAL_DAY_LIMIT', 60),
-                   voice_global_month=limit('VOICE_GLOBAL_MONTH_LIMIT', 600))
+                   voice_global_month=limit('VOICE_GLOBAL_MONTH_LIMIT', 600),
+                   speech_provider=speech_provider,
+                   doubao_speech_key=os.environ.get('DOUBAO_SPEECH_API_KEY', ''))
 
 
 class Quotas:
@@ -198,7 +206,21 @@ class Application:
         self.slots = threading.BoundedSemaphore(2)
         self.upstream = _upstream or deepseek_reply
         self.voice_slot = threading.BoundedSemaphore(1)
-        self.speech = _speech or local_transcribe
+        self.speech = _speech or self.configured_transcribe
+
+    def configured_transcribe(self, raw):
+        if self.config.speech_provider == 'local':
+            return local_transcribe(raw)
+        key = self.config.doubao_speech_key
+        if not re.fullmatch(r'[A-Za-z0-9._~+/-]{16,512}={0,2}', key):
+            raise ServiceError('voice_not_configured', 503)
+        from doubao_speech import recognize, SpeechError
+        try:
+            return recognize(raw, key)
+        except SpeechError as exc:
+            allowed = {'voice_not_configured', 'voice_empty', 'voice_busy', 'voice_unavailable', 'timeout'}
+            raise ServiceError(exc.code if exc.code in allowed else 'voice_unavailable',
+                               exc.status if exc.status in (422, 429, 503, 504) else 503) from None
 
     def digest(self, purpose, value):
         return hmac.new(self.config.session_secret, (purpose + ':' + value).encode(), hashlib.sha256).hexdigest()
