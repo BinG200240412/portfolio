@@ -449,5 +449,14 @@
     "rendering": "Editable SVG paths, circles, rectangles and text mounted into the DOM near the viewport. No full-page or diagram raster captures.",
     "motion": "Local row growth, line reveals, touch ripples and a source-loop travelling signal; paused offscreen and in reduced motion.",
     "video": "Silent on-screen looping previews; original full movies remain in the detail player."
+  },
+  "transparent20261031": {
+    "presentation": "Remove added white/black/gray diagram and image backing panels; labels use page ink. Preserve real photographic scenes.",
+    "cutouts": {
+      "native/arduino-cutout.webp": "image_gen transparent edit of native/component-6407.webp",
+      "native/sensor-cutout.webp": "image_gen transparent edit of native/component-6401.webp",
+      "native/led-cutout.webp": "image_gen transparent edit of native/component-1587.webp"
+    },
+    "paintingViewer": "native/painting-sample.svg embeds the unchanged source photograph and original silhouette clip; transparent outside the mountain."
   }
 }
