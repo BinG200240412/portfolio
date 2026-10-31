@@ -1,36 +1,36 @@
 # 作品集 AI 接口
 
-为 `bing2002.com` 底部红点对话框准备的独立后端。代码和示例配置已准备，16 项后端集成测试、12 项前端模拟测试通过；**还未部署，未填写密钥，也未完成真实 OpenAI 调用**。前端默认仍未连接，不会显示模拟答案。
+为 `bing2002.com` 底部红点对话框准备的独立后端。代码和示例配置已准备，17 项后端集成测试、12 项前端模拟测试通过；**还未部署，未填写密钥，也未完成真实 DeepSeek 调用**。前端默认仍未连接，不会显示模拟答案。
 
 ## 当前部署边界
 
-用户选择 OpenAI，但现有服务器为阿里云杭州。2026.10.31 核对的 [OpenAI 支持地区](https://developers.openai.com/api/docs/supported-countries) 不包含中国大陆。不能把这份代码直接部署到杭州，就当作已解决访问问题；海外机器本身也不代表账户与服务对象自动符合支持范围。部署前需核实账户资格、提供服务的地区和运行环境。不要配置非官方中转、关闭 TLS 验证，或复用旧数独凭据。
+用户最终选择使用现有阿里云杭州服务器，模型改为 DeepSeek。采用 [DeepSeek 官方接口](https://api-docs.deepseek.com/quick_start/)，不使用第三方中转、不关闭 TLS 验证、不复用旧数独凭据。2026.10.31 登录检查显示阿里云会话失效，需本人登录后才能部署；没有尝试旧密码或修改现有服务。
 
 正式连接设计：
 
-`bing2002.com 红点聊天框 → ai.bing2002.com/portfolio-ai/ → OpenAI Responses API`
+`bing2002.com 红点聊天框 → ai.bing2002.com/portfolio-ai/ → DeepSeek Chat Completions API`
 
 `ai.bing2002.com` 是计划使用的新子域，**目前没有创建或修改 DNS**。现有 `api.bing2002.com`、数独服务和杭州服务器保持原状。
 
 ## 最小部署清单
 
-适用于已确认可使用 OpenAI 的独立 Linux/systemd 主机；未在真实服务器执行以下步骤。
+适用于现有 Linux/systemd 主机上的独立服务；未在真实服务器执行以下步骤。
 
 1. 核对主机身份、地区和已有服务；保存服务/端口快照。准备独立系统用户 `portfolio-ai`，应用目录 `/opt/portfolio-ai` 由管理员拥有，服务用户不可写代码。
-2. 将 `server.py`、`knowledge.md` 放入 `/opt/portfolio-ai`。无需安装第三方 Python 包。运行 `python3 -m unittest discover -s server/portfolio-ai -p 'test_server.py' -v` 与 `node server/portfolio-ai/test_frontend.cjs` 验证代码。
-3. 将环境示例复制至 `/etc/portfolio-ai/portfolio-ai.env`，目录权限 0700、文件 root:root 0600。通过本人控制的服务器终端私密填写**新的作品集项目密钥**与至少 32 字节的随机 `SESSION_SECRET`。不要贴到聊天、浏览器代码、Git、日志或命令行参数里。不要 `source` 不可信配置，也不要把环境变量输出到终端。
-4. 示例中的 `QUOTA_DATABASE=/var/lib/portfolio-ai/quota.sqlite3`、`KNOWLEDGE_FILE=/opt/portfolio-ai/knowledge.md` 和 `TRUST_LOOPBACK_PROXY=1` 对应独立状态路径、知识文件和可信本机代理模式；监听仅 `127.0.0.1:8788`。反向代理必须覆盖 `X-Real-IP`，不可透传用户伪造值。服务用户只可写自己的状态目录。
+2. 将 `server.py`、`knowledge.md`、`store_key.py` 放入 `/opt/portfolio-ai`。无需安装第三方 Python 包。运行 `python3 -m unittest discover -s server/portfolio-ai -p 'test_server.py' -v` 与 `node server/portfolio-ai/test_frontend.cjs` 验证代码。
+3. 通过本人控制的服务器交互终端运行 `sudo python3 /opt/portfolio-ai/store_key.py`，本人输入**新的 DeepSeek 作品集专用密钥**。输入隐藏，不经过聊天、命令参数或 shell 历史；程序在 `/etc/portfolio-ai/portfolio-ai.env` 原子保存，目录 0700、文件 0600，自动创建随机会话密钥，后续更换 API Key 保留原会话密钥。不调用模型、不充值、不自动重启。不要把环境变量输出到终端。也可参照 `.env.example` 用受控私密配置工具保存，不能将真实值放在仓库或静态目录。
+4. 示例中的 `QUOTA_DATABASE=/var/lib/portfolio-ai/quota.sqlite3`、`KNOWLEDGE_FILE=/opt/portfolio-ai/knowledge.md` 和 `TRUST_LOOPBACK_PROXY=1` 对应独立状态路径、知识文件和可信本机代理模式；监听仅 `127.0.0.1:8791`。现有服务器的 8787–8790 已被其他服务占用，不覆盖它们。反向代理必须覆盖 `X-Real-IP`，不可透传用户伪造值。服务用户只可写自己的状态目录。
 5. 安装 `portfolio-ai.service` 并检查 unit；仅启动这个新服务。确认本机 health 返回 ready=true。密钥格式存在并不证明有额度或模型权限，正式验收仍需一条低成本问答。
-6. 把新子域解析到新主机后，使用 `Caddyfile.example` 配置 HTTPS。保留现有站点配置，先 validate 再 reload；不要替换杭州现有 Caddy 配置或重启数独服务。
+6. 把新子域解析到已核实的杭州主机后，使用 `Caddyfile.example` 的独立域名段配置 HTTPS。保留现有站点配置，先 validate 再平滑 reload；不要替换整个 Caddyfile 或重启数独服务。服务器级 timeouts 仅供专用新主机参考，在现有多站主机上不能直接照搬，以免影响原站。
 7. 先检查 HTTPS、CORS、会话、限额和真实问答，再在首页加载连接模块后显式执行 `PortfolioAssistantConnection.configureHosted()`。未验收前不启用。同步共享资源 hash、发布 Pages，最后从总站红点实际发送并核对答案、返回与中英文错误状态。
 
 ## 费用与滥用控制
 
-- 模型固定为服务端配置的 `gpt-6-luna`，关闭推理，输出最多 400 tokens，不提供工具、任意 URL、浏览器、代码执行或文件访问。参考 [模型文档](https://developers.openai.com/api/docs/models/gpt-6-luna) 与 [Responses API](https://developers.openai.com/api/docs/guides/text)。
+- 模型固定为服务端配置的 `deepseek-flash`，显式 `thinking:{type:"disabled"}`、`max_tokens:400`、`stream:false`，不提供工具、任意 URL、浏览器、代码执行或文件访问。只展示最终 `message.content`，不展示推理内容。参考 [官方接口](https://api-docs.deepseek.com/api/create-chat-completion/) 与 [思考开关](https://api-docs.deepseek.com/guides/thinking_mode/)。
 - 默认每 IP 6 次/分钟、30 次/日；每会话 20 次/日；全站 100 次/日、1000 次/月；最多 2 个并行模型请求。每条输入和历史另有限额。所有上游尝试在请求前以 SQLite 事务计数，失败与超时同样保留计数，重启不会清空。
-- 这些是**请求次数上限，不是美元账单限额**。另在 OpenAI 作品集项目设置较小的月度金额并开启 Enforce a hard limit，不只添加提醒；[官方说明](https://developers.openai.com/api/docs/guides/spend-limits) 明确两者不同，且计费限额执行可能有少量延迟。实际值由用户决定，不擅自提高或开启自动充值。
+- 这些是**请求次数上限，不是人民币账单限额**。DeepSeek 使用本人设置的小额余额，充值和自动支付由本人决定，不能替用户充值或擅自开启自动续费。价格按 [官方定价](https://api-docs.deepseek.com/zh-cn/quick_start/pricing/)；输入与输出都收费，默认关闭思考和搜索工具。供应商后台若提供独立用量限额，同样配置；不要把账户提醒当硬限额。
 - Origin、CORS、cookie、CSRF 只能限制浏览器跨站请求，不能阻止脚本伪装访客。公开匿名接口仍可能被耗尽额度；真正保底是服务端持久化总限额与供应商限额。访问增加后再考虑验证码或登录，不把前端静态 token 当秘密。
-- 不保存原始问题、回答或明文 IP；仅保留用于限额的带密钥摘要、时间窗口与计数。OpenAI `store:false` 不等于供应商完全不留任何合规或滥用监测数据。本人审核公开知识后才上线，私有简历资料不要直接加入。
+- 本服务不保存原始问题、回答或明文 IP；仅保留用于限额的带密钥摘要、时间窗口与计数。这不等于供应商完全不留合规或服务数据。本人审核公开知识后才上线，私有简历资料不要直接加入。
 - 无密钥或服务端配置缺失时拒绝调用；非 2xx、超时、余额不足等不自动重复收费请求。前端等待上限为 22 秒；上游 20 秒为网络无数据超时，不保证供应商生成必定在 20 秒内终止。关闭前端会取消浏览器请求，但已到供应商的生成未必立即停止，仍受输出及次数限制。独立 Caddy 示例为入口配置请求读取和写入期限，避免慢客户端长期占据连接；仅用于新独立主机，不覆盖已有服务的全局设置。
 
 ## 知识与 Skill
@@ -52,4 +52,4 @@
 
 真实 Chrome 中使用只运行在 localhost 的测试服务，验证首次红点先导航、再次打开底部弹窗、失败后保留问题、手动重试后正确显示文本与清空输入。测试回复明确写为“本地连接测试：这不是模型回答”，仅用于 UI 验证，不部署测试服务或该文本。没有真实供应商调用、扣费或服务器配置变更。
 
-尚待真实部署后验证：支持地区与账户资格、密钥及额度、DNS/HTTPS、真实 CORS/cookie、模型回答准确度和延迟、移动端真实网络。Caddy 与 systemd 当前是未在目标 Linux 主机执行的模板，不宣称已通过服务器运行验收。
+尚待真实部署后验证：阿里云登录与主机身份、密钥及余额、DNS/HTTPS、真实 CORS/cookie、模型回答准确度和延迟、移动端真实网络。Caddy 与 systemd 当前是未在目标 Linux 主机执行的模板，不宣称已通过服务器运行验收。

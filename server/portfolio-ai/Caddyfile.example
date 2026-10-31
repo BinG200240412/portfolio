@@ -1,5 +1,9 @@
-# Deployment template only. Add on the NEW supported-region host after DNS
-# ai.bing2002.com points there. Do not replace the existing Sudoku Caddyfile.
+# Deployment template only. Add the DOMAIN BLOCK after DNS points to the
+# verified host. Do not replace the existing Sudoku Caddyfile.
+# The GLOBAL OPTIONS BLOCK is only for a NEW dedicated host. On the existing
+# multi-site host keep its globals unchanged; the backend has a 5s absolute
+# input deadline and bounded workers. Configure route-specific limits only
+# after checking the installed Caddy version and existing routes.
 {
     servers {
         timeouts {
@@ -16,7 +20,7 @@ ai.bing2002.com {
         request_body {
             max_size 16KB
         }
-        reverse_proxy 127.0.0.1:8788 {
+        reverse_proxy 127.0.0.1:8791 {
             # Always overwrite the visitor-supplied header.
             header_up X-Real-IP {remote_host}
         }

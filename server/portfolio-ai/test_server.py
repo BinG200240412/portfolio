@@ -1,10 +1,11 @@
-"""No network calls to OpenAI; integration runs only on localhost."""
+"""No network calls to DeepSeek; integration runs only on localhost."""
 import concurrent.futures
 from dataclasses import replace
 import http.client
 import importlib.util
 import io
 import json
+import os
 from pathlib import Path
 import socket
 import tempfile
@@ -309,31 +310,56 @@ class ServiceTests(unittest.TestCase):
         self.assertEqual(len(self.calls), 1)
 
     def test_upstream_payload_fixed_endpoint_and_error_redaction(self):
-        body = json.dumps({'status': 'completed', 'output': [{'type': 'message', 'role': 'assistant',
-                           'content': [{'type': 'output_text', 'text': 'reply'}]}]}).encode()
+        body = json.dumps({'choices': [{'finish_reason': 'stop',
+                           'message': {'role': 'assistant', 'content': 'reply', 'reasoning_content': 'never reveal this'}}]}).encode()
         with patch.object(service.request.OpenerDirector, 'open', return_value=io.BytesIO(body)) as mocked:
-            self.assertEqual(service.openai_reply(self.config, QUESTION['messages']), 'reply')
+            self.assertEqual(service.deepseek_reply(self.config, QUESTION['messages']), 'reply')
             args = mocked.call_args
             req = args.args[0]
             sent = json.loads(req.data)
-            self.assertEqual(req.full_url, 'https://api.openai.com/v1/responses')
-            self.assertEqual(sent['reasoning'], {'effort': 'none'})
-            self.assertEqual(sent['max_output_tokens'], 400)
-            self.assertFalse(sent['store'])
+            self.assertEqual(req.full_url, 'https://api.deepseek.com/chat/completions')
+            self.assertEqual(sent['model'], 'deepseek-flash')
+            self.assertEqual(sent['thinking'], {'type': 'disabled'})
+            self.assertEqual(sent['max_tokens'], 400)
+            self.assertFalse(sent['stream'])
+            self.assertEqual(sent['messages'][0]['role'], 'system')
+            self.assertIn('Published portfolio facts.', sent['messages'][0]['content'])
+            self.assertEqual(sent['messages'][1:], QUESTION['messages'])
+            self.assertNotIn('store', sent)
+            self.assertNotIn('reasoning', sent)
+            self.assertNotIn('max_output_tokens', sent)
             self.assertNotIn('tools', sent)
             self.assertEqual(args.kwargs['timeout'], 20)
         for exc, code in [(socket.timeout('only-a-test-key'), 'timeout'),
                           (error.URLError('only-a-test-key'), 'upstream_error')]:
             with patch.object(service.request.OpenerDirector, 'open', side_effect=exc):
                 with self.assertRaises(service.ServiceError) as caught:
-                    service.openai_reply(self.config, QUESTION['messages'])
+                    service.deepseek_reply(self.config, QUESTION['messages'])
                 self.assertEqual(caught.exception.code, code)
                 self.assertNotIn('only-a-test-key', str(caught.exception))
+                self.assertEqual(service.request.OpenerDirector.open.call_count, 1)
         self.assertIsNone(service.NoRedirect().redirect_request(None, None, 302, 'Moved', {}, 'https://elsewhere.example'))
         self.app.upstream = lambda *_: (_ for _ in ()).throw(RuntimeError('only-a-test-key'))
         status, _, data = self.http('chat', QUESTION, self.session())
         self.assertEqual(status, 503)
         self.assertNotIn('only-a-test-key', json.dumps(data))
+
+    def test_deepseek_env_and_model_allowlist(self):
+        knowledge = Path(self.temp.name) / 'knowledge.md'
+        knowledge.write_text('Only documented portfolio facts.')
+        values = {'DEEPSEEK_API_KEY': 'test-ds-key', 'SESSION_SECRET': 's' * 32,
+                  'KNOWLEDGE_FILE': str(knowledge), 'QUOTA_DATABASE': self.config.database}
+        with patch.dict(os.environ, values, clear=True):
+            config = service.Config.from_env()
+            self.assertTrue(config.ready)
+            self.assertEqual(config.api_key, 'test-ds-key')
+            self.assertEqual(config.model, 'deepseek-flash')
+        with patch.dict(os.environ, {**values, 'DEEPSEEK_MODEL': 'other-model'}, clear=True):
+            with self.assertRaises(ValueError):
+                service.Config.from_env()
+        values.pop('DEEPSEEK_API_KEY')
+        with patch.dict(os.environ, {**values, 'OPENAI_API_KEY': 'unused-old-test-key'}, clear=True):
+            self.assertFalse(service.Config.from_env().ready)
 
 
 if __name__ == '__main__':

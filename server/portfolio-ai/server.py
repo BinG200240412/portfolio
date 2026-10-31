@@ -55,7 +55,7 @@ class Config:
     session_secret: bytes
     database: str
     knowledge: str
-    model: str = 'gpt-6-luna'
+    model: str = 'deepseek-flash'
     origins: tuple = ('https://bing2002.com',)
     trust_proxy: bool = False
     upstream_timeout: float = 20
@@ -84,10 +84,10 @@ class Config:
         # No wildcard, HTTP, subdomains, query strings, or paths from a typo.
         if not origins or any(x not in ('https://bing2002.com', 'https://www.bing2002.com') for x in origins):
             raise ValueError('Unsupported portfolio origin')
-        model = os.environ.get('OPENAI_MODEL', 'gpt-6-luna')
-        if model != 'gpt-6-luna':
+        model = os.environ.get('DEEPSEEK_MODEL', 'deepseek-flash')
+        if model != 'deepseek-flash':
             raise ValueError('Review model pricing before changing the allowlisted model')
-        return cls(os.environ.get('OPENAI_API_KEY', '').strip(),
+        return cls(os.environ.get('DEEPSEEK_API_KEY', '').strip(),
                    os.environ.get('SESSION_SECRET', '').encode(),
                    os.environ.get('QUOTA_DATABASE', '/var/lib/portfolio-ai/quota.sqlite3'),
                    raw.decode('utf-8'), model, origins,
@@ -120,11 +120,11 @@ class Quotas:
                            [(b, s, w, expiry) for b, s, w, expiry, _, _ in specs])
 
 
-def openai_reply(config, messages):
-    payload = {'model': config.model, 'instructions': INSTRUCTIONS.format(knowledge=config.knowledge),
-               'input': messages, 'reasoning': {'effort': 'none'}, 'max_output_tokens': 400,
-               'store': False}
-    req = request.Request('https://api.openai.com/v1/responses',
+def deepseek_reply(config, messages):
+    payload = {'model': config.model,
+               'messages': [{'role': 'system', 'content': INSTRUCTIONS.format(knowledge=config.knowledge)}, *messages],
+               'thinking': {'type': 'disabled'}, 'max_tokens': 400, 'stream': False}
+    req = request.Request('https://api.deepseek.com/chat/completions',
                           data=json.dumps(payload).encode(), method='POST',
                           headers={'Authorization': 'Bearer ' + config.api_key,
                                    'Content-Type': 'application/json', 'Accept': 'application/json'})
@@ -135,12 +135,10 @@ def openai_reply(config, messages):
         if len(raw) > MAX_RESPONSE:
             raise ServiceError('upstream_error', 502)
         data = json.loads(raw)
-        parts = [part['text'] for item in data.get('output', [])
-                 if item.get('type') == 'message' and item.get('role') == 'assistant'
-                 for part in item.get('content', [])
-                 if part.get('type') == 'output_text' and isinstance(part.get('text'), str)]
-        answer = '\n'.join(parts).strip()
-        if data.get('status') not in ('completed', 'incomplete') or not answer:
+        choice = data['choices'][0]
+        message = choice['message']
+        answer = message['content'].strip()
+        if message.get('role') != 'assistant' or choice.get('finish_reason') not in ('stop', 'length') or not answer:
             raise ServiceError('upstream_error', 502)
         return answer[:6000]
     except (TimeoutError, socket.timeout):
@@ -148,7 +146,7 @@ def openai_reply(config, messages):
     except error.URLError as exc:
         raise ServiceError('timeout' if isinstance(exc.reason, (TimeoutError, socket.timeout)) else 'upstream_error',
                            504 if isinstance(exc.reason, (TimeoutError, socket.timeout)) else 502) from None
-    except (ValueError, TypeError, KeyError, AttributeError):
+    except (ValueError, TypeError, KeyError, AttributeError, IndexError):
         raise ServiceError('upstream_error', 502) from None
 
 
@@ -157,7 +155,7 @@ class Application:
         self.config, self.clock = config, _clock
         self.quota = Quotas(config.database)
         self.slots = threading.BoundedSemaphore(2)
-        self.upstream = _upstream or openai_reply
+        self.upstream = _upstream or deepseek_reply
 
     def digest(self, purpose, value):
         return hmac.new(self.config.session_secret, (purpose + ':' + value).encode(), hashlib.sha256).hexdigest()
@@ -413,7 +411,7 @@ class Server(ThreadingHTTPServer):
 if __name__ == '__main__':
     os.umask(0o077)
     application = Application(Config.from_env())
-    server = Server(('127.0.0.1', int(os.environ.get('PORT', '8788'))), application)
+    server = Server(('127.0.0.1', int(os.environ.get('PORT', '8791'))), application)
     print('Portfolio assistant listening on loopback; ready=' + str(application.config.ready), flush=True)
     try:
         server.serve_forever()

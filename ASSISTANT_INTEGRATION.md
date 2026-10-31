@@ -1,8 +1,8 @@
 # 作品集 AI：连接与部署
 
-2026.10.31：红点聊天界面、连接适配器、OpenAI 后端和公开知识草稿已准备；**没有真实密钥、服务器部署或实际模型问答验收**。线上默认保持 `not_connected`，不生成模拟答案。
+2026.10.31：红点聊天界面、连接适配器、DeepSeek 后端和公开知识草稿已准备，29 项本地检查通过；**没有真实密钥、服务器部署或实际模型问答验收**。线上默认保持 `not_connected`，不生成模拟答案。
 
-用户选择 OpenAI。现有阿里云服务器是杭州机房，不能据此认定 OpenAI 可用。上线前核对 [官方支持地区](https://developers.openai.com/api/docs/supported-countries)、账户资格和服务对象；新运行环境尚待确定，不购买服务器、不改杭州现有服务或旧数独凭据。
+用户最终选择在现有阿里云杭州服务器上使用 DeepSeek。采用官方 API 和新作品集专用 Key，不复用旧数独凭据。独立服务、独立状态目录、独立子域；不购买服务器。新增路由须核对现有配置并先 validate，不能重启或覆盖既有数独服务。
 
 部署说明、完整限制与测试在 [server/portfolio-ai/README.md](server/portfolio-ai/README.md)。新独立域名计划为 `ai.bing2002.com`，尚未创建 DNS。
 
@@ -41,6 +41,6 @@ PortfolioAssistantConnection.configureHosted();
 
 密钥只放服务器私密环境配置，不进入 GitHub Pages、JS、URL、源码仓库、聊天或日志。使用新的作品集专用项目，不能与数独等现有服务共用历史凭据。
 
-后端固定 OpenAI Responses API / GPT-6 Luna，关闭推理、输出最多 400 tokens，无工具执行或任意网络转发。SQLite 在调用前事务预占次数，失败也计数，重启不重置。默认全站 100 次/日、1000 次/月，并有 IP、会话、并发限制；次数限制不是金额预算，OpenAI 平台另外设置项目硬限额。CORS、Origin、cookie 与 CSRF 不是防脚本盗刷的身份认证。
+后端固定官方 DeepSeek Chat Completions API / `deepseek-flash`，关闭思考、输出最多 400 tokens，无工具执行或任意网络转发。SQLite 在调用前事务预占次数，失败也计数，重启不重置。默认全站 100 次/日、1000 次/月，并有 IP、会话、并发限制；次数限制不是金额预算，供应商侧只使用本人设置的小额余额，不擅自充值。CORS、Origin、cookie 与 CSRF 不是防脚本盗刷的身份认证。
 
 公开知识见 `server/portfolio-ai/knowledge.md`，来源见同目录 `knowledge-sources.md`；上线前作者审核。未公布的工作邀约、薪酬、合作和个人信息不能猜测；案例完成度按公开证据区分成品、原型、设想。这版是受限的文本问答，并不具备执行本机 Skill、读取私有笔记或修改外部系统的能力。
