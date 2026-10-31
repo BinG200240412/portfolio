@@ -6,23 +6,22 @@
 (() => {
   'use strict';
   if (window.PortfolioAssistant) return;
-  const voiceModuleURL=new URL('assistant-voice.js?v=e1f5af2919',document.currentScript?.src||new URL('/assets/portfolio-assistant.js',location.href));
+  const voiceModuleURL=new URL('assistant-voice.js?v=b07463c086',document.currentScript?.src||new URL('/assets/portfolio-assistant.js',location.href));
   let voiceModule;
   const waveform=Array.from({length:27},(_,column)=>Array.from({length:9},(_,row)=>
-    `<circle cx="${4+column*4}" cy="${2+row*4}" r="1.1"/>`
+    `<circle cx="${4+column*4}" cy="${2+row*4}" r="1.1" opacity="0"/>`
   ).join('')).join('');
   const popup=document.createElement('section');
   popup.id='portfolio-assistant';popup.className='pa-popover';
   popup.setAttribute('role','dialog');popup.setAttribute('aria-modal','false');
   popup.setAttribute('aria-describedby','pa-status');
   popup.setAttribute('data-i18n-ignore','');popup.setAttribute('aria-hidden','true');
-  popup.dataset.open='false';popup.dataset.voiceExpanded='false';popup.dataset.suspended=String(document.hidden);popup.inert=true;
-  popup.innerHTML=`<div class="pa-voice-panel" id="pa-voice-panel" aria-hidden="true"><svg class="pa-wave" viewBox="0 0 112 36" aria-hidden="true" focusable="false">${waveform}</svg></div>
-  <div class="pa-window">
+  popup.dataset.open='false';popup.dataset.voiceExpanded='false';popup.dataset.voiceLit='false';popup.dataset.voiceDraft='false';popup.dataset.suspended=String(document.hidden);popup.inert=true;
+  popup.innerHTML=`<div class="pa-window">
     <div class="pa-history" hidden><div class="pa-log" role="log" aria-live="polite" aria-relevant="additions"></div><p class="pa-notice" role="status" hidden></p></div>
     <form class="pa-form">
-      <button class="pa-voice-toggle" type="button" aria-controls="pa-voice-panel" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M6 11v1a6 6 0 0 0 12 0v-1M12 18v3m-3 0h6"/></svg></button>
-      <textarea class="pa-input" rows="1" maxlength="1000"></textarea>
+      <button class="pa-voice-toggle" type="button" aria-controls="pa-voice-panel" aria-expanded="false"><svg class="pa-microphone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M6 11v1a6 6 0 0 0 12 0v-1M12 18v3m-3 0h6"/></svg><svg class="pa-stop-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><rect x="7" y="7" width="10" height="10" rx="1"/></svg></button>
+      <div class="pa-compose"><textarea class="pa-input" rows="1" maxlength="1000"></textarea><div class="pa-voice-panel" id="pa-voice-panel" aria-hidden="true"><svg class="pa-wave" viewBox="0 0 112 36" aria-hidden="true" focusable="false">${waveform}</svg></div></div>
       <button class="pa-send" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 19V5m-5 5 5-5 5 5"/></svg></button>
       <button class="pa-close" type="button"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m5 5 10 10M15 5 5 15"/></svg></button>
     </form>
@@ -44,7 +43,7 @@
       voiceRequesting:'请允许使用麦克风',voiceListening:'正在听…',voiceTranscribing:'正在转成文字…',voiceCancel:'取消语音输入',
       voice_unavailable:'语音暂不可用，请用文字提问。',voice_unsupported:'这个浏览器暂不支持录音，请使用新版 Safari 或 Chrome。',
       voice_permission_denied:'麦克风未获授权，请在浏览器设置中允许。',voice_permission_timeout:'尚未获得麦克风权限，请再试一次。',
-      voice_no_microphone:'没有找到麦克风。',voice_empty:'没听清，请再说一次。',voice_interrupted:'录音中断了，请再试一次。',
+      voice_no_microphone:'没有找到麦克风。',voice_input_silent:'没有收到麦克风声音，请检查输入设备。',voice_empty:'没听清，请再说一次。',voice_interrupted:'录音中断了，请再试一次。',
       voice_capture_error:'录音未能开始，请检查麦克风后再试。',voice_busy:'语音识别正在忙，请稍后再试。',
       voice_error:'语音识别暂不可用，请稍后再试。',voice_too_long:'输入已满，请删减后再录音。',quota_exceeded:'语音额度已用完，请稍后再来。',
       offline:'尚未接入',error:'暂时无法回复，请稍后再试。',
@@ -57,7 +56,7 @@
       voiceRequesting:'Allow microphone access',voiceListening:'Listening…',voiceTranscribing:'Transcribing…',voiceCancel:'Cancel voice input',
       voice_unavailable:'Voice input is unavailable. Please type your question.',voice_unsupported:'Please use a current Safari or Chrome browser for voice input.',
       voice_permission_denied:'Allow microphone access in your browser settings.',voice_permission_timeout:'Microphone access is still pending. Please try again.',
-      voice_no_microphone:'No microphone was found.',voice_empty:'No speech was recognised. Please try again.',voice_interrupted:'Recording was interrupted. Please try again.',
+      voice_no_microphone:'No microphone was found.',voice_input_silent:'No microphone sound was received. Check your input device.',voice_empty:'No speech was recognised. Please try again.',voice_interrupted:'Recording was interrupted. Please try again.',
       voice_capture_error:'Recording could not start. Please check your microphone.',voice_busy:'Voice recognition is busy. Please try again shortly.',
       voice_error:'Voice recognition is unavailable. Please try again later.',voice_too_long:'The input is full. Please shorten it before recording.',quota_exceeded:'The voice allowance is used up. Please check back later.',
       offline:'Not connected',error:'A reply is unavailable. Please try again later.',
@@ -67,7 +66,7 @@
       busy:'The assistant is busy. Please try again shortly.',invalid_messages:'Please keep your question within 1000 characters.'},
   };
   const serviceErrors=new Set(['not_configured','rate_limited','budget_exhausted','invalid_session','upstream_error','timeout','busy','invalid_messages']);
-  const voiceErrors=new Set(['voice_unavailable','voice_unsupported','voice_permission_denied','voice_permission_timeout','voice_no_microphone','voice_empty','voice_interrupted','voice_capture_error','voice_busy','voice_too_long','quota_exceeded','rate_limited','budget_exhausted','invalid_session']);
+  const voiceErrors=new Set(['voice_unavailable','voice_unsupported','voice_permission_denied','voice_permission_timeout','voice_no_microphone','voice_input_silent','voice_empty','voice_interrupted','voice_capture_error','voice_busy','voice_too_long','quota_exceeded','rate_limited','budget_exhausted','invalid_session']);
   const language=()=>window.PortfolioI18n?.language==='en'||document.documentElement.lang==='en'?'en':'zh';
   const text=()=>copy[language()];
   const configured=()=>!!window.PortfolioAssistantConnection&&window.PortfolioAssistantConnection.mode!=='not_connected';
@@ -76,8 +75,8 @@
     const recording=!!voiceState;
     status.textContent=recording?(voiceState==='requesting'?t.voiceRequesting:voiceState==='transcribing'?t.voiceTranscribing:t.voiceListening):busy?t.pending:configured()?t.ready:t.preview;
     closeButton.setAttribute('aria-label',t.close);
-    input.placeholder=recording?(voiceState==='requesting'?t.voiceRequesting:voiceState==='transcribing'?t.voiceTranscribing:t.voiceListening):t.placeholder;input.setAttribute('aria-label',t.placeholder);
-    popup.dataset.voiceExpanded=String(voiceExpanded);
+    input.placeholder=voiceState==='listening'?'':t.placeholder;input.setAttribute('aria-label',t.placeholder);
+    popup.dataset.voiceExpanded=String(voiceExpanded);popup.dataset.voiceDraft=String(!!input.value.trim());
     voiceButton.setAttribute('aria-expanded',String(voiceExpanded));
     voiceButton.setAttribute('aria-label',recording?(voiceState==='listening'?t.voiceClose:t.voiceCancel):t.voiceOpen);
     voiceButton.setAttribute('aria-pressed',String(recording));voiceButton.disabled=busy;popup.dataset.voiceState=voiceState;
@@ -127,13 +126,16 @@
     }
   }
   function paintVoice(levels=[]) {
+    let lit=false;
     for(let column=0;column<27;column++){
-      const level=levels[column]||0,height=Math.round(level*4);
+      const level=levels[column]||0,height=Math.round(level*4),active=level>.025;
+      if(active)lit=true;
       for(let row=0;row<9;row++){
-        const index=column*9+row,opacity=Math.abs(row-4)<=height?(level>.025?'.92':'.16'):'.045';
+        const index=column*9+row,opacity=active&&Math.abs(row-4)<=height?'.92':'0';
         if(waveDots[index]&&waveOpacity[index]!==opacity){waveDots[index].setAttribute('opacity',opacity);waveOpacity[index]=opacity;}
       }
     }
+    popup.dataset.voiceLit=String(lit&&voiceState==='listening');
   }
   function cancelVoice() {
     voiceGeneration++;clearTimeout(voiceSetupTimer);voiceSetupTimer=0;voiceController?.abort();voiceCapture?.cancel();voiceCapture=null;voiceController=null;
@@ -192,9 +194,7 @@
     // Fixed positioning uses the layout viewport; lift the bottom edge above
     // a software keyboard, then retain the ordinary safe-area breathing room.
     const bottom=Math.max(0,innerHeight-viewTop-height)+16;
-    // Keep the floating dots inside the visual viewport without adding a tray.
-    const voiceReserve=voiceExpanded?(height<400?48:64):0;
-    const maxHeight=`max(0px, min(480px, calc(${Math.max(0,height-32-voiceReserve)}px - env(safe-area-inset-bottom, 0px))))`;
+    const maxHeight=`max(0px, min(480px, calc(${Math.max(0,height-32)}px - env(safe-area-inset-bottom, 0px))))`;
     popup.style.width=`${boxWidth}px`;popup.style.left=`${left}px`;popup.style.top='auto';
     popup.style.bottom=`calc(${bottom}px + env(safe-area-inset-bottom, 0px))`;
     popup.style.maxHeight=maxHeight;
@@ -230,7 +230,7 @@
   closeButton.addEventListener('click',()=>close());
   voiceButton.addEventListener('click',startVoice);
   find('.pa-form').addEventListener('submit',event=>{event.preventDefault();submit();});
-  input.addEventListener('input',()=>{resizeInput();sendButton.disabled=busy||!!voiceState||!input.value.trim();});
+  input.addEventListener('input',()=>{resizeInput();update();});
   popup.addEventListener('keydown',event=>{
     if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close();return;}
     if(event.key==='Enter'&&event.target===input&&!event.shiftKey&&!event.isComposing){

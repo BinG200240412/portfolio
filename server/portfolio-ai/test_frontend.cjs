@@ -311,19 +311,48 @@ test('closing during transcription aborts the upload, keeps the draft and ignore
 });
 
 
-test('voice dots are a decorative sibling of the input card and keep the microphone accessibility connection',async()=>{
-  let finish;
+test('voice dots stay inside the input composition and paint only live points, with silence fully empty',async()=>{
+  let finish,levels;
   const env=ui(()=>assert.fail('voice must not auto-send'),{
+    module:{record({onState,onLevels}){levels=onLevels;onState('listening');return{result:new Promise(resolve=>{finish=resolve;}),cancel(){},stop(){}};}},
+    transcribe:async()=>({status:'ok',text:'数独'}),
+  });
+  const card=env.popup.querySelector('.pa-window'),compose=env.popup.querySelector('.pa-compose'),wave=env.popup.querySelector('.pa-wave'),panel=env.popup.querySelector('.pa-voice-panel'),mic=env.nodes.get('.pa-voice-toggle');
+  assert.equal(panel.parentElement,compose);assert.equal(card.contains(wave),true);assert.equal(panel.contains(env.nodes.get('.pa-input')),false,'wave cannot cover an ancestor containing the text');
+  const dots=wave.querySelectorAll('circle');assert.equal(dots.length,243);assert.ok(dots.every(dot=>dot.attributes.opacity==='0'),'no initial dim matrix');
+  assert.equal(panel.attributes['aria-hidden'],'true');assert.equal(mic.attributes['aria-controls'],panel.attributes.id);
+  assert.ok(mic.querySelector('.pa-stop-icon'),'active microphone has a distinct stop glyph');
+  env.allow();env.api.open();mic.listeners.click();await tick();
+  assert.equal(mic.attributes['aria-expanded'],'true');assert.equal(mic.attributes['aria-pressed'],'true');assert.equal(env.popup.dataset.voiceDraft,'false');
+  assert.equal(env.nodes.get('.pa-input').placeholder,'','empty recording does not layer a label behind the dots');
+  levels(Array(27).fill(0));assert.equal(env.popup.dataset.voiceLit,'false');assert.ok(dots.every(dot=>dot.attributes.opacity==='0'));
+  levels([.1,.8,...Array(25).fill(0)]);assert.equal(env.popup.dataset.voiceLit,'true');assert.ok(dots.some(dot=>dot.attributes.opacity==='.92'));
+  assert.ok(dots.every(dot=>['0','.92'].includes(dot.attributes.opacity)),'off points never form a faint background grid');
+  levels(Array(27).fill(0));assert.equal(env.popup.dataset.voiceLit,'false');assert.ok(dots.every(dot=>dot.attributes.opacity==='0'));
+  finish(new Blob(['audio']));await tick();assert.equal(mic.attributes['aria-expanded'],'false');assert.equal(mic.attributes['aria-pressed'],'false');assert.equal(env.popup.dataset.voiceLit,'false');
+});
+
+test('voice composition marks existing draft text for its own row and preserves it until transcription',async()=>{
+  let finish;
+  const env=ui(()=>assert.fail('must not auto-send'),{
     module:{record({onState}){onState('listening');return{result:new Promise(resolve=>{finish=resolve;}),cancel(){},stop(){}};}},
     transcribe:async()=>({status:'ok',text:'数独'}),
   });
-  const card=env.popup.querySelector('.pa-window'),wave=env.popup.querySelector('.pa-wave'),panel=env.popup.querySelector('.pa-voice-panel'),mic=env.nodes.get('.pa-voice-toggle');
-  assert.equal(panel.parentElement,env.popup,'waveform must stay outside the card background');assert.equal(card.contains(wave),false);
-  assert.equal(wave.querySelectorAll('circle').length,243,'uniform 27 by 9 point grid');assert.equal(panel.attributes['aria-hidden'],'true');
-  assert.equal(mic.attributes['aria-controls'],panel.attributes.id);
-  const originalCardChildren=[...card.children];env.allow();env.api.open();env.nodes.get('.pa-voice-toggle').listeners.click();await tick();
-  assert.equal(mic.attributes['aria-expanded'],'true');assert.equal(mic.attributes['aria-pressed'],'true');
-  assert.deepEqual(card.children,originalCardChildren,'recording must not insert an expanding tray into the card');
-  assert.match(env.popup.style.maxHeight,/886px/,'floating dots reserve visual viewport headroom');
-  finish(new Blob(['audio']));await tick();assert.equal(mic.attributes['aria-expanded'],'false');assert.equal(mic.attributes['aria-pressed'],'false');
+  env.allow();env.api.open();const input=env.nodes.get('.pa-input');input.value='原有草稿';input.selectionStart=input.selectionEnd=input.value.length;
+  env.nodes.get('.pa-voice-toggle').listeners.click();await tick();assert.equal(env.popup.dataset.voiceDraft,'true');assert.equal(input.value,'原有草稿');assert.equal(input.readOnly,true);
+  const compose=env.popup.querySelector('.pa-compose');assert.equal(compose.children[0],input);assert.equal(compose.children[1],env.popup.querySelector('.pa-voice-panel'));
+  finish(new Blob(['audio']));await tick();assert.equal(input.value,'原有草稿数独');assert.equal(input.readOnly,false);assert.equal(env.popup.dataset.voiceExpanded,'false');
+});
+
+
+test('silent microphone PCM gives a specific localised input-device notice, preserving the draft without ASR upload',async()=>{
+  for(const [language,expected] of [['zh','没有收到麦克风声音，请检查输入设备。'],['en','No microphone sound was received. Check your input device.']]){
+    const env=ui(()=>assert.fail('must not send'),{
+      module:{record({onState}){onState('listening');return{result:Promise.reject(Object.assign(new Error('silent input'),{code:'voice_input_silent'})),cancel(){},stop(){}};}},
+      transcribe:()=>assert.fail('digital silence must not reach ASR'),
+    });
+    env.context.document.documentElement.lang=language;env.allow();env.api.open();const input=env.nodes.get('.pa-input');input.value='Keep draft';
+    env.nodes.get('.pa-voice-toggle').listeners.click();await tick();assert.equal(env.nodes.get('.pa-notice').textContent,expected);
+    assert.equal(input.value,'Keep draft');assert.equal(input.readOnly,false);assert.equal(env.popup.dataset.voiceLit,'false');
+  }
 });
