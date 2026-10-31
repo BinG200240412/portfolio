@@ -2,7 +2,7 @@
 .q-native{position:relative;min-width:0;width:100%;outline-offset:8px;aspect-ratio:1.9}
 .q-native>svg{display:block;width:100%;height:auto;overflow:visible}
 .q-native:focus-visible{outline:1px solid var(--jade)}
-.q-native-chart{background:transparent;color:var(--ink);padding:clamp(12px,2vw,32px);aspect-ratio:1481/620}
+.q-native-chart{background:transparent;color:var(--ink);padding:0;aspect-ratio:1481/620}
 .q-native-study{overflow:auto}.q-native-study .q-native-chart{min-width:720px}
 .q-native-study>.q-native-replay{position:sticky;left:0}
 .q-native-dots{aspect-ratio:1.8;cursor:pointer}
@@ -33,7 +33,7 @@
 .q-serpentine figcaption{display:flex;gap:14px;align-items:baseline;font-size:16px;line-height:1.65}
 .q-serpentine figcaption>b{font-size:clamp(26px,3vw,40px);font-weight:400;color:#b7aa90;line-height:1}
 .q-serpentine figcaption>span{max-width:24ch}
-.q-native-logic{aspect-ratio:1170/683;background:transparent;padding:18px}
+.q-native-logic{aspect-ratio:1170/683;background:transparent;padding:0}
 .q-native-logic svg{overflow:hidden}
 .q-logic-mobile{display:none}
 .q-deconstruction{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5vw;align-items:center}
@@ -109,3 +109,6 @@ html[data-theme="dark"] .q-native-chart circle[stroke="black"]{stroke:var(--soft
 @media(prefers-reduced-motion:reduce){.q-flow-reveal{animation:none!important;stroke-dashoffset:0}}
 
 @media(max-width:900px){.q-led-production{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Reserve the source viewBox before its SVG fetch completes. */
+.q-line-native[data-native-src*="lighting-contours.svg"]{aspect-ratio:405/167}
