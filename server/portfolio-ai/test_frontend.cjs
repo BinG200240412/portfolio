@@ -157,7 +157,8 @@ test('history is capped at seven turns and 4000 characters, with the latest ques
 });
 
 function ui(reply, voice = {}, options = {}) {
-  const nodes=new Map(),timers=new Map(),waves=[];let popup,available=false,serial=0,now=0;
+  const nodes=new Map(),timers=new Map(),waves=[],resizeObservers=[];let popup,available=false,serial=0,now=0;
+  const cardSize={width:options.cardSize?.width??440,height:options.cardSize?.height??88};
   function eventTarget(target={}) {
     const callbacks=new Map();
     target.addEventListener=(type,callback)=>{if(!callbacks.has(type))callbacks.set(type,new Set());callbacks.get(type).add(callback);};
@@ -168,13 +169,13 @@ function ui(reply, voice = {}, options = {}) {
   const matches=(node,selector)=>selector.startsWith('.')?node.className.split(/\s+/).includes(selector.slice(1)):selector.startsWith('#')?node.attributes.id===selector.slice(1):selector==='[inert]'?!!node.inert:node.tagName===selector;
   class Node {
     constructor(tagName='div') {
-      this.tagName=tagName;this.className='';this.parentElement=null;this.listeners={};this.attributes={};this.children=[];this.dataset={};this.value='';this._textContent='';this.textWrites=0;this.replaceCount=0;
+      this.tagName=tagName;this.className='';this.parentElement=null;this.listeners={};this.attributes={};this.children=[];this.dataset={};this.value='';this._textContent='';this.textWrites=0;this.replaceCount=0;this.attributeWrites=0;this.rectReads=0;
       this.style={setProperty(name,value){this[name]=value;},removeProperty(name){delete this[name];}};
       this.classList={add:(...names)=>{this.className=[...new Set([...this.className.split(/\s+/).filter(Boolean),...names])].join(' ');},remove:(...names)=>{this.className=this.className.split(/\s+/).filter(name=>!names.includes(name)).join(' ');},contains:name=>this.className.split(/\s+/).includes(name),toggle:(name,force)=>{const active=force??!this.classList.contains(name);this.classList[active?'add':'remove'](name);return active;}};
       this.scrollHeight=48;this.scrollTop=0;this.clientHeight=120;this.isConnected=true;
       eventTarget(this);const add=this.addEventListener;this.addEventListener=(type,callback,...rest)=>{this.listeners[type]=callback;add(type,callback,...rest);};
     }
-    setAttribute(name,value){this.attributes[name]=String(value);if(name==='class')this.className=String(value);if(name==='id')this.id=String(value);}
+    setAttribute(name,value){this.attributes[name]=String(value);this.attributeWrites++;if(name==='class')this.className=String(value);if(name==='id')this.id=String(value);}
     getAttribute(name){return this.attributes[name]??null;}
     removeAttribute(name){delete this.attributes[name];}
     appendChild(node){if(node.parentElement)node.parentElement.children=node.parentElement.children.filter(child=>child!==node);this.children.push(node);node.parentElement=this;return node;}
@@ -187,6 +188,7 @@ function ui(reply, voice = {}, options = {}) {
     get lastElementChild(){return this.children.at(-1)||null;}
     focus(){document.activeElement=this;}
     setSelectionRange(start,end){this.selectionStart=start;this.selectionEnd=end;}
+    getBoundingClientRect(){this.rectReads++;const size=this.classList.contains('pa-window')?cardSize:{width:0,height:0};return{x:0,y:0,left:0,top:0,right:size.width,bottom:size.height,...size};}
     closest(selector){for(let current=this;current;current=current.parentElement)if(matches(current,selector))return current;return null;}
     contains(target){for(let current=target;current;current=current.parentElement)if(current===this)return true;return false;}
     querySelectorAll(selector){
@@ -214,6 +216,12 @@ function ui(reply, voice = {}, options = {}) {
     body:new Node('body'),getElementById(id){return this.body.querySelector('#'+id);},
   });
   const motion=eventTarget({matches:options.reducedMotion??true,media:'(prefers-reduced-motion: reduce)'});
+  class FakeResizeObserver {
+    constructor(callback){this.callback=callback;this.targets=new Set();this.observes=0;this.disconnects=0;resizeObservers.push(this);}
+    observe(target){this.targets.add(target);this.observes++;}
+    disconnect(){this.targets.clear();this.disconnects++;}
+    deliver({queued=false}={}){if(queued||this.targets.size)this.callback([...this.targets].map(target=>({target})),this);}
+  }
   const fakeWaveModule={createVoiceWave(svg,settings={}){
     const state={svg,settings,starts:0,stops:0,destroys:0,levels:[],active:false,
       start(){state.starts++;state.active=true;settings.onLit?.(false);},
@@ -234,16 +242,74 @@ function ui(reply, voice = {}, options = {}) {
     location:{href:'https://bing2002.com/'},innerHeight:982,innerWidth:1512,AbortController,CustomEvent,
     addEventListener:window.addEventListener,removeEventListener:window.removeEventListener,dispatchEvent:window.dispatchEvent,
   };
+  if(options.resizeObserver){context.ResizeObserver=FakeResizeObserver;window.ResizeObserver=FakeResizeObserver;}
   const executable=uiSource.replace('import(voiceModuleURL.href)','Promise.resolve(window.__testVoiceModule)').replace('import(waveModuleURL.href)','Promise.resolve(window.__testWaveModule)');
   vm.runInNewContext(executable,context);
   const emit=(target,type,detail)=>target.dispatchEvent(new CustomEvent(type,{detail}));
-  return {api:window.PortfolioAssistant,nodes,popup,context,timers,waves,motion,
+  return {api:window.PortfolioAssistant,nodes,popup,context,timers,waves,motion,resizeObservers,
     allow(){available=true;},submit(){nodes.get('.pa-form').dispatchEvent(new CustomEvent('submit'));},
     emitWindow(type,detail){emit(window,type,detail);},emitDocument(type,detail){emit(document,type,detail);},
+    resizeCard(width,height){Object.assign(cardSize,{width,height});resizeObservers.forEach(observer=>observer.deliver());},
     setReducedMotion(value){if(motion.matches!==value){motion.matches=value;motion.dispatchEvent({type:'change',matches:value,media:motion.media});}},
     advance(ms){const target=now+ms;let count=0;while(true){const due=[...timers].filter(([,timer])=>timer.at<=target).sort((a,b)=>a[1].at-b[1].at||a[0]-b[0])[0];if(!due)break;if(++count>10000)throw new Error('unbounded scheduled UI work');const[id,timer]=due;timers.delete(id);now=timer.at;timer.fn();}now=target;return count;},
   };
 }
+
+test('edge lamps follow the actual rounded card perimeter and resize without replacing unchanged geometry',()=>{
+  for(const resizeObserver of [false,true]){
+    const env=ui(()=>assert.fail('opening visual feedback must not send a request'),{},{resizeObserver,cardSize:{width:320,height:96}});
+    const card=env.popup.querySelector('.pa-window'),svg=env.popup.querySelector('.pa-edge-svg'),beads=env.popup.querySelector('#pa-edge-beads'),mask=env.popup.querySelector('#pa-edge-scan'),track=env.popup.querySelector('.pa-edge-track');
+    const mutationCount=()=>[svg,mask,track,...beads.children].reduce((sum,node)=>sum+node.attributeWrites,0);
+    const assertPerimeter=(width,height)=>{
+      assert.equal(svg.getAttribute('viewBox'),`0 0 ${width} ${height}`);
+      assert.equal(Number(mask.getAttribute('width')),width);assert.equal(Number(mask.getAttribute('height')),height);
+      const x=Number(track.getAttribute('x')),y=Number(track.getAttribute('y')),w=Number(track.getAttribute('width')),h=Number(track.getAttribute('height')),radius=Number(track.getAttribute('rx'));
+      assert.ok(x>0&&y>0&&x+w<width&&y+h<height,'mask track fits within the actual card');
+      assert.ok(radius>0&&radius<=Math.min(w,h)/2,'the scan follows rounded corners');
+      assert.ok(beads.children.length>20,'the perimeter is composed of individual lamps');
+      assert.ok(beads.children.every(node=>node.tagName==='circle'),'the lamp field has circles rather than a continuous rectangular line');
+      const points=beads.children.map(node=>({x:Number(node.getAttribute('cx')),y:Number(node.getAttribute('cy')),r:Number(node.getAttribute('r'))}));
+      assert.equal(new Set(points.map(point=>point.r)).size,1,'lamps keep a consistent round size');
+      assert.ok(points.every(point=>Number.isFinite(point.x)&&Number.isFinite(point.y)&&point.r>0&&point.x-point.r>=0&&point.y-point.r>=0&&point.x+point.r<=width&&point.y+point.r<=height),'no lamp is clipped outside the card');
+      assert.ok(points.every(point=>Math.min(point.x,width-point.x,point.y,height-point.y)<Math.min(width,height)*.3),'lamps stay on the boundary instead of filling the chat content');
+      assert.ok(points.some(point=>point.x<width*.1)&&points.some(point=>point.x>width*.9)&&points.some(point=>point.y<height*.1)&&points.some(point=>point.y>height*.9),'lamps cover all four sides');
+      assert.ok(points.some(point=>point.x>x+.1&&point.x<x+radius&&point.y>y+.1&&point.y<y+radius),'corner lamps turn through the rounded corner');
+    };
+    assert.equal(beads.children.length,0);assert.equal(card.rectReads,0,'closed chat is not measured');
+    env.allow();env.api.open();assertPerimeter(320,96);
+    const original=[...beads.children],writes=mutationCount();
+    if(resizeObserver)env.resizeObservers[0].deliver();else env.emitWindow('resize');
+    assert.equal(mutationCount(),writes,'unchanged dimensions do not rewrite SVG attributes');
+    assert.ok(beads.children.every((node,index)=>node===original[index]),'unchanged lamps keep their existing nodes');
+    env.resizeCard(440,180);if(!resizeObserver)env.emitWindow('resize');assertPerimeter(440,180);
+    assert.equal(beads.children[0],original[0],'resizing reuses existing lamp nodes');
+    env.resizeCard(180,72);if(!resizeObserver)env.emitWindow('resize');assertPerimeter(180,72);
+    assert.equal(beads.children[0],original[0],'shrinking removes excess lamps without replacing retained ones');
+    assert.equal(env.advance(60000),0,'CSS scanning does not schedule a JavaScript animation loop');assert.equal(env.timers.size,0);
+  }
+});
+
+test('edge observers suspend for hidden or closed chat and ignore already queued resize notifications',()=>{
+  const env=ui(()=>assert.fail('visual lifecycle must not send a request'),{},{resizeObserver:true,cardSize:{width:440,height:96}});
+  const card=env.popup.querySelector('.pa-window'),svg=env.popup.querySelector('.pa-edge-svg'),beads=env.popup.querySelector('#pa-edge-beads'),observer=env.resizeObservers[0];
+  assert.equal(observer.targets.size,0,'closed chat does not subscribe to layout changes');
+  env.allow();env.api.open();assert.ok(observer.targets.has(card));
+  const snapshot=()=>({viewBox:svg.getAttribute('viewBox'),reads:card.rectReads,nodes:[...beads.children],writes:beads.children.reduce((sum,node)=>sum+node.attributeWrites,0)});
+  const assertNoWork=before=>{
+    assert.equal(svg.getAttribute('viewBox'),before.viewBox);assert.equal(card.rectReads,before.reads,'inactive chat cannot read layout');
+    assert.ok(beads.children.every((node,index)=>node===before.nodes[index]));
+    assert.equal(beads.children.reduce((sum,node)=>sum+node.attributeWrites,0),before.writes,'inactive chat cannot mutate lamp geometry');
+    assert.equal(env.advance(60000),0);assert.equal(env.timers.size,0);
+  };
+  env.context.document.hidden=true;env.emitDocument('visibilitychange');assert.equal(observer.targets.size,0);assert.ok(observer.disconnects>0);
+  const hidden=snapshot();env.resizeCard(380,160);observer.deliver({queued:true});env.emitWindow('resize');assertNoWork(hidden);
+  env.context.document.hidden=false;env.emitDocument('visibilitychange');assert.ok(observer.targets.has(card));assert.equal(svg.getAttribute('viewBox'),'0 0 380 160','returning to the page catches up to its current size');
+  env.api.close();assert.equal(observer.targets.size,0);
+  const closed=snapshot();env.resizeCard(340,220);observer.deliver({queued:true});env.emitWindow('resize');assertNoWork(closed);
+  env.api.open();assert.ok(observer.targets.has(card));assert.equal(svg.getAttribute('viewBox'),'0 0 340 220');
+  env.emitWindow('pagehide');assert.equal(env.api.isOpen(),false);assert.equal(observer.targets.size,0);
+  const departed=snapshot();observer.deliver({queued:true});assertNoWork(departed);
+});
 
 test('UI keeps first-entry gate, retains failed question, and never commits consecutive user turns', async () => {
   const calls = []; let n = 0;

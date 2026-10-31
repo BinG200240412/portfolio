@@ -18,7 +18,7 @@
   popup.setAttribute('data-i18n-ignore','');popup.setAttribute('aria-hidden','true');
   popup.dataset.open='false';popup.dataset.voiceExpanded='false';popup.dataset.voiceLit='false';popup.dataset.voiceDraft='false';popup.dataset.suspended=String(document.hidden);popup.inert=true;
   popup.innerHTML=`<div class="pa-window">
-    <div class="pa-edge-glow" aria-hidden="true"><svg preserveAspectRatio="none"><rect class="pa-edge-track" x="1" y="1" rx="33" pathLength="1000"/></svg></div>
+    <div class="pa-edge-glow" aria-hidden="true"><svg class="pa-edge-svg" aria-hidden="true" focusable="false"><defs><g id="pa-edge-beads"></g><mask id="pa-edge-scan" maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse" style="mask-type:luminance"><rect class="pa-edge-track" pathLength="1000"/></mask></defs><use class="pa-edge-quiet" href="#pa-edge-beads"/><use class="pa-edge-lit" href="#pa-edge-beads" mask="url(#pa-edge-scan)"/></svg></div>
     <div class="pa-history" hidden><div class="pa-log" role="log" aria-live="off"></div><p class="pa-notice" role="status" hidden></p></div>
     <div class="pa-voice-panel" id="pa-voice-panel" aria-hidden="true"><svg class="pa-wave" viewBox="0 0 320 48" aria-hidden="true" focusable="false"></svg></div>
     <form class="pa-form">
@@ -47,6 +47,35 @@
   let feedback='',navigationMode=null,pendingMessage=null;
   let voiceState='',voiceCapture=null,voiceController=null,voiceContext=null,voiceGeneration=0,voiceSetupTimer=0;
   let replyReveal=null,replyTimer=0;
+  const card=find('.pa-window'),edgeSvg=find('.pa-edge-svg'),edgeBeads=find('#pa-edge-beads'),edgeTrack=find('.pa-edge-track'),edgeMask=find('#pa-edge-scan');
+  let edgeSize='',edgeObserver=null;
+  function paintEdge() {
+    if(!opened||document.hidden||typeof card.getBoundingClientRect!=='function')return;
+    const box=card.getBoundingClientRect(),width=Math.round(box.width*10)/10,height=Math.round(box.height*10)/10;
+    if(width<12||height<12)return;
+    const size=width+':'+height;if(size===edgeSize)return;edgeSize=size;
+    const inset=3,x=inset,y=inset,w=width-inset*2,h=height-inset*2,r=Math.min(31,w/2,h/2);
+    edgeSvg.setAttribute('viewBox',`0 0 ${width} ${height}`);
+    edgeMask.setAttribute('x','0');edgeMask.setAttribute('y','0');edgeMask.setAttribute('width',String(width));edgeMask.setAttribute('height',String(height));
+    for(const[name,value]of Object.entries({x,y,width:w,height:h,rx:r,ry:r}))edgeTrack.setAttribute(name,String(value));
+    const horizontal=w-2*r,vertical=h-2*r,arc=Math.PI*r/2;
+    const lengths=[horizontal,arc,vertical,arc,horizontal,arc,vertical,arc],perimeter=lengths.reduce((a,b)=>a+b,0),count=Math.max(8,Math.round(perimeter/5.5));
+    // Equal arc-length spacing keeps the lamps round and evenly spaced at corners.
+    for(let index=0;index<count;index++){
+      let distance=index*perimeter/count,part=0;
+      while(part<7&&distance>lengths[part]){distance-=lengths[part];part++;}
+      let cx,cy,angle;
+      if(part===0){cx=x+r+distance;cy=y;}
+      else if(part===2){cx=x+w;cy=y+r+distance;}
+      else if(part===4){cx=x+w-r-distance;cy=y+h;}
+      else if(part===6){cx=x;cy=y+h-r-distance;}
+      else{angle=distance/r+(part===1?-Math.PI/2:part===3?0:part===5?Math.PI/2:Math.PI);cx=(part===1||part===3?x+w-r:x+r)+r*Math.cos(angle);cy=(part===1||part===7?y+r:y+h-r)+r*Math.sin(angle);}
+      let bead=edgeBeads.children[index];
+      if(!bead){bead=document.createElementNS('http://www.w3.org/2000/svg','circle');bead.setAttribute('r','1.05');edgeBeads.appendChild(bead);}
+      bead.setAttribute('cx',cx.toFixed(2));bead.setAttribute('cy',cy.toFixed(2));
+    }
+    while(edgeBeads.children.length>count)edgeBeads.lastElementChild.remove();
+  }
   const copy={
     zh:{title:'关于我的对话',close:'关闭对话',preview:'AI 尚未连接',ready:'可以提问',pending:'等待回复…',
       placeholder:'你想问我什么？',send:'发送',voiceOpen:'开始语音输入',voiceClose:'停止录音',
@@ -238,20 +267,20 @@
     popup.style.maxHeight=maxHeight;
     popup.style.setProperty('--pa-available-height',maxHeight);
     popup.style.setProperty('--pa-viewport',`${height}px`);
-    popup.dataset.compact=String(height<400);resizeInput();
+    popup.dataset.compact=String(height<400);resizeInput();paintEdge();
   }
   function announce(open) {dispatchEvent(new CustomEvent('portfolio:assistant',{detail:{open}}));}
   function open(options={}) {
     if(opened||window.PortfolioNavigation?.assistantAvailable?.()!==true)return;
     returnFocus=document.activeElement;feedback='';opened=true;
     popup.inert=false;popup.dataset.open='true';popup.setAttribute('aria-hidden','false');
-    update();position();popup.classList.add('is-visible');announce(true);
+    update();position();edgeObserver?.observe(card);popup.classList.add('is-visible');announce(true);
     if(options?.focusClose)closeButton.focus({preventScroll:true});
   }
   function close(options={}) {
     if(!opened)return;
     const focusedInside=popup.contains(document.activeElement);
-    opened=false;cancelVoice();voiceExpanded=false;abort();popup.dataset.open='false';popup.classList.remove('is-visible');
+    opened=false;edgeObserver?.disconnect();cancelVoice();voiceExpanded=false;abort();popup.dataset.open='false';popup.classList.remove('is-visible');
     popup.inert=true;popup.setAttribute('aria-hidden','true');announce(false);
     if(options?.restoreFocus!==false&&focusedInside) {
       const target=returnFocus?.isConnected&&!returnFocus.closest('[inert]')?returnFocus:dot();
@@ -280,7 +309,7 @@
   });
   document.addEventListener('pointerdown',outside,true);
   document.addEventListener('click',outside,true);
-  document.addEventListener('visibilitychange',()=>{popup.dataset.suspended=String(document.hidden);if(document.hidden){finishReplyReveal();if(voiceState){cancelVoice();update();position();}}});
+  document.addEventListener('visibilitychange',()=>{popup.dataset.suspended=String(document.hidden);if(document.hidden){edgeObserver?.disconnect();finishReplyReveal();if(voiceState){cancelVoice();update();position();}}else if(opened){position();edgeObserver?.observe(card);}});
   motion?.addEventListener?.('change',()=>{if(reducedMotion())finishReplyReveal();});
   addEventListener('portfolio:navigation',event=>{
     const mode=event.detail?.mode,reason=event.detail?.reason,previous=navigationMode;
@@ -293,6 +322,7 @@
   window.visualViewport?.addEventListener('resize',position,{passive:true});
   window.visualViewport?.addEventListener('scroll',position,{passive:true});
   addEventListener('pagehide',()=>{finishReplyReveal();waveRenderer?.destroy();waveRenderer=null;if(opened)close({restoreFocus:false});});
+  if(typeof ResizeObserver==='function')edgeObserver=new ResizeObserver(paintEdge);
   window.PortfolioAssistant=Object.freeze({open,close,toggle:options=>opened?close(options):open(options),isOpen:()=>opened,clear});
   render();
 })();
