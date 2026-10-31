@@ -155,46 +155,93 @@ test('history is capped at seven turns and 4000 characters, with the latest ques
   }
 });
 
-function ui(reply, voice = {}) {
-  const nodes = new Map(); let popup;
+function ui(reply, voice = {}, options = {}) {
+  const nodes=new Map(),timers=new Map(),waves=[];let popup,available=false,serial=0,now=0;
+  function eventTarget(target={}) {
+    const callbacks=new Map();
+    target.addEventListener=(type,callback)=>{if(!callbacks.has(type))callbacks.set(type,new Set());callbacks.get(type).add(callback);};
+    target.removeEventListener=(type,callback)=>callbacks.get(type)?.delete(callback);
+    target.dispatchEvent=event=>{if(!event.target)event.target=target;event.preventDefault ||= ()=>{};event.stopPropagation ||= ()=>{};for(const callback of [...(callbacks.get(event.type)||[])])callback.call(target,event);return true;};
+    return target;
+  }
   const matches=(node,selector)=>selector.startsWith('.')?node.className.split(/\s+/).includes(selector.slice(1)):selector.startsWith('#')?node.attributes.id===selector.slice(1):selector==='[inert]'?!!node.inert:node.tagName===selector;
   class Node {
-    constructor(tagName='div') { this.tagName=tagName;this.className='';this.parentElement=null;this.listeners = {}; this.attributes = {}; this.children = []; this.dataset = {}; this.value = ''; this.style = { setProperty() {} }; this.classList = { add() {}, remove() {}, toggle() {} }; this.scrollHeight = 48; this.isConnected = true; }
-    setAttribute(name, value) { this.attributes[name] = value;if(name==='class')this.className=value; }
-    addEventListener(name, handler) { this.listeners[name] = handler; }
-    appendChild(node) { this.children.push(node);node.parentElement=this;return node; }
-    replaceChildren() { this.children = []; }
-    focus() {} closest(selector) { for(let current=this;current;current=current.parentElement)if(matches(current,selector))return current;return null; }
-    contains(target) {for(let current=target;current;current=current.parentElement)if(current===this)return true;return false;}
-    querySelectorAll(selector) {
+    constructor(tagName='div') {
+      this.tagName=tagName;this.className='';this.parentElement=null;this.listeners={};this.attributes={};this.children=[];this.dataset={};this.value='';this._textContent='';this.textWrites=0;this.replaceCount=0;
+      this.style={setProperty(name,value){this[name]=value;},removeProperty(name){delete this[name];}};
+      this.classList={add:(...names)=>{this.className=[...new Set([...this.className.split(/\s+/).filter(Boolean),...names])].join(' ');},remove:(...names)=>{this.className=this.className.split(/\s+/).filter(name=>!names.includes(name)).join(' ');},contains:name=>this.className.split(/\s+/).includes(name),toggle:(name,force)=>{const active=force??!this.classList.contains(name);this.classList[active?'add':'remove'](name);return active;}};
+      this.scrollHeight=48;this.scrollTop=0;this.clientHeight=120;this.isConnected=true;
+      eventTarget(this);const add=this.addEventListener;this.addEventListener=(type,callback,...rest)=>{this.listeners[type]=callback;add(type,callback,...rest);};
+    }
+    setAttribute(name,value){this.attributes[name]=String(value);if(name==='class')this.className=String(value);if(name==='id')this.id=String(value);}
+    getAttribute(name){return this.attributes[name]??null;}
+    removeAttribute(name){delete this.attributes[name];}
+    appendChild(node){if(node.parentElement)node.parentElement.children=node.parentElement.children.filter(child=>child!==node);this.children.push(node);node.parentElement=this;return node;}
+    append(...items){for(const item of items)this.appendChild(typeof item==='string'?document.createTextNode(item):item);}
+    replaceChildren(...items){for(const child of this.children)child.parentElement=null;this.children=[];this._textContent='';this.replaceCount++;this.append(...items);}
+    remove(){if(this.parentElement)this.parentElement.children=this.parentElement.children.filter(child=>child!==this);this.parentElement=null;this.isConnected=false;}
+    get textContent(){return this._textContent+this.children.map(child=>child.textContent).join('');}
+    set textContent(value){this._textContent=String(value);this.textWrites++;for(const child of this.children)child.parentElement=null;this.children=[];}
+    get data(){return this._textContent;}set data(value){this.textContent=value;}
+    get lastElementChild(){return this.children.at(-1)||null;}
+    focus(){document.activeElement=this;}
+    setSelectionRange(start,end){this.selectionStart=start;this.selectionEnd=end;}
+    closest(selector){for(let current=this;current;current=current.parentElement)if(matches(current,selector))return current;return null;}
+    contains(target){for(let current=target;current;current=current.parentElement)if(current===this)return true;return false;}
+    querySelectorAll(selector){
       const parts=selector.split(/\s+/),found=[];
       const visit=node=>{for(const child of node.children){
         if(matches(child,parts.at(-1))){let ancestor=child.parentElement,index=parts.length-2;while(index>=0&&ancestor){if(matches(ancestor,parts[index]))index--;ancestor=ancestor.parentElement;}if(index<0)found.push(child);}
         visit(child);
       }};visit(this);return found;
     }
-    querySelector(selector) {const node=this.querySelectorAll(selector)[0]||null;if(node)nodes.set(selector,node);return node;}
-    set innerHTML(html) {
+    querySelector(selector){const node=this.querySelectorAll(selector)[0]||null;if(node)nodes.set(selector,node);return node;}
+    set innerHTML(html){
       this.html=html;this.children=[];const stack=[this];
       for(const match of html.matchAll(/<(\/?)([a-z][a-z0-9-]*)([^>]*?)(\/?)>/gi)){
-        const [,closing,tag,attributes,selfClosing]=match;
-        if(closing){stack.pop();continue;}
+        const [,closing,tag,attributes,selfClosing]=match;if(closing){stack.pop();continue;}
         const node=new Node(tag);for(const attribute of attributes.matchAll(/([a-z][a-z0-9-]*)="([^"]*)"/gi))node.setAttribute(attribute[1],attribute[2]);
         stack.at(-1).appendChild(node);if(!selfClosing&&!['input','br','img','hr','meta','link'].includes(tag))stack.push(node);
       }
     }
     get innerHTML(){return this.html||'';}
   }
-  const document = { hidden: false, activeElement: null, documentElement: { lang: 'zh' },
-    createElement(name) {const node=new Node(name);if(name==='section')popup=node;return node;},
-    body: new Node('body'), getElementById() { return null; }, addEventListener() {},
+  const document=eventTarget({hidden:false,activeElement:null,documentElement:{lang:'zh'},
+    createElement(name){const node=new Node(name);if(name==='section')popup=node;return node;},
+    createElementNS(_namespace,name){return this.createElement(name);},
+    createTextNode(value){const node=new Node('#text');node.textContent=value;return node;},
+    body:new Node('body'),getElementById(id){return this.body.querySelector('#'+id);},
+  });
+  const motion=eventTarget({matches:options.reducedMotion??true,media:'(prefers-reduced-motion: reduce)'});
+  const fakeWaveModule={createVoiceWave(svg,settings={}){
+    const state={svg,settings,starts:0,stops:0,destroys:0,levels:[],active:false,
+      start(){state.starts++;state.active=true;settings.onLit?.(false);},
+      stop(){state.stops++;state.active=false;settings.onLit?.(false);},
+      destroy(){state.destroys++;state.active=false;settings.onLit?.(false);},
+      setLevels(values){state.levels.push(Array.from(values));settings.onLit?.(state.active&&values.some(value=>value>0));},
+    };waves.push(state);return state;
+  }};
+  const schedule=(fn,ms=0)=>{const id=++serial;timers.set(id,{fn,ms,at:now+Math.max(0,Number(ms)||0)});return id;};
+  const clear=id=>timers.delete(id);
+  const window=eventTarget({__testVoiceModule:voice.module,__testWaveModule:fakeWaveModule,matchMedia:()=>motion,
+    AudioContext:voice.module?class {constructor(){this.state='running';}resume(){return Promise.resolve();}close(){this.state='closed';return Promise.resolve();}}:undefined,
+    PortfolioNavigation:{assistantAvailable:()=>available},PortfolioAssistantConnection:{mode:'transport',reply,supportsVoice:!!voice.module,transcribe:voice.transcribe},
+  });
+  class CustomEvent{constructor(type,settings={}){this.type=type;this.detail=settings.detail;}}
+  const context={document,window,URL,Intl,Blob,Float32Array,performance:{now:()=>now},setTimeout:schedule,clearTimeout:clear,
+    requestAnimationFrame:fn=>schedule(()=>fn(now),16),cancelAnimationFrame:clear,
+    location:{href:'https://bing2002.com/'},innerHeight:982,innerWidth:1512,AbortController,CustomEvent,
+    addEventListener:window.addEventListener,removeEventListener:window.removeEventListener,dispatchEvent:window.dispatchEvent,
   };
-  let available = false;
-  const context = { document, URL, setTimeout, clearTimeout, location: {href:'https://bing2002.com/'}, innerHeight: 982, innerWidth: 1512, AbortController, CustomEvent: class { constructor(type, options) { this.type = type; this.detail = options?.detail; } },
-    addEventListener() {}, dispatchEvent() {}, window: { __testVoiceModule: voice.module, AudioContext: voice.module ? class { constructor(){this.state='running';} resume(){return Promise.resolve();} close(){this.state='closed';return Promise.resolve();} } : undefined, PortfolioNavigation: { assistantAvailable: () => available }, PortfolioAssistantConnection: { mode: 'transport', reply, supportsVoice: !!voice.module, transcribe: voice.transcribe } },
+  const executable=uiSource.replace('import(voiceModuleURL.href)','Promise.resolve(window.__testVoiceModule)').replace('import(waveModuleURL.href)','Promise.resolve(window.__testWaveModule)');
+  vm.runInNewContext(executable,context);
+  const emit=(target,type,detail)=>target.dispatchEvent(new CustomEvent(type,{detail}));
+  return {api:window.PortfolioAssistant,nodes,popup,context,timers,waves,motion,
+    allow(){available=true;},submit(){nodes.get('.pa-form').dispatchEvent(new CustomEvent('submit'));},
+    emitWindow(type,detail){emit(window,type,detail);},emitDocument(type,detail){emit(document,type,detail);},
+    setReducedMotion(value){if(motion.matches!==value){motion.matches=value;motion.dispatchEvent({type:'change',matches:value,media:motion.media});}},
+    advance(ms){const target=now+ms;let count=0;while(true){const due=[...timers].filter(([,timer])=>timer.at<=target).sort((a,b)=>a[1].at-b[1].at||a[0]-b[0])[0];if(!due)break;if(++count>10000)throw new Error('unbounded scheduled UI work');const[id,timer]=due;timers.delete(id);now=timer.at;timer.fn();}now=target;return count;},
   };
-  vm.runInNewContext(voice.module ? uiSource.replace('import(voiceModuleURL.href)', 'Promise.resolve(window.__testVoiceModule)') : uiSource, context);
-  return { api: context.window.PortfolioAssistant, nodes, popup, context, allow() { available = true; }, submit() { nodes.get('.pa-form').listeners.submit({ preventDefault() {} }); } };
 }
 
 test('UI keeps first-entry gate, retains failed question, and never commits consecutive user turns', async () => {
@@ -224,6 +271,115 @@ test('UI close cancels pending question without losing its input or leaking an u
   complete({ status: 'ok', message: { role: 'assistant', content: 'too late' } }); await tick();
   assert.equal(env.nodes.get('.pa-log').children.length, 0);
   env.api.open(); env.submit(); await tick(); assert.deepEqual(calls[1], calls[0]);
+});
+
+test('reply reveals complete graphemes on a controllable clock without remounting or repeated announcements',async()=>{
+  const answer='👩🏽‍💻你好，这是完整的作品回答。';
+  const env=ui(async()=>({status:'ok',message:{role:'assistant',content:answer}}),{},{reducedMotion:false});
+  env.allow();env.api.open();const input=env.nodes.get('.pa-input');input.value='介绍我的作品';env.submit();await tick();
+  const log=env.nodes.get('.pa-log'),reply=log.children[1],announcer=env.nodes.get('.pa-announcer');
+  assert.notEqual(reply.textContent,answer,'the visual answer is not revealed all at once');
+  assert.equal(input.readOnly,false,'presentation does not keep the composer network-busy');
+  assert.equal(log.getAttribute('aria-live'),'off');assert.equal(announcer.getAttribute('aria-live'),'polite');assert.equal(announcer.getAttribute('aria-atomic'),'true');
+  assert.equal(announcer.textContent,answer,'assistive technology receives one complete answer');
+  const remounts=log.replaceCount,announcements=announcer.textWrites;
+  env.advance(22);assert.equal(reply.textContent,'👩🏽‍💻','a ZWJ emoji and skin-tone modifier stay together');
+  env.advance(22);assert.ok(reply.textContent.length>2&&reply.textContent.length<answer.length);
+  assert.equal(log.children[1],reply);assert.equal(log.replaceCount,remounts,'character updates do not rebuild history');
+  env.advance(10000);assert.equal(reply.textContent,answer);assert.equal(announcer.textWrites,announcements,'characters are not announced repeatedly');assert.equal(env.timers.size,0);
+});
+
+test('presentation completion preserves a new draft and a new request uses the full previous answer exactly once',async()=>{
+  const answer='这是已经完整收到、正在逐字显示的回答。',calls=[];let second;
+  const env=ui(async messages=>{calls.push(json(messages));return calls.length===1?{status:'ok',message:{role:'assistant',content:answer}}:new Promise(resolve=>{second=resolve;});},{},{reducedMotion:false});
+  env.allow();env.api.open();const input=env.nodes.get('.pa-input');input.value='第一个问题';env.submit();await tick();env.advance(22);
+  input.value='尚未发送的新草稿';input.dispatchEvent({type:'input'});env.advance(10000);
+  assert.equal(input.value,'尚未发送的新草稿','finishing presentation must never clear text typed meanwhile');
+  input.value='第二个问题';env.submit();env.submit();await tick();
+  assert.equal(calls.length,2,'duplicate submission while the request is pending does not send twice');
+  assert.deepEqual(calls[1],[{role:'user',content:'第一个问题'},{role:'assistant',content:answer},{role:'user',content:'第二个问题'}]);
+  second({status:'ok',message:{role:'assistant',content:'第二个完整回答。'}});await tick();
+  input.value='还要继续保留';env.advance(22);env.api.close();env.advance(10000);assert.equal(input.value,'还要继续保留');
+});
+
+test('submitting during a partial reveal sends the complete canonical answer and stops its presentation timer',async()=>{
+  const answer='上一条回答还没有显示完，但模型历史必须包含它的全文。',calls=[];
+  const env=ui(async messages=>{calls.push(json(messages));return calls.length===1?{status:'ok',message:{role:'assistant',content:answer}}:new Promise(()=>{});},{},{reducedMotion:false});
+  env.allow();env.api.open();const input=env.nodes.get('.pa-input');input.value='第一问';env.submit();await tick();env.advance(22);
+  assert.ok(env.nodes.get('.pa-log').children[1].textContent.length<answer.length);
+  input.value='紧接着问';env.submit();await tick();
+  assert.deepEqual(calls[1],[{role:'user',content:'第一问'},{role:'assistant',content:answer},{role:'user',content:'紧接着问'}]);
+  assert.equal(env.nodes.get('.pa-log').children[1].textContent,answer);assert.equal(env.timers.size,0);
+  env.context.document.dispatchEvent({type:'keydown',key:'Escape'});assert.equal(env.api.isOpen(),false);assert.equal(input.value,'紧接着问');
+});
+
+test('closing or clearing during reply presentation cancels every future character without discarding accepted history on close',async()=>{
+  const answer='这条回复在关闭之前只显示一小部分。';
+  for(const action of ['close','clear']){
+    const env=ui(async()=>({status:'ok',message:{role:'assistant',content:answer}}),{},{reducedMotion:false});
+    env.allow();env.api.open();const input=env.nodes.get('.pa-input');input.value='问题';env.submit();await tick();env.advance(22);
+    assert.ok(env.nodes.get('.pa-log').children[1].textContent.length<answer.length);
+    input.value='保留新的草稿';env.api[action]();const log=env.nodes.get('.pa-log'),remounts=log.replaceCount,writes=env.nodes.get('.pa-announcer').textWrites;
+    assert.equal(env.timers.size,0);env.advance(10000);assert.equal(log.replaceCount,remounts);assert.equal(env.nodes.get('.pa-announcer').textWrites,writes);assert.equal(input.value,'保留新的草稿');
+    if(action==='close'){env.api.open();assert.equal(log.children.length,2);assert.equal(log.children[1].textContent,answer);}
+    else {assert.equal(log.children.length,0);assert.equal(env.nodes.get('.pa-announcer').textContent,'','clear removes the accessible answer as well as visual history');}
+  }
+});
+
+test('language changes keep the reveal position and reduced-motion changes finish it immediately without replay',async()=>{
+  const answer='语言按钮只更新控件，不会重新播放回答。';
+  const env=ui(async()=>({status:'ok',message:{role:'assistant',content:answer}}),{},{reducedMotion:false});
+  env.allow();env.api.open();env.nodes.get('.pa-input').value='问题';env.submit();await tick();env.advance(22);
+  const reply=env.nodes.get('.pa-log').children[1],prefix=reply.textContent,announcer=env.nodes.get('.pa-announcer'),writes=announcer.textWrites;
+  env.context.document.documentElement.lang='en';env.emitWindow('portfolio:language',{language:'en'});
+  assert.equal(env.nodes.get('.pa-input').placeholder,'Ask me a question');assert.equal(reply.textContent,prefix);assert.equal(announcer.textWrites,writes);
+  env.advance(22);assert.ok(reply.textContent.startsWith(prefix)&&reply.textContent.length>prefix.length,'the next step continues rather than restarting');
+  env.setReducedMotion(true);assert.equal(reply.textContent,answer);assert.equal(env.timers.size,0);assert.equal(announcer.textWrites,writes);
+  env.setReducedMotion(false);env.advance(10000);assert.equal(reply.textContent,answer);assert.equal(env.timers.size,0);
+});
+
+test('character updates respect readers who scroll upwards while continuing to follow the bottom when requested',async()=>{
+  const answer='这是一段逐字展开、需要保持阅读位置的回复。';
+  const env=ui(async()=>({status:'ok',message:{role:'assistant',content:answer}}),{},{reducedMotion:false});
+  env.allow();env.api.open();env.nodes.get('.pa-input').value='问题';env.submit();await tick();
+  const history=env.nodes.get('.pa-history');history.scrollHeight=900;history.clientHeight=200;history.scrollTop=125;
+  env.advance(44);assert.equal(history.scrollTop,125,'typing must not drag a reader away from earlier messages');
+  history.scrollTop=700;env.advance(22);assert.ok(history.scrollTop>=700,'a reader at the end continues to follow the answer');
+  env.api.close();
+});
+
+test('a new reply arriving while the reader is above the bottom preserves that reading position',async()=>{
+  let complete;let count=0;
+  const env=ui(async()=>++count===1?{status:'ok',message:{role:'assistant',content:'第一条已完成的回复。'}}:new Promise(resolve=>{complete=resolve;}));
+  env.allow();env.api.open();const input=env.nodes.get('.pa-input');input.value='先问一个';env.submit();await tick();
+  env.setReducedMotion(false);input.value='再问一个';env.submit();await tick();
+  const history=env.nodes.get('.pa-history');history.scrollHeight=900;history.clientHeight=200;history.scrollTop=100;
+  complete({status:'ok',message:{role:'assistant',content:'第二条正在到来的回复。'}});await tick();
+  assert.equal(history.scrollTop,100,'new reply rendering must not force an upward reader to the end');
+  env.advance(44);assert.equal(history.scrollTop,100);env.api.close();
+});
+
+test('hidden documents and page departure finish pending presentation without leaving timers running',async()=>{
+  const answer='这条已收到的回答不能在离开后继续逐字更新。';
+  for(const action of ['hidden','pagehide']){
+    const env=ui(async()=>({status:'ok',message:{role:'assistant',content:answer}}),{},{reducedMotion:false});
+    env.allow();env.api.open();env.nodes.get('.pa-input').value='问题';env.submit();await tick();env.advance(22);
+    if(action==='hidden'){env.context.document.hidden=true;env.emitDocument('visibilitychange');}
+    else env.emitWindow('pagehide');
+    const log=env.nodes.get('.pa-log');assert.equal(log.children[1].textContent,answer);assert.equal(env.timers.size,0);
+    const writes=log.children[1].textWrites;env.advance(10000);assert.equal(log.children[1].textWrites,writes);
+  }
+});
+
+test('starting voice during reply presentation preserves selection insertion and never submits a second question',async()=>{
+  let questions=0;
+  const env=ui(async()=>{questions++;return{status:'ok',message:{role:'assistant',content:'一段仍在逐字展开的作品回答。'}};},{
+    module:{record({onState}){onState('listening');return{result:Promise.resolve(new Blob(['audio'])),cancel(){},stop(){}};}},
+    transcribe:async()=>({status:'ok',text:'数独'}),
+  },{reducedMotion:false});
+  env.allow();env.api.open();const input=env.nodes.get('.pa-input');input.value='第一个问题';env.submit();await tick();env.advance(22);
+  input.value='关于这个作品';input.selectionStart=2;input.selectionEnd=4;env.nodes.get('.pa-voice-toggle').dispatchEvent({type:'click'});await tick();
+  assert.equal(input.value,'关于数独作品');assert.equal(input.readOnly,false);assert.equal(questions,1);env.advance(10000);assert.equal(input.value,'关于数独作品');
 });
 
 
@@ -311,25 +467,28 @@ test('closing during transcription aborts the upload, keeps the draft and ignore
 });
 
 
-test('voice dots stay inside the input composition and paint only live points, with silence fully empty',async()=>{
+test('voice timeline has its own row above the input and delegates live levels to its renderer',async()=>{
   let finish,levels;
   const env=ui(()=>assert.fail('voice must not auto-send'),{
     module:{record({onState,onLevels}){levels=onLevels;onState('listening');return{result:new Promise(resolve=>{finish=resolve;}),cancel(){},stop(){}};}},
     transcribe:async()=>({status:'ok',text:'数独'}),
   });
-  const card=env.popup.querySelector('.pa-window'),compose=env.popup.querySelector('.pa-compose'),wave=env.popup.querySelector('.pa-wave'),panel=env.popup.querySelector('.pa-voice-panel'),mic=env.nodes.get('.pa-voice-toggle');
-  assert.equal(panel.parentElement,compose);assert.equal(card.contains(wave),true);assert.equal(panel.contains(env.nodes.get('.pa-input')),false,'wave cannot cover an ancestor containing the text');
-  const dots=wave.querySelectorAll('circle');assert.equal(dots.length,243);assert.ok(dots.every(dot=>dot.attributes.opacity==='0'),'no initial dim matrix');
+  const card=env.popup.querySelector('.pa-window'),form=env.popup.querySelector('.pa-form'),wave=env.popup.querySelector('.pa-wave'),panel=env.popup.querySelector('.pa-voice-panel'),mic=env.nodes.get('.pa-voice-toggle');
+  assert.equal(panel.parentElement,card);assert.ok(card.children.indexOf(panel)<card.children.indexOf(form),'timeline has a separate row before the composer');
+  assert.equal(panel.contains(env.nodes.get('.pa-input')),false,'wave cannot cover text or placeholder');
+  assert.equal(wave.getAttribute('viewBox'),'0 0 320 48');assert.equal(wave.querySelectorAll('circle').length,0,'no prefilled background matrix');
+  assert.equal(env.waves.length,0,'renderer remains lazy before the microphone is pressed');
   assert.equal(panel.attributes['aria-hidden'],'true');assert.equal(mic.attributes['aria-controls'],panel.attributes.id);
   assert.ok(mic.querySelector('.pa-stop-icon'),'active microphone has a distinct stop glyph');
   env.allow();env.api.open();mic.listeners.click();await tick();
   assert.equal(mic.attributes['aria-expanded'],'true');assert.equal(mic.attributes['aria-pressed'],'true');assert.equal(env.popup.dataset.voiceDraft,'false');
-  assert.equal(env.nodes.get('.pa-input').placeholder,'','empty recording does not layer a label behind the dots');
-  levels(Array(27).fill(0));assert.equal(env.popup.dataset.voiceLit,'false');assert.ok(dots.every(dot=>dot.attributes.opacity==='0'));
-  levels([.1,.8,...Array(25).fill(0)]);assert.equal(env.popup.dataset.voiceLit,'true');assert.ok(dots.some(dot=>dot.attributes.opacity==='.92'));
-  assert.ok(dots.every(dot=>['0','.92'].includes(dot.attributes.opacity)),'off points never form a faint background grid');
-  levels(Array(27).fill(0));assert.equal(env.popup.dataset.voiceLit,'false');assert.ok(dots.every(dot=>dot.attributes.opacity==='0'));
+  assert.equal(env.nodes.get('.pa-input').placeholder,'你想问我什么？','placeholder stays visible in its independent input row');
+  assert.equal(env.waves.length,1);assert.equal(env.waves[0].svg,wave);assert.equal(env.waves[0].starts,1);assert.equal(env.waves[0].settings.isReducedMotion(),true);
+  levels(Array(27).fill(0));assert.equal(env.popup.dataset.voiceLit,'false');
+  const signal=[.1,.8,...Array(25).fill(0)];levels(signal);assert.equal(env.popup.dataset.voiceLit,'true');assert.deepEqual(env.waves[0].levels.at(-1),signal);
+  levels(Array(27).fill(0));assert.equal(env.popup.dataset.voiceLit,'false');
   finish(new Blob(['audio']));await tick();assert.equal(mic.attributes['aria-expanded'],'false');assert.equal(mic.attributes['aria-pressed'],'false');assert.equal(env.popup.dataset.voiceLit,'false');
+  assert.equal(env.waves[0].active,false);assert.ok(env.waves[0].stops>=1);
 });
 
 test('voice composition marks existing draft text for its own row and preserves it until transcription',async()=>{
@@ -340,7 +499,8 @@ test('voice composition marks existing draft text for its own row and preserves 
   });
   env.allow();env.api.open();const input=env.nodes.get('.pa-input');input.value='原有草稿';input.selectionStart=input.selectionEnd=input.value.length;
   env.nodes.get('.pa-voice-toggle').listeners.click();await tick();assert.equal(env.popup.dataset.voiceDraft,'true');assert.equal(input.value,'原有草稿');assert.equal(input.readOnly,true);
-  const compose=env.popup.querySelector('.pa-compose');assert.equal(compose.children[0],input);assert.equal(compose.children[1],env.popup.querySelector('.pa-voice-panel'));
+  const compose=env.popup.querySelector('.pa-compose');assert.equal(compose.children[0],input);assert.equal(compose.contains(env.popup.querySelector('.pa-voice-panel')),false);
+  assert.equal(input.placeholder,'你想问我什么？');
   finish(new Blob(['audio']));await tick();assert.equal(input.value,'原有草稿数独');assert.equal(input.readOnly,false);assert.equal(env.popup.dataset.voiceExpanded,'false');
 });
 

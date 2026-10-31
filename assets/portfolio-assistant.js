@@ -7,10 +7,10 @@
   'use strict';
   if (window.PortfolioAssistant) return;
   const voiceModuleURL=new URL('assistant-voice.js?v=b07463c086',document.currentScript?.src||new URL('/assets/portfolio-assistant.js',location.href));
-  let voiceModule;
-  const waveform=Array.from({length:27},(_,column)=>Array.from({length:9},(_,row)=>
-    `<circle cx="${4+column*4}" cy="${2+row*4}" r="1.1" opacity="0"/>`
-  ).join('')).join('');
+  const waveModuleURL=new URL('assistant-wave.js?v=b8e092d90e',document.currentScript?.src||new URL('/assets/portfolio-assistant.js',location.href));
+  const motion=window.matchMedia?.('(prefers-reduced-motion: reduce)');
+  const reducedMotion=()=>!!motion?.matches;
+  let voiceModule,waveModule,waveRenderer;
   const popup=document.createElement('section');
   popup.id='portfolio-assistant';popup.className='pa-popover';
   popup.setAttribute('role','dialog');popup.setAttribute('aria-modal','false');
@@ -18,25 +18,28 @@
   popup.setAttribute('data-i18n-ignore','');popup.setAttribute('aria-hidden','true');
   popup.dataset.open='false';popup.dataset.voiceExpanded='false';popup.dataset.voiceLit='false';popup.dataset.voiceDraft='false';popup.dataset.suspended=String(document.hidden);popup.inert=true;
   popup.innerHTML=`<div class="pa-window">
-    <div class="pa-history" hidden><div class="pa-log" role="log" aria-live="polite" aria-relevant="additions"></div><p class="pa-notice" role="status" hidden></p></div>
+    <div class="pa-edge-glow" aria-hidden="true"><svg preserveAspectRatio="none"><rect class="pa-edge-track" x="1" y="1" rx="33" pathLength="1000"/></svg></div>
+    <div class="pa-history" hidden><div class="pa-log" role="log" aria-live="off"></div><p class="pa-notice" role="status" hidden></p></div>
+    <div class="pa-voice-panel" id="pa-voice-panel" aria-hidden="true"><svg class="pa-wave" viewBox="0 0 320 48" aria-hidden="true" focusable="false"></svg></div>
     <form class="pa-form">
       <button class="pa-voice-toggle" type="button" aria-controls="pa-voice-panel" aria-expanded="false"><svg class="pa-microphone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M6 11v1a6 6 0 0 0 12 0v-1M12 18v3m-3 0h6"/></svg><svg class="pa-stop-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><rect x="7" y="7" width="10" height="10" rx="1"/></svg></button>
-      <div class="pa-compose"><textarea class="pa-input" rows="1" maxlength="1000"></textarea><div class="pa-voice-panel" id="pa-voice-panel" aria-hidden="true"><svg class="pa-wave" viewBox="0 0 112 36" aria-hidden="true" focusable="false">${waveform}</svg></div></div>
+      <div class="pa-compose"><textarea class="pa-input" rows="1" maxlength="1000"></textarea></div>
       <button class="pa-send" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 19V5m-5 5 5-5 5 5"/></svg></button>
       <button class="pa-close" type="button"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m5 5 10 10M15 5 5 15"/></svg></button>
     </form>
     <span class="pa-status" id="pa-status" role="status"></span>
+    <span class="pa-status pa-announcer" aria-live="polite" aria-atomic="true"></span>
   </div>`;
   document.body.appendChild(popup);
   const find=selector=>popup.querySelector(selector),dot=()=>document.getElementById('dot');
   const input=find('.pa-input'),sendButton=find('.pa-send'),closeButton=find('.pa-close');
   const voiceButton=find('.pa-voice-toggle');
   const history=find('.pa-history'),log=find('.pa-log'),notice=find('.pa-notice');
-  const status=find('.pa-status'),messages=[];
+  const status=find('.pa-status'),announcer=find('.pa-announcer'),messages=[],messageNodes=new Map();
   let opened=false,voiceExpanded=false,busy=false,controller=null,generation=0,returnFocus=null;
   let feedback='',navigationMode=null,pendingMessage=null;
   let voiceState='',voiceCapture=null,voiceController=null,voiceContext=null,voiceGeneration=0,voiceSetupTimer=0;
-  const waveDots=Array.from(popup.querySelectorAll?.('.pa-wave circle')||[]),waveOpacity=[];
+  let replyReveal=null,replyTimer=0;
   const copy={
     zh:{title:'关于我的对话',close:'关闭对话',preview:'AI 尚未连接',ready:'可以提问',pending:'等待回复…',
       placeholder:'你想问我什么？',send:'发送',voiceOpen:'开始语音输入',voiceClose:'停止录音',
@@ -75,7 +78,7 @@
     const recording=!!voiceState;
     status.textContent=recording?(voiceState==='requesting'?t.voiceRequesting:voiceState==='transcribing'?t.voiceTranscribing:t.voiceListening):busy?t.pending:configured()?t.ready:t.preview;
     closeButton.setAttribute('aria-label',t.close);
-    input.placeholder=voiceState==='listening'?'':t.placeholder;input.setAttribute('aria-label',t.placeholder);
+    input.placeholder=t.placeholder;input.setAttribute('aria-label',t.placeholder);
     popup.dataset.voiceExpanded=String(voiceExpanded);popup.dataset.voiceDraft=String(!!input.value.trim());
     voiceButton.setAttribute('aria-expanded',String(voiceExpanded));
     voiceButton.setAttribute('aria-label',recording?(voiceState==='listening'?t.voiceClose:t.voiceCancel):t.voiceOpen);
@@ -86,27 +89,58 @@
     history.hidden=!hasHistory;popup.classList.toggle('has-history',hasHistory);popup.classList.toggle('has-messages',messages.length>0||!!pendingMessage);
     notice.hidden=!feedback;notice.textContent=feedback?t[feedback]||t.error:'';
   }
-  function render() {
-    log.replaceChildren();
+  function render({follow=false}={}) {
+    const top=history.scrollTop||0,atBottom=history.scrollHeight-top-(history.clientHeight||0)<32;
+    log.replaceChildren();messageNodes.clear();
     for (const message of pendingMessage?[...messages,pendingMessage]:messages) {
       const block=document.createElement('div');block.className=`pa-message pa-message--${message.role}`;
-      block.textContent=message.content;log.appendChild(block);
+      block.textContent=replyReveal?.message===message?replyReveal.visible:message.content;log.appendChild(block);messageNodes.set(message,block);
     }
-    update();history.scrollTop=history.scrollHeight;
+    update();history.scrollTop=follow||atBottom?history.scrollHeight:top;
+  }
+  function finishReplyReveal() {
+    clearTimeout(replyTimer);replyTimer=0;
+    if(!replyReveal)return;
+    const state=replyReveal;replyReveal=null;
+    const follow=history.scrollHeight-history.scrollTop-(history.clientHeight||0)<32;
+    const block=messageNodes.get(state.message);if(block)block.textContent=state.message.content;
+    if(follow)history.scrollTop=history.scrollHeight;
+  }
+  function revealReply(message) {
+    finishReplyReveal();
+    if(reducedMotion()||document.hidden){render();return;}
+    const segments=typeof Intl.Segmenter==='function'
+      ?Array.from(new Intl.Segmenter(undefined,{granularity:'grapheme'}).segment(message.content),part=>part.segment)
+      :Array.from(message.content);
+    const state={message,visible:'',count:0};replyReveal=state;render();
+    const step=Math.max(1,Math.ceil(segments.length/260));
+    function advance() {
+      if(replyReveal!==state||!opened)return;
+      const follow=history.scrollHeight-history.scrollTop-(history.clientHeight||0)<32;
+      state.count=Math.min(segments.length,state.count+step);state.visible=segments.slice(0,state.count).join('');
+      const block=messageNodes.get(message);if(block)block.textContent=state.visible;
+      if(follow)history.scrollTop=history.scrollHeight;
+      if(state.count===segments.length){replyReveal=null;replyTimer=0;return;}
+      const punctuation=/[，。！？、,.!?;；：:]$/.test(state.visible);
+      replyTimer=setTimeout(advance,punctuation?90:22);
+    }
+    replyTimer=setTimeout(advance,22);
   }
   function resizeInput() {
     const viewportHeight=window.visualViewport?.height||innerHeight;
     const maxHeight=Math.min(96,Math.max(48,viewportHeight*.22));
     input.style.height='auto';input.style.height=`${Math.min(maxHeight,Math.max(48,input.scrollHeight))}px`;
   }
-  function abort() {generation++;controller?.abort();controller=null;busy=false;pendingMessage=null;}
-  function clear() {cancelVoice();abort();messages.length=0;feedback='';voiceExpanded=false;render();if(opened)input.focus({preventScroll:true});}
+  function abort() {generation++;controller?.abort();controller=null;busy=false;pendingMessage=null;finishReplyReveal();}
+  function clear() {cancelVoice();abort();messages.length=0;announcer.textContent='';feedback='';voiceExpanded=false;render();if(opened)input.focus({preventScroll:true});}
   async function submit() {
     const content=input.value.trim();if(!opened||busy||voiceState||!content)return;
     if(!configured()){feedback='offline';render();return;}
     if(content.length>1000){feedback='invalid_messages';render();return;}
+    finishReplyReveal();announcer.textContent='';
     pendingMessage={role:'user',content};const question=pendingMessage;feedback='';busy=true;
-    const token=++generation;controller=new AbortController();render();
+    const token=++generation;controller=new AbortController();render({follow:true});
+    let completedReply=null;
     try {
       const connection=window.PortfolioAssistantConnection;
       const result=typeof connection?.reply==='function'
@@ -115,32 +149,23 @@
       if (token!==generation||!opened)return;
       const answer=result?.status==='ok'&&result.message?.role==='assistant'?result.message.content:null;
       if (typeof answer==='string'&&answer.trim()) {
-        messages.push(question,{role:'assistant',content:answer.trim()});input.value='';resizeInput();
+        completedReply={role:'assistant',content:answer.trim()};messages.push(question,completedReply);input.value='';resizeInput();announcer.textContent=completedReply.content;
       }
       else if (result?.status==='not_connected') feedback='offline';
       else if (result?.status!=='aborted') feedback=serviceErrors.has(result?.error?.code)?result.error.code:'error';
     } catch(error) {
       if(token===generation&&opened&&error?.name!=='AbortError')feedback='error';
     } finally {
-      if(token===generation){controller=null;busy=false;pendingMessage=null;render();}
+      if(token===generation){controller=null;busy=false;pendingMessage=null;if(completedReply)revealReply(completedReply);else render();}
     }
   }
   function paintVoice(levels=[]) {
-    let lit=false;
-    for(let column=0;column<27;column++){
-      const level=levels[column]||0,height=Math.round(level*4),active=level>.025;
-      if(active)lit=true;
-      for(let row=0;row<9;row++){
-        const index=column*9+row,opacity=active&&Math.abs(row-4)<=height?'.92':'0';
-        if(waveDots[index]&&waveOpacity[index]!==opacity){waveDots[index].setAttribute('opacity',opacity);waveOpacity[index]=opacity;}
-      }
-    }
-    popup.dataset.voiceLit=String(lit&&voiceState==='listening');
+    waveRenderer?.setLevels(levels);
   }
   function cancelVoice() {
     voiceGeneration++;clearTimeout(voiceSetupTimer);voiceSetupTimer=0;voiceController?.abort();voiceCapture?.cancel();voiceCapture=null;voiceController=null;
     if(voiceContext&&voiceContext.state!=='closed')Promise.resolve(voiceContext.close()).catch(()=>{});
-    voiceContext=null;voiceState='';voiceExpanded=false;paintVoice();
+    waveRenderer?.stop();popup.dataset.voiceLit='false';voiceContext=null;voiceState='';voiceExpanded=false;
   }
   async function startVoice() {
     if(!opened||busy)return;
@@ -150,6 +175,7 @@
     if(input.value.length>=1000){feedback='voice_too_long';render();return;}
     const AudioContext=window.AudioContext||window.webkitAudioContext;
     if(!AudioContext){feedback='voice_unsupported';render();return;}
+    finishReplyReveal();
     const draft=input.value,start=input.selectionStart??draft.length,end=input.selectionEnd??start;
     const token=++voiceGeneration;voiceController=new AbortController();const signal=voiceController.signal;
     voiceState='requesting';voiceExpanded=true;feedback='';paintVoice();render();position();
@@ -158,14 +184,19 @@
       // Resume during the actual click, before the lazy module or permission await.
       voiceContext=new AudioContext();Promise.resolve(voiceContext.resume()).catch(()=>{});
       voiceModule ||= import(voiceModuleURL.href);
-      const module=await voiceModule;
+      waveModule ||= import(waveModuleURL.href).catch(()=>{waveModule=null;return null;});
+      const [module,wave]=await Promise.all([voiceModule,waveModule]);
       if(token!==voiceGeneration||!opened)return;
+      if(!waveRenderer&&wave?.createVoiceWave){
+        try{waveRenderer=wave.createVoiceWave(find('.pa-wave'),{isReducedMotion:reducedMotion,onLit:lit=>{popup.dataset.voiceLit=String(!!lit&&voiceState==='listening');}});}catch(_){}
+      }
       voiceCapture=module.record({context:voiceContext,signal,onLevels:paintVoice,onState:state=>{
-        if(token!==voiceGeneration||!opened)return;if(state==='listening'){clearTimeout(voiceSetupTimer);voiceSetupTimer=0;}voiceState=state;update();
+        if(token!==voiceGeneration||!opened)return;
+        voiceState=state;if(state==='listening'){clearTimeout(voiceSetupTimer);voiceSetupTimer=0;waveRenderer?.start();}else waveRenderer?.stop();update();
       }});
       const audio=await voiceCapture.result;
       if(token!==voiceGeneration||!opened)return;
-      voiceCapture=null;voiceContext=null;voiceState='transcribing';paintVoice();update();
+      voiceCapture=null;voiceContext=null;voiceState='transcribing';waveRenderer?.stop();popup.dataset.voiceLit='false';update();
       const result=await connection.transcribe(audio,{signal});
       if(token!==voiceGeneration||!opened)return;
       if(result?.status==='ok'&&typeof result.text==='string'){
@@ -242,7 +273,8 @@
   });
   document.addEventListener('pointerdown',outside,true);
   document.addEventListener('click',outside,true);
-  document.addEventListener('visibilitychange',()=>{popup.dataset.suspended=String(document.hidden);if(document.hidden&&voiceState){cancelVoice();update();position();}});
+  document.addEventListener('visibilitychange',()=>{popup.dataset.suspended=String(document.hidden);if(document.hidden){finishReplyReveal();if(voiceState){cancelVoice();update();position();}}});
+  motion?.addEventListener?.('change',()=>{if(reducedMotion())finishReplyReveal();});
   addEventListener('portfolio:navigation',event=>{
     const mode=event.detail?.mode,reason=event.detail?.reason,previous=navigationMode;
     if(typeof mode==='string')navigationMode=mode;
@@ -253,7 +285,7 @@
   addEventListener('resize',position,{passive:true});addEventListener('scroll',position,{passive:true});
   window.visualViewport?.addEventListener('resize',position,{passive:true});
   window.visualViewport?.addEventListener('scroll',position,{passive:true});
-  addEventListener('pagehide',()=>{if(opened)close({restoreFocus:false});});
+  addEventListener('pagehide',()=>{finishReplyReveal();waveRenderer?.destroy();waveRenderer=null;if(opened)close({restoreFocus:false});});
   window.PortfolioAssistant=Object.freeze({open,close,toggle:options=>opened?close(options):open(options),isOpen:()=>opened,clear});
   render();
 })();

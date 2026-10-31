@@ -1,4 +1,4 @@
-/* Live voice points share the input surface; silence paints nothing. */
+/* Live voice points have a small upper bay; silence paints nothing. */
 .pa-popover {
   --pa-red:var(--red,#f04432);
   position:fixed;z-index:95;left:12px;top:auto;bottom:calc(16px + env(safe-area-inset-bottom,0px));
@@ -10,23 +10,31 @@
 }
 .pa-popover.is-visible {opacity:1;visibility:visible;pointer-events:none;transform:translateY(0);transition-delay:0s}
 .pa-window {
-  pointer-events:auto;display:flex;flex-direction:column;max-height:var(--pa-available-height,480px);overflow:hidden;
+  position:relative;isolation:isolate;pointer-events:auto;display:flex;flex-direction:column;max-height:var(--pa-available-height,480px);overflow:hidden;
   border:1px solid var(--line,#333);border-radius:34px;background:var(--paper,#111110);
   box-shadow:0 14px 52px #0000001c;
 }
-/* The existing draft keeps its own row; empty input uses the same 48px slot. */
+/* The upper voice bay opens without occupying the draft or placeholder. */
 .pa-compose {position:relative;flex:1;min-width:0;min-height:48px}
 .pa-voice-panel {
-  position:absolute;left:50%;top:50%;width:min(140px,100%);height:44px;
-  margin:0;padding:0;overflow:hidden;pointer-events:none;transform:translate(-50%,-50%);
+  display:flex;flex:none;align-items:center;justify-content:center;box-sizing:border-box;
+  width:100%;height:0;min-height:0;margin:0;padding:0;overflow:hidden;pointer-events:none;
   border:0;background:none;box-shadow:none;filter:none;backdrop-filter:none;-webkit-backdrop-filter:none;
-  visibility:hidden;
+  visibility:hidden;transition:height .22s cubic-bezier(.22,.61,.36,1),visibility 0s .22s;
 }
-.pa-wave {display:block;width:100%;height:100%;margin:0;color:var(--ink,#efeee9)}
-.pa-popover[data-voice-state="listening"][data-voice-lit="true"] .pa-voice-panel {visibility:visible}
-.pa-popover[data-voice-expanded="true"][data-voice-draft="true"] .pa-compose {padding-bottom:28px}
-.pa-popover[data-voice-draft="true"] .pa-voice-panel {top:auto;bottom:0;height:24px;transform:translateX(-50%)}
+.pa-popover[data-open="true"][data-voice-expanded="true"] .pa-voice-panel {height:52px;visibility:visible;transition-delay:0s}
+.pa-wave {display:block;flex:none;width:min(320px,calc(100% - 48px));height:48px;margin:0;color:var(--ink,#efeee9);visibility:hidden}
+.pa-popover[data-voice-state="listening"][data-voice-lit="true"] .pa-wave {visibility:visible}
 .pa-wave circle {fill:currentColor}
+/* A short cluster travels around the actual card geometry, never a lit ring. */
+.pa-edge-glow {position:absolute;inset:0;z-index:2;overflow:hidden;border-radius:inherit;pointer-events:none;color:var(--pa-red);opacity:.78}
+.pa-edge-glow svg {display:block;width:100%;height:100%;overflow:visible;pointer-events:none}
+.pa-edge-track {
+  width:calc(100% - 2px);height:calc(100% - 2px);fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;
+  stroke-dasharray:.05 9.95 .05 9.95 .05 979.95;stroke-dashoffset:0;
+  animation:pa-edge-travel 8s linear infinite;animation-play-state:paused;
+}
+.pa-popover.is-visible[data-open="true"]:not([data-suspended="true"]) .pa-edge-track {animation-play-state:running}
 .pa-history {display:flex;flex:1;flex-direction:column;gap:12px;min-height:0;overflow:auto;overscroll-behavior:contain;padding:22px 24px 10px;scrollbar-width:thin}
 .pa-popover:not(.has-messages) .pa-history {flex:0 1 auto;padding:18px 24px 2px}
 .pa-log {display:flex;flex:none;flex-direction:column;gap:14px}
@@ -55,14 +63,34 @@
 .pa-popover .pa-voice-toggle:hover:not(:disabled) {background:none}
 .pa-popover button:focus-visible {outline:1px solid var(--pa-red);outline-offset:2px}
 .pa-window:has(.pa-input:focus-visible) {outline:1px solid var(--pa-red);outline-offset:3px}
-.pa-popover[data-compact="true"] .pa-voice-panel {width:min(112px,100%);height:32px}
-.pa-popover[data-compact="true"][data-voice-draft="true"] .pa-voice-panel {height:24px}
+.pa-popover[data-compact="true"][data-open="true"][data-voice-expanded="true"] .pa-voice-panel {height:44px}
+.pa-popover[data-compact="true"] .pa-wave {width:min(256px,calc(100% - 48px));height:38px}
 .pa-popover[data-compact="true"] .pa-history {padding-top:12px;padding-bottom:4px}
 .pa-popover[data-compact="true"] .pa-form {padding-top:4px;padding-bottom:4px}
+@keyframes pa-edge-travel {to{stroke-dashoffset:-1000}}
+
+/* The active iris grows; the title's pupil and its hit target stay fixed. */
+#stage #dot.assistant-active {--title-ring-size:44px}
+#stage #dot.assistant-active[aria-expanded="true"]::after {
+  animation:pa-iris-wake .2s ease-out both,pa-iris-rest 5.6s ease-in-out .2s infinite;
+}
+body:has(#portfolio-assistant[data-suspended="true"]) #stage #dot.assistant-active[aria-expanded="true"]::after {animation-play-state:paused}
+@keyframes pa-iris-wake {
+  0%{transform:translate(-50%,-50%) scale(.96);opacity:.5}
+  55%{transform:translate(-50%,-50%) scale(1.07);opacity:.7}
+  100%{transform:translate(-50%,-50%) scale(1);opacity:.58}
+}
+@keyframes pa-iris-rest {
+  0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.58}
+  50%{transform:translate(-50%,-50%) scale(1.035);opacity:.67}
+}
+@media(max-width:600px){#stage #dot.assistant-active{--title-ring-size:32px}}
 @media(prefers-reduced-motion:reduce) {
   .pa-popover {transition:none;transform:none}
   .pa-voice-panel {transition:none}
   .pa-wave circle {transition:none}
+  .pa-edge-track {animation:none;stroke-dashoffset:36}
+  #stage #dot.assistant-active[aria-expanded="true"]::after {animation:none;transform:translate(-50%,-50%);opacity:.58}
 }
 @media(forced-colors:active) {
   .pa-popover {color:CanvasText}
@@ -70,5 +98,6 @@
   .pa-window {background:Canvas;border-color:CanvasText;box-shadow:none}
   .pa-voice-toggle[aria-pressed="true"] {color:Highlight}
   .pa-wave circle {fill:CanvasText}
+  .pa-edge-glow {color:CanvasText}
   .pa-message--user {border:1px solid CanvasText;background:Canvas}
 }
