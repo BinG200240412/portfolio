@@ -1,10 +1,10 @@
 # 作品集 AI：连接与部署
 
-2026.10.31：红点聊天界面、连接适配器、DeepSeek 后端和公开知识草稿已准备，29 项本地检查通过；**没有真实密钥、服务器部署或实际模型问答验收**。线上默认保持 `not_connected`，不生成模拟答案。
+2026.10.31：红点连接、DeepSeek 后端和公开知识草稿已准备，29 项本地检查通过。杭州服务器的独立服务、DNS 和 HTTPS 已部署；**尚未填写真实 API Key，也未完成模型问答验收**。线上前端保持 `not_connected`，不生成模拟答案。部署记录见 `docs/portfolio-ai-deployment-20261031.md`。
 
 用户最终选择在现有阿里云杭州服务器上使用 DeepSeek。采用官方 API 和新作品集专用 Key，不复用旧数独凭据。独立服务、独立状态目录、独立子域；不购买服务器。新增路由须核对现有配置并先 validate，不能重启或覆盖既有数独服务。
 
-部署说明、完整限制与测试在 [server/portfolio-ai/README.md](server/portfolio-ai/README.md)。新独立域名计划为 `ai.bing2002.com`，尚未创建 DNS。
+部署说明、完整限制与测试在 [server/portfolio-ai/README.md](server/portfolio-ai/README.md)。独立域名为 `ai.bing2002.com`；当前 health 返回 `ready:false`，无密钥时主动拒绝模型调用。
 
 ## 保留的界面规则
 
