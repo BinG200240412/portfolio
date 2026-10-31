@@ -7,7 +7,7 @@
   'use strict';
   if (window.PortfolioAssistant) return;
   const voiceModuleURL=new URL('assistant-voice.js?v=b07463c086',document.currentScript?.src||new URL('/assets/portfolio-assistant.js',location.href));
-  const waveModuleURL=new URL('assistant-wave.js?v=e597d1e93b',document.currentScript?.src||new URL('/assets/portfolio-assistant.js',location.href));
+  const waveModuleURL=new URL('assistant-wave.js?v=dd63b10039',document.currentScript?.src||new URL('/assets/portfolio-assistant.js',location.href));
   const motion=window.matchMedia?.('(prefers-reduced-motion: reduce)');
   const reducedMotion=()=>!!motion?.matches;
   let voiceModule,waveModule,waveRenderer;
