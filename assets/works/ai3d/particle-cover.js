@@ -19,7 +19,7 @@
   };
   // A small subset appears first; the final scene retains every original point.
   // Both use identical coordinates, camera and zero drift/scatter.
-  // Start at the farthest distance, and retain every view until the next gesture.
+  // Start at the farthest distance. Idle motion stays around the chosen front view.
   const subject = [0, -.3, 1.85];
   const home = Object.freeze({ yaw: -.035, pitch: .18, distance: 4 });
   const presets = [
@@ -31,6 +31,9 @@
   const limits = { yaw: [-.7, .7], pitch: [-.05, .9], distance: [1.15, 4] };
   const target = { ...home };
   const camera = { ...target };
+  const renderedCamera = { ...camera };
+  const idleMotion = { yaw: .055, pitch: .008, zoom: .03, resumeDelay: 3500 };
+  let idleTime = 0, idleBlend = 0, resumeAt = 0, idleTimer = 0;
   let presetIndex = 0, viewName = 'wide';
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const tr = key => words[(window.PortfolioI18n?.language || document.documentElement.dataset.language) === 'en' ? 'en' : 'zh'][key];
@@ -229,15 +232,32 @@
     requestRender();
   }
   function requestRender() {
-    if (ready && !lost && !raf && active()) raf = requestAnimationFrame(render);
+    if (ready && !lost && !raf && active()) {
+      clearTimeout(idleTimer); idleTimer = 0;
+      raf = requestAnimationFrame(render);
+    }
   }
   function suspend() {
     cancelAnimationFrame(raf); cancelAnimationFrame(presentationFrame);
+    clearTimeout(idleTimer); idleTimer = 0;
     raf = 0; presentationFrame = 0; last = 0;
+  }
+  function takeControl() {
+    // Start the gesture at the pose actually on screen, without snapping back
+    // from the idle offset or dropping accumulated input between frames.
+    if (idleBlend > 0) {
+      Object.assign(camera, renderedCamera); Object.assign(target, renderedCamera);
+    }
+    idleTime = 0; idleBlend = 0; resumeAt = performance.now() + idleMotion.resumeDelay;
+    clearTimeout(idleTimer); idleTimer = 0;
+    requestRender();
   }
   function render(now) {
     raf = 0;
     if (!ready || lost || !active()) return;
+    const idle = !reducedMotion.matches && dragPointer === null && !safariPinching && now >= resumeAt;
+    // A slow camera needs only 30 draws/second; direct gestures remain unthrottled.
+    if (idle && last && now - last < 1000 / 30) { requestRender(); return; }
     const dt = last ? Math.min((now - last) / 1000, .06) : 0; last = now;
     const ease = reducedMotion.matches ? 1 : Math.min(1, 1 - Math.exp(-Math.max(dt, 1 / 60) * 9));
     let settling = false;
@@ -246,7 +266,13 @@
       if (Math.abs(target[key] - camera[key]) > .0001) settling = true;
       else camera[key] = target[key];
     }
-    const { yaw, pitch, distance: r } = camera;
+    if (idle) { idleTime += dt; idleBlend = Math.min(1, idleBlend + dt / 1.2); }
+    // All offsets are bounded oscillations, never a cumulative orbit. Keep the
+    // farthest initial framing, then gently push in and return over 13 seconds.
+    renderedCamera.yaw = clamp(camera.yaw + Math.sin(idleTime * Math.PI * 2 / 18) * idleMotion.yaw * idleBlend, ...limits.yaw);
+    renderedCamera.pitch = clamp(camera.pitch + Math.sin(idleTime * Math.PI * 2 / 21) * idleMotion.pitch * idleBlend, ...limits.pitch);
+    renderedCamera.distance = clamp(camera.distance * (1 - (1 - Math.cos(idleTime * Math.PI * 2 / 13)) * .5 * idleMotion.zoom * idleBlend), ...limits.distance);
+    const { yaw, pitch, distance: r } = renderedCamera;
     const eye = [subject[0] + Math.sin(yaw) * Math.cos(pitch) * r, subject[1] + Math.sin(pitch) * r, subject[2] - Math.cos(yaw) * Math.cos(pitch) * r];
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.uniformMatrix4fv(uniforms.uView, false, lookAt(eye, subject));
@@ -280,26 +306,36 @@
     canvas.dataset.view = viewName;
     canvas.dataset.distance = r.toFixed(3);
     canvas.dataset.yaw = yaw.toFixed(4); canvas.dataset.pitch = pitch.toFixed(4);
-    if (settling) requestRender();
-    else last = 0;
+    canvas.dataset.motion = reducedMotion.matches ? 'reduced' : idle ? 'idle' : 'manual';
+    if (settling || idle) requestRender();
+    else {
+      last = 0;
+      if (!reducedMotion.matches && dragPointer === null && !safariPinching) {
+        idleTimer = setTimeout(requestRender, Math.max(0, resumeAt - performance.now()));
+      }
+    }
   }
   function chooseView(index) {
+    takeControl();
     presetIndex = index; viewName = presets[index].name;
     const { yaw, pitch, distance } = presets[index];
     Object.assign(target, { yaw, pitch, distance }); requestRender();
   }
   function rotate(yawDelta, pitchDelta = 0) {
+    takeControl();
     target.yaw = clamp(target.yaw + yawDelta, ...limits.yaw);
     target.pitch = clamp(target.pitch + pitchDelta, ...limits.pitch);
     viewName = 'free'; requestRender();
   }
   function zoom(distance) {
+    takeControl();
     const next = clamp(distance, ...limits.distance);
     if (Math.abs(next - target.distance) < .00001) return false;
     target.distance = next; viewName = 'free'; requestRender(); return true;
   }
   canvas.addEventListener('pointerdown', event => {
     if (!ready || !event.isPrimary || (event.pointerType === 'mouse' && event.button !== 0)) return;
+    takeControl();
     dragPointer = event.pointerId; previousX = event.clientX; previousY = event.clientY;
     canvas.classList.add('is-dragging');
     canvas.setPointerCapture(event.pointerId);
@@ -312,10 +348,12 @@
   for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) canvas.addEventListener(type, event => {
     if (event.pointerId !== dragPointer) return;
     dragPointer = null; canvas.classList.remove('is-dragging');
+    takeControl(); requestRender();
   });
   canvas.addEventListener('wheel', event => {
     if (!ready || lost || !event.cancelable) return;
     if (safariPinching) { event.preventDefault(); return; }
+    takeControl();
     const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? height : 1;
     const dx = event.deltaX * unit, dy = event.deltaY * unit;
     if (!event.ctrlKey && Math.abs(dx) > Math.abs(dy) * 1.2) {
@@ -328,6 +366,7 @@
   // Safari on macOS exposes trackpad pinches as gesture events rather than ctrl-wheel.
   canvas.addEventListener('gesturestart', event => {
     if (!ready || lost || !matchMedia('(pointer: fine)').matches) return;
+    takeControl();
     event.preventDefault(); safariPinching = true; pinchDistance = target.distance;
   }, { passive: false });
   canvas.addEventListener('gesturechange', event => {
@@ -337,7 +376,7 @@
   }, { passive: false });
   canvas.addEventListener('gestureend', event => {
     if (!safariPinching) return;
-    event.preventDefault(); safariPinching = false;
+    event.preventDefault(); safariPinching = false; takeControl(); requestRender();
   }, { passive: false });
   canvas.addEventListener('dblclick', event => {
     if (!ready || lost) return;
@@ -354,6 +393,7 @@
       Home: () => chooseView(0)
     };
     if (!keys[event.key]) return;
+    takeControl();
     event.preventDefault(); keys[event.key]();
     requestRender();
   });
@@ -395,7 +435,7 @@
     const observer = new MutationObserver(syncActivity);
     observer.observe(host, { attributes: true, attributeFilter: ['class'] }); observers.push(observer);
   }
-  reducedMotion.addEventListener('change', requestRender);
+  reducedMotion.addEventListener('change', () => { takeControl(); requestRender(); });
   const resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(root); observers.push(resizeObserver);
   const coverObserver = new IntersectionObserver(entries => {

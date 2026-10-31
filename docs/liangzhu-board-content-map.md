@@ -177,3 +177,21 @@ this display cleanup does not invent an execution repair. Group dragging and
 reset, local image selection, both languages/themes, and 390, 1512, 1728, 1920
 and 2560 px widths were checked. The latest “负责事项 / 进度” project overview,
 all page image URLs and four workflow chapters remain preserved.
+
+
+## Cover camera motion — 2026-10-31
+
+The existing point coordinates, colors, density, zero scatter/drift and camera
+presets remain unchanged. The cover starts at its farthest distance, then adds
+bounded camera offsets around the selected view: yaw ±0.055 radians over 18 s,
+pitch ±0.008 radians over 21 s, and an inward/return distance change of at most
+3% over 13 s. These oscillations do not accumulate into a full orbit.
+
+A gesture commits the currently displayed pose before accepting input, avoiding
+a snap back to the unmoving base camera. While dragging or pinching the automatic
+motion stops; after 3.5 s without input it fades back in over 1.2 s. Ordinary hover
+does not stop it. Idle drawing is capped at 30 fps, with direct gestures retaining
+the existing render cadence. Reduced-motion preferences disable automatic motion;
+manual controls and all four view presets remain available. Offscreen/hidden
+suspension and iframe disposal clear animation frames and the idle wake-up timer.
+Preview-to-full-detail refinement retains the same camera phase and pose.
