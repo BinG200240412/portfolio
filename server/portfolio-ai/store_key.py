@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 import secrets
 import tempfile
+import warnings
 
 TARGET = Path('/etc/portfolio-ai/portfolio-ai.env')
 DEFAULTS = {
@@ -57,9 +58,11 @@ if __name__ == '__main__':
     if os.geteuid() != 0 or not os.isatty(0):
         raise SystemExit('Run with sudo in an interactive server terminal.')
     try:
-        key = getpass.getpass('DeepSeek API Key (hidden input): ').strip()
+        with warnings.catch_warnings():
+            warnings.simplefilter('error', getpass.GetPassWarning)
+            key = getpass.getpass('DeepSeek API Key (hidden input): ').strip()
         save_key(TARGET, key)
         del key
-    except (ValueError, OSError, EOFError, KeyboardInterrupt):
+    except (ValueError, OSError, EOFError, KeyboardInterrupt, getpass.GetPassWarning):
         raise SystemExit('Key was not saved. Check input and private configuration permissions.') from None
     print('Private configuration saved. Restart only portfolio-ai after configuration review.')
