@@ -1063,3 +1063,12 @@ Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
   "原始色卡 6": "Original color swatch 6",
   "原始色卡 7": "Original color swatch 7"
 });
+
+/* Framed display board and native material captions. */
+Object.assign(window.PORTFOLIO_CASE_TRANSLATIONS, {
+ "茶弦记 | 展具语言拆解分析":"Tea String Chronicles | Display vocabulary",
+ "茶弦记 | 展示系统分析":"Tea String Chronicles | Exhibition system",
+ "茶弦记 | 茶展架展陈示意":"Tea String Chronicles | Display arrangement",
+ "陶瓷":"Ceramics", "竹木":"Bamboo", "金属":"Metal", "玻璃":"Glass", "石材":"Stone",
+ "陶瓷材质图样":"Ceramic texture", "竹木材质图样":"Bamboo texture", "金属材质图样":"Metal texture", "玻璃材质图样":"Glass texture", "石材材质图样":"Stone texture"
+});
