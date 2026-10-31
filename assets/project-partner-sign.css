@@ -1,0 +1,14 @@
+/* A compact coloured LED masthead; the case title remains the main heading. */
+.project-partner-sign{--sign-width:294px;--sign-ratio:294/44;--sign-fill:#3f6658;position:relative;display:block;flex:none;width:var(--sign-width);max-width:100%;aspect-ratio:var(--sign-ratio);margin:0 0 20px;background:var(--sign-fill);color:#f2eddc;clip-path:polygon(6px 0,calc(100% - 6px) 0,calc(100% - 6px) 3px,calc(100% - 3px) 3px,calc(100% - 3px) 6px,100% 6px,100% calc(100% - 6px),calc(100% - 3px) calc(100% - 6px),calc(100% - 3px) calc(100% - 3px),calc(100% - 6px) calc(100% - 3px),calc(100% - 6px) 100%,6px 100%,6px calc(100% - 3px),3px calc(100% - 3px),3px calc(100% - 6px),0 calc(100% - 6px),0 6px,3px 6px,3px 3px,6px 3px);pointer-events:none;user-select:none}
+.project-partner-sign>.project-partner-art{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .12s ease}
+.project-partner-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:5px 14px;text-align:center;font-size:14px;line-height:1.25;color:#f2eddc}
+.project-partner-sign[data-ready="true"]>.project-partner-art{opacity:1}
+.project-partner-sign[data-ready="true"]>.project-partner-fallback{visibility:hidden}
+html[lang^="en"] .project-partner-fallback>[lang="zh"],html:not([lang^="en"]) .project-partner-fallback>[lang="en"]{display:none}
+.project-partner-sign--gogo{--sign-width:360px;--sign-ratio:360/44;--sign-fill:#77603f}
+.gogo-hero-photo>.project-partner-sign--gogo{position:absolute;z-index:5;right:calc(var(--gogo-frame) + 22px);bottom:calc(100% + 14px);max-width:calc(100% - 84px);margin:0}
+html[lang^="en"] .project-partner-sign{--sign-width:254px;--sign-ratio:254/50}
+html[lang^="en"] .project-partner-fallback{font-size:12px}
+@media(max-width:720px){.gogo-hero-photo>.project-partner-sign--gogo{right:24px;bottom:calc(100% + 32px);max-width:calc(100vw - 52px)}}
+@media(prefers-reduced-motion:reduce){.project-partner-sign>.project-partner-art{transition:none}}
+@media(forced-colors:active){.project-partner-sign{background:Canvas;border:1px solid CanvasText;clip-path:none}.project-partner-sign>.project-partner-art{display:none}.project-partner-sign>.project-partner-fallback{visibility:visible;color:CanvasText}}
