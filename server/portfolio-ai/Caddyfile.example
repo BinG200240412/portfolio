@@ -1,0 +1,25 @@
+# Deployment template only. Add on the NEW supported-region host after DNS
+# ai.bing2002.com points there. Do not replace the existing Sudoku Caddyfile.
+{
+    servers {
+        timeouts {
+            read_header 5s
+            read_body 5s
+            write 30s
+            idle 30s
+        }
+    }
+}
+
+ai.bing2002.com {
+    handle /portfolio-ai/* {
+        request_body {
+            max_size 16KB
+        }
+        reverse_proxy 127.0.0.1:8788 {
+            # Always overwrite the visitor-supplied header.
+            header_up X-Real-IP {remote_host}
+        }
+    }
+    respond 404
+}

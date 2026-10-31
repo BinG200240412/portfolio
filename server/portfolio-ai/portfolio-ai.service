@@ -1,0 +1,36 @@
+[Unit]
+Description=BinG portfolio assistant
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=portfolio-ai
+Group=portfolio-ai
+WorkingDirectory=/opt/portfolio-ai
+EnvironmentFile=/etc/portfolio-ai/portfolio-ai.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /opt/portfolio-ai/server.py
+Restart=on-failure
+RestartSec=5
+UMask=0077
+StateDirectory=portfolio-ai
+StateDirectoryMode=0700
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+MemoryMax=192M
+CPUQuota=50%
+TasksMax=48
+LimitNOFILE=512
+
+[Install]
+WantedBy=multi-user.target
