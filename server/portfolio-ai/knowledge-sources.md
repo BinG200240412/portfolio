@@ -10,6 +10,7 @@ Only public website source was used. No private memory, credentials, API calls, 
 | Author-confirmed project starts | assets/project-dates.js |
 | Public English project names | assets/i18n-main.js, assets/i18n-cases.js, assets/xr-story-i18n.js, assets/tea-i18n.js |
 | Sudoku released status, scope, retrospective, offline coaching caveat, store/site links | sections/sudoku.html |
+| Shared puzzle preserves entries and candidates and allows naming; implemented maintenance-version UI | sections/sudoku.html, data-screen="share" and current maintenance iteration record |
 | GouGO team/role, Quest 3 prototype, tracking limitation, planned features | sections/xr.html |
 | Tea team/role, course demo, four game prototypes, exhibition design status | sections/tea.html |
 | Four AI3D workflows, Marble outputs, illustrative reconstruction caveat | sections/ai3d.html |
