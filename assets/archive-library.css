@@ -1,0 +1,44 @@
+/* Real document covers, generous shelves, and no document downloads at startup. */
+body.archive {margin:0;padding-top:82px;background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:200}
+.archive-library {width:min(1440px,calc(100% - clamp(40px,8vw,144px)));margin:0 auto}
+.archive-shelf {padding:64px 0 96px;min-height:100svh;scroll-margin-top:82px}
+.archive-shelf--books {padding-top:24px;min-height:calc(100svh - 82px)}
+.archive-heading {margin-bottom:40px}
+.archive-heading h1 {margin:0;font-size:clamp(40px,5vw,60px);font-weight:400;line-height:1.1}
+.archive-shelf h2 {margin:0 0 28px;font-size:28px;font-weight:400;line-height:1.35}
+.archive-grid {display:grid;gap:48px 36px;align-items:start}
+.archive-grid--books {grid-template-columns:minmax(0,1fr) minmax(240px,.52fr);column-gap:clamp(40px,8vw,120px);align-items:end}
+.archive-grid--projects {grid-template-columns:repeat(3,minmax(0,1fr))}
+.archive-document {min-width:0;margin:0}
+.archive-tile {display:block;width:100%;margin:0;padding:0;border:0;background:none;color:inherit;cursor:pointer}
+.archive-tile img {display:block;width:100%;height:auto;max-width:100%;margin:0;background:none;object-fit:contain}
+.archive-grid--books .archive-tile {height:clamp(240px,38svh,440px);display:flex;align-items:end;justify-content:start}
+.archive-grid--books .archive-tile img {width:auto;max-width:100%;max-height:100%}
+.archive-document--portfolio-2025 {max-width:330px}
+.archive-grid--projects .archive-tile {height:clamp(220px,24vw,330px);display:flex;align-items:center;justify-content:start}
+.archive-grid--projects .archive-tile img {width:auto;max-width:100%;max-height:100%}
+.archive-caption {position:relative;margin-top:22px;padding-right:64px}
+.archive-caption h3 {margin:0;font:inherit;font-size:18px;font-weight:400;line-height:1.5}
+.archive-title-link {display:inline;margin:0;padding:0;border:0;background:none;color:inherit;text-align:left;font:inherit;cursor:pointer}
+.archive-meta {display:flex;flex-wrap:wrap;gap:6px 18px;margin:8px 0 0;color:var(--mid);font-size:16px;font-weight:200;line-height:1.5}
+.archive-download {position:absolute;top:-3px;right:0;display:inline-flex;align-items:center;gap:7px;min-height:44px;color:var(--ink);font-size:16px;text-decoration:none}
+.archive-download svg {width:19px;height:19px}
+.archive-title-link:hover,.archive-download:hover {color:var(--red)}
+.archive-library :is(button,a):focus-visible {outline:1px solid var(--ink);outline-offset:5px}
+@media(min-width:1801px){.archive-library{width:min(1600px,calc(100% - 12vw))}.archive-grid--books{column-gap:10vw}}
+@media(max-width:1000px){.archive-grid--projects{grid-template-columns:repeat(2,minmax(0,1fr))}.archive-grid--projects .archive-tile{height:280px}}
+@media(max-width:640px){
+  body.archive{padding-top:76px}
+  .archive-library{width:calc(100% - 48px)}
+  .archive-shelf{padding:44px 0 64px;scroll-margin-top:76px}
+  .archive-shelf--books{min-height:calc(100svh - 76px);padding-top:24px}
+  .archive-heading{margin-bottom:32px}.archive-shelf h2{font-size:24px;margin-bottom:24px}
+  .archive-grid--books,.archive-grid--projects{grid-template-columns:minmax(0,1fr);row-gap:44px}
+  .archive-grid--books .archive-tile{height:auto;max-height:none}
+  .archive-grid--books .archive-tile img{width:100%;height:auto;max-height:none}
+  .archive-document--portfolio-2025{max-width:280px}
+  .archive-grid--projects .archive-tile{height:auto;max-height:none}
+  .archive-grid--projects .archive-tile img{width:100%;height:auto;max-height:none}
+  .archive-document--tea-presentation .archive-tile img{max-width:280px}
+  .archive-caption{margin-top:18px}.archive-caption h3{font-size:18px}
+}

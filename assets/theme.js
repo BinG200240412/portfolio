@@ -139,6 +139,7 @@
       'design-skills.html': ['.skills-hero', '#newsprint', '--red', 'inline'],
       'arright.html': ['.wrap .hero', null, '--ink', 'center'],
       'index.html': ['.about-hero', '.about-details', '--red', 'center'],
+      'more.html': ['.archive-shelf--books', '.archive-shelf:nth-of-type(2)', '--red', 'center'],
     };
     const definition = definitions[file];
     if (!definition) return;

@@ -175,7 +175,9 @@
     document.querySelectorAll('.practice-card').forEach(element => element.classList.add('portfolio-snap-subpage'));
   } else if (file === 'more.html') {
     root.dataset.snapLayout = 'archive';
-    page(document.querySelector('body > .wrap'));
+    const shelves=document.querySelectorAll('.archive-shelf');
+    if(shelves.length)shelves.forEach(page);
+    else page(document.querySelector('body > .wrap'));
   } else if (file === 'sudoku-demo.html') {
     root.dataset.snapLayout = 'demo';
     group([...document.body.children].filter(element => element.matches('.head,.phone,.legend,.foot')));

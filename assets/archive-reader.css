@@ -1,0 +1,53 @@
+/* One page image at a time. The shared return mark closes this layer first. */
+html.archive-reader-open,html.archive-reader-open body {overflow:hidden;scroll-snap-type:none!important}
+dialog.archive-reader {
+  position:fixed;inset:0;width:100%;height:100dvh;max-width:none;max-height:none;
+  margin:0;padding:0;border:0;overflow:hidden;color:var(--ink,#efeee9);
+  background:var(--paper,var(--bg,#111110));overscroll-behavior:contain;
+}
+dialog.archive-reader[open] {display:grid;grid-template-rows:auto minmax(0,1fr) auto}
+.archive-reader::backdrop {background:#000a}
+.archive-reader-bar {
+  display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:76px;
+  padding:12px clamp(20px,4vw,56px) 12px 82px;border:0;background:none;
+}
+.archive-reader .archive-reader-title {
+  flex:1;min-width:0;margin:0;font:inherit;font-size:18px;font-weight:400;line-height:1.45;
+  letter-spacing:0;overflow-wrap:anywhere;
+}
+.archive-reader-download {
+  display:inline-flex;flex:none;align-items:center;justify-content:center;gap:8px;min-width:44px;min-height:44px;
+  padding:0 4px;border:0;background:none;color:inherit;font:inherit;font-size:16px;text-decoration:none;cursor:pointer;
+}
+.archive-reader-download svg {width:20px;height:20px}
+.archive-reader-stage {position:relative;min-width:0;min-height:0;overflow:auto;overscroll-behavior:contain;padding:12px clamp(16px,4vw,56px) 24px;scrollbar-width:thin}
+.archive-reader-paper {min-width:0;margin:0;padding:0;border:0;background:none}
+.archive-reader-image {
+  display:block;width:min(100%,var(--archive-page-width,1440px));height:auto;max-width:100%;max-height:none;
+  margin:0 auto;padding:0;border:0;border-radius:0;clip-path:none!important;object-fit:contain;
+  background:none;box-shadow:none;
+}
+.archive-reader[data-state="loading"] .archive-reader-image {visibility:hidden}
+.archive-reader-feedback {position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;color:var(--mid,var(--soft,#aaa));font-size:16px;text-align:center}
+.archive-reader .archive-reader-loader {animation-play-state:paused}
+dialog.archive-reader[open][data-state="loading"] .archive-reader-loader {animation-play-state:running}
+.archive-reader-feedback p {margin:0;line-height:1.6}
+.archive-reader-feedback button {min-width:64px;min-height:44px;padding:8px 16px;border:1px solid var(--line,#555);border-radius:24px;background:none;color:var(--ink,#efeee9);font:inherit;font-size:16px;cursor:pointer}
+.archive-reader-navigation {display:flex;align-items:center;justify-content:center;gap:20px;min-height:68px;padding:8px 20px max(12px,env(safe-area-inset-bottom));border:0;background:none}
+.archive-reader-navigation button {display:grid;place-items:center;flex:none;width:44px;height:44px;margin:0;padding:0;border:0;background:none;color:inherit;cursor:pointer}
+.archive-reader-navigation svg {display:block;width:24px;height:24px}
+.archive-reader-navigation button:disabled {opacity:.25;cursor:default}
+.archive-reader-counter {min-width:76px;color:var(--mid,var(--soft,#aaa));font:inherit;font-size:16px;line-height:1.5;text-align:center;font-variant-numeric:tabular-nums}
+.archive-reader :is(button,a,[tabindex="0"]):focus-visible {outline:1px solid currentColor;outline-offset:3px}
+.archive-reader [hidden] {display:none!important}
+@media(max-width:600px) {
+  .archive-reader-bar {min-height:72px;gap:12px;padding:10px 16px 10px 76px}
+  .archive-reader .archive-reader-title {font-size:16px}
+  .archive-reader-stage {padding:8px 12px 16px}
+  .archive-reader-navigation {gap:16px}
+}
+@media(forced-colors:active) {
+  dialog.archive-reader {color:CanvasText;background:Canvas}
+  .archive-reader-counter,.archive-reader-feedback {color:CanvasText}
+  .archive-reader-feedback button {border-color:ButtonText;color:ButtonText}
+}

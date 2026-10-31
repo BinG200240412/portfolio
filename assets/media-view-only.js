@@ -5,6 +5,16 @@
   const surfaceSelector = `${mediaSelector},[data-media-zoomable]`;
   const filePattern = /\.(?:avif|bmp|gif|ico|jpe?g|png|svg|webp|mp4|m4v|mov|webm|og[gv]|mp3|m4a|wav|flac|aac|pdf|zip|7z|rar|obj|fbx|glb|gltf|ply|spz|stl|usdz)$/i;
 
+  // The author allows the explicitly listed Archive PDFs to be saved.
+  // Other images, films, vector assets and source files keep their policy.
+  function archivePDF(link) {
+    if (!document.body?.classList.contains('archive') || !link.hasAttribute('data-archive-pdf-download')) return false;
+    try {
+      const url = new URL(link.getAttribute('href'), document.baseURI);
+      return url.origin === location.origin && url.pathname.startsWith('/assets/works/') && /\.pdf$/i.test(url.pathname);
+    } catch (_) { return false; }
+  }
+
   function fileLink(link) {
     if (link.hasAttribute('download')) return true;
     const href = link.getAttribute('href');
@@ -18,12 +28,12 @@
   }
   function mediaEvent(event) {
     return elements(event).some(node => node.closest(surfaceSelector) ||
-      (node.closest('a[href],a[download]') && fileLink(node.closest('a[href],a[download]'))));
+      (node.closest('a[href],a[download]') && fileLink(node.closest('a[href],a[download]')) && !archivePDF(node.closest('a[href],a[download]'))));
   }
   function blockFileNavigation(event) {
     const link = elements(event).map(node => node.closest('a[href],a[download]')).find(Boolean);
     // Do not stop propagation: existing in-page galleries may still handle a click.
-    if (link && fileLink(link)) event.preventDefault();
+    if (link && fileLink(link) && !archivePDF(link)) event.preventDefault();
   }
   document.addEventListener('contextmenu', event => {
     if (mediaEvent(event)) event.preventDefault();

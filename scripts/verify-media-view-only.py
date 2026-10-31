@@ -19,10 +19,16 @@ class PagePolicy(HTMLParser):
     def handle_starttag(self, tag, attrs):
         global video_count
         attrs = dict(attrs)
-        assert 'download' not in attrs, (self.path.name, 'download attribute')
+        href = attrs.get('href', '')
+        target = urlsplit(href)
+        archive_pdf = (tag == 'a' and self.path.name == 'more.html'
+                       and 'data-archive-pdf-download' in attrs
+                       and not target.scheme and not target.netloc
+                       and target.path.startswith('../assets/works/')
+                       and target.path.lower().endswith('.pdf'))
+        assert 'download' not in attrs or archive_pdf, (self.path.name, 'download attribute')
         if tag == 'a':
-            href = attrs.get('href', '')
-            assert not file_extension.search(urlsplit(href).path), (self.path.name, href)
+            assert not file_extension.search(target.path) or archive_pdf, (self.path.name, href)
             assert not href.startswith(('blob:', 'data:')), (self.path.name, 'file URL')
         if tag in ('video', 'audio'):
             assert 'nodownload' in attrs.get('controlslist', '').split(), (self.path.name, tag)
@@ -43,7 +49,8 @@ for page in pages:
 for module in (root / 'assets').rglob('*.js'):
     if 'vendor' in module.relative_to(root / 'assets').parts:
         continue
-    assert not re.search(r'\.download\s*=|setAttribute\(\s*[\'"]download[\'"]', module.read_text()), module.name
+    if module.name != 'archive-reader.js':
+        assert not re.search(r'\.download\s*=|setAttribute\(\s*[\'"]download[\'"]', module.read_text()), module.name
 
 assert video_count > 0, 'Expected at least one inline media preview'
-print(f'PASS: {len(pages)} pages, no file-download links or export handlers; {video_count} inline previews hide controls and retain nodownload.')
+print(f'PASS: {len(pages)} pages, only marked Archive PDFs allow download; {video_count} inline previews hide controls and retain nodownload.')
