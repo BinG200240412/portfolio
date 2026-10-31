@@ -26,3 +26,10 @@
 - 没有访问本人的实体麦克风；不同设备的物理录音、噪声环境、Safari 授权仍需要设备实测。不能用合成音频测试替代这些结论。
 
 来源：[DeepSeek 接口](https://api-docs.deepseek.com/api/create-chat-completion/)、[SenseVoice 官方模型说明](https://k2-fsa.github.io/sherpa/onnx/sense-voice/pretrained.html)、[FunASR 模型许可](https://github.com/modelscope/FunASR/blob/main/MODEL_LICENSE)。
+
+## 最终组合验收
+
+- GitHub Pages `67151631410d1f9a65faf59b2efd87347e838a03` 已 `built`；线上懒加载模块 SHA-256 和源码匹配。主站底部浮窗显示“开始语音输入”，无旧预览假波形。
+- 浏览器组合测试切为真实识别：合成 TTS → 实际录音和 Analyser/Worklet → 公网 session/CSRF 转写 → 原草稿插入，全部通过。可见灯珠数量 0–235、上传 1 次、问答发送 0 次、音轨停止 1 次、AudioContext 关闭 1 次。该测试仍未访问硬件麦克风。
+- 正式站 390×844 英文白色与 1512×982 中文黑色下没有横向溢出，手机浮窗位于 x=12–378、底边 y≈828；日志未见警告或错误。临时视口已恢复，中文黑色模式已恢复。
+- 最后只读核查：语音日/月计数各 2，文字问答日/月计数各 5，原计数未重置；私密环境仍 root:root 0600。语音进程重启次数 0，峰值仍约 401MiB，系统可用内存约 776MiB。
