@@ -1,0 +1,30 @@
+[
+  {
+    "filename": "poster-original.svg",
+    "sourceFilename": "final-home-hiring-ad.svg",
+    "sha256": "47d575cf21efa762a4d46b7f444070640e4ed54d72fb724270af59b537cdfa87",
+    "purpose": "原海报数独的广告插画原始矢量；用于展示美式海报语言，非完整App界面",
+    "stage": "美式海报数独阶段"
+  },
+  {
+    "filename": "apple-early.svg",
+    "sourceFilename": "GardenAppleEarly.svg",
+    "sha256": "47b8b5ae0492d524fec2f3f7ce2dacc43feb328aedbf1edff924a83067875a1f",
+    "purpose": "苹果早期成长原始矢量；用于早期园艺数独／旧花园成长示意",
+    "stage": "旧园艺成长阶段"
+  },
+  {
+    "filename": "apple-middle.svg",
+    "sourceFilename": "GardenAppleMiddle.svg",
+    "sha256": "3e577d21f0c5cb0f9ef03590de679398cfe7bf9dfae306b8af7ec2bc4c7f2f6a",
+    "purpose": "苹果中期成长原始矢量；用于早期园艺数独／旧花园成长示意",
+    "stage": "旧园艺成长阶段"
+  },
+  {
+    "filename": "apple-mature.svg",
+    "sourceFilename": "GardenAppleMature.svg",
+    "sha256": "5d290639f3a563c91e454a9214d5feb910b63608ac49268cdeb92a0e04f343e0",
+    "purpose": "苹果成熟原始矢量；用于早期园艺数独／旧花园成长示意",
+    "stage": "旧园艺成长阶段"
+  }
+]

@@ -178,3 +178,55 @@
 }
 html[lang="en"] .arright-case .project-overview>div{grid-template-columns:112px minmax(0,1fr)}
 @media(max-width:700px){html[lang="en"] .arright-case .project-overview>div{grid-template-columns:1fr;gap:4px}}
+/* Complete native captures use the measured Sudoku hardware, scoped to this case.
+   The source images stay intact; contain leaves only sub-pixel ratio gutters. */
+.arright-case :is(.arright-device-open,.arright-art-open){display:block;width:100%;margin:0;padding:0;border:0;background:none;color:inherit;line-height:0;cursor:zoom-in;touch-action:manipulation}
+.arright-case .sudoku-device{display:block;position:relative;width:100%;aspect-ratio:1470/3000;isolation:isolate}
+.arright-case .sudoku-device>.sudoku-device-screen{position:absolute;display:block;left:5.1020408163%;top:2.2%;width:89.7959183673%;height:95.6%;max-width:none;max-height:none;aspect-ratio:auto;border-radius:14.393939% / 6.624826%;object-fit:contain;background:#f5f3ed;z-index:0}
+.arright-case .sudoku-device::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:url("works/sudoku/iphone-17-pro-max-deep-blue-portrait.png") center/100% 100% no-repeat;filter:grayscale(1) brightness(.9)}
+/* Keep a capture's own system cutout above the decorative PNG cutout. */
+.arright-case .sudoku-device.has-native-island>.sudoku-device-screen{z-index:2}
+.arright-case .cover-phones .native-shot{width:100%;max-width:280px;justify-self:center}
+.arright-case .origin-comparison .origin-minimal{max-width:260px}
+.arright-case .origin-comparison .origin-poster{max-width:300px}
+.arright-case .origin-poster [data-poster-panel="art"]>img{aspect-ratio:auto;height:auto;max-height:570px;object-fit:contain}
+.arright-case .poster-controls{flex-wrap:wrap;gap:6px 18px;margin-bottom:22px}
+.arright-case .garden-native{max-width:280px}
+.arright-case .garden-history-control{flex-wrap:wrap;gap:4px 16px}
+.arright-case .growth-source>figure{display:grid;grid-template-columns:100px minmax(0,1fr);gap:22px;align-items:center;margin:18px 0}
+.arright-case .growth-source .arright-art-open{width:100px;height:100px}
+.arright-case .growth-source .arright-art-open>img{width:100%;height:100%;aspect-ratio:auto;object-fit:contain}
+.arright-case .growth-source>figure>figcaption{margin:0;font-size:18px!important;color:var(--ink)}
+.arright-case .growth-source>.caption{margin-top:24px}
+.arright-case .shell-switch,.arright-case .detail-shot{max-width:300px}
+.arright-case .current-worlds .native-shot{max-width:260px}
+.arright-case .garden-web>img{aspect-ratio:1600/1000}
+.arright-device-viewer{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:82px 24px 32px;border:0;background:var(--paper);color:var(--ink);overflow:auto;overscroll-behavior:contain}
+.arright-device-viewer::backdrop{background:var(--paper)}
+.arright-case .arright-viewer-caption{max-width:50em;margin:0 auto;font-size:15px!important;line-height:1.6!important;text-align:center;color:var(--mid)}
+.arright-viewer-image{display:flex;justify-content:center;align-items:flex-start;min-width:0;padding-top:22px}
+.arright-viewer-image>.sudoku-device{width:min(440px,calc((100svh - 164px) * .49),calc(100vw - 48px));flex:none}
+.arright-viewer-image>img{display:block;width:auto;max-width:min(900px,100%);max-height:calc(100svh - 164px);height:auto;object-fit:contain}
+@media(min-width:1801px){
+ .arright-case .cover-phones .native-shot{max-width:390px}
+ .arright-case .origin-comparison .origin-minimal{max-width:360px}
+ .arright-case .origin-comparison .origin-poster{max-width:400px}
+ .arright-case .origin-poster [data-poster-panel="art"]>img{max-height:750px}
+ .arright-case .garden-native{max-width:340px}
+ .arright-case .shell-switch,.arright-case .detail-shot{max-width:365px}
+ .arright-case .current-worlds .native-shot{max-width:345px}
+}
+@media(max-width:700px){
+ .arright-case .garden-native{max-width:280px}
+ .arright-case .shell-switch{max-width:280px}
+ .arright-case .current-worlds .native-shot{max-width:230px}
+ .arright-case .origin-poster [data-poster-panel="art"]>img{max-height:none}
+ .arright-case .poster-controls>button{font-size:14px}
+ .arright-device-viewer{padding:78px 20px 28px}
+ .arright-viewer-image>.sudoku-device{width:min(420px,calc((100svh - 164px) * .49),calc(100vw - 40px))}
+}
+.arright-case .origin-poster [data-poster-panel="art"]{padding:20px;background:#f5f3ed}
+.arright-case .origin-poster [data-poster-panel="art"] img{aspect-ratio:auto;height:auto;max-height:570px;object-fit:contain}
+.arright-case .growth-source{--ink:#41403d;--mid:#62605b;padding:18px 22px;background:#f5f3ed;color:#41403d}
+.arright-viewer-image>img{padding:20px;background:#f5f3ed}
+@media(min-width:1801px){.arright-case .origin-poster [data-poster-panel="art"] img{max-height:750px}}

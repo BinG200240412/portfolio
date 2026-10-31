@@ -1,0 +1,105 @@
+{
+  "artifact": "garden-relations-source.svg",
+  "source_stage": "2026-09-20 independent web prototype",
+  "representation": "Source-data redraw; not a screenshot or a new game state.",
+  "sources": [
+    {
+      "file": "logic.js",
+      "sha256": "c12f92bfc26fe7cd12db1ddd43113442cabf67c8243b0e6a521d3b8919c8819c"
+    },
+    {
+      "file": "app.js",
+      "sha256": "baedaf1b92bd598d58135c9cd844c52e3c9cb1c821073ad5baf72c1123d3b0e5"
+    },
+    {
+      "file": "index.html",
+      "sha256": "9b01d16feedc748db09da51f7e795c212d618fcf81ec9eb1c689623a5d92f705"
+    },
+    {
+      "file": "style.css",
+      "sha256": "245833d28a58d3290d4696fcf79a3cb6a9e822a14c3af6c78bf510fd294b2343"
+    },
+    {
+      "file": "玩法设计.md",
+      "sha256": "1c01ff72e4de32bbb609b078baf519dafed3420ec77575debccf85db39e2e4dc"
+    },
+    {
+      "file": "assets/Apple.svg",
+      "sha256": "5d290639f3a563c91e454a9214d5feb910b63608ac49268cdeb92a0e04f343e0"
+    },
+    {
+      "file": "assets/Strawberry.svg",
+      "sha256": "da98a1daa18345aa67f5f7c00c708ef717d6c0827d731a94c1672219d91482e3"
+    },
+    {
+      "file": "assets/Rose.svg",
+      "sha256": "e85bc0c772146b0f1c98b0ba377fe9f74312a552533d77f821c578f98c9cd873"
+    },
+    {
+      "file": "assets/Lemon.svg",
+      "sha256": "8ce561b9ee9d544139fea37085dbf1d5034963ec1264b02133609f06dfa23014"
+    },
+    {
+      "file": "assets/Sunflower.svg",
+      "sha256": "ec851e6606e516ed07597ead9a3a7bf1ae666f3b83cdb6d99ba76ea71fc8a55a"
+    },
+    {
+      "file": "assets/Tulip.svg",
+      "sha256": "84f103dfa705ec3acecc00502523078eb07b39836af138e8777e24ad27a39c19"
+    }
+  ],
+  "data_sha256": "6f2ef0d8a17a6336bbbfc279d6b319f2fd537f8095db5969a67c5df00ccc81eb",
+  "layout_selection": {
+    "puzzle_index": 0,
+    "id": "borrow-shade",
+    "name": "借一片树荫",
+    "size": [
+      6,
+      6
+    ],
+    "bed_size": [
+      2,
+      3
+    ],
+    "cell_indexing": "zero based row-major",
+    "wells": [
+      1,
+      9,
+      17
+    ],
+    "well_coordinates": [
+      "B1",
+      "D2",
+      "F3"
+    ],
+    "placed": {},
+    "marks": {},
+    "shadow": [],
+    "state": "fresh initial state; no restored localStorage"
+  },
+  "rules_shown": {
+    "global": "Six plants used once each; exactly one plant in every row, column and 2x3 bed.",
+    "near": "orthogonal one cell; diagonal means exactly one row and one column apart",
+    "apple": "near a well; casts shade one and two cells southeast (cell+7, cell+14, clipped at board boundary)",
+    "strawberry": "inside apple shade",
+    "rose": "near a well; outside shade",
+    "lemon": "diagonally adjacent to rose; outside shade",
+    "sunflower": "not near any well; outside shade",
+    "tulip": "outer perimeter; outside shade"
+  },
+  "artwork": "Six original source SVG path groups are embedded without modifying their path geometry or fill colour (#41403D); well symbol copied from app.js wellSvg.",
+  "right_hand_diagram": "Rule relationships only. Plant node positions do not correspond to a puzzle placement or solution.",
+  "output": {
+    "viewBox": [
+      0,
+      0,
+      1600,
+      1000
+    ],
+    "editable_text": true,
+    "raster_images": false,
+    "svg_sha256": "a7ba6e4dad789ab67a548b8d381385ed1d48877a24aeb6d53df42a2f8cfefba3"
+  },
+  "englishVariant": "garden-relations-source-en.svg",
+  "localization": "Only editable text is translated; path and board data are identical."
+}

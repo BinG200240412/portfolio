@@ -75,7 +75,6 @@ window.PORTFOLIO_CASE_TRANSLATIONS = Object.assign(window.PORTFOLIO_CASE_TRANSLA
   "机器、检修交接区与固定工序物流。新增试玩方案，仍待作者判断。": "Machines, maintenance and handover zones, and a fixed production flow. A new playable proposal awaiting further author judgment.",
   "验证到哪一步": "What has been verified",
   "10 月 28 日的记录：32 项原生规则／存档测试，以及 iPhone Air、17e 模拟器关键流程通过。尚无本轮实体 iPhone 验证、TestFlight 上传或 App Store 发布。": "The 28 October record: 32 native rule/save tests and key flows on iPhone Air and 17e simulators passed. This iteration has no physical-iPhone validation, TestFlight upload or App Store release.",
-
   "试玩 2026.10.18 网页原型（中文）": "Play the 18 Oct 2026 web prototype (Chinese)",
   "该网页原型承载家装第一章；与上方 0.2.0 原生版属于不同阶段。": "The web prototype contains the first home chapter. It is a different stage from the native 0.2.0 build shown above.",
   "花园阶段": "Garden stages",
@@ -84,7 +83,23 @@ window.PORTFOLIO_CASE_TRANSLATIONS = Object.assign(window.PORTFOLIO_CASE_TRANSLA
   "原生交互界面": "Native interaction screens",
   "查看案例 ↗": "View case ↗",
   "试玩 2026.10.18 网页原型（中文） ↗": "Play the 18 Oct 2026 web prototype (Chinese) ↗",
-
   "负责事项": "Responsibilities",
-  "开始时间": "Started"
+  "开始时间": "Started",
+  "早期花园初始盘面与六种植物关系，依据原型源码及原始SVG重绘": "The early garden’s initial board and six plant relationships, redrawn from its source code and original SVG assets",
+  "2026.09.20 网页原型 · 源数据重绘（初态）": "20 Sep 2026 web prototype · Source-data redraw (initial state)",
+  "海报素材": "Poster source material",
+  "插画原稿": "Original artwork",
+  "当时界面": "Earlier interface",
+  "生长素材": "Growth artwork",
+  "美式海报阶段的原始招聘广告SVG插画": "Original recruitment-ad SVG illustration from the American poster stage",
+  "海报数独阶段 · 原始 SVG 插画": "Poster Sudoku stage · Original SVG illustration",
+  "旧阶段生长插画 · 原始 SVG": "Earlier growth artwork · Original SVG",
+  "幼苗": "Seedling",
+  "生长": "Growing",
+  "成熟": "Mature",
+  "早期苹果生长插画 · 成熟": "Early apple growth artwork · Mature",
+  "初期": "Early",
+  "中期": "Mid-stage",
+  "早期苹果生长插画 · 初期": "Early apple growth artwork · Early stage",
+  "早期苹果生长插画 · 中期": "Early apple growth artwork · Mid-stage"
 });
