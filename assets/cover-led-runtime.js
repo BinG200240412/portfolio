@@ -28,7 +28,7 @@
     ctx.fillStyle = `rgb(${key})`; ctx.beginPath(); ctx.arc(12,12,6,0,Math.PI*2); ctx.fill();
     sprites.set(key,image); return image;
   }
-  function mount(canvas, draw) {
+  function mount(canvas, draw, animated) {
     if (canvas.dataset.ledMounted) return;
     const ctx = canvas.getContext('2d', {alpha:true});
     if (!ctx) return;
@@ -80,7 +80,7 @@
       raf = requestAnimationFrame(loop);
     }
     function sync() {
-      if (!canRun() || reduce.matches) { stop(); if (visible) paint(); return; }
+      if (!canRun() || reduce.matches || !animated) { stop(); if (visible) paint(); return; }
       if (!raf) { canvas.dataset.ledRunning = 'true'; raf = requestAnimationFrame(loop); }
     }
     function resize() {
@@ -122,7 +122,7 @@
     instances.add(dispose); window.PortfolioLifecycle?.onDispose(dispose);
     theme(); resize();
   }
-  window.PortfolioCoverDots = Object.freeze({register(kind, draw) {
-    document.querySelectorAll(`canvas[data-led-cover="${kind}"]`).forEach(canvas => mount(canvas,draw));
+  window.PortfolioCoverDots = Object.freeze({register(kind, draw, {animated = true} = {}) {
+    document.querySelectorAll(`canvas[data-led-cover="${kind}"]`).forEach(canvas => mount(canvas,draw,animated));
   }});
 })();
