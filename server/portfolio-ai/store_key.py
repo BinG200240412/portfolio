@@ -22,6 +22,13 @@ DEFAULTS = {
 
 
 def save_key(target, key):
+    # Workbench may pass bracketed-paste framing through getpass's hidden read.
+    # Unwrap only a complete outer pair, never arbitrary ANSI/control sequences.
+    begin, end = '\x1b[200~', '\x1b[201~'
+    if isinstance(key, str) and key.startswith(begin) and key.endswith(end):
+        key = key[len(begin):-len(end)]
+    if not isinstance(key, str):
+        raise ValueError('Key format rejected; no configuration changed.')
     if not re.fullmatch(r'sk-[A-Za-z0-9_-]{20,256}', key):
         raise ValueError('Key format rejected; no configuration changed.')
     if target.is_symlink() or target.parent.resolve() != target.parent:
@@ -54,15 +61,19 @@ def save_key(target, key):
             os.unlink(temporary)
 
 
-if __name__ == '__main__':
+def main():
     if os.geteuid() != 0 or not os.isatty(0):
         raise SystemExit('Run with sudo in an interactive server terminal.')
     try:
         with warnings.catch_warnings():
             warnings.simplefilter('error', getpass.GetPassWarning)
-            key = getpass.getpass('DeepSeek API Key (hidden input): ').strip()
+            key = getpass.getpass('DeepSeek API Key (hidden input): ')
         save_key(TARGET, key)
         del key
     except (ValueError, OSError, EOFError, KeyboardInterrupt, getpass.GetPassWarning):
         raise SystemExit('Key was not saved. Check input and private configuration permissions.') from None
     print('Private configuration saved. Restart only portfolio-ai after configuration review.')
+
+
+if __name__ == '__main__':
+    main()

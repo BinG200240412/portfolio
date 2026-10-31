@@ -7,6 +7,7 @@ const { test } = require('node:test');
 const root = path.resolve(__dirname, '../..');
 const bridgeSource = fs.readFileSync(path.join(root, 'assets/assistant-connection.js'), 'utf8');
 const uiSource = fs.readFileSync(path.join(root, 'assets/portfolio-assistant.js'), 'utf8');
+const hostedSource = fs.readFileSync(path.join(root, 'assets/assistant-hosted.js'), 'utf8');
 const question = [{ role: 'user', content: '介绍一下数独' }];
 const token = 'csrf_token_for_test_0123456789';
 const response = (body, status = 200) => ({ ok: status >= 200 && status < 300, status, json: async () => body });
@@ -25,8 +26,17 @@ function bridge(fetchImpl, origin = 'https://bing2002.com') {
     fetch: async (url, options) => { calls.push({ url, options }); return fetchImpl(url, options, calls.length); },
   };
   vm.runInNewContext(bridgeSource, context);
-  return { api: context.window.PortfolioAssistantConnection, calls, timers };
+  return { api: context.window.PortfolioAssistantConnection, calls, timers, context };
 }
+
+test('production bootstrap enables the hosted transport without requests and leaves other origins disconnected', () => {
+  for (const origin of ['https://bing2002.com', 'https://www.bing2002.com', 'http://127.0.0.1:4176', 'https://other.example', 'https://bing2002.com.evil.example']) {
+    const env = bridge(() => assert.fail('bootstrap must not send requests'), origin);
+    vm.runInNewContext(hostedSource, env.context);
+    assert.equal(env.api.mode, ['https://bing2002.com', 'https://www.bing2002.com'].includes(origin) ? 'transport' : 'not_connected');
+    assert.equal(env.calls.length, 0);
+  }
+});
 
 test('disconnected by default; explicit production activation makes no network requests', async () => {
   const env = bridge(() => assert.fail('unexpected fetch'));

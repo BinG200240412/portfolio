@@ -1,10 +1,10 @@
 # 作品集 AI：连接与部署
 
-2026.10.31：红点连接、DeepSeek 后端和公开知识草稿已准备，29 项本地检查通过。杭州服务器的独立服务、DNS 和 HTTPS 已部署；**尚未填写真实 API Key，也未完成模型问答验收**。线上前端保持 `not_connected`，不生成模拟答案。部署记录见 `docs/portfolio-ai-deployment-20261031.md`。
+2026.10.31：独立 DeepSeek 服务、DNS / HTTPS 与真实问答已验证，密钥从本人指定的本机文件私密填入服务器，没有进入网页或日志。首页通过 `assets/assistant-hosted.js` 启用连接；初始化不请求接口，实际发送才建立会话。部署与验收记录见 `docs/portfolio-ai-deployment-20261031.md`。
 
 用户最终选择在现有阿里云杭州服务器上使用 DeepSeek。采用官方 API 和新作品集专用 Key，不复用旧数独凭据。独立服务、独立状态目录、独立子域；不购买服务器。新增路由须核对现有配置并先 validate，不能重启或覆盖既有数独服务。
 
-部署说明、完整限制与测试在 [server/portfolio-ai/README.md](server/portfolio-ai/README.md)。独立域名为 `ai.bing2002.com`；当前 health 返回 `ready:false`，无密钥时主动拒绝模型调用。
+部署说明、完整限制与测试在 [server/portfolio-ai/README.md](server/portfolio-ai/README.md)。独立域名为 `ai.bing2002.com`；当前 health 返回 `ready:true`，缺失密钥时仍主动拒绝模型调用。
 
 ## 保留的界面规则
 
@@ -22,7 +22,7 @@
 PortfolioAssistantConnection.configureHosted();
 ```
 
-**当前没有执行这句，也没有在入口中添加它。** 它只可在正式站点 origin 上设置固定的 `https://ai.bing2002.com/portfolio-ai/` 适配器，不接受用户提供的主机、模型或密钥。
+首页现已通过独立的 `defer` 脚本调用，在连接模块之后、聊天 UI 之前执行。它只可在正式站点 origin 上设置固定的 `https://ai.bing2002.com/portfolio-ai/` 适配器，不接受用户提供的主机、模型或密钥。本地和其他 origin 保持默认未连接。
 
 实际第一次发送时才请求 `POST session`，携带 `{version:1}`；后端返回 CSRF token 并设置 Secure / HttpOnly / SameSite=Strict / host-only cookie。随后 `POST chat` 携带 cookie、`X-CSRF-Token` 和 `{version:1,messages}`。CSRF token 仅在内存中，不进入浏览器存储。前端等待上限 22 秒，仅 `invalid_session` 这种尚未调用模型的拒绝会更新会话并重试一次，其他错误不自动重发。
 

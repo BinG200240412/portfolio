@@ -1,6 +1,6 @@
 # 作品集 AI 接口
 
-为 `bing2002.com` 底部红点对话框准备的独立后端。17 项后端集成测试、12 项前端模拟测试通过；已安装到杭州独立服务并完成 DNS / HTTPS；**未填写密钥，也未完成真实 DeepSeek 调用**。前端默认仍未连接，不会显示模拟答案。部署记录见 `../../docs/portfolio-ai-deployment-20261031.md`。
+为 `bing2002.com` 底部红点对话框提供服务的独立后端。已安装到杭州并完成 DNS / HTTPS；本人授权从本机文件私密填入新 Key，真实 DeepSeek 问答成功。首页加载受控生产初始化，其他 origin 默认未连接。部署记录见 `../../docs/portfolio-ai-deployment-20261031.md`。
 
 ## 当前部署边界
 
@@ -14,7 +14,7 @@
 
 ## 最小部署清单
 
-适用于现有 Linux/systemd 主机上的独立服务。已完成安装、DNS / HTTPS；当前停在本人私密填 Key，随后才做真实模型调用和前端激活。
+适用于现有 Linux/systemd 主机上的独立服务。已完成安装、DNS / HTTPS、私密密钥保存、真实模型问答和首页连接。
 
 1. 核对主机身份、地区和已有服务；保存服务/端口快照。准备独立系统用户 `portfolio-ai`，应用目录 `/opt/portfolio-ai` 由管理员拥有，服务用户不可写代码。
 2. 将 `server.py`、`knowledge.md`、`store_key.py` 放入 `/opt/portfolio-ai`。无需安装第三方 Python 包。运行 `python3 -m unittest discover -s server/portfolio-ai -p 'test_server.py' -v` 与 `node server/portfolio-ai/test_frontend.cjs` 验证代码。
@@ -52,4 +52,4 @@
 
 真实 Chrome 中使用只运行在 localhost 的测试服务，验证首次红点先导航、再次打开底部弹窗、失败后保留问题、手动重试后正确显示文本与清空输入。测试回复明确写为“本地连接测试：这不是模型回答”，仅用于 UI 验证，不部署测试服务或该文本。测试没有真实供应商调用或扣费；之后的独立服务安装见部署记录。
 
-服务器已验证登录与主机身份、服务安装、DNS / HTTPS、允许来源的 CORS 和无密钥拒绝；错误来源返回 403，不配置允许来源。www 自动 301 至主域。尚待：本人填写新 Key、余额与模型权限、真实 session cookie 和问答、回答准确度和延迟、移动端真实网络。服务器安装不代表真实 AI 已启用。
+服务器已验证登录与主机身份、服务安装、DNS / HTTPS、允许来源的 CORS、真实 session / cookie 和 DeepSeek 问答；无密钥时拒绝，错误来源返回 403、不配置允许来源。www 自动 301 至主域。一次数独介绍问答返回约 2.1 秒，不能视为全部访客的响应时间保证。回答资料由作者持续审核；移动端桌面视口测试不能代替真实手机和不同网络的人工体验。
