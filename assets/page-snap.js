@@ -20,7 +20,7 @@
       : file === 'xr.html'
         ? '.gogo-hero, .gogo-snap-page, .gogo-concept-visual-page, .gogo-concept-details, .gogo-interaction-page'
         : file === 'index.html'
-          ? '.about-hero, .about-details, .about-details > section, #contact-page [data-contact-stop]'
+          ? '.about-hero, .about-details, .about-details > section'
           : '.portfolio-snap-page';
     // A chapter may delegate native snapping to its inner reading stops while
     // remaining a single entry in the chapter navigation.
@@ -30,7 +30,7 @@
          getComputedStyle(element).scrollSnapAlign !== 'auto'));
     const label = (element, index, total) => {
       const heading = element.querySelector('h1,h2,h3');
-      const name = (element.dataset.snapLabel || heading?.textContent)?.replace(/\s+/g, ' ').trim().slice(0, 42);
+      const name = heading?.textContent?.replace(/\s+/g, ' ').trim().slice(0, 42);
       const english = document.documentElement.lang.startsWith('en');
       return english ? `Go to page ${index + 1} of ${total}${name ? `: ${name}` : ''}`
         : `跳转到第 ${index + 1} / ${total} 页${name ? `：${name}` : ''}`;
@@ -186,7 +186,8 @@
     page(document.querySelector('.about-hero'));
     page(document.querySelector('.about-details'));
     document.querySelectorAll('.about-details > section').forEach(element => element.classList.add('portfolio-snap-subpage'));
-    const sync = () => root.classList.toggle('portfolio-paged', document.body.classList.contains('expanded'));
+    const sync = () => root.classList.toggle('portfolio-paged', !!document.getElementById('resume')?.classList.contains('live'));
+    addEventListener('portfolio:navigation', sync);
     new MutationObserver(sync).observe(document.body, {attributes:true, attributeFilter:['class']});
     sync(); enabled = false;
   } else enabled = false;

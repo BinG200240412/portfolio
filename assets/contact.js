@@ -57,38 +57,48 @@
   window.PortfolioContactGlyphs = { size, glyphs };
 })();
 
-/* Native scrolling changes the brightness of fixed beads; no idle animation loop. */
+/* The interface stays in one viewport. A brief scrambled LED state resolves
+   into the next channel, always on the same equally spaced physical grid. */
 (() => {
  'use strict';
  const page=document.getElementById('contact-page');if(!page)return;
- const stage=page.querySelector('.contact-stage'),stopsHost=page.querySelector('.contact-stops');
- const canvas=page.querySelector('canvas'),ctx=canvas.getContext('2d');
+ const stage=page.querySelector('.contact-stage'),canvas=page.querySelector('canvas'),ctx=canvas.getContext('2d');
  const copy=page.querySelector('.contact-copy'),heading=page.querySelector('h1'),value=page.querySelector('.contact-value');
- const open=page.querySelector('.contact-open'),button=page.querySelector('.contact-copy-value'),status=page.querySelector('.contact-feedback'),next=page.querySelector('.contact-next');
- const channels=window.PortfolioContactChannels||[],size=window.PortfolioContactGlyphs.size;
- const glyphs=Object.fromEntries(window.PortfolioContactGlyphs.glyphs.map(g=>[g.id,g.rows.join('').split('').map(Number)]));
+ const open=page.querySelector('.contact-open'),button=page.querySelector('.contact-copy-value'),status=page.querySelector('.contact-feedback');
+ const next=page.querySelector('.contact-next'),nav=page.querySelector('.contact-channel-nav');
+ const channels=window.PortfolioContactChannels||[],size=window.PortfolioContactGlyphs.size,count=size*size;
+ if(!channels.length)return;
+ const glyphs=Object.fromEntries(window.PortfolioContactGlyphs.glyphs.map(g=>[g.id,Float32Array.from(g.rows.join(''),Number)]));
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
- let frame=0,active=-1,generation=0,live=false,stops=[],geometry=[],themeInk='',themeRed='';
+ let frame=0,active=-1,selected=0,generation=0,live=false,motion=null,serial=0;
+ let lights=new Float32Array(count),themeInk='',themeRed='',wheelTotal=0,wheelArmed=true,wheelTimer=0,touch=null;
+ const controls=[];
  const english=()=>window.PortfolioI18n?.language==='en';
  const label=c=>c.label[english()?'en':'zh'];
  const clamp=v=>Math.max(0,Math.min(1,v));
  const smooth=v=>{v=clamp(v);return v*v*(3-2*v);};
+ const hash=n=>{n=Math.imul(n^(n>>>16),0x45d9f3b);n=Math.imul(n^(n>>>16),0x45d9f3b);return ((n^(n>>>16))>>>0)/4294967295;};
  const safeHref=c=>{if(!c?.href?.trim())return '';try{const u=new URL(c.href,location.href);return ['https:','mailto:','tel:'].includes(u.protocol)?u.href:'';}catch(_){return '';}};
  const available=()=>live&&!document.hidden&&page.classList.contains('live');
- const stopFragment=document.createDocumentFragment();
  channels.forEach((channel,index)=>{
-  const stop=document.createElement('section');stop.className='contact-stop portfolio-snap-page';stop.dataset.contactStop=channel.id;
-  stop.id=`contact-${channel.id}`;stop.dataset.snapLabel=label(channel);stopFragment.append(stop);stops.push(stop);
+  const control=document.createElement('button');control.type='button';control.className='contact-channel-point';
+  control.setAttribute('aria-controls','contact-title');control.dataset.contactChannel=channel.id;
+  const led=document.createElement('span');led.className='contact-channel-light';led.setAttribute('aria-hidden','true');control.append(led);
+  control.addEventListener('click',()=>change(index));nav.append(control);controls.push(control);
  });
- stopsHost.append(stopFragment);
  const pattern=['0001000','0001000','0001000','1001001','0101010','0011100','0001000'];
  pattern.forEach((row,y)=>[...row].forEach((v,x)=>{if(v!=='1')return;const d=document.createElement('i');d.className='scroll-cue-led';d.style.gridColumn=x+1;d.style.gridRow=y+1;d.style.setProperty('--led-row',y);next.firstElementChild.append(d);}));
+ function labels(){
+  nav.setAttribute('aria-label',english()?'Contact channels':'联系方式');
+  next.setAttribute('aria-label',english()?'Next contact channel':'下一个联系方式');
+  next.setAttribute('aria-controls','contact-title');
+  controls.forEach((c,i)=>c.setAttribute('aria-label',english()?`Switch to ${label(channels[i])}`:`切换到${label(channels[i])}`));
+ }
  function showInfo(index){
   if(index===active)return;
   active=index;generation++;
   const c=channels[index],href=safeHref(c),filled=!!c.value&&!!href;
-  page.dataset.contactActive=c.id;
-  heading.textContent=label(c);value.textContent=c.value||'';
+  page.dataset.contactActive=c.id;heading.textContent=label(c);value.textContent=c.value||'';
   if(filled)value.setAttribute('href',href);else value.removeAttribute('href');
   open.hidden=button.hidden=!filled;button.disabled=!filled;status.textContent='';
   if(filled){open.href=href;open.querySelector('span').textContent=english()?(c.id==='email'?'Send email':c.id==='phone'?'Call':'Open profile'):(c.id==='email'?'发邮件':c.id==='phone'?'拨打电话':'打开主页');}
@@ -96,64 +106,90 @@
   if(external){open.target=value.target='_blank';open.rel=value.rel='noopener noreferrer';}
   else {for(const el of [open,value]){el.removeAttribute('target');el.removeAttribute('rel');}}
   button.querySelector('span').textContent=english()?(c.id==='email'?'Copy email':c.id==='phone'?'Copy number':'Copy handle'):(c.id==='email'?'复制邮箱':c.id==='phone'?'复制号码':'复制账号');
-  next.hidden=index===channels.length-1;
-  next.setAttribute('aria-label',english()?'Next contact channel':'下一个联系方式');
-  if(!next.hidden)next.setAttribute('aria-controls',stops[index+1].id);
+  controls.forEach((c,i)=>{const distance=Math.abs(i-index);c.classList.toggle('is-current',distance===0);c.classList.toggle('is-near',distance===1);c.setAttribute('aria-pressed',String(distance===0));});
  }
  function measure(){
   if(!available())return;
-  // Reading the stops can settle native snapping after their insertion.
-  // Capture scrollY after layout, rather than adding a pre-layout position.
-  const positions=stops.map(el=>el.getBoundingClientRect().top),y=scrollY;geometry=positions.map(top=>top+y);
-  const rect=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2);
-  const w=Math.max(1,Math.round(rect.width*dpr));if(canvas.width!==w||canvas.height!==w){canvas.width=w;canvas.height=w;}
+  const rect=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,2),w=Math.max(1,Math.round(rect.width*dpr));
+  if(canvas.width!==w||canvas.height!==w){canvas.width=w;canvas.height=w;}
   const style=getComputedStyle(page);themeInk=style.color;themeRed=style.getPropertyValue('--red').trim()||'#d9584c';
  }
- function draw(){
-  frame=0;if(!available()||!geometry.length)return;
-  const y=scrollY;let from=0;
-  while(from<channels.length-1&&y>=geometry[from+1])from++;
-  const to=Math.min(from+1,channels.length-1),span=geometry[to]-geometry[from]||1;
-  const progress=to===from?0:clamp((y-geometry[from])/span);
-  const index=y+innerHeight*.42>=geometry[to]?to:from;
-  const mix=reduced.matches?(index===to?1:0):smooth((progress-.18)/.64);
-  showInfo(index);
-  const fade=reduced.matches?1:1-Math.sin(mix*Math.PI)*.85;
-  copy.style.opacity=fade;copy.style.transform=reduced.matches?'none':`translateY(${mix<.5?-mix*16:(1-mix)*16}px)`;
-  copy.style.pointerEvents=fade<.5?'none':'';
-  if(!ctx)return;
-  const a=glyphs[channels[from].id],b=glyphs[channels[to].id],w=canvas.width,scale=w/480;
-  ctx.clearRect(0,0,w,w);
+ function paint(seal=active===0?1:0){
+  if(!ctx)return;const scale=canvas.width/480;ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle=themeInk;
   for(let row=0;row<size;row++)for(let col=0;col<size;col++){
-   const i=row*size+col;
-   const phase=reduced.matches?mix:smooth((mix-(col+row)/(size*2)*.14)/.86);
-   const light=a[i]*(1-phase)+b[i]*phase;if(light<.015)continue;
-   ctx.globalAlpha=light*.94;ctx.fillStyle=themeInk;
-   ctx.beginPath();ctx.arc((40+col*10)*scale,(40+row*10)*scale,1.9*scale,0,Math.PI*2);ctx.fill();
+   const light=lights[row*size+col];if(light<.015)continue;
+   ctx.globalAlpha=light*.94;ctx.beginPath();ctx.arc((40+col*10)*scale,(40+row*10)*scale,1.9*scale,0,Math.PI*2);ctx.fill();
   }
-  const seal=(from===0?1-mix:0)+(to===0?mix:0);
   if(seal>.01){ctx.globalAlpha=seal;ctx.fillStyle=themeRed;ctx.beginPath();ctx.arc(240*scale,270*scale,3.2*scale,0,Math.PI*2);ctx.fill();}
   ctx.globalAlpha=1;
  }
- function queue(){if(available()&&!frame)frame=requestAnimationFrame(draw);}
- function resetFeedback(){generation++;status.textContent='';button.disabled=!channels[active]?.value||!safeHref(channels[active]);}
- function activate(){live=page.classList.contains('live');next.dataset.paused=String(!available());if(!available()){if(frame)cancelAnimationFrame(frame);frame=0;resetFeedback();return;}if(frame)cancelAnimationFrame(frame);frame=0;measure();active=-1;draw();}
- next.addEventListener('click',()=>{if(available()&&active<channels.length-1)stops[active+1].scrollIntoView({block:'start',behavior:reduced.matches?'instant':'smooth'});});
+ function settle(){
+  motion=null;page.dataset.contactTransition='idle';showInfo(selected);lights.set(glyphs[channels[selected].id]);copy.style.opacity='1';copy.inert=false;button.disabled=!channels[active]?.value||!safeHref(channels[active]);paint();
+ }
+ function tick(now){
+  frame=0;if(!available())return;if(!motion){paint();return;}
+  const p=clamp((now-motion.start)/980),target=glyphs[channels[motion.target].id];
+  if(p>=1){settle();return;}
+  const old=1-smooth(p/.33),noise=smooth(p/.16)*(1-smooth((p-.34)/.66)),reveal=smooth((p-.3)/.7);
+  // Noise changes in a few short beats. Each bulb itself remains a flat circle.
+  const beat=Math.floor((now-motion.start)/120);
+  for(let i=0;i<count;i++){
+   const rank=hash(i+motion.seed),r=hash(i+beat*853+motion.seed*7);
+   const random=r>.74?(.35+(r-.74)*2.2)*noise:0;
+   const resolved=target[i]*smooth((reveal-rank*.78)/.22);
+   lights[i]=Math.max(motion.from[i]*old,random,resolved);
+  }
+  if(p>=.42)showInfo(motion.target);
+  copy.style.opacity=p<.42?String(1-smooth(p/.2)):String(smooth((p-.42)/.25));
+  paint((motion.source===0?1-smooth(p/.25):0)+(motion.target===0?smooth((p-.75)/.25):0));
+  frame=requestAnimationFrame(tick);
+ }
+ function queue(){if(available()&&!frame)frame=requestAnimationFrame(tick);}
+ function change(index){
+  if(!available())return;index=(index+channels.length)%channels.length;
+  if(index===selected)return;
+  selected=index;generation++;status.textContent='';
+  if(frame)cancelAnimationFrame(frame);frame=0;
+  if(reduced.matches){settle();return;}
+  if(copy.contains(document.activeElement))next.focus({preventScroll:true});
+  copy.inert=true;page.dataset.contactTransition='running';
+  motion={target:index,source:active,from:lights.slice(),start:performance.now(),seed:++serial*7919};queue();
+ }
+ function stop(){if(frame)cancelAnimationFrame(frame);frame=0;clearTimeout(wheelTimer);wheelTimer=0;wheelTotal=0;wheelArmed=true;touch=null;generation++;status.textContent='';motion=null;copy.inert=false;copy.style.opacity='1';page.dataset.contactTransition='idle';}
+ function activate(){
+  const entering=!live&&page.classList.contains('live');live=page.classList.contains('live');next.dataset.paused=String(!available());
+  if(!available()){stop();return;}
+  if(entering){selected=0;window.scrollTo({top:0,left:0,behavior:'instant'});}
+  stop();labels();active=-1;showInfo(selected);measure();settle();
+ }
+ next.addEventListener('click',()=>change(selected+1));
+ page.addEventListener('wheel',event=>{
+  if(!available()||event.ctrlKey)return;
+  clearTimeout(wheelTimer);wheelTimer=setTimeout(()=>{wheelArmed=true;wheelTotal=0;},220);
+  if(!wheelArmed||motion)return;
+  wheelTotal+=event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?innerHeight:1);
+  if(Math.abs(wheelTotal)<45)return;wheelArmed=false;change(selected+(wheelTotal>0?1:-1));wheelTotal=0;
+ },{passive:true});
+ page.addEventListener('touchstart',event=>{if(event.touches.length!==1||event.target.closest('a,button,input,textarea')){touch=null;return;}touch={x:event.touches[0].clientX,y:event.touches[0].clientY};},{passive:true});
+ page.addEventListener('touchcancel',()=>{touch=null;},{passive:true});
+ page.addEventListener('touchend',event=>{if(!touch||!event.changedTouches.length)return;const t=event.changedTouches[0],dy=touch.y-t.clientY,dx=touch.x-t.clientX;touch=null;if(Math.abs(dy)>45&&Math.abs(dy)>Math.abs(dx)*1.3)change(selected+(dy>0?1:-1));},{passive:true});
+ page.addEventListener('keydown',event=>{
+  if(!available()||event.defaultPrevented||event.isComposing||event.repeat||event.ctrlKey||event.metaKey||event.altKey||event.shiftKey||event.target.closest('input,textarea,[contenteditable]'))return;
+  if(['ArrowDown','ArrowRight','ArrowUp','ArrowLeft'].includes(event.key)){event.preventDefault();change(selected+(['ArrowDown','ArrowRight'].includes(event.key)?1:-1));}
+ });
  button.addEventListener('click',async()=>{
-  const c=channels[active];if(button.disabled||!available()||!c?.value||!safeHref(c))return;
+  const c=channels[active];if(button.disabled||!available()||motion||!c?.value||!safeHref(c))return;
   const token=++generation;button.disabled=true;status.textContent='';
   try{if(!navigator.clipboard?.writeText)throw Error('Clipboard unavailable');await navigator.clipboard.writeText(c.value);if(token===generation&&available())status.textContent=english()?'Copied':'已复制';}
   catch(_){if(token!==generation||!available())return;const selection=getSelection(),range=document.createRange();range.selectNodeContents(value);selection?.removeAllRanges();selection?.addRange(range);status.textContent=english()?'Select the address to copy.':'请选中地址复制。';}
   finally{if(token===generation)button.disabled=false;}
  });
- addEventListener('scroll',queue,{passive:true});
  addEventListener('resize',()=>{measure();queue();},{passive:true});
- addEventListener('portfolio:navigation',activate);
- addEventListener('portfolio:language',()=>{stops.forEach((el,i)=>el.dataset.snapLabel=label(channels[i]));active=-1;activate();});
- document.addEventListener('visibilitychange',activate);
- addEventListener('pageshow',activate);
- addEventListener('pagehide',()=>{live=false;if(frame)cancelAnimationFrame(frame);frame=0;resetFeedback();});
- reduced.addEventListener('change',queue);
+ addEventListener('portfolio:navigation',activate);addEventListener('portfolio:language',activate);
+ document.addEventListener('visibilitychange',activate);addEventListener('pageshow',activate);
+ addEventListener('pagehide',()=>{live=false;stop();});
+ reduced.addEventListener('change',()=>{if(available()){stop();settle();}});
  new MutationObserver(()=>{measure();queue();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
  if('ResizeObserver'in window)new ResizeObserver(()=>{measure();queue();}).observe(stage);
  activate();

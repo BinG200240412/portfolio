@@ -185,7 +185,7 @@
 <link rel="stylesheet" href="assets/works/ai3d/particle-cover.css?v=e9081c26dc">
 <link rel="stylesheet" href="assets/matrix-field.css?v=6a32da6f6c">
 <link rel="stylesheet" href="assets/about.css?v=ed21d99dab">
-<link rel="stylesheet" href="assets/contact.css?v=4e574b2c5e">
+<link rel="stylesheet" href="assets/contact.css?v=3dfedba50e">
 <link rel="stylesheet" href="assets/ambient-field.css?v=46d61ec273">
 <link rel="stylesheet" href="assets/portfolio-assistant.css?v=b5151d0c45">
 <link rel="stylesheet" href="assets/title-dot.css?v=5f0b650f0b">
@@ -208,7 +208,7 @@
 <script defer src="assets/pixel-loader.js?v=df8d4dfee5"></script>
 <script defer src="assets/about-project-previews.js?v=6b4c1409f9"></script>
 <script defer src="assets/contact-channels.js?v=6329c05bf8"></script>
-<script defer src="assets/contact.js?v=46b8c60a9b"></script>
+<script defer src="assets/contact.js?v=bdb8620438"></script>
 <script defer src="assets/ambient-field.js?v=a13d015450"></script>
 <script defer src="assets/assistant-connection.js?v=eebbb56790"></script>
 <script defer src="assets/assistant-hosted.js?v=296f0b00ec"></script>
@@ -224,7 +224,7 @@
 
 
 
-<script defer src="assets/page-snap.js?v=0411251029"></script>
+<script defer src="assets/page-snap.js?v=c289a8915f"></script>
 
 
 <script defer src="assets/video-detail.js?v=66a64c5a20"></script>
@@ -354,8 +354,7 @@
   </main>
 
   <main id="contact-page" aria-label="联系我" aria-hidden="true" inert>
-    <div class="contact-sequence">
-      <div class="contact-stage">
+    <div class="contact-stage">
         <div class="contact-layout">
           <div class="contact-orbit" aria-hidden="true" data-media-corners-ignore>
             <canvas class="contact-matrix" width="480" height="480"></canvas>
@@ -370,10 +369,9 @@
             <span class="contact-feedback" role="status"></span>
           </div>
         </div>
-        <button class="contact-next scroll-cue" type="button" aria-label="向下浏览" hidden data-i18n-ignore><span class="scroll-cue-pixels" aria-hidden="true"></span></button>
-      </div>
-      <div class="contact-stops" aria-hidden="true"></div>
+        <button class="contact-next scroll-cue" type="button" aria-label="下一个联系方式" data-i18n-ignore><span class="scroll-cue-pixels" aria-hidden="true"></span></button>
     </div>
+    <nav class="contact-channel-nav" aria-label="联系方式" data-i18n-ignore></nav>
   </main>
 
 <script>
@@ -425,6 +423,7 @@ function syncAssistantTrigger(){
 function disarmHint(){dotEl.classList.remove('hinting');}
 function navigationChanged(reason='navigation'){
   navigationEpoch++;
+  document.body.classList.toggle('contact-mode',phase==='contact');
   stage.inert=!['typing','question','hub','works'].includes(phase);
   stage.setAttribute('aria-hidden',String(stage.inert));
   syncAssistantTrigger();
