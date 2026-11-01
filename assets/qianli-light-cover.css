@@ -1,24 +1,50 @@
 body.legacy-case.qianli-case{padding-top:0}
-.qianli-light-hero{isolation:isolate;background:transparent;overflow:hidden}
-.qianli-light-hero .hero-media{height:100svh;min-height:480px;background:transparent;border:0}
+.qianli-light-hero{position:relative;isolation:isolate;background:transparent;overflow:hidden}
+.qianli-case .qianli-light-hero .hero-media{position:absolute;inset:0;width:100%;height:100%;min-height:0;background:transparent;border:0}
+.qianli-light-hero .hero-media::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 56% 42% at 8% 4%,var(--paper),transparent),linear-gradient(0deg,var(--paper),transparent 32%);opacity:.82}
 #qianli-light-cover{display:block;width:100%;height:100%;touch-action:pan-y;cursor:crosshair}
 #qianli-light-cover:focus-visible{outline:2px solid var(--jade);outline-offset:-7px}
-.qianli-light-hero .hero-cap,.qianli-light-hero .hero-foot{max-width:none;margin:0;left:clamp(22px,4.5vw,86px);right:clamp(22px,4.5vw,86px);pointer-events:none}
-.qianli-light-hero .hero-cap{top:clamp(90px,10vh,130px)}
-.qianli-light-hero .title{color:var(--ink);text-shadow:0 0 28px var(--paper);font-size:clamp(56px,6.2vw,104px)}
-html[lang="en"] .qianli-light-hero .title{font-size:clamp(42px,6.5vw,104px);letter-spacing:-.035em;line-height:1.07}
-.qianli-light-hero .eyebrow{color:var(--jade);text-shadow:none}
-.qianli-light-hero .hero-foot{bottom:clamp(26px,4vh,56px)}
-.qianli-light-hero .hero-foot .zh{color:var(--ink);font-size:clamp(18px,2.4vw,30px);text-shadow:0 0 18px var(--paper)}
-.qianli-light-hero .hero-foot .sub{color:var(--soft);text-shadow:0 0 12px var(--paper)}
-.qianli-light-hint{margin-top:10px;font:11px var(--mono);letter-spacing:.08em;color:var(--ink);text-transform:none}
-html[data-theme="light"] .qianli-light-hero .eyebrow{color:#39776e}
-@media(max-width:650px){
-  .qianli-light-hero .hero-cap{top:100px}
-  .qianli-light-hero .eyebrow{font-size:10px;letter-spacing:.16em;margin-bottom:20px}
-  .qianli-light-hero .hero-foot{bottom:30px;display:block}
-  .qianli-light-hero .hero-foot .sub{margin-top:14px;text-align:left;font-size:10px}
-  .qianli-light-hint{font-size:10px}
+
+/* The transparent copy is part of the cover's flow. Long translations can
+   increase its height; no fixed box clips them or covers the landscape. */
+.qianli-cover-content{
+  position:relative;z-index:1;display:grid;grid-template-rows:auto minmax(18svh,1fr) auto;
+  gap:clamp(28px,4svh,48px);min-height:100svh;box-sizing:border-box;
+  padding:clamp(96px,10svh,136px) clamp(28px,4.5vw,86px) clamp(44px,5svh,72px);
+  pointer-events:none;text-shadow:0 1px 12px var(--paper),0 0 5px var(--paper);
 }
-@media(prefers-reduced-motion:reduce){.qianli-light-hero .eyebrow .dot{animation:none}}
-@media(forced-colors:active){#qianli-light-cover{opacity:.75}}
+.qianli-cover-copy{grid-row:1;max-width:min(100%,42rem);align-self:start}
+.qianli-case .qianli-light-hero .title{margin:0;color:var(--ink);line-height:1.08;letter-spacing:.015em;text-wrap:balance}
+.qianli-cover-copy p{margin:0;color:var(--ink);text-wrap:pretty}
+.qianli-cover-subtitle{margin-top:22px!important}
+.qianli-cover-intro{max-width:46ch;margin-top:18px!important}
+
+/* Three equal-scale facts sit below the light field, rather than forming a
+   separate overview page. Labels and values use the shared cover scale. */
+.qianli-light-hero dl.qianli-cover-facts{
+  grid-row:3;display:grid;grid-template-columns:minmax(100px,.55fr) minmax(0,1.5fr) minmax(0,1.35fr);
+  gap:clamp(28px,4.5vw,86px);width:100%;max-width:none;margin:0;letter-spacing:normal;text-transform:none;
+}
+.qianli-light-hero dl.qianli-cover-facts>div{display:block;min-width:0}
+.qianli-light-hero dl.qianli-cover-facts dt{margin:0 0 10px;color:var(--mid)}
+.qianli-light-hero dl.qianli-cover-facts dd{margin:0;color:var(--ink);overflow-wrap:anywhere}
+.qianli-light-hero dl.qianli-cover-facts time{white-space:nowrap}
+
+@media(max-width:900px){
+  .qianli-cover-content{grid-template-rows:auto minmax(14svh,1fr) auto;gap:28px;padding-inline:clamp(28px,5vw,44px)}
+  .qianli-light-hero dl.qianli-cover-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 36px}
+  .qianli-light-hero dl.qianli-cover-facts>.project-start-row{grid-column:1/-1}
+  .qianli-light-hero dl.qianli-cover-facts>.project-start-row:not([hidden]){display:flex;align-items:baseline;gap:20px}
+  .qianli-light-hero dl.qianli-cover-facts>.project-start-row dt{margin:0}
+}
+@media(max-width:650px){
+  .qianli-cover-content{grid-template-rows:auto minmax(11svh,1fr) auto;gap:24px;padding:92px 34px 38px 24px}
+  .qianli-cover-copy{max-width:none}
+  .qianli-cover-subtitle{margin-top:18px!important}
+  .qianli-cover-intro{margin-top:14px!important}
+  .qianli-light-hero dl.qianli-cover-facts{grid-template-columns:minmax(0,1fr);gap:18px}
+  .qianli-light-hero dl.qianli-cover-facts>div{display:block}
+  .qianli-light-hero dl.qianli-cover-facts dt{margin-bottom:5px}
+}
+@media(max-height:700px){.qianli-cover-content{grid-template-rows:auto minmax(64px,1fr) auto}}
+@media(forced-colors:active){#qianli-light-cover{opacity:.75}.qianli-cover-content{text-shadow:none}}

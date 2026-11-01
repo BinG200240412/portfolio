@@ -1,0 +1,37 @@
+/* The project facts share the opening photograph; the complete artwork stays
+   available at its natural ratio, and narrow screens put the copy above it. */
+.drift-cover .hero-media{display:grid;grid-template-columns:minmax(0,1fr);align-items:center;border:0;background:var(--paper)}
+.drift-cover .hero-media>img{grid-area:1 / 1;align-self:center;object-fit:contain}
+.drift-cover-copy{grid-area:1 / 1;position:relative;z-index:2;align-self:start;width:min(640px,46%);margin:clamp(104px,11svh,160px) 0 clamp(72px,8svh,120px) clamp(28px,5vw,112px);color:var(--ink)}
+.drift-cover-copy h1{margin:0;max-width:100%}
+.drift-cover-copy .drift-cover-lead{margin:22px 0 0;max-width:32ch;color:var(--ink)}
+.drift-cover-copy dl.project-overview{margin-top:30px;max-width:100%;gap:16px}
+.drift-cover-copy dl.project-overview>div{grid-template-columns:80px minmax(0,1fr);gap:20px}
+html[lang="en"] .drift-cover-copy dl.project-overview>div{grid-template-columns:112px minmax(0,1fr)}
+.drift-cover .hero-cap{z-index:2;left:auto;right:clamp(28px,5vw,112px);top:clamp(108px,12svh,168px);max-width:36%;pointer-events:none;opacity:.5}
+.drift-cover .hero-cap .title{font-size:clamp(26px,3.4vw,48px);line-height:1.1;letter-spacing:0}
+.drift-cover .hero-scrim{z-index:1;background:linear-gradient(90deg,rgba(8,8,7,.88),rgba(8,8,7,.66) 37%,rgba(8,8,7,.1) 68%,transparent),linear-gradient(180deg,rgba(8,8,7,.25),transparent 65%)}
+/* Undo the legacy snap crop without changing the source or stretching it. */
+html.drift-paged body>.hero.drift-cover .hero-media,
+html.drift-paged body>.hero.drift-cover .hero-media>img{height:auto}
+html.drift-paged body>.hero.drift-cover .hero-media>img{object-fit:contain}
+@media(min-width:901px){
+ .drift-cover-copy{--ink:#f2f0e9;--mid:#d5d3cc;--soft:#d5d3cc}
+ html.drift-paged body>.hero.drift-cover .hero-media{min-height:calc(100svh - 82px)}
+ html.drift-paged body>.hero.drift-cover .hero-media>img{height:calc(100svh - 82px);object-fit:contain}
+}
+@media(max-width:900px){
+ .drift-cover .hero-media{display:flex;flex-direction:column;align-items:stretch;overflow:visible}
+ .drift-cover-copy{order:-1;align-self:stretch;width:auto;margin:0;padding:104px clamp(24px,6vw,48px) 38px}
+ .drift-cover-copy .drift-cover-lead{margin-top:20px}
+ .drift-cover-copy dl.project-overview{margin-top:26px;gap:14px}
+ .drift-cover-copy dl.project-overview>div,
+ html[lang="en"] .drift-cover-copy dl.project-overview>div{grid-template-columns:1fr;gap:4px}
+ .drift-cover .hero-cap,.drift-cover .hero-scrim{display:none}
+ .drift-cover .hero-media>img{align-self:stretch;width:100%;height:auto}
+}
+@media(forced-colors:active){
+ .drift-cover .hero-media{display:flex;flex-direction:column;align-items:stretch}
+ .drift-cover-copy{order:-1;width:auto;margin:0;padding:104px 28px 40px;color:CanvasText;--ink:CanvasText;--mid:CanvasText}
+ .drift-cover .hero-cap,.drift-cover .hero-scrim{display:none}
+}

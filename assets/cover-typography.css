@@ -1,0 +1,48 @@
+/* Every cover uses the same three reading levels. Artwork inside a canvas,
+   source image or partner sign keeps its original lettering. Load this last. */
+:root{
+  --cover-title:clamp(48px,4.6vw,76px);
+  --cover-lead:20px;
+  --cover-facts:18px;
+  --cover-label:var(--cover-facts);
+}
+html body [data-project-cover] [data-cover-title],
+#resume .about-intro[data-project-cover] [data-cover-title]{
+  font-size:var(--cover-title)!important;line-height:1.12!important;
+  letter-spacing:-.025em!important;text-wrap:balance;-webkit-text-stroke:0;
+}
+html body [data-project-cover] [data-cover-lead],
+html body [data-project-cover] [data-cover-lead]>p,
+#resume [data-project-cover] [data-cover-lead]>p{
+  font-size:var(--cover-lead)!important;line-height:1.65!important;
+  letter-spacing:0!important;text-transform:none;
+}
+html body [data-cover-facts],
+html body [data-cover-facts] :is(p,li,dt,dd,time,span,h3),
+html body [data-project-cover] [data-cover-facts] :is(p,li,dt,dd,time,span,h3),
+#resume [data-cover-facts] :is(p,li,dt,dd,time,span,h3){
+  font-size:var(--cover-facts)!important;line-height:1.65!important;
+  letter-spacing:0!important;text-transform:none;
+}
+html body [data-cover-facts] dt{color:var(--mid,var(--soft))}
+html body [data-cover-facts] dd{color:var(--ink)}
+html body [data-cover-facts]>div{min-width:0}
+html body [data-cover-facts] time{font-variant-numeric:tabular-nums;white-space:nowrap}
+/* A compact title no longer needs the old wordmark-sized margins. */
+.sudoku-scenes .hero-main>[data-cover-title]{margin-bottom:28px}
+.sudoku-scenes .hero-main>[data-cover-facts]{max-width:36rem}
+.tea-case [data-cover-title],.arright-case [data-cover-title]{margin-bottom:0}
+.arright-case [data-cover-lead]{margin-top:24px;max-width:27em}
+.skills-page .hero-heading{align-items:start}
+.skills-page .hero-heading>[data-cover-title]{align-self:start}
+.skills-page .hero-note>[data-cover-lead]{margin:0}
+@media(min-width:1801px){
+  :root{--cover-title:clamp(76px,3.4vw,96px);--cover-lead:24px;--cover-facts:20px}
+}
+@media(max-width:700px){
+  :root{--cover-title:clamp(38px,10.5vw,48px);--cover-lead:18px;--cover-facts:16px}
+  html body [data-cover-facts]{gap:14px}
+  html body [data-cover-facts]>div{gap:8px 14px}
+  .sudoku-scenes .hero-main>[data-cover-title]{margin-bottom:24px}
+  .arright-case [data-cover-lead]{margin-top:20px}
+}

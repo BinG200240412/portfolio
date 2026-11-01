@@ -59,7 +59,7 @@
   @keyframes blink{0%,42%,100%{opacity:1;box-shadow:0 0 10px 1px rgba(255,43,24,.55)}
     46%,52%{opacity:.18;box-shadow:0 0 0 0 rgba(255,43,24,0)}}
   .title{font-family:var(--serif);font-weight:600;color:#fff;
-    font-size:clamp(54px,12vw,150px);line-height:.96;letter-spacing:.02em;
+    line-height:.96;letter-spacing:.02em;
     text-shadow:0 2px 46px rgba(0,0,0,.55)}
   .hero-foot{position:absolute;left:clamp(20px,5vw,64px);bottom:clamp(18px,3vw,34px);right:64px;
     display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
@@ -170,7 +170,7 @@
 </style>
 <link rel="stylesheet" href="../assets/theme.css?v=b6a23e06c2">
 <link rel="stylesheet" href="../assets/pixel-loader.css?v=129635cc74">
-<link rel="stylesheet" href="../assets/works/ai3d/particle-cover.css?v=cf5a2226e3">
+<link rel="stylesheet" href="../assets/works/ai3d/particle-cover.css?v=06935d6850">
 <link rel="stylesheet" href="../assets/works/ai3d/workflow/graph.css?v=4f36d3288e">
 <link rel="stylesheet" href="../assets/ambient-field.css?v=46d61ec273">
 <link rel="stylesheet" href="../assets/page-snap.css?v=b080d0a43e">
@@ -200,10 +200,10 @@
 <script defer src="../assets/i18n-cases.js?v=71b948215d"></script>
 <script defer src="../assets/ai3d-story-i18n.js?v=c68af71a2d"></script>
 <script defer src="../assets/ai3d-board-i18n.js?v=cc381175fe"></script>
-<script defer src="../assets/ai3d-project-context-i18n.js?v=5aaeae1cd4"></script>
+<script defer src="../assets/ai3d-project-context-i18n.js?v=2af41aacd0"></script>
 <script defer src="../assets/i18n.js?v=3094438d9c"></script>
 <script defer src="../assets/interaction-sound.js?v=a6bfb2a2a1"></script>
-<script defer src="../assets/theme.js?v=8e65d072cc"></script>
+<script defer src="../assets/theme.js?v=ef4573cabe"></script>
 <title>良渚复原 — AI 三维场景工作流</title>
 
 
@@ -228,18 +228,22 @@
 
 
 <script defer src="../assets/project-dates.js?v=e6f38734ac"></script>
+<link rel="stylesheet" href="../assets/cover-typography.css?v=f005aeb5fc">
 </head>
 <body class="legacy-case liangzhu-case">
-<div class="hero particle-cover" id="liangzhu-particle-cover" data-particle-cover aria-labelledby="liangzhu-cover-title">
+<div class="hero particle-cover" id="liangzhu-particle-cover" data-project-cover data-particle-cover aria-labelledby="liangzhu-cover-title">
   <div class="hero-media">
     <canvas id="liangzhu-cover" tabindex="0" role="img" aria-label="可交互的良渚粒子封面。拖动旋转，滚动缩放，双击切换视角。" data-i18n-ignore></canvas>
     <div class="hero-scrim"></div>
   </div>
   <div class="hero-cap">
-    <h1 class="title" id="liangzhu-cover-title">良渚复原</h1>
-  </div>
-  <div class="hero-foot">
-    <div class="zh">关于良渚遗址公园相关场地复原的三维场景设计</div>
+    <h1 class="title" id="liangzhu-cover-title" data-cover-title>良渚复原</h1>
+    <p class="liangzhu-cover-lead" data-cover-lead>良渚遗址公园的生成式三维场景复原。</p>
+    <dl class="project-overview liangzhu-cover-facts" data-cover-facts data-copy-align="start">
+      <div class="project-start-row" hidden><dt>开始时间</dt><dd><time data-project-start="ai3d"></time></dd></div>
+      <div><dt>负责事项</dt><dd>独立搭建并串联四个工作流，整理参考、配置节点与参数、判断生成结果，并将场景呈现于网页。</dd></div>
+      <div><dt>进度</dt><dd>已完成风格图、全景图与两个 Marble 场景，保留节点及生成记录；基于资料与图像的生成式重建，不作为考古实证。</dd></div>
+    </dl>
   </div>
   <div class="cover-status pixel-loader" data-cover-status data-pixel-loader role="status" aria-live="polite" data-i18n-ignore>
     <p class="pixel-loader__label" data-cover-label>正在载入场景</p>
@@ -250,10 +254,6 @@
 <main class="wrap liangzhu-story" id="liangzhu-process">
 <section class="liangzhu-story-page liangzhu-overview" id="process-overview" data-ai3d-page aria-labelledby="process-overview-title">
   <header class="liangzhu-chapter-head"><h2 id="process-overview-title">从一张图到一个三维场景</h2></header>
-  <dl class="project-overview" data-copy-align="start"><div class="project-start-row" hidden><dt>开始时间</dt><dd><time data-project-start="ai3d"></time></dd></div>
-    <div><dt>负责事项</dt><dd>我独立搭建并串联四个工作流，整理参考、配置节点与参数，判断生成结果，并将场景带到网页中展示。</dd></div>
-    <div><dt>进度</dt><dd>已产出风格图、全景图与两个 Marble 场景，保留节点流程和生成记录。场景是基于资料与图像的生成式重建，不作为考古实证。</dd></div>
-  </dl>
   <div id="liangzhu-complete-path" class="liangzhu-overview-map">
     <figure class="liangzhu-sankey-figure" data-media-corners-ignore>
       <div class="liangzhu-sankey-scroll" role="region" aria-label="四个工作流的衔接关系" data-sankey="overview" data-i18n-ignore data-media-corners-ignore><p class="liangzhu-diagram-status" role="status">正在展开流程图</p></div>

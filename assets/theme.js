@@ -198,8 +198,8 @@
     const file = location.pathname.split('/').pop() || 'index.html';
     const definitions = {
       'sudoku.html': ['.sudoku-opening > .hero', '#intent', '--accent', 'center'],
-      'ai3d.html': ['#liangzhu-particle-cover', '.wrap .intro', '--cover-accent', 'right'],
-      'qianli.html': ['.qianli-light-hero', '.wrap .intro', '--jade', 'right'],
+      'ai3d.html': ['#liangzhu-particle-cover', '#process-overview', '--cover-accent', 'right'],
+      'qianli.html': ['.qianli-light-hero', '#elements', '--jade', 'right'],
       'xr.html': ['.gogo-hero', '#concept', '--gogo-accent', 'center'],
       'drift.html': ['body > .hero', '.wrap .intro', '--green', 'right'],
       'design-skills.html': ['.skills-hero', '#newsprint', '--red', 'inline'],
@@ -252,7 +252,7 @@
       // Use the viewport centre even when the cover's composition is right-aligned.
       const left = position === 'right' ? innerWidth - Math.max(18, Math.min(44, innerWidth * .04)) - 48 : innerWidth / 2 - 24;
       let bottom = Math.max(22, Math.min(34, innerHeight * .035));
-      const obstacles = Array.from(hero.querySelectorAll('.hero-foot,.gogo-chapter-nav,.gogo-opening>p,.gogo-opening>span,.gogo-project-name'), node => node.getBoundingClientRect())
+      const obstacles = Array.from(hero.querySelectorAll('.hero-foot,.qianli-cover-facts,.liangzhu-cover-facts,.gogo-chapter-nav,.gogo-opening>p,.gogo-opening>span,.gogo-project-name'), node => node.getBoundingClientRect())
         .filter(foot => foot.width > 0 && foot.height > 0 && foot.left < left + 48 && foot.right > left);
       // Moving above one line can reach another. Each pass moves upward past
       // one obstacle, so the number of obstacles also bounds the recheck.
