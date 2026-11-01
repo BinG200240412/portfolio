@@ -712,16 +712,16 @@
         "en": "Drifting House · Design Board"
       },
       "group": "project",
-      "pdf": "../assets/works/drift/drift.pdf",
-      "sizeBytes": 2814171,
+      "pdf": "../assets/works/drift/drift.pdf?v=bcc6657db1",
+      "sizeBytes": 2968427,
       "pages": [
         {
-          "src": "../assets/works/more/pages/drift/001.webp",
+          "src": "../assets/works/more/pages/drift/001.webp?v=656f664bb6",
           "width": 1280,
           "height": 2900
         }
       ],
-      "cover": "../assets/works/more/covers/drift.webp",
+      "cover": "../assets/works/more/covers/drift.webp?v=f5b312ce15",
       "coverWidth": 960,
       "coverHeight": 720
     }
