@@ -7,41 +7,45 @@ body.portfolio-shell:has(#section.on .native-frame[data-particle-cover-on]) :is(
 .particle-cover canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:pan-y pinch-zoom;outline-offset:-5px}
 .particle-cover canvas.is-dragging{cursor:grabbing}
 .particle-cover canvas:focus-visible{outline:1px solid var(--cover-accent)}
-.particle-cover .hero-scrim{z-index:1;background:linear-gradient(90deg,rgba(6,8,8,.88),rgba(6,8,8,.68) 46%,transparent 76%),linear-gradient(180deg,rgba(6,8,8,.2),transparent 45%,rgba(6,8,8,.28))}
-.particle-cover .hero-cap{position:relative;z-index:2;pointer-events:none;inset:auto;width:min(48%,680px);margin-inline-start:clamp(24px,5vw,76px);padding-block:clamp(100px,13svh,150px) 100px;text-align:left;text-shadow:0 1px 14px #0008}
+.particle-cover .hero-scrim{z-index:1;background:linear-gradient(180deg,rgba(6,8,8,.72),rgba(6,8,8,.15) 28%,transparent 43%,transparent 60%,rgba(6,8,8,.76) 80%,rgba(6,8,8,.96))}
+.particle-cover .hero-cap{position:relative;z-index:2;pointer-events:none;inset:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto minmax(max(240px,28svh),1fr) auto;gap:32px clamp(48px,7vw,160px);width:100%;min-height:100svh;box-sizing:border-box;margin:0;padding:clamp(96px,10svh,144px) clamp(24px,5vw,96px) clamp(64px,7svh,108px);text-align:left;text-shadow:0 1px 14px #0008}
+.liangzhu-cover-heading{grid-column:1;grid-row:1;min-width:0;max-width:42rem}
 .particle-cover .eyebrow{font-size:11px;letter-spacing:.16em;color:#c9d4c3;margin-bottom:22px}
 .particle-cover .eyebrow .dot{background:#c5d6a5;box-shadow:none;animation:none;width:5px;height:5px}
 .particle-cover .title{color:var(--cover-ink);line-height:1.12;letter-spacing:0;max-width:none;text-shadow:0 2px 30px #0005;text-wrap:balance}
-.particle-cover .liangzhu-cover-lead{max-width:32em;margin-top:24px;color:var(--cover-ink);font-size:var(--cover-lead);line-height:1.6;text-wrap:pretty}
-.particle-cover dl.liangzhu-cover-facts{gap:16px;max-width:none;margin-top:30px;color:var(--cover-ink);font-size:var(--cover-facts);line-height:1.7}
-.particle-cover dl.liangzhu-cover-facts>div{grid-template-columns:5em minmax(0,1fr);gap:16px}
+.particle-cover .liangzhu-cover-lead{max-width:32em;margin:24px 0 0;color:var(--cover-ink);font-size:var(--cover-lead);line-height:1.6;text-wrap:pretty}
+.particle-cover dl.liangzhu-cover-facts{display:block;width:100%;max-width:40rem;margin:0;color:var(--cover-ink);font-size:var(--cover-facts);line-height:1.7}
+.particle-cover dl.liangzhu-cover-facts>div{display:block}
 .particle-cover dl.liangzhu-cover-facts :is(dt,dd){font-size:inherit;line-height:inherit}
-.particle-cover dl.liangzhu-cover-facts dt{color:var(--cover-muted);font-weight:inherit}
+.particle-cover dl.liangzhu-cover-facts dt{margin:0 0 10px;color:var(--cover-muted);font-weight:inherit}
 .particle-cover dl.liangzhu-cover-facts dd{color:var(--cover-ink);overflow-wrap:normal}
+.particle-cover dl.liangzhu-cover-start{grid-column:2;grid-row:1;width:auto;justify-self:end;align-self:start;padding-top:8px}
+.particle-cover dl.liangzhu-cover-start>div:not([hidden]){display:flex;align-items:baseline;gap:18px}
+.particle-cover dl.liangzhu-cover-start dt{margin:0}
+.particle-cover dl.liangzhu-cover-role{grid-column:1;grid-row:3;align-self:start}
+.particle-cover dl.liangzhu-cover-progress{grid-column:2;grid-row:3;justify-self:end;align-self:start}
 .particle-cover .project-start-row time{font-variant-numeric:tabular-nums;white-space:nowrap}
 .cover-status{position:absolute;z-index:3;top:50%;left:50%;transform:translate(-50%,-50%);width:min(80%,400px);text-align:center;font-size:12px;line-height:1.8;letter-spacing:.06em;color:#bfc1bb;pointer-events:none}
 .cover-status[hidden]{display:none}
 .cover-status .pixel-loader__retry{pointer-events:auto;min-height:44px}
-html[lang="en"] .particle-cover dl.liangzhu-cover-facts>div{grid-template-columns:7.5em minmax(0,1fr)}
-@media(max-width:1000px){
- .particle-cover .hero-cap{width:min(72%,640px)}
- .particle-cover .hero-scrim{background:linear-gradient(90deg,rgba(6,8,8,.76),rgba(6,8,8,.38) 50%,transparent),linear-gradient(180deg,rgba(6,8,8,.12),transparent 60%,rgba(6,8,8,.28))}
-}
+@media(max-width:1000px){.particle-cover .hero-cap{column-gap:40px}}
 @media(max-width:720px){
- .particle-cover .hero-cap{width:auto;margin-inline:24px;padding-block:100px 116px}
- .particle-cover .hero-scrim{background:linear-gradient(180deg,rgba(6,8,8,.48),rgba(6,8,8,.7) 45%,rgba(6,8,8,.38) 85%,transparent)}
+ .particle-cover .hero-cap{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(max(480px,54svh),1fr) auto auto;gap:24px;padding:96px 24px 72px}
+ .liangzhu-cover-heading{grid-column:1;grid-row:1;max-width:none}
+ .particle-cover .hero-scrim{background:linear-gradient(180deg,rgba(6,8,8,.72),rgba(6,8,8,.2) 28%,transparent 42%,transparent 55%,rgba(6,8,8,.78) 73%,rgba(6,8,8,.96) 95%)}
  .particle-cover .liangzhu-cover-lead{margin-top:20px}
- .particle-cover dl.liangzhu-cover-facts{margin-top:24px;gap:14px}
- .particle-cover dl.liangzhu-cover-facts>div{display:block}
- .particle-cover dl.liangzhu-cover-facts :is(dt,dd){display:inline}
- .particle-cover dl.liangzhu-cover-facts dt{margin-inline-end:12px}
+ .particle-cover dl.liangzhu-cover-start{grid-column:1;grid-row:2;justify-self:start;padding:0}
+ .particle-cover dl.liangzhu-cover-role{grid-column:1;grid-row:4}
+ .particle-cover dl.liangzhu-cover-progress{grid-column:1;grid-row:5;justify-self:start}
+ .particle-cover dl.liangzhu-cover-facts dt{margin-bottom:6px}
+ .particle-cover dl.liangzhu-cover-start dt{margin:0}
 }
 @media(max-width:600px){
  .particle-cover .eyebrow{font-size:9px;letter-spacing:.07em;margin-bottom:19px;gap:8px}
 }
 
 /* Full detail refines the usable first scene without covering it or adding copy. */
-.particle-cover .cover-detail-loader{--pixel-loader-size:22px;position:absolute;z-index:3;right:clamp(24px,5vw,76px);bottom:96px;width:44px;height:44px;color:#a6afa2;pointer-events:none}
+.particle-cover .cover-detail-loader{--pixel-loader-size:22px;position:absolute;z-index:3;right:clamp(24px,5vw,76px);top:50%;bottom:auto;transform:translateY(-50%);width:44px;height:44px;color:#a6afa2;pointer-events:none}
 .particle-cover .cover-detail-loader[hidden]{display:none}
 .particle-cover .cover-detail-loader button{position:absolute;inset:0;width:44px;height:44px;padding:0;border:0;background:none;color:inherit;cursor:pointer;pointer-events:auto;border-radius:50%}
 .particle-cover .cover-detail-loader button:focus-visible{outline:1px solid var(--cover-accent);outline-offset:2px}
