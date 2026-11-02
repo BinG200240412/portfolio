@@ -57,6 +57,176 @@
   window.PortfolioContactGlyphs = { size, glyphs };
 })();
 
+/* Semantic animations are authored in the icon's 41 × 41 framebuffer.
+ * get(id) generates one short action on demand. The visible LED grid is owned
+ * by the contact renderer; these frames contain no DOM, sprites or timing. */
+(() => {
+  'use strict';
+  const size = 41, count = size * size, length = 21, cache = new Map();
+  const glyphs = new Map((window.PortfolioContactGlyphs?.glyphs || []).map(g => [g.id, g.rows.join('')]));
+  const clamp = v => Math.max(0, Math.min(1, v));
+  const smooth = v => { v = clamp(v); return v * v * (3 - 2 * v); };
+  const distance = (x, y, ax, ay, bx, by) => {
+    const dx = bx - ax, dy = by - ay;
+    const t = clamp(((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy || 1));
+    return Math.hypot(x - ax - t * dx, y - ay - t * dy);
+  };
+  const line = (x, y, ax, ay, bx, by, thickness = 1.6) => distance(x, y, ax, ay, bx, by) <= thickness / 2;
+  const circle = (x, y, cx, cy, radius, thickness = 1.8) => Math.abs(Math.hypot(x - cx, y - cy) - radius) <= thickness / 2;
+  const rectDistance = (x, y, l, t, r, b, radius) => {
+    const qx = Math.abs(x - (l + r) / 2) - (r - l) / 2 + radius;
+    const qy = Math.abs(y - (t + b) / 2) - (b - t) / 2 + radius;
+    return Math.hypot(Math.max(qx, 0), Math.max(qy, 0)) + Math.min(Math.max(qx, qy), 0) - radius;
+  };
+  const rect = (x, y, l, t, r, b, radius, thickness = 1.8) => Math.abs(rectDistance(x, y, l, t, r, b, radius)) <= thickness / 2;
+  const polygon = (x, y, points) => {
+    let inside = false;
+    for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
+      const [ax, ay] = points[i], [bx, by] = points[j];
+      if ((ay > y) !== (by > y) && x < (bx - ax) * (y - ay) / (by - ay) + ax) inside = !inside;
+    }
+    return inside;
+  };
+  const arc = (x, y, cx, cy, radius, start, end, thickness = 1.4) => {
+    if (!circle(x, y, cx, cy, radius, thickness)) return false;
+    let a = Math.atan2(y - cy, x - cx); if (a < 0) a += Math.PI * 2;
+    return a >= start && a <= end;
+  };
+  function tone(id, x, y) {
+    if (id === 'email') return x === 20 && y === 23 ? 2 : (y >= 12 && y <= 22 && x > 6 && x < 35 ? 1 : 0);
+    if (id === 'phone') return y < 12 || x > 24 && y > 26 ? 2 : (x > 12 && y < 28 ? 1 : 0);
+    if (id === 'xiaohongshu') return x <= 14 ? 1 : (x >= 31 || y <= 7 || y >= 32 ? 2 : 0);
+    if (id === 'x') return Math.abs(x + y - 40) < 3 ? 2 : 1;
+    if (id === 'instagram') return x >= 11 && x <= 29 && y >= 11 && y <= 29 ? (x > 26 && y < 14 ? 2 : 0) : 1;
+    return y >= 24 && x <= 21 ? 2 : (x >= 21 && x < 30 ? 1 : 0);
+  }
+  const blank = () => ({ mask: new Float32Array(count), roles: new Uint8Array(count) });
+  function raster(frame, paint) {
+    for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+      const role = paint(x, y); if (role < 0) continue;
+      const at = y * size + x; frame.mask[at] = 1; frame.roles[at] = role;
+    }
+  }
+  function base(id) {
+    const frame = blank(), source = glyphs.get(id);
+    if (!source) return frame;
+    for (let i = 0; i < count; i++) if (source[i] === '1') { frame.mask[i] = 1; frame.roles[i] = tone(id, i % size, Math.floor(i / size)); }
+    return frame;
+  }
+  function stamp(frame, id, dx = 0, dy = 0, angle = 0) {
+    const source = glyphs.get(id), cos = Math.cos(angle), sin = Math.sin(angle);
+    if (!source) return;
+    for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) {
+      const px = x - 20 - dx, py = y - 20 - dy;
+      const sx = Math.round(px * cos + py * sin + 20), sy = Math.round(-px * sin + py * cos + 20);
+      if (sx < 0 || sy < 0 || sx >= size || sy >= size || source[sy * size + sx] !== '1') continue;
+      const at = y * size + x; frame.mask[at] = 1; frame.roles[at] = tone(id, sx, sy);
+    }
+  }
+  const actions = {
+    email(frame, t) {
+      // The lid hinges around the envelope's upper edge; the paper rises behind it.
+      const opening = Math.sin(Math.PI * smooth(t)) ** 2;
+      const tip = Math.round(22 - 19 * opening), paperTop = Math.round(14 - 12 * opening);
+      raster(frame, (x, y) => {
+        const body = rect(x, y, 4, 10, 36, 31, 2) || line(x, y, 5, 30, 15, 22, 1.4) || line(x, y, 25, 22, 35, 30, 1.4);
+        if (body) return 0;
+        if (line(x, y, 5, 11, 20, tip) || line(x, y, 20, tip, 35, 11)) return 1;
+        if (opening > .22 && y <= 18 && (rect(x, y, 13, paperTop, 27, paperTop + 12, 1, 1.4) || line(x, y, 17, paperTop + 4, 23, paperTop + 4, 1.2))) return 0;
+        if (opening < .24 && x === 20 && y === 23) return 2;
+        return -1;
+      });
+    },
+    phone(frame, t) {
+      // Three small mechanical shivers, with two separately timed expanding rings.
+      const envelope = Math.sin(Math.PI * t) ** 2;
+      const shake = Math.round(Math.sin(t * Math.PI * 12) * envelope * 2);
+      stamp(frame, 'phone', shake * .5, 0, shake * .035);
+      if (t < .12 || t > .88) return;
+      const cycle = ((t - .12) * 2.5) % 1;
+      raster(frame, (x, y) => {
+        const first = cycle < .85 && (arc(x, y, 15, 14, 8 + cycle * 5, 3.55, 4.64) || arc(x, y, 24, 25, 9 + cycle * 4, .07, 1.08));
+        const second = cycle > .25 && (arc(x, y, 15, 14, 9 + (cycle - .25) * 5, 3.55, 4.64) || arc(x, y, 24, 25, 10 + (cycle - .25) * 4, .07, 1.08));
+        return first || second ? 0 : -1;
+      });
+    },
+    xiaohongshu(frame, t) {
+      // A turning page pivots about the spine, keeping the book's back cover visible.
+      const turn = Math.sin(Math.PI * smooth(t)) ** 2;
+      const edge = Math.round(33 - 18 * turn), lift = Math.round(turn * 3);
+      raster(frame, (x, y) => {
+        if (rect(x, y, 9, 5, 33, 35, 2)) return x <= 14 ? 1 : 2;
+        if (line(x, y, 13, 6, 13, 34, 1.3) || line(x, y, 10, 30, 32, 30, 1.3)) return 1;
+        if (line(x, y, 13, 6, edge, 7 + lift, 1.4) || line(x, y, edge, 7 + lift, edge, 31 - lift, 1.4) || line(x, y, edge, 31 - lift, 13, 33, 1.4)) return 0;
+        if (edge - 13 > 7 && (line(x, y, 17, 14 + lift, edge - 4, 14 + lift, 1.2) || line(x, y, 17, 19 + lift, edge - 6, 19 + lift, 1.2))) return 0;
+        if (line(x, y, 26, 5, 26, 10, 1.3) || line(x, y, 30, 5, 30, 10, 1.3) || line(x, y, 26, 10, 28, 8, 1.3) || line(x, y, 28, 8, 30, 10, 1.3)) return 2;
+        return -1;
+      });
+    },
+    x(frame, t) {
+      // The two strokes take opposite one-cell steps, then lock together again.
+      const shift = t < .18 || t > .84 ? 0 : Math.round(Math.sin((t - .18) / .66 * Math.PI * 2));
+      const band = 6 + clamp((t - .08) / .82) * 30;
+      raster(frame, (x, y) => {
+        const heavy = polygon(x - shift, y, [[7,6],[14,6],[34,35],[27,35]]);
+        const crossing = line(x + shift, y, 32, 6, 8, 35, 1.9);
+        if (crossing) return Math.abs(y - (41 - band)) < 4 ? 0 : 2;
+        if (heavy) return Math.abs(y - band) < 4 ? 2 : 1;
+        return -1;
+      });
+    },
+    instagram(frame, t) {
+      // Six discrete shutter blades close around a shrinking hexagonal opening.
+      const closing = Math.sin(Math.PI * smooth(t)) ** 4;
+      const opening = 6.5 - closing * 5.5;
+      raster(frame, (x, y) => {
+        const dx = x - 20, dy = y - 20, radius = Math.hypot(dx, dy);
+        if (rect(x, y, 6, 6, 34, 34, 8, 2)) return 1;
+        if (circle(x, y, 20, 20, 7, 2)) return 0;
+        if (Math.hypot(x - 29, y - 11) <= 1.4) return 2;
+        if (closing > .04 && radius < 7) {
+          const angle = (Math.atan2(dy, dx) + Math.PI * 2 + closing * .3) % (Math.PI * 2);
+          const sector = Math.PI / 3, local = angle % sector - sector / 2;
+          const inner = opening / Math.cos(local);
+          if (radius >= inner && Math.abs(local) > .055) return Math.floor(angle / sector) % 2 ? 0 : 1;
+        }
+        if (t >= .43 && t <= .62) {
+          const reach = t < .53 ? 3 : 2;
+          if (line(x, y, 35 - reach, 4, 35 + reach, 4, 1.3) || line(x, y, 35, 4 - reach, 35, 4 + reach, 1.3)) return 2;
+        }
+        return -1;
+      });
+    },
+    douyin(frame, t) {
+      // A short bass bounce; two rhythm strokes answer at different heights.
+      const jump = Math.round(Math.sin(Math.PI * t) * (1 + .8 * Math.sin(t * Math.PI * 3) ** 2));
+      stamp(frame, 'douyin', 0, -jump);
+      if (t < .12 || t > .87) return;
+      const a = 1 + Math.round(Math.abs(Math.sin(t * Math.PI * 3)) * 4);
+      const b = 1 + Math.round(Math.abs(Math.sin(t * Math.PI * 3 - Math.PI / 3)) * 4);
+      raster(frame, (x, y) => {
+        if (line(x, y, 3, 21 - a, 3, 21 + a, 1.3)) return 1;
+        if (line(x, y, 38, 24 - b, 38, 24 + b, 1.3)) return 2;
+        return -1;
+      });
+    },
+  };
+  // Offline-measured union of every action frame, including the exact rest glyph.
+  // Constant bounds let the page reserve motion space before any action is generated.
+  const bounds = {"email":{"left":4,"top":2,"right":36,"bottom":31},"phone":{"left":2,"top":1,"right":37,"bottom":36},"xiaohongshu":{"left":9,"top":5,"right":33,"bottom":35},"x":{"left":6,"top":6,"right":34,"bottom":35},"instagram":{"left":5,"top":1,"right":38,"bottom":35},"douyin":{"left":3,"top":3,"right":38,"bottom":36}};
+  function get(id) {
+    if (cache.has(id)) return cache.get(id);
+    if (!glyphs.has(id) || !actions[id]) return [];
+    const frames = Array.from({ length }, (_, i) => {
+      if (i === 0 || i === length - 1) return base(id);
+      const frame = blank(); actions[id](frame, i / (length - 1)); return frame;
+    });
+    cache.set(id, frames); return frames;
+  }
+  window.PortfolioContactMotion = Object.freeze({ size, get, bounds });
+})();
+
+
 /* Contact stickers share one physical LED screen. Pictures may sway inside
    the framebuffer; the final bulbs always stay on the same hardware grid. */
 (() => {
@@ -75,38 +245,10 @@
  const controls=[],bounds={};
  let width=0,height=0,ratio=1,pitch=3,columns=1,rows=1,placements=[];
  let boardInk=new Uint8Array(1),boardLight=new Float32Array(1),sprites=[],paletteTheme='';
- let frame=0,lastTick=0,time=0,live=false,selected=0,active=-1,hover=-1,generation=0,motion=null,frames=0;
+ let frame=0,lastTick=0,time=0,live=false,selected=0,active=-1,hover=-1,generation=0,typing=null,textTimer=0,textEpoch=0,frames=0;
  const pulseStarts=new Float64Array(channels.length);pulseStarts.fill(-10);
  const english=()=>window.PortfolioI18n?.language==='en';
  const label=c=>c.label[english()?'en':'zh'];
- // The wave travels through occupied neighbours, including isolated details.
- // Every connected component has a seed; empty cells receive no light.
- const anchors={email:[20,10],phone:[8,5],xiaohongshu:[10,5],x:[7,6],instagram:[6,6],douyin:[23,5]};
- function trace(mask,anchor){
-  const ranks=new Float32Array(count),seen=new Uint8Array(count),raw=new Float32Array(count);
-  const occupied=[];for(let i=0;i<count;i++)if(mask[i]>.015)occupied.push(i);
-  const steps=[[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]];
-  let maximum=1;
-  for(const first of occupied){
-   if(seen[first])continue;
-   const component=[first];seen[first]=1;
-   for(let n=0;n<component.length;n++){
-    const at=component[n],x=at%size,y=Math.floor(at/size);
-    for(const [dx,dy] of steps){const nx=x+dx,ny=y+dy,ni=ny*size+nx;if(nx<0||ny<0||nx>=size||ny>=size||seen[ni]||mask[ni]<=.015)continue;seen[ni]=1;component.push(ni);}
-   }
-   let seed=first,nearest=Infinity;
-   for(const at of component){const d=Math.hypot(at%size-anchor[0],Math.floor(at/size)-anchor[1]);if(d<nearest){nearest=d;seed=at;}}
-   const distance=new Int16Array(count);distance.fill(-1);distance[seed]=0;
-   const queue=[seed];
-   for(let n=0;n<queue.length;n++){
-    const at=queue[n],x=at%size,y=Math.floor(at/size);
-    for(const [dx,dy] of steps){const nx=x+dx,ny=y+dy,ni=ny*size+nx;if(nx<0||ny<0||nx>=size||ny>=size||distance[ni]>=0||mask[ni]<=.015)continue;distance[ni]=distance[at]+1;queue.push(ni);}
-   }
-   for(const at of component){raw[at]=distance[at]+nearest*.38;maximum=Math.max(maximum,raw[at]);}
-  }
-  for(const at of occupied)ranks[at]=raw[at]/maximum;
-  return ranks;
- }
  function tone(id,x,y){
   if(id==='email')return x===20&&y===23?2:(y>=12&&y<=22&&x>6&&x<35?1:0);
   if(id==='phone')return y<12||x>24&&y>26?2:(x>12&&y<28?1:0);
@@ -115,11 +257,9 @@
   if(id==='instagram')return x>=11&&x<=29&&y>=11&&y<=29?(x>26&&y<14?2:0):1;
   return y>=24&&x<=21?2:(x>=21&&x<30?1:0);
  }
- const ranks={},roleMaps={},restLights={};
+ const roleMaps={};
  for(const channel of channels){
   const id=channel.id;roleMaps[id]=Uint8Array.from({length:count},(_,i)=>tone(id,i%size,Math.floor(i/size)));
-  ranks[id]=trace(glyphs[id],anchors[id]);
-  restLights[id]=Float32Array.from(glyphs[id],(v,i)=>v*(roleMaps[id][i]===0?.83:roleMaps[id][i]===2?.94:1));
  }
  // Flat, object-specific colours. Light mode uses deeper inks for the same roles.
  const colourways={
@@ -136,7 +276,8 @@
  for(const c of channels){
   let left=size,top=size,right=0,bottom=0;
   glyphs[c.id].forEach((v,i)=>{if(!v)return;const x=i%size,y=Math.floor(i/size);left=Math.min(left,x-.5);top=Math.min(top,y-.5);right=Math.max(right,x+.5);bottom=Math.max(bottom,y+.5);});
-  bounds[c.id]={left,top,right,bottom};
+  const actionBounds=window.PortfolioContactMotion.bounds[c.id];
+  bounds[c.id]=actionBounds?{left:actionBounds.left-.5,top:actionBounds.top-.5,right:actionBounds.right+.5,bottom:actionBounds.bottom+.5}:{left,top,right,bottom};
  }
  function makeSprite(colour){
   const c=document.createElement('canvas');c.width=c.height=24;const p=c.getContext('2d');p.fillStyle=colour;p.beginPath();p.arc(12,12,6,0,Math.PI*2);p.fill();return c;
@@ -158,17 +299,49 @@
   const leave=()=>{if(hover===index)hover=-1;};
   control.addEventListener('mouseenter',enter);control.addEventListener('mouseleave',leave);control.addEventListener('focus',enter);control.addEventListener('blur',leave);
  });
- function showInfo(index){
-  if(index===active)return;active=index;generation++;
-  const c=channels[index],href=safeHref(c),filled=!!c.value&&!!href;
-  page.dataset.contactActive=c.id;heading.textContent=label(c);value.textContent=c.value||'';
-  if(filled)value.setAttribute('href',href);else value.removeAttribute('href');
-  open.hidden=button.hidden=!filled;button.disabled=!filled;status.textContent='';
-  if(filled){open.href=href;open.querySelector('span').textContent=english()?(c.id==='email'?'Send email':c.id==='phone'?'Call':'Open profile'):(c.id==='email'?'发邮件':c.id==='phone'?'拨打电话':'打开主页');}
+ // Independent text tracks use the homepage's erase-and-type rhythm.
+ // Invisible complete labels reserve their final layout throughout typing.
+ function makeTrack(element,typeDelay,eraseDelay){
+  const current=element.textContent.trim(),ghosts=channels.map(()=>{const e=document.createElement('span');e.className='contact-type-reserve';e.setAttribute('aria-hidden','true');return e;});
+  const visible=document.createElement('span');visible.className='contact-type-text';visible.setAttribute('aria-hidden','true');visible.textContent=current;element.replaceChildren(...ghosts,visible);
+  return {element,ghosts,visible,typeDelay,eraseDelay,current:Array.from(current),target:[],due:0};
+ }
+ const titleTrack=makeTrack(heading,130,70),valueTrack=makeTrack(value,45,25),tracks=[titleTrack,valueTrack];
+ function cancelTyping(){clearTimeout(textTimer);textTimer=0;textEpoch++;typing=null;copy.setAttribute('aria-busy','false');}
+ function finishTyping(epoch){
+  if(epoch!==textEpoch||!available())return;clearTimeout(textTimer);textTimer=0;typing=null;
+  const c=channels[active],href=safeHref(c),filled=!!c.value&&!!href;
+  if(filled){value.href=open.href=href;value.removeAttribute('aria-disabled');}else{value.removeAttribute('href');open.removeAttribute('href');value.setAttribute('aria-disabled','true');}
   const external=filled&&href.startsWith('https:');
   for(const el of [open,value]){if(external){el.target='_blank';el.rel='noopener noreferrer';}else{el.removeAttribute('target');el.removeAttribute('rel');}}
+  open.hidden=button.hidden=!filled;button.disabled=!filled;copy.setAttribute('aria-busy','false');page.dataset.contactTyping='false';page.dataset.contactTransition='idle';
+ }
+ function pumpTyping(epoch){
+  textTimer=0;if(epoch!==textEpoch||!available()||!typing)return;const now=performance.now();let done=true,nextDue=Infinity;
+  for(const track of tracks){
+   const same=track.current.length===track.target.length&&track.current.every((c,i)=>c===track.target[i]);if(same)continue;
+   done=false;if(now>=track.due){
+    let prefix=0;while(prefix<track.current.length&&prefix<track.target.length&&track.current[prefix]===track.target[prefix])prefix++;
+    const erase=track.current.length>prefix;if(erase)track.current.pop();else track.current.push(track.target[track.current.length]);
+    track.visible.textContent=track.current.join('');track.due=now+(erase?track.eraseDelay:track.typeDelay);
+   }
+   nextDue=Math.min(nextDue,track.due);
+  }
+  if(done){finishTyping(epoch);return;}textTimer=setTimeout(()=>pumpTyping(epoch),Math.max(8,nextDue-performance.now()));
+ }
+ function showInfo(index,{animate=true}={}){
+  if(index===active)return;cancelTyping();active=index;generation++;
+  const c=channels[index],href=safeHref(c),filled=!!c.value&&!!href,epoch=textEpoch;
+  page.dataset.contactActive=c.id;heading.setAttribute('aria-label',label(c));value.setAttribute('aria-label',c.value||'');
+  tracks.forEach((track,j)=>channels.forEach((item,i)=>track.ghosts[i].textContent=j===0?label(item):item.value||''));
+  titleTrack.target=Array.from(label(c));valueTrack.target=Array.from(c.value||'');
+  value.removeAttribute('href');open.removeAttribute('href');value.setAttribute('aria-disabled','true');open.hidden=button.hidden=true;button.disabled=true;status.textContent='';
+  open.querySelector('span').textContent=english()?(c.id==='email'?'Send email':c.id==='phone'?'Call':'Open profile'):(c.id==='email'?'发邮件':c.id==='phone'?'拨打电话':'打开主页');
   button.querySelector('span').textContent=english()?(c.id==='email'?'Copy email':c.id==='phone'?'Copy number':'Copy handle'):(c.id==='email'?'复制邮箱':c.id==='phone'?'复制号码':'复制账号');
-  controls.forEach((c,i)=>{c.classList.toggle('is-current',i===index);c.setAttribute('aria-pressed',String(i===index));});
+  controls.forEach((control,i)=>{control.classList.toggle('is-current',i===index);control.setAttribute('aria-pressed',String(i===index));});
+  if(reduced.matches||!animate){for(const track of tracks){track.current=track.target.slice();track.visible.textContent=track.current.join('');}finishTyping(epoch);return;}
+  for(const track of tracks){track.current=Array.from(track.visible.textContent);track.due=performance.now()+15;}
+  typing={epoch};copy.setAttribute('aria-busy','true');page.dataset.contactTyping='true';page.dataset.contactTransition='running';pumpTyping(epoch);
  }
  function boxFor(p){
   const b=bounds[p.id],out={left:Infinity,top:Infinity,right:-Infinity,bottom:-Infinity};
@@ -188,24 +361,31 @@
   const mobile=width<700,landscape=height<560&&width>=540;
   const compact=Math.min(1,height/780);
   let specs;
-  if(landscape)specs=[[.16,.27,.29,-.12],[.83,.25,.23,.14],[.31,.88,.19,-.08],[.15,.63,.16,.08],[.85,.64,.24,-.10],[.68,.89,.18,.13]];
-  else if(mobile)specs=[[.29,.20,.62,-.12],[.81,.27,.36,.13],[.80,.74,.39,-.08],[.72,.125,.20,.10],[.20,.77,.37,-.13],[.52,.91,.34,.10]];
-  else specs=[[.18,.24,.42,-.12],[.80,.20,.26,.13],[.83,.73,.31,-.08],[.48,.13,.15,.10],[.19,.75,.30,-.12],[.51,.85,.23,.12]];
+  if(landscape)specs=[[.16,.27,.31,-.12],[.83,.25,.26,.10],[.31,.88,.16,-.08],[.15,.63,.105,.08],[.85,.64,.20,-.10],[.68,.89,.13,.13]];
+  else if(mobile)specs=[[.29,.20,.59,-.12],[.81,.27,.38,.10],[.80,.74,.31,-.08],[.72,.125,.14,.10],[.20,.77,.32,-.13],[.52,.91,.23,.10]];
+  else specs=[[.15,.24,.46,-.12],[.83,.21,.34,.10],[.83,.73,.25,-.08],[.48,.13,.10,.10],[.19,.75,.27,-.12],[.51,.85,.16,.12]];
+  if(!mobile&&!landscape&&width<1100)specs[3]=[.55,.13,.10,.10];
   if(mobile&&!landscape&&height<740){
-   specs[0]=[.29,.20,.54,-.12];specs[1]=[.84,.24,.32,.13];specs[3]=[.59,.295,.14,.10];
+   specs[0]=[.29,.20,.49,-.12];specs[1]=[.84,.24,.32,.10];specs[2]=[.80,.74,.29,-.08];specs[3]=[.59,.275,.10,.10];specs[4]=[.20,.77,.29,-.13];specs[5]=[.52,.91,.19,.10];
   }
   const multiplier=mobile&&!landscape?compact:1,artUnit=landscape?Math.min(width,height):unit;
   const text=copy.getBoundingClientRect(),clear={left:text.left-rect.left-14,right:text.right-rect.left+14,top:text.top-rect.top-14,bottom:text.bottom-rect.top+14};
   placements=specs.map((s,i)=>{
    const p={id:channels[i].id,x:s[0]*width,y:s[1]*height,scale:s[2]*artUnit*multiplier/size,angle:s[3],phase:i*1.71};p.cos=Math.cos(p.angle);p.sin=Math.sin(p.angle);
    // Move a whole sticker away from the actual copy. Never crop a rectangle out of it.
-   for(let pass=0;pass<3;pass++){
+   for(let pass=0;pass<5;pass++){
     let b=boxFor(p);
     if(intersects(b,clear)){p.y+=p.y<height*.5?clear.top-b.bottom:clear.bottom-b.top;b=boxFor(p);}
     const dx=Math.max(14-b.left,0)-Math.max(b.right-(width-14),0),dy=Math.max(70-b.top,0)-Math.max(b.bottom-(height-14),0);p.x+=dx;p.y+=dy;
+    const fitted=boxFor(p);
+    if(pass===2&&intersects(fitted,clear)){
+     const above=p.y<height*.5,bandTop=above?70:clear.bottom,bandBottom=above?clear.top:height-14;
+     p.scale*=Math.min(1,Math.max(32,bandBottom-bandTop)/(fitted.bottom-fitted.top))*.96;
+     const smaller=boxFor(p);p.y+=(bandTop+bandBottom-smaller.top-smaller.bottom)/2;
+    }
    }
    const b=boxFor(p);p.box=b;
-   const hit=controls[i];hit.style.left=`${b.left-7}px`;hit.style.top=`${b.top-7}px`;hit.style.width=`${Math.max(44,b.right-b.left+14)}px`;hit.style.height=`${Math.max(44,b.bottom-b.top+14)}px`;
+   const hit=controls[i],hitWidth=Math.max(44,b.right-b.left+14),hitHeight=Math.max(44,b.bottom-b.top+14);hit.style.left=`${(b.left+b.right-hitWidth)/2}px`;hit.style.top=`${(b.top+b.bottom-hitHeight)/2}px`;hit.style.width=`${hitWidth}px`;hit.style.height=`${hitHeight}px`;
    return p;
   });
   canvas.dataset.ledGridPitch=pitch.toFixed(6);canvas.dataset.ledDiameter=(pitch*.7).toFixed(6);canvas.dataset.contactGlyphs=String(placements.length);
@@ -213,20 +393,28 @@
  }
  function paint(){
   if(!available()||!width||!placements.length)return;
-  boardInk.fill(0);boardLight.fill(0);
+  boardInk.fill(0);boardLight.fill(0);const playing=[];
   for(let n=0;n<placements.length;n++){
    const p=placements[n],id=p.id,phase=p.phase;
    const dx=reduced.matches?0:Math.sin(time*.58+phase)*2.8,dy=reduced.matches?0:Math.cos(time*.46+phase)*3.2;
-   const angle=p.angle+(reduced.matches?0:Math.sin(time*.43+phase)*.013)+(hover===n&&!reduced.matches?Math.sin(time*2.4)*.012:0);
-   const cos=Math.cos(angle),sin=Math.sin(angle),base=restLights[id],roles=roleMaps[id],age=time-pulseStarts[n];
+   const angle=p.angle+(reduced.matches?0:Math.sin(time*.43+phase)*.013);
+   const cos=Math.cos(angle),sin=Math.sin(angle),age=time-pulseStarts[n];
+   const autoAge=time-[4.5,1.0,7.5,10.5,13.5,16.5][n];
+   const hoverAge=hover===n&&age>=0?age%2.4:age;
+   const actionAge=hoverAge>=0&&hoverAge<1.4?hoverAge:(autoAge>=0?autoAge%21:-1);
+   let mask=glyphs[id],roles=roleMaps[id];
+   if(!reduced.matches&&actionAge>=0&&actionAge<1.4){
+    const frames=window.PortfolioContactMotion.get(id),index=Math.min(frames.length-1,Math.floor(actionAge/1.4*(frames.length-1)));
+    if(frames[index]){mask=frames[index].mask;roles=frames[index].roles;playing.push(id+':'+index);}
+   }
    const box=p.box,pad=10;
    for(let r=Math.max(0,Math.floor((box.top-pad)/pitch));r<Math.min(rows,Math.ceil((box.bottom+pad)/pitch));r++){
     const py=(r+.5)*pitch-p.y-dy;
     for(let c=Math.max(0,Math.floor((box.left-pad)/pitch));c<Math.min(columns,Math.ceil((box.right+pad)/pitch));c++){
      const px=(c+.5)*pitch-p.x-dx,x=Math.round((px*cos+py*sin)/p.scale+20),y=Math.round((-px*sin+py*cos)/p.scale+20);
-     if(x<0||y<0||x>=size||y>=size)continue;const at=y*size+x;if(!base[at])continue;
-     const local=age-.07-ranks[id][at]*.42,wave=reduced.matches||age<0||age>1?0:Math.sin(Math.PI*clamp(local/.34));
-     const light=base[at]*(1-.46*wave*wave)*(n===selected||hover===n?1:.82),cell=r*columns+c;
+     if(x<0||y<0||x>=size||y>=size)continue;const at=y*size+x;if(!mask[at])continue;
+     const shade=roles[at]===0?.83:roles[at]===2?.94:1;
+     const light=mask[at]*shade*(n===selected||hover===n?1:.82),cell=r*columns+c;
      if(light>=boardLight[cell]){boardLight[cell]=light;boardInk[cell]=1+n*3+roles[at];}
     }
    }
@@ -237,37 +425,39 @@
    const at=r*columns+c,ink=boardInk[at];if(!ink)continue;
    ctx.globalAlpha=boardLight[at]*.94;ctx.drawImage(sprites[ink],(c+.5)*pitch-dotSize/2,(r+.5)*pitch-dotSize/2,dotSize,dotSize);lit++;
   }
-  ctx.globalAlpha=1;canvas.dataset.ledFrame=String(++frames);canvas.dataset.ledTime=time.toFixed(3);canvas.dataset.ledPoints=String(lit);
+  ctx.globalAlpha=1;canvas.dataset.ledFrame=String(++frames);canvas.dataset.ledTime=time.toFixed(3);canvas.dataset.ledPoints=String(lit);canvas.dataset.contactActions=playing.join(',');
  }
  function tick(now){
   frame=0;if(!available())return;
   if(!lastTick||now-lastTick>=49){
    if(lastTick)time+=Math.min(.10,(now-lastTick)/1000);lastTick=now;
-   if(motion){const p=clamp((time-motion.start)/.8);if(p>=.28)showInfo(motion.target);copy.style.opacity=p<.28?String(motion.opacity*(1-smooth(p/.22))):String(smooth((p-.28)/.32));if(p>=1){motion=null;copy.inert=false;copy.style.opacity='1';button.disabled=!channels[active]?.value||!safeHref(channels[active]);page.dataset.contactTransition='idle';}}
    paint();
   }
-  if(!reduced.matches||motion)frame=requestAnimationFrame(tick);
+  if(!reduced.matches)frame=requestAnimationFrame(tick);
  }
- function run(){if(available()&&!frame){canvas.dataset.ledRunning=String(!reduced.matches);if(reduced.matches&&!motion)paint();else frame=requestAnimationFrame(tick);}}
+ function run(){if(available()&&!frame){canvas.dataset.ledRunning=String(!reduced.matches);if(reduced.matches)paint();else frame=requestAnimationFrame(tick);}}
  function change(index){
-  if(!available())return;index=(index+channels.length)%channels.length;selected=index;generation++;status.textContent='';pulseStarts[index]=time;
+  if(!available())return;index=(index+channels.length)%channels.length;pulseStarts[index]=time;
   if(copy.contains(document.activeElement))controls[index].focus({preventScroll:true});
-  if(reduced.matches){motion=null;copy.inert=false;copy.style.opacity='1';showInfo(index);button.disabled=!channels[active]?.value||!safeHref(channels[active]);page.dataset.contactTransition='idle';measure();return;}
-  copy.inert=true;motion={target:index,start:time,opacity:Number(copy.style.opacity||1)};page.dataset.contactTransition='running';run();
+  if(index!==selected||active!==index){selected=index;showInfo(index);}
+  run();
  }
- function stop(){if(frame)cancelAnimationFrame(frame);frame=0;lastTick=0;motion=null;hover=-1;pulseStarts.fill(-10);generation++;status.textContent='';copy.inert=false;copy.style.opacity='1';page.dataset.contactTransition='idle';canvas.dataset.ledRunning='false';}
- function activate(){
+ function stop(){if(frame)cancelAnimationFrame(frame);frame=0;lastTick=0;cancelTyping();hover=-1;pulseStarts.fill(-10);generation++;status.textContent='';copy.inert=false;copy.style.opacity='1';page.dataset.contactTransition='idle';page.dataset.contactTyping='false';canvas.dataset.ledRunning='false';}
+ function activate(event){
+  // The first pageshow follows deferred startup; preserve the typing already in flight.
+  if(event?.type==='pageshow'&&!event.persisted&&available()){measure();run();return;}
   const entering=!live&&page.classList.contains('live');live=page.classList.contains('live');
-  if(!available()){stop();return;}stop();if(entering){selected=0;window.scrollTo({top:0,left:0,behavior:'instant'});}labels();active=-1;showInfo(selected);measure();run();
+  if(!available()){stop();return;}stop();if(entering){selected=0;for(const track of tracks){track.current=[];track.visible.textContent='';}window.scrollTo({top:0,left:0,behavior:'instant'});}
+  labels();active=-1;showInfo(selected,{animate:entering||event?.type==='portfolio:language'});measure();run();
  }
  page.addEventListener('keydown',event=>{
   if(!available()||event.defaultPrevented||event.isComposing||event.repeat||event.ctrlKey||event.metaKey||event.altKey||event.shiftKey||event.target.closest('input,textarea,[contenteditable]'))return;
   if(['ArrowDown','ArrowRight','ArrowUp','ArrowLeft'].includes(event.key)){event.preventDefault();const index=(selected+(['ArrowDown','ArrowRight'].includes(event.key)?1:-1)+channels.length)%channels.length;controls[index].focus({preventScroll:true});change(index);}
  });
  button.addEventListener('click',async()=>{
-  const c=channels[active];if(button.disabled||!available()||motion||!c?.value||!safeHref(c))return;const token=++generation;button.disabled=true;status.textContent='';
+  const c=channels[active];if(button.disabled||!available()||typing||!c?.value||!safeHref(c))return;const token=++generation;button.disabled=true;status.textContent='';
   try{if(!navigator.clipboard?.writeText)throw Error('Clipboard unavailable');await navigator.clipboard.writeText(c.value);if(token===generation&&available())status.textContent=english()?'Copied':'已复制';}
-  catch(_){if(token!==generation||!available())return;const selection=getSelection(),range=document.createRange();range.selectNodeContents(value);selection?.removeAllRanges();selection?.addRange(range);status.textContent=english()?'Select the address to copy.':'请选中地址复制。';}
+  catch(_){if(token!==generation||!available())return;const selection=getSelection(),range=document.createRange();range.selectNodeContents(valueTrack.visible);selection?.removeAllRanges();selection?.addRange(range);status.textContent=english()?'Select the address to copy.':'请选中地址复制。';}
   finally{if(token===generation)button.disabled=false;}
  });
  addEventListener('resize',()=>{measure();run();},{passive:true});addEventListener('portfolio:navigation',activate);addEventListener('portfolio:language',activate);

@@ -47,3 +47,7 @@ body.expanded.contact-mode{overflow:hidden}
  #contact-page .contact-open:hover svg{transform:none}
 }
 @media(forced-colors:active){#contact-page,#contact-page .contact-value,#contact-page .contact-actions :is(a,button),#contact-page .contact-feedback{color:CanvasText}}
+/* Reserve complete lines so erasing/typing does not move the sticker layout. */
+#contact-page .contact-copy h1,#contact-page .contact-value{display:grid;grid-template-columns:minmax(0,1fr)}
+#contact-page .contact-type-reserve,#contact-page .contact-type-text{grid-area:1/1;min-width:0;max-width:100%}
+#contact-page .contact-type-reserve{visibility:hidden;pointer-events:none;user-select:none}
