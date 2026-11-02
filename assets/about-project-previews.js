@@ -2,9 +2,9 @@
 (() => {
   'use strict';
   const resume = document.getElementById('resume');
-  const list = resume?.querySelector('.about-project-list');
-  if (!list) return;
-  const items = [...list.querySelectorAll('[data-about-project]')];
+  const lists = [...resume?.querySelectorAll('.about-project-list') || []];
+  if (!lists.length) return;
+  const items = lists.flatMap(list => [...list.querySelectorAll('[data-about-project]')]);
   let active = null, closeTimer = 0;
   function load(item, priority = 'low') {
     const image = item.querySelector('[data-about-preview-src]');
@@ -46,11 +46,14 @@
   // set only once the actual resume list enters the viewport.
   if (typeof IntersectionObserver === 'function') {
     const observer = new IntersectionObserver(entries => {
-      if (!entries.some(entry => entry.isIntersecting) ||
-          !resume.classList.contains('live') || !list.getClientRects().length) return;
-      items.forEach(item => load(item)); observer.disconnect();
+      if (!resume.classList.contains('live')) return;
+      entries.forEach(entry => {
+        if (!entry.isIntersecting || !entry.target.getClientRects().length) return;
+        entry.target.querySelectorAll('[data-about-project]').forEach(item => load(item));
+        observer.unobserve(entry.target);
+      });
     });
-    observer.observe(list);
+    lists.forEach(list => observer.observe(list));
   }
   new MutationObserver(() => {
     if (!resume.classList.contains('live')) close();

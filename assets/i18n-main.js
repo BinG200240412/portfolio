@@ -52,6 +52,7 @@ window.PORTFOLIO_TRANSLATIONS = {
   "项目负责人，心率交互装置。": "Project lead for a heart-rate-driven installation.",
   "千里江山": "A Thousand Li of Rivers and Mountains",
   "设计工具 · Skills": "Design tools · Skills",
+  "设计工具": "Design tools",
   "作品归档": "Archive",
   "页面颜色": "Page appearance",
   "页面颜色与语言": "Appearance and language",
