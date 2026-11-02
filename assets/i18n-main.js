@@ -48,6 +48,8 @@ window.PORTFOLIO_TRANSLATIONS = {
   "良渚 · AI 3D": "Liangzhu · AI 3D",
   "良渚 · XR": "Liangzhu · XR",
   "漂移之屋": "The Drift",
+  "心·境·声": "Heart · Space · Sound",
+  "项目负责人，心率交互装置。": "Project lead for a heart-rate-driven installation.",
   "千里江山": "A Thousand Li of Rivers and Mountains",
   "设计工具 · Skills": "Design tools · Skills",
   "作品归档": "Archive",
