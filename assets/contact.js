@@ -132,7 +132,9 @@ window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,
       // Paper is above the rear flap but below all three front folds.
       if(paperVisible&&x>=12&&x<=28&&y>=paperTop&&y<=paperTop+13&&y<31){
         const writing=y===paperTop+4&&x>=15&&x<=25||y===paperTop+7&&x>=15&&x<=22;
-        put(writing?1:0,1,1);
+        const edge=x===12||x===28||y===paperTop||y===paperTop+13;
+        // Paper has its own ivory and ink roles, independent of theme neutrals.
+        put(writing||edge?4:3,1,1);
       }
       const inBody=x>=4&&x<=36&&y>=10&&y<=31;
       const frontCoverage=inBody&&(inside(x+.001,y+.001,left)||inside(x-.001,y+.001,right)||inside(x,y-.001,front));
@@ -373,7 +375,7 @@ window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,
  const smooth=v=>{v=clamp(v);return v*v*(3-2*v);};
  const controls=[],bounds={};
  let width=0,height=0,ratio=1,pitch=3,columns=1,rows=1,placements=[];
- let boardInk=new Uint8Array(1),boardLight=new Float32Array(1),sprites=[],paletteTheme='';
+ let boardInk=new Uint8Array(1),boardLight=new Float32Array(1),sprites=[],paperSprites=[],paletteTheme='';
  let frame=0,lastTick=0,time=0,live=false,selected=0,active=-1,hover=-1,generation=0,typing=null,textTimer=0,textEpoch=0,frames=0;
  const pulseStarts=new Float64Array(channels.length);pulseStarts.fill(-10);
  const english=()=>window.PortfolioI18n?.language==='en';
@@ -418,6 +420,10 @@ window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,
    const neutral=c.id==='xiaohongshu'?(theme==='light'?'#b49c6d':'#e7d4aa'):(theme==='light'?'#30332f':'#e0dfd9');
    [neutral,...colourways[c.id][variant]].forEach(colour=>sprites.push(makeSprite(colour)));
   });
+  paperSprites=[];
+  for(const colour of theme==='light'?['#fff9eb','#537083']:['#f1e4c8','#6e8490']){
+   paperSprites.push(sprites.length);sprites.push(makeSprite(colour));
+  }
  }
  function labels(){
   hits.setAttribute('aria-label',english()?'Contact channels':'联系方式');
@@ -549,7 +555,7 @@ window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,
      if(x<0||y<0||x>=size||y>=size)continue;const at=y*size+x;if(!mask[at])continue;
      const shade=roles[at]===0?.83:roles[at]===2?.94:1;
      const light=mask[at]*shade*(n===selected||hover===n?1:.82),cell=r*columns+c;
-     if(light>=boardLight[cell]){boardLight[cell]=light;boardInk[cell]=1+n*3+roles[at];}
+     if(light>=boardLight[cell]){boardLight[cell]=light;boardInk[cell]=id==='email'&&roles[at]>=3?paperSprites[roles[at]-3]:1+n*3+roles[at];}
     }
    }
    controls[n].style.transform=`translate(${dx.toFixed(2)}px,${dy.toFixed(2)}px)`;
