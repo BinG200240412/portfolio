@@ -1,4 +1,4 @@
-/* All six contact stickers share a screen, with a clear centre for the details. */
+/* Contact stickers share a screen, with a clear centre for the details. */
 body.expanded.contact-mode{overflow:hidden}
 #contact-page{display:none;position:relative;z-index:1;width:100%;margin:0;padding:0;color:var(--ink,#efeee9)}
 #contact-page.live{display:block}

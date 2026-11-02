@@ -448,11 +448,11 @@ window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,
  function cancelTyping(){clearTimeout(textTimer);textTimer=0;textEpoch++;typing=null;copy.setAttribute('aria-busy','false');}
  function finishTyping(epoch){
   if(epoch!==textEpoch||!available())return;clearTimeout(textTimer);textTimer=0;typing=null;
-  const c=channels[active],href=safeHref(c),filled=!!c.value&&!!href;
+  const c=channels[active],href=safeHref(c),hasValue=!!c.value?.trim(),filled=hasValue&&!!href;
   if(filled){value.href=open.href=href;value.removeAttribute('aria-disabled');}else{value.removeAttribute('href');open.removeAttribute('href');value.setAttribute('aria-disabled','true');}
   const external=filled&&href.startsWith('https:');
   for(const el of [open,value]){if(external){el.target='_blank';el.rel='noopener noreferrer';}else{el.removeAttribute('target');el.removeAttribute('rel');}}
-  open.hidden=button.hidden=!filled;button.disabled=!filled;copy.setAttribute('aria-busy','false');page.dataset.contactTyping='false';page.dataset.contactTransition='idle';
+  open.hidden=!filled;button.hidden=button.disabled=!hasValue;copy.setAttribute('aria-busy','false');page.dataset.contactTyping='false';page.dataset.contactTransition='idle';
  }
  function pumpTyping(epoch){
   textTimer=0;if(epoch!==textEpoch||!available()||!typing)return;const now=performance.now();let done=true,nextDue=Infinity;
@@ -469,13 +469,13 @@ window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,
  }
  function showInfo(index,{animate=true}={}){
   if(index===active)return;cancelTyping();active=index;generation++;
-  const c=channels[index],href=safeHref(c),filled=!!c.value&&!!href,epoch=textEpoch;
+  const c=channels[index],epoch=textEpoch;
   page.dataset.contactActive=c.id;heading.setAttribute('aria-label',label(c));value.setAttribute('aria-label',c.value||'');
   tracks.forEach((track,j)=>channels.forEach((item,i)=>track.ghosts[i].textContent=j===0?label(item):item.value||''));
   titleTrack.target=Array.from(label(c));valueTrack.target=Array.from(c.value||'');
   value.removeAttribute('href');open.removeAttribute('href');value.setAttribute('aria-disabled','true');open.hidden=button.hidden=true;button.disabled=true;status.textContent='';
-  open.querySelector('span').textContent=english()?(c.id==='email'?'Send email':c.id==='phone'?'Call':'Open profile'):(c.id==='email'?'发邮件':c.id==='phone'?'拨打电话':'打开主页');
-  button.querySelector('span').textContent=english()?(c.id==='email'?'Copy email':c.id==='phone'?'Copy number':'Copy handle'):(c.id==='email'?'复制邮箱':c.id==='phone'?'复制号码':'复制账号');
+  open.querySelector('span').textContent=english()?(c.id==='email'?'Send email':'Open profile'):(c.id==='email'?'发邮件':'打开主页');
+  button.querySelector('span').textContent=english()?(c.id==='email'?'Copy email':'Copy handle'):(c.id==='email'?'复制邮箱':'复制账号');
   controls.forEach((control,i)=>{control.classList.toggle('is-current',i===index);control.setAttribute('aria-pressed',String(i===index));});
   if(reduced.matches||!animate){for(const track of tracks){track.current=track.target.slice();track.visible.textContent=track.current.join('');}finishTyping(epoch);return;}
   for(const track of tracks){track.current=Array.from(track.visible.textContent);track.due=performance.now()+15;}
@@ -490,6 +490,8 @@ window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,
   return out;
  }
  const intersects=(a,b,pad=0)=>a.left<b.right+pad&&a.right>b.left-pad&&a.top<b.bottom+pad&&a.bottom>b.top-pad;
+ const layoutOrder=['email','phone','xiaohongshu','x','instagram','douyin'];
+ const idleStarts={email:4.5,phone:1,xiaohongshu:7.5,x:10.5,instagram:13.5,douyin:16.5};
  function measure(){
   if(!available())return;
   const rect=canvas.getBoundingClientRect();width=rect.width;height=rect.height;ratio=Math.min(devicePixelRatio||1,1.5);
@@ -506,10 +508,16 @@ window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,
   if(mobile&&!landscape&&height<740){
    specs[0]=[.29,.20,.49,-.12];specs[1]=[.84,.24,.32,.10];specs[2]=[.80,.74,.29,-.08];specs[3]=[.59,.275,.10,.10];specs[4]=[.20,.77,.29,-.13];specs[5]=[.52,.91,.19,.10];
   }
+  // Keep each object's size and motion after removing a contact channel.
+  const specsById=Object.fromEntries(layoutOrder.map((id,i)=>[id,specs[i]]));
+  specsById.xiaohongshu=[...specsById.xiaohongshu];
+  specsById.xiaohongshu[0]=specsById.phone[0];specsById.xiaohongshu[1]=specsById.phone[1];
+  if(!landscape){specsById.douyin=[...specsById.douyin];specsById.douyin[0]=.80;specsById.douyin[1]=.85;}
   const multiplier=mobile&&!landscape?compact:1,artUnit=landscape?Math.min(width,height):unit;
   const text=copy.getBoundingClientRect(),clear={left:text.left-rect.left-14,right:text.right-rect.left+14,top:text.top-rect.top-14,bottom:text.bottom-rect.top+14};
-  placements=specs.map((s,i)=>{
-   const p={id:channels[i].id,x:s[0]*width,y:s[1]*height,scale:s[2]*artUnit*multiplier/size,angle:s[3],phase:i*1.71};p.cos=Math.cos(p.angle);p.sin=Math.sin(p.angle);
+  placements=channels.map((channel,i)=>{
+   const s=specsById[channel.id];
+   const p={id:channel.id,x:s[0]*width,y:s[1]*height,scale:s[2]*artUnit*multiplier/size,angle:s[3],phase:layoutOrder.indexOf(channel.id)*1.71};p.cos=Math.cos(p.angle);p.sin=Math.sin(p.angle);
    // Move a whole sticker away from the actual copy. Never crop a rectangle out of it.
    for(let pass=0;pass<5;pass++){
     let b=boxFor(p);
@@ -538,7 +546,7 @@ window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,
    const dx=still?0:Math.sin(time*.58+phase)*2.8,dy=still?0:Math.cos(time*.46+phase)*3.2;
    const angle=p.angle+(still?0:Math.sin(time*.43+phase)*.013);
    const cos=Math.cos(angle),sin=Math.sin(angle),age=time-pulseStarts[n];
-   const autoAge=time-[4.5,1.0,7.5,10.5,13.5,16.5][n];
+   const autoAge=time-idleStarts[id];
    const duration=id==='email'||id==='xiaohongshu'?1.8:1.4;
    const hoverAge=hover===n&&age>=0?age%(duration+1):age;
    const actionAge=hoverAge>=0&&hoverAge<duration?hoverAge:(autoAge>=0?autoAge%21:-1);
@@ -595,7 +603,7 @@ window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,
   if(['ArrowDown','ArrowRight','ArrowUp','ArrowLeft'].includes(event.key)){event.preventDefault();const index=(selected+(['ArrowDown','ArrowRight'].includes(event.key)?1:-1)+channels.length)%channels.length;controls[index].focus({preventScroll:true});change(index);}
  });
  button.addEventListener('click',async()=>{
-  const c=channels[active];if(button.disabled||!available()||typing||!c?.value||!safeHref(c))return;const token=++generation;button.disabled=true;status.textContent='';
+  const c=channels[active];if(button.disabled||!available()||typing||!c?.value)return;const token=++generation;button.disabled=true;status.textContent='';
   try{if(!navigator.clipboard?.writeText)throw Error('Clipboard unavailable');await navigator.clipboard.writeText(c.value);if(token===generation&&available())status.textContent=english()?'Copied':'已复制';}
   catch(_){if(token!==generation||!available())return;const selection=getSelection(),range=document.createRange();range.selectNodeContents(valueTrack.visible);selection?.removeAllRanges();selection?.addRange(range);status.textContent=english()?'Select the address to copy.':'请选中地址复制。';}
   finally{if(token===generation)button.disabled=false;}
