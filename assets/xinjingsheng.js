@@ -64,8 +64,10 @@
   const videos=[...document.querySelectorAll('video[data-xjs-video]')];
   if(!videos.length)return;
   const reduced=matchMedia('(prefers-reduced-motion: reduce)'),visible=new WeakMap();
-  let disposed=false,suspended=false,detailOpen=false,host=null;
+  let disposed=false,suspended=false,detailOpen=false,host=null,back=null,backDescription=null;
   try{host=window.frameElement?.closest('#section')||null;}catch(_){}
+  if(host)back=host.ownerDocument.getElementById('secBack');
+  document.body.classList.toggle('xjs-embedded',!!back);
   const available=()=>!disposed&&!suspended&&!document.hidden&&(!host||host.classList.contains('on'));
   const eligible=video=>available()&&!detailOpen&&!reduced.matches&&visible.get(video);
   function sync(){
@@ -79,7 +81,28 @@
     entries.forEach(entry=>visible.set(entry.target,entry.isIntersecting&&entry.intersectionRatio>=.15));sync();
   },{threshold:[0,.15]}):null;
   videos.forEach(video=>{visible.set(video,false);observer?.observe(video);});
-  const detail=event=>{detailOpen=!!event.detail?.open;sync();};
+  const returnToPage=event=>{
+    const dialog=document.getElementById('portfolio-video-detail');
+    if(!dialog?.open)return;
+    event.preventDefault();event.stopImmediatePropagation();dialog.close();
+  };
+  function describeBack(open){
+    if(!back)return;
+    if(open){
+      backDescription??=['aria-label','title'].map(name=>back.getAttribute(name));
+      const label=document.documentElement.lang.startsWith('en')?'Back to page':'返回作品页面';
+      back.setAttribute('aria-label',label);back.title=label;
+    }else if(backDescription){
+      ['aria-label','title'].forEach((name,i)=>backDescription[i]===null?back.removeAttribute(name):back.setAttribute(name,backDescription[i]));backDescription=null;
+    }
+  }
+  const detail=event=>{
+    detailOpen=!!event.detail?.open;
+    describeBack(detailOpen);
+    back?.removeEventListener('click',returnToPage,true);
+    if(detailOpen)back?.addEventListener('click',returnToPage,true);
+    sync();
+  };
   const hide=()=>{suspended=true;sync();},show=()=>{suspended=false;sync();};
   document.addEventListener('visibilitychange',sync);
   document.addEventListener('portfolio:video-detail',detail);
@@ -87,6 +110,8 @@
   if(host)window.PortfolioLifecycle?.observeParent(host,sync,{attributes:true,attributeFilter:['class']});
   window.PortfolioLifecycle?.onDispose(()=>{
     disposed=true;observer?.disconnect();
+    back?.removeEventListener('click',returnToPage,true);
+    describeBack(false);
     document.removeEventListener('visibilitychange',sync);document.removeEventListener('portfolio:video-detail',detail);
     removeEventListener('pagehide',hide);removeEventListener('pageshow',show);reduced.removeEventListener('change',sync);
     document.querySelectorAll('video').forEach(video=>{video.pause();video.removeAttribute('src');video.load();});
