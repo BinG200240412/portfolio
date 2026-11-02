@@ -93,6 +93,70 @@ const rest={mask:new Float32Array(1681),roles:new Uint8Array(1681)};bookRest(res
 window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,top:3,right:36,bottom:36}});
 })();
 
+/* One folded envelope: rear flap, letter, side folds and front pocket.
+ * Unlit pocket interiors still hide the letter; the open flap stays behind it. */
+(() => {
+  'use strict';
+  const size=41,count=size*size;
+  const smooth=v=>{v=Math.max(0,Math.min(1,v));return v*v*(3-2*v);};
+  const line=(x,y,ax,ay,bx,by,width=1.65)=>{
+    const dx=bx-ax,dy=by-ay,t=Math.max(0,Math.min(1,((x-ax)*dx+(y-ay)*dy)/(dx*dx+dy*dy||1)));
+    return Math.hypot(x-ax-t*dx,y-ay-t*dy)<=width/2;
+  };
+  const inside=(x,y,points)=>{
+    let hit=false;
+    for(let i=0,j=points.length-1;i<points.length;j=i++){
+      const a=points[i],b=points[j];
+      if((a[1]>y)!==(b[1]>y)&&x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0])hit=!hit;
+    }
+    return hit;
+  };
+  const left=[[4,10],[20,22],[4,31]],right=[[36,10],[20,22],[36,31]],front=[[4,31],[20,18],[36,31]];
+  function paint(frame,t){
+    frame.mask.fill(0);frame.roles.fill(0);frame.layers=new Uint8Array(count);
+    const opening=smooth(t/.20),insertion=smooth((t-.30)/.38),closing=smooth((t-.72)/.20);
+    const tip=t<.20?22-20*opening:2+20*closing;
+    const paperTop=Math.round(2+22*insertion),paperVisible=t>=.23&&t<.72;
+    const flap=[[5,11],[20,tip],[35,11]],folded=tip>=11;
+    for(let y=0;y<size;y++)for(let x=0;x<size;x++){
+      const at=y*size+x;
+      let role=-1,alpha=1,layer=0;
+      const put=(r,a,l)=>{role=r;alpha=a;layer=l;};
+      const clear=()=>{role=-1;alpha=1;layer=0;};
+      const flapEdge=line(x,y,5,11,20,tip)||line(x,y,20,tip,35,11)||line(x,y,5,11,35,11,1.3);
+      // The complete open sealing flap includes its face and its hinge.
+      if(!folded){
+        if(inside(x,y,flap))put(1,.45,3);
+        if(flapEdge)put(1,1,3);
+      }
+      // Paper is above the rear flap but below all three front folds.
+      if(paperVisible&&x>=12&&x<=28&&y>=paperTop&&y<=paperTop+13&&y<31){
+        const writing=y===paperTop+4&&x>=15&&x<=25||y===paperTop+7&&x>=15&&x<=22;
+        put(writing?1:0,1,1);
+      }
+      const inBody=x>=4&&x<=36&&y>=10&&y<=31;
+      const frontCoverage=inBody&&(inside(x+.001,y+.001,left)||inside(x-.001,y+.001,right)||inside(x,y-.001,front));
+      if(frontCoverage)clear();
+      const outline=line(x,y,4,11,4,30)||line(x,y,5,31,35,31)||line(x,y,36,11,36,30)||Math.hypot(x-5,y-11)<1||Math.hypot(x-35,y-11)<1;
+      // The lower triangle is a complete connected fold, even with the lid open.
+      const bottomFold=line(x,y,5,30,20,18,1.4)||line(x,y,20,18,35,30,1.4);
+      const leftJoin=line(x,y,5,11,20,22,1.4)&&x<17;
+      const rightJoin=line(x,y,20,22,35,11,1.4)&&x>23;
+      if(inBody&&(outline||bottomFold||leftJoin||rightJoin))put(outline?0:1,1,2);
+      // Closing flap becomes the front layer only after the paper is inside.
+      if(folded){
+        if(inside(x,y,flap))clear();
+        if(flapEdge&&y>=10)put(1,1,5);
+      }
+      if(t>=.93&&Math.hypot(x-20,y-23)<=1.1)put(2,1,4);
+      if(role>=0){frame.mask[at]=alpha;frame.roles[at]=role;frame.layers[at]=layer;}
+    }
+    return frame;
+  }
+  const rest={mask:new Float32Array(count),roles:new Uint8Array(count)};paint(rest,1);
+  window.PortfolioContactEnvelope=Object.freeze({rest,paint});
+})();
+
 /* Native 41 × 41 LED masks. Every "1" is one equally sized circular bead. */
 (() => {
   'use strict';
@@ -124,10 +188,7 @@ window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,
   });
   const phoneOutline = [[9,5],[6,6],[4,10],[5,16],[8,23],[14,29],[21,34],[28,36],[33,35],[36,31],[35,28],[28,24],[25,27],[22,26],[17,22],[13,17],[12,14],[15,11],[12,5]];
   const glyphs = [
-    make('email', (x, y) =>
-      roundedRect(x, y, 4, 10, 36, 31, 2) ||
-      line(x, y, 5, 11, 20, 22) || line(x, y, 20, 22, 35, 11) ||
-      line(x, y, 5, 30, 15, 22, 1.4) || line(x, y, 25, 22, 35, 30, 1.4) || (x === 20 && y === 23)),
+    make('email', (x, y) => !!window.PortfolioContactEnvelope.rest.mask[y * size + x]),
     make('phone', (x, y) => polygon(x, y, phoneOutline)),
     // A filled cover, binding and page block.
     make('xiaohongshu', (x, y) => !!window.PortfolioContactBook.rest.mask[y * size + x]),
@@ -182,7 +243,7 @@ window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,
     return a >= start && a <= end;
   };
   function tone(id, x, y) {
-    if (id === 'email') return x === 20 && y === 23 ? 2 : (y >= 12 && y <= 22 && x > 6 && x < 35 ? 1 : 0);
+    if (id === 'email') return window.PortfolioContactEnvelope.rest.roles[y * size + x];
     if (id === 'phone') return y < 12 || x > 24 && y > 26 ? 2 : (x > 12 && y < 28 ? 1 : 0);
     if (id === 'xiaohongshu') return window.PortfolioContactBook.rest.roles[y * size + x];
     if (id === 'x') return Math.abs(x + y - 40) < 3 ? 2 : 1;
@@ -214,25 +275,7 @@ window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,
   }
   const actions = {
     email(frame, t) {
-      // Empty lid opens; a letter is placed above the mouth, inserted, then sealed.
-      // The entire front pocket occludes paper, including its unlit interior.
-      if(t>=.90){const sealed=base('email');frame.mask.set(sealed.mask);frame.roles.set(sealed.roles);frame.layers=new Uint8Array(count);for(let i=0;i<count;i++)if(frame.mask[i])frame.layers[i]=i===23*size+20?4:2;return;}
-      const opening=smooth(t/.20),insertion=smooth((t-.32)/.36),closing=smooth((t-.70)/.19);
-      const tip=Math.round(t<.20?22-19*opening:3+19*closing);
-      const paperTop=Math.round(2+11*insertion),paperAlpha=smooth((t-.20)/.10);
-      frame.layers=new Uint8Array(count);
-      for(let y=0;y<size;y++)for(let x=0;x<size;x++){
-        const at=y*size+x,frontCoverage=x>=4&&x<=36&&y>=10&&y<=31;
-        const frontInk=rect(x,y,4,10,36,31,2)||line(x,y,5,30,15,22,1.4)||line(x,y,25,22,35,30,1.4);
-        const lidInk=line(x,y,5,11,20,tip)||line(x,y,20,tip,35,11);
-        const paperCoverage=x>=13&&x<=27&&y>=paperTop&&y<=paperTop+12;
-        let role=-1,alpha=1,layer=0;
-        if(frontInk){role=0;layer=2;}
-        else if(frontCoverage){if(lidInk){role=1;layer=3;}else if(t>=.90&&x===20&&y===23){role=2;layer=4;}}
-        else if(paperCoverage&&paperAlpha>0){role=y===paperTop+3&&x>=17&&x<=23?1:0;alpha=paperAlpha;layer=1;}
-        else if(lidInk){role=1;layer=3;}
-        if(role>=0){frame.mask[at]=alpha;frame.roles[at]=role;frame.layers[at]=layer;}
-      }
+      window.PortfolioContactEnvelope.paint(frame,t);
     },
     phone(frame, t) {
       // The receiver is immutable. Only two separate sound arcs travel outwards.
@@ -336,7 +379,7 @@ window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,
  const english=()=>window.PortfolioI18n?.language==='en';
  const label=c=>c.label[english()?'en':'zh'];
  function tone(id,x,y){
-  if(id==='email')return x===20&&y===23?2:(y>=12&&y<=22&&x>6&&x<35?1:0);
+  if(id==='email')return window.PortfolioContactEnvelope.rest.roles[y*size+x];
   if(id==='phone')return y<12||x>24&&y>26?2:(x>12&&y<28?1:0);
   if(id==='xiaohongshu')return window.PortfolioContactBook.rest.roles[y*size+x];
   if(id==='x')return Math.abs(x+y-40)<3?2:1;
@@ -351,7 +394,7 @@ window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,
  const colourways={
   email:[['#8ea8ba','#c78e80'],['#426e89','#a75546']],
   phone:[['#9caf9a','#c4ac82'],['#4d7059','#8b6c3d']],
-  xiaohongshu:[['#c1887d','#b897a4'],['#a04f43','#885b6d']],
+  xiaohongshu:[['#d27061','#70424b'],['#bd4b41','#513544']],
   x:[['#94a8b8','#ada1be'],['#4b6a80','#77628c']],
   instagram:[['#c193ac','#c3ab81'],['#9c607e','#8b6e3c']],
   douyin:[['#8fada9','#c08f91'],['#3e7974','#9e5e64']],
@@ -371,7 +414,10 @@ window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,
  function refreshPalettes(){
   const theme=document.documentElement.dataset.theme==='light'?'light':'dark';if(theme===paletteTheme)return;
   paletteTheme=theme;const variant=theme==='light'?1:0;sprites=[null];
-  channels.forEach(c=>[theme==='light'?'#30332f':'#e0dfd9',...colourways[c.id][variant]].forEach(colour=>sprites.push(makeSprite(colour))));
+  channels.forEach(c=>{
+   const neutral=c.id==='xiaohongshu'?(theme==='light'?'#b49c6d':'#e7d4aa'):(theme==='light'?'#30332f':'#e0dfd9');
+   [neutral,...colourways[c.id][variant]].forEach(colour=>sprites.push(makeSprite(colour)));
+  });
  }
  function labels(){
   hits.setAttribute('aria-label',english()?'Contact channels':'联系方式');
