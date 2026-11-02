@@ -7,6 +7,7 @@ from a full checkout when this one is sparse. No personal folders are scanned.
 
     python3 scripts/build-archive-documents.py
     python3 scripts/build-archive-documents.py --source-root /path/to/full/checkout
+    python3 scripts/build-archive-documents.py --only xinjingsheng tea-boards
 
 Two independent processes are used rather than threads: each process owns its
 PyMuPDF document and rendering state. --workers 1 runs serially.
@@ -66,11 +67,18 @@ DOCUMENTS = (
         "board": True,
     },
     {
-        "id": "drift",
-        "title": {"zh": "漂移之屋 · 设计展板", "en": "Drifting House · Design Board"},
+        "id": "xinjingsheng",
+        "title": {"zh": "心·境·声", "en": "Heart · Space · Sound"},
         "group": "project",
-        "pdf": "assets/works/drift/drift.pdf",
+        "pdf": "assets/works/xinjingsheng/xinjingsheng.pdf",
+    },
+    {
+        "id": "tea-boards",
+        "title": {"zh": "茶弦记 · 设计展板", "en": "Tea String Chronicles · Design Boards"},
+        "group": "project",
+        "pdf": "assets/works/tea/tea-boards.pdf",
         "board": True,
+        "previewWidth": 1920,
     },
 )
 
@@ -124,7 +132,7 @@ def render_document(job: tuple[dict, str, str]) -> tuple[dict, int]:
         if document.needs_pass or len(document) == 0:
             raise ValueError(f"Cannot render approved PDF: {spec['id']}")
         for index, page in enumerate(document):
-            image = render_image(page, BOARD_WIDTH if spec.get("board") else PAGE_WIDTH)
+            image = render_image(page, spec.get('previewWidth', BOARD_WIDTH if spec.get("board") else PAGE_WIDTH))
             relative = page_dir / f"{index + 1:03d}.webp"
             target = output_root / relative
             write_webp(image, target)
@@ -175,10 +183,20 @@ def main() -> None:
         help="Optional full checkout containing the same approved PDF paths.",
     )
     parser.add_argument("--workers", type=int, choices=(1, 2), default=2)
+    parser.add_argument('--only', nargs='+', choices=[spec['id'] for spec in DOCUMENTS],
+                        help='Update only these documents; preserve other existing catalog entries.')
     args = parser.parse_args()
 
+    destination = REPO_ROOT / ARCHIVE_DIR / 'archive-catalog.json'
+    existing = {}
+    if args.only:
+        if not destination.is_file():
+            parser.error('Incremental rendering requires an existing archive catalog.')
+        existing = {entry['id']: entry for entry in json.loads(destination.read_text())['documents']}
     jobs = []
     for spec in DOCUMENTS:
+        if args.only and spec['id'] not in args.only:
+            continue
         source = REPO_ROOT / spec["pdf"]
         borrowed = False
         if not source.is_file() and args.source_root is not None:
@@ -196,15 +214,19 @@ def main() -> None:
         with ProcessPoolExecutor(max_workers=args.workers) as executor:
             results = list(executor.map(render_document, jobs))
 
-    catalog = {"documents": [entry for entry, _ in results]}
-    destination = REPO_ROOT / ARCHIVE_DIR / "archive-catalog.json"
+    existing.update({entry['id']: entry for entry, _ in results})
+    missing = [spec['id'] for spec in DOCUMENTS if spec['id'] not in existing]
+    if missing:
+        parser.error('Missing catalog entries; include these in --only: '+', '.join(missing))
+    # Canonical IDs also remove retired entries such as Drift from future builds.
+    catalog = {'documents': [existing[spec['id']] for spec in DOCUMENTS]}
     destination.parent.mkdir(parents=True, exist_ok=True)
     temporary = destination.with_suffix(".json.tmp")
     temporary.write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     temporary.replace(destination)
     print(
-        f"Wrote {len(results)} documents / "
-        f"{sum(len(entry['pages']) for entry, _ in results)} pages / "
+        f"Updated {len(results)} documents; wrote {len(catalog['documents'])} documents / "
+        f"{sum(len(entry['pages']) for entry in catalog['documents'])} pages / "
         f"{sum(size for _, size in results):,} preview bytes to "
         f"{destination.relative_to(REPO_ROOT)}",
         flush=True,

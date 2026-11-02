@@ -1,0 +1,17 @@
+{
+  "source": "蔡正阳作品集.pdf",
+  "sourceSHA256": "f1307ce0757e2cd939b73444ed46896146c86dda3ef1af0959d22f6715719cec",
+  "sourcePages": [
+    1,
+    8
+  ],
+  "excludedPage": 9,
+  "pages": 8,
+  "pageSizePoints": [
+    1920,
+    1080
+  ],
+  "renderAndTextMatch": true,
+  "sha256": "62275c2058c5914e7a3834a853398801b056aca10d7270929f3eba6985c9b250",
+  "bytes": 18099398
+}

@@ -128,6 +128,7 @@
   }
   function init(){
     if(initialised||destroyed)return;initialised=true;catalog=readCatalog();
+    document.body.classList.toggle('archive-embedded',window.top!==window.self);
     document.querySelectorAll('[data-archive-open]').forEach(trigger=>{trigger.setAttribute('aria-haspopup','dialog');trigger.setAttribute('aria-controls',ID);});
     document.addEventListener('click',activate);addEventListener('portfolio:language',language);addEventListener('pagehide',pagehide);addEventListener('pageshow',pageshow);
     removeDispose=window.PortfolioLifecycle?.onDispose(dispose)||(()=>{});

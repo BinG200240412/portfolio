@@ -706,22 +706,82 @@
       "coverHeight": 720
     },
     {
-      "id": "drift",
+      "id": "xinjingsheng",
       "title": {
-        "zh": "漂移之屋 · 设计展板",
-        "en": "Drifting House · Design Board"
+        "zh": "心·境·声",
+        "en": "Heart · Space · Sound"
       },
       "group": "project",
-      "pdf": "../assets/works/drift/drift.pdf?v=bcc6657db1",
-      "sizeBytes": 2968427,
+      "pdf": "../assets/works/xinjingsheng/xinjingsheng.pdf",
+      "sizeBytes": 18099398,
       "pages": [
         {
-          "src": "../assets/works/more/pages/drift/001.webp?v=656f664bb6",
-          "width": 1280,
-          "height": 2900
+          "src": "../assets/works/more/pages/xinjingsheng/001.webp",
+          "width": 1440,
+          "height": 810
+        },
+        {
+          "src": "../assets/works/more/pages/xinjingsheng/002.webp",
+          "width": 1440,
+          "height": 810
+        },
+        {
+          "src": "../assets/works/more/pages/xinjingsheng/003.webp",
+          "width": 1440,
+          "height": 810
+        },
+        {
+          "src": "../assets/works/more/pages/xinjingsheng/004.webp",
+          "width": 1440,
+          "height": 810
+        },
+        {
+          "src": "../assets/works/more/pages/xinjingsheng/005.webp",
+          "width": 1440,
+          "height": 810
+        },
+        {
+          "src": "../assets/works/more/pages/xinjingsheng/006.webp",
+          "width": 1440,
+          "height": 810
+        },
+        {
+          "src": "../assets/works/more/pages/xinjingsheng/007.webp",
+          "width": 1440,
+          "height": 810
+        },
+        {
+          "src": "../assets/works/more/pages/xinjingsheng/008.webp",
+          "width": 1440,
+          "height": 810
         }
       ],
-      "cover": "../assets/works/more/covers/drift.webp?v=f5b312ce15",
+      "cover": "../assets/works/more/covers/xinjingsheng.webp",
+      "coverWidth": 960,
+      "coverHeight": 540
+    },
+    {
+      "id": "tea-boards",
+      "title": {
+        "zh": "茶弦记 · 设计展板",
+        "en": "Tea String Chronicles · Design Boards"
+      },
+      "group": "project",
+      "pdf": "../assets/works/tea/tea-boards.pdf",
+      "sizeBytes": 20001417,
+      "pages": [
+        {
+          "src": "../assets/works/more/pages/tea-boards/001.webp",
+          "width": 1920,
+          "height": 2121
+        },
+        {
+          "src": "../assets/works/more/pages/tea-boards/002.webp",
+          "width": 1920,
+          "height": 2165
+        }
+      ],
+      "cover": "../assets/works/more/covers/tea-boards.webp",
       "coverWidth": 960,
       "coverHeight": 720
     }

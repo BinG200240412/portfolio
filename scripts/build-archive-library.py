@@ -2,6 +2,7 @@
 """Refresh the Archive shelves and reader data from the rendered PDF catalog."""
 from pathlib import Path
 import html
+import hashlib
 import json
 import re
 
@@ -40,6 +41,14 @@ def main():
                             lambda match: match[1]+payload+match[2], source, flags=re.S)
     assert count == 1, 'Missing reader catalog'
     PAGE.write_text(source)
+    # The hub must request the new HTML catalog instead of a cached old shelf.
+    index = ROOT / 'index.html'
+    revision = hashlib.sha256(source.encode()).hexdigest()[:10]
+    shell, count = re.subn(r'("作品归档"\s*:\s*)"sections/more\.html(?:\?[^"]*)?"',
+                          lambda match: match[1]+json.dumps('sections/more.html?v='+revision),
+                          index.read_text())
+    assert count == 1, 'Missing Archive route'
+    index.write_text(shell)
     print(f'Archive refreshed: {len(catalog["documents"])} documents, {sum(len(d["pages"]) for d in catalog["documents"])} pages')
 
 

@@ -11,6 +11,8 @@ dialog.archive-reader[open] {display:grid;grid-template-rows:auto minmax(0,1fr) 
   display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:76px;
   padding:12px clamp(20px,4vw,56px) 12px 82px;border:0;background:none;
 }
+/* The outer portfolio owns its top settings when this reader is in an iframe. */
+.archive-embedded .archive-reader-bar {padding-top:calc(64px + env(safe-area-inset-top,0px))}
 .archive-reader .archive-reader-title {
   flex:1;min-width:0;margin:0;font:inherit;font-size:18px;font-weight:400;line-height:1.45;
   letter-spacing:0;overflow-wrap:anywhere;

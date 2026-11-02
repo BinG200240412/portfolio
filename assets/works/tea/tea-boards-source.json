@@ -1,0 +1,58 @@
+{
+  "title": "茶弦记 · 设计展板",
+  "pageOrder": [
+    "culture",
+    "space"
+  ],
+  "operation": "Complete source boards, proportionally downsampled at most to 7680px wide, JPEG90 4:4:4 in a two-page PDF; no new cover, crop or content edits.",
+  "pages": [
+    {
+      "page": 1,
+      "board": "culture",
+      "title": "文化调研与游戏系统",
+      "sourceFile": "展板_01(2).png",
+      "sourceSHA256": "64553e83b81d3191c02a97f8e887b3717c0d228b90cb81b9cf884fdf3f21b392",
+      "sourcePixels": [
+        18519,
+        20456
+      ],
+      "embeddedPixels": [
+        7680,
+        8483
+      ],
+      "pagePoints": [
+        1000,
+        1104.5952805227064
+      ],
+      "jpegQuality": 90,
+      "chromaSubsampling": "4:4:4",
+      "crop": "none",
+      "alpha": "composited onto white when needed"
+    },
+    {
+      "page": 2,
+      "board": "space",
+      "title": "空间体验与展陈设计",
+      "sourceFile": "Frame 322.png",
+      "sourceSHA256": "6160e30606e67844b16d8dfec344ce8d0f71d8231d1d724f07fded94980d0b6d",
+      "sourcePixels": [
+        7680,
+        8660
+      ],
+      "embeddedPixels": [
+        7680,
+        8660
+      ],
+      "pagePoints": [
+        1000,
+        1127.6041666666667
+      ],
+      "jpegQuality": 90,
+      "chromaSubsampling": "4:4:4",
+      "crop": "none",
+      "alpha": "composited onto white when needed"
+    }
+  ],
+  "sizeBytes": 20001417,
+  "sha256": "c88a0260213aa60d0555832b597012db0a334cb67b4da84563d002e95482611d"
+}
