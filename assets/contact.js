@@ -1,3 +1,98 @@
+(() => {
+'use strict';
+/* A solid little red book. Paper is drawn as filled planes, not wire outlines.
+ * Coordinates stay in the 41×41 source raster; the caller owns visible LEDs. */
+function bookSmooth(value) {
+  const t = Math.max(0, Math.min(1, value));
+  return t * t * (3 - 2 * t);
+}
+function bookInside(x, y, vertices) {
+  let inside = false;
+  for (let i = 0, j = vertices.length - 1; i < vertices.length; j = i++) {
+    const a = vertices[i], b = vertices[j];
+    if ((a[1] > y) !== (b[1] > y) && x < (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]) + a[0]) inside = !inside;
+  }
+  return inside;
+}
+function bookFill(frame, vertices, role) {
+  const minX = Math.max(0, Math.floor(Math.min(...vertices.map(p => p[0]))));
+  const maxX = Math.min(40, Math.ceil(Math.max(...vertices.map(p => p[0]))));
+  const minY = Math.max(0, Math.floor(Math.min(...vertices.map(p => p[1]))));
+  const maxY = Math.min(40, Math.ceil(Math.max(...vertices.map(p => p[1]))));
+  for (let y = minY; y <= maxY; y++) for (let x = minX; x <= maxX; x++) {
+    if (!bookInside(x + .001, y + .001, vertices)) continue;
+    const at = y * 41 + x; frame.mask[at] = 1; frame.roles[at] = role;
+  }
+}
+function bookBack(frame) {
+  // The pink-grey side and bottom are the thickness of the closed binding.
+  bookFill(frame, [[14,5],[34,5],[37,8],[37,35],[18,37],[13,34],[13,8]], 2);
+  bookFill(frame, [[14,6],[35,6],[35,33],[17,35],[13,33],[13,8]], 1);
+  // Solid page edges between the two covers. Only one low strip is exposed.
+  bookFill(frame, [[18,31],[35,29],[37,31],[37,34],[18,36]], 0);
+  bookFill(frame, [[18,35],[36,33],[37,35],[18,37]], 2);
+}
+function bookLeaf(angle, page = 0, width = 16) {
+  const sine = Math.sin(angle), cosine = Math.cos(angle);
+  const rootTop = 7 + page * .35, rootBottom = 33 - page * .2;
+  const edgeX = 18 + width * cosine;
+  return [[18,rootTop],[edgeX,rootTop - sine * 5],[edgeX,rootBottom - sine * 3],[18,rootBottom]];
+}
+function bookCover(frame, angle) {
+  const sine = Math.sin(angle), cosine = Math.cos(angle);
+  const vertices = [[18,5],[18 + 17 * cosine,5 - sine * 3],[18 + 17 * cosine,32 - sine * 2],[18,34]];
+  bookFill(frame, vertices, 1);
+  // The bookmark belongs to the front of the cover and foreshortens with it.
+  if (cosine > .08) {
+    const point = (u, v) => [18 + u * cosine, 5 + v - sine * 3 * u / 17];
+    const mark = [[5,5],[10,5],[10,16],[7.5,13.5],[5,16]].map(p => point(p[0], p[1]));
+    // Intersect the mark with the filled cover so it can never float outside.
+    for (let y = 0; y < 41; y++) for (let x = 0; x < 41; x++) {
+      if (bookInside(x + .001, y + .001, vertices) && bookInside(x + .001, y + .001, mark)) {
+        frame.mask[y * 41 + x] = 1; frame.roles[y * 41 + x] = 0;
+      }
+    }
+  }
+}
+function bookSpine(frame) {
+  bookFill(frame, [[13,8],[17,5],[18,34],[15,36],[13,34]], 2);
+  bookFill(frame, [[15,8],[17,7],[17,33],[15,34]], 1);
+}
+function bookRest(frame) {
+  bookBack(frame); bookCover(frame, 0); bookSpine(frame);
+  return frame;
+}
+function bookAction(frame, t) {
+  if (t <= .06 || t >= .96) return bookRest(frame);
+  const radians = Math.PI / 180;
+  const coverOpen = bookSmooth((t - .06) / .20) * (1 - bookSmooth((t - .74) / .21));
+  const coverAngle = coverOpen * 164 * radians;
+  bookBack(frame);
+  // A leftward cover is behind the pages; a rightward cover occludes them.
+  // The drawing-order swap happens edge-on, where the cover has zero area.
+  if (coverAngle >= Math.PI / 2) bookCover(frame, coverAngle);
+  // Right-hand stock stays visible behind the individual moving leaves.
+  bookFill(frame, [[18,7],[34,7],[34,30],[18,33]], 0);
+  bookFill(frame, [[23,13],[30,13],[30,15],[23,15]], 2);
+  bookFill(frame, [[21,19],[29,19],[29,21],[21,21]], 2);
+  const fan = [164,139,113,88].map((target, index) => {
+    const opening = bookSmooth((t - .10 - index * .045) / .34);
+    const closing = 1 - bookSmooth((t - .72 - index * .018) / .19);
+    return { angle: target * opening * closing * radians, index };
+  });
+  // Extended leaves are behind the more upright leaves. Four broad paper faces
+  // can be seen at once as a fan outside the spine, each with a hard colour edge.
+  fan.sort((a,b) => b.angle - a.angle);
+  for (const page of fan) bookFill(frame, bookLeaf(page.angle, page.index, 16 - page.index * .25), page.index % 2 ? 0 : 2);
+  if (coverAngle < Math.PI / 2) bookCover(frame, coverAngle);
+  bookSpine(frame);
+  return frame;
+}
+
+const rest={mask:new Float32Array(1681),roles:new Uint8Array(1681)};bookRest(rest);
+window.PortfolioContactBook=Object.freeze({rest,paint:bookAction,bounds:{left:2,top:3,right:36,bottom:36}});
+})();
+
 /* Native 41 × 41 LED masks. Every "1" is one equally sized circular bead. */
 (() => {
   'use strict';
@@ -34,14 +129,8 @@
       line(x, y, 5, 11, 20, 22) || line(x, y, 20, 22, 35, 11) ||
       line(x, y, 5, 30, 15, 22, 1.4) || line(x, y, 25, 22, 35, 30, 1.4) || (x === 20 && y === 23)),
     make('phone', (x, y) => polygon(x, y, phoneOutline)),
-    // A closed book, one folded page and a bookmark; the adjacent caption names the platform.
-    make('xiaohongshu', (x, y) =>
-      roundedRect(x, y, 9, 5, 33, 35, 2) ||
-      line(x, y, 13, 6, 13, 34, 1.3) ||
-      line(x, y, 10, 30, 32, 30, 1.3) ||
-      line(x, y, 18, 14, 27, 14, 1.3) || line(x, y, 18, 19, 25, 19, 1.3) ||
-      line(x, y, 26, 5, 26, 10, 1.3) || line(x, y, 30, 5, 30, 10, 1.3) ||
-      line(x, y, 26, 10, 28, 8, 1.3) || line(x, y, 28, 8, 30, 10, 1.3)),
+    // A filled cover, binding and page block.
+    make('xiaohongshu', (x, y) => !!window.PortfolioContactBook.rest.mask[y * size + x]),
     make('x', (x, y) =>
       polygon(x, y, [[7,6],[14,6],[34,35],[27,35]]) ||
       line(x, y, 32, 6, 8, 35, 1.9)),
@@ -95,7 +184,7 @@
   function tone(id, x, y) {
     if (id === 'email') return x === 20 && y === 23 ? 2 : (y >= 12 && y <= 22 && x > 6 && x < 35 ? 1 : 0);
     if (id === 'phone') return y < 12 || x > 24 && y > 26 ? 2 : (x > 12 && y < 28 ? 1 : 0);
-    if (id === 'xiaohongshu') return x <= 14 ? 1 : (x >= 31 || y <= 7 || y >= 32 ? 2 : 0);
+    if (id === 'xiaohongshu') return window.PortfolioContactBook.rest.roles[y * size + x];
     if (id === 'x') return Math.abs(x + y - 40) < 3 ? 2 : 1;
     if (id === 'instagram') return x >= 11 && x <= 29 && y >= 11 && y <= 29 ? (x > 26 && y < 14 ? 2 : 0) : 1;
     return y >= 24 && x <= 21 ? 2 : (x >= 21 && x < 30 ? 1 : 0);
@@ -125,44 +214,40 @@
   }
   const actions = {
     email(frame, t) {
-      // The lid hinges around the envelope's upper edge; the paper rises behind it.
-      const opening = Math.sin(Math.PI * smooth(t)) ** 2;
-      const tip = Math.round(22 - 19 * opening), paperTop = Math.round(14 - 12 * opening);
-      raster(frame, (x, y) => {
-        const body = rect(x, y, 4, 10, 36, 31, 2) || line(x, y, 5, 30, 15, 22, 1.4) || line(x, y, 25, 22, 35, 30, 1.4);
-        if (body) return 0;
-        if (line(x, y, 5, 11, 20, tip) || line(x, y, 20, tip, 35, 11)) return 1;
-        if (opening > .22 && y <= 18 && (rect(x, y, 13, paperTop, 27, paperTop + 12, 1, 1.4) || line(x, y, 17, paperTop + 4, 23, paperTop + 4, 1.2))) return 0;
-        if (opening < .24 && x === 20 && y === 23) return 2;
-        return -1;
-      });
+      // Empty lid opens; a letter is placed above the mouth, inserted, then sealed.
+      // The entire front pocket occludes paper, including its unlit interior.
+      if(t>=.90){const sealed=base('email');frame.mask.set(sealed.mask);frame.roles.set(sealed.roles);frame.layers=new Uint8Array(count);for(let i=0;i<count;i++)if(frame.mask[i])frame.layers[i]=i===23*size+20?4:2;return;}
+      const opening=smooth(t/.20),insertion=smooth((t-.32)/.36),closing=smooth((t-.70)/.19);
+      const tip=Math.round(t<.20?22-19*opening:3+19*closing);
+      const paperTop=Math.round(2+11*insertion),paperAlpha=smooth((t-.20)/.10);
+      frame.layers=new Uint8Array(count);
+      for(let y=0;y<size;y++)for(let x=0;x<size;x++){
+        const at=y*size+x,frontCoverage=x>=4&&x<=36&&y>=10&&y<=31;
+        const frontInk=rect(x,y,4,10,36,31,2)||line(x,y,5,30,15,22,1.4)||line(x,y,25,22,35,30,1.4);
+        const lidInk=line(x,y,5,11,20,tip)||line(x,y,20,tip,35,11);
+        const paperCoverage=x>=13&&x<=27&&y>=paperTop&&y<=paperTop+12;
+        let role=-1,alpha=1,layer=0;
+        if(frontInk){role=0;layer=2;}
+        else if(frontCoverage){if(lidInk){role=1;layer=3;}else if(t>=.90&&x===20&&y===23){role=2;layer=4;}}
+        else if(paperCoverage&&paperAlpha>0){role=y===paperTop+3&&x>=17&&x<=23?1:0;alpha=paperAlpha;layer=1;}
+        else if(lidInk){role=1;layer=3;}
+        if(role>=0){frame.mask[at]=alpha;frame.roles[at]=role;frame.layers[at]=layer;}
+      }
     },
     phone(frame, t) {
-      // Three small mechanical shivers, with two separately timed expanding rings.
-      const envelope = Math.sin(Math.PI * t) ** 2;
-      const shake = Math.round(Math.sin(t * Math.PI * 12) * envelope * 2);
-      stamp(frame, 'phone', shake * .5, 0, shake * .035);
-      if (t < .12 || t > .88) return;
-      const cycle = ((t - .12) * 2.5) % 1;
-      raster(frame, (x, y) => {
-        const first = cycle < .85 && (arc(x, y, 15, 14, 8 + cycle * 5, 3.55, 4.64) || arc(x, y, 24, 25, 9 + cycle * 4, .07, 1.08));
-        const second = cycle > .25 && (arc(x, y, 15, 14, 9 + (cycle - .25) * 5, 3.55, 4.64) || arc(x, y, 24, 25, 10 + (cycle - .25) * 4, .07, 1.08));
-        return first || second ? 0 : -1;
+      // The receiver is immutable. Only two separate sound arcs travel outwards.
+      const receiver=base('phone');frame.mask.set(receiver.mask);frame.roles.set(receiver.roles);
+      if(t<.08||t>.92)return;
+      const phase=(t-.08)/.84;
+      raster(frame,(x,y)=>{
+        // Keep an empty cell between every wave and the receiver's geometry.
+        for(let yy=Math.max(0,y-1);yy<=Math.min(size-1,y+1);yy++)for(let xx=Math.max(0,x-1);xx<=Math.min(size-1,x+1);xx++)if(receiver.mask[yy*size+xx])return -1;
+        const first=phase<=.82&&arc(x,y,16,18,6+clamp(phase/.82)*6,-1.45+Math.PI*2,-.18+Math.PI*2,1.25);
+        const second=phase>=.22&&arc(x,y,16,18,10+clamp((phase-.22)/.78)*6,-1.45+Math.PI*2,-.18+Math.PI*2,1.25);
+        return first?1:second?0:-1;
       });
     },
-    xiaohongshu(frame, t) {
-      // A turning page pivots about the spine, keeping the book's back cover visible.
-      const turn = Math.sin(Math.PI * smooth(t)) ** 2;
-      const edge = Math.round(33 - 18 * turn), lift = Math.round(turn * 3);
-      raster(frame, (x, y) => {
-        if (rect(x, y, 9, 5, 33, 35, 2)) return x <= 14 ? 1 : 2;
-        if (line(x, y, 13, 6, 13, 34, 1.3) || line(x, y, 10, 30, 32, 30, 1.3)) return 1;
-        if (line(x, y, 13, 6, edge, 7 + lift, 1.4) || line(x, y, edge, 7 + lift, edge, 31 - lift, 1.4) || line(x, y, edge, 31 - lift, 13, 33, 1.4)) return 0;
-        if (edge - 13 > 7 && (line(x, y, 17, 14 + lift, edge - 4, 14 + lift, 1.2) || line(x, y, 17, 19 + lift, edge - 6, 19 + lift, 1.2))) return 0;
-        if (line(x, y, 26, 5, 26, 10, 1.3) || line(x, y, 30, 5, 30, 10, 1.3) || line(x, y, 26, 10, 28, 8, 1.3) || line(x, y, 28, 8, 30, 10, 1.3)) return 2;
-        return -1;
-      });
-    },
+    xiaohongshu(frame, t) { window.PortfolioContactBook.paint(frame,t); },
     x(frame, t) {
       // The two strokes take opposite one-cell steps, then lock together again.
       const shift = t < .18 || t > .84 ? 0 : Math.round(Math.sin((t - .18) / .66 * Math.PI * 2));
@@ -213,13 +298,14 @@
   };
   // Offline-measured union of every action frame, including the exact rest glyph.
   // Constant bounds let the page reserve motion space before any action is generated.
-  const bounds = {"email":{"left":4,"top":2,"right":36,"bottom":31},"phone":{"left":2,"top":1,"right":37,"bottom":36},"xiaohongshu":{"left":9,"top":5,"right":33,"bottom":35},"x":{"left":6,"top":6,"right":34,"bottom":35},"instagram":{"left":5,"top":1,"right":38,"bottom":35},"douyin":{"left":3,"top":3,"right":38,"bottom":36}};
+  const bounds = {"email":{"left":4,"top":2,"right":36,"bottom":31},"phone":{"left":4,"top":2,"right":35,"bottom":35},"xiaohongshu":{"left":2,"top":3,"right":36,"bottom":36},"x":{"left":6,"top":6,"right":34,"bottom":35},"instagram":{"left":5,"top":1,"right":38,"bottom":35},"douyin":{"left":3,"top":3,"right":38,"bottom":36}};
   function get(id) {
     if (cache.has(id)) return cache.get(id);
     if (!glyphs.has(id) || !actions[id]) return [];
-    const frames = Array.from({ length }, (_, i) => {
-      if (i === 0 || i === length - 1) return base(id);
-      const frame = blank(); actions[id](frame, i / (length - 1)); return frame;
+    const frameCount=id==='email'||id==='xiaohongshu'?31:length;
+    const frames = Array.from({ length:frameCount }, (_, i) => {
+      if (i === 0 || i === frameCount - 1) return base(id);
+      const frame = blank(); actions[id](frame, i / (frameCount - 1)); return frame;
     });
     cache.set(id, frames); return frames;
   }
@@ -252,7 +338,7 @@
  function tone(id,x,y){
   if(id==='email')return x===20&&y===23?2:(y>=12&&y<=22&&x>6&&x<35?1:0);
   if(id==='phone')return y<12||x>24&&y>26?2:(x>12&&y<28?1:0);
-  if(id==='xiaohongshu')return x<=14?1:(x>=31||y<=7||y>=32?2:0);
+  if(id==='xiaohongshu')return window.PortfolioContactBook.rest.roles[y*size+x];
   if(id==='x')return Math.abs(x+y-40)<3?2:1;
   if(id==='instagram')return x>=11&&x<=29&&y>=11&&y<=29?(x>26&&y<14?2:0):1;
   return y>=24&&x<=21?2:(x>=21&&x<30?1:0);
@@ -396,15 +482,17 @@
   boardInk.fill(0);boardLight.fill(0);const playing=[];
   for(let n=0;n<placements.length;n++){
    const p=placements[n],id=p.id,phase=p.phase;
-   const dx=reduced.matches?0:Math.sin(time*.58+phase)*2.8,dy=reduced.matches?0:Math.cos(time*.46+phase)*3.2;
-   const angle=p.angle+(reduced.matches?0:Math.sin(time*.43+phase)*.013);
+   const still=reduced.matches||id==='phone';
+   const dx=still?0:Math.sin(time*.58+phase)*2.8,dy=still?0:Math.cos(time*.46+phase)*3.2;
+   const angle=p.angle+(still?0:Math.sin(time*.43+phase)*.013);
    const cos=Math.cos(angle),sin=Math.sin(angle),age=time-pulseStarts[n];
    const autoAge=time-[4.5,1.0,7.5,10.5,13.5,16.5][n];
-   const hoverAge=hover===n&&age>=0?age%2.4:age;
-   const actionAge=hoverAge>=0&&hoverAge<1.4?hoverAge:(autoAge>=0?autoAge%21:-1);
+   const duration=id==='email'||id==='xiaohongshu'?1.8:1.4;
+   const hoverAge=hover===n&&age>=0?age%(duration+1):age;
+   const actionAge=hoverAge>=0&&hoverAge<duration?hoverAge:(autoAge>=0?autoAge%21:-1);
    let mask=glyphs[id],roles=roleMaps[id];
-   if(!reduced.matches&&actionAge>=0&&actionAge<1.4){
-    const frames=window.PortfolioContactMotion.get(id),index=Math.min(frames.length-1,Math.floor(actionAge/1.4*(frames.length-1)));
+   if(!reduced.matches&&actionAge>=0&&actionAge<duration){
+    const frames=window.PortfolioContactMotion.get(id),index=Math.min(frames.length-1,Math.floor(actionAge/duration*(frames.length-1)));
     if(frames[index]){mask=frames[index].mask;roles=frames[index].roles;playing.push(id+':'+index);}
    }
    const box=p.box,pad=10;
