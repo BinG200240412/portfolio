@@ -185,7 +185,7 @@
 <link rel="stylesheet" href="assets/works/ai3d/particle-cover.css?v=e9081c26dc">
 <link rel="stylesheet" href="assets/matrix-field.css?v=6a32da6f6c">
 <link rel="stylesheet" href="assets/about.css?v=ed21d99dab">
-<link rel="stylesheet" href="assets/contact.css?v=3dfedba50e">
+<link rel="stylesheet" href="assets/contact.css?v=d791a1b830">
 <link rel="stylesheet" href="assets/ambient-field.css?v=46d61ec273">
 <link rel="stylesheet" href="assets/portfolio-assistant.css?v=b5151d0c45">
 <link rel="stylesheet" href="assets/title-dot.css?v=5f0b650f0b">
@@ -208,7 +208,7 @@
 <script defer src="assets/pixel-loader.js?v=df8d4dfee5"></script>
 <script defer src="assets/about-project-previews.js?v=6b4c1409f9"></script>
 <script defer src="assets/contact-channels.js?v=6329c05bf8"></script>
-<script defer src="assets/contact.js?v=92909ae835"></script>
+<script defer src="assets/contact.js?v=f6a80f70f4"></script>
 <script defer src="assets/ambient-field.js?v=a13d015450"></script>
 <script defer src="assets/assistant-connection.js?v=eebbb56790"></script>
 <script defer src="assets/assistant-hosted.js?v=296f0b00ec"></script>
@@ -355,23 +355,18 @@
 
   <main id="contact-page" aria-label="联系我" aria-hidden="true" inert>
     <div class="contact-stage">
-        <div class="contact-layout">
-          <div class="contact-orbit" aria-hidden="true" data-media-corners-ignore>
-            <canvas class="contact-matrix" width="480" height="480"></canvas>
-          </div>
-          <div class="contact-copy" data-i18n-ignore>
-            <h1 id="contact-title" tabindex="-1">邮箱</h1>
-            <a class="contact-value" href="mailto:bing2002czy@gmail.com">bing2002czy@gmail.com</a>
-            <div class="contact-actions">
-              <a class="contact-open" href="mailto:bing2002czy@gmail.com"><span>发邮件</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a>
-              <button class="contact-copy-value" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 5V3h13v13h-2M3 8h13v13H3Z"/></svg><span>复制邮箱</span></button>
-            </div>
-            <span class="contact-feedback" role="status"></span>
-          </div>
+      <canvas class="contact-matrix" aria-hidden="true" data-media-corners-ignore></canvas>
+      <div class="contact-stickers" role="group" aria-label="联系方式" data-i18n-ignore></div>
+      <div class="contact-copy" data-i18n-ignore>
+        <h1 id="contact-title" tabindex="-1">邮箱</h1>
+        <a class="contact-value" href="mailto:bing2002czy@gmail.com">bing2002czy@gmail.com</a>
+        <div class="contact-actions">
+          <a class="contact-open" href="mailto:bing2002czy@gmail.com"><span>发邮件</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 19 19 5M5 5h14v14"/></svg></a>
+          <button class="contact-copy-value" type="button" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 5V3h13v13h-2M3 8h13v13H3Z"/></svg><span>复制邮箱</span></button>
         </div>
-        <button class="contact-next scroll-cue" type="button" aria-label="下一个联系方式" data-i18n-ignore><span class="scroll-cue-pixels" aria-hidden="true"></span></button>
+        <span class="contact-feedback" role="status"></span>
+      </div>
     </div>
-    <nav class="contact-channel-nav" aria-label="联系方式" data-i18n-ignore></nav>
   </main>
 
 <script>
