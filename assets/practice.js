@@ -4,25 +4,25 @@
   const copy = {
     zh: {
       title: 'Practice — Cai Zhengyang',
-      description: '蔡正阳的创作练习：arright 与漂移之屋。',
+      description: '蔡正阳的创作练习：arright 与心·境·声。',
       arrightLink: '查看 arright',
       arrightAlt: 'arright 的住宅平面图与摆放推理界面',
       arrightIntro: '把物品放到合适的位置，让一个场景成立的排列推理游戏。',
-      driftLink: '查看漂移之屋',
-      driftAlt: '漂移之屋的鱼眼视角房间与佩戴 MR 头显的体验者',
-      driftTitle: '漂移之屋',
-      driftIntro: '让无意识的动作慢慢改变房间的 MR 装置概念。'
+      xjsLink: '查看心·境·声',
+      xjsAlt: '心·境·声：钟体与水面的涟漪意象',
+      xjsTitle: '心·境·声',
+      xjsIntro: '把心率转为钟声与水纹的交互装置。'
     },
     en: {
       title: 'Practice — Cai Zhengyang',
-      description: 'Creative exercises by Cai Zhengyang: arright and The Drift.',
+      description: 'Creative exercises by Cai Zhengyang: arright and Heart · Space · Sound.',
       arrightLink: 'View arright',
       arrightAlt: 'A floor plan and furniture-placement puzzle in arright',
       arrightIntro: 'A spatial puzzle about arranging objects so a room works.',
-      driftLink: 'View The Drift',
-      driftAlt: 'A fisheye view of The Drift room and a participant wearing an MR headset',
-      driftTitle: 'The Drift',
-      driftIntro: 'An MR installation concept where unconscious actions gradually change a room.'
+      xjsLink: 'View Heart · Space · Sound',
+      xjsAlt: 'A bell and ripples: the visual intent for Heart · Space · Sound',
+      xjsTitle: 'Heart · Space · Sound',
+      xjsIntro: 'An interactive installation translating heart-rate data into bell sounds and ripples.'
     }
   };
 

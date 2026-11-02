@@ -11,7 +11,8 @@
     'skills-print': '2026-06',
     'skills-icons': '2026-06',
     'skills-ui': '2026-08',
-    'drift': '2025-11'
+    'drift': '2025-11',
+    'xinjingsheng': '2021-08'
   };
   function render() {
     document.querySelectorAll('time[data-project-start]').forEach(time => {

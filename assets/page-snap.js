@@ -169,6 +169,10 @@
       });
       group(pending);
     }
+  } else if (file === 'xinjingsheng.html') {
+    root.dataset.snapLayout = 'xinjingsheng';
+    cover(document.querySelector('.xjs-cover'));
+    document.querySelectorAll('.xjs-page').forEach(page);
   } else if (file === 'practice.html') {
     root.dataset.snapLayout = 'practice';
     page(document.querySelector('main.practice'));

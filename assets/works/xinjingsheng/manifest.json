@@ -1,0 +1,82 @@
+{
+  "hero": {
+    "page": 1,
+    "xref": 5,
+    "preview": "hero.webp",
+    "original": "originals/hero.jpg",
+    "width": 1232,
+    "height": 928
+  },
+  "water": {
+    "page": 2,
+    "xref": 819,
+    "preview": "water.webp",
+    "original": "originals/water.jpg",
+    "width": 1409,
+    "height": 1061
+  },
+  "sketch": {
+    "page": 4,
+    "xref": 1349,
+    "preview": "sketch.webp",
+    "original": "originals/sketch.png",
+    "width": 1600,
+    "height": 1097
+  },
+  "model-section": {
+    "page": 4,
+    "xref": 1335,
+    "preview": "model-section.webp",
+    "original": "originals/model-section.png",
+    "width": 420,
+    "height": 462
+  },
+  "model-front": {
+    "page": 4,
+    "xref": 1345,
+    "preview": "model-front.webp",
+    "original": "originals/model-front.png",
+    "width": 349,
+    "height": 324
+  },
+  "mechanism": {
+    "page": 5,
+    "xref": 1799,
+    "preview": "mechanism.webp",
+    "original": "originals/mechanism.png",
+    "width": 1600,
+    "height": 1570
+  },
+  "assembly": {
+    "page": 8,
+    "xref": 3311,
+    "preview": "assembly.webp",
+    "original": "originals/assembly.jpg",
+    "width": 1600,
+    "height": 1200
+  },
+  "installation": {
+    "page": 8,
+    "xref": 3317,
+    "preview": "installation.webp",
+    "original": "originals/installation.jpg",
+    "width": 1600,
+    "height": 1200
+  },
+  "detail": {
+    "page": 8,
+    "xref": 3339,
+    "preview": "detail.webp",
+    "original": "originals/detail.jpg",
+    "width": 1600,
+    "height": 739
+  },
+  "top-view": {
+    "page": 8,
+    "xref": 3295,
+    "preview": "top-view.webp",
+    "original": "originals/top-view.jpg",
+    "width": 1417,
+    "height": 835
+  }
+}

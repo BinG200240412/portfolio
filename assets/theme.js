@@ -107,7 +107,7 @@
     const back = document.querySelector('.standalone-back');
     if (back) {
       const english = window.PortfolioI18n?.language === 'en';
-      const practiceDetail=['arright.html','drift.html'].includes(location.pathname.split('/').pop());
+      const practiceDetail=['arright.html','drift.html','xinjingsheng.html'].includes(location.pathname.split('/').pop());
       const label = practiceDetail ? (english ? 'Back to Practice' : '返回练习') : (english ? 'Back to works' : '返回作品集');
       back.setAttribute('aria-label', label); back.title = label;
       back.querySelector('.return-label').textContent = label;
@@ -204,6 +204,7 @@
       'drift.html': ['body > .hero', '.wrap .intro', '--green', 'right'],
       'design-skills.html': ['.skills-hero', '#newsprint', '--red', 'inline'],
       'arright.html': ['.wrap .hero', null, '--ink', 'center'],
+      'xinjingsheng.html': ['.xjs-cover', '#origins', '--xjs-accent', 'right'],
       'index.html': ['.about-hero', '.about-details', '--red', 'center'],
       'more.html': ['.archive-shelf--books', '.archive-shelf:nth-of-type(2)', '--red', 'center'],
     };
