@@ -1,0 +1,107 @@
+{
+  "source": "Video QR in the author-supplied PDF, page 8",
+  "films": [
+    {
+      "id": "demo-1",
+      "sourceQR": "http://qr71.cn/o8w7OB/qr3FYk5",
+      "sourceSHA256": "c32fa634badf5691840320e8ed2ebf15a0f2b9d8e402bb170225e57bcd72e575",
+      "full": "demo-1.mp4",
+      "preview": "preview-1.mp4",
+      "poster": "poster-1.webp",
+      "fullProbe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1280,
+            "height": 720,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "19.195011",
+          "size": "4093603"
+        }
+      },
+      "previewProbe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 640,
+            "height": 360,
+            "r_frame_rate": "24/1"
+          }
+        ],
+        "format": {
+          "duration": "19.166667",
+          "size": "671019"
+        }
+      },
+      "fullSHA256": "cf757865525fd9fa73e07d6b8b0603707a348aeb27f05c3fff3d271b246a5def"
+    },
+    {
+      "id": "demo-2",
+      "sourceQR": "http://qr71.cn/o8w7OB/qr3FYk5",
+      "sourceSHA256": "67680e214ef3ac0cebdb00126e4032bd78841f70fd38a321ea641e295ffd6688",
+      "full": "demo-2.mp4",
+      "preview": "preview-2.mp4",
+      "poster": "poster-2.webp",
+      "fullProbe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1280,
+            "height": 720,
+            "r_frame_rate": "30/1"
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_type": "audio",
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "20.333333",
+          "size": "4401467"
+        }
+      },
+      "previewProbe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 640,
+            "height": 360,
+            "r_frame_rate": "24/1"
+          }
+        ],
+        "format": {
+          "duration": "20.333333",
+          "size": "1170331"
+        }
+      },
+      "fullSHA256": "66f4c7b72fc048514054f78955a3852804ca0a612b2d5e4f5a660d4651f707a7"
+    }
+  ]
+}

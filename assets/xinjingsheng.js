@@ -7,6 +7,7 @@
       description:'心·境·声：把心率转为钟声与水纹的实物交互装置。',
       dateLabel:'开始时间',roleLabel:'负责事项',role:'项目负责人',stateLabel:'进度',state:'实物装置与试运转记录',
       heroCaption:'钟体与水面的意象',heroAlt:'钟体与水面涟漪的意向图',
+      filmsTitle:'装置演示',filmOneLabel:'心·境·声实物演示一',filmTwoLabel:'心·境·声实物演示二',
       originTitle:'把「静」变成身体的反馈',originIntro:'从枯山水、寺庙与冥想中提取水纹、钟声和心跳，用振动将三者相连。',
       relationsLabel:'心跳、钟声与水纹',heartbeat:'心跳',bell:'钟声',ripples:'水纹',waterAlt:'水面与钟体的涟漪意象',
       mechanismTitle:'把敲击藏进钟体',mechanismIntro:'内杆随舵机转动，外管支撑结构；把敲击机构藏在钟内，保留完整的外形。',
@@ -22,6 +23,7 @@
       description:'Heart · Space · Sound: an interactive installation translating heart-rate data into bell sounds and ripples.',
       dateLabel:'Started',roleLabel:'Role',role:'Project lead',stateLabel:'Status',state:'Physical installation and trial-run records',
       heroCaption:'Visual intent: bell and water',heroAlt:'Visual intent of a bell and ripples on water',
+      filmsTitle:'The installation in motion',filmOneLabel:'Heart · Space · Sound: installation film one',filmTwoLabel:'Heart · Space · Sound: installation film two',
       originTitle:'Stillness, felt through the body',originIntro:'Ripples, bell sounds and heartbeats are drawn from gardens, temples and meditation, then connected through vibration.',
       relationsLabel:'Heartbeat, bell sounds and ripples',heartbeat:'Heartbeat',bell:'Bell sounds',ripples:'Ripples',waterAlt:'Visual intent of water ripples around a bell',
       mechanismTitle:'A hidden striking mechanism',mechanismIntro:'A rotating inner shaft drives the concealed striker; an outer tube supports the structure and keeps the bell’s silhouette intact.',
@@ -54,4 +56,39 @@
     document.querySelectorAll('.xjs-page').forEach(page=>observer.observe(page));
     window.PortfolioLifecycle?.onDispose?.(()=>observer.disconnect());
   }
+})();
+
+/* Load only nearby previews; the shared detail player owns sound and controls. */
+(() => {
+  'use strict';
+  const videos=[...document.querySelectorAll('video[data-xjs-video]')];
+  if(!videos.length)return;
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)'),visible=new WeakMap();
+  let disposed=false,suspended=false,detailOpen=false,host=null;
+  try{host=window.frameElement?.closest('#section')||null;}catch(_){}
+  const available=()=>!disposed&&!suspended&&!document.hidden&&(!host||host.classList.contains('on'));
+  const eligible=video=>available()&&!detailOpen&&!reduced.matches&&visible.get(video);
+  function sync(){
+    for(const video of videos){
+      if(!eligible(video)){video.pause();continue;}
+      if(!video.getAttribute('src')){video.src=video.dataset.videoSrc;video.load();}
+      if(video.paused)video.play().then(()=>{if(!eligible(video))video.pause();}).catch(()=>{});
+    }
+  }
+  const observer='IntersectionObserver' in window?new IntersectionObserver(entries=>{
+    entries.forEach(entry=>visible.set(entry.target,entry.isIntersecting&&entry.intersectionRatio>=.15));sync();
+  },{threshold:[0,.15]}):null;
+  videos.forEach(video=>{visible.set(video,false);observer?.observe(video);});
+  const detail=event=>{detailOpen=!!event.detail?.open;sync();};
+  const hide=()=>{suspended=true;sync();},show=()=>{suspended=false;sync();};
+  document.addEventListener('visibilitychange',sync);
+  document.addEventListener('portfolio:video-detail',detail);
+  addEventListener('pagehide',hide);addEventListener('pageshow',show);reduced.addEventListener('change',sync);
+  if(host)window.PortfolioLifecycle?.observeParent(host,sync,{attributes:true,attributeFilter:['class']});
+  window.PortfolioLifecycle?.onDispose(()=>{
+    disposed=true;observer?.disconnect();
+    document.removeEventListener('visibilitychange',sync);document.removeEventListener('portfolio:video-detail',detail);
+    removeEventListener('pagehide',hide);removeEventListener('pageshow',show);reduced.removeEventListener('change',sync);
+    document.querySelectorAll('video').forEach(video=>{video.pause();video.removeAttribute('src');video.load();});
+  });
 })();

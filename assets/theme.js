@@ -204,7 +204,7 @@
       'drift.html': ['body > .hero', '.wrap .intro', '--green', 'right'],
       'design-skills.html': ['.skills-hero', '#newsprint', '--red', 'inline'],
       'arright.html': ['.wrap .hero', null, '--ink', 'center'],
-      'xinjingsheng.html': ['.xjs-cover', '#origins', '--xjs-accent', 'right'],
+      'xinjingsheng.html': ['.xjs-cover', '#films', '--xjs-accent', 'right'],
       'index.html': ['.about-hero', '.about-details', '--red', 'center'],
       'more.html': ['.archive-shelf--books', '.archive-shelf:nth-of-type(2)', '--red', 'center'],
     };

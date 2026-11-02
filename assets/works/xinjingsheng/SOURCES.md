@@ -20,3 +20,9 @@ page 7 (60–80, 80–100 and 100–140 BPM); each maps to a fixed servo speed,
 not a claimed beat-by-beat synchronization.
 
 Rebuild images with `python3 scripts/build-xinjingsheng-assets.py --source INPUT.pdf`.
+
+The two installation recordings are from the video QR on page 8:
+`http://qr71.cn/o8w7OB/qr3FYk5`. The full films retain the original 1280×720
+video and audio streams, remuxed for progressive playback. Small muted previews
+load only when visible; clicking opens the original recording with sound and
+playback controls. `films/manifest.json` records durations and source hashes.
