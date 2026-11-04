@@ -20,13 +20,802 @@
 })();
 </script>
 <link rel="preload" as="font" type="font/woff2" href="../assets/fonts/PortfolioSlab-Regular.woff2" crossorigin>
-<link rel="stylesheet" href="../assets/theme.css?v=c15fae45f4">
-<link rel="stylesheet" href="../assets/type-comparison.css?v=d020d81f10">
-<link rel="stylesheet" href="../assets/media-corners.css?v=8f1ee9eda7">
-<link rel="stylesheet" href="../assets/video-detail.css?v=4dfc0d0f0d">
-<link rel="stylesheet" href="../assets/media-view-only.css?v=899ee04344">
-<link rel="stylesheet" href="../assets/editorial-hierarchy.css?v=932fdd7dc9">
-<link rel="stylesheet" href="../assets/wide-screen.css?v=faac84ee2a" media="(min-width: 1801px)">
+<style data-portfolio-style-source="../assets/theme.css" data-source-version="c15fae45f4">
+@font-face{font-family:"Portfolio Mono";src:url("../assets/fonts/GeistMono-Regular.ttf") format("truetype");font-style:normal;font-weight:400;font-display:swap}
+html[data-theme="dark"]{--paper:#111110;--bg:#111110;--bg2:#181817;--panel:#1a1a18;--ink:#efeee9;--mid:#b7b6b0;--soft:#a4a39c;--dim:#8d8c85;--faint:#77766f;--line:#33332f;--line2:#484841;--red:#f04432;--surface:#1b1b19;--chrome:rgba(17,17,16,.92)}
+html[data-theme="light"]{--paper:#f5f3ed;--bg:#f5f3ed;--bg2:#eeece5;--panel:#eae8e1;--ink:#171715;--mid:#55554f;--soft:#66665f;--dim:#75756d;--faint:#85857d;--line:#d6d4cb;--line2:#c5c2b8;--red:#e13c2a;--surface:#eeece5;--chrome:rgba(245,243,237,.94)}
+html{background:var(--paper);scrollbar-color:var(--faint) var(--paper)}
+body{background-color:var(--paper);color:var(--ink)}
+::selection{background:var(--red);color:#fff}
+.theme-controls{position:fixed;z-index:90;right:18px;top:16px;display:flex;align-items:center;gap:8px;padding:0;background:none;border:0;border-radius:0;box-shadow:none;backdrop-filter:none;-webkit-user-select:none;user-select:none}
+.theme-controls button{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:0;background:none;color:var(--ink);cursor:pointer;position:relative;touch-action:manipulation;transition:opacity .18s ease}
+.appearance-icon{display:block;width:24px;height:24px;transform:rotate(var(--appearance-angle,0deg));transform-origin:center;transition:transform 380ms cubic-bezier(.22,.61,.36,1)}
+.sound-icon{display:block;width:22px;height:22px}
+.sound-toggle[aria-pressed="true"] .sound-off,.sound-toggle[aria-pressed="false"] .sound-on{display:none}
+.sound-toggle[aria-pressed="false"]{opacity:.55}
+.theme-controls button:hover{opacity:.65}
+.theme-controls button:focus-visible,.standalone-back:focus-visible{outline:1.5px solid var(--ink);outline-offset:2px}
+.standalone-back{position:fixed;left:26px;top:25px;z-index:90;color:var(--ink);text-decoration:none;font:12px "Portfolio Mono",monospace;background:var(--chrome);border:1px solid var(--line);border-radius:30px;padding:10px 15px}
+
+/* Site chrome changes colour; the work itself keeps its original colour. */
+body.portfolio-shell{--mono:"Portfolio Mono","PingFang SC","Microsoft YaHei",monospace;--sans:"PingFang SC","Microsoft YaHei",sans-serif;--serif:var(--mono);background:var(--paper)}
+.portfolio-shell #stage,.portfolio-shell #section,.portfolio-shell #section.native{background:var(--paper)}
+.portfolio-shell #section{pointer-events:none}
+.portfolio-shell #section.on{pointer-events:auto}
+.portfolio-shell .caption,.portfolio-shell .hint{display:none}
+.portfolio-shell .mi{color:var(--soft);min-height:36px;align-items:center;text-decoration:none}
+.portfolio-shell .mi .mn{color:var(--faint)}
+.portfolio-shell .mi:hover,.portfolio-shell .mi:focus-visible{color:var(--ink)}
+.portfolio-shell .mi:focus-visible{outline:1px solid var(--red);outline-offset:5px}
+.portfolio-shell #back{left:30px;right:auto}
+.portfolio-shell #back,.portfolio-shell #toHub{color:var(--soft);background:var(--chrome);padding:9px 0}
+.portfolio-shell #secBack{color:var(--ink);background:var(--chrome);border-color:var(--line);box-shadow:none}
+.portfolio-shell #secBack .bd{box-shadow:none}
+.portfolio-shell .tags{gap:11px 22px;margin-bottom:32px}
+.portfolio-shell .tags span{padding:0;background:none;border:0;color:var(--soft);font-size:12px}
+.portfolio-shell .tags span::before{display:none}
+.portfolio-shell .intro p,.portfolio-shell .cols li{color:var(--mid)}
+.portfolio-shell .cv-head .latin,.portfolio-shell .contact .k,.portfolio-shell .cols .lead{color:var(--soft)}
+.portfolio-shell .cols section{border-color:var(--line)}
+.portfolio-shell .contact a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+.portfolio-shell .line{font-size:clamp(24px,4vw,44px);max-width:92vw}
+.portfolio-shell .menu{top:calc(50% + 54px);transform:translateX(-50%);gap:9px 24px;max-width:880px}
+.portfolio-shell #stage.hublv .menu{gap:14px 38px}
+.portfolio-shell .dot:focus-visible{outline:1px solid var(--ink);outline-offset:9px}
+
+body.legacy-case{padding-top:82px;background:var(--paper);background-image:none!important}
+.legacy-case header.top{display:none}
+.legacy-case .act,.legacy-case .speclist,.legacy-case .callout{background:var(--panel)}
+.legacy-case .core h2,.legacy-case .actbar h2,.legacy-case .act .at,.legacy-case .act .an b,.legacy-case .sw .lab b,.legacy-case .speclist b,.legacy-case .callout p,.legacy-case .closing .big{color:var(--ink)}
+html[data-theme="light"] .legacy-case [style*="color:#fff"]{color:var(--ink)!important}
+.legacy-case.archive .hero h1,.legacy-case.archive .yr{color:var(--ink)}
+.legacy-case.archive .dl{background:var(--ink);color:var(--paper);box-shadow:none}
+.legacy-case.archive .dl:hover{background:var(--mid);box-shadow:none}
+.media-viewer .viewer-bar{height:130px;padding-top:70px}
+.media-viewer .viewer-image{min-height:calc(100% - 130px)}
+@media(max-width:600px){.theme-controls{top:10px;right:10px}.standalone-back{left:17px;top:19px}.portfolio-shell #back,.portfolio-shell #toHub{top:19px;left:20px}.portfolio-shell #secBack{top:17px;left:16px}.portfolio-shell .menu{max-width:90vw;gap:9px 20px}.portfolio-shell .mi{font-size:12px}.portfolio-shell #resume{padding-top:90px}.portfolio-shell .cv-head h1{font-size:clamp(36px,8vw,64px)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Latin: Josefin Slab Regular 400. Chinese: self-hosted PLIX ExtraLight 200.
+   The derived CJK faces are renamed Portfolio Plix CN under their OFL licence.
+   The CJK-only range
+   keeps every Latin letter and digit on the unchanged self-hosted Slab face.
+   The two static Regular faces cover every requested CSS weight, so legacy 300–900
+   declarations keep the same Regular outlines without synthetic bold. The derived
+   font is renamed Portfolio Slab under Josefin’s reserved-name OFL. */
+@font-face{font-family:"Portfolio Slab";src:url("../assets/fonts/PortfolioSlab-Regular.woff2") format("woff2");font-style:normal;font-weight:100 900;font-display:swap}
+@font-face{font-family:"Portfolio Slab";src:url("../assets/fonts/PortfolioSlab-Italic.woff2") format("woff2");font-style:italic;font-weight:100 900;font-display:swap}
+@font-face{font-family:"Portfolio Plix CN";src:url("../assets/fonts/PortfolioPlixCN-Light.woff2") format("woff2");font-style:normal;font-weight:300;font-display:swap;unicode-range:U+2E80-2FFF,U+3000-303F,U+3100-312F,U+31A0-31EF,U+3200-33FF,U+3400-4DBF,U+4E00-9FFF,U+F900-FAFF,U+FE10-FE1F,U+FE30-FE4F,U+FF00-FFEF,U+20000-323AF}
+@font-face{font-family:"Portfolio Plix CN";src:url("../assets/fonts/PortfolioPlixCN-ExtraLight.woff2") format("woff2");font-style:normal;font-weight:200;font-display:swap;unicode-range:U+2E80-2FFF,U+3000-303F,U+3100-312F,U+31A0-31EF,U+3200-33FF,U+3400-4DBF,U+4E00-9FFF,U+F900-FAFF,U+FE10-FE1F,U+FE30-FE4F,U+FF00-FFEF,U+20000-323AF}
+/* PLIX site subset: generated by scripts/subset-site-font.py. */
+@font-face{font-family:"Portfolio Plix CN Site";src:url("../assets/fonts/PortfolioPlixCN-Site-ExtraLight.woff2?v=49896c10e3") format("woff2");font-style:normal;font-weight:200;font-display:swap;unicode-range:U+3000-3002,U+300A-3011,U+4E00-4E01,U+4E03,U+4E08-4E0B,U+4E0D-4E0E,U+4E13-4E14,U+4E16,U+4E19-4E1A,U+4E1C,U+4E22,U+4E24-4E25,U+4E2A,U+4E2D,U+4E32,U+4E34,U+4E39-4E3B,U+4E3D-4E3E,U+4E45,U+4E48-4E49,U+4E4B,U+4E4E,U+4E50,U+4E5D,U+4E5F-4E61,U+4E66,U+4E73,U+4E86,U+4E88-4E89,U+4E8B-4E8C,U+4E8E,U+4E91-4E92,U+4E94-4E95,U+4E9B,U+4EA4,U+4EA7,U+4EAB-4EAC,U+4EAE,U+4EB2,U+4EBA,U+4EC0,U+4EC5,U+4ECA-4ECB,U+4ECD-4ECE,U+4ED3,U+4ED6,U+4ED8,U+4EE3-4EE5,U+4EEA,U+4EEC,U+4EF6-4EF7,U+4EFB,U+4EFD,U+4F01,U+4F0F,U+4F11,U+4F17,U+4F19-4F1A,U+4F20,U+4F24,U+4F26,U+4F30,U+4F34,U+4F38,U+4F3C,U+4F46,U+4F4D-4F4F,U+4F53,U+4F55,U+4F59,U+4F5B-4F5C,U+4F60,U+4F69,U+4F7F,U+4F8B,U+4F8D,U+4F9B,U+4F9D,U+4FA7,U+4FBF,U+4FC3,U+4FDD,U+4FE1,U+4FEE-4FEF,U+5012,U+5019,U+501F,U+503C,U+503E,U+5047-5048,U+504F,U+505A,U+505C,U+5065,U+5085,U+50CF,U+50E7,U+5141,U+5143,U+5145,U+5148-5149,U+514B,U+514D,U+5165,U+5168,U+516B-516D,U+5171,U+5173-5174,U+5176-5178,U+517B-517C,U+5185,U+518C-518D,U+5192,U+5199,U+519C,U+51A0,U+51A5,U+51B3,U+51B5,U+51C0,U+51C6,U+51CF,U+51D1,U+51E0-51E1,U+51ED,U+51F8,U+51FA-51FB,U+5206-5207,U+520A,U+5212,U+5217,U+5219-521B,U+521D,U+5220,U+5224,U+5229,U+522B,U+5230,U+5236-5238,U+523B,U+524D,U+5256,U+5267,U+5269-526A,U+526F,U+5272,U+529B,U+529F-52A1,U+52A8-52A9,U+52B1,U+52B3,U+52BF,U+52C3,U+52D2,U+52DF,U+52FE-5300,U+5305,U+5316,U+5319,U+5323,U+5339-533A,U+5341,U+5343,U+5347,U+5349-534A,U+534E-534F,U+5355,U+5357,U+5360-5361,U+5370,U+5373-5374,U+5377-5378,U+5382,U+5385-5386,U+538B,U+5398,U+539A,U+539F,U+53BB,U+53C2,U+53C8-53CD,U+53D1,U+53D6-53D9,U+53E0,U+53E3-53E6,U+53EA,U+53EF-53F0,U+53F2-53F3,U+53F6-53F8,U+5403-5404,U+5408,U+540C-540E,U+5411,U+5426,U+542B-542C,U+542F,U+5438,U+543B,U+5448,U+544A,U+5458,U+5468,U+5473,U+547C-547D,U+548C,U+5496,U+54AC,U+54C0-54C1,U+54CD,U+54EA,U+5524,U+552F,U+5546,U+5561,U+5582,U+5584,U+559C,U+55BB,U+55C5,U+5668,U+566A,U+56DB,U+56DE,U+56E0,U+56E2,U+56ED,U+56F0,U+56F4,U+56FA,U+56FD-56FE,U+5706,U+5708,U+571F,U+5728,U+5730,U+573A,U+5740,U+5747,U+574A,U+574F-5750,U+5757,U+578B,U+57CE,U+57DF,U+57FA,U+5802,U+5806,U+586B,U+5883,U+5899,U+589E,U+58A8,U+58C1,U+58EB,U+58F0,U+58F3,U+58F6,U+5904,U+5907,U+590D,U+590F,U+5916,U+591A,U+591F,U+5927,U+5929-592A,U+592E-592F,U+5931,U+5934,U+5949,U+594F,U+5956-5957,U+5973,U+597D,U+5982,U+59CB,U+59D3-59D4,U+59FF,U+5A55,U+5A92,U+5B50,U+5B54,U+5B57-5B58,U+5B66,U+5B69,U+5B83,U+5B85,U+5B87-5B89,U+5B8B-5B8C,U+5B97-5B98,U+5B9A,U+5B9D-5B9E,U+5BA1-5BA4,U+5BAB,U+5BB3-5BB4,U+5BB6,U+5BB9,U+5BBD,U+5BC6,U+5BDF,U+5BEE,U+5BF8-5BFC,U+5C01,U+5C04,U+5C06,U+5C0F,U+5C11,U+5C14,U+5C16,U+5C1A,U+5C1D,U+5C31,U+5C3A,U+5C3D-5C3E,U+5C40-5C42,U+5C45,U+5C49-5C4B,U+5C4F,U+5C55,U+5C5E,U+5C65,U+5C71,U+5CA9,U+5CB8,U+5CE6,U+5CF0,U+5D0E,U+5DDD,U+5DE5-5DE6,U+5DE8,U+5DEE,U+5DF1-5DF2,U+5DFE,U+5E03,U+5E05,U+5E08,U+5E0C,U+5E16,U+5E26-5E27,U+5E2D-5E2E,U+5E38,U+5E45,U+5E55,U+5E72-5E74,U+5E76,U+5E7C,U+5E7F,U+5E84,U+5E8A,U+5E8F,U+5E93-5E95,U+5E99,U+5E9E,U+5EA6-5EA7,U+5ECA,U+5ED3,U+5EF6,U+5EFA,U+5F00,U+5F02,U+5F08,U+5F0F,U+5F15,U+5F20,U+5F26-5F27,U+5F2F,U+5F39-5F3A,U+5F52-5F53,U+5F55,U+5F62,U+5F69,U+5F71,U+5F7C,U+5F80-5F81,U+5F84-5F85,U+5F88,U+5F8B,U+5F90,U+5F97,U+5FAA,U+5FAE,U+5FB7,U+5FBD,U+5FC3,U+5FC5-5FC6,U+5FD7,U+5FD9,U+5FE7,U+5FEB,U+5FF5,U+5FFD,U+6001,U+600E,U+601D,U+6021,U+6025,U+6027,U+603B,U+6062,U+606D,U+606F-6070,U+6084,U+6089,U+609F,U+60A6,U+60C5,U+60CA,U+60EF,U+60F3,U+6108,U+610F,U+6115,U+611F,U+6162,U+61A9,U+61C2,U+620F-6211,U+6216,U+6218,U+622A,U+6234,U+6237,U+623F-6241,U+6247,U+624B,U+624D,U+6251,U+6253,U+6258,U+6267,U+6269,U+626B,U+626D-626E,U+6270,U+6279,U+627E-6280,U+628A,U+6291,U+6293,U+6295-6298,U+629A,U+62A4-62A5,U+62AC,U+62B5,U+62BD,U+62C2,U+62C5-62C6,U+62C9,U+62CC-62CD,U+62D2,U+62D6,U+62DB,U+62DF,U+62E2,U+62E5,U+62E8-62E9,U+62EC,U+62FC,U+62FE-62FF,U+6301-6302,U+6307,U+6309,U+6311,U+6321,U+632F,U+6342,U+6346,U+6349,U+634F,U+6355,U+6362,U+6367,U+636E,U+6377,U+6388-6389,U+638C,U+6392,U+63A0,U+63A2,U+63A5,U+63A7-63A8,U+63CF-63D0,U+63D2,U+63E1,U+63ED,U+6405,U+641C,U+642C-642D,U+643A,U+6444,U+6446-6447,U+6458,U+6478-6479,U+6491-6492,U+649E,U+64A4,U+64AD-64AE,U+64C5,U+64CD-64CE,U+64E6,U+6512,U+652F,U+6536,U+6539,U+653B,U+653E,U+6545,U+6548,U+6559,U+655B,U+6563,U+6570,U+6572,U+6574,U+6587,U+6597,U+6599,U+65AD,U+65AF-65B0,U+65B9,U+65BD,U+65C1,U+65C5,U+65CB,U+65CF,U+65E0,U+65E2,U+65E5,U+65E7,U+65E9,U+65F6,U+660E-660F,U+6613,U+661F-6620,U+662F,U+663E,U+6653,U+6668,U+666E-6670,U+667A,U+6682,U+6696-6697,U+66B4,U+66F2,U+66F4,U+66F9,U+66FE-6700,U+6708-6709,U+670B,U+670D,U+671B,U+671D,U+671F,U+6728,U+672A-672C,U+672F,U+6731,U+673A,U+6742-6743,U+6746,U+6750-6751,U+675F-6761,U+6765,U+676F,U+6775,U+677E-677F,U+6781,U+6784,U+6790,U+6797,U+679A,U+679C-679D,U+67A2,U+67AF,U+67B6,U+67C4,U+67D0,U+67D3-67D4,U+67DC,U+67E0,U+67E5,U+67F1,U+6805,U+6807,U+680F,U+6811,U+6821,U+682A,U+6837-6839,U+683C,U+6846,U+6848,U+684C,U+6851,U+6863,U+6865,U+68A6,U+68A8,U+68AD,U+68B0,U+68B3,U+68C0,U+68CB,U+68EE,U+6905,U+690D,U+695A,U+6982,U+699C,U+6A21,U+6A2A,U+6A61,U+6AAC,U+6B21,U+6B27,U+6B3E,U+6B46,U+6B62-6B65,U+6B6A,U+6B8B,U+6BB5,U+6BBF,U+6BC5,U+6BCD,U+6BCF,U+6BD4,U+6BDB,U+6BEB,U+6C11,U+6C14,U+6C1B,U+6C34,U+6C38,U+6C42,U+6C47,U+6C5F-6C60,U+6C64,U+6C89,U+6CA1,U+6CAB,U+6CB3,U+6CBB,U+6CBF,U+6CC4,U+6CC9,U+6CD5,U+6CDB,U+6CE2,U+6CE8,U+6CFC-6CFD,U+6D01,U+6D17,U+6D1E,U+6D3B,U+6D41,U+6D45,U+6D4B,U+6D4F,U+6D6E,U+6D77-6D78,U+6D88,U+6D9F,U+6DB2,U+6DC0,U+6DE1,U+6DF1,U+6DFB,U+6E05,U+6E0A,U+6E10,U+6E1A,U+6E29,U+6E2F,U+6E32,U+6E34,U+6E38,U+6E7F,U+6E85,U+6E90,U+6EAF,U+6ED1,U+6EDA,U+6EE1,U+6EF4,U+6F02,U+6F06,U+6F14,U+6F2A-6F2B,U+6F5C,U+6F6E,U+6F88,U+6FC0,U+706B,U+706D,U+706F-7070,U+7075,U+7089,U+70B8-70B9,U+70ED,U+70EF,U+7115,U+7119,U+7126,U+7136,U+714C,U+714E,U+7167,U+719F,U+7206,U+7231,U+7247-7248,U+724C,U+7269,U+7275,U+7279,U+72B6,U+72B9,U+72D7,U+72EC,U+731B,U+7329,U+7384,U+7387,U+7389,U+738B,U+73A9,U+73AB,U+73AF-73B0,U+73BB,U+73E0,U+7403,U+7406,U+742E,U+7470,U+7483,U+74E2,U+74E6,U+74F6-74F7,U+751F,U+7528,U+7530-7531,U+7535,U+7537-7538,U+753B,U+7545,U+754C,U+7559,U+7565,U+7578,U+758F,U+75B2,U+75BC,U+75D5,U+767D-767E,U+7684,U+7686,U+76AE,U+76C6,U+76C8,U+76CA,U+76CF,U+76D1-76D2,U+76D6,U+76D8,U+76DB,U+76EE,U+76F2,U+76F4,U+76F8,U+770B,U+771F,U+773C,U+7740-7741,U+775B,U+7761,U+777F,U+77AC,U+77B0,U+77B3,U+77E2,U+77E5,U+77ED,U+77F3,U+77FF,U+7801,U+7814,U+7816,U+7834,U+7840,U+786C,U+786E,U+788E,U+7897,U+78A7,U+78B0,U+78BE,U+78E8,U+793A,U+793C,U+793E,U+795E,U+7968,U+7985,U+798F,U+79BB,U+79CD,U+79D1-79D2,U+79D8,U+79E9,U+79EF-79F0,U+79FB,U+7A00,U+7A0B,U+7A0D,U+7A20,U+7A33,U+7A3B,U+7A3F,U+7A57,U+7A76,U+7A7A,U+7A7F,U+7A81,U+7A84,U+7A97,U+7ACB,U+7AD9,U+7ADE-7AE0,U+7AEF,U+7AF9-7AFA,U+7B11,U+7B14,U+7B26,U+7B2C,U+7B3C,U+7B45,U+7B49,U+7B51-7B52,U+7B54,U+7B56,U+7B5B,U+7B79,U+7B7E,U+7B80,U+7B97,U+7BA1,U+7BB1,U+7BC7,U+7BD3,U+7BFE,U+7C73,U+7C7B,U+7C89,U+7C92,U+7C97,U+7C9F,U+7CAE,U+7CBE,U+7CD9,U+7CFB,U+7D20,U+7D22,U+7D27,U+7D2B,U+7D2F,U+7E41,U+7EA0,U+7EA2,U+7EA4,U+7EA6-7EA7,U+7EAC,U+7EAF,U+7EB1,U+7EB3,U+7EB5,U+7EB8-7EB9,U+7EBD,U+7EBF,U+7EC3-7EC4,U+7EC6-7EC8,U+7ECD-7ECF,U+7ED1,U+7ED3,U+7ED5,U+7ED8-7EDA,U+7EDC-7EDD,U+7EDF,U+7EE2,U+7EE7,U+7EE9-7EEA,U+7EED,U+7EF4,U+7EFD,U+7EFF-7F00,U+7F13,U+7F16,U+7F18,U+7F1D,U+7F20,U+7F29,U+7F3A,U+7F51,U+7F57,U+7F69,U+7F6E,U+7F72,U+7F8E,U+7FFB,U+8001,U+8003,U+8005,U+800C,U+8010,U+8017,U+8033,U+804C,U+8054,U+8058,U+805A,U+80A1,U+80B2,U+80CC,U+80DC,U+80E1,U+80F8,U+80FD,U+8109,U+8111,U+811A,U+8138,U+816E,U+817E,U+818F,U+819C,U+81C6,U+81EA,U+81F3-81F4,U+81FC,U+820D,U+821E-821F,U+822A,U+822C,U+8235,U+8239,U+826F,U+8272,U+827A,U+8282,U+82A6,U+82B1,U+82BD,U+82C7,U+82D4,U+82D7,U+82E5-82E6,U+82F1,U+82F9,U+8303,U+8305,U+8317,U+8336,U+8349,U+8361,U+8363,U+836B,U+836F,U+8393,U+83AB,U+83B7,U+83CA,U+83DC,U+83F1,U+8404,U+8425,U+843D,U+8461,U+8471,U+8475,U+84DD,U+851A,U+8521,U+853D,U+85CF,U+8638,U+864E,U+8651,U+865A,U+8679,U+86C7,U+878D,U+87BA,U+87F9,U+884C-884D,U+8854,U+8863,U+8865,U+8868,U+886C,U+8870,U+88AB,U+88C1-88C2,U+88C5,U+88F8,U+8910,U+897F,U+8981,U+8986,U+89C1-89C2,U+89C4,U+89C6,U+89C8-89C9,U+89D2,U+89E3,U+89E6,U+8A00,U+8A89,U+8B66,U+8BA1-8BA2,U+8BA4,U+8BA9,U+8BAD,U+8BB0,U+8BB2,U+8BB6,U+8BB8,U+8BBA,U+8BBE-8BBF,U+8BC1,U+8BC4,U+8BC6,U+8BCD,U+8BD1,U+8BD5,U+8BD7,U+8BDD,U+8BE5-8BE6,U+8BED,U+8BEF,U+8BF1,U+8BF4,U+8BF7,U+8BFB,U+8BFE,U+8C03,U+8C31,U+8C61,U+8C6B,U+8C8C,U+8D1F,U+8D23,U+8D26,U+8D28,U+8D2F,U+8D34,U+8D44,U+8D4B,U+8D4F,U+8D5B,U+8D5E,U+8D6D,U+8D70,U+8D77,U+8D81,U+8D85,U+8D8A-8D8B,U+8DA3,U+8DB3,U+8DD1,U+8DDD,U+8DDF,U+8DEF,U+8DF3,U+8DF5,U+8E2A,U+8EAB,U+8F66,U+8F68,U+8F6C,U+8F6E-8F6F,U+8F74,U+8F7B,U+8F7D,U+8F83,U+8F85,U+8F89,U+8F91,U+8F93,U+8FA8,U+8FB9,U+8FBE,U+8FC1,U+8FC7,U+8FD0-8FD1,U+8FD4,U+8FD8-8FD9,U+8FDB-8FDC,U+8FDE,U+8FED,U+8FF0,U+8FF7-8FF9,U+8FFD,U+9000-9002,U+9009,U+900F-9010,U+9012,U+9014,U+9017,U+901A-901B,U+901F-9020,U+903B,U+9047,U+904D,U+9053,U+9057,U+906D-906E,U+907F,U+9091,U+90A3,U+90AE,U+90BB,U+90C1,U+90E8,U+90FD,U+914D,U+9192,U+91C7,U+91C9-91CA,U+91CC-91CF,U+91D1,U+9488,U+949F,U+94AE,U+94B3,U+94BB,U+94DC,U+94FA,U+94FE,U+9500-9501,U+9505,U+9510,U+9519-951A,U+952E,U+9542,U+955C,U+957F,U+95E8,U+95EA,U+95ED-95EE,U+95F2,U+95F4,U+9601,U+9605,U+9608,U+961F,U+9633-9636,U+963F-9640,U+9644-9646,U+9648,U+964D,U+9650,U+9662,U+9664,U+9669,U+9675-9676,U+968F-9690,U+9694,U+9699,U+96BE,U+96C5-96C6,U+96CF,U+96D5,U+96F6-96F7,U+96FE,U+9700,U+9707,U+9732,U+9752,U+9759,U+975E,U+9760,U+9762,U+97E6,U+97F3,U+97F5,U+9875-9876,U+9879-987B,U+987E-987F,U+9884,U+9886,U+9891,U+9897-9898,U+989C-989D,U+98CE,U+98DE-98DF,U+9910,U+996E,U+9970-9971,U+9986,U+9988,U+9996,U+9999,U+9A71,U+9A7B,U+9A8C,U+9A8F,U+9AA4,U+9AD8,U+9C7C,U+9C88,U+9CC4,U+9E1F,U+9E3F,U+9EA6,U+9EC4,U+9ED1,U+9F13,U+9F20,U+9F50,U+FF01,U+FF08-FF09,U+FF0B-FF0C,U+FF0F,U+FF1A-FF1B,U+FF1F}
+/* End PLIX site subset. */
+:root{--portfolio-font:"Portfolio Plix CN Site","Portfolio Plix CN","Portfolio Slab","PingFang SC","Microsoft YaHei",sans-serif;--portfolio-font-weight:200}
+:root[data-cjk-preview="plix"]{--portfolio-font:"Portfolio Plix CN","Portfolio Slab","PingFang SC","Microsoft YaHei",sans-serif;--portfolio-font-weight:300}
+:root[data-cjk-preview="plix-extra"]{--portfolio-font-weight:200}
+/* A legacy heading's 600/900 must not select or synthesize a heavier CJK face.
+   Slab still uses its genuine static 400 outlines for this requested weight. */
+body,body *,body *::before,body *::after{font-family:var(--portfolio-font)!important;font-weight:var(--portfolio-font-weight,200)!important;font-synthesis:none}
+body.portfolio-shell{--mono:var(--portfolio-font);--sans:var(--portfolio-font);--serif:var(--portfolio-font)}
+.theme-controls .language-toggle{--portfolio-font-weight:200;display:flex;align-items:center;justify-content:center;gap:4px;width:72px;margin:0;border:0;border-radius:0;color:var(--ink);font-size:16px;line-height:1;letter-spacing:0}
+.theme-controls :is(.language-option,.language-divider){display:flex;align-items:center;justify-content:center;margin:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none;text-shadow:none;line-height:0;color:var(--soft)}
+.theme-controls .language-option[data-language="zh"]{flex:0 0 20px}
+.theme-controls .language-option[data-language="en"]{flex:0 0 37px}
+.theme-controls .language-divider{flex:0 0 6px}
+.theme-controls .language-option.is-current{color:var(--ink)}
+/* The single CJK glyph needs more ink height than the two-letter EN mark.
+   Keep each in its fixed slot, with a slight optical lift for 中. */
+.theme-controls .language-mark{display:block;height:12px;width:auto;flex:none;fill:currentColor;transition:height 220ms cubic-bezier(.22,.61,.36,1)}
+.theme-controls .language-option[data-language="zh"] .language-mark{height:17px;transform:translateY(-1px)}
+.theme-controls .language-option[data-language="zh"] .language-mark path{stroke:currentColor;stroke-width:12;stroke-linejoin:miter}
+.theme-controls .language-option[data-language="zh"].is-current .language-mark{height:22px}
+.theme-controls .language-option[data-language="en"].is-current .language-mark{height:20px}
+.theme-controls ::selection{background:transparent;color:inherit}
+.scroll-cue{position:fixed;z-index:70;display:grid;place-items:center;width:48px;height:52px;margin:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.scroll-cue[hidden]{display:none}
+.scroll-cue:focus-visible{outline:1px solid currentColor;outline-offset:4px}
+.scroll-cue-pixels{display:grid;grid-template-columns:repeat(7,3px);grid-template-rows:repeat(7,3px);gap:2px;pointer-events:none}
+.scroll-cue-led{display:block;width:3px;height:3px;border-radius:50%;background:currentColor;opacity:.32;animation:scroll-led-flow 2.8s ease-in-out infinite;animation-delay:calc(var(--led-row) * .14s)}
+.scroll-cue[data-paused="true"] .scroll-cue-led{animation-play-state:paused}
+.scroll-cue[data-position="inline"]{position:relative;margin:20px auto 0}
+@keyframes scroll-led-flow{0%,7%,65%,100%{opacity:.32}27%{opacity:1}46%{opacity:.6}}
+.sudoku-scenes{--scroll-cue-accent:#7da479}
+html[data-theme="light"] .sudoku-scenes{--scroll-cue-accent:#416f41}
+@media(prefers-reduced-motion:reduce){.scroll-cue-led{animation:none;opacity:.75}}
+@media(forced-colors:active){.scroll-cue{color:ButtonText!important}.scroll-cue-led{animation:none;opacity:1;forced-color-adjust:none}}
+.portfolio-shell .line{font-size:clamp(42px,5vw,64px);font-weight:500;letter-spacing:.005em}
+.portfolio-shell .mi{font-size:16px;letter-spacing:.015em}
+.portfolio-shell .selected-works{display:flex;flex-wrap:wrap;justify-content:center;gap:9px 28px;width:100%}
+.portfolio-shell .work-collections{display:flex;flex-wrap:wrap;justify-content:center;gap:9px 28px;width:100%;margin-top:14px}
+.portfolio-shell .work-collections .mi{color:var(--mid)}
+.portfolio-shell .work-collections .mi:hover,.portfolio-shell .work-collections .mi:focus-visible{color:var(--ink)}
+.portfolio-shell .mi .mn{font-size:12px}
+.portfolio-shell #stage.hublv .mi{font-size:19px;letter-spacing:.015em}
+html[lang="en"] .portfolio-shell .text{white-space:pre-wrap;text-align:center;max-width:82vw;line-height:1.12}
+html[lang="en"] .portfolio-shell .cv-head .latin{letter-spacing:.055em}
+html[lang="en"] .portfolio-shell .cols{grid-template-columns:1fr 1.25fr 1fr}
+html[lang="en"] .portfolio-shell .cols li{font-size:14px;line-height:1.6}
+html[lang="en"] .portfolio-shell .intro p{font-size:18px;line-height:1.65}
+html[lang="en"] .legacy-case .featlist .k{white-space:normal}
+html[lang="en"] h1,html[lang="en"] h2,html[lang="en"] h3{overflow-wrap:normal}
+/* Reserve the wider appearance/language control in standalone project headers. */
+.topbar{padding-right:124px}
+@media(max-width:720px){.topbar{padding-right:110px}.topbar .store-link{white-space:normal;line-height:1.3;gap:8px}}
+@media(max-width:600px){.portfolio-shell .line{font-size:clamp(34px,9vw,42px)}.portfolio-shell .mi{font-size:15px}.portfolio-shell .menu{gap:5px 19px;max-width:90vw}.portfolio-shell #stage.hublv .mi{font-size:18px}html[lang="en"] .portfolio-shell .cols{grid-template-columns:1fr}.theme-controls .language-toggle{font-size:15px;width:64px;gap:4px}.theme-controls .language-option[data-language="zh"]{flex-basis:18px}.theme-controls .language-option[data-language="en"]{flex-basis:34px}.theme-controls .language-divider{flex-basis:4px}.theme-controls .language-mark{height:11px}.theme-controls .language-option[data-language="zh"] .language-mark{height:16px}.theme-controls .language-option[data-language="zh"].is-current .language-mark{height:20px}.theme-controls .language-option[data-language="en"].is-current .language-mark{height:18px}}
+@media(prefers-reduced-motion:reduce){.appearance-icon,.theme-controls .language-mark{transition:none!important}}
+
+/* Keep small English labels readable through size and contrast. */
+html[lang="en"] :is(.topbar,.meta-row,.eyebrow,.num,.hen,.h2en,.project-type,.section-no,.screen-caption,.screen-caption span,.art-number,.art-kind,.art-facts,.art-caption,.sample-label,.sample-foot,.foot,.case-footer,.hero-kicker,.pdfbar .pt,.linknote,.tags span){font-size:13px!important;letter-spacing:.04em}
+html[lang="en"] :is(.meta-row,.hen,.h2en,.project-type,.section-no,.screen-caption,.art-number,.art-kind,.art-facts,.art-caption,.sample-label,.sample-foot,.foot,.case-footer){color:var(--mid)}
+html[lang="en"] :is(.standalone-back,.topbar a,.footer-actions a,.case-footer a,.skill-link,.repo-link,.pdfbar a){font-size:14px!important}
+html[lang="en"] .portfolio-shell .mi .mn{font-size:13px}
+html[lang="en"] :is(.tool .lbl,.tool .bdg,.cell .notes span){font-size:11px!important;letter-spacing:.02em}
+html[lang="en"] :is(.tool .lbl,.cell .notes span,.voice .meta span){color:var(--ink-mid,var(--mid))}
+html[lang="en"] .voice .meta span{font-size:12px}
+
+/* Shared return mark: a true 45-degree vector, independent of font glyphs. */
+body.portfolio-shell :is(#back,#toHub,#secBack),a.standalone-back{
+  position:fixed;left:18px;right:auto;top:16px;z-index:90;
+  display:inline-flex;align-items:center;justify-content:center;gap:0;
+  width:44px;height:44px;min-width:44px;min-height:44px;margin:0;padding:0;
+  border:0;border-radius:0;background:none;color:var(--ink);box-shadow:none;
+  backdrop-filter:none;-webkit-backdrop-filter:none;text-decoration:none;
+  font-size:0;line-height:1;letter-spacing:0;cursor:pointer;touch-action:manipulation;
+  transform:none;transition:opacity .3s ease,transform 160ms ease;
+}
+body.portfolio-shell :is(#back,#toHub,#secBack)[hidden]{display:none}
+body.portfolio-shell :is(#back,#toHub,#secBack) .bd,a.standalone-back .bd{
+  display:block;position:static;flex:0 0 28px;width:28px;height:28px;margin:0;padding:0;
+  border:0;border-radius:0;box-shadow:none;background:currentColor;forced-color-adjust:none;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2028%2028%22%3E%3Cpath%20d%3D%22M24%2024%204%204M4%204H19M4%204V19%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.4%22%20stroke-linecap%3D%22square%22%20stroke-linejoin%3D%22miter%22%2F%3E%3C%2Fsvg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2028%2028%22%3E%3Cpath%20d%3D%22M24%2024%204%204M4%204H19M4%204V19%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.4%22%20stroke-linecap%3D%22square%22%20stroke-linejoin%3D%22miter%22%2F%3E%3C%2Fsvg%3E") center/contain no-repeat;
+}
+a.standalone-back .return-label{
+  position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;
+  overflow:hidden;clip-path:inset(50%);white-space:nowrap;
+}
+body.portfolio-shell :is(#back,#toHub,#secBack):focus-visible,a.standalone-back:focus-visible{
+  outline:1.5px solid var(--ink);outline-offset:2px;
+}
+@media(hover:hover) and (pointer:fine){
+  body.portfolio-shell :is(#back,#toHub,#secBack):hover,a.standalone-back:hover{
+    background:none;color:var(--ink);box-shadow:none;transform:translate(-2px,-2px);
+  }
+}
+@media(max-width:600px){
+  body.portfolio-shell :is(#back,#toHub,#secBack),a.standalone-back{left:10px;top:10px;padding:0}
+}
+@media(prefers-reduced-motion:reduce){
+  body.portfolio-shell :is(#back,#toHub,#secBack),a.standalone-back,
+  body.portfolio-shell :is(#back,#toHub,#secBack):hover,a.standalone-back:hover{
+    transform:none;transition:none;
+  }
+}
+
+/* The remaining captions and controls carry useful information, so give them
+   reading size rather than the former decorative microtype. */
+body figcaption{font-size:15px!important;line-height:1.7!important;letter-spacing:0!important;text-transform:none!important}
+.skills-page :is(.chapter-note>p,.workflow p,.hero-sub){font-size:15px!important;line-height:1.8}
+.skills-page :is(.text-link,.archive-filters button,.archive-count,.archive-status,.tile-label,.footer-meta,.viewer-actions a,.archive-viewer-foot){font-size:14px!important}
+.gogo-case .gogo-small-index{font-size:15px;letter-spacing:0}
+</style>
+<style data-portfolio-style-source="../assets/type-comparison.css" data-source-version="d020d81f10">
+/* Same family, content, sizes and spacing; only the true CJK weight changes. */
+html.type-comparison{--portfolio-font:"Portfolio Plix CN","Portfolio Slab","PingFang SC",sans-serif;--sample-size:17px}
+.type-comparison,.type-comparison *{box-sizing:border-box}
+.type-comparison body{margin:0;min-height:100svh}
+.type-wrap{width:min(1280px,100%);margin:0 auto;padding:88px clamp(24px,5vw,72px) 48px}
+.type-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;margin-bottom:36px}
+.type-heading h1{margin:0 0 14px;font-size:clamp(30px,3.2vw,44px);line-height:1.25;letter-spacing:.01em}
+.type-heading p{margin:0;font-size:15px;color:var(--soft);line-height:1.7}
+.type-size-control{display:flex;align-items:center;flex-wrap:wrap;gap:12px;flex-shrink:0;font-size:14px}
+.type-size-control input{width:120px;accent-color:var(--ink);cursor:pointer}
+.type-size-control output{display:block;min-width:32px;color:var(--soft)}
+.type-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border-top:1px solid var(--line)}
+.type-column{min-width:0;padding:30px 42px 0 0}
+.type-column+.type-column{padding:30px 0 0 42px;border-left:1px solid var(--line)}
+.type-plix{--portfolio-font-weight:300}
+.type-extra{--portfolio-font-weight:200}
+.type-font-name{display:flex;align-items:baseline;flex-wrap:wrap;gap:10px 18px;margin-bottom:12px}
+.type-font-name h2{font-size:25px;line-height:1.3;letter-spacing:.035em;margin:0}
+.type-font-name p{font-size:14px;color:var(--soft);line-height:1.5;margin:0}
+.type-font-name a{display:inline-flex;align-items:center;gap:14px;margin-left:auto;min-height:36px;padding-bottom:4px;border-bottom:1px solid var(--line2);color:var(--ink);font-size:15px;text-decoration:none}
+.type-font-name a:hover{border-color:var(--ink)}
+.type-font-name a:focus-visible{outline:1px solid var(--ink);outline-offset:5px}
+.type-font-note{font-size:14px;line-height:1.7;color:var(--soft);margin:0 0 30px;min-height:1.7em}
+.type-specimen{min-width:0}
+.type-name{display:flex;align-items:center;margin:0 0 14px;font-size:clamp(48px,5.6vw,72px);line-height:1.25;letter-spacing:.015em}
+.type-dot{display:block;width:7px;height:7px;border-radius:50%;background:var(--red);margin-left:18px;flex-shrink:0}
+.type-latin{font-size:16px;line-height:1.6;letter-spacing:.035em;margin:0;color:var(--soft)}
+.type-tags{font-size:calc(var(--sample-size) - 2px);line-height:1.8;margin:30px 0 26px;overflow-wrap:anywhere}
+.type-prose{min-height:4em;font-size:var(--sample-size);line-height:2;letter-spacing:.01em;margin:0 0 28px}
+.type-education{margin-bottom:28px}
+.type-education h4{font-size:25px;line-height:1.4;margin:0 0 16px}
+.type-education p{font-size:var(--sample-size);line-height:2;margin:0}
+.type-projects{font-size:23px;line-height:1.7;margin:0 0 20px}
+.type-digits{color:var(--ink)}
+.type-sources a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line2);padding-bottom:5px;line-height:1.7}
+.type-sources a:hover{border-color:var(--ink)}
+.type-sources a:focus-visible{outline:1px solid var(--ink);outline-offset:5px}
+.type-sources{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px 24px;margin-top:48px;font-size:13px;color:var(--soft)}
+@media(max-width:760px){
+ .type-wrap{padding-top:90px}
+ .type-heading{display:block;margin-bottom:30px}
+ .type-size-control{margin-top:24px}
+ .type-size-control input{width:140px}
+ .type-columns{grid-template-columns:minmax(0,1fr)}
+ .type-column{padding:28px 0 36px}
+ .type-column+.type-column{padding:32px 0 0;border-left:0;border-top:1px solid var(--line)}
+ .type-name{font-size:60px}
+ .type-font-note{margin-bottom:26px}
+ .type-prose{min-height:0}
+ .type-projects{font-size:22px}
+}
+</style>
+<style data-portfolio-style-source="../assets/media-corners.css" data-source-version="8f1ee9eda7">
+/* Circular cuts deepen at the top left and bottom right when selected.
+ * Matching arc vertices preserve a continuous, native CSS transition.
+ * Mark the background-bearing visual surface, not its caption or controls bar.
+ */
+[data-media-corners] {
+  border-radius: 0 !important;
+  -webkit-mask-image: none;
+  mask-image: none;
+  clip-path: var(--media-corner-rest, inset(0));
+  transition: clip-path 420ms cubic-bezier(.22, .61, .36, 1);
+}
+
+[data-media-zoomable] { cursor: zoom-in; }
+
+/* The host can be the surface itself, or an existing link/button around it. */
+@media (hover: hover) {
+  [data-media-zoomable][data-media-corners]:hover,
+  [data-media-zoomable]:hover [data-media-corners] {
+    clip-path: var(--media-corner-selected, var(--media-corner-rest, inset(0)));
+  }
+}
+
+/* :is() keeps the ordinary focus and press paths valid on older engines.
+ * A child control may hold keyboard focus when a media host contains controls.
+ */
+[data-media-zoomable][data-media-corners]:is(:focus-visible, :has(:focus-visible), [data-media-press="true"]),
+[data-media-zoomable]:is(:focus-visible, :has(:focus-visible), [data-media-press="true"]) [data-media-corners],
+[data-media-zoomable] [data-media-corners][data-media-press="true"] {
+  clip-path: var(--media-corner-selected, var(--media-corner-rest, inset(0)));
+}
+
+/* The changing cut is the affordance; remove the superseded corner arrow. */
+.gogo-zoom[data-media-zoomable]::after { content: none !important; display: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-media-corners] { transition: none; }
+}
+
+/* These figures used a solid mat beneath their image. Let the cut reveal the page. */
+:is(.q-panorama,.q-result-main,.q-film,.gogo-film):has([data-media-corners]) { background: transparent; }
+.archive-tile[data-media-zoomable] .tile-label small { display: none; }
+video[data-media-corners]:fullscreen { -webkit-mask-image: none; mask-image: none; clip-path: none; }
+video[data-media-corners]:-webkit-full-screen { -webkit-mask-image: none; mask-image: none; clip-path: none; }
+
+/* Detail views keep every original pixel, without cutting a second set of corners. */
+html.media-detail-open { overflow: hidden; scroll-snap-type: none !important; }
+.media-detail {
+  position: fixed; inset: 0; width: 100%; max-width: none;
+  height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0;
+  background: var(--paper,#111110); color: var(--ink,#efeee9);
+  overscroll-behavior: contain;
+}
+.media-detail::backdrop { background: #000a; }
+.media-detail-stage {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; min-height: 100%; padding: 64px clamp(16px,4vw,56px) 24px;
+}
+.media-detail-stage > img {
+  display: block; width: auto; height: auto; max-width: 100%;
+  max-height: calc(100dvh - 88px); object-fit: contain;
+  border: 0; background: none;
+}
+.media-detail-close {
+  position: fixed; z-index: 2; top: max(12px,env(safe-area-inset-top)); right: 16px;
+  display: grid; place-items: center; width: 44px; height: 44px;
+  padding: 0; border: 0; background: var(--paper,#111110); color: inherit; cursor: pointer;
+}
+.media-detail-close svg { width: 24px; height: 24px; }
+.media-detail-close:focus-visible { outline: 1px solid currentColor; outline-offset: -4px; }
+.media-detail-feedback { position: absolute; padding: 24px; font-size: 16px; }
+.media-detail-feedback[hidden] { display: none; }
+
+/* Image detail is one navigation level. The existing upper-left return mark
+   closes it first; its page action resumes after the dialog closes. */
+:is(#portfolio-media-viewer,#media-viewer,#qianli-viewer,#gogo-lightbox,#archive-viewer,#tea-board-viewer,.il-dialog)[open]
+  :is(.media-detail-close,.viewer-close,[data-q-close],#archive-close,[data-board-close],.il-dialog-close),
+#gogo-lightbox[open] .gogo-lightbox-bar form { display: none !important; }
+dialog[data-image-layer] :is(.standalone-back,#back,#toHub,#secBack,.media-layer-back) {
+  position:fixed !important;z-index:999 !important;top:16px !important;left:18px !important;
+  display:inline-flex !important;align-items:center;justify-content:center;
+  width:44px;height:44px;min-width:44px;min-height:44px;padding:0;margin:0;
+  border:0;background:none;color:var(--ink,#efeee9);cursor:pointer;
+}
+.media-layer-back svg {width:28px;height:28px;display:block}
+dialog[data-image-layer] :is(.standalone-back,#back,#toHub,#secBack,.media-layer-back):focus-visible {
+  outline:1.5px solid currentColor;outline-offset:2px;
+}
+dialog[data-image-layer]:focus {outline:none}
+/* A centred dialog would clip a fixed corner control outside its own box.
+   Give image readers a full-viewport layer so the mark keeps its page position. */
+#gogo-lightbox[data-image-layer],#icon-library .il-dialog[data-image-layer] {
+  inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;border:0;
+}
+#gogo-lightbox[data-image-layer] {
+  display:flex;flex-direction:column;justify-content:center;
+  padding:72px clamp(20px,4vw,56px) 24px;
+}
+#gogo-lightbox[data-image-layer] .gogo-lightbox-media img {max-height:calc(100dvh - 150px)}
+#archive-viewer[data-image-layer] .archive-viewer-bar {padding-left:84px}
+#icon-library .il-dialog[data-image-layer] {background:var(--paper);display:grid;place-items:center}
+#icon-library .il-dialog[data-image-layer] .il-dialog-content {width:min(740px,calc(100% - 36px))}
+@media(max-width:600px){
+  dialog[data-image-layer] :is(.standalone-back,#back,#toHub,#secBack,.media-layer-back){top:10px !important;left:10px !important}
+}
+</style>
+<style data-portfolio-style-source="../assets/video-detail.css" data-source-version="4dfc0d0f0d">
+.video-preview {display:block;position:relative;width:100%;margin:0;padding:0;border:0;background:none;line-height:0;cursor:zoom-in;touch-action:manipulation}
+.video-preview > video {pointer-events:none}
+.video-preview:focus-visible {outline:1px solid var(--ink);outline-offset:5px}
+html.video-detail-open {overflow:hidden;scroll-snap-type:none!important}
+#portfolio-video-detail {
+  position:fixed;inset:0;width:100%;max-width:none;height:100dvh;max-height:none;
+  margin:0;padding:0;border:0;background:var(--paper,#111110);color:var(--ink,#efeee9);overflow:auto;overscroll-behavior:contain;
+}
+#portfolio-video-detail::backdrop {background:#000a}
+.video-detail-stage {display:flex;align-items:center;justify-content:center;width:100%;height:100%;padding:64px clamp(16px,4vw,56px) 24px}
+#portfolio-video-detail .video-detail-player {display:block;width:min(1400px,100%);height:auto;max-width:100%;max-height:calc(100dvh - 88px);margin:0;border:0;border-radius:0;object-fit:contain;clip-path:none;background:#000}
+.video-detail-close {position:fixed;z-index:2;top:max(12px,env(safe-area-inset-top));right:16px;display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;background:var(--paper,#111110);color:inherit;cursor:pointer}
+.video-detail-close svg {width:24px;height:24px}
+.video-detail-close:focus-visible {outline:1px solid currentColor;outline-offset:-4px}
+.video-detail-feedback {position:absolute;left:50%;top:50%;max-width:80%;margin:0;padding:16px 24px;transform:translate(-50%,-50%);background:var(--paper,#111110);font-size:16px}
+.video-detail-feedback[hidden] {display:none}
+#portfolio-video-detail .video-detail-player:fullscreen {width:100vw;height:100vh;max-width:none;max-height:none;object-fit:contain}
+#portfolio-video-detail .video-detail-player:-webkit-full-screen {width:100vw;height:100vh;max-width:none;max-height:none;object-fit:contain}
+</style>
+<style data-portfolio-style-source="../assets/media-view-only.css" data-source-version="899ee04344">
+/* Restrict media save gestures without changing text, controls or page layout. */
+img,picture,svg,canvas,video,audio,[data-media-zoomable] {
+  -webkit-touch-callout:none;
+  -webkit-user-drag:none;
+}
+img,picture,svg,canvas {
+  -webkit-user-select:none;
+  user-select:none;
+}
+</style>
+<style data-portfolio-style-source="../assets/editorial-hierarchy.css" data-source-version="932fdd7dc9">
+/* A descending editorial hierarchy. Original artwork, product wordmarks,
+   numeric specimens and diagram geometry keep their own scale. */
+:root {
+  --editorial-title: clamp(38px, 3.7vw, 50px);
+  --editorial-subtitle: clamp(25px, 2.4vw, 31px);
+  --editorial-body: 18px;
+  --editorial-note: 14px;
+}
+
+/* 1. Chapter titles. A project's opening wordmark is part of its artwork. */
+#resume .about-intro h1,
+.gogo-case h2,
+.qianli-case .q-heading h2,
+.skills-page .chapter-heading h2,
+.sudoku-scenes h2,
+.liangzhu-case :is(.actbar h2, .htitle),
+.legacy-case:not(.liangzhu-case, .archive) :is(.htitle, .core h2),
+.legacy-case.archive :is(.hero h1, .yr),
+.arright-case main h2,
+.practice .practice-card h2 {
+  font-size: var(--editorial-title) !important;
+  line-height: 1.2 !important;
+  letter-spacing: -.025em !important;
+}
+
+/* 2. Subsections sit clearly below their parent chapter. */
+.gogo-case h3,
+.sudoku-scenes h3,
+#resume .about-details h2,
+.skills-page #icon-library .il-heading {
+  font-size: var(--editorial-subtitle) !important;
+  line-height: 1.3 !important;
+  letter-spacing: -.015em !important;
+  font-weight: 300 !important;
+  color: var(--ink) !important;
+}
+
+/* 3. Item titles and reading text share a scale; weight and ink separate them. */
+:is(.gogo-case, .qianli-case, .skills-page, .legacy-case, .arright-case)
+  :is(p, li, dt, dd),
+.sudoku-scenes :is(p, li, dt, dd, h4),
+.practice .practice-card p,
+#resume :is(.intro p, .about-details li),
+.gogo-case h4,
+.skills-page .workflow h3,
+.skills-page .workflow p,
+.skills-page .chapter-note p,
+.skills-page .skills-index a > span:first-child,
+.sudoku-scenes .anatomy-callout-title,
+.legacy-case :is(.featlist .k, .act .at, .mid .ti),
+.qianli-case :is(.q-paths b, .q-flow b, .q-flow span),
+.portfolio-shell .mi {
+  font-size: var(--editorial-body) !important;
+  line-height: 1.65 !important;
+  letter-spacing: 0 !important;
+}
+.gogo-case h4,
+.sudoku-scenes h4,
+.skills-page .workflow h3 {
+  font-weight: 300 !important;
+  color: var(--ink) !important;
+}
+.gogo-case .gogo-mode-copy p { color: var(--mid) !important; }
+
+/* 3. Captions, source information and controls are the only small text. */
+body figcaption,
+:is(.gogo-case, .qianli-case, .skills-page, .legacy-case, .arright-case, .sudoku-scenes)
+  :is(small, .eyebrow, .meta-row, .num, .hen, .h2en, .linknote, .project-type,
+      .section-no, .screen-caption, .art-number, .art-kind, .art-facts,
+      .art-caption, .sample-label, .sample-foot, .hero-kicker, .pdfbar .pt),
+.gogo-case :is(.gogo-small-index, .gogo-concept-label, .gogo-concept-caption,
+                .gogo-logic-track li, .gogo-chapter-nav a, .gogo-dot-title,
+                .gogo-hub-era, .gogo-hub-actor, .gogo-terrain-tools,
+                .gogo-player-sequence span),
+.qianli-case :is(.q-palette span, .q-parameters dt, .q-paths small),
+.skills-page :is(.chapter-meta, .text-link, .archive-count, .archive-status,
+                 .tile-label, .footer-meta, .viewer-kicker, .archive-filters button,
+                 .archive-tools button, .archive-sentinel button, .fg-recording-label),
+.skills-page #icon-library :is(.il-overline, .il-text-button, .il-total,
+                               .il-subheading, .il-filter, .il-filter-count,
+                               .il-card-title, .il-detail-facts),
+.sudoku-scenes :is(.case-type-name, .case-palette span, .case-delivery dt,
+                   .sudoku-action span, .case-coach-steps button,
+                   .case-inline-actions button),
+#resume :is(.cv-head .latin, .contact, .tags span, .mi .mn),
+.legacy-case.archive .mid .meta {
+  font-size: var(--editorial-note) !important;
+  line-height: 1.55 !important;
+  letter-spacing: 0 !important;
+}
+
+/* Accent belongs to the dot artwork. Auxiliary words stay neutral and legible. */
+body.gogo-case .gogo-small-index {
+  font-size: clamp(15px, 1.3vw, 16px) !important;
+  font-weight: 300 !important;
+  color: var(--mid) !important;
+}
+body.gogo-case .gogo-small-index > span {
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  color: inherit !important;
+}
+.gogo-case .gogo-chapter-nav a > span:first-child { display: none; }
+.gogo-case .gogo-journey li > span { color: var(--mid) !important; }
+.gogo-case .gogo-network-side { color: var(--mid) !important; }
+
+/* A clear gap carries section rhythm. Thin rules around every text block do not. */
+.gogo-case :is(.gogo-chapter, .gogo-relationship, .gogo-logic-track li,
+               .gogo-devlog, .gogo-semantic-list li, .gogo-behaviors,
+               .gogo-system article, .gogo-modes, .gogo-mode,
+               .gogo-story-line, .gogo-journey li, .gogo-footer),
+.qianli-case :is(.q-panel, .q-paths > a, .q-elements dl > div,
+                 .q-flow li, .q-detail, .q-end),
+.skills-page :is(.skills-index, .skills-index a, .skill-chapter, .chapter-meta,
+                 .workflow li, .archive-toolbar, .text-link, .footer-meta),
+.skills-page .skills-footer > div:first-child,
+.legacy-case :is(header.top, .meta-row, .actbar, section.s, .feat,
+                 .featlist li, .speclist li, .closing, footer),
+.legacy-case.archive .item,
+.arright-case :is(.mechanics li, .mobile-section),
+.sudoku-scenes :is(.case-chapter, .case-type-study, .case-digit-study,
+                   .case-flow-block, .case-continuity, .case-coach-steps,
+                   .case-coach-steps button, .case-inline-actions button,
+                   .case-delivery),
+#resume .about-details > section {
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+}
+.gogo-case .gogo-relationship article + article {
+  border-top: 0 !important;
+}
+.skills-page .skills-index a + a,
+#resume .about-details > section { border-left: 0 !important; }
+.gogo-case .gogo-chapter-number { display: none !important; }
+.gogo-case .gogo-relationship { gap: clamp(28px, 4vw, 56px); }
+.gogo-case .gogo-relationship article { padding-block: 16px; }
+.qianli-case .q-elements dl { gap: 24px; }
+.qianli-case .q-elements dl > div { padding-bottom: 0; }
+.skills-page .workflow { gap: clamp(28px, 3vw, 44px); }
+#resume .about-details { gap: clamp(24px, 3vw, 48px); }
+#resume .about-details > section { padding-inline: 0; }
+
+/* Icon names must remain readable in the Skills gallery on narrow screens. */
+@media (max-width: 600px) {
+  .skills-page #icon-library .il-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px 12px;
+  }
+  .skills-page #icon-library .il-card-title { min-height: 0; }
+}
+
+@media (max-width: 700px) {
+  :root {
+    --editorial-title: clamp(32px, 8vw, 40px);
+    --editorial-subtitle: clamp(22px, 6vw, 26px);
+    --editorial-body: 16px;
+    --editorial-note: 13px;
+  }
+  .skills-page .workflow,
+  .skills-page .workflow-six { grid-template-columns: 1fr; gap: 22px; }
+  .skills-page .workflow li {
+    display: grid;
+    grid-template-columns: minmax(0, 8em) minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+    padding-top: 0;
+  }
+  .skills-page .workflow h3,
+  .skills-page .workflow p { margin: 0; }
+  #resume .about-details { gap: 28px; }
+}
+</style>
+<style data-portfolio-style-source="../assets/wide-screen.css" data-source-version="faac84ee2a" media="(min-width: 1801px)">
+/* The approved laptop layouts remain unchanged. Large displays get their own
+   artwork proportions and reading measures, without page zoom or transforms. */
+@media (min-width: 1801px) {
+  :root {
+    --editorial-title: clamp(50px, 2.5vw, 64px);
+    --editorial-subtitle: clamp(31px, 1.55vw, 40px);
+    --editorial-body: clamp(18px, 1vw, 22px);
+    --editorial-note: clamp(14px, .7vw, 16px);
+  }
+  .portfolio-shell .line { font-size: clamp(64px, 3.3vw, 84px); }
+  .portfolio-shell .menu {
+    top: calc(50% + clamp(64px, 4vw, 88px));
+    width: min(80vw, 1080px);
+    max-width: 1080px;
+    gap: 14px 32px;
+  }
+  .portfolio-shell #stage.hublv .mi { font-size: clamp(20px, 1vw, 25px); }
+  body.portfolio-shell #resume {
+    max-width: min(88vw, 1640px);
+    padding-inline: clamp(72px, 4vw, 112px);
+  }
+  .about-hero {
+    grid-template-columns: minmax(0, 1fr) minmax(380px, .95fr);
+    gap: clamp(76px, 5vw, 144px);
+  }
+  .about-portrait { width: clamp(380px, 22vw, 600px); max-width: 100%; }
+  #resume .about-intro .cv-head h1 { font-size: clamp(64px, 3.3vw, 84px) !important; }
+  #resume .about-intro .intro { max-width: 620px; }
+  #resume .about-details > section { padding-inline: 36px; }
+  #resume .about-details > section:first-child { padding-left: 0; }
+  #resume .about-details > section:last-child { padding-right: 0; }
+  .practice { width: min(92vw, 2240px); padding-inline: clamp(72px, 4vw, 112px); }
+  .practice-grid { gap: clamp(64px, 4vw, 112px); }
+  .skills-page .page-width { width: min(94vw, 2320px); max-width: none; }
+  .skills-page .hero-heading { gap: clamp(80px, 6vw, 160px); }
+  .skills-page .hero-note { max-width: 32ch; }
+  .legacy-case.archive .wrap { max-width: min(80vw, 1320px); }
+  .qianli-case .q-study { max-width: min(88vw, 2200px); }
+}
+
+/* Wide monitors get their own composition. Laptop and mobile rules stay intact. */
+@media (min-width: 1801px) {
+  .sudoku-scenes {
+    --layout-width: min(100vw, 2320px);
+    --scene-gutter: clamp(88px, 5.5vw, 128px);
+  }
+
+  /* Keep the diagonally cropped board in the left half, with the title right. */
+  .sudoku-opening > .hero {
+    padding-block: clamp(88px, 9svh, 144px);
+  }
+  .sudoku-board-angle {
+    --board-size: calc(var(--layout-width) * 1.42);
+    left: calc(50vw - var(--board-size) * 1.12);
+  }
+  .sudoku-scenes .hero-main {
+    width: 50%;
+    padding-right: var(--scene-gutter);
+  }
+  .sudoku-scenes .hero h1 {
+    font-size: clamp(180px, calc(var(--layout-width) * .112), 268px);
+  }
+  .sudoku-scenes .hero-main .case-role,
+  .sudoku-scenes .hero-main .case-release {
+    max-width: 32em;
+    margin-left: auto;
+  }
+  .sudoku-actions {
+    gap: 16px 32px;
+    margin-top: clamp(36px, 3svh, 48px);
+  }
+
+  /* The measured dock still drives the existing rotation/shrink animation. */
+  .sudoku-scenes .case-chapter.sudoku-intro {
+    max-width: 2320px;
+    grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+    gap: clamp(96px, 7vw, 200px);
+    padding-inline: var(--scene-gutter);
+  }
+  .sudoku-board-dock {
+    width: min(100%, 32vw, 62svh);
+  }
+  .sudoku-intro-copy {
+    width: 100%;
+    max-width: 880px;
+    justify-self: start;
+  }
+  .sudoku-intro-copy .case-lead {
+    max-width: 42em;
+  }
+
+  /* Later chapters use the wider stage, while prose keeps a reading measure. */
+  .sudoku-story {
+    max-width: 2320px;
+    padding-inline: var(--scene-gutter);
+  }
+  .sudoku-scenes .case-product-art {
+    width: min(100%, calc(100svh - 280px), 1280px);
+  }
+  .sudoku-story .sudoku-gallery-copy {
+    max-width: 46em;
+  }
+  .sudoku-anatomy {
+    --anatomy-phone-height: clamp(600px, 65svh, 840px);
+    max-width: 1760px;
+    margin-inline: auto;
+  }
+  .sudoku-scenes .anatomy-callout {
+    max-width: 280px;
+  }
+  .sudoku-scenes .case-visual-system {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
+    column-gap: clamp(96px, 6vw, 160px);
+  }
+  .sudoku-scenes .visual-device-stage {
+    top: clamp(112px, 12svh, 176px);
+    width: min(100%, calc((100svh - 220px) * .49), 560px);
+  }
+  .sudoku-scenes .visual-system-block > p {
+    max-width: 32em;
+  }
+  .case-iteration-sequence {
+    --iteration-phone: clamp(160px, 15svh, 224px);
+  }
+  .sudoku-ui-wall {
+    --ui-wall-bleed: var(--scene-gutter);
+  }
+}
+
+/* Large displays get roomier artwork, while the approved laptop composition
+   remains untouched. Text keeps its existing reading measure and hierarchy. */
+@media (min-width: 1801px) {
+  /* GouGO: the original grids and native drawings grow with their container. */
+  .gogo-case {
+    --gogo-stage-width: min(100vw, 2200px);
+    --gogo-page-safe: clamp(88px, 5.5vw, 140px);
+  }
+  .gogo-case .gogo-hero-photo h1 { font-size: clamp(76px, 4vw, 112px); }
+  .gogo-case .gogo-project-meta > div {
+    grid-template-columns: minmax(112px, 5vw) minmax(0, 1fr);
+    gap: clamp(24px, 1.3vw, 36px);
+  }
+  .gogo-case .gogo-project-meta dt { white-space: nowrap; }
+  .gogo-case .gogo-wrap {
+    width: min(88vw, 2200px);
+  }
+  .gogo-case .gogo-terrain-shell {
+    width: 92%;
+    max-width: 1800px;
+    height: clamp(680px, 64svh, 960px);
+  }
+  .gogo-case .gogo-logic-network {
+    height: clamp(680px, 70svh, 980px);
+  }
+  .gogo-case .gogo-research-sprite svg {
+    height: clamp(180px, 17svh, 245px);
+  }
+  .gogo-case .gogo-code-grid {
+    width: 100%;
+    max-width: 1680px;
+  }
+  .gogo-case .gogo-code-grid .gogo-zoom {
+    max-width: 100%;
+  }
+  .gogo-case .gogo-mode-visual,
+  .gogo-case .gogo-experience-pair .gogo-mode figure {
+    max-width: clamp(300px, 18vw, 430px);
+  }
+  .gogo-case .gogo-experience-pair .gogo-interaction-overview {
+    width: min(100%, 1440px);
+  }
+  .gogo-case .gogo-field-motion {
+    --field-height: clamp(168px, 14svh, 210px);
+  }
+
+  /* Tea: retain full source-image geometry and the flowing photo rows. */
+  .tea-case .tea-page {
+    width: min(92vw, 2320px);
+    padding-inline: clamp(72px, 4vw, 112px);
+  }
+  .tea-case .tea-cover h1 {
+    font-size: clamp(126px, 6.6vw, 164px);
+  }
+  .tea-case .tea-cover .tea-english {
+    font-size: clamp(43px, 2.2vw, 58px);
+  }
+  .tea-case .tea-particle-stage {
+    height: clamp(680px, 72svh, 1080px);
+  }
+  .tea-case .tea-game-recording {
+    max-width: min(100%, calc(68svh * 4 / 3));
+  }
+  .tea-case .tea-tools-study .tea-study-image {
+    max-width: 600px;
+  }
+  .tea-case .tea-character-study,
+  .tea-case .tea-prototype-base,
+  .tea-case .tea-native-gestures {
+    max-width: min(100%, 1560px);
+  }
+  .tea-case .tea-spatial-flow {
+    width: min(85%, 1350px);
+  }
+  .tea-case .tea-sketch-chapter {
+    width: 100%;
+    max-width: none;
+    padding-inline: 0;
+  }
+  .tea-case .tea-sketch-chapter > .tea-heading,
+  .tea-case .tea-sketch-row-label {
+    width: min(92vw, 2320px);
+    max-width: none;
+    padding-inline: clamp(72px, 4vw, 112px);
+  }
+  .tea-case .tea-sketch-row:nth-child(1) {
+    --study-height: clamp(230px, 20svh, 300px);
+  }
+  .tea-case .tea-sketch-row:nth-child(2) {
+    --study-height: clamp(280px, 25svh, 380px);
+  }
+  .tea-case .tea-sketch-row:nth-child(3) {
+    --study-height: clamp(225px, 20svh, 295px);
+  }
+  .tea-case .tea-course-chapter {
+    --course-photo-height: clamp(250px, 24svh, 360px);
+  }
+
+  /* Liangzhu: give diagrams and result windows the width of a visual case,
+     instead of constraining them to a text article's 1200px shell. */
+  .liangzhu-case .wrap {
+    width: min(92vw, 2320px);
+    max-width: none;
+    padding-inline: clamp(72px, 4vw, 112px);
+  }
+  .liangzhu-case .liangzhu-overview-map {
+    width: min(88vw, 2200px);
+    max-width: none;
+  }
+  .liangzhu-case .liangzhu-io-sequence {
+    width: min(100%, 1400px);
+    --io-gap: clamp(44px, 3vw, 72px);
+  }
+  .liangzhu-case .liangzhu-crop-gallery[data-crop-gallery="grid"] {
+    height: clamp(362px, 36svh, 520px);
+  }
+  .liangzhu-case .liangzhu-crop-gallery[data-crop-gallery="strip"] {
+    height: clamp(300px, 28svh, 430px);
+  }
+  .liangzhu-case .liangzhu-output-rows .liangzhu-crop-gallery {
+    height: clamp(280px, 27svh, 420px);
+  }
+}
+</style>
 
 
   <title>PLIX 字重对比 — Who am I</title>

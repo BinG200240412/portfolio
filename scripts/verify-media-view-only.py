@@ -34,8 +34,9 @@ class PagePolicy(HTMLParser):
             assert 'nodownload' in attrs.get('controlslist', '').split(), (self.path.name, tag)
             assert 'controls' not in attrs, (self.path.name, 'inline controls')
             video_count += 1
-        if tag in ('script', 'link'):
-            source = attrs.get('src', '') if tag == 'script' else attrs.get('href', '')
+        if tag in ('script', 'link', 'style'):
+            source = (attrs.get('src', '') if tag == 'script' else
+                      attrs.get('data-portfolio-style-source', '') if tag == 'style' else attrs.get('href', ''))
             name = Path(urlsplit(source).path).name
             if name in ('media-view-only.js', 'media-view-only.css', 'video-detail.js', 'video-detail.css'):
                 assert (self.path.parent / urlsplit(source).path).resolve().is_file(), source

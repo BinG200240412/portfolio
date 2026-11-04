@@ -30,3 +30,4 @@ for page in [*ROOT.glob('*.html'),*(ROOT/'sections').glob('*.html')]:
  updated=re.sub(r'((?:src|href)=[\"\'])([^\"\']+)([\"\'])',replace,source)
  if updated!=source:page.write_text(updated);changed+=1
 print(f'{changed} pages updated; {len(cache)} JS/CSS assets share stable content versions')
+subprocess.run([sys.executable, str(ROOT/'scripts/build-page-styles.py')], check=True)
