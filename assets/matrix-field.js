@@ -104,6 +104,7 @@
   let gorillaReady = false, gorillaPlacement = null;
   let pending = null, maskSettling = 0;
   let pointerHover = null, focusHover = null, menuPreview = null;
+  let kissProgress = 1;
   let protectedBoxes = null;
   let speechKey = null, speechBorn = 0;
   const speechless = new Set(['robot-dog','quest-3','sudoku','skill']);
@@ -460,6 +461,7 @@
     const follow = 1 - Math.exp(-dt * 12);
     pointerX += (aimX - pointerX) * follow;
     pointerY += (aimY - pointerY) * follow;
+    if (kissProgress < 1) kissProgress = Math.min(1, kissProgress + dt / 1.7);
     for (const entry of hotspots.values()) {
       entry.hover += (entry.hoverTarget-entry.hover)*follow;
       entry.hoverElapsed = entry.hoverTarget || pending?.entry === entry ||
@@ -490,9 +492,10 @@
         hover:reduced.matches ? 0 : entry?.hover || 0,hoverElapsed:entry?.hoverElapsed || 0,
         gaitPhase:entry?.gaitPhase,reduced:reduced.matches};
       if (item.id === 'gorilla') Object.assign(options,{morph:smooth(morph),pointerX,pointerY});
+      if (item.id === 'kiss-woman') options.kissProgress = kissProgress;
       const image = source.render(item.id, time * item.speed, item.variant, options);
       if (!image?.pixels || !image.width || !image.height) continue;
-      const p = placement(item, time, image);
+      const p = placement(item, item.id === 'kiss-woman' ? 0 : time, image);
       const {pitch,x,y,cos,sin} = p, size = ledPitch * 1.4, palette = palettes[item.id];
       if (!palette) continue;
       p.hitBox = inkBounds(image);
@@ -554,11 +557,13 @@
       pending = null;
       aimX = aimY = pointerX = pointerY = 0;
       pointerHover=focusHover=null;
+      kissProgress = 1;
       for (const entry of hotspots.values()) {entry.hover=entry.hoverTarget=0;entry.staticActive=0;}
       buttonVisibility();
       return;
     }
     if (reduced.matches) {
+      kissProgress = 1;
       if (pending) {
         const reaction=finishPending();
         if (reaction) reaction.entry.staticActive=1;
@@ -589,7 +594,12 @@
     ? target.closest('#menu .mi')?.dataset.matrixMotif || null : null;
   menu?.addEventListener('pointerover',event => {
     if (event.pointerType === 'touch') return;
-    menuPreview=motifFromMenu(event.target); syncHoverTargets(); if (reduced.matches) draw(6);
+    menuPreview=motifFromMenu(event.target);
+    if (menuPreview === 'skill' && motifFromMenu(event.relatedTarget) !== 'skill' &&
+        kissProgress === 1 && visible() && !reduced.matches && projectGate()) {
+      kissProgress = 0;
+    }
+    syncHoverTargets(); if (reduced.matches) draw(6);
   });
   menu?.addEventListener('pointerout',event => {
     if (event.pointerType === 'touch') return;
@@ -602,11 +612,13 @@
     menuPreview=motifFromMenu(event.relatedTarget); syncHoverTargets(); if (reduced.matches) draw(6);
   });
   addEventListener('portfolio:language', () => {
+    kissProgress = 1;
     buttonLabel(); for (const entry of hotspots.values()) objectLabel(entry);
     updateQuietZones(); if (reduced.matches) draw(6);
   });
   addEventListener('portfolio:navigation', () => {
     pointerHover=focusHover=menuPreview=null;
+    kissProgress = 1;
     speechKey=null;
     for (const entry of hotspots.values()) {entry.hoverTarget=0;objectLabel(entry);}
     if (reduced.matches && visible()) draw(6);

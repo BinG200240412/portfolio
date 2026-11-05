@@ -709,7 +709,7 @@
 
 ;
 
-/* Source: assets/matrix-project-stickers.js | sha256: 860f1b2d351d47e77f44d2fe17dc953668032d23c1414ad702ded4e87bf48dec */
+/* Source: assets/matrix-project-stickers.js | sha256: 5640b6aaa74b41fb40ab16ac7796912c0564521caa4e02171d674d3203d29c5e */
 /* Portfolio pixel stickers: open lettering, a cute nine-square doodle and the author’s portrait. Pure pixel data; no DOM, timers or dependencies.
  * Roles: 0 transparent, 1 primary, 2 secondary, 3 neutral, 4 accent. */
 (() => {
@@ -930,12 +930,48 @@
     "0000000000000000000000000000000000000000000000000000000000000000"
 ];
   const portraitPixels = Uint8Array.from(portraitRows.join(''), Number);
-  function portrait(time) {
-    const pixels = new Uint8Array(PORTRAIT_WIDTH * PORTRAIT_HEIGHT);
-    const lift = Math.sin(time * .65) > .5 ? -1 : 0;
-    for (let i=0;i<portraitPixels.length;i++) {
-      const role = portraitPixels[i];
-      if (role) pixels[i + (role === 4 ? lift * PORTRAIT_WIDTH : 0)] = role;
+  // The hand and forearm form one path in the original SVG. These edges
+  // isolate that path on rows 41–70; keep the two shared lip pixels in place.
+  const handRightEdge = [29,30,30,30,30,30,31,30,30,30,29,29,28,28,27,
+    27,26,26,25,24,23,22,21,19,19,19,19,20,20,20];
+  const handPixels = new Uint8Array(portraitPixels.length);
+  const stillPortrait = portraitPixels.slice();
+  handRightEdge.forEach((right, row) => {
+    const y = 41 + row;
+    for (let x = row === 0 ? 28 : 0; x <= right; x++) {
+      const index = y * PORTRAIT_WIDTH + x;
+      const role = portraitPixels[index];
+      handPixels[index] = role === 2 ? 1 : role;
+      if (!(x === 28 && y === 41) && !(x === 31 && y === 47)) stillPortrait[index] = 0;
+    }
+  });
+  function ease(value) {
+    const t = Math.max(0, Math.min(1, value));
+    return t * t * (3 - 2 * t);
+  }
+  function portrait(_time, _variant, options) {
+    const progress = options.kissProgress || 0;
+    if (options.reduced || progress <= 0 || progress >= 1) return portraitPixels;
+    const swing = ease(progress / .36) * (1 - ease((progress - .50) / .50));
+    const pixels = stillPortrait.slice();
+    const wristX = 16, wristY = 63;
+    for (let y = 34; y <= 70; y++) {
+      // Inverse-sample the hand into the existing grid. The wrist and lower
+      // forearm stay joined while the fingers arc away below the kiss marks.
+      const reach = swing * ease((wristY - y) / 14);
+      const angle = reach * .40;
+      const cos = Math.cos(angle), sin = Math.sin(angle);
+      const dy = y - wristY - reach * 4.6;
+      for (let x = 0; x <= 31; x++) {
+        const index = y * PORTRAIT_WIDTH + x;
+        if (pixels[index]) continue;
+        const dx = x - wristX;
+        const sourceX = Math.round(wristX + dx * cos - dy * sin);
+        const sourceY = Math.round(wristY + dx * sin + dy * cos);
+        if (sourceX >= 0 && sourceX < PORTRAIT_WIDTH && sourceY >= 41 && sourceY <= 70) {
+          pixels[index] = handPixels[sourceY * PORTRAIT_WIDTH + sourceX];
+        }
+      }
     }
     return pixels;
   }
@@ -1292,7 +1328,7 @@
 
 ;
 
-/* Source: assets/matrix-field.js | sha256: 121e56fac22c3aca27e71741eb28935bbe185fc8c1d14866294f4599d24a47de */
+/* Source: assets/matrix-field.js | sha256: 5483b9c164bce63e4df2cee1991e9807cd42e38180164f470b6e543fd9c5e3e2 */
 (() => {
   const canvas = document.getElementById('matrix-field');
   const stage = document.getElementById('stage');
@@ -1399,6 +1435,7 @@
   let gorillaReady = false, gorillaPlacement = null;
   let pending = null, maskSettling = 0;
   let pointerHover = null, focusHover = null, menuPreview = null;
+  let kissProgress = 1;
   let protectedBoxes = null;
   let speechKey = null, speechBorn = 0;
   const speechless = new Set(['robot-dog','quest-3','sudoku','skill']);
@@ -1755,6 +1792,7 @@
     const follow = 1 - Math.exp(-dt * 12);
     pointerX += (aimX - pointerX) * follow;
     pointerY += (aimY - pointerY) * follow;
+    if (kissProgress < 1) kissProgress = Math.min(1, kissProgress + dt / 1.7);
     for (const entry of hotspots.values()) {
       entry.hover += (entry.hoverTarget-entry.hover)*follow;
       entry.hoverElapsed = entry.hoverTarget || pending?.entry === entry ||
@@ -1785,9 +1823,10 @@
         hover:reduced.matches ? 0 : entry?.hover || 0,hoverElapsed:entry?.hoverElapsed || 0,
         gaitPhase:entry?.gaitPhase,reduced:reduced.matches};
       if (item.id === 'gorilla') Object.assign(options,{morph:smooth(morph),pointerX,pointerY});
+      if (item.id === 'kiss-woman') options.kissProgress = kissProgress;
       const image = source.render(item.id, time * item.speed, item.variant, options);
       if (!image?.pixels || !image.width || !image.height) continue;
-      const p = placement(item, time, image);
+      const p = placement(item, item.id === 'kiss-woman' ? 0 : time, image);
       const {pitch,x,y,cos,sin} = p, size = ledPitch * 1.4, palette = palettes[item.id];
       if (!palette) continue;
       p.hitBox = inkBounds(image);
@@ -1849,11 +1888,13 @@
       pending = null;
       aimX = aimY = pointerX = pointerY = 0;
       pointerHover=focusHover=null;
+      kissProgress = 1;
       for (const entry of hotspots.values()) {entry.hover=entry.hoverTarget=0;entry.staticActive=0;}
       buttonVisibility();
       return;
     }
     if (reduced.matches) {
+      kissProgress = 1;
       if (pending) {
         const reaction=finishPending();
         if (reaction) reaction.entry.staticActive=1;
@@ -1884,7 +1925,12 @@
     ? target.closest('#menu .mi')?.dataset.matrixMotif || null : null;
   menu?.addEventListener('pointerover',event => {
     if (event.pointerType === 'touch') return;
-    menuPreview=motifFromMenu(event.target); syncHoverTargets(); if (reduced.matches) draw(6);
+    menuPreview=motifFromMenu(event.target);
+    if (menuPreview === 'skill' && motifFromMenu(event.relatedTarget) !== 'skill' &&
+        kissProgress === 1 && visible() && !reduced.matches && projectGate()) {
+      kissProgress = 0;
+    }
+    syncHoverTargets(); if (reduced.matches) draw(6);
   });
   menu?.addEventListener('pointerout',event => {
     if (event.pointerType === 'touch') return;
@@ -1897,11 +1943,13 @@
     menuPreview=motifFromMenu(event.relatedTarget); syncHoverTargets(); if (reduced.matches) draw(6);
   });
   addEventListener('portfolio:language', () => {
+    kissProgress = 1;
     buttonLabel(); for (const entry of hotspots.values()) objectLabel(entry);
     updateQuietZones(); if (reduced.matches) draw(6);
   });
   addEventListener('portfolio:navigation', () => {
     pointerHover=focusHover=menuPreview=null;
+    kissProgress = 1;
     speechKey=null;
     for (const entry of hotspots.values()) {entry.hoverTarget=0;objectLabel(entry);}
     if (reduced.matches && visible()) draw(6);

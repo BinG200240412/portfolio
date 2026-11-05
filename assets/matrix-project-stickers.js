@@ -218,12 +218,48 @@
     "0000000000000000000000000000000000000000000000000000000000000000"
 ];
   const portraitPixels = Uint8Array.from(portraitRows.join(''), Number);
-  function portrait(time) {
-    const pixels = new Uint8Array(PORTRAIT_WIDTH * PORTRAIT_HEIGHT);
-    const lift = Math.sin(time * .65) > .5 ? -1 : 0;
-    for (let i=0;i<portraitPixels.length;i++) {
-      const role = portraitPixels[i];
-      if (role) pixels[i + (role === 4 ? lift * PORTRAIT_WIDTH : 0)] = role;
+  // The hand and forearm form one path in the original SVG. These edges
+  // isolate that path on rows 41–70; keep the two shared lip pixels in place.
+  const handRightEdge = [29,30,30,30,30,30,31,30,30,30,29,29,28,28,27,
+    27,26,26,25,24,23,22,21,19,19,19,19,20,20,20];
+  const handPixels = new Uint8Array(portraitPixels.length);
+  const stillPortrait = portraitPixels.slice();
+  handRightEdge.forEach((right, row) => {
+    const y = 41 + row;
+    for (let x = row === 0 ? 28 : 0; x <= right; x++) {
+      const index = y * PORTRAIT_WIDTH + x;
+      const role = portraitPixels[index];
+      handPixels[index] = role === 2 ? 1 : role;
+      if (!(x === 28 && y === 41) && !(x === 31 && y === 47)) stillPortrait[index] = 0;
+    }
+  });
+  function ease(value) {
+    const t = Math.max(0, Math.min(1, value));
+    return t * t * (3 - 2 * t);
+  }
+  function portrait(_time, _variant, options) {
+    const progress = options.kissProgress || 0;
+    if (options.reduced || progress <= 0 || progress >= 1) return portraitPixels;
+    const swing = ease(progress / .36) * (1 - ease((progress - .50) / .50));
+    const pixels = stillPortrait.slice();
+    const wristX = 16, wristY = 63;
+    for (let y = 34; y <= 70; y++) {
+      // Inverse-sample the hand into the existing grid. The wrist and lower
+      // forearm stay joined while the fingers arc away below the kiss marks.
+      const reach = swing * ease((wristY - y) / 14);
+      const angle = reach * .40;
+      const cos = Math.cos(angle), sin = Math.sin(angle);
+      const dy = y - wristY - reach * 4.6;
+      for (let x = 0; x <= 31; x++) {
+        const index = y * PORTRAIT_WIDTH + x;
+        if (pixels[index]) continue;
+        const dx = x - wristX;
+        const sourceX = Math.round(wristX + dx * cos - dy * sin);
+        const sourceY = Math.round(wristY + dx * sin + dy * cos);
+        if (sourceX >= 0 && sourceX < PORTRAIT_WIDTH && sourceY >= 41 && sourceY <= 70) {
+          pixels[index] = handPixels[sourceY * PORTRAIT_WIDTH + sourceX];
+        }
+      }
     }
     return pixels;
   }
