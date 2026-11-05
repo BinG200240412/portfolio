@@ -240,14 +240,14 @@
   function portrait(_time, _variant, options) {
     const progress = options.kissProgress || 0;
     if (options.reduced || progress <= 0 || progress >= 1) return portraitPixels;
-    const swing = ease(progress / .36) * (1 - ease((progress - .50) / .50));
+    const swing = ease(progress / .36) * (1 - ease((progress - .58) / .42));
     const pixels = stillPortrait.slice();
     const wristX = 16, wristY = 63;
     for (let y = 34; y <= 70; y++) {
       // Inverse-sample the hand into the existing grid. The wrist and lower
       // forearm stay joined while the fingers arc away below the kiss marks.
       const reach = swing * ease((wristY - y) / 14);
-      const angle = reach * .40;
+      const angle = reach * .50;
       const cos = Math.cos(angle), sin = Math.sin(angle);
       const dy = y - wristY - reach * 4.6;
       for (let x = 0; x <= 31; x++) {

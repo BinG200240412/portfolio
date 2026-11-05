@@ -709,7 +709,7 @@
 
 ;
 
-/* Source: assets/matrix-project-stickers.js | sha256: 5640b6aaa74b41fb40ab16ac7796912c0564521caa4e02171d674d3203d29c5e */
+/* Source: assets/matrix-project-stickers.js | sha256: 677253e5c77e580be473a7a87517207737c6f345d4fcee496cd19f48896d3483 */
 /* Portfolio pixel stickers: open lettering, a cute nine-square doodle and the author’s portrait. Pure pixel data; no DOM, timers or dependencies.
  * Roles: 0 transparent, 1 primary, 2 secondary, 3 neutral, 4 accent. */
 (() => {
@@ -952,14 +952,14 @@
   function portrait(_time, _variant, options) {
     const progress = options.kissProgress || 0;
     if (options.reduced || progress <= 0 || progress >= 1) return portraitPixels;
-    const swing = ease(progress / .36) * (1 - ease((progress - .50) / .50));
+    const swing = ease(progress / .36) * (1 - ease((progress - .58) / .42));
     const pixels = stillPortrait.slice();
     const wristX = 16, wristY = 63;
     for (let y = 34; y <= 70; y++) {
       // Inverse-sample the hand into the existing grid. The wrist and lower
       // forearm stay joined while the fingers arc away below the kiss marks.
       const reach = swing * ease((wristY - y) / 14);
-      const angle = reach * .40;
+      const angle = reach * .50;
       const cos = Math.cos(angle), sin = Math.sin(angle);
       const dy = y - wristY - reach * 4.6;
       for (let x = 0; x <= 31; x++) {
@@ -1328,7 +1328,7 @@
 
 ;
 
-/* Source: assets/matrix-field.js | sha256: 5483b9c164bce63e4df2cee1991e9807cd42e38180164f470b6e543fd9c5e3e2 */
+/* Source: assets/matrix-field.js | sha256: 1a21b97762dca479e19dc34e12a54a7fd328561f8dbfa9a285dfc1becf9748a5 */
 (() => {
   const canvas = document.getElementById('matrix-field');
   const stage = document.getElementById('stage');
@@ -1570,6 +1570,7 @@
     };
     button.addEventListener('pointerenter', event => {
       if (event.pointerType === 'touch') return;
+      if (entry.id === 'skill') startKiss();
       pointerHover = entry; hover();
     });
     button.addEventListener('pointerleave', () => {
@@ -1581,19 +1582,34 @@
       if (focusHover === entry) focusHover = null;
       hover();
     });
-    button.addEventListener('click', () => {
-      if (!visible() || !entry.placement || pending) return;
-      const gate=projectGate();
-      if (reduced.matches) {
-        entry.staticActive=entry.staticActive?0:1; draw(6);
-        if (gate && gate===projectGate()) window.PortfolioNavigation?.openProject(entry.project);
-        return;
-      }
-      entry.staticActive=0;
-      pending = {entry,progress:0,gate}; buttonVisibility();
-    });
+    button.addEventListener('click', () => activateSticker(entry));
     hotspots.set(item.key, entry); stage.appendChild(button); objectLabel(entry);
   }
+  function startKiss() {
+    if (kissProgress === 1 && visible() && !reduced.matches) kissProgress = 0;
+  }
+  function activateSticker(entry) {
+    if (!visible() || !entry.placement) return false;
+    if (pending) return pending.entry === entry;
+    const gate = projectGate();
+    if (reduced.matches) {
+      entry.staticActive = entry.staticActive ? 0 : 1;
+      draw(6);
+      if (gate && gate === projectGate()) window.PortfolioNavigation?.openProject(entry.project);
+      return true;
+    }
+    if (entry.id === 'skill') startKiss();
+    entry.staticActive = 0;
+    pending = {entry, progress:0, gate};
+    buttonVisibility();
+    return true;
+  }
+  window.PortfolioMatrixInteractions = Object.freeze({
+    openSkills() {
+      const entry = [...hotspots.values()].find(sticker => sticker.id === 'skill');
+      return entry ? activateSticker(entry) : false;
+    },
+  });
   function syncHoverTargets() {
     for (const entry of hotspots.values()) entry.hoverTarget =
       pointerHover === entry || focusHover === entry || menuPreview === entry.id ||
@@ -1801,7 +1817,9 @@
     }
     if (pending) {
       pending.progress = Math.min(1,pending.progress+dt/(pending.entry.id === 'sudoku' ? 1.15 : .65));
-      if (pending.progress >= 1) finishPending();
+      // Leave the fully extended hand on screen before starting the fade.
+      const ready = pending.entry.id === 'skill' ? kissProgress >= .46 : pending.progress >= 1;
+      if (ready) finishPending();
     }
   }
   function draw(time) {
@@ -1926,10 +1944,7 @@
   menu?.addEventListener('pointerover',event => {
     if (event.pointerType === 'touch') return;
     menuPreview=motifFromMenu(event.target);
-    if (menuPreview === 'skill' && motifFromMenu(event.relatedTarget) !== 'skill' &&
-        kissProgress === 1 && visible() && !reduced.matches && projectGate()) {
-      kissProgress = 0;
-    }
+    if (menuPreview === 'skill' && motifFromMenu(event.relatedTarget) !== 'skill') startKiss();
     syncHoverTargets(); if (reduced.matches) draw(6);
   });
   menu?.addEventListener('pointerout',event => {
@@ -1947,9 +1962,11 @@
     buttonLabel(); for (const entry of hotspots.values()) objectLabel(entry);
     updateQuietZones(); if (reduced.matches) draw(6);
   });
-  addEventListener('portfolio:navigation', () => {
+  addEventListener('portfolio:navigation', event => {
     pointerHover=focusHover=menuPreview=null;
-    kissProgress = 1;
+    // A tap on the opening screen still reveals the hub while the kiss plays.
+    const openingKiss = event.detail?.mode === 'hub' && pending?.entry.id === 'skill' && !pending.gate;
+    if (!openingKiss) kissProgress = 1;
     speechKey=null;
     for (const entry of hotspots.values()) {entry.hoverTarget=0;objectLabel(entry);}
     if (reduced.matches && visible()) draw(6);
