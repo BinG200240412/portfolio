@@ -608,8 +608,9 @@
     buttonLabel();
   }
   const menu = document.getElementById('menu');
+  // A language update can replace a menu link while the pointer stays over it.
   const motifFromMenu = target => target instanceof Element
-    ? target.closest('#menu .mi')?.dataset.matrixMotif || null : null;
+    ? target.closest('.mi[data-matrix-motif]')?.dataset.matrixMotif || null : null;
   menu?.addEventListener('pointerover',event => {
     if (event.pointerType === 'touch') return;
     menuPreview=motifFromMenu(event.target);

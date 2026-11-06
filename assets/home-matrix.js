@@ -1328,7 +1328,7 @@
 
 ;
 
-/* Source: assets/matrix-field.js | sha256: 6f789e5f7ce9e9a66ac3364a7969f6f92b49bc99d36500b9be50a253c00f5c4f */
+/* Source: assets/matrix-field.js | sha256: 391d74faa92f5a43f8ee588a1a84ae46400babc3f251b16fdd7523dc35d80540 */
 (() => {
   const canvas = document.getElementById('matrix-field');
   const stage = document.getElementById('stage');
@@ -1939,8 +1939,9 @@
     buttonLabel();
   }
   const menu = document.getElementById('menu');
+  // A language update can replace a menu link while the pointer stays over it.
   const motifFromMenu = target => target instanceof Element
-    ? target.closest('#menu .mi')?.dataset.matrixMotif || null : null;
+    ? target.closest('.mi[data-matrix-motif]')?.dataset.matrixMotif || null : null;
   menu?.addEventListener('pointerover',event => {
     if (event.pointerType === 'touch') return;
     menuPreview=motifFromMenu(event.target);
