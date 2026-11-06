@@ -1338,7 +1338,7 @@
 
 ;
 
-/* Source: assets/matrix-field.js | sha256: 46bcb35e4826b346c338b88f18a8bef766065daf7e7ddb31fb9b01c2bd47ff5c */
+/* Source: assets/matrix-field.js | sha256: 3b061f3678f42143ee21343817f49cfedc40241c9dab55e202f71e86de2bb47b */
 (() => {
   const canvas = document.getElementById('matrix-field');
   const stage = document.getElementById('stage');
@@ -1593,7 +1593,9 @@
       if (focusHover === entry) focusHover = null;
       hover();
     });
-    button.addEventListener('click', () => activateSticker(entry));
+    button.addEventListener('click', event => {
+      if (activateSticker(entry) && entry.id === 'kiss-woman') event.preventDefault();
+    });
     hotspots.set(item.key, entry); stage.appendChild(button); objectLabel(entry);
   }
   function startKiss() {
@@ -1602,11 +1604,11 @@
   function activateSticker(entry) {
     if (!visible() || !entry.placement) return false;
     if (pending) return pending.entry === entry;
-    const gate = projectGate();
+    const gate = projectGate(entry);
     if (reduced.matches) {
       entry.staticActive = entry.staticActive ? 0 : 1;
       draw(6);
-      if (gate && gate === projectGate()) window.PortfolioNavigation?.openProject(entry.project);
+      if (gate && gate === projectGate(entry)) window.PortfolioNavigation?.openProject(entry.project, entry.id);
       return true;
     }
     if (entry.project === 'skill') startKiss();
@@ -1626,22 +1628,22 @@
       pointerHover === entry || focusHover === entry || menuPreview === entry.id ||
       (menuPreview === 'quest-3' && entry.id === 'robot-dog') ? 1 : 0;
   }
-  function projectGate() {
-    const gate=window.PortfolioNavigation?.projectGate?.();
+  function projectGate(entry) {
+    const gate=window.PortfolioNavigation?.projectGate?.(entry?.id);
     return Number.isSafeInteger(gate) && gate>0 ? gate : 0;
   }
   function finishPending() {
     const reaction=pending;
     pending=null;
-    if (reaction && visible() && reaction.gate && reaction.gate===projectGate())
-      window.PortfolioNavigation?.openProject(reaction.entry.project);
+    if (reaction && visible() && reaction.gate && reaction.gate===projectGate(reaction.entry))
+      window.PortfolioNavigation?.openProject(reaction.entry.project, reaction.entry.id);
     return reaction;
   }
   function objectLabel(entry) {
     const english = window.PortfolioI18n?.language === 'en' || document.documentElement.lang === 'en';
-    const works=!!projectGate();
-    const label = english ? `${works?'Open':'Play with'} ${names[entry.id][1]}`
-      : works?`查看${names[entry.id][0]}`:`与${names[entry.id][0]}互动`;
+    const canOpen=!!projectGate(entry);
+    const label = english ? `${canOpen?'Open':'Play with'} ${names[entry.id][1]}`
+      : canOpen?`查看${names[entry.id][0]}`:`与${names[entry.id][0]}互动`;
     entry.button.setAttribute('aria-label',label); entry.button.title = label;
   }
   function buttonVisibility() {
@@ -1975,7 +1977,7 @@
   });
   addEventListener('portfolio:navigation', event => {
     pointerHover=focusHover=menuPreview=null;
-    // A tap on the opening screen still reveals the hub while the kiss plays.
+    // Tapping the Skills lamp on the opening screen reveals the hub while the kiss plays.
     const openingKiss = event.detail?.mode === 'hub' && pending?.entry.project === 'skill' && !pending.gate;
     if (!openingKiss) kissProgress = 1;
     speechKey=null;
