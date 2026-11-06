@@ -709,7 +709,7 @@
 
 ;
 
-/* Source: assets/matrix-project-stickers.js | sha256: 677253e5c77e580be473a7a87517207737c6f345d4fcee496cd19f48896d3483 */
+/* Source: assets/matrix-project-stickers.js | sha256: d3077a1cc27d0fc79b7a111d8aa3868892bcdbb9642aa552316eb61706b89413 */
 /* Portfolio pixel stickers: open lettering, a cute nine-square doodle and the author’s portrait. Pure pixel data; no DOM, timers or dependencies.
  * Roles: 0 transparent, 1 primary, 2 secondary, 3 neutral, 4 accent. */
 (() => {
@@ -945,6 +945,11 @@
       if (!(x === 28 && y === 41) && !(x === 31 && y === 47)) stillPortrait[index] = 0;
     }
   });
+  // Briefly open the original winking eye. The other eye and brow stay fixed.
+  const openEye = ['001111100', '010000010', '100011001', '100011001', '010000010', '001111100']
+    .map(row => Uint8Array.from(row, Number));
+  const halfOpenEye = ['000000000', '001111100', '110011011', '011111110', '000000000', '000000000']
+    .map(row => Uint8Array.from(row, Number));
   function ease(value) {
     const t = Math.max(0, Math.min(1, value));
     return t * t * (3 - 2 * t);
@@ -959,7 +964,7 @@
       // Inverse-sample the hand into the existing grid. The wrist and lower
       // forearm stay joined while the fingers arc away below the kiss marks.
       const reach = swing * ease((wristY - y) / 14);
-      const angle = reach * .50;
+      const angle = reach * .58;
       const cos = Math.cos(angle), sin = Math.sin(angle);
       const dy = y - wristY - reach * 4.6;
       for (let x = 0; x <= 31; x++) {
@@ -972,6 +977,11 @@
           pixels[index] = handPixels[sourceY * PORTRAIT_WIDTH + sourceX];
         }
       }
+    }
+    const eyelid = ease(progress / .09) * (1 - ease((progress - .23) / .09));
+    if (eyelid > .18) {
+      const eye = eyelid > .7 ? openEye : halfOpenEye;
+      eye.forEach((row, y) => pixels.set(row, (24 + y) * PORTRAIT_WIDTH + 37));
     }
     return pixels;
   }
@@ -1328,7 +1338,7 @@
 
 ;
 
-/* Source: assets/matrix-field.js | sha256: 391d74faa92f5a43f8ee588a1a84ae46400babc3f251b16fdd7523dc35d80540 */
+/* Source: assets/matrix-field.js | sha256: 46bcb35e4826b346c338b88f18a8bef766065daf7e7ddb31fb9b01c2bd47ff5c */
 (() => {
   const canvas = document.getElementById('matrix-field');
   const stage = document.getElementById('stage');
@@ -1422,9 +1432,9 @@
   ];
   const smooth = value => { const t = Math.max(0, Math.min(1, value)); return t * t * (3 - 2 * t); };
   const projects = {sudoku:'sudoku','robot-dog':'robot-dog','quest-3':'quest-3',arright:'arright',
-    skill:'skill','liangzhu-mask':'liangzhu','jade-cong':'liangzhu'};
+    skill:'skill','kiss-woman':'skill','liangzhu-mask':'liangzhu','jade-cong':'liangzhu'};
   const names = {sudoku:['数独','Sudoku'],'robot-dog':['机器狗','Robot dog'],'quest-3':['Quest 3','Quest 3'],
-    arright:['Arright','Arright'],skill:['Skills','Skills'],
+    arright:['Arright','Arright'],skill:['Skills','Skills'],'kiss-woman':['飞吻女郎','Kiss sticker'],
     'liangzhu-mask':['良渚','Liangzhu'],'jade-cong':['良渚','Liangzhu']};
   const hotspots = new Map();
   const sampleWeights = new Float32Array(9), sampleShades = new Float32Array(9);
@@ -1438,7 +1448,7 @@
   let kissProgress = 1;
   let protectedBoxes = null;
   let speechKey = null, speechBorn = 0;
-  const speechless = new Set(['robot-dog','quest-3','sudoku','skill']);
+  const speechless = new Set(['robot-dog','quest-3','sudoku','skill','kiss-woman']);
 
   function updateQuietZones() {
     // Paint the actual DOM glyphs, including individual typewriter spans and
@@ -1544,7 +1554,8 @@
   }
   function placement(item, time, image) {
     const gorilla = item.id === 'gorilla';
-    const entry = hotspots.get(item.key), active = pending && pending.entry === entry ? pending.progress : 0;
+    const entry = hotspots.get(item.key);
+    const active = item.id !== 'kiss-woman' && pending && pending.entry === entry ? pending.progress : 0;
     const beat = reduced.matches ? 0 : Math.sin(active * Math.PI);
     const dogHover = item.id === 'robot-dog' && !reduced.matches ? entry?.hover || 0 : 0;
     const angle = item.angle + .035 * Math.sin(time * .23 + item.phase) * (1 - dogHover) +
@@ -1570,7 +1581,7 @@
     };
     button.addEventListener('pointerenter', event => {
       if (event.pointerType === 'touch') return;
-      if (entry.id === 'skill') startKiss();
+      if (entry.project === 'skill') startKiss();
       pointerHover = entry; hover();
     });
     button.addEventListener('pointerleave', () => {
@@ -1598,7 +1609,7 @@
       if (gate && gate === projectGate()) window.PortfolioNavigation?.openProject(entry.project);
       return true;
     }
-    if (entry.id === 'skill') startKiss();
+    if (entry.project === 'skill') startKiss();
     entry.staticActive = 0;
     pending = {entry, progress:0, gate};
     buttonVisibility();
@@ -1818,7 +1829,7 @@
     if (pending) {
       pending.progress = Math.min(1,pending.progress+dt/(pending.entry.id === 'sudoku' ? 1.15 : .65));
       // Leave the fully extended hand on screen before starting the fade.
-      const ready = pending.entry.id === 'skill' ? kissProgress >= .46 : pending.progress >= 1;
+      const ready = pending.entry.project === 'skill' ? kissProgress >= .46 : pending.progress >= 1;
       if (ready) finishPending();
     }
   }
@@ -1965,7 +1976,7 @@
   addEventListener('portfolio:navigation', event => {
     pointerHover=focusHover=menuPreview=null;
     // A tap on the opening screen still reveals the hub while the kiss plays.
-    const openingKiss = event.detail?.mode === 'hub' && pending?.entry.id === 'skill' && !pending.gate;
+    const openingKiss = event.detail?.mode === 'hub' && pending?.entry.project === 'skill' && !pending.gate;
     if (!openingKiss) kissProgress = 1;
     speechKey=null;
     for (const entry of hotspots.values()) {entry.hoverTarget=0;objectLabel(entry);}

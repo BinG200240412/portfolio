@@ -233,6 +233,11 @@
       if (!(x === 28 && y === 41) && !(x === 31 && y === 47)) stillPortrait[index] = 0;
     }
   });
+  // Briefly open the original winking eye. The other eye and brow stay fixed.
+  const openEye = ['001111100', '010000010', '100011001', '100011001', '010000010', '001111100']
+    .map(row => Uint8Array.from(row, Number));
+  const halfOpenEye = ['000000000', '001111100', '110011011', '011111110', '000000000', '000000000']
+    .map(row => Uint8Array.from(row, Number));
   function ease(value) {
     const t = Math.max(0, Math.min(1, value));
     return t * t * (3 - 2 * t);
@@ -247,7 +252,7 @@
       // Inverse-sample the hand into the existing grid. The wrist and lower
       // forearm stay joined while the fingers arc away below the kiss marks.
       const reach = swing * ease((wristY - y) / 14);
-      const angle = reach * .50;
+      const angle = reach * .58;
       const cos = Math.cos(angle), sin = Math.sin(angle);
       const dy = y - wristY - reach * 4.6;
       for (let x = 0; x <= 31; x++) {
@@ -260,6 +265,11 @@
           pixels[index] = handPixels[sourceY * PORTRAIT_WIDTH + sourceX];
         }
       }
+    }
+    const eyelid = ease(progress / .09) * (1 - ease((progress - .23) / .09));
+    if (eyelid > .18) {
+      const eye = eyelid > .7 ? openEye : halfOpenEye;
+      eye.forEach((row, y) => pixels.set(row, (24 + y) * PORTRAIT_WIDTH + 37));
     }
     return pixels;
   }

@@ -91,9 +91,9 @@
   ];
   const smooth = value => { const t = Math.max(0, Math.min(1, value)); return t * t * (3 - 2 * t); };
   const projects = {sudoku:'sudoku','robot-dog':'robot-dog','quest-3':'quest-3',arright:'arright',
-    skill:'skill','liangzhu-mask':'liangzhu','jade-cong':'liangzhu'};
+    skill:'skill','kiss-woman':'skill','liangzhu-mask':'liangzhu','jade-cong':'liangzhu'};
   const names = {sudoku:['数独','Sudoku'],'robot-dog':['机器狗','Robot dog'],'quest-3':['Quest 3','Quest 3'],
-    arright:['Arright','Arright'],skill:['Skills','Skills'],
+    arright:['Arright','Arright'],skill:['Skills','Skills'],'kiss-woman':['飞吻女郎','Kiss sticker'],
     'liangzhu-mask':['良渚','Liangzhu'],'jade-cong':['良渚','Liangzhu']};
   const hotspots = new Map();
   const sampleWeights = new Float32Array(9), sampleShades = new Float32Array(9);
@@ -107,7 +107,7 @@
   let kissProgress = 1;
   let protectedBoxes = null;
   let speechKey = null, speechBorn = 0;
-  const speechless = new Set(['robot-dog','quest-3','sudoku','skill']);
+  const speechless = new Set(['robot-dog','quest-3','sudoku','skill','kiss-woman']);
 
   function updateQuietZones() {
     // Paint the actual DOM glyphs, including individual typewriter spans and
@@ -213,7 +213,8 @@
   }
   function placement(item, time, image) {
     const gorilla = item.id === 'gorilla';
-    const entry = hotspots.get(item.key), active = pending && pending.entry === entry ? pending.progress : 0;
+    const entry = hotspots.get(item.key);
+    const active = item.id !== 'kiss-woman' && pending && pending.entry === entry ? pending.progress : 0;
     const beat = reduced.matches ? 0 : Math.sin(active * Math.PI);
     const dogHover = item.id === 'robot-dog' && !reduced.matches ? entry?.hover || 0 : 0;
     const angle = item.angle + .035 * Math.sin(time * .23 + item.phase) * (1 - dogHover) +
@@ -239,7 +240,7 @@
     };
     button.addEventListener('pointerenter', event => {
       if (event.pointerType === 'touch') return;
-      if (entry.id === 'skill') startKiss();
+      if (entry.project === 'skill') startKiss();
       pointerHover = entry; hover();
     });
     button.addEventListener('pointerleave', () => {
@@ -267,7 +268,7 @@
       if (gate && gate === projectGate()) window.PortfolioNavigation?.openProject(entry.project);
       return true;
     }
-    if (entry.id === 'skill') startKiss();
+    if (entry.project === 'skill') startKiss();
     entry.staticActive = 0;
     pending = {entry, progress:0, gate};
     buttonVisibility();
@@ -487,7 +488,7 @@
     if (pending) {
       pending.progress = Math.min(1,pending.progress+dt/(pending.entry.id === 'sudoku' ? 1.15 : .65));
       // Leave the fully extended hand on screen before starting the fade.
-      const ready = pending.entry.id === 'skill' ? kissProgress >= .46 : pending.progress >= 1;
+      const ready = pending.entry.project === 'skill' ? kissProgress >= .46 : pending.progress >= 1;
       if (ready) finishPending();
     }
   }
@@ -634,7 +635,7 @@
   addEventListener('portfolio:navigation', event => {
     pointerHover=focusHover=menuPreview=null;
     // A tap on the opening screen still reveals the hub while the kiss plays.
-    const openingKiss = event.detail?.mode === 'hub' && pending?.entry.id === 'skill' && !pending.gate;
+    const openingKiss = event.detail?.mode === 'hub' && pending?.entry.project === 'skill' && !pending.gate;
     if (!openingKiss) kissProgress = 1;
     speechKey=null;
     for (const entry of hotspots.values()) {entry.hoverTarget=0;objectLabel(entry);}
