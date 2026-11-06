@@ -1328,7 +1328,7 @@
 
 ;
 
-/* Source: assets/matrix-field.js | sha256: 1a21b97762dca479e19dc34e12a54a7fd328561f8dbfa9a285dfc1becf9748a5 */
+/* Source: assets/matrix-field.js | sha256: 6f789e5f7ce9e9a66ac3364a7969f6f92b49bc99d36500b9be50a253c00f5c4f */
 (() => {
   const canvas = document.getElementById('matrix-field');
   const stage = document.getElementById('stage');
@@ -1958,7 +1958,6 @@
     menuPreview=motifFromMenu(event.relatedTarget); syncHoverTargets(); if (reduced.matches) draw(6);
   });
   addEventListener('portfolio:language', () => {
-    kissProgress = 1;
     buttonLabel(); for (const entry of hotspots.values()) objectLabel(entry);
     updateQuietZones(); if (reduced.matches) draw(6);
   });

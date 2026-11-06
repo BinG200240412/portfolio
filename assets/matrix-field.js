@@ -627,7 +627,6 @@
     menuPreview=motifFromMenu(event.relatedTarget); syncHoverTargets(); if (reduced.matches) draw(6);
   });
   addEventListener('portfolio:language', () => {
-    kissProgress = 1;
     buttonLabel(); for (const entry of hotspots.values()) objectLabel(entry);
     updateQuietZones(); if (reduced.matches) draw(6);
   });
