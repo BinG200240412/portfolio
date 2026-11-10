@@ -26,7 +26,9 @@
     }
     sample.textContent = value;
     context.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-    const ink = context.measureText(value);
+    // Measure the letter bodies so a single descender cannot pull the pupil down.
+    const letterBodies = value.replace(/[gjpqy]/g, letter => letter === 'j' ? 'i' : 'x');
+    const ink = context.measureText(letterBodies);
     if (!Number.isFinite(ink.actualBoundingBoxAscent) || !Number.isFinite(ink.actualBoundingBoxDescent)) return;
     const box = probe.getBoundingClientRect();
     const baselineY = baseline.getBoundingClientRect().top - box.top;
